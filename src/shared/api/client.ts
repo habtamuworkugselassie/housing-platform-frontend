@@ -11,12 +11,17 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 // In production, use the production backend URL if VITE_API_BASE_URL is not set
 // In development, use relative URL which will be proxied by Vite
 const getBaseURL = () => {
-  if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL
+  // Check if VITE_API_BASE_URL is explicitly set
+  // @ts-ignore - Vite env variables
+  const envUrl = import.meta.env.VITE_API_BASE_URL
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    return envUrl
   }
   
-  // Production default
-  if (import.meta.env.PROD) {
+  // Production default - check if we're in production mode
+  // @ts-ignore - Vite env variables
+  const isProduction = import.meta.env.MODE === 'production' || import.meta.env.PROD === true
+  if (isProduction) {
     return 'https://housing-platform-backend.onrender.com/api/v1'
   }
   
@@ -51,7 +56,7 @@ const processQueue = (error: any, token: string | null = null) => {
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     // Import dynamically to avoid circular dependency issues
     const token = localStorage.getItem('accessToken')
     if (token && config.headers) {
