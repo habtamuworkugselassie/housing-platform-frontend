@@ -6,7 +6,7 @@
       <span class="mdc-top-app-bar__title">Dashboard</span>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -203,17 +203,18 @@
 
         <!-- Agents Section (for super agents) -->
         <div v-if="organization && isSuperAgent" class="mdc-card mb-8">
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
             <div class="flex items-center">
               <span class="material-icons text-indigo-600 mr-2">people</span>
               <h2 class="mdc-typography--headline6 m-0">Agents</h2>
             </div>
             <button
               @click="$router.push('/create-agent')"
-              class="mdc-button mdc-button--raised"
+              class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">person_add</span>
-              Create Agent
+              <span class="hidden sm:inline">Create Agent</span>
+              <span class="sm:hidden">Create</span>
             </button>
           </div>
           <div v-if="agentsLoading" class="text-center py-8">
@@ -225,8 +226,41 @@
             <p class="mdc-typography--body1 text-gray-500 mt-2">No agents registered yet.</p>
             <p class="mdc-typography--body2 text-gray-400">Click "Create Agent" to add one.</p>
           </div>
-          <div v-else class="overflow-x-auto">
-            <table class="mdc-data-table">
+          <template v-else>
+            <!-- Mobile Card View -->
+            <div class="block sm:hidden space-y-3">
+              <div v-for="agent in agents" :key="agent.id" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div class="flex items-start justify-between mb-2">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-1">
+                      <span class="material-icons mr-2 text-gray-600" style="font-size: 20px;">person</span>
+                      <span class="font-semibold text-gray-900">{{ agent.user?.firstName }} {{ agent.user?.lastName }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-7">{{ agent.user?.email }}</p>
+                  </div>
+                  <button
+                    @click="editAgent(agent)"
+                    class="p-2 text-gray-600 hover:text-primary-600"
+                  >
+                    <span class="material-icons" style="font-size: 20px;">edit</span>
+                  </button>
+                </div>
+                <div class="flex flex-wrap gap-2 ml-7">
+                  <span :class="{
+                    'px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800': agent.status === 'ACTIVE',
+                    'px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800': agent.status === 'INACTIVE',
+                    'px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800': agent.status === 'SUSPENDED'
+                  }">
+                    {{ agent.status }}
+                  </span>
+                  <span v-if="agent.isSuperAgent" class="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">Super Agent</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Desktop Table View -->
+            <div class="hidden sm:block overflow-x-auto">
+            <table class="mdc-data-table min-w-full">
               <thead class="mdc-data-table__header-row">
                 <tr>
                   <th class="mdc-data-table__header-cell">Name</th>
@@ -270,11 +304,12 @@
               </tbody>
             </table>
           </div>
+          </template>
         </div>
 
         <!-- Properties Section (for all agents) -->
         <div v-if="agent || (organization && isSuperAgent)" class="mdc-card">
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
             <div class="flex items-center">
               <span class="material-icons text-teal-600 mr-2">home</span>
               <h2 class="mdc-typography--headline6 m-0">
@@ -283,10 +318,11 @@
             </div>
             <button
               @click="$router.push('/submit-property')"
-              class="mdc-button mdc-button--raised"
+              class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-              Submit Property
+              <span class="hidden sm:inline">Submit Property</span>
+              <span class="sm:hidden">Submit</span>
             </button>
           </div>
           <div v-if="propertiesLoading" class="text-center py-8">
@@ -298,8 +334,53 @@
             <p class="mdc-typography--body1 text-gray-500 mt-2">No properties listed yet.</p>
             <p class="mdc-typography--body2 text-gray-400">Click "Submit Property" to add one.</p>
           </div>
-          <div v-else class="overflow-x-auto">
-            <table class="mdc-data-table">
+          <template v-else>
+            <!-- Mobile Card View -->
+            <div class="block sm:hidden space-y-3">
+              <div v-for="property in properties" :key="property.id" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <div class="flex items-start justify-between mb-2">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-1">
+                      <span class="material-icons mr-2 text-gray-600" style="font-size: 20px;">home</span>
+                      <span class="font-semibold text-gray-900">{{ property.title }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 ml-7">{{ property.city }}</p>
+                  </div>
+                  <div class="flex gap-1">
+                    <router-link
+                      :to="`/properties/${property.id}`"
+                      class="p-2 text-gray-600 hover:text-primary-600"
+                    >
+                      <span class="material-icons" style="font-size: 20px;">visibility</span>
+                    </router-link>
+                    <button
+                      @click="editProperty(property)"
+                      class="p-2 text-gray-600 hover:text-primary-600"
+                    >
+                      <span class="material-icons" style="font-size: 20px;">edit</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 ml-7">
+                  <span class="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">{{ property.type }}</span>
+                  <div class="flex flex-col gap-0.5">
+                    <span v-if="property.priceETB" class="px-2 py-1 rounded text-xs font-medium font-semibold text-gray-900">{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                    <span v-if="property.priceUSD" class="px-2 py-1 rounded text-xs font-medium text-gray-700">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                  </div>
+                  <span :class="{
+                    'px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800': property.status === 'AVAILABLE',
+                    'px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800': property.status === 'RESERVED',
+                    'px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800': property.status === 'SOLD'
+                  }">
+                    {{ property.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Desktop Table View -->
+            <div class="hidden sm:block overflow-x-auto">
+            <table class="mdc-data-table min-w-full">
               <thead class="mdc-data-table__header-row">
                 <tr>
                   <th class="mdc-data-table__header-cell">Title</th>
@@ -322,7 +403,10 @@
                     <span class="mdc-chip">{{ property.type }}</span>
                   </td>
                   <td class="mdc-data-table__cell">
-                    <span class="mdc-typography--subtitle2 font-medium">${{ property.price?.toLocaleString() }}</span>
+                    <div class="flex flex-col gap-0.5">
+                      <span v-if="property.priceETB" class="mdc-typography--subtitle2 font-medium">{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                      <span v-if="property.priceUSD" class="mdc-typography--body2 text-gray-600">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                    </div>
                   </td>
                   <td class="mdc-data-table__cell">{{ property.city }}</td>
                   <td class="mdc-data-table__cell">
@@ -354,20 +438,21 @@
               </tbody>
             </table>
           </div>
+          </template>
         </div>
       </div>
       <!-- End Main Content -->
 
       <!-- Modals -->
       <!-- Edit Organization Modal -->
-        <div v-if="showEditOrganizationModal" class="mdc-dialog" @click.self="showEditOrganizationModal = false">
-          <div class="mdc-dialog__surface">
+        <div v-if="showEditOrganizationModal" class="mdc-dialog fixed inset-0 z-50 overflow-y-auto" @click.self="showEditOrganizationModal = false">
+          <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 600px; margin-left: auto; margin-right: auto;">
             <div class="flex items-center mb-4">
               <span class="material-icons text-blue-600 mr-2">business</span>
               <h3 class="mdc-dialog__title">Edit Organization</h3>
             </div>
         <form @submit.prevent="updateOrganization" class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mdc-text-field">
               <input
                 v-model="organizationForm.name"
@@ -397,7 +482,7 @@
             />
             <label class="mdc-text-field__label">Address</label>
           </div>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mdc-text-field">
               <input
                 v-model="organizationForm.city"
@@ -417,7 +502,7 @@
               <label class="mdc-text-field__label">Country</label>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mdc-text-field">
               <input
                 v-model="organizationForm.phoneNumber"
@@ -456,17 +541,17 @@
             ></textarea>
             <label class="mdc-text-field__label">Description</label>
           </div>
-            <div class="flex justify-end space-x-3 pt-4">
+            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
               <button
                 type="button"
                 @click="showEditOrganizationModal = false"
-                class="mdc-button mdc-button--outlined"
+                class="mdc-button mdc-button--outlined w-full sm:w-auto"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="mdc-button mdc-button--raised"
+                class="mdc-button mdc-button--raised w-full sm:w-auto"
               >
                 <span class="material-icons mr-1" style="font-size: 18px;">save</span>
                 Update
@@ -477,8 +562,8 @@
       </div>
 
       <!-- Edit Agent Modal -->
-      <div v-if="showEditAgentModal" class="mdc-dialog" @click.self="showEditAgentModal = false">
-        <div class="mdc-dialog__surface" style="max-width: 500px;">
+      <div v-if="showEditAgentModal" class="mdc-dialog fixed inset-0 z-50 overflow-y-auto" @click.self="showEditAgentModal = false">
+        <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 500px; margin-left: auto; margin-right: auto;">
           <div class="flex items-center mb-4">
             <span class="material-icons text-green-600 mr-2">badge</span>
             <h3 class="mdc-dialog__title">Edit Agent</h3>
@@ -538,17 +623,17 @@
             ></textarea>
             <label class="mdc-text-field__label">Notes</label>
           </div>
-          <div class="flex justify-end space-x-3 pt-4">
+          <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
             <button
               type="button"
               @click="showEditAgentModal = false"
-              class="mdc-button mdc-button--outlined"
+              class="mdc-button mdc-button--outlined w-full sm:w-auto"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="mdc-button mdc-button--raised"
+              class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">save</span>
               Update
@@ -559,157 +644,320 @@
     </div>
 
     <!-- Edit Property Modal -->
-    <div v-if="showEditPropertyModal" class="mdc-dialog" @click.self="showEditPropertyModal = false">
-      <div class="mdc-dialog__surface" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
-        <div class="flex items-center mb-4">
-          <span class="material-icons text-teal-600 mr-2">home</span>
-          <h3 class="mdc-dialog__title">Edit Property</h3>
+    <div v-if="showEditPropertyModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50" @click.self="showEditPropertyModal = false">
+      <div class="bg-white rounded-lg shadow-xl m-4 sm:m-8 p-6" style="max-width: 700px; max-height: 90vh; overflow-y: auto; margin-left: auto; margin-right: auto;">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center">
+            <span class="material-icons text-teal-600 mr-2">home</span>
+            <h3 class="text-xl font-semibold text-gray-900">Edit Property</h3>
+          </div>
+          <button
+            type="button"
+            @click="showEditPropertyModal = false"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <span class="material-icons">close</span>
+          </button>
         </div>
         <form @submit.prevent="updateProperty" class="space-y-4">
-          <div class="mdc-text-field">
+          <div>
+            <label for="edit-title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
             <input
+              id="edit-title"
               v-model="propertyForm.title"
               type="text"
               required
-              placeholder=" "
-              class="mdc-text-field__input"
+              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             />
-            <label class="mdc-text-field__label">Title *</label>
           </div>
-          <div class="mdc-text-field">
+          <div>
+            <label for="edit-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
+              id="edit-description"
               v-model="propertyForm.description"
               rows="3"
-              placeholder=" "
-              class="mdc-text-field__input"
+              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               style="min-height: 80px;"
             ></textarea>
-            <label class="mdc-text-field__label">Description</label>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="mdc-text-field">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="edit-type" class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
               <select
+                id="edit-type"
                 v-model="propertyForm.type"
                 required
-                class="mdc-text-field__input"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               >
                 <option value="">Select type</option>
                 <option value="APARTMENT">Apartment</option>
                 <option value="HOUSE">House</option>
+                <option value="VILLA">Villa</option>
+                <option value="CONDOMINIUM">Condominium</option>
+                <option value="TOWNHOUSE">Townhouse</option>
                 <option value="LAND">Land</option>
                 <option value="COMMERCIAL">Commercial</option>
               </select>
-              <label class="mdc-text-field__label">Type *</label>
-            </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="propertyForm.price"
-                type="number"
-                step="0.01"
-                required
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">Price *</label>
             </div>
           </div>
-          <div class="mdc-text-field">
+          
+          <!-- Price Fields -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Price *</label>
+            <p class="text-xs text-gray-500">Provide at least one price (ETB or USD)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="edit-priceETB" class="block text-xs font-medium text-gray-600 mb-1">Price (ETB/Birr)</label>
+                <input
+                  id="edit-priceETB"
+                  v-model.number="propertyForm.priceETB"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                />
+              </div>
+              <div>
+                <label for="edit-priceUSD" class="block text-xs font-medium text-gray-600 mb-1">Price (USD/Dollar)</label>
+                <input
+                  id="edit-priceUSD"
+                  v-model.number="propertyForm.priceUSD"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                />
+              </div>
+            </div>
+            <p class="text-xs text-gray-500">At least one price (ETB or USD) is required</p>
+          </div>
+          <div>
+            <label for="edit-address" class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
             <input
+              id="edit-address"
               v-model="propertyForm.address"
               type="text"
               required
-              placeholder=" "
-              class="mdc-text-field__input"
+              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             />
-            <label class="mdc-text-field__label">Address *</label>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="mdc-text-field">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="edit-city" class="block text-sm font-medium text-gray-700 mb-1">City *</label>
               <input
+                id="edit-city"
                 v-model="propertyForm.city"
                 type="text"
                 required
-                placeholder=" "
-                class="mdc-text-field__input"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               />
-              <label class="mdc-text-field__label">City *</label>
             </div>
-            <div class="mdc-text-field">
+            <div>
+              <label for="edit-country" class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
               <input
+                id="edit-country"
                 v-model="propertyForm.country"
                 type="text"
                 required
-                placeholder=" "
-                class="mdc-text-field__input"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               />
-              <label class="mdc-text-field__label">Country *</label>
             </div>
           </div>
-          <div class="grid grid-cols-3 gap-4">
-            <div class="mdc-text-field">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label for="edit-area" class="block text-sm font-medium text-gray-700 mb-1">Area (sqm) *</label>
               <input
-                v-model="propertyForm.bedrooms"
-                type="number"
-                min="0"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">Bedrooms</label>
-            </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="propertyForm.bathrooms"
-                type="number"
-                min="0"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">Bathrooms</label>
-            </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="propertyForm.area"
+                id="edit-area"
+                v-model.number="propertyForm.area"
                 type="number"
                 step="0.01"
                 min="0"
-                placeholder=" "
-                class="mdc-text-field__input"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               />
-              <label class="mdc-text-field__label">Area (sqm)</label>
+            </div>
+            <div>
+              <label for="edit-bedrooms" class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+              <input
+                id="edit-bedrooms"
+                v-model.number="propertyForm.bedrooms"
+                type="number"
+                min="0"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+            <div>
+              <label for="edit-bathrooms" class="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
+              <input
+                id="edit-bathrooms"
+                v-model.number="propertyForm.bathrooms"
+                type="number"
+                min="0"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              />
             </div>
           </div>
-          <div class="mdc-text-field">
-            <select
-              v-model="propertyForm.constructionStatus"
-              required
-              class="mdc-text-field__input"
-            >
-              <option value="">Select status</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="UNDER_CONSTRUCTION">Under Construction</option>
-              <option value="PLANNED">Planned</option>
-            </select>
-            <label class="mdc-text-field__label">Construction Status *</label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="edit-floorNumber" class="block text-sm font-medium text-gray-700 mb-1">Floor Number</label>
+              <input
+                id="edit-floorNumber"
+                v-model.number="propertyForm.floorNumber"
+                type="number"
+                min="0"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+            <div>
+              <label for="edit-totalFloors" class="block text-sm font-medium text-gray-700 mb-1">Total Floors</label>
+              <input
+                id="edit-totalFloors"
+                v-model.number="propertyForm.totalFloors"
+                type="number"
+                min="0"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
           </div>
-        <div class="flex justify-end space-x-3 pt-4">
+          
+          <div>
+            <label for="edit-constructionPercentage" class="block text-sm font-medium text-gray-700 mb-1">Construction Percentage (0-100)</label>
+            <input
+              id="edit-constructionPercentage"
+              v-model.number="propertyForm.constructionPercentage"
+              type="number"
+              min="0"
+              max="100"
+              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+          
+          <div class="flex items-center">
+            <input
+              v-model="propertyForm.isFullyFurnished"
+              type="checkbox"
+              id="isFullyFurnished"
+              class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+            />
+            <label for="isFullyFurnished" class="ml-2 text-sm text-gray-700">Fully Furnished</label>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="edit-constructionStatus" class="block text-sm font-medium text-gray-700 mb-1">Construction Status *</label>
+              <select
+                id="edit-constructionStatus"
+                v-model="propertyForm.constructionStatus"
+                required
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              >
+                <option value="">Select status</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="UNDER_CONSTRUCTION">Under Construction</option>
+                <option value="PLANNED">Planned</option>
+                <option value="READY_TO_MOVE">Ready to Move</option>
+              </select>
+            </div>
+            <div>
+              <label for="edit-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select
+                id="edit-category"
+                v-model="propertyForm.category"
+                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              >
+                <option value="">Select category</option>
+                <option value="FOR_SALE">For Sale</option>
+                <option value="FOR_RENTAL">For Rental</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Image/Video Upload Section -->
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Photos/Videos</label>
+            <div class="space-y-3">
+              <!-- Existing Images -->
+              <div v-if="editingProperty && editingProperty.images && editingProperty.images.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                <div v-for="image in editingProperty.images" :key="image.id" class="relative group">
+                  <img :src="image.imageUrl" :alt="image.caption || 'Property image'" class="w-full h-24 object-cover rounded border border-gray-300" />
+                  <button
+                    type="button"
+                    @click="deletePropertyImage(editingProperty.id, image.id)"
+                    class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+                  >
+                    <span class="material-icons" style="font-size: 16px;">close</span>
+                  </button>
+                  <div v-if="image.isPrimary" class="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">Primary</div>
+                </div>
+              </div>
+              
+              <!-- File Upload -->
+              <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                <input
+                  type="file"
+                  ref="fileInput"
+                  @change="handleFileSelect"
+                  multiple
+                  accept="image/*,video/*"
+                  class="hidden"
+                  id="property-file-upload"
+                />
+                <label for="property-file-upload" class="cursor-pointer flex flex-col items-center justify-center">
+                  <span class="material-icons text-gray-400 mb-2" style="font-size: 48px;">cloud_upload</span>
+                  <span class="text-sm text-gray-600 mb-1">Click to upload photos or videos</span>
+                  <span class="text-xs text-gray-500">Supports: JPG, PNG, GIF, MP4, MOV (Max 10MB each)</span>
+                </label>
+              </div>
+              
+              <!-- Selected Files Preview -->
+              <div v-if="selectedFiles.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <div v-for="(file, index) in selectedFiles" :key="index" class="relative">
+                  <div v-if="file.type.startsWith('image/')" class="relative">
+                    <img :src="file.preview" :alt="file.name" class="w-full h-24 object-cover rounded border border-gray-300" />
+                    <button
+                      type="button"
+                      @click="removeSelectedFile(index)"
+                      class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                      style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+                    >
+                      <span class="material-icons" style="font-size: 16px;">close</span>
+                    </button>
+                  </div>
+                  <div v-else class="relative bg-gray-100 rounded border border-gray-300 h-24 flex items-center justify-center">
+                    <span class="material-icons text-gray-400">videocam</span>
+                    <button
+                      type="button"
+                      @click="removeSelectedFile(index)"
+                      class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                      style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+                    >
+                      <span class="material-icons" style="font-size: 16px;">close</span>
+                    </button>
+                  </div>
+                  <p class="text-xs text-gray-600 mt-1 truncate">{{ file.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
           <button
             type="button"
             @click="showEditPropertyModal = false"
-            class="mdc-button mdc-button--outlined"
+            class="mdc-button mdc-button--outlined w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="mdc-button mdc-button--raised"
+            class="mdc-button mdc-button--raised w-full sm:w-auto"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">save</span>
             Update
           </button>
         </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
 
   <!-- Sponsorship Application Modal -->
   <div v-if="showSponsorshipModal" class="mdc-dialog" @click.self="showSponsorshipModal = false">
@@ -868,6 +1116,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
+import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -915,15 +1164,23 @@ const propertyForm = ref({
   title: '',
   description: '',
   type: '',
-  price: '',
+  priceETB: null,
+  priceUSD: null,
   address: '',
   city: '',
   country: '',
-  bedrooms: '',
-  bathrooms: '',
-  area: '',
-  constructionStatus: ''
+  bedrooms: null,
+  bathrooms: null,
+  area: null,
+  floorNumber: null,
+  totalFloors: null,
+  constructionStatus: '',
+  category: '',
+  constructionPercentage: null,
+  isFullyFurnished: false
 })
+const selectedFiles = ref([])
+const fileInput = ref(null)
 
 const loadDashboardData = async () => {
   if (!authStore.hasRole('REALTOR')) {
@@ -1148,41 +1405,124 @@ const editProperty = (propertyData) => {
     title: propertyData.title || '',
     description: propertyData.description || '',
     type: propertyData.type || '',
-    price: propertyData.price?.toString() || '',
+    priceETB: propertyData.priceETB || null,
+    priceUSD: propertyData.priceUSD || null,
     address: propertyData.address || '',
     city: propertyData.city || '',
     country: propertyData.country || '',
-    bedrooms: propertyData.bedrooms?.toString() || '',
-    bathrooms: propertyData.bathrooms?.toString() || '',
-    area: propertyData.area?.toString() || '',
-    constructionStatus: propertyData.constructionStatus || ''
+    bedrooms: propertyData.bedrooms || null,
+    bathrooms: propertyData.bathrooms || null,
+    area: propertyData.area || null,
+    floorNumber: propertyData.floorNumber || null,
+    totalFloors: propertyData.totalFloors || null,
+    constructionStatus: propertyData.constructionStatus || '',
+    category: propertyData.category || '',
+    constructionPercentage: propertyData.constructionPercentage || null,
+    isFullyFurnished: propertyData.isFullyFurnished || false
+  }
+  selectedFiles.value = []
+  if (fileInput.value) {
+    fileInput.value.value = ''
   }
   showEditPropertyModal.value = true
+}
+
+const handleFileSelect = (event) => {
+  const files = Array.from(event.target.files || [])
+  files.forEach(file => {
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`File ${file.name} exceeds 10MB limit`)
+      return
+    }
+    
+    const fileObj = {
+      file: file,
+      name: file.name,
+      type: file.type,
+      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+    }
+    selectedFiles.value.push(fileObj)
+  })
+}
+
+const removeSelectedFile = (index) => {
+  if (selectedFiles.value[index].preview) {
+    URL.revokeObjectURL(selectedFiles.value[index].preview)
+  }
+  selectedFiles.value.splice(index, 1)
+}
+
+const deletePropertyImage = async (propertyId, imageId) => {
+  if (!confirm('Are you sure you want to delete this image?')) return
+  
+  try {
+    await api.delete(`/properties/${propertyId}/images/${imageId}`)
+    await loadProperties()
+    // Update editingProperty to reflect deleted image
+    if (editingProperty.value && editingProperty.value.images) {
+      editingProperty.value.images = editingProperty.value.images.filter(img => img.id !== imageId)
+    }
+    alert('Image deleted successfully')
+  } catch (err) {
+    alert(err.response?.data?.message || 'Failed to delete image')
+  }
 }
 
 const updateProperty = async () => {
   if (!editingProperty.value) return
   
   try {
+    // First update property details
     const payload = {
       title: propertyForm.value.title,
       description: propertyForm.value.description || null,
       type: propertyForm.value.type,
-      price: parseFloat(propertyForm.value.price),
+      priceETB: propertyForm.value.priceETB != null ? (typeof propertyForm.value.priceETB === 'number' ? propertyForm.value.priceETB : parseFloat(propertyForm.value.priceETB)) : null,
+      priceUSD: propertyForm.value.priceUSD != null ? (typeof propertyForm.value.priceUSD === 'number' ? propertyForm.value.priceUSD : parseFloat(propertyForm.value.priceUSD)) : null,
       address: propertyForm.value.address,
       city: propertyForm.value.city,
       country: propertyForm.value.country,
-      bedrooms: propertyForm.value.bedrooms ? parseInt(propertyForm.value.bedrooms) : null,
-      bathrooms: propertyForm.value.bathrooms ? parseInt(propertyForm.value.bathrooms) : null,
-      area: propertyForm.value.area ? parseFloat(propertyForm.value.area) : null,
+      bedrooms: propertyForm.value.bedrooms != null ? (typeof propertyForm.value.bedrooms === 'number' ? propertyForm.value.bedrooms : parseInt(propertyForm.value.bedrooms)) : null,
+      bathrooms: propertyForm.value.bathrooms != null ? (typeof propertyForm.value.bathrooms === 'number' ? propertyForm.value.bathrooms : parseInt(propertyForm.value.bathrooms)) : null,
+      area: propertyForm.value.area != null ? (typeof propertyForm.value.area === 'number' ? propertyForm.value.area : parseFloat(propertyForm.value.area)) : null,
+      floorNumber: propertyForm.value.floorNumber != null ? (typeof propertyForm.value.floorNumber === 'number' ? propertyForm.value.floorNumber : parseInt(propertyForm.value.floorNumber)) : null,
+      totalFloors: propertyForm.value.totalFloors != null ? (typeof propertyForm.value.totalFloors === 'number' ? propertyForm.value.totalFloors : parseInt(propertyForm.value.totalFloors)) : null,
+      constructionPercentage: propertyForm.value.constructionPercentage != null ? (typeof propertyForm.value.constructionPercentage === 'number' ? propertyForm.value.constructionPercentage : parseInt(propertyForm.value.constructionPercentage)) : null,
+      isFullyFurnished: propertyForm.value.isFullyFurnished || false,
       realEstateCompanyId: organization.value.id,
-      constructionStatus: propertyForm.value.constructionStatus
+      constructionStatus: propertyForm.value.constructionStatus,
+      category: propertyForm.value.category || null
+    }
+    
+    // Validate that at least one price is provided
+    if (!payload.priceETB && !payload.priceUSD) {
+      alert('Please provide at least one price (ETB or USD)')
+      return
     }
     
     await api.put(`/properties/${editingProperty.value.id}`, payload)
+    
+    // Then upload new files if any
+    if (selectedFiles.value.length > 0) {
+      const formData = new FormData()
+      selectedFiles.value.forEach(fileObj => {
+        formData.append('files', fileObj.file)
+      })
+      
+      await api.post(`/properties/${editingProperty.value.id}/images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    }
+    
     await loadProperties()
     showEditPropertyModal.value = false
     editingProperty.value = null
+    selectedFiles.value = []
+    if (fileInput.value) {
+      fileInput.value.value = ''
+    }
     alert('Property updated successfully')
   } catch (err) {
     alert(err.response?.data?.message || 'Failed to update property')
@@ -1196,6 +1536,10 @@ const formatDate = (dateString) => {
     month: 'short',
     day: 'numeric'
   })
+}
+
+const formatPrice = (price, currency = 'ETB') => {
+  return formatCurrencyPrice(price, currency || 'ETB')
 }
 
 onMounted(() => {

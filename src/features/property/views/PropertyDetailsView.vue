@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div v-if="loading" class="text-center py-12">
       <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
       <p class="mt-4 text-gray-600">Loading property details...</p>
@@ -7,7 +7,7 @@
 
     <div v-else-if="property" class="bg-white shadow rounded-lg overflow-hidden">
       <!-- Property Images -->
-      <div class="h-96 bg-gray-200 flex items-center justify-center">
+      <div class="h-48 sm:h-64 md:h-96 bg-gray-200 flex items-center justify-center">
         <span v-if="!property.images || property.images.length === 0" class="text-gray-400 text-6xl">🏠</span>
         <img
           v-else
@@ -17,18 +17,18 @@
         />
       </div>
 
-      <div class="p-8">
-        <div class="flex justify-between items-start mb-6">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ property.title }}</h1>
+      <div class="p-4 sm:p-6 lg:p-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-start gap-4 mb-6">
+          <div class="flex-1">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{{ property.title }}</h1>
             <div class="flex flex-col gap-2">
-              <p v-if="property.priceETB" class="text-3xl font-bold text-primary-600">
+              <p v-if="property.priceETB" class="text-2xl sm:text-3xl font-bold text-primary-600">
                 {{ formatPrice(property.priceETB, 'ETB') }}
               </p>
-              <p v-if="property.priceUSD" class="text-2xl font-semibold text-gray-600">
+              <p v-if="property.priceUSD" class="text-xl sm:text-2xl font-semibold text-gray-600">
                 {{ formatPrice(property.priceUSD, 'USD') }}
               </p>
-              <p v-if="!property.priceETB && !property.priceUSD" class="text-lg text-gray-500">
+              <p v-if="!property.priceETB && !property.priceUSD" class="text-base sm:text-lg text-gray-500">
                 {{ $t('property.priceNotSet') }}
               </p>
             </div>
@@ -39,7 +39,7 @@
               'bg-yellow-100 text-yellow-800': property.status === 'RESERVED',
               'bg-gray-100 text-gray-800': property.status === 'SOLD'
             }"
-            class="px-4 py-2 text-sm font-semibold rounded"
+            class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold rounded whitespace-nowrap"
           >
             {{ property.status }}
           </span>

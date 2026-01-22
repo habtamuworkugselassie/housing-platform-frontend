@@ -1,7 +1,7 @@
 <template>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="bg-white shadow rounded-lg p-8">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('submitProperty.title') }}</h2>
+  <div class="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div class="bg-white shadow rounded-lg p-4 sm:p-6 lg:p-8">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">{{ $t('submitProperty.title') }}</h2>
       
       <div v-if="!agent" class="mb-6 rounded-md bg-yellow-50 p-4">
         <div class="text-sm text-yellow-800">
@@ -70,6 +70,7 @@
                 <option value="READY_TO_MOVE">{{ $t('property.readyToMove') }}</option>
                 <option value="UNDER_CONSTRUCTION">{{ $t('property.underConstruction') }}</option>
                 <option value="PLANNED">{{ $t('property.planned') }}</option>
+                <option value="COMPLETED">{{ $t('property.completed') || 'Completed' }}</option>
               </select>
             </div>
 

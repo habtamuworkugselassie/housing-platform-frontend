@@ -214,7 +214,10 @@
                           {{ property.city }}, {{ property.country || 'Ethiopia' }}
                           <span v-if="property.realEstateCompanyName"> • {{ property.realEstateCompanyName }}</span>
                         </p>
-                        <p class="text-sm font-medium text-primary-600 mt-1 ml-6">{{ formatPrice(property.priceETB || property.priceUSD, property.priceETB ? 'ETB' : 'USD') }}</p>
+                        <div class="flex flex-col gap-1 mt-1 ml-6">
+                          <p v-if="property.priceETB" class="text-sm font-medium text-primary-600">{{ formatPrice(property.priceETB, 'ETB') }}</p>
+                          <p v-if="property.priceUSD" class="text-xs font-semibold text-gray-600">{{ formatPrice(property.priceUSD, 'USD') }}</p>
+                        </div>
                         <div v-if="property.bedrooms || property.bathrooms || property.area" class="text-xs text-gray-500 mt-1 ml-6">
                           <span v-if="property.bedrooms">{{ property.bedrooms }} bed</span>
                           <span v-if="property.bathrooms"> • {{ property.bathrooms }} bath</span>

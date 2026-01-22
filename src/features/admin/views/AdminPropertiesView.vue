@@ -83,7 +83,10 @@
                   {{ property.city }}, {{ property.country }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-900">
-                  {{ formatPrice(property.priceEtb, property.priceUsd) }}
+                  <div class="flex flex-col gap-1">
+                    <span v-if="property.priceETB" class="font-semibold">{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                    <span v-if="property.priceUSD" class="text-xs text-gray-600">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                  </div>
                 </td>
                 <td class="px-6 py-4">
                   <span

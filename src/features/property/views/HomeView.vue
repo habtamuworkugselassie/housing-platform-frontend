@@ -1,16 +1,16 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Top Search Bar with Filters -->
-    <div class="bg-white shadow-sm border-b sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex items-center justify-between gap-4">
+    <div class="bg-white shadow-sm border-b sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <!-- Search Filters -->
-          <div class="flex-1 flex items-center gap-3 flex-wrap">
+          <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <!-- Service Type Filter -->
-            <div class="relative">
+            <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.serviceType"
-                class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
               >
                 <option value="">{{ $t('home.serviceType') }}</option>
                 <option value="rental">{{ $t('home.rental') }}</option>
@@ -24,10 +24,10 @@
             </div>
 
             <!-- Location Filter -->
-            <div class="relative">
+            <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.location"
-                class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
               >
                 <option value="">{{ $t('home.location') }}</option>
                 <option value="Bole">Bole</option>
@@ -42,10 +42,10 @@
             </div>
 
             <!-- Price Filter -->
-            <div class="relative">
+            <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.priceRange"
-                class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
               >
                 <option value="">{{ $t('home.priceRange') }}</option>
                 <option value="0-5000">ብ0 - ብ5,000</option>
@@ -61,23 +61,23 @@
             </div>
 
             <!-- Instant Booking Toggle -->
-            <label class="flex items-center gap-2 cursor-pointer">
+            <label class="flex items-center gap-2 cursor-pointer whitespace-nowrap">
               <input
                 type="checkbox"
                 v-model="filters.instantBooking"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span class="text-sm text-gray-700">{{ $t('home.instantBooking') }}</span>
+              <span class="text-xs sm:text-sm text-gray-700">{{ $t('home.instantBooking') }}</span>
             </label>
 
             <!-- Free Cancellation Toggle -->
-            <label class="flex items-center gap-2 cursor-pointer">
+            <label class="flex items-center gap-2 cursor-pointer whitespace-nowrap">
               <input
                 type="checkbox"
                 v-model="filters.freeCancellation"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span class="text-sm text-gray-700">{{ $t('home.freeCancellation') }}</span>
+              <span class="text-xs sm:text-sm text-gray-700">{{ $t('home.freeCancellation') }}</span>
             </label>
           </div>
         </div>
@@ -85,10 +85,10 @@
     </div>
 
     <!-- Main Content: Property List and Map -->
-    <div class="flex h-[calc(100vh-88px)]">
+    <div class="flex flex-col lg:flex-row h-[calc(100vh-88px)] sm:h-[calc(100vh-120px)]">
       <!-- Left Side: Property Cards List -->
-      <div class="flex-1 overflow-y-auto bg-white">
-        <div class="max-w-2xl mx-auto px-4 py-6 space-y-6">
+      <div class="flex-1 overflow-y-auto bg-white order-2 lg:order-1">
+        <div class="max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
           <!-- Loading State -->
           <div v-if="loading" class="space-y-6">
             <div v-for="i in 3" :key="i" class="bg-gray-200 animate-pulse rounded-xl h-96"></div>
@@ -101,17 +101,48 @@
             :data-property-id="property.id"
             @click="selectProperty(property)"
             :class="[
-              'bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer overflow-hidden border-2',
-              selectedProperty?.id === property.id ? 'border-blue-500 shadow-lg' : 'border-gray-100'
+              'rounded-xl shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer overflow-hidden border-2',
+              selectedProperty?.id === property.id ? 'border-blue-500 shadow-lg' : '',
+              property.isSponsored && property.sponsorshipType === 'PREMIER' 
+                ? 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-yellow-400 shadow-lg' 
+                : property.isSponsored && property.sponsorshipType === 'BASIC'
+                ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-blue-300 shadow-md'
+                : 'bg-white border-gray-100'
             ]"
           >
+            <!-- Sponsored Badge - Prominent Display -->
+            <div v-if="property.isSponsored" class="relative">
+              <div
+                :class="{
+                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': property.sponsorshipType === 'PREMIER',
+                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': property.sponsorshipType === 'BASIC'
+                }"
+                class="absolute top-3 right-3 px-4 py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1.5 animate-pulse border-2 border-white"
+              >
+                <span v-if="property.sponsorshipType === 'PREMIER'" class="text-base">⭐</span>
+                <span v-else class="text-base">✨</span>
+                <span class="uppercase tracking-wide">{{ property.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
+              </div>
+              <!-- Additional Premier Crown Badge -->
+              <div v-if="property.sponsorshipType === 'PREMIER'" class="absolute top-3 left-3 z-20">
+                <div class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+                  <span>👑</span>
+                  <span>FEATURED</span>
+                </div>
+              </div>
+            </div>
+            
             <!-- Property Image -->
-            <div class="relative h-64 bg-gray-200 overflow-hidden">
+            <div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 overflow-hidden">
               <img
                 v-if="property.images && property.images.length > 0"
                 :src="property.images[0].imageUrl"
                 :alt="property.title"
-                class="w-full h-full object-cover"
+                :class="{
+                  'w-full h-full object-cover transition-transform duration-300': true,
+                  'brightness-110 contrast-110 scale-105 hover:scale-110': property.isSponsored && property.sponsorshipType === 'PREMIER',
+                  'brightness-105 scale-102 hover:scale-105': property.isSponsored && property.sponsorshipType === 'BASIC'
+                }"
               />
               <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
                 <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,10 +150,49 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </div>
+              <!-- Sponsored Overlay Gradient - More Prominent -->
+              <div 
+                v-if="property.isSponsored"
+                :class="{
+                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': property.sponsorshipType === 'PREMIER',
+                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': property.sponsorshipType === 'BASIC'
+                }"
+              ></div>
+              <!-- Premier Glow Effect -->
+              <div 
+                v-if="property.isSponsored && property.sponsorshipType === 'PREMIER'"
+                class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
+              ></div>
               <!-- Price Badge -->
-              <div class="absolute top-4 left-4 bg-white px-3 py-1.5 rounded-lg shadow-md">
-                <span class="text-lg font-bold text-gray-900">{{ formatPrice(property.priceETB || property.priceUSD, property.priceETB ? 'ETB' : 'USD') }}</span>
-                <span v-if="property.category === 'FOR_RENTAL'" class="text-xs text-gray-500">/month</span>
+              <div 
+                :class="{
+                  'bg-white': !property.isSponsored,
+                  'bg-yellow-100 border-2 border-yellow-400 shadow-xl': property.isSponsored && property.sponsorshipType === 'PREMIER',
+                  'bg-blue-100 border-2 border-blue-400 shadow-lg': property.isSponsored && property.sponsorshipType === 'BASIC'
+                }"
+                class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10"
+              >
+                <div class="flex flex-col">
+                  <span 
+                    v-if="property.priceETB"
+                    :class="{
+                      'text-gray-900': !property.isSponsored,
+                      'text-yellow-900 font-extrabold': property.isSponsored && property.sponsorshipType === 'PREMIER',
+                      'text-blue-900 font-bold': property.isSponsored && property.sponsorshipType === 'BASIC'
+                    }"
+                    class="text-lg font-bold"
+                  >{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                  <span 
+                    v-if="property.priceUSD"
+                    :class="{
+                      'text-gray-700': !property.isSponsored,
+                      'text-yellow-700 font-bold': property.isSponsored && property.sponsorshipType === 'PREMIER',
+                      'text-blue-700 font-semibold': property.isSponsored && property.sponsorshipType === 'BASIC'
+                    }"
+                    class="text-sm font-semibold"
+                  >{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                  <span v-if="property.category === 'FOR_RENTAL'" class="text-xs text-gray-500">/month</span>
+                </div>
               </div>
             </div>
 
@@ -130,7 +200,14 @@
             <div class="p-5">
               <!-- Title and Rating -->
               <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-semibold text-gray-900 flex-1 pr-2">{{ property.title }}</h3>
+                <h3 
+                  :class="{
+                    'text-lg font-semibold text-gray-900': !property.isSponsored,
+                    'text-lg font-extrabold text-gray-900': property.isSponsored && property.sponsorshipType === 'PREMIER',
+                    'text-lg font-bold text-gray-900': property.isSponsored && property.sponsorshipType === 'BASIC'
+                  }"
+                  class="flex-1 pr-2"
+                >{{ property.title }}</h3>
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
@@ -143,7 +220,7 @@
               <p class="text-sm text-gray-600 mb-3">{{ property.city }}, {{ property.country || 'Ethiopia' }}</p>
 
               <!-- Property Features -->
-              <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -187,7 +264,7 @@
       </div>
 
       <!-- Right Side: Interactive Map -->
-      <div class="w-1/2 border-l border-gray-200 relative bg-gray-100">
+      <div class="hidden lg:block lg:w-1/2 border-l border-gray-200 relative bg-gray-100 order-1 lg:order-2">
         <!-- Map Container -->
         <div class="h-full w-full relative">
           <!-- Map Placeholder (Replace with actual map library like Leaflet or Google Maps) -->
@@ -220,7 +297,10 @@
                   selectedProperty?.id === property.id ? 'border-blue-500 scale-110' : 'border-transparent hover:border-blue-300'
                 ]"
               >
-                <span class="text-sm font-bold text-gray-900">{{ formatPrice(property.priceETB || property.priceUSD, property.priceETB ? 'ETB' : 'USD') }}</span>
+                <div class="flex flex-col">
+                  <span v-if="property.priceETB" class="text-sm font-bold text-gray-900">{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                  <span v-if="property.priceUSD" class="text-xs font-semibold text-gray-600">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                </div>
               </div>
             </div>
 
@@ -279,8 +359,11 @@
                   <span>{{ selectedProperty.area || 'N/A' }} m²</span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <div>
-                    <span class="text-xl font-bold text-gray-900">{{ formatPrice(selectedProperty.priceETB || selectedProperty.priceUSD, selectedProperty.priceETB ? 'ETB' : 'USD') }}</span>
+                  <div class="flex flex-col">
+                    <div class="flex flex-col gap-1">
+                      <span v-if="selectedProperty.priceETB" class="text-xl font-bold text-gray-900">{{ formatPrice(selectedProperty.priceETB, 'ETB') }}</span>
+                      <span v-if="selectedProperty.priceUSD" class="text-base font-semibold text-gray-600">{{ formatPrice(selectedProperty.priceUSD, 'USD') }}</span>
+                    </div>
                     <span v-if="selectedProperty.category === 'FOR_RENTAL'" class="text-sm text-gray-500">/month</span>
                   </div>
                   <router-link

@@ -200,10 +200,16 @@
             </div>
             
             <p v-if="unit.unitNumber" class="text-xs text-gray-500 mb-2">Unit: {{ unit.unitNumber }}</p>
-            <p class="text-lg font-bold text-primary-600">
-              {{ formatPrice(unit.priceETB || unit.priceUSD, unit.priceETB ? 'ETB' : 'USD') }}
-              <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-500 font-normal">/month</span>
-            </p>
+            <div class="flex flex-col gap-1">
+              <p v-if="unit.priceETB" class="text-lg font-bold text-primary-600">
+                {{ formatPrice(unit.priceETB, 'ETB') }}
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-500 font-normal">/month</span>
+              </p>
+              <p v-if="unit.priceUSD" class="text-base font-semibold text-gray-600">
+                {{ formatPrice(unit.priceUSD, 'USD') }}
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-xs text-gray-500 font-normal">/month</span>
+              </p>
+            </div>
             
             <div class="mt-2 flex gap-4 text-xs text-gray-600">
               <span v-if="unit.bedrooms">{{ unit.bedrooms }} bed</span>
