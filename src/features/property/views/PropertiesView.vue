@@ -183,7 +183,7 @@ import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 const properties = ref([])
 const loading = ref(false)
 const currentPage = ref(0)
-const pageSize = ref(20)
+const pageSize = ref(20) // Reasonable page size for better performance
 const totalPages = ref(0)
 
 const filters = ref({
@@ -203,12 +203,12 @@ const loadProperties = async () => {
       params.city = filters.value.city
     }
     
-    // For public viewing, only show AVAILABLE properties
-    if (!filters.value.status) {
-      params.status = 'AVAILABLE'
-    } else {
+    // Only apply status filter if explicitly set
+    // Backend will handle public vs authenticated filtering
+    if (filters.value.status) {
       params.status = filters.value.status
     }
+    // Don't set default status - let backend decide based on authentication
     
     const response = await api.get('/properties', { params })
     properties.value = response.data.content || response.data
