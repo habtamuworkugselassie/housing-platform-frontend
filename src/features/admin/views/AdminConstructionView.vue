@@ -63,6 +63,76 @@
           </table>
         </div>
       </div>
+
+      <!-- View Project Modal -->
+      <div
+        v-if="showViewDialog"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        @click.self="showViewDialog = false"
+      >
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Construction Project Details</h3>
+              <button
+                @click="showViewDialog = false"
+                class="text-gray-400 hover:text-gray-500"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div v-if="viewingProject" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Name</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.name || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      getStatusClass(viewingProject.status)
+                    ]"
+                  >
+                    {{ viewingProject.status || 'N/A' }}
+                  </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Progress</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.progressPercentage || 0 }}%</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Budget (ETB)</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.budgetEtb ? formatPrice(viewingProject.budgetEtb, 'ETB') : 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Budget (USD)</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.budgetUsd ? formatPrice(viewingProject.budgetUsd, 'USD') : 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Project ID</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.id || 'N/A' }}</p>
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700">Description</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingProject.description || 'N/A' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                @click="showViewDialog = false"
+                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
@@ -75,6 +145,9 @@ import { formatPrice } from '@/shared/utils'
 
 const loading = ref(false)
 const projects = ref([])
+
+const showViewDialog = ref(false)
+const viewingProject = ref(null)
 
 const loadProjects = async () => {
   loading.value = true
@@ -106,8 +179,8 @@ const getProgressColor = (progress) => {
 }
 
 const viewProject = (project) => {
-  // TODO: Navigate to project details
-  console.log('View project:', project)
+  viewingProject.value = project
+  showViewDialog.value = true
 }
 
 onMounted(() => {

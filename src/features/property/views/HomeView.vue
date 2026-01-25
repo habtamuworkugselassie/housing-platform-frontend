@@ -1,5 +1,17 @@
 <template>
   <div class="min-h-screen bg-gray-50">
+    <!-- Ad Space under NavBar - PREMIER Sponsored Properties (Two Side by Side) -->
+    <div class="bg-white border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <AdSpace 
+          v-if="currentPremierAds && currentPremierAds.length > 0"
+          size="banner" 
+          :ad-contents="currentPremierAds"
+        />
+        <AdSpace v-else size="banner" />
+      </div>
+    </div>
+
     <!-- Top Search Bar with Filters -->
     <div class="bg-white shadow-sm border-b sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
@@ -79,52 +91,60 @@
               />
               <span class="text-xs sm:text-sm text-gray-700">{{ $t('home.freeCancellation') }}</span>
             </label>
+
+            <!-- Clear Filters Button -->
+            <button
+              v-if="hasActiveFilters"
+              @click="clearFilters"
+              class="px-3 sm:px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
+            >
+              {{ $t('filters.clearFilters') }}
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Main Content: Property List and Map -->
-    <div class="flex flex-col lg:flex-row h-[calc(100vh-88px)] sm:h-[calc(100vh-120px)]">
-      <!-- Left Side: Property Cards List -->
-      <div class="flex-1 overflow-y-auto bg-white order-2 lg:order-1">
-        <div class="max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
-          <!-- Loading State -->
-          <div v-if="loading" class="space-y-6">
-            <div v-for="i in 3" :key="i" class="bg-gray-200 animate-pulse rounded-xl h-96"></div>
-          </div>
+    <!-- Main Content: Property List in Two Columns -->
+    <div class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-white">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
+        <!-- Loading State -->
+        <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div v-for="i in 4" :key="i" class="bg-gray-200 animate-pulse rounded-xl h-96"></div>
+        </div>
 
-          <!-- Property Cards -->
+        <!-- Combined Property and Building Cards in Two Columns -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div
-            v-for="property in properties"
-            :key="property.id"
-            :data-property-id="property.id"
-            @click="selectProperty(property)"
+            v-for="item in combinedList"
+            :key="`${item.type}-${item.id}`"
+            :data-property-id="item.type === 'property' ? item.id : null"
+            :data-building-id="item.type === 'building' ? item.id : null"
+            @click="item.type === 'property' ? selectProperty(item) : selectBuilding(item)"
             :class="[
               'rounded-xl shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer overflow-hidden border-2',
-              selectedProperty?.id === property.id ? 'border-blue-500 shadow-lg' : '',
-              property.isSponsored && property.sponsorshipType === 'PREMIER' 
+              item.isSponsored && item.sponsorshipType === 'PREMIER' 
                 ? 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-yellow-400 shadow-lg' 
-                : property.isSponsored && property.sponsorshipType === 'BASIC'
+                : item.isSponsored && item.sponsorshipType === 'BASIC'
                 ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-blue-300 shadow-md'
                 : 'bg-white border-gray-100'
             ]"
           >
             <!-- Sponsored Badge - Prominent Display -->
-            <div v-if="property.isSponsored" class="relative">
+            <div v-if="item.isSponsored" class="relative">
               <div
                 :class="{
-                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': property.sponsorshipType === 'PREMIER',
-                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': property.sponsorshipType === 'BASIC'
+                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIER',
+                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'BASIC'
                 }"
                 class="absolute top-3 right-3 px-4 py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1.5 animate-pulse border-2 border-white"
               >
-                <span v-if="property.sponsorshipType === 'PREMIER'" class="text-base">⭐</span>
+                <span v-if="item.sponsorshipType === 'PREMIER'" class="text-base">⭐</span>
                 <span v-else class="text-base">✨</span>
-                <span class="uppercase tracking-wide">{{ property.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
+                <span class="uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
               </div>
               <!-- Additional Premier Crown Badge -->
-              <div v-if="property.sponsorshipType === 'PREMIER'" class="absolute top-3 left-3 z-20">
+              <div v-if="item.sponsorshipType === 'PREMIER'" class="absolute top-3 left-3 z-20">
                 <div class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
                   <span>👑</span>
                   <span>FEATURED</span>
@@ -132,83 +152,104 @@
               </div>
             </div>
             
-            <!-- Property Image -->
+            <!-- Building Type Badge (for non-sponsored buildings) -->
+            <div v-if="item.type === 'building' && !item.isSponsored" class="absolute top-3 left-3 z-20">
+              <div class="bg-indigo-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+                <span>🏢</span>
+                <span>BUILDING</span>
+              </div>
+            </div>
+            
+            <!-- Property/Building Image -->
             <div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 overflow-hidden">
               <img
-                v-if="property.images && property.images.length > 0"
-                :src="property.images[0].imageUrl"
-                :alt="property.title"
+                v-if="(item.images && item.images.length > 0) || (item.imageUrls && item.imageUrls.length > 0)"
+                :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                :alt="item.title || item.name"
                 :class="{
                   'w-full h-full object-cover transition-transform duration-300': true,
-                  'brightness-110 contrast-110 scale-105 hover:scale-110': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                  'brightness-105 scale-102 hover:scale-105': property.isSponsored && property.sponsorshipType === 'BASIC'
+                  'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                  'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'BASIC'
                 }"
               />
               <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg v-if="item.type === 'property'" class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <svg v-else class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m4 0h1m-1 4h1m4 0h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
               </div>
               <!-- Sponsored Overlay Gradient - More Prominent -->
               <div 
-                v-if="property.isSponsored"
+                v-if="item.isSponsored"
                 :class="{
-                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': property.sponsorshipType === 'PREMIER',
-                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': property.sponsorshipType === 'BASIC'
+                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIER',
+                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'BASIC'
                 }"
               ></div>
               <!-- Premier Glow Effect -->
               <div 
-                v-if="property.isSponsored && property.sponsorshipType === 'PREMIER'"
+                v-if="item.isSponsored && item.sponsorshipType === 'PREMIER'"
                 class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
               ></div>
-              <!-- Price Badge -->
+              <!-- Price Badge (for properties) or Units Badge (for buildings) -->
               <div 
+                v-if="item.type === 'property' && item.priceETB"
                 :class="{
-                  'bg-white': !property.isSponsored,
-                  'bg-yellow-100 border-2 border-yellow-400 shadow-xl': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                  'bg-blue-100 border-2 border-blue-400 shadow-lg': property.isSponsored && property.sponsorshipType === 'BASIC'
+                  'bg-white': !item.isSponsored,
+                  'bg-yellow-100 border-2 border-yellow-400 shadow-xl': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                  'bg-blue-100 border-2 border-blue-400 shadow-lg': item.isSponsored && item.sponsorshipType === 'BASIC'
                 }"
                 class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10"
               >
                 <div class="flex flex-col">
                   <span 
-                    v-if="property.priceETB"
                     :class="{
-                      'text-gray-900': !property.isSponsored,
-                      'text-yellow-900 font-extrabold': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                      'text-blue-900 font-bold': property.isSponsored && property.sponsorshipType === 'BASIC'
+                      'text-gray-900': !item.isSponsored,
+                      'text-yellow-900 font-extrabold': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                      'text-blue-900 font-bold': item.isSponsored && item.sponsorshipType === 'BASIC'
                     }"
                     class="text-lg font-bold"
-                  >{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                  >{{ formatPrice(item.priceETB, 'ETB') }}</span>
                   <span 
-                    v-if="property.priceUSD"
+                    v-if="item.priceUSD"
                     :class="{
-                      'text-gray-700': !property.isSponsored,
-                      'text-yellow-700 font-bold': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                      'text-blue-700 font-semibold': property.isSponsored && property.sponsorshipType === 'BASIC'
+                      'text-gray-700': !item.isSponsored,
+                      'text-yellow-700 font-bold': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                      'text-blue-700 font-semibold': item.isSponsored && item.sponsorshipType === 'BASIC'
                     }"
                     class="text-sm font-semibold"
-                  >{{ formatPrice(property.priceUSD, 'USD') }}</span>
-                  <span v-if="property.category === 'FOR_RENTAL'" class="text-xs text-gray-500">/month</span>
+                  >{{ formatPrice(item.priceUSD, 'USD') }}</span>
+                  <span v-if="item.category === 'FOR_RENTAL'" class="text-xs text-gray-500">/month</span>
+                </div>
+              </div>
+              <!-- Building Units Badge -->
+              <div 
+                v-else-if="item.type === 'building'"
+                class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10 bg-white"
+              >
+                <div class="flex flex-col">
+                  <span class="text-lg font-bold text-gray-900">{{ item.totalUnits || 0 }} Units</span>
+                  <span class="text-xs text-gray-600">{{ item.availableUnits || 0 }} Available</span>
                 </div>
               </div>
             </div>
 
-            <!-- Property Details -->
+            <!-- Property/Building Details -->
             <div class="p-5">
               <!-- Title and Rating -->
               <div class="flex items-start justify-between mb-2">
                 <h3 
                   :class="{
-                    'text-lg font-semibold text-gray-900': !property.isSponsored,
-                    'text-lg font-extrabold text-gray-900': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                    'text-lg font-bold text-gray-900': property.isSponsored && property.sponsorshipType === 'BASIC'
+                    'text-lg font-semibold text-gray-900': !item.isSponsored,
+                    'text-lg font-extrabold text-gray-900': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                    'text-lg font-bold text-gray-900': item.isSponsored && item.sponsorshipType === 'BASIC'
                   }"
                   class="flex-1 pr-2"
-                >{{ property.title }}</h3>
-                <div class="flex items-center gap-1">
+                >{{ item.title || item.name }}</h3>
+                <div v-if="item.type === 'property'" class="flex items-center gap-1">
                   <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
                   </svg>
@@ -217,43 +258,70 @@
               </div>
 
               <!-- Location -->
-              <p class="text-sm text-gray-600 mb-3">{{ property.city }}, {{ property.country || 'Ethiopia' }}</p>
+              <p class="text-sm text-gray-600 mb-3">{{ item.city }}, {{ item.country || 'Ethiopia' }}</p>
 
-              <!-- Property Features -->
-              <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
-                <div class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
-                  <span>{{ property.bedrooms || 'N/A' }} guests</span>
-                </div>
+              <!-- Property Features (for properties) or Building Info (for buildings) -->
+              <div v-if="item.type === 'property'" class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                   </svg>
-                  <span>{{ property.bedrooms || 'N/A' }} beds</span>
+                  <span>{{ item.bedrooms || 'N/A' }} beds</span>
                 </div>
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
                   </svg>
-                  <span>{{ property.bathrooms || 'N/A' }} baths</span>
+                  <span>{{ item.bathrooms || 'N/A' }} baths</span>
+                </div>
+                <div v-if="item.area" class="flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l9 9m0-9V4m0 4h-4"/>
+                  </svg>
+                  <span>{{ item.area }} m²</span>
+                </div>
+              </div>
+              
+              <!-- Building Features -->
+              <div v-else class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
+                <div class="flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                  <span>{{ item.totalUnits || 0 }} Units</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                  </svg>
+                  <span>{{ item.totalFloors || 'N/A' }} Floors</span>
+                </div>
+                <div v-if="item.availableUnits" class="flex items-center gap-1">
+                  <span class="text-green-600 font-semibold">{{ item.availableUnits }} Available</span>
                 </div>
               </div>
 
-              <!-- Property Type and Host -->
-              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                <span class="text-xs font-medium text-gray-500 uppercase">{{ property.type || 'Apartment' }}</span>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-gray-600">Hosted by</span>
-                  <span class="text-xs font-medium text-gray-900">{{ property.agentName || 'Property Owner' }}</span>
+              <!-- Property Type/Building Type and Real Estate Company -->
+              <div class="flex flex-col gap-2 pt-3 border-t border-gray-100">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-medium text-gray-500 uppercase">{{ item.type === 'property' ? (item.propertyType || item.type || 'Apartment') : (item.buildingType || 'Building') }}</span>
+                  <div class="flex items-center gap-2" v-if="item.type === 'property' && item.agentName">
+                    <span class="text-xs text-gray-600">Agent:</span>
+                    <span class="text-xs font-medium text-gray-900">{{ item.agentName }}</span>
+                  </div>
+                </div>
+                <div v-if="item.realEstateCompanyName" class="flex items-center gap-2">
+                  <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                  <span class="text-xs font-semibold text-primary-600">{{ item.realEstateCompanyName }}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Empty State -->
-          <div v-if="!loading && properties.length === 0" class="text-center py-12">
+        <!-- Empty State -->
+        <div v-if="!loading && combinedList.length === 0" class="col-span-full text-center py-12">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
@@ -262,139 +330,45 @@
           </div>
         </div>
       </div>
-
-      <!-- Right Side: Interactive Map -->
-      <div class="hidden lg:block lg:w-1/2 border-l border-gray-200 relative bg-gray-100 order-1 lg:order-2">
-        <!-- Map Container -->
-        <div class="h-full w-full relative">
-          <!-- Map Placeholder (Replace with actual map library like Leaflet or Google Maps) -->
-          <div class="h-full w-full bg-gray-200 relative overflow-hidden">
-            <!-- Map Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-            
-            <!-- Map Title -->
-            <div class="absolute top-4 left-4 z-10 bg-white px-4 py-2 rounded-lg shadow-md">
-              <h3 class="text-sm font-semibold text-gray-900">Addis Ababa, Ethiopia</h3>
-            </div>
-
-            <!-- Property Markers -->
-            <div
-              v-for="(property, index) in properties"
-              :key="property.id"
-              :style="{
-                position: 'absolute',
-                left: `${20 + (index % 3) * 30}%`,
-                top: `${30 + (index % 4) * 20}%`,
-                transform: 'translate(-50%, -50%)'
-              }"
-              class="cursor-pointer z-20"
-              @click="selectProperty(property)"
-            >
-              <!-- Price Marker -->
-              <div
-                :class="[
-                  'bg-white px-3 py-1.5 rounded-lg shadow-lg border-2 transition-all',
-                  selectedProperty?.id === property.id ? 'border-blue-500 scale-110' : 'border-transparent hover:border-blue-300'
-                ]"
-              >
-                <div class="flex flex-col">
-                  <span v-if="property.priceETB" class="text-sm font-bold text-gray-900">{{ formatPrice(property.priceETB, 'ETB') }}</span>
-                  <span v-if="property.priceUSD" class="text-xs font-semibold text-gray-600">{{ formatPrice(property.priceUSD, 'USD') }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Selected Search Area Circle (Dashed Blue Boundary) -->
-            <div
-              class="absolute border-2 border-blue-500 border-dashed rounded-full pointer-events-none z-10"
-              :style="{
-                left: '30%',
-                top: '40%',
-                width: '200px',
-                height: '200px',
-                transform: 'translate(-50%, -50%)'
-              }"
-            ></div>
-          </div>
-
-          <!-- Floating Property Card (Shown when property is selected) -->
-          <div
-            v-if="selectedProperty"
-            class="absolute bottom-6 left-6 right-6 z-30 bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-200"
-          >
-            <div class="flex">
-              <!-- Property Image -->
-              <div class="w-48 h-40 bg-gray-200 flex-shrink-0">
-                <img
-                  v-if="selectedProperty.images && selectedProperty.images.length > 0"
-                  :src="selectedProperty.images[0].imageUrl"
-                  :alt="selectedProperty.title"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-                  <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  </svg>
-                </div>
-              </div>
-
-              <!-- Property Details -->
-              <div class="flex-1 p-4">
-                <div class="flex items-start justify-between mb-2">
-                  <h4 class="text-lg font-semibold text-gray-900">{{ selectedProperty.title }}</h4>
-                  <button
-                    @click="selectedProperty = null"
-                    class="text-gray-400 hover:text-gray-600"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                  </button>
-                </div>
-                <p class="text-sm text-gray-600 mb-2">{{ selectedProperty.city }}, {{ selectedProperty.country || 'Ethiopia' }}</p>
-                <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                  <span>{{ selectedProperty.bedrooms || 'N/A' }} beds</span>
-                  <span>{{ selectedProperty.bathrooms || 'N/A' }} baths</span>
-                  <span>{{ selectedProperty.area || 'N/A' }} m²</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex flex-col">
-                    <div class="flex flex-col gap-1">
-                      <span v-if="selectedProperty.priceETB" class="text-xl font-bold text-gray-900">{{ formatPrice(selectedProperty.priceETB, 'ETB') }}</span>
-                      <span v-if="selectedProperty.priceUSD" class="text-base font-semibold text-gray-600">{{ formatPrice(selectedProperty.priceUSD, 'USD') }}</span>
-                    </div>
-                    <span v-if="selectedProperty.category === 'FOR_RENTAL'" class="text-sm text-gray-500">/month</span>
-                  </div>
-                  <router-link
-                    :to="`/properties/${selectedProperty.id}`"
-                    class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    View Details
-                  </router-link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { AdSpace } from '@/shared/components'
+import { useAds } from '@/shared/composables/useAds'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { loadAllAds, topAds, getRandomTopAd } = useAds()
 
 const properties = ref([])
+const buildings = ref([])
+const combinedList = ref([])
 const loading = ref(false)
-const selectedProperty = ref(null)
+const currentPremierAdIndex = ref(0)
+
+// Get current top ads (two ads side by side, rotates through available ads)
+// These are ads with the highest base_price
+const currentPremierAds = computed(() => {
+  if (topAds.value.length === 0) return []
+  
+  const ads = []
+  const startIndex = currentPremierAdIndex.value % topAds.value.length
+  
+  // Get two ads, wrapping around if needed
+  for (let i = 0; i < 2; i++) {
+    const index = (startIndex + i) % topAds.value.length
+    ads.push(topAds.value[index])
+  }
+  
+  return ads
+})
 
 const filters = ref({
   serviceType: '',
@@ -407,96 +381,181 @@ const filters = ref({
 const loadProperties = async () => {
   loading.value = true
   try {
+    // Load properties
     const params = {
       page: 0,
-      size: 20,
+      size: 100, // Load more to allow client-side filtering
       status: 'AVAILABLE'
     }
 
+    // Apply location filter
     if (filters.value.location) {
       params.city = filters.value.location
     }
 
-    const response = await api.get('/properties', { params })
-    properties.value = response.data.content || response.data || []
+    const propertiesResponse = await api.get('/properties', { params })
+    let propertiesData = propertiesResponse.data.content || propertiesResponse.data || []
     
-    // Add mock data for demonstration if no properties
-    if (properties.value.length === 0) {
-      properties.value = generateMockProperties()
+    // Apply service type filter (category) on properties
+    if (filters.value.serviceType) {
+      const category = filters.value.serviceType === 'rental' ? 'FOR_RENTAL' : 'FOR_SALE'
+      propertiesData = propertiesData.filter(p => p.category === category)
     }
+    
+    properties.value = propertiesData
+    
+    // Load buildings
+    const buildingsParams = {}
+    if (filters.value.location) {
+      buildingsParams.city = filters.value.location
+    }
+    
+    const buildingsResponse = await api.get('/buildings', { params: buildingsParams })
+    let buildingsData = Array.isArray(buildingsResponse.data) ? buildingsResponse.data : []
+    
+    // Apply service type filter on buildings
+    if (filters.value.serviceType) {
+      const category = filters.value.serviceType === 'rental' ? 'FOR_RENTAL' : 'FOR_SALE'
+      buildingsData = buildingsData.filter(b => b.category === category)
+    }
+    
+    buildings.value = buildingsData
+    
+    // Combine properties and buildings
+    let combined = [
+      ...properties.value.map(p => ({ ...p, type: 'property' })),
+      ...buildings.value.map(b => ({ ...b, type: 'building', title: b.name }))
+    ]
+    
+    // Apply price range filter (client-side)
+    if (filters.value.priceRange) {
+      combined = combined.filter(item => {
+        if (item.type === 'building') {
+          // Buildings don't have prices, skip price filter for them
+          return true
+        }
+        
+        const price = item.priceETB || 0
+        const range = filters.value.priceRange
+        
+        if (range === '0-5000') {
+          return price >= 0 && price <= 5000
+        } else if (range === '5000-10000') {
+          return price > 5000 && price <= 10000
+        } else if (range === '10000-20000') {
+          return price > 10000 && price <= 20000
+        } else if (range === '20000+') {
+          return price > 20000
+        }
+        
+        return true
+      })
+    }
+    
+    // Note: instantBooking and freeCancellation filters are not implemented
+    // as these fields don't exist in the current data model
+    
+    // Sort by sponsorship (PREMIER first, then BASIC, then none), then by creation date
+    combined.sort((a, b) => {
+      // Sponsorship priority (works for both properties and buildings)
+      const aPriority = a.isSponsored && a.sponsorshipType === 'PREMIER' ? 0 : 
+                       a.isSponsored && a.sponsorshipType === 'BASIC' ? 1 : 2
+      const bPriority = b.isSponsored && b.sponsorshipType === 'PREMIER' ? 0 : 
+                       b.isSponsored && b.sponsorshipType === 'BASIC' ? 1 : 2
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority
+      }
+      
+      // Then by creation date (newest first)
+      const aDate = new Date(a.createdAt || 0)
+      const bDate = new Date(b.createdAt || 0)
+      return bDate - aDate
+    })
+    
+    combinedList.value = combined
   } catch (err) {
-    console.error('Failed to load properties:', err)
-    // Use mock data on error
-    properties.value = generateMockProperties()
+    console.error('Failed to load properties/buildings:', err)
+    combinedList.value = []
   } finally {
     loading.value = false
   }
 }
 
-const generateMockProperties = () => {
-  return [
-    {
-      id: 1,
-      title: 'Modern Apartment in Bole',
-      city: 'Addis Ababa',
-      country: 'Ethiopia',
-      price: 8500,
-      bedrooms: 2,
-      bathrooms: 1,
-      area: 75,
-      type: 'APARTMENT',
-      agentName: 'John Doe',
-      images: []
-    },
-    {
-      id: 2,
-      title: 'Spacious Villa in Megenagna',
-      city: 'Addis Ababa',
-      country: 'Ethiopia',
-      price: 15000,
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 120,
-      type: 'VILLA',
-      agentName: 'Sarah Smith',
-      images: []
-    },
-    {
-      id: 3,
-      title: 'Cozy Studio Apartment',
-      city: 'Addis Ababa',
-      country: 'Ethiopia',
-      price: 5000,
-      bedrooms: 1,
-      bathrooms: 1,
-      area: 45,
-      type: 'APARTMENT',
-      agentName: 'Mike Johnson',
-      images: []
-    }
-  ]
+const selectBuilding = (building) => {
+  router.push(`/buildings/${building.id}`)
 }
 
 const selectProperty = (property) => {
-  selectedProperty.value = property
-  // Scroll to top of property list to show selected property
-  const propertyElement = document.querySelector(`[data-property-id="${property.id}"]`)
-  if (propertyElement) {
-    propertyElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (property.type === 'building') {
+    selectBuilding(property)
+    return
   }
+  // Navigate directly to property details page
+  router.push(`/properties/${property.id}`)
 }
 
 const formatPrice = (price, currency = 'ETB') => {
   return formatCurrencyPrice(price, currency || 'ETB')
 }
 
-// Watch for filter changes
+// Check if any filters are active
+const hasActiveFilters = computed(() => {
+  return filters.value.serviceType !== '' ||
+         filters.value.location !== '' ||
+         filters.value.priceRange !== '' ||
+         filters.value.instantBooking ||
+         filters.value.freeCancellation
+})
+
+// Clear all filters
+const clearFilters = () => {
+  filters.value = {
+    serviceType: '',
+    location: '',
+    priceRange: '',
+    instantBooking: false,
+    freeCancellation: false
+  }
+}
+
+// Watch for filter changes with debounce
+let filterTimeout = null
 watch(filters, () => {
-  loadProperties()
+  // Clear existing timeout
+  if (filterTimeout) {
+    clearTimeout(filterTimeout)
+  }
+  
+  // Debounce filter changes to avoid too many API calls
+  filterTimeout = setTimeout(() => {
+    loadProperties()
+  }, 300)
 }, { deep: true })
+
+// Rotate premier ads every 10 seconds
+let adRotationInterval = null
 
 onMounted(() => {
   loadProperties()
+  loadAllAds(20).then(() => {
+    // Start rotating top ads (highest base_price) every 10 seconds
+    adRotationInterval = setInterval(() => {
+      if (topAds.value.length > 0) {
+        currentPremierAdIndex.value = (currentPremierAdIndex.value + 1) % topAds.value.length
+      }
+    }, 10000)
+  })
+})
+
+// Cleanup interval and timeout on unmount
+onUnmounted(() => {
+  if (adRotationInterval) {
+    clearInterval(adRotationInterval)
+  }
+  if (filterTimeout) {
+    clearTimeout(filterTimeout)
+  }
 })
 </script>
 

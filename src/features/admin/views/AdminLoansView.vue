@@ -86,6 +86,80 @@
           </table>
         </div>
       </div>
+
+      <!-- View Loan Modal -->
+      <div
+        v-if="showViewDialog"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        @click.self="showViewDialog = false"
+      >
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Loan Application Details</h3>
+              <button
+                @click="showViewDialog = false"
+                class="text-gray-400 hover:text-gray-500"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div v-if="viewingLoan" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Applicant Name</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.applicantName || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Applicant Email</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.applicantEmail || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Property</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.propertyTitle || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      getStatusClass(viewingLoan.status)
+                    ]"
+                  >
+                    {{ viewingLoan.status || 'N/A' }}
+                  </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Loan Amount (ETB)</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.loanAmountEtb ? formatPrice(viewingLoan.loanAmountEtb, 'ETB') : 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Loan Amount (USD)</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.loanAmountUsd ? formatPrice(viewingLoan.loanAmountUsd, 'USD') : 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Applied Date</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingLoan.createdAt) }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Loan ID</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.id || 'N/A' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                @click="showViewDialog = false"
+                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
@@ -99,6 +173,9 @@ import { formatPrice } from '@/shared/utils'
 const loading = ref(false)
 const loans = ref([])
 const filters = ref({ status: '' })
+
+const showViewDialog = ref(false)
+const viewingLoan = ref(null)
 
 const loadLoans = async () => {
   loading.value = true
@@ -127,8 +204,8 @@ const formatDate = (dateString) => {
 }
 
 const viewLoan = (loan) => {
-  // TODO: Navigate to loan details
-  console.log('View loan:', loan)
+  viewingLoan.value = loan
+  showViewDialog.value = true
 }
 
 onMounted(() => {

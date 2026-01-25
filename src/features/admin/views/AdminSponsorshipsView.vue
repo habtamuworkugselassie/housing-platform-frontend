@@ -162,8 +162,14 @@
                   <td class="px-6 py-4 text-right text-sm font-medium">
                     <div class="flex items-center justify-end space-x-2">
                       <button
-                        @click="editPackage(pkg)"
+                        @click="viewPackage(pkg)"
                         class="text-primary-600 hover:text-primary-900"
+                      >
+                        View
+                      </button>
+                      <button
+                        @click="editPackage(pkg)"
+                        class="text-blue-600 hover:text-blue-900"
                       >
                         Edit
                       </button>
@@ -276,22 +282,27 @@
                     {{ formatDate(app.createdAt) }}
                   </td>
                   <td class="px-6 py-4 text-right text-sm font-medium">
-                    <div v-if="app.status === 'PENDING'" class="flex items-center justify-end space-x-2">
+                    <div class="flex items-center justify-end space-x-2">
                       <button
-                        @click="approveApplication(app)"
-                        class="text-green-600 hover:text-green-900"
+                        @click="viewApplication(app)"
+                        class="text-primary-600 hover:text-primary-900"
                       >
-                        Approve
+                        View
                       </button>
-                      <button
-                        @click="showRejectModal(app)"
-                        class="text-red-600 hover:text-red-900"
-                      >
-                        Reject
-                      </button>
-                    </div>
-                    <div v-else class="text-gray-400">
-                      {{ app.status }}
+                      <div v-if="app.status === 'PENDING'">
+                        <button
+                          @click="approveApplication(app)"
+                          class="text-green-600 hover:text-green-900"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          @click="showRejectModal(app)"
+                          class="text-red-600 hover:text-red-900"
+                        >
+                          Reject
+                        </button>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -412,6 +423,172 @@
         </div>
       </div>
 
+      <!-- View Package Modal -->
+      <div
+        v-if="showViewPackageDialog"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        @click.self="showViewPackageDialog = false"
+      >
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Sponsorship Package Details</h3>
+              <button
+                @click="showViewPackageDialog = false"
+                class="text-gray-400 hover:text-gray-500"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div v-if="viewingPackage" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Name</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.name || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Type</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      viewingPackage.type === 'PREMIER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                    ]"
+                  >
+                    {{ viewingPackage.type || 'N/A' }}
+                  </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Base Price</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.basePrice ? formatPrice(viewingPackage.basePrice) : 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      viewingPackage.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    ]"
+                  >
+                    {{ viewingPackage.status || 'N/A' }}
+                  </span>
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700">Description</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.description || 'N/A' }}</p>
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700">Features</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.features || 'N/A' }}</p>
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700">Notes</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.notes || 'N/A' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                @click="showViewPackageDialog = false"
+                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Application Modal -->
+      <div
+        v-if="showViewApplicationDialog"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        @click.self="showViewApplicationDialog = false"
+      >
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Sponsorship Application Details</h3>
+              <button
+                @click="showViewApplicationDialog = false"
+                class="text-gray-400 hover:text-gray-500"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div v-if="viewingApplication" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Organization</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.organizationName || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Organization Email</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.organizationEmail || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Sponsorship Package</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.sponsorshipName || 'N/A' }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Type</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      viewingApplication.sponsorship?.type === 'PREMIER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                    ]"
+                  >
+                    {{ viewingApplication.sponsorship?.type || 'N/A' }}
+                  </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.startDate) }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">End Date</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.endDate) }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <span
+                    :class="[
+                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      getApplicationStatusClass(viewingApplication.status)
+                    ]"
+                  >
+                    {{ viewingApplication.status || 'N/A' }}
+                  </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Applied Date</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.createdAt) }}</p>
+                </div>
+                <div class="col-span-2" v-if="viewingApplication.notes">
+                  <label class="block text-sm font-medium text-gray-700">Notes</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.notes }}</p>
+                </div>
+                <div class="col-span-2" v-if="viewingApplication.rejectionReason">
+                  <label class="block text-sm font-medium text-gray-700">Rejection Reason</label>
+                  <p class="mt-1 text-sm text-red-600">{{ viewingApplication.rejectionReason }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                @click="showViewApplicationDialog = false"
+                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Reject Application Modal -->
       <div
         v-if="showRejectDialog"
@@ -487,6 +664,12 @@ const showRejectDialog = ref(false)
 const selectedApplication = ref(null)
 const rejectReason = ref('')
 
+const showViewPackageDialog = ref(false)
+const viewingPackage = ref(null)
+
+const showViewApplicationDialog = ref(false)
+const viewingApplication = ref(null)
+
 const pendingApplicationsCount = computed(() => {
   return applications.value.filter(app => app.status === 'PENDING').length
 })
@@ -560,6 +743,11 @@ const savePackage = async () => {
   }
 }
 
+const viewPackage = (pkg) => {
+  viewingPackage.value = pkg
+  showViewPackageDialog.value = true
+}
+
 const editPackage = (pkg) => {
   editingPackage.value = pkg
   form.value = {
@@ -596,6 +784,11 @@ const deletePackage = async (id) => {
     console.error('Failed to delete package:', err)
     alert(err.response?.data?.message || 'Failed to delete package')
   }
+}
+
+const viewApplication = (app) => {
+  viewingApplication.value = app
+  showViewApplicationDialog.value = true
 }
 
 const approveApplication = async (app) => {

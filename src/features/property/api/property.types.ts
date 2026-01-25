@@ -54,7 +54,11 @@ export interface PropertyResponse {
   status: string
   buildingId?: string
   imageUrls?: string[]
+  images?: Array<{ imageUrl: string }>
   realEstateCompanyId?: string
+  realEstateCompanyName?: string
+  isSponsored?: boolean
+  sponsorshipType?: 'PREMIER' | 'BASIC'
   createdAt: string
   updatedAt: string
 }

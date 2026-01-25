@@ -170,7 +170,12 @@ import { ref, onMounted, computed } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdmin } from '../composables/useAdmin'
 
-const { stats, loading, error, loadStats } = useAdmin()
+const admin = useAdmin()
+// Access refs directly to preserve reactivity
+const stats = admin.stats
+const loading = admin.loading
+const error = admin.error
+const { loadStats } = admin
 
 const recentActivity = computed(() => {
   return stats.value?.recentActivity || []

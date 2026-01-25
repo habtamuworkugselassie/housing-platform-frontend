@@ -44,7 +44,14 @@ export interface BuildingResponse {
   yearBuilt?: number
   amenities?: string
   facilities?: string
-  realEstateCompanyId: string
+  realEstateCompanyId?: string
+  realEstateCompanyName?: string
+  availableUnits?: number
+  occupiedUnits?: number
+  isSponsored?: boolean
+  sponsorshipType?: 'PREMIER' | 'BASIC'
+  createdAt?: string
+  updatedAt?: string
 }
 
 export function useBuildings() {

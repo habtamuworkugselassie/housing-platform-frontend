@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $t('property.properties') }}</h1>
-      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">{{ $t('property.browseCollection') }}</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Properties & Buildings</h1>
+      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Browse available properties and buildings</p>
     </div>
 
     <!-- Filters -->
@@ -50,34 +50,42 @@
       <p class="mt-4 text-gray-600">{{ $t('filters.loadingProperties') }}</p>
     </div>
 
-    <!-- Properties Grid -->
-    <div v-else-if="properties.length" class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Properties and Buildings Grid -->
+    <div v-else-if="combinedList.length" class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <div
-        v-for="property in properties"
-        :key="property.id"
+        v-for="item in combinedList"
+        :key="`${item.type}-${item.id}`"
         :class="{
-          'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer': !property.isSponsored,
-          'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer border-2 border-yellow-400 ring-2 ring-yellow-200': property.isSponsored && property.sponsorshipType === 'PREMIER',
-          'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer border-2 border-blue-300': property.isSponsored && property.sponsorshipType === 'BASIC'
+          'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer': !item.isSponsored,
+          'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer border-2 border-yellow-400 ring-2 ring-yellow-200': item.isSponsored && item.sponsorshipType === 'PREMIER',
+          'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer border-2 border-blue-300': item.isSponsored && item.sponsorshipType === 'BASIC'
         }"
-        @click="$router.push(`/properties/${property.id}`)"
+        @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
       >
+        <!-- Type Badge (Building) -->
+        <div v-if="item.type === 'building'" class="absolute top-2 left-2 z-20">
+          <div class="bg-indigo-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+            <span>🏢</span>
+            <span>BUILDING</span>
+          </div>
+        </div>
+        
         <!-- Sponsored Badge - Prominent Display -->
-        <div v-if="property.isSponsored" class="relative">
+        <div v-if="item.isSponsored" class="relative">
           <div
             :class="{
-              'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': property.sponsorshipType === 'PREMIER',
-              'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': property.sponsorshipType === 'BASIC'
+              'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIER',
+              'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'BASIC'
             }"
             class="absolute top-2 right-2 sm:top-3 sm:right-3 px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1 sm:gap-1.5 animate-pulse border-2 border-white"
           >
-            <span v-if="property.sponsorshipType === 'PREMIER'" class="text-sm sm:text-base">⭐</span>
+            <span v-if="item.sponsorshipType === 'PREMIER'" class="text-sm sm:text-base">⭐</span>
             <span v-else class="text-sm sm:text-base">✨</span>
-            <span class="hidden sm:inline uppercase tracking-wide">{{ property.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
-            <span class="sm:hidden uppercase">{{ property.sponsorshipType === 'PREMIER' ? 'P' : 'S' }}</span>
+            <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
+            <span class="sm:hidden uppercase">{{ item.sponsorshipType === 'PREMIER' ? 'P' : 'S' }}</span>
           </div>
           <!-- Additional Premier Crown Badge -->
-          <div v-if="property.sponsorshipType === 'PREMIER'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
+          <div v-if="item.sponsorshipType === 'PREMIER' && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
             <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
               <span class="text-xs sm:text-sm">👑</span>
               <span class="hidden sm:inline">FEATURED</span>
@@ -86,98 +94,114 @@
         </div>
         
         <div class="h-40 sm:h-48 bg-gray-200 flex items-center justify-center relative overflow-hidden">
-          <span v-if="!property.images || property.images.length === 0" class="text-gray-400 text-4xl">🏠</span>
+          <span v-if="!item.images && !item.imageUrls" class="text-gray-400 text-4xl">{{ item.type === 'property' ? '🏠' : '🏢' }}</span>
           <img
             v-else
-            :src="property.images[0].imageUrl"
-            :alt="property.title"
+            :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+            :alt="item.title || item.name"
             :class="{
               'w-full h-full object-cover transition-transform duration-300': true,
-              'brightness-110 contrast-110 scale-105 hover:scale-110': property.isSponsored && property.sponsorshipType === 'PREMIER',
-              'brightness-105 scale-102 hover:scale-105': property.isSponsored && property.sponsorshipType === 'BASIC'
+              'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIER',
+              'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'BASIC'
             }"
           />
           <!-- Sponsored Overlay Gradient - More Prominent -->
           <div 
-            v-if="property.isSponsored"
+            v-if="item.isSponsored"
             :class="{
-              'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': property.sponsorshipType === 'PREMIER',
-              'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': property.sponsorshipType === 'BASIC'
+              'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIER',
+              'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'BASIC'
             }"
           ></div>
           <!-- Premier Glow Effect -->
           <div 
-            v-if="property.isSponsored && property.sponsorshipType === 'PREMIER'"
+            v-if="item.isSponsored && item.sponsorshipType === 'PREMIER'"
             class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
           ></div>
         </div>
         <div class="p-4 sm:p-6">
           <div class="flex items-start justify-between mb-2">
             <h3 :class="{
-              'text-lg sm:text-xl font-semibold text-gray-900': !property.isSponsored,
-              'text-lg sm:text-xl font-extrabold text-gray-900': property.isSponsored && property.sponsorshipType === 'PREMIER',
-              'text-lg sm:text-xl font-bold text-gray-900': property.isSponsored && property.sponsorshipType === 'BASIC'
-            }" class="flex-1 pr-2">{{ property.title }}</h3>
+              'text-lg sm:text-xl font-semibold text-gray-900': !item.isSponsored,
+              'text-lg sm:text-xl font-extrabold text-gray-900': item.isSponsored && item.sponsorshipType === 'PREMIER',
+              'text-lg sm:text-xl font-bold text-gray-900': item.isSponsored && item.sponsorshipType === 'BASIC'
+            }" class="flex-1 pr-2">{{ item.title || item.name }}</h3>
           </div>
           <div class="flex flex-wrap items-center gap-2 mb-2">
-            <div class="flex flex-col gap-1">
-              <p v-if="property.priceETB" :class="{
-                'text-xl sm:text-2xl font-bold text-primary-600': !property.isSponsored,
-                'text-xl sm:text-2xl font-extrabold text-yellow-700': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                'text-xl sm:text-2xl font-bold text-blue-700': property.isSponsored && property.sponsorshipType === 'BASIC'
-              }">{{ formatPrice(property.priceETB, 'ETB') }}</p>
-              <p v-if="property.priceUSD" :class="{
-                'text-base sm:text-lg font-semibold text-gray-600': !property.isSponsored,
-                'text-base sm:text-lg font-bold text-yellow-600': property.isSponsored && property.sponsorshipType === 'PREMIER',
-                'text-base sm:text-lg font-semibold text-blue-600': property.isSponsored && property.sponsorshipType === 'BASIC'
-              }">{{ formatPrice(property.priceUSD, 'USD') }}</p>
-              <p v-if="!property.priceETB && !property.priceUSD" class="text-base sm:text-lg text-gray-500">
+            <!-- Property Price -->
+            <div v-if="item.type === 'property'" class="flex flex-col gap-1">
+              <p v-if="item.priceETB" :class="{
+                'text-xl sm:text-2xl font-bold text-primary-600': !item.isSponsored,
+                'text-xl sm:text-2xl font-extrabold text-yellow-700': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                'text-xl sm:text-2xl font-bold text-blue-700': item.isSponsored && item.sponsorshipType === 'BASIC'
+              }">{{ formatPrice(item.priceETB, 'ETB') }}</p>
+              <p v-if="item.priceUSD" :class="{
+                'text-base sm:text-lg font-semibold text-gray-600': !item.isSponsored,
+                'text-base sm:text-lg font-bold text-yellow-600': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                'text-base sm:text-lg font-semibold text-blue-600': item.isSponsored && item.sponsorshipType === 'BASIC'
+              }">{{ formatPrice(item.priceUSD, 'USD') }}</p>
+              <p v-if="!item.priceETB && !item.priceUSD" class="text-base sm:text-lg text-gray-500">
                 {{ $t('property.priceNotSet') }}
               </p>
             </div>
-            <span v-if="property.category" :class="{
-              'bg-blue-100 text-blue-800': property.category === 'FOR_SALE',
-              'bg-green-100 text-green-800': property.category === 'FOR_RENTAL'
+            <!-- Building Units Info -->
+            <div v-else class="flex flex-col gap-1">
+              <p class="text-xl sm:text-2xl font-bold text-primary-600">{{ item.totalUnits || 0 }} Units</p>
+              <p class="text-sm text-gray-600">{{ item.availableUnits || 0 }} Available</p>
+            </div>
+            <span v-if="item.category" :class="{
+              'bg-blue-100 text-blue-800': item.category === 'FOR_SALE',
+              'bg-green-100 text-green-800': item.category === 'FOR_RENTAL'
             }" class="px-2 py-0.5 rounded text-xs font-medium">
-              {{ property.category === 'FOR_SALE' ? 'Sale' : 'Rental' }}
+              {{ item.category === 'FOR_SALE' ? 'Sale' : 'Rental' }}
             </span>
-            <span v-if="property.isFullyFurnished" class="px-2 py-0.5 bg-purple-100 text-purple-800 rounded text-xs font-medium">
+            <span v-if="item.isFullyFurnished" class="px-2 py-0.5 bg-purple-100 text-purple-800 rounded text-xs font-medium">
               Furnished
             </span>
           </div>
           <p class="text-sm text-gray-600 mb-2">
-            📍 {{ property.city }}, {{ property.country }}
+            📍 {{ item.city }}, {{ item.country }}
           </p>
-          <div v-if="property.constructionPercentage !== null && property.constructionPercentage !== undefined" class="mb-2">
+          <div v-if="item.constructionPercentage !== null && item.constructionPercentage !== undefined" class="mb-2">
             <div class="flex items-center gap-2">
               <span class="text-xs text-gray-500">Construction:</span>
               <div class="flex-1 bg-gray-200 rounded-full h-2">
                 <div 
                   class="bg-primary-600 h-2 rounded-full transition-all"
-                  :style="{ width: property.constructionPercentage + '%' }"
+                  :style="{ width: item.constructionPercentage + '%' }"
                 ></div>
               </div>
-              <span class="text-xs text-gray-600">{{ property.constructionPercentage }}%</span>
+              <span class="text-xs text-gray-600">{{ item.constructionPercentage }}%</span>
             </div>
           </div>
-          <p v-if="property.realEstateCompanyName" class="text-xs text-gray-500 mb-2">
-            By {{ property.realEstateCompanyName }}
-          </p>
-          <div class="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
-            <span v-if="property.bedrooms">🛏️ {{ property.bedrooms }} beds</span>
-            <span v-if="property.bathrooms">🚿 {{ property.bathrooms }} baths</span>
-            <span v-if="property.area">📐 {{ property.area }} sqm</span>
+          <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 mb-2">
+            <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+            <span class="text-xs font-semibold text-primary-600">{{ item.realEstateCompanyName }}</span>
+          </div>
+          <!-- Property Features -->
+          <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
+            <span v-if="item.bedrooms">🛏️ {{ item.bedrooms }} beds</span>
+            <span v-if="item.bathrooms">🚿 {{ item.bathrooms }} baths</span>
+            <span v-if="item.area">📐 {{ item.area }} sqm</span>
+          </div>
+          <!-- Building Features -->
+          <div v-else class="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
+            <span>🏢 {{ item.totalUnits || 0 }} Units</span>
+            <span v-if="item.totalFloors">📊 {{ item.totalFloors }} Floors</span>
+            <span v-if="item.availableUnits" class="text-green-600 font-semibold">{{ item.availableUnits }} Available</span>
           </div>
           <div class="mt-4 flex items-center justify-between">
             <span
               :class="{
-                'bg-green-100 text-green-800': property.status === 'AVAILABLE',
-                'bg-yellow-100 text-yellow-800': property.status === 'RESERVED',
-                'bg-gray-100 text-gray-800': property.status === 'SOLD'
+                'bg-green-100 text-green-800': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
+                'bg-yellow-100 text-yellow-800': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
+                'bg-gray-100 text-gray-800': item.status === 'SOLD' || item.status === 'PLANNED'
               }"
               class="inline-block px-2 py-1 text-xs font-semibold rounded"
             >
-              {{ property.status }}
+              {{ item.status }}
             </span>
           </div>
         </div>
@@ -186,7 +210,7 @@
 
     <!-- Empty State -->
     <div v-else class="text-center py-12">
-      <p class="text-gray-600">No properties found. Try adjusting your filters.</p>
+      <p class="text-gray-600">No properties or buildings found. Try adjusting your filters.</p>
     </div>
 
     <!-- Pagination -->
@@ -220,6 +244,8 @@ import api from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const properties = ref([])
+const buildings = ref([])
+const combinedList = ref([])
 const loading = ref(false)
 const currentPage = ref(0)
 const pageSize = ref(20) // Reasonable page size for better performance
@@ -233,6 +259,7 @@ const filters = ref({
 const loadProperties = async () => {
   loading.value = true
   try {
+    // Load properties
     const params = {
       page: currentPage.value,
       size: pageSize.value
@@ -249,13 +276,54 @@ const loadProperties = async () => {
     }
     // Don't set default status - let backend decide based on authentication
     
-    const response = await api.get('/properties', { params })
-    properties.value = response.data.content || response.data
-    if (response.data.totalPages !== undefined) {
-      totalPages.value = response.data.totalPages
+    const propertiesResponse = await api.get('/properties', { params })
+    properties.value = propertiesResponse.data.content || propertiesResponse.data || []
+    if (propertiesResponse.data.totalPages !== undefined) {
+      totalPages.value = propertiesResponse.data.totalPages
     }
+    
+    // Load buildings
+    const buildingsParams = {}
+    if (filters.value.city) {
+      buildingsParams.city = filters.value.city
+    }
+    
+    try {
+      const buildingsResponse = await api.get('/buildings', { params: buildingsParams })
+      buildings.value = Array.isArray(buildingsResponse.data) ? buildingsResponse.data : []
+    } catch (err) {
+      console.error('Failed to load buildings:', err)
+      buildings.value = []
+    }
+    
+    // Combine properties and buildings
+    const combined = [
+      ...properties.value.map(p => ({ ...p, type: 'property' })),
+      ...buildings.value.map(b => ({ ...b, type: 'building', title: b.name }))
+    ]
+    
+    // Sort by sponsorship (PREMIER first, then BASIC, then none), then by creation date
+    combined.sort((a, b) => {
+      // Sponsorship priority (works for both properties and buildings)
+      const aPriority = a.isSponsored && a.sponsorshipType === 'PREMIER' ? 0 : 
+                       a.isSponsored && a.sponsorshipType === 'BASIC' ? 1 : 2
+      const bPriority = b.isSponsored && b.sponsorshipType === 'PREMIER' ? 0 : 
+                       b.isSponsored && b.sponsorshipType === 'BASIC' ? 1 : 2
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority
+      }
+      
+      // Then by creation date (newest first)
+      const aDate = new Date(a.createdAt || 0)
+      const bDate = new Date(b.createdAt || 0)
+      return bDate - aDate
+    })
+    
+    combinedList.value = combined
   } catch (err) {
     console.error('Failed to load properties:', err)
+    combinedList.value = []
   } finally {
     loading.value = false
   }

@@ -24,6 +24,14 @@
               {{ $t('nav.properties') }}
             </router-link>
           </div>
+          <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <router-link
+              to="/buildings"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600"
+            >
+              {{ $t('nav.buildings') }}
+            </router-link>
+          </div>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
           <!-- Desktop Navigation -->

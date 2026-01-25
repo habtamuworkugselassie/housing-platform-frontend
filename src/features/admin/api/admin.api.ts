@@ -4,6 +4,7 @@
  * API client for admin management endpoints.
  */
 import api from '@/shared/api/client'
+import type { AxiosResponse } from 'axios'
 import type {
   AdminStats,
   UserManagementRequest,
@@ -29,19 +30,21 @@ interface PaginatedResponse<T> {
 export const adminApi = {
   /**
    * Get admin dashboard statistics
+   * Returns the full AxiosResponse so useApi.execute can extract response.data
    */
-  getStats: async (): Promise<AdminStats> => {
+  getStats: async (): Promise<AxiosResponse<AdminStats>> => {
     const response = await api.get('/admin/stats')
-    return response.data
+    return response
   },
 
   /**
    * Get all users with pagination and filters
+   * Returns the full AxiosResponse so useApi.execute can extract response.data
    */
-  getUsers: async (filters, pageRequest) => {
+  getUsers: async (filters, pageRequest): Promise<AxiosResponse<any>> => {
     const params = { ...filters, ...pageRequest }
     const response = await api.get('/users', { params })
-    return response.data
+    return response
   },
 
   /**
@@ -54,10 +57,11 @@ export const adminApi = {
 
   /**
    * Get all organizations with filters
+   * Returns the full AxiosResponse so useApi.execute can extract response.data
    */
-  getOrganizations: async (filters?: AdminFilters): Promise<any[]> => {
-    const response = await api.get('/organizations', { params: filters })
-    return response.data
+  getOrganizations: async (filters?: AdminFilters): Promise<AxiosResponse<any[]>> => {
+    const response = await api.get('/organizations', { params: filters || {} })
+    return response
   },
 
   /**

@@ -2,16 +2,57 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">{{ $t('building.buildings') }}</h1>
-        <p class="mt-2 text-sm text-gray-600">{{ $t('building.manageBuildings') }}</p>
+        <h1 class="text-3xl font-bold text-gray-900">{{ isManagementMode ? $t('building.buildings') : 'Buildings' }}</h1>
+        <p class="mt-2 text-sm text-gray-600">{{ isManagementMode ? $t('building.manageBuildings') : 'Browse all available buildings' }}</p>
       </div>
       <button
-        v-if="organization"
+        v-if="isManagementMode && organization"
         @click="showCreateModal = true"
         class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
       >
         + {{ $t('building.addBuilding') }}
       </button>
+    </div>
+
+    <!-- Filters (Public Mode) -->
+    <div v-if="!isManagementMode" class="mb-6 bg-white p-4 rounded-lg shadow">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <label for="cityFilter" class="block text-sm font-medium text-gray-700">City</label>
+          <input
+            id="cityFilter"
+            v-model="filters.city"
+            type="text"
+            placeholder="Filter by city"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            @input="loadBuildings"
+          />
+        </div>
+        <div>
+          <label for="buildingTypeFilter" class="block text-sm font-medium text-gray-700">Building Type</label>
+          <select
+            id="buildingTypeFilter"
+            v-model="filters.buildingType"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            @change="loadBuildings"
+          >
+            <option value="">All Types</option>
+            <option value="APARTMENT_COMPLEX">Apartment Complex</option>
+            <option value="CONDOMINIUM">Condominium</option>
+            <option value="RESIDENTIAL_COMPLEX">Residential Complex</option>
+            <option value="MIXED_USE">Mixed Use</option>
+            <option value="COMMERCIAL_RESIDENTIAL">Commercial Residential</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button
+            @click="clearFilters"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+          >
+            Clear Filters
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Loading State -->
@@ -30,19 +71,49 @@
         v-for="building in buildings"
         :key="building.id"
         @click="viewBuilding(building.id)"
-        class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
+        :class="[
+          'rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer',
+          building.isSponsored && building.sponsorshipType === 'PREMIER' 
+            ? 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-2 border-yellow-400' 
+            : building.isSponsored && building.sponsorshipType === 'BASIC'
+            ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-2 border-blue-300'
+            : 'bg-white'
+        ]"
       >
         <div class="flex items-start justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">{{ building.name }}</h3>
-          <span :class="[
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-            getStatusColor(building.status)
-          ]">
-            {{ building.status }}
-          </span>
+          <div class="flex items-center gap-2">
+            <!-- Sponsored Badge -->
+            <span 
+              v-if="building.isSponsored"
+              :class="{
+                'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900': building.sponsorshipType === 'PREMIER',
+                'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900': building.sponsorshipType === 'BASIC'
+              }"
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold shadow-lg"
+            >
+              <span v-if="building.sponsorshipType === 'PREMIER'" class="mr-1">⭐</span>
+              <span v-else class="mr-1">✨</span>
+              {{ building.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}
+            </span>
+            <span :class="[
+              'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+              getStatusColor(building.status)
+            ]">
+              {{ building.status }}
+            </span>
+          </div>
         </div>
         
         <p class="text-sm text-gray-600 mb-4">{{ building.address }}, {{ building.city }}</p>
+        
+        <!-- Real Estate Company Name -->
+        <div v-if="building.realEstateCompanyName" class="mb-3 flex items-center gap-2">
+          <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+          <span class="text-xs font-semibold text-primary-600">{{ building.realEstateCompanyName }}</span>
+        </div>
         
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -63,7 +134,8 @@
           </div>
         </div>
 
-        <div class="mt-4 flex gap-2">
+        <!-- Management Actions (only in management mode) -->
+        <div v-if="isManagementMode" class="mt-4 flex gap-2">
           <button
             @click.stop="editBuilding(building)"
             class="flex-1 px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
@@ -77,12 +149,22 @@
             {{ $t('building.viewUnits') }}
           </button>
         </div>
+        
+        <!-- Public View Action -->
+        <div v-else class="mt-4">
+          <button
+            @click.stop="viewBuilding(building.id)"
+            class="w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700"
+          >
+            View Details
+          </button>
+        </div>
       </div>
 
       <div v-if="buildings.length === 0" class="col-span-full text-center py-12 bg-white rounded-lg shadow">
-            <p class="text-sm text-gray-500">{{ $t('building.noBuildings') }}</p>
+        <p class="text-sm text-gray-500">{{ isManagementMode ? $t('building.noBuildings') : 'No buildings found' }}</p>
         <button
-          v-if="organization"
+          v-if="isManagementMode && organization"
           @click="showCreateModal = true"
           class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
         >
@@ -319,7 +401,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
@@ -335,6 +417,15 @@ const organization = ref(null)
 const showCreateModal = ref(false)
 const showEditModal = ref(false)
 const editingBuilding = ref(null)
+const filters = ref({
+  city: '',
+  buildingType: ''
+})
+
+// Determine if we're in management mode (authenticated realtor with organization)
+const isManagementMode = computed(() => {
+  return authStore.isAuthenticated && authStore.hasRole('REALTOR') && organization.value !== null
+})
 
 const buildingForm = ref({
   name: '',
@@ -378,26 +469,48 @@ const loadOrganization = async () => {
 }
 
 const loadBuildings = async () => {
-  if (!organization.value) {
-    await loadOrganization()
-  }
-  
-  if (!organization.value) {
-    error.value = 'No organization found. Please register as an agent or create a company.'
-    return
-  }
-
   loading.value = true
   error.value = ''
+  
   try {
-    const response = await api.get(`/buildings/companies/${organization.value.id}`)
-    buildings.value = response.data
+    // If in management mode, load organization buildings
+    if (isManagementMode.value) {
+      if (!organization.value) {
+        await loadOrganization()
+      }
+      
+      if (!organization.value) {
+        error.value = 'No organization found. Please register as an agent or create a company.'
+        return
+      }
+      
+      const response = await api.get(`/buildings/companies/${organization.value.id}`)
+      buildings.value = response.data || []
+    } else {
+      // Public mode: load all buildings with optional filters
+      const params = {}
+      if (filters.value.city) {
+        params.city = filters.value.city
+      }
+      if (filters.value.buildingType) {
+        params.buildingType = filters.value.buildingType
+      }
+      
+      const response = await api.get('/buildings', { params })
+      buildings.value = Array.isArray(response.data) ? response.data : []
+    }
   } catch (err) {
     console.error('Failed to load buildings:', err)
     error.value = err.response?.data?.message || 'Failed to load buildings'
+    buildings.value = []
   } finally {
     loading.value = false
   }
+}
+
+const clearFilters = () => {
+  filters.value = { city: '', buildingType: '' }
+  loadBuildings()
 }
 
 const submitBuilding = async () => {
@@ -485,7 +598,12 @@ const closeModal = () => {
   }
 }
 
-onMounted(() => {
-  loadBuildings()
+onMounted(async () => {
+  // Try to load organization if user is authenticated realtor
+  if (authStore.isAuthenticated && authStore.hasRole('REALTOR')) {
+    await loadOrganization()
+  }
+  // Load buildings (will determine mode based on organization)
+  await loadBuildings()
 })
 </script>

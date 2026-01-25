@@ -157,8 +157,7 @@ const routes = [
   {
     path: '/buildings',
     name: 'Buildings',
-    component: () => import('@/features/property/views/BuildingsView.vue'),
-    meta: { requiresAuth: true, requiresRealtor: true }
+    component: () => import('@/features/property/views/BuildingsView.vue')
   },
   {
     path: '/buildings/:id',
