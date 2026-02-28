@@ -288,28 +288,59 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('submitProperty.propertyImages') }}</label>
-            <div v-for="(image, index) in form.images" :key="index" class="flex gap-2 mb-2">
+            
+            <!-- File Upload -->
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4">
               <input
-                v-model="form.images[index]"
-                type="url"
-                :placeholder="$t('submitProperty.imageUrl')"
-                class="flex-1 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                type="file"
+                ref="fileInput"
+                @change="handleFileSelect"
+                multiple
+                accept="image/*,video/*"
+                class="hidden"
+                id="property-file-upload"
               />
-              <button
-                type="button"
-                @click="removeImage(index)"
-                class="px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50"
-              >
-                {{ $t('submitProperty.remove') }}
-              </button>
+              <label for="property-file-upload" class="cursor-pointer flex flex-col items-center justify-center">
+                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <span class="text-sm text-gray-600 mb-1">Click to upload photos or videos</span>
+                <span class="text-xs text-gray-500">Supports: JPG, PNG, GIF, MP4, MOV (Max 10MB each)</span>
+              </label>
             </div>
-            <button
-              type="button"
-              @click="addImage"
-              class="mt-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-            >
-              {{ $t('submitProperty.addImageUrl') }}
-            </button>
+            
+            <!-- Selected Files Preview -->
+            <div v-if="selectedFiles.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div v-for="(fileObj, index) in selectedFiles" :key="index" class="relative">
+                <div v-if="fileObj.type.startsWith('image/')" class="relative">
+                  <img :src="fileObj.preview" :alt="fileObj.name" class="w-full h-24 object-cover rounded border border-gray-300" />
+                  <button
+                    type="button"
+                    @click="removeSelectedFile(index)"
+                    class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+                <div v-else class="relative bg-gray-100 rounded border border-gray-300 h-24 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  <button
+                    type="button"
+                    @click="removeSelectedFile(index)"
+                    class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-600 mt-1 truncate">{{ fileObj.name }}</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -337,7 +368,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api from '@/shared/api/client'
@@ -370,13 +401,14 @@ const form = ref({
   description: '',
   realEstateCompanyId: '',
   buildingId: '',
-  unitNumber: '',
-  images: ['']
+  unitNumber: ''
 })
 
 const loading = ref(false)
 const error = ref('')
 const success = ref('')
+const selectedFiles = ref([])
+const fileInput = ref(null)
 
 const loadAgent = async () => {
   try {
@@ -420,12 +452,43 @@ onMounted(() => {
   }
 })
 
-const addImage = () => {
-  form.value.images.push('')
+// Cleanup preview URLs on unmount
+onUnmounted(() => {
+  selectedFiles.value.forEach(fileObj => {
+    if (fileObj.preview) {
+      URL.revokeObjectURL(fileObj.preview)
+    }
+  })
+})
+
+const handleFileSelect = (event) => {
+  const files = Array.from(event.target.files || [])
+  files.forEach(file => {
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`File ${file.name} exceeds 10MB limit`)
+      return
+    }
+    
+    const fileObj = {
+      file: file,
+      name: file.name,
+      type: file.type,
+      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+    }
+    selectedFiles.value.push(fileObj)
+  })
+  
+  // Reset input to allow selecting the same file again
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
 }
 
-const removeImage = (index) => {
-  form.value.images.splice(index, 1)
+const removeSelectedFile = (index) => {
+  if (selectedFiles.value[index].preview) {
+    URL.revokeObjectURL(selectedFiles.value[index].preview)
+  }
+  selectedFiles.value.splice(index, 1)
 }
 
 const handleSubmit = async () => {
@@ -434,21 +497,31 @@ const handleSubmit = async () => {
   success.value = ''
 
   try {
-    // Prepare images data
-    const imagesData = form.value.images
-      .filter(url => url.trim() !== '')
-      .map((url, index) => ({
-        imageUrl: url.trim(),
-        displayOrder: index,
-        isPrimary: index === 0
-      }))
-
+    // Create property first (without images)
     const propertyData = {
-      ...form.value,
-      images: imagesData.length > 0 ? imagesData : undefined
+      ...form.value
     }
 
-    await api.post('/properties', propertyData)
+    // Remove images from propertyData as we'll upload them separately
+    delete propertyData.images
+
+    const response = await api.post('/properties', propertyData)
+    const createdProperty = response.data
+    
+    // Upload images if any were selected
+    if (selectedFiles.value.length > 0) {
+      const formData = new FormData()
+      selectedFiles.value.forEach(fileObj => {
+        formData.append('files', fileObj.file)
+      })
+      
+      await api.post(`/properties/${createdProperty.id}/images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    }
+    
     success.value = t('submitProperty.propertySubmitted')
     setTimeout(() => {
       router.push('/properties')

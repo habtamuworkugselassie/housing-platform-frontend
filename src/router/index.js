@@ -5,6 +5,11 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    component: () => import('@/features/exhibition/views/ExhibitionLandingView.vue')
+  },
+  {
+    path: '/real-estate',
+    name: 'RealEstateSearch',
     component: () => import('@/features/property/views/HomeView.vue')
   },
   {
@@ -211,17 +216,28 @@ const routes = [
     name: 'SupplierDashboard',
     component: () => import('@/features/construction/views/SupplierDashboardView.vue'),
     meta: { requiresAuth: true, requiresSupplier: true }
+  },
+  {
+    path: '/exhibition',
+    name: 'ExhibitionLanding',
+    component: () => import('@/features/exhibition/views/ExhibitionLandingView.vue')
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, _from, _savedPosition) {
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' }
+    }
+    return { top: 0 }
+  }
 })
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  
+
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } })
   } else if (to.meta.requiresRealtor && !authStore.hasRole('REALTOR')) {

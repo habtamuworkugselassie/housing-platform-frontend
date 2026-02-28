@@ -18,6 +18,14 @@
           
           <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
             <router-link
+              to="/real-estate"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600"
+            >
+              Marketplace
+            </router-link>
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <router-link
               to="/properties"
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600"
             >
@@ -31,6 +39,12 @@
             >
               {{ $t('nav.buildings') }}
             </router-link>
+          </div>
+          <div class="hidden md:ml-6 md:flex md:space-x-6">
+            <router-link to="/#why-exhibit" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Why Exhibit</router-link>
+            <router-link to="/#why-visit" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Why Visit</router-link>
+            <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Show Features</router-link>
+            <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Who Attends</router-link>
           </div>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
@@ -153,12 +167,23 @@
       <div v-if="mobileMenuOpen" class="sm:hidden border-t border-gray-200">
         <div class="px-2 pt-2 pb-3 space-y-1">
           <router-link
+            to="/real-estate"
+            @click="mobileMenuOpen = false"
+            class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+          >
+            Marketplace
+          </router-link>
+          <router-link
             to="/properties"
             @click="mobileMenuOpen = false"
             class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md"
           >
             {{ $t('nav.properties') }}
           </router-link>
+          <router-link to="/#why-exhibit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Exhibit</router-link>
+          <router-link to="/#why-visit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Visit</router-link>
+          <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Show Features</router-link>
+          <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Who Attends</router-link>
           
           <template v-if="authStore.isAuthenticated">
             <router-link
