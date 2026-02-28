@@ -1,0 +1,15 @@
+# Example: add this frontend service to your droplet's ~/housing-platform/docker-compose.yml
+# so the app is reachable on the server's port 80 (or another port).
+
+services:
+  frontend:
+    image: habtamuwgs/housing-platform-frontend:latest
+    container_name: housing-platform-frontend
+    ports:
+      - "80:80"   # Host port 80 → container port 80 (nginx)
+    restart: unless-stopped
+
+# If port 80 is already used (e.g. by another app), use another host port, e.g.:
+#   ports:
+#     - "3000:80"
+# Then access the app at http://<droplet-ip>:3000

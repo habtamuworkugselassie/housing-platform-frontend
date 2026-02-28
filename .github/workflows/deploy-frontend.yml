@@ -22,6 +22,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Set repo secret BACKEND_URL to your droplet backend API (e.g. https://your-api.com/api/v1) so login/API calls use it instead of Render
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -29,6 +30,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: habtamuwgs/housing-platform-frontend:latest
+          build-args: |
+            VITE_API_BASE_URL=${{ secrets.BACKEND_URL }}
 
       - name: Deploy on DigitalOcean droplet
         uses: appleboy/ssh-action@v1.2.0

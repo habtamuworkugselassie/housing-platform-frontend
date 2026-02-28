@@ -2,6 +2,10 @@
 FROM node:20-slim AS build
 WORKDIR /app
 
+# Backend API URL baked into the frontend at build time (e.g. https://your-backend.com/api/v1 for droplet)
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 COPY package*.json ./
 RUN npm ci
 # Work around npm optional deps bug: explicitly install Rollup native binary for Linux (https://github.com/npm/cli/issues/4828)

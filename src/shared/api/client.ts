@@ -7,25 +7,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 // Note: useAuthStore is imported dynamically in interceptors to avoid circular dependencies
 
-// Determine API base URL
-// In production, use the production backend URL if VITE_API_BASE_URL is not set
-// In development, use relative URL which will be proxied by Vite
-const getBaseURL = () => {
-  // Check if VITE_API_BASE_URL is explicitly set
-  // @ts-ignore - Vite env variables
+// API base URL from env (set at build time, e.g. VITE_API_BASE_URL / BACKEND_URL in Docker). Fallback: relative /api/v1 (dev proxy or same-origin).
+const getBaseURL = (): string => {
   const envUrl = import.meta.env.VITE_API_BASE_URL
-  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
-    return envUrl
+  if (envUrl != null && typeof envUrl === 'string') {
+    const trimmed = envUrl.trim()
+    if (trimmed !== '') return trimmed
   }
-  
-  // Production default - check if we're in production mode
-  // @ts-ignore - Vite env variables
-  const isProduction = import.meta.env.MODE === 'production' || import.meta.env.PROD === true
-  if (isProduction) {
-    return 'https://housing-platform-backend.onrender.com/api/v1'
-  }
-  
-  // Development default (relative URL, proxied by Vite)
   return '/api/v1'
 }
 
