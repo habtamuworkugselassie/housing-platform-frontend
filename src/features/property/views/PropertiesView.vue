@@ -1,30 +1,31 @@
 <template>
-  <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+  <div class="min-h-screen bg-black text-white">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Properties & Buildings</h1>
-      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Browse available properties and buildings</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-white">Properties & Buildings</h1>
+      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-400">Browse available properties and buildings</p>
     </div>
 
     <!-- Filters -->
-    <div class="mb-4 sm:mb-6 bg-white p-3 sm:p-4 rounded-lg shadow">
+    <div class="mb-4 sm:mb-6 bg-zinc-900 border border-white/10 p-3 sm:p-4 rounded-lg">
       <div class="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label for="city" class="block text-sm font-medium text-gray-700">{{ $t('property.city') }}</label>
+          <label for="city" class="block text-sm font-medium text-gray-300">{{ $t('property.city') }}</label>
           <input
             id="city"
             v-model="filters.city"
             type="text"
             :placeholder="$t('property.filterByCity')"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             @input="loadProperties"
           />
         </div>
         <div>
-          <label for="status" class="block text-sm font-medium text-gray-700">{{ $t('property.status') }}</label>
+          <label for="status" class="block text-sm font-medium text-gray-300">{{ $t('property.status') }}</label>
           <select
             id="status"
             v-model="filters.status"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             @change="loadProperties"
           >
             <option value="">{{ $t('filters.all') }}</option>
@@ -36,7 +37,7 @@
         <div class="flex items-end sm:col-span-2 lg:col-span-1">
           <button
             @click="clearFilters"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400"
           >
             {{ $t('filters.clearFilters') }}
           </button>
@@ -46,8 +47,8 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      <p class="mt-4 text-gray-600">{{ $t('filters.loadingProperties') }}</p>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+      <p class="mt-4 text-gray-400">{{ $t('filters.loadingProperties') }}</p>
     </div>
 
     <!-- Properties and Buildings Grid -->
@@ -56,9 +57,9 @@
         v-for="item in combinedList"
         :key="`${item.type}-${item.id}`"
         :class="{
-          'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer': !item.isSponsored,
-          'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-all cursor-pointer border-2 border-yellow-400 ring-2 ring-yellow-200': item.isSponsored && item.sponsorshipType === 'PREMIER',
-          'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer border-2 border-blue-300': item.isSponsored && item.sponsorshipType === 'BASIC'
+          'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': !item.isSponsored,
+          'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'PREMIER',
+          'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'BASIC'
         }"
         @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
       >
@@ -93,8 +94,8 @@
           </div>
         </div>
         
-        <div class="h-40 sm:h-48 bg-gray-200 flex items-center justify-center relative overflow-hidden">
-          <span v-if="!item.images && !item.imageUrls" class="text-gray-400 text-4xl">{{ item.type === 'property' ? '🏠' : '🏢' }}</span>
+        <div class="h-40 sm:h-48 bg-zinc-800 flex items-center justify-center relative overflow-hidden">
+          <span v-if="!item.images && !item.imageUrls" class="text-gray-500 text-4xl">{{ item.type === 'property' ? '🏠' : '🏢' }}</span>
           <img
             v-else
             :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
@@ -121,83 +122,71 @@
         </div>
         <div class="p-4 sm:p-6">
           <div class="flex items-start justify-between mb-2">
-            <h3 :class="{
-              'text-lg sm:text-xl font-semibold text-gray-900': !item.isSponsored,
-              'text-lg sm:text-xl font-extrabold text-gray-900': item.isSponsored && item.sponsorshipType === 'PREMIER',
-              'text-lg sm:text-xl font-bold text-gray-900': item.isSponsored && item.sponsorshipType === 'BASIC'
-            }" class="flex-1 pr-2">{{ item.title || item.name }}</h3>
+            <h3 class="flex-1 pr-2 text-lg sm:text-xl font-semibold text-white">{{ item.title || item.name }}</h3>
           </div>
           <div class="flex flex-wrap items-center gap-2 mb-2">
             <!-- Property Price -->
             <div v-if="item.type === 'property'" class="flex flex-col gap-1">
-              <p v-if="item.priceETB" :class="{
-                'text-xl sm:text-2xl font-bold text-primary-600': !item.isSponsored,
-                'text-xl sm:text-2xl font-extrabold text-yellow-700': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                'text-xl sm:text-2xl font-bold text-blue-700': item.isSponsored && item.sponsorshipType === 'BASIC'
-              }">{{ formatPrice(item.priceETB, 'ETB') }}</p>
-              <p v-if="item.priceUSD" :class="{
-                'text-base sm:text-lg font-semibold text-gray-600': !item.isSponsored,
-                'text-base sm:text-lg font-bold text-yellow-600': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                'text-base sm:text-lg font-semibold text-blue-600': item.isSponsored && item.sponsorshipType === 'BASIC'
-              }">{{ formatPrice(item.priceUSD, 'USD') }}</p>
+              <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-yellow-400">{{ formatPrice(item.priceETB, 'ETB') }}</p>
+              <p v-if="item.priceUSD" class="text-base sm:text-lg font-semibold text-gray-400">{{ formatPrice(item.priceUSD, 'USD') }}</p>
               <p v-if="!item.priceETB && !item.priceUSD" class="text-base sm:text-lg text-gray-500">
                 {{ $t('property.priceNotSet') }}
               </p>
             </div>
             <!-- Building Units Info -->
             <div v-else class="flex flex-col gap-1">
-              <p class="text-xl sm:text-2xl font-bold text-primary-600">{{ item.totalUnits || 0 }} Units</p>
-              <p class="text-sm text-gray-600">{{ item.availableUnits || 0 }} Available</p>
+              <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} Units</p>
+              <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} Available</p>
             </div>
             <span v-if="item.category" :class="{
-              'bg-blue-100 text-blue-800': item.category === 'FOR_SALE',
-              'bg-green-100 text-green-800': item.category === 'FOR_RENTAL'
+              'bg-blue-500/30 text-blue-200': item.category === 'FOR_SALE',
+              'bg-green-500/30 text-green-200': item.category === 'FOR_RENTAL'
             }" class="px-2 py-0.5 rounded text-xs font-medium">
               {{ item.category === 'FOR_SALE' ? 'Sale' : 'Rental' }}
             </span>
-            <span v-if="item.isFullyFurnished" class="px-2 py-0.5 bg-purple-100 text-purple-800 rounded text-xs font-medium">
+            <span v-if="item.isFullyFurnished" class="px-2 py-0.5 bg-purple-500/30 text-purple-200 rounded text-xs font-medium">
               Furnished
             </span>
           </div>
-          <p class="text-sm text-gray-600 mb-2">
+          <p class="text-sm text-gray-400 mb-2">
             📍 {{ item.city }}, {{ item.country }}
           </p>
           <div v-if="item.constructionPercentage !== null && item.constructionPercentage !== undefined" class="mb-2">
             <div class="flex items-center gap-2">
               <span class="text-xs text-gray-500">Construction:</span>
-              <div class="flex-1 bg-gray-200 rounded-full h-2">
+              <div class="flex-1 bg-zinc-700 rounded-full h-2">
                 <div 
-                  class="bg-primary-600 h-2 rounded-full transition-all"
+                  class="bg-yellow-400 h-2 rounded-full transition-all"
                   :style="{ width: item.constructionPercentage + '%' }"
                 ></div>
               </div>
-              <span class="text-xs text-gray-600">{{ item.constructionPercentage }}%</span>
+              <span class="text-xs text-gray-400">{{ item.constructionPercentage }}%</span>
             </div>
           </div>
           <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 mb-2">
-            <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            <span class="text-xs font-semibold text-primary-600">{{ item.realEstateCompanyName }}</span>
+            <span class="text-xs font-semibold text-yellow-400">{{ item.realEstateCompanyName }}</span>
           </div>
           <!-- Property Features -->
-          <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
+          <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
             <span v-if="item.bedrooms">🛏️ {{ item.bedrooms }} beds</span>
             <span v-if="item.bathrooms">🚿 {{ item.bathrooms }} baths</span>
             <span v-if="item.area">📐 {{ item.area }} sqm</span>
           </div>
           <!-- Building Features -->
-          <div v-else class="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 gap-2 sm:gap-4">
+          <div v-else class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
             <span>🏢 {{ item.totalUnits || 0 }} Units</span>
             <span v-if="item.totalFloors">📊 {{ item.totalFloors }} Floors</span>
-            <span v-if="item.availableUnits" class="text-green-600 font-semibold">{{ item.availableUnits }} Available</span>
+            <span v-if="item.availableUnits" class="text-green-400 font-semibold">{{ item.availableUnits }} Available</span>
           </div>
           <div class="mt-4 flex items-center justify-between">
             <span
               :class="{
-                'bg-green-100 text-green-800': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
-                'bg-yellow-100 text-yellow-800': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
-                'bg-gray-100 text-gray-800': item.status === 'SOLD' || item.status === 'PLANNED'
+                'bg-green-500/30 text-green-200': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
+                'bg-yellow-500/30 text-yellow-200': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
+                'bg-gray-500/30 text-gray-300': item.status === 'SOLD' || item.status === 'PLANNED'
               }"
               class="inline-block px-2 py-1 text-xs font-semibold rounded"
             >
@@ -210,7 +199,7 @@
 
     <!-- Empty State -->
     <div v-else class="text-center py-12">
-      <p class="text-gray-600">No properties or buildings found. Try adjusting your filters.</p>
+      <p class="text-gray-400">No properties or buildings found. Try adjusting your filters.</p>
     </div>
 
     <!-- Pagination -->
@@ -219,22 +208,23 @@
         <button
           @click="changePage(currentPage - 1)"
           :disabled="currentPage === 0"
-          class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
         >
           Previous
         </button>
-        <span class="px-4 py-2 text-sm text-gray-700">
+        <span class="px-4 py-2 text-sm text-gray-300">
           Page {{ currentPage + 1 }} of {{ totalPages }}
         </span>
         <button
           @click="changePage(currentPage + 1)"
           :disabled="currentPage >= totalPages - 1"
-          class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
         >
           Next
         </button>
       </nav>
     </div>
+  </div>
   </div>
 </template>
 

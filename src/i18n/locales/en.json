@@ -62,7 +62,26 @@
     "loginSuccess": "Login successful",
     "registerSuccess": "Registration successful",
     "loginError": "Login failed",
-    "registerError": "Registration failed"
+    "registerError": "Registration failed",
+    "forgotPasswordTitle": "Forgot password",
+    "forgotPasswordSubtitle": "Enter your email and we'll send you a link to reset your password.",
+    "emailAddress": "Email address",
+    "sendResetLink": "Send reset link",
+    "sending": "Sending…",
+    "forgotSuccessMessage": "If an account exists for that email, we've sent a password reset link. Check your inbox and spam folder.",
+    "backToLogin": "Back to login",
+    "resetPasswordTitle": "Set new password",
+    "resetPasswordSubtitle": "Enter your new password below. It must be at least 8 characters.",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "resetting": "Resetting…",
+    "resetPasswordButton": "Reset password",
+    "resetSuccessMessage": "Your password has been reset. You can now log in with your new password.",
+    "invalidResetLink": "Invalid reset link. Please use the link from your email or request a new one.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "passwordMinLength": "Password must be at least 8 characters.",
+    "linkExpiredError": "This link may have expired. Please request a new password reset.",
+    "somethingWentWrong": "Something went wrong. Please try again."
   },
   "property": {
     "title": "Property",
@@ -535,6 +554,130 @@
     "common": {
       "viewAll": "View All",
       "page": "Page"
+    }
+  },
+  "exhibition": {
+    "hero": {
+      "tagline1": "Bold Projects.",
+      "tagline2": "Big Connections.",
+      "tagline3": "Bigger Opportunities.",
+      "dateVenue": "10–13 November 2026 — Exhibition & Convention Center — Addis Ababa, Ethiopia",
+      "subtitle": "Meet global visionaries, explore iconic projects, and unlock pathways to growth and collaboration at the region's biggest real estate and construction show.",
+      "registerInterest": "Register your interest 2026",
+      "downloadBrochure": "Download event brochure",
+      "foundationPartners": "Foundation Partners",
+      "partner": "Partner"
+    },
+    "whyExhibit": {
+      "title": "Inspire industry leaders at the exhibition",
+      "body": "Showcase your vision alongside global influencers and decision-makers. Connect with institutional investors, developers, and government bodies driving the future of construction and real estate.",
+      "bullet1": "Unmatched access to high-value projects and partnerships",
+      "bullet2": "Elevate your presence through sponsorship opportunities",
+      "bullet3": "Conferences, networking sessions, and investor programs",
+      "bookStand": "Book a stand",
+      "exhibitorImagery": "Exhibitor imagery"
+    },
+    "whyVisit": {
+      "title": "Explore the future of living at the region's largest real estate event",
+      "body": "Immerse yourself in groundbreaking urban innovations and connect with global real estate leaders.",
+      "bullet1": "300+ exhibitors · 500+ speakers · 6 stages",
+      "bullet2": "180+ hours of conference content",
+      "bullet3": "Interactive show features and networking",
+      "registerToVisit": "Register to visit",
+      "visitorExperience": "Visitor experience"
+    },
+    "whatHappened": {
+      "title": "What happened at the exhibition",
+      "card1Title": "The region's biggest projects",
+      "card1Body": "Latest launches, visionary masterplans, and breakthrough developments — all under one roof. 550+ exhibitors showcasing the future of real estate and construction.",
+      "card2Title": "Network with decision-makers",
+      "card2Body": "Connect with investors, developers, and city leaders through curated networking. Unlock new capital, forge partnerships, and expand in the markets that matter.",
+      "card3Title": "Insights that matter",
+      "card3Body": "Actionable insights from global visionaries — ministers, CEOs, and award-winning architects — on the trends reshaping how we live, invest, and build."
+    },
+    "keyShowFeatures": {
+      "title": "Key show features",
+      "subtitle": "World-class conferences, major announcements, developer programme, and specialised tracks.",
+      "exploreMore": "Explore more"
+    },
+    "whoAttends": {
+      "title": "Who attends",
+      "subtitle": "The event brings together real estate leaders — investors, developers, architects, government officials, and home buyers.",
+      "developers": "Real Estate Developers",
+      "developersDesc": "Master planners and project leads",
+      "proptech": "Proptech Innovators",
+      "proptechDesc": "Tech and property market solutions",
+      "architects": "Architects & Designers",
+      "architectsDesc": "Sustainable and futuristic design",
+      "government": "Government Officials",
+      "governmentDesc": "National development strategies",
+      "construction": "Construction Professionals",
+      "constructionDesc": "Contractors and infrastructure",
+      "brokers": "Brokers & Consultants",
+      "brokersDesc": "Market intelligence and advisory",
+      "investors": "Investors & Financiers",
+      "investorsDesc": "High-value real estate opportunities",
+      "homebuyers": "Homebuyers",
+      "homebuyersDesc": "Residential trends and smart living"
+    },
+    "valueChain": {
+      "title": "Construction value chain",
+      "subtitle": "We cover the entire spectrum of the industry. Find the niche that matters to your business.",
+      "buildingMaterials": "Building Materials",
+      "concreteCement": "Concrete & Cement",
+      "interiorsFinishes": "Interiors & Finishes",
+      "urbanDesign": "Urban Design",
+      "buildingServices": "Building Services (MEP)",
+      "constructionTools": "Construction Tools",
+      "hvacCooling": "HVAC & Cooling",
+      "digitalConstruction": "Digital Construction",
+      "solarEnergy": "Solar Energy",
+      "heavyMachinery": "Heavy Machinery",
+      "intelligentBuilding": "Intelligent Building",
+      "sustainableConstruction": "Sustainable Construction"
+    },
+    "pillar": {
+      "whyParticipate": "Why Participate",
+      "title": "Connect with industry leaders",
+      "subtitle": "Discover the latest innovations and high-level networking that drives the sector forward.",
+      "expandBusiness": "Expand your business",
+      "expandBusinessDesc": "Establish new partnerships and grow your network in the rapidly expanding market.",
+      "showcaseProducts": "Showcase your products",
+      "showcaseProductsDesc": "Display your latest innovations to thousands of potential customers and decision-makers.",
+      "meetBuyers": "Meet serious buyers",
+      "meetBuyersDesc": "Connect directly with procurement managers, architects, and developers.",
+      "generateLeads": "Generate quality leads",
+      "generateLeadsDesc": "Fill your pipeline with high-value contacts and real business opportunities."
+    },
+    "testimonial": {
+      "title": "World-class leaders building the future",
+      "quote": "The exhibition is a perfect destination for international investors to meet and exchange ideas and explore how they can develop their own product and the wider market.",
+      "author": "Industry Leader"
+    },
+    "planVisit": {
+      "title": "Plan your trip",
+      "body": "Join us for an event that pushes the boundaries of what's possible in real estate and urban development.",
+      "planYourVisit": "Plan your visit"
+    },
+    "partners": {
+      "foundationPartners": "Foundation Partners",
+      "partner": "Partner"
+    },
+    "cta": {
+      "title": "Ready to join the leaders?",
+      "body": "Book your stand or register to visit the most anticipated real estate and construction event of the year.",
+      "standEnquiry": "Stand enquiry",
+      "viewBrochure": "View event brochure"
+    },
+    "footer": {
+      "copyright": "© 2026 Construction Exhibition. All rights reserved.",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "contact": "Contact"
+    },
+    "sponsorCarousel": {
+      "noSponsors": "Premium & Gold sponsor spots available",
+      "sponsor": "Sponsor"
     }
   }
 }

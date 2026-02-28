@@ -9,7 +9,9 @@ import type {
   LoginRequest,
   RegisterRequest,
   AuthResponse,
-  RefreshTokenResponse
+  RefreshTokenResponse,
+  ForgotPasswordRequest,
+  ResetPasswordRequest
 } from './auth.types'
 
 export const authApi = {
@@ -44,5 +46,19 @@ export const authApi = {
    */
   logout: async (): Promise<void> => {
     await api.post('/auth/logout')
+  },
+
+  /**
+   * Request password reset email (link sent to email if account exists)
+   */
+  forgotPassword: async (data: ForgotPasswordRequest): Promise<void> => {
+    await api.post('/auth/forgot-password', data)
+  },
+
+  /**
+   * Reset password using token from email link
+   */
+  resetPassword: async (data: ResetPasswordRequest): Promise<void> => {
+    await api.post('/auth/reset-password', data)
   }
 }

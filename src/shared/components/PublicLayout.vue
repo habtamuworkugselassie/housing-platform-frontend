@@ -1,33 +1,43 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex">
-    <!-- Left Side Ad (Desktop Only) - BASIC Sponsored Properties/Buildings -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-white border-r border-gray-200 sticky top-0 h-screen overflow-y-auto">
+  <div class="min-h-screen bg-black text-white flex flex-col">
+    <!-- Optional full-width top (e.g. sponsor carousel) - side panels start below -->
+    <div v-if="$slots.top" class="w-full flex-shrink-0">
+      <slot name="top" />
+    </div>
+
+    <!-- Main row: Left Ad | Content | Right Ad -->
+    <div class="flex flex-1 min-h-0">
+    <!-- Left Side Ad (Desktop Only) -->
+    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-r border-white/10 sticky top-0 h-screen overflow-y-auto text-white">
       <div class="p-4 space-y-4">
         <AdSpace 
           v-if="leftSideAd"
-          size="sidebar" 
+          size="sidebar"
+          dark
           :ad-content="leftSideAd"
         />
-        <AdSpace v-else size="sidebar" />
+        <AdSpace v-else size="sidebar" dark />
       </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 min-w-0">
+    <main class="flex-1 min-w-0 text-white">
       <slot />
     </main>
 
-    <!-- Right Side Ad (Desktop Only) - BASIC Sponsored Properties/Buildings -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-white border-l border-gray-200 sticky top-0 h-screen overflow-y-auto">
+    <!-- Right Side Ad (Desktop Only) -->
+    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-l border-white/10 sticky top-0 h-screen overflow-y-auto text-white">
       <div class="p-4 space-y-4">
         <AdSpace 
           v-if="rightSideAd"
-          size="sidebar" 
+          size="sidebar"
+          dark
           :ad-content="rightSideAd"
         />
-        <AdSpace v-else size="sidebar" />
+        <AdSpace v-else size="sidebar" dark />
       </div>
     </aside>
+    </div>
   </div>
 </template>
 
@@ -82,15 +92,15 @@ onUnmounted(() => {
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #27272a;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
+  background: #52525b;
   border-radius: 3px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
+  background: #71717a;
 }
 </style>

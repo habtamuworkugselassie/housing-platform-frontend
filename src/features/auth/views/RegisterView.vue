@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+  <div class="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8 text-white">
+    <div class="max-w-md w-full space-y-8 p-8 rounded-lg bg-zinc-900 border border-white/10">
       <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
           {{ $t('register.title') }}
         </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
+        <p class="mt-2 text-center text-sm text-gray-400">
           {{ $t('register.subtitle') }}
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleRegister">
-        <div class="rounded-md shadow-sm -space-y-px">
+        <div class="rounded-md -space-y-px">
           <div>
             <label for="firstName" class="sr-only">First Name</label>
             <input
@@ -18,7 +18,7 @@
               v-model="form.firstName"
               type="text"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
               :placeholder="$t('auth.firstName')"
             />
           </div>
@@ -29,7 +29,7 @@
               v-model="form.lastName"
               type="text"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
               :placeholder="$t('auth.lastName')"
             />
           </div>
@@ -40,7 +40,7 @@
               v-model="form.email"
               type="email"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
               :placeholder="$t('auth.email')"
             />
           </div>
@@ -50,7 +50,7 @@
               id="phoneNumber"
               v-model="form.phoneNumber"
               type="tel"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
               :placeholder="$t('register.phoneOptional')"
             />
           </div>
@@ -61,7 +61,7 @@
               v-model="form.password"
               type="password"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
               :placeholder="$t('register.passwordHint')"
             />
           </div>
@@ -71,7 +71,7 @@
               id="role"
               v-model="form.role"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 text-white rounded-b-md focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
             >
               <option value="">{{ $t('register.selectRole') }}</option>
               <option value="BUYER">{{ $t('register.buyer') }}</option>
@@ -82,13 +82,13 @@
           </div>
         </div>
 
-        <div v-if="error" class="rounded-md bg-red-50 p-4">
-          <div class="text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class="rounded-md bg-red-900/40 border border-red-500/30 p-4">
+          <div class="text-sm text-red-200">{{ error }}</div>
         </div>
         
-        <div v-if="fieldErrors && fieldErrors.length > 0" class="rounded-md bg-red-50 p-4">
-          <div class="text-sm font-medium text-red-800 mb-2">{{ $t('register.fixErrors') }}</div>
-          <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+        <div v-if="fieldErrors && fieldErrors.length > 0" class="rounded-md bg-red-900/40 border border-red-500/30 p-4">
+          <div class="text-sm font-medium text-red-200 mb-2">{{ $t('register.fixErrors') }}</div>
+          <ul class="list-disc list-inside text-sm text-red-200 space-y-1">
             <li v-for="fieldError in fieldErrors" :key="fieldError.field">
               <strong>{{ fieldError.field }}:</strong> {{ fieldError.message }}
             </li>
@@ -99,7 +99,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-yellow-400 disabled:opacity-50"
           >
             <span v-if="loading">{{ $t('register.registering') }}</span>
             <span v-else>{{ $t('auth.register') }}</span>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="text-center">
-          <router-link to="/login" class="text-sm text-primary-600 hover:text-primary-500">
+          <router-link to="/login" class="text-sm text-white hover:text-yellow-400">
             {{ $t('register.alreadyHaveAccount') }}
           </router-link>
         </div>

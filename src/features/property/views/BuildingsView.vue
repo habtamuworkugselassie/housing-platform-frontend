@@ -1,39 +1,39 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">{{ isManagementMode ? $t('building.buildings') : 'Buildings' }}</h1>
-        <p class="mt-2 text-sm text-gray-600">{{ isManagementMode ? $t('building.manageBuildings') : 'Browse all available buildings' }}</p>
+        <h1 class="text-3xl font-bold text-white">{{ isManagementMode ? $t('building.buildings') : 'Buildings' }}</h1>
+        <p class="mt-2 text-sm text-gray-400">{{ isManagementMode ? $t('building.manageBuildings') : 'Browse all available buildings' }}</p>
       </div>
       <button
         v-if="isManagementMode && organization"
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
       >
         + {{ $t('building.addBuilding') }}
       </button>
     </div>
 
     <!-- Filters (Public Mode) -->
-    <div v-if="!isManagementMode" class="mb-6 bg-white p-4 rounded-lg shadow">
+    <div v-if="!isManagementMode" class="mb-6 bg-zinc-900 border border-white/10 p-4 rounded-lg">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label for="cityFilter" class="block text-sm font-medium text-gray-700">City</label>
+          <label for="cityFilter" class="block text-sm font-medium text-gray-300">City</label>
           <input
             id="cityFilter"
             v-model="filters.city"
             type="text"
             placeholder="Filter by city"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             @input="loadBuildings"
           />
         </div>
         <div>
-          <label for="buildingTypeFilter" class="block text-sm font-medium text-gray-700">Building Type</label>
+          <label for="buildingTypeFilter" class="block text-sm font-medium text-gray-300">Building Type</label>
           <select
             id="buildingTypeFilter"
             v-model="filters.buildingType"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             @change="loadBuildings"
           >
             <option value="">All Types</option>
@@ -47,7 +47,7 @@
         <div class="flex items-end">
           <button
             @click="clearFilters"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
           >
             Clear Filters
           </button>
@@ -57,12 +57,12 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Buildings Grid -->
@@ -72,25 +72,25 @@
         :key="building.id"
         @click="viewBuilding(building.id)"
         :class="[
-          'rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer',
+          'rounded-lg border p-6 transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20',
           building.isSponsored && building.sponsorshipType === 'PREMIER' 
-            ? 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-2 border-yellow-400' 
+            ? 'bg-zinc-900 border-2 border-yellow-400' 
             : building.isSponsored && building.sponsorshipType === 'BASIC'
-            ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-2 border-blue-300'
-            : 'bg-white'
+            ? 'bg-zinc-900 border-2 border-blue-400/60'
+            : 'bg-zinc-900 border border-white/10'
         ]"
       >
         <div class="flex items-start justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-900">{{ building.name }}</h3>
+          <h3 class="text-lg font-semibold text-white">{{ building.name }}</h3>
           <div class="flex items-center gap-2">
             <!-- Sponsored Badge -->
             <span 
               v-if="building.isSponsored"
               :class="{
-                'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900': building.sponsorshipType === 'PREMIER',
-                'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900': building.sponsorshipType === 'BASIC'
+                'bg-yellow-500/40 text-yellow-200': building.sponsorshipType === 'PREMIER',
+                'bg-blue-500/40 text-blue-200': building.sponsorshipType === 'BASIC'
               }"
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold shadow-lg"
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold"
             >
               <span v-if="building.sponsorshipType === 'PREMIER'" class="mr-1">⭐</span>
               <span v-else class="mr-1">✨</span>
@@ -105,32 +105,32 @@
           </div>
         </div>
         
-        <p class="text-sm text-gray-600 mb-4">{{ building.address }}, {{ building.city }}</p>
+        <p class="text-sm text-gray-400 mb-4">{{ building.address }}, {{ building.city }}</p>
         
         <!-- Real Estate Company Name -->
         <div v-if="building.realEstateCompanyName" class="mb-3 flex items-center gap-2">
-          <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-3 h-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
           </svg>
-          <span class="text-xs font-semibold text-primary-600">{{ building.realEstateCompanyName }}</span>
+          <span class="text-xs font-semibold text-yellow-400">{{ building.realEstateCompanyName }}</span>
         </div>
         
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <label class="text-xs font-medium text-gray-500">Total Units</label>
-            <p class="text-sm font-semibold text-gray-900">{{ building.totalUnits }}</p>
+            <label class="text-xs font-medium text-gray-400">Total Units</label>
+            <p class="text-sm font-semibold text-white">{{ building.totalUnits }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">Floors</label>
-            <p class="text-sm font-semibold text-gray-900">{{ building.totalFloors }}</p>
+            <label class="text-xs font-medium text-gray-400">Floors</label>
+            <p class="text-sm font-semibold text-white">{{ building.totalFloors }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">Available</label>
-            <p class="text-sm font-semibold text-green-600">{{ building.availableUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-400">Available</label>
+            <p class="text-sm font-semibold text-green-400">{{ building.availableUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">Occupied</label>
-            <p class="text-sm font-semibold text-gray-600">{{ building.occupiedUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-400">Occupied</label>
+            <p class="text-sm font-semibold text-gray-300">{{ building.occupiedUnits || 0 }}</p>
           </div>
         </div>
 
@@ -138,13 +138,13 @@
         <div v-if="isManagementMode" class="mt-4 flex gap-2">
           <button
             @click.stop="editBuilding(building)"
-            class="flex-1 px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+            class="flex-1 px-3 py-1 text-sm bg-white/10 text-white border border-white/20 rounded hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
           >
             {{ $t('common.edit') }}
           </button>
           <button
             @click.stop="viewBuilding(building.id)"
-            class="flex-1 px-3 py-1 text-sm bg-primary-100 text-primary-700 rounded hover:bg-primary-200"
+            class="flex-1 px-3 py-1 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
           >
             {{ $t('building.viewUnits') }}
           </button>
@@ -154,19 +154,19 @@
         <div v-else class="mt-4">
           <button
             @click.stop="viewBuilding(building.id)"
-            class="w-full px-3 py-2 text-sm bg-primary-600 text-white rounded hover:bg-primary-700"
+            class="w-full px-3 py-2 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
           >
             View Details
           </button>
         </div>
       </div>
 
-      <div v-if="buildings.length === 0" class="col-span-full text-center py-12 bg-white rounded-lg shadow">
-        <p class="text-sm text-gray-500">{{ isManagementMode ? $t('building.noBuildings') : 'No buildings found' }}</p>
+      <div v-if="buildings.length === 0" class="col-span-full text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
+        <p class="text-sm text-gray-400">{{ isManagementMode ? $t('building.noBuildings') : 'No buildings found' }}</p>
         <button
           v-if="isManagementMode && organization"
           @click="showCreateModal = true"
-          class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          class="mt-4 px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 transition-colors"
         >
           {{ $t('building.createFirstBuilding') }}
         </button>
@@ -176,115 +176,115 @@
     <!-- Create/Edit Building Modal -->
     <div
       v-if="showCreateModal || showEditModal"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
       @click.self="closeModal"
     >
-      <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+      <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
         <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+          <h3 class="text-lg font-medium text-white mb-4">
             {{ showEditModal ? 'Edit Building' : 'Create Building' }}
           </h3>
           
           <form @submit.prevent="submitBuilding" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('building.buildingName') }} *</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('building.buildingName') }} *</label>
               <input
                 v-model="buildingForm.name"
                 type="text"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('property.description') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('property.description') }}</label>
               <textarea
                 v-model="buildingForm.description"
                 rows="3"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('property.address') }} *</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('property.address') }} *</label>
                 <input
                   v-model="buildingForm.address"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('property.city') }} *</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('property.city') }} *</label>
                 <input
                   v-model="buildingForm.city"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('property.state') }}</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('property.state') }}</label>
                 <input
                   v-model="buildingForm.state"
                   type="text"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('property.country') }} *</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('property.country') }} *</label>
                 <input
                   v-model="buildingForm.country"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('property.zipCode') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('property.zipCode') }}</label>
               <input
                 v-model="buildingForm.zipCode"
                 type="text"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('building.totalFloors') }} *</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('building.totalFloors') }} *</label>
                 <input
                   v-model.number="buildingForm.totalFloors"
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('building.totalUnits') }} *</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('building.totalUnits') }} *</label>
                 <input
                   v-model.number="buildingForm.totalUnits"
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('building.buildingType') }} *</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('building.buildingType') }} *</label>
               <select
                 v-model="buildingForm.buildingType"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
                 <option value="">{{ $t('propertyTypes.selectType') }}</option>
                 <option value="APARTMENT_COMPLEX">{{ $t('building.apartmentComplex') }}</option>
@@ -295,11 +295,11 @@
               </select>
               </div>
               <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('property.category') }} *</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('property.category') }} *</label>
               <select
                 v-model="buildingForm.category"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
                 <option value="">{{ $t('submitProperty.selectCategory') }}</option>
                 <option value="FOR_SALE">{{ $t('property.forSale') }}</option>
@@ -310,10 +310,10 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('property.status') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('property.status') }}</label>
               <select
                 v-model="buildingForm.status"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
                 <option value="PLANNED">{{ $t('building.planned') }}</option>
                 <option value="UNDER_CONSTRUCTION">{{ $t('building.underConstruction') }}</option>
@@ -322,14 +322,14 @@
               </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('property.constructionPercentage') }} (%)</label>
+                <label class="block text-sm font-medium text-gray-300">{{ $t('property.constructionPercentage') }} (%)</label>
                 <input
                   v-model.number="buildingForm.constructionPercentage"
                   type="number"
                   min="0"
                   max="100"
                   placeholder="0-100"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
@@ -339,41 +339,41 @@
                 id="isFullyFurnished"
                 v-model="buildingForm.isFullyFurnished"
                 type="checkbox"
-                class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
               />
-              <label for="isFullyFurnished" class="ml-2 block text-sm text-gray-700">
+              <label for="isFullyFurnished" class="ml-2 block text-sm text-gray-300">
                 {{ $t('property.isFullyFurnished') }}
               </label>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('building.yearBuilt') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('building.yearBuilt') }}</label>
               <input
                 v-model.number="buildingForm.yearBuilt"
                 type="number"
                 min="1800"
                 :max="new Date().getFullYear()"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('building.amenities') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('building.amenities') }}</label>
               <textarea
                 v-model="buildingForm.amenities"
                 rows="2"
                 :placeholder="$t('building.amenitiesPlaceholder')"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('building.facilities') }}</label>
+              <label class="block text-sm font-medium text-gray-300">{{ $t('building.facilities') }}</label>
               <textarea
                 v-model="buildingForm.facilities"
                 rows="2"
                 :placeholder="$t('building.facilitiesPlaceholder')"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
@@ -381,14 +381,14 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
               >
                 {{ $t('common.cancel') }}
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 transition-colors"
               >
                 {{ submitting ? $t('common.loading') : (showEditModal ? $t('common.update') : $t('common.create')) }}
               </button>
@@ -565,12 +565,12 @@ const viewBuilding = (buildingId) => {
 
 const getStatusColor = (status) => {
   const colors = {
-    PLANNED: 'bg-gray-100 text-gray-800',
-    UNDER_CONSTRUCTION: 'bg-yellow-100 text-yellow-800',
-    COMPLETED: 'bg-green-100 text-green-800',
-    RENOVATION: 'bg-blue-100 text-blue-800'
+    PLANNED: 'bg-gray-500/30 text-gray-300',
+    UNDER_CONSTRUCTION: 'bg-yellow-500/30 text-yellow-200',
+    COMPLETED: 'bg-green-500/30 text-green-200',
+    RENOVATION: 'bg-blue-500/30 text-blue-200'
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const closeModal = () => {

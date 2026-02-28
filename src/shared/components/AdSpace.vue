@@ -132,7 +132,8 @@
       <div 
         v-if="adContent.imageUrl"
         :class="[
-          'w-full bg-gray-200 overflow-hidden',
+          'w-full overflow-hidden',
+          dark ? 'bg-zinc-700' : 'bg-gray-200',
           size === 'sidebar' ? 'h-48' : 'h-32'
         ]"
       >
@@ -145,11 +146,12 @@
       <div 
         v-else
         :class="[
-          'w-full bg-gray-200 flex items-center justify-center',
+          'w-full flex items-center justify-center',
+          dark ? 'bg-zinc-700' : 'bg-gray-200',
           size === 'sidebar' ? 'h-48' : 'h-32'
         ]"
       >
-        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg :class="['w-12 h-12', dark ? 'text-gray-500' : 'text-gray-400']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
@@ -160,37 +162,35 @@
             v-if="adContent.sponsorshipType"
             :class="[
               'text-xs font-bold px-2 py-0.5 rounded',
-              adContent.sponsorshipType.toUpperCase().includes('PREMIER') || 
-              adContent.sponsorshipType.toUpperCase().includes('PREMIUM') ||
-              adContent.sponsorshipType.toUpperCase().includes('GOLD')
-                ? 'text-yellow-600 bg-yellow-100'
-                : 'text-blue-600 bg-blue-100'
+              dark
+                ? (adContent.sponsorshipType.toUpperCase().includes('PREMIER') || adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-amber-200 bg-amber-900/50' : 'text-blue-200 bg-blue-900/50')
+                : (adContent.sponsorshipType.toUpperCase().includes('PREMIER') || adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-yellow-600 bg-yellow-100' : 'text-blue-600 bg-blue-100')
             ]"
           >
             {{ adContent.sponsorshipType.toUpperCase() }}
           </span>
           <span 
             v-else
-            class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded"
+            :class="dark ? 'text-xs font-semibold text-blue-200 bg-blue-900/50 px-2 py-0.5 rounded' : 'text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded'"
           >
             SPONSORED
           </span>
         </div>
-        <h3 class="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
+        <h3 :class="['text-sm font-semibold mb-1 line-clamp-2', dark ? 'text-white' : 'text-gray-900']">
           {{ adContent.title }}
         </h3>
         <div class="mt-auto space-y-1">
-          <div v-if="adContent.city" class="text-xs text-gray-600">
+          <div v-if="adContent.city" :class="['text-xs', dark ? 'text-gray-400' : 'text-gray-600']">
             {{ adContent.city }}
           </div>
-          <div v-if="adContent.priceETB" class="text-sm font-bold text-primary-600">
+          <div v-if="adContent.priceETB" :class="['text-sm font-bold', dark ? 'text-primary-400' : 'text-primary-600']">
             {{ formatPrice(adContent.priceETB, 'ETB') }}
           </div>
-          <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs pt-1 border-t border-gray-200">
-            <svg class="w-3 h-3 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div v-if="adContent.realEstateCompanyName" :class="['flex items-center gap-1 text-xs pt-1 border-t', dark ? 'border-white/20' : 'border-gray-200']">
+            <svg :class="['w-3 h-3 flex-shrink-0', dark ? 'text-primary-400' : 'text-primary-600']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            <span class="text-primary-600 font-medium truncate">{{ adContent.realEstateCompanyName }}</span>
+            <span :class="['font-medium truncate', dark ? 'text-primary-400' : 'text-primary-600']">{{ adContent.realEstateCompanyName }}</span>
           </div>
         </div>
       </div>
@@ -201,7 +201,8 @@
   <div 
     v-else
     :class="[
-      'bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center',
+      'rounded-lg flex items-center justify-center',
+      dark ? 'bg-zinc-800 border border-white/10' : 'bg-gray-100 border border-gray-200',
       size === 'banner' ? 'h-24 sm:h-28' : '',
       size === 'sidebar' ? 'w-full min-h-[300px]' : '',
       size === 'rectangle' ? 'h-32 sm:h-40' : ''
@@ -234,6 +235,7 @@ const props = defineProps({
     default: 'banner',
     validator: (value) => ['banner', 'sidebar', 'rectangle'].includes(value)
   },
+  dark: { type: Boolean, default: false },
   adContent: {
     type: Object,
     default: null
@@ -266,8 +268,9 @@ const adContainerClass = computed(() => {
   
   // Dynamic sponsorship styling - check if it's a top-tier sponsorship (highest base price)
   // For now, we'll use a general check - can be enhanced to check actual base price
-  if (checkAd && checkAd.sponsorshipType) {
-    // Check if it's likely a premium type (PREMIER or highest tier)
+  if (props.dark) {
+    baseClasses.push('bg-zinc-800 border-white/10 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors')
+  } else if (checkAd && checkAd.sponsorshipType) {
     const isPremium = checkAd.sponsorshipType.toUpperCase().includes('PREMIER') || 
                       checkAd.sponsorshipType.toUpperCase().includes('PREMIUM') ||
                       checkAd.sponsorshipType.toUpperCase().includes('GOLD')

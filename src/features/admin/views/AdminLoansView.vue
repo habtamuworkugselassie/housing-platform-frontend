@@ -2,17 +2,17 @@
   <AdminLayout>
     <div class="space-y-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Loan Management</h1>
-        <p class="mt-2 text-sm text-gray-600">Manage loan applications</p>
+        <h1 class="text-3xl font-bold text-white">Loan Management</h1>
+        <p class="mt-2 text-sm text-gray-400">Manage loan applications</p>
       </div>
 
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-4">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Status</label>
+            <label class="block text-sm font-medium text-gray-300">Status</label>
             <select
               v-model="filters.status"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -23,7 +23,7 @@
           <div class="flex items-end">
             <button
               @click="loadLoans"
-              class="w-full px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
             >
               Apply Filters
             </button>
@@ -31,33 +31,33 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
         </div>
 
         <div v-else>
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-white/10">
+            <thead class="bg-zinc-800">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Applicant</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Property</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Applied</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Applicant</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Property</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Amount</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Applied</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase">Actions</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="loan in loans" :key="loan.id" class="hover:bg-gray-50">
+            <tbody class="divide-y divide-white/10">
+              <tr v-for="loan in loans" :key="loan.id" class="hover:bg-yellow-500/10 transition-colors">
                 <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-gray-900">{{ loan.applicantName || 'N/A' }}</div>
-                  <div class="text-sm text-gray-500">{{ loan.applicantEmail || 'N/A' }}</div>
+                  <div class="text-sm font-medium text-white">{{ loan.applicantName || 'N/A' }}</div>
+                  <div class="text-sm text-gray-400">{{ loan.applicantEmail || 'N/A' }}</div>
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-900">
+                <td class="px-6 py-4 text-sm text-white">
                   {{ loan.propertyTitle || 'N/A' }}
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-900">
+                <td class="px-6 py-4 text-sm text-white">
                   {{ formatPrice(loan.loanAmountEtb, loan.loanAmountUsd) }}
                 </td>
                 <td class="px-6 py-4">
@@ -70,13 +70,13 @@
                     {{ loan.status }}
                   </span>
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-500">
+                <td class="px-6 py-4 text-sm text-gray-400">
                   {{ formatDate(loan.createdAt) }}
                 </td>
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
                     @click="viewLoan(loan)"
-                    class="text-primary-600 hover:text-primary-900"
+                    class="text-white hover:text-yellow-400 transition-colors"
                   >
                     View
                   </button>
@@ -90,16 +90,16 @@
       <!-- View Loan Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
-        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-gray-900">Loan Application Details</h3>
+              <h3 class="text-lg font-medium text-white">Loan Application Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-gray-500"
+                class="text-gray-400 hover:text-yellow-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -109,19 +109,19 @@
             <div v-if="viewingLoan" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Applicant Name</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.applicantName || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Applicant Name</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.applicantName || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Applicant Email</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.applicantEmail || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Applicant Email</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.applicantEmail || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Property</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.propertyTitle || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Property</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.propertyTitle || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <label class="block text-sm font-medium text-gray-400">Status</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
@@ -132,27 +132,27 @@
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Loan Amount (ETB)</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.loanAmountEtb ? formatPrice(viewingLoan.loanAmountEtb, 'ETB') : 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Loan Amount (ETB)</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.loanAmountEtb ? formatPrice(viewingLoan.loanAmountEtb, 'ETB') : 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Loan Amount (USD)</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.loanAmountUsd ? formatPrice(viewingLoan.loanAmountUsd, 'USD') : 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Loan Amount (USD)</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.loanAmountUsd ? formatPrice(viewingLoan.loanAmountUsd, 'USD') : 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Applied Date</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingLoan.createdAt) }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Applied Date</label>
+                  <p class="mt-1 text-sm text-white">{{ formatDate(viewingLoan.createdAt) }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Loan ID</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingLoan.id || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-400">Loan ID</label>
+                  <p class="mt-1 text-sm text-white">{{ viewingLoan.id || 'N/A' }}</p>
                 </div>
               </div>
             </div>
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
               >
                 Close
               </button>
@@ -191,11 +191,11 @@ const loadLoans = async () => {
 
 const getStatusClass = (status) => {
   const classes = {
-    PENDING: 'bg-yellow-100 text-yellow-800',
-    APPROVED: 'bg-green-100 text-green-800',
-    REJECTED: 'bg-red-100 text-red-800'
+    PENDING: 'bg-yellow-500/30 text-yellow-200',
+    APPROVED: 'bg-green-500/30 text-green-200',
+    REJECTED: 'bg-red-500/30 text-red-200'
   }
-  return classes[status] || 'bg-gray-100 text-gray-800'
+  return classes[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const formatDate = (dateString) => {

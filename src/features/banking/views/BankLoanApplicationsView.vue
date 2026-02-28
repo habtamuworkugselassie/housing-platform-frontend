@@ -1,26 +1,26 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Loan Applications Review</h1>
-      <p class="mt-2 text-sm text-gray-600">Review and manage loan applications for your bank</p>
+      <h1 class="text-3xl font-bold text-white">Loan Applications Review</h1>
+      <p class="mt-2 text-sm text-gray-400">Review and manage loan applications for your bank</p>
     </div>
 
     <!-- Filter Tabs -->
-    <div class="mb-6 border-b border-gray-200">
+    <div class="mb-6 border-b border-white/10">
       <nav class="-mb-px flex space-x-8">
         <button
           v-for="filter in statusFilters"
           :key="filter.value"
           @click="selectedStatus = filter.value"
           :class="[
-            'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
+            'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors',
             selectedStatus === filter.value
-              ? 'border-primary-500 text-primary-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              ? 'border-yellow-400 text-yellow-400'
+              : 'border-transparent text-gray-400 hover:text-yellow-400 hover:border-white/30'
           ]"
         >
           {{ filter.label }}
-          <span v-if="filter.count !== undefined" class="ml-2 bg-gray-100 text-gray-600 py-0.5 px-2 rounded-full text-xs">
+          <span v-if="filter.count !== undefined" class="ml-2 bg-white/10 text-gray-300 py-0.5 px-2 rounded-full text-xs">
             {{ filter.count }}
           </span>
         </button>
@@ -29,12 +29,12 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Loan Applications List -->
@@ -43,12 +43,12 @@
         v-for="application in filteredApplications"
         :key="application.id"
         @click="viewDetails(application.id)"
-        class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors cursor-pointer"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">
+              <h3 class="text-lg font-semibold text-white">
                 Application #{{ application.id.substring(0, 8) }}
               </h3>
               <span :class="[
@@ -61,26 +61,26 @@
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               <div>
-                <label class="text-xs font-medium text-gray-500">Requested Amount</label>
-                <p class="text-sm font-semibold text-gray-900 mt-1">{{ formatPrice(application.requestedAmount, application.currency || 'ETB') }}</p>
+                <label class="text-xs font-medium text-gray-400">Requested Amount</label>
+                <p class="text-sm font-semibold text-white mt-1">{{ formatPrice(application.requestedAmount, application.currency || 'ETB') }}</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Tenure</label>
-                <p class="text-sm text-gray-900 mt-1">{{ application.requestedTenureMonths }} months</p>
+                <label class="text-xs font-medium text-gray-400">Tenure</label>
+                <p class="text-sm text-white mt-1">{{ application.requestedTenureMonths }} months</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Buyer ID</label>
-                <p class="text-sm text-gray-900 mt-1">{{ application.buyerId.substring(0, 8) }}...</p>
+                <label class="text-xs font-medium text-gray-400">Buyer ID</label>
+                <p class="text-sm text-white mt-1">{{ application.buyerId.substring(0, 8) }}...</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Applied Date</label>
-                <p class="text-sm text-gray-900 mt-1">{{ formatDate(application.createdAt) }}</p>
+                <label class="text-xs font-medium text-gray-400">Applied Date</label>
+                <p class="text-sm text-white mt-1">{{ formatDate(application.createdAt) }}</p>
               </div>
             </div>
 
             <div v-if="application.purpose" class="mt-4">
               <label class="text-xs font-medium text-gray-500">Purpose</label>
-              <p class="text-sm text-gray-900 mt-1">{{ application.purpose }}</p>
+              <p class="text-sm text-white mt-1">{{ application.purpose }}</p>
             </div>
           </div>
           
@@ -113,36 +113,36 @@
         </div>
       </div>
 
-      <div v-if="filteredApplications.length === 0" class="text-center py-12 bg-white rounded-lg shadow">
-        <p class="text-sm text-gray-500">No loan applications found</p>
+      <div v-if="filteredApplications.length === 0" class="text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
+        <p class="text-sm text-gray-400">No loan applications found</p>
       </div>
     </div>
 
     <!-- Approve Modal -->
     <div
       v-if="showApproveModalFlag && selectedApplication"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeApproveModal"
     >
-      <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-        <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Approve Loan Application</h3>
+      <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-white mb-4">Approve Loan Application</h3>
           
           <form @submit.prevent="approveApplication" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Approved Amount *</label>
+              <label class="block text-sm font-medium text-gray-400">Approved Amount *</label>
               <input
                 v-model.number="approvalForm.approvedAmount"
                 type="number"
                 min="0"
                 step="0.01"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Approved Interest Rate (%) *</label>
+              <label class="block text-sm font-medium text-gray-400">Approved Interest Rate (%) *</label>
               <input
                 v-model.number="approvalForm.approvedInterestRate"
                 type="number"
@@ -150,28 +150,28 @@
                 max="100"
                 step="0.01"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Approved Tenure (months) *</label>
+              <label class="block text-sm font-medium text-gray-400">Approved Tenure (months) *</label>
               <input
                 v-model.number="approvalForm.approvedTenureMonths"
                 type="number"
                 min="1"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Approval Notes</label>
+              <label class="block text-sm font-medium text-gray-400">Approval Notes</label>
               <textarea
                 v-model="approvalForm.approvalNotes"
                 rows="3"
                 placeholder="Additional notes about the approval"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
@@ -179,14 +179,14 @@
               <button
                 type="button"
                 @click="closeApproveModal"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ submitting ? 'Approving...' : 'Approve' }}
               </button>
@@ -199,22 +199,22 @@
     <!-- Reject Modal -->
     <div
       v-if="showRejectModalFlag && selectedApplication"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeRejectModal"
     >
-      <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-        <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Reject Loan Application</h3>
+      <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-white mb-4">Reject Loan Application</h3>
           
           <form @submit.prevent="rejectApplication" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Rejection Reason *</label>
+              <label class="block text-sm font-medium text-gray-400">Rejection Reason *</label>
               <textarea
                 v-model="rejectionForm.rejectionReason"
                 rows="4"
                 required
                 placeholder="Please provide a reason for rejection"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
@@ -222,14 +222,14 @@
               <button
                 type="button"
                 @click="closeRejectModal"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ submitting ? 'Rejecting...' : 'Reject' }}
               </button>
@@ -393,15 +393,15 @@ const viewDetails = (applicationId) => {
 
 const getStatusColor = (status) => {
   const colors = {
-    DRAFT: 'bg-gray-100 text-gray-800',
-    SUBMITTED: 'bg-blue-100 text-blue-800',
-    UNDER_REVIEW: 'bg-yellow-100 text-yellow-800',
-    APPROVED: 'bg-green-100 text-green-800',
-    REJECTED: 'bg-red-100 text-red-800',
-    DISBURSED: 'bg-purple-100 text-purple-800',
-    CLOSED: 'bg-gray-100 text-gray-800'
+    DRAFT: 'bg-gray-500/30 text-gray-300',
+    SUBMITTED: 'bg-blue-500/30 text-blue-200',
+    UNDER_REVIEW: 'bg-yellow-500/30 text-yellow-200',
+    APPROVED: 'bg-green-500/30 text-green-200',
+    REJECTED: 'bg-red-500/30 text-red-200',
+    DISBURSED: 'bg-purple-500/30 text-purple-200',
+    CLOSED: 'bg-gray-500/30 text-gray-300'
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const formatPrice = (price, currency = 'ETB') => {

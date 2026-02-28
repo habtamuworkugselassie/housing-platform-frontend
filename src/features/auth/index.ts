@@ -22,3 +22,5 @@ export type {
 // Views (for router)
 export { default as LoginView } from './views/LoginView.vue'
 export { default as RegisterView } from './views/RegisterView.vue'
+export { default as ForgotPasswordView } from './views/ForgotPasswordView.vue'
+export { default as ResetPasswordView } from './views/ResetPasswordView.vue'

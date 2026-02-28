@@ -33,6 +33,16 @@ const routes = [
     component: () => import('@/features/auth/views/LoginView.vue')
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('@/features/auth/views/ForgotPasswordView.vue')
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('@/features/auth/views/ResetPasswordView.vue')
+  },
+  {
     path: '/register-company',
     name: 'RegisterCompany',
     component: () => import('@/features/identity/views/RegisterCompanyView.vue'),

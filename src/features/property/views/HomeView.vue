@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-black text-white">
     <!-- Ad Space under NavBar - PREMIER Sponsored Properties (Two Side by Side) -->
-    <div class="bg-white border-b">
+    <div class="bg-zinc-900 border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <AdSpace 
           v-if="currentPremierAds && currentPremierAds.length > 0"
@@ -13,7 +13,7 @@
     </div>
 
     <!-- Top Search Bar with Filters -->
-    <div class="bg-white shadow-sm border-b sticky top-0 z-40">
+    <div class="bg-zinc-900 shadow-sm border-b border-white/10 sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <!-- Search Filters -->
@@ -22,13 +22,13 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.serviceType"
-                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.serviceType') }}</option>
                 <option value="rental">{{ $t('home.rental') }}</option>
                 <option value="sale">{{ $t('home.sale') }}</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -39,14 +39,14 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.location"
-                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.location') }}</option>
                 <option value="Bole">Bole</option>
                 <option value="Megenagna">Megenagna</option>
                 <option value="Addis Ababa">Addis Ababa</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -57,7 +57,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.priceRange"
-                class="w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.priceRange') }}</option>
                 <option value="0-5000">ብ0 - ብ5,000</option>
@@ -65,7 +65,7 @@
                 <option value="10000-20000">ብ10,000 - ብ20,000</option>
                 <option value="20000+">ብ20,000+</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -77,9 +77,9 @@
               <input
                 type="checkbox"
                 v-model="filters.instantBooking"
-                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
               />
-              <span class="text-xs sm:text-sm text-gray-700">{{ $t('home.instantBooking') }}</span>
+              <span class="text-xs sm:text-sm text-gray-300">{{ $t('home.instantBooking') }}</span>
             </label>
 
             <!-- Free Cancellation Toggle -->
@@ -87,16 +87,16 @@
               <input
                 type="checkbox"
                 v-model="filters.freeCancellation"
-                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
               />
-              <span class="text-xs sm:text-sm text-gray-700">{{ $t('home.freeCancellation') }}</span>
+              <span class="text-xs sm:text-sm text-gray-300">{{ $t('home.freeCancellation') }}</span>
             </label>
 
             <!-- Clear Filters Button -->
             <button
               v-if="hasActiveFilters"
               @click="clearFilters"
-              class="px-3 sm:px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
+              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 transition-colors whitespace-nowrap"
             >
               {{ $t('filters.clearFilters') }}
             </button>
@@ -106,11 +106,11 @@
     </div>
 
     <!-- Main Content: Property List in Two Columns -->
-    <div class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-white">
+    <div class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-black">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         <!-- Loading State -->
         <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div v-for="i in 4" :key="i" class="bg-gray-200 animate-pulse rounded-xl h-96"></div>
+          <div v-for="i in 4" :key="i" class="bg-white/10 animate-pulse rounded-xl h-96"></div>
         </div>
 
         <!-- Combined Property and Building Cards in Two Columns -->
@@ -122,12 +122,12 @@
             :data-building-id="item.type === 'building' ? item.id : null"
             @click="item.type === 'property' ? selectProperty(item) : selectBuilding(item)"
             :class="[
-              'rounded-xl shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer overflow-hidden border-2',
+              'rounded-xl shadow-md transition-all duration-200 cursor-pointer overflow-hidden border-2 hover:border-yellow-400 hover:bg-yellow-500/10',
               item.isSponsored && item.sponsorshipType === 'PREMIER' 
-                ? 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-yellow-400 shadow-lg' 
+                ? 'bg-zinc-900 border-yellow-400/60 shadow-lg' 
                 : item.isSponsored && item.sponsorshipType === 'BASIC'
-                ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-blue-300 shadow-md'
-                : 'bg-white border-gray-100'
+                ? 'bg-zinc-900 border-blue-400/50 shadow-md'
+                : 'bg-zinc-900 border-white/10'
             ]"
           >
             <!-- Sponsored Badge - Prominent Display -->
@@ -161,7 +161,7 @@
             </div>
             
             <!-- Property/Building Image -->
-            <div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 overflow-hidden">
+            <div class="relative h-48 sm:h-56 md:h-64 bg-white/10 overflow-hidden">
               <img
                 v-if="(item.images && item.images.length > 0) || (item.imageUrls && item.imageUrls.length > 0)"
                 :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
@@ -198,41 +198,41 @@
               <div 
                 v-if="item.type === 'property' && item.priceETB"
                 :class="{
-                  'bg-white': !item.isSponsored,
-                  'bg-yellow-100 border-2 border-yellow-400 shadow-xl': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                  'bg-blue-100 border-2 border-blue-400 shadow-lg': item.isSponsored && item.sponsorshipType === 'BASIC'
+                  'bg-zinc-800/90 border border-white/20': !item.isSponsored,
+                  'bg-yellow-500/30 border-2 border-yellow-400 shadow-xl': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                  'bg-blue-500/30 border-2 border-blue-400 shadow-lg': item.isSponsored && item.sponsorshipType === 'BASIC'
                 }"
                 class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10"
               >
                 <div class="flex flex-col">
                   <span 
                     :class="{
-                      'text-gray-900': !item.isSponsored,
-                      'text-yellow-900 font-extrabold': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                      'text-blue-900 font-bold': item.isSponsored && item.sponsorshipType === 'BASIC'
+                      'text-white font-bold': !item.isSponsored,
+                      'text-yellow-200 font-extrabold': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                      'text-blue-200 font-bold': item.isSponsored && item.sponsorshipType === 'BASIC'
                     }"
-                    class="text-lg font-bold"
+                    class="text-lg"
                   >{{ formatPrice(item.priceETB, 'ETB') }}</span>
                   <span 
                     v-if="item.priceUSD"
                     :class="{
-                      'text-gray-700': !item.isSponsored,
-                      'text-yellow-700 font-bold': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                      'text-blue-700 font-semibold': item.isSponsored && item.sponsorshipType === 'BASIC'
+                      'text-gray-300': !item.isSponsored,
+                      'text-yellow-200/90 font-bold': item.isSponsored && item.sponsorshipType === 'PREMIER',
+                      'text-blue-200/90 font-semibold': item.isSponsored && item.sponsorshipType === 'BASIC'
                     }"
                     class="text-sm font-semibold"
                   >{{ formatPrice(item.priceUSD, 'USD') }}</span>
-                  <span v-if="item.category === 'FOR_RENTAL'" class="text-xs text-gray-500">/month</span>
+                  <span v-if="item.category === 'FOR_RENTAL'" class="text-xs text-gray-400">/month</span>
                 </div>
               </div>
               <!-- Building Units Badge -->
               <div 
                 v-else-if="item.type === 'building'"
-                class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10 bg-white"
+                class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-10 bg-zinc-800/90 border border-white/20"
               >
                 <div class="flex flex-col">
-                  <span class="text-lg font-bold text-gray-900">{{ item.totalUnits || 0 }} Units</span>
-                  <span class="text-xs text-gray-600">{{ item.availableUnits || 0 }} Available</span>
+                  <span class="text-lg font-bold text-white">{{ item.totalUnits || 0 }} Units</span>
+                  <span class="text-xs text-gray-400">{{ item.availableUnits || 0 }} Available</span>
                 </div>
               </div>
             </div>
@@ -242,26 +242,21 @@
               <!-- Title and Rating -->
               <div class="flex items-start justify-between mb-2">
                 <h3 
-                  :class="{
-                    'text-lg font-semibold text-gray-900': !item.isSponsored,
-                    'text-lg font-extrabold text-gray-900': item.isSponsored && item.sponsorshipType === 'PREMIER',
-                    'text-lg font-bold text-gray-900': item.isSponsored && item.sponsorshipType === 'BASIC'
-                  }"
-                  class="flex-1 pr-2"
+                  class="flex-1 pr-2 text-lg font-semibold text-white"
                 >{{ item.title || item.name }}</h3>
                 <div v-if="item.type === 'property'" class="flex items-center gap-1">
                   <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
                   </svg>
-                  <span class="text-sm font-medium text-gray-700">4.8</span>
+                  <span class="text-sm font-medium text-gray-300">4.8</span>
                 </div>
               </div>
 
               <!-- Location -->
-              <p class="text-sm text-gray-600 mb-3">{{ item.city }}, {{ item.country || 'Ethiopia' }}</p>
+              <p class="text-sm text-gray-400 mb-3">{{ item.city }}, {{ item.country || 'Ethiopia' }}</p>
 
               <!-- Property Features (for properties) or Building Info (for buildings) -->
-              <div v-if="item.type === 'property'" class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
+              <div v-if="item.type === 'property'" class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 mb-3">
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -283,7 +278,7 @@
               </div>
               
               <!-- Building Features -->
-              <div v-else class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-3">
+              <div v-else class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 mb-3">
                 <div class="flex items-center gap-1">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -297,24 +292,24 @@
                   <span>{{ item.totalFloors || 'N/A' }} Floors</span>
                 </div>
                 <div v-if="item.availableUnits" class="flex items-center gap-1">
-                  <span class="text-green-600 font-semibold">{{ item.availableUnits }} Available</span>
+                  <span class="text-green-400 font-semibold">{{ item.availableUnits }} Available</span>
                 </div>
               </div>
 
               <!-- Property Type/Building Type and Real Estate Company -->
-              <div class="flex flex-col gap-2 pt-3 border-t border-gray-100">
+              <div class="flex flex-col gap-2 pt-3 border-t border-white/10">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-medium text-gray-500 uppercase">{{ item.type === 'property' ? (item.propertyType || item.type || 'Apartment') : (item.buildingType || 'Building') }}</span>
                   <div class="flex items-center gap-2" v-if="item.type === 'property' && item.agentName">
-                    <span class="text-xs text-gray-600">Agent:</span>
-                    <span class="text-xs font-medium text-gray-900">{{ item.agentName }}</span>
+                    <span class="text-xs text-gray-400">Agent:</span>
+                    <span class="text-xs font-medium text-white">{{ item.agentName }}</span>
                   </div>
                 </div>
                 <div v-if="item.realEstateCompanyName" class="flex items-center gap-2">
-                  <svg class="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-3 h-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                   </svg>
-                  <span class="text-xs font-semibold text-primary-600">{{ item.realEstateCompanyName }}</span>
+                  <span class="text-xs font-semibold text-yellow-400">{{ item.realEstateCompanyName }}</span>
                 </div>
               </div>
             </div>
@@ -322,11 +317,11 @@
 
         <!-- Empty State -->
         <div v-if="!loading && combinedList.length === 0" class="col-span-full text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No properties found</h3>
-            <p class="mt-1 text-sm text-gray-500">Try adjusting your filters</p>
+            <h3 class="mt-2 text-sm font-medium text-white">No properties found</h3>
+            <p class="mt-1 text-sm text-gray-400">Try adjusting your filters</p>
           </div>
         </div>
       </div>
@@ -560,21 +555,21 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Custom scrollbar */
+/* Custom scrollbar - dark theme */
 .overflow-y-auto::-webkit-scrollbar {
   width: 8px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #27272a;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
+  background: #52525b;
   border-radius: 4px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
+  background: #a1a1aa;
 }
 </style>

@@ -31,7 +31,7 @@
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
           href="#register"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-gray-100 transition-colors min-w-[240px]"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[240px]"
         >
           Register your interest 2026
         </a>
@@ -44,11 +44,11 @@
       </div>
     </div>
 
-    <!-- Foundation Partners strip -->
+    <!-- {{ $t('exhibition.hero.foundationPartners') }} strip -->
     <div class="relative z-10 border-t border-white/20 bg-black/50 py-6">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-center text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] mb-5">
-          Foundation Partners
+          {{ $t('exhibition.hero.foundationPartners') }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
           <div
@@ -56,7 +56,7 @@
             :key="i"
             class="h-6 w-20 sm:h-8 sm:w-28 bg-white/10 flex items-center justify-center text-white/30 text-[10px] sm:text-xs"
           >
-            Partner {{ i }}
+            {{ $t('exhibition.hero.partner') }} {{ i }}
           </div>
         </div>
       </div>

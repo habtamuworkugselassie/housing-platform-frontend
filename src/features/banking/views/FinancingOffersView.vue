@@ -1,13 +1,13 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">{{ $t('banking.financingOffers') }}</h1>
-        <p class="mt-2 text-sm text-gray-600">{{ $t('banking.managePropertyFinancingOffers') }}</p>
+        <h1 class="text-3xl font-bold text-white">{{ $t('banking.financingOffers') }}</h1>
+        <p class="mt-2 text-sm text-gray-400">{{ $t('banking.managePropertyFinancingOffers') }}</p>
       </div>
       <button
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
       >
         + {{ $t('banking.createFinancingOffer') }}
       </button>
@@ -15,12 +15,12 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Financing Offers List -->
@@ -28,20 +28,20 @@
       <div
         v-for="offer in offers"
         :key="offer.id"
-        class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">
+              <h3 class="text-lg font-semibold text-white">
                 {{ $t('banking.offer') }} #{{ offer.id.substring(0, 8) }}
               </h3>
               <span :class="[
                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                offer.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                offer.status === 'PENDING_APPROVAL' ? 'bg-yellow-100 text-yellow-800' :
-                offer.status === 'EXPIRED' ? 'bg-red-100 text-red-800' :
-                'bg-gray-100 text-gray-800'
+                offer.status === 'ACTIVE' ? 'bg-green-500/30 text-green-200' :
+                offer.status === 'PENDING_APPROVAL' ? 'bg-yellow-500/30 text-yellow-200' :
+                offer.status === 'EXPIRED' ? 'bg-red-500/30 text-red-200' :
+                'bg-gray-500/30 text-gray-300'
               ]">
                 {{ offer.status }}
               </span>
@@ -49,30 +49,30 @@
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               <div>
-                <label class="text-xs font-medium text-gray-500">{{ $t('banking.creditProduct') }}</label>
-                <p class="text-sm text-gray-900 mt-1">{{ getProductName(offer.creditProductId) }}</p>
+                <label class="text-xs font-medium text-gray-400">{{ $t('banking.creditProduct') }}</label>
+                <p class="text-sm text-white mt-1">{{ getProductName(offer.creditProductId) }}</p>
               </div>
               <div v-if="offer.propertyId">
-                <label class="text-xs font-medium text-gray-500">{{ $t('banking.propertyId') }}</label>
-                <p class="text-sm text-gray-900 mt-1">{{ offer.propertyId.substring(0, 8) }}...</p>
+                <label class="text-xs font-medium text-gray-400">{{ $t('banking.propertyId') }}</label>
+                <p class="text-sm text-white mt-1">{{ offer.propertyId.substring(0, 8) }}...</p>
               </div>
               <div v-if="offer.buildingId">
-                <label class="text-xs font-medium text-gray-500">{{ $t('banking.buildingId') }}</label>
-                <p class="text-sm text-gray-900 mt-1">{{ offer.buildingId.substring(0, 8) }}...</p>
+                <label class="text-xs font-medium text-gray-400">{{ $t('banking.buildingId') }}</label>
+                <p class="text-sm text-white mt-1">{{ offer.buildingId.substring(0, 8) }}...</p>
               </div>
               <div v-if="offer.specialInterestRate">
-                <label class="text-xs font-medium text-gray-500">{{ $t('banking.specialInterestRate') }}</label>
-                <p class="text-sm text-gray-900 mt-1">{{ offer.specialInterestRate }}%</p>
+                <label class="text-xs font-medium text-gray-400">{{ $t('banking.specialInterestRate') }}</label>
+                <p class="text-sm text-white mt-1">{{ offer.specialInterestRate }}%</p>
               </div>
               <div v-if="offer.specialLTVRatio">
-                <label class="text-xs font-medium text-gray-500">{{ $t('banking.specialLtvRatio') }}</label>
-                <p class="text-sm text-gray-900 mt-1">{{ (offer.specialLTVRatio * 100).toFixed(0) }}%</p>
+                <label class="text-xs font-medium text-gray-400">{{ $t('banking.specialLtvRatio') }}</label>
+                <p class="text-sm text-white mt-1">{{ (offer.specialLTVRatio * 100).toFixed(0) }}%</p>
               </div>
             </div>
 
             <div v-if="offer.specialTerms" class="mt-4">
-              <label class="text-xs font-medium text-gray-500">{{ $t('loan.specialTerms') }}</label>
-              <p class="text-sm text-gray-900 mt-1">{{ offer.specialTerms }}</p>
+              <label class="text-xs font-medium text-gray-400">{{ $t('loan.specialTerms') }}</label>
+              <p class="text-sm text-white mt-1">{{ offer.specialTerms }}</p>
             </div>
           </div>
           
@@ -93,30 +93,30 @@
         </div>
       </div>
 
-      <div v-if="offers.length === 0" class="text-center py-12 bg-white rounded-lg shadow">
-        <p class="text-sm text-gray-500">{{ $t('banking.noFinancingOffersYet') }}</p>
+      <div v-if="offers.length === 0" class="text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
+        <p class="text-sm text-gray-400">{{ $t('banking.noFinancingOffersYet') }}</p>
       </div>
     </div>
 
     <!-- Create/Edit Modal -->
     <div
       v-if="showCreateModal || editingOffer"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeModal"
     >
-      <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-        <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-white mb-4">
             {{ editingOffer ? $t('banking.editFinancingOffer') : $t('banking.createFinancingOffer') }}
           </h3>
           
           <form @submit.prevent="saveOffer" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('banking.creditProduct') }} *</label>
+              <label class="block text-sm font-medium text-gray-400">{{ $t('banking.creditProduct') }} *</label>
               <select
                 v-model="offerForm.creditProductId"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
               >
                 <option value="">{{ $t('loan.selectCreditProduct') }}</option>
                 <option
@@ -130,11 +130,11 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('banking.linkTo') }} *</label>
+              <label class="block text-sm font-medium text-gray-400">{{ $t('banking.linkTo') }} *</label>
               <select
                 v-model="linkType"
                 @change="clearSelection"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
               >
                 <option value="none">{{ $t('banking.noneGeneralOffer') }}</option>
                 <option value="property">{{ $t('property.properties') }}</option>
@@ -144,7 +144,7 @@
 
             <!-- Property Search -->
             <div v-if="linkType === 'property'">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-gray-400 mb-2">
                 {{ $t('banking.searchSelectProperties') }} *
                 <span class="text-xs font-normal text-gray-500">({{ $t('banking.youCanSelectMultiple') }})</span>
               </label>
@@ -155,28 +155,28 @@
                   v-model="propertySearch.companyName"
                   type="text"
                   :placeholder="$t('banking.companyName') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.city"
                   type="text"
                   :placeholder="$t('property.city') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.title"
                   type="text"
                   :placeholder="$t('banking.propertyTitle') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.country"
                   type="text"
                   :placeholder="$t('property.country') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
               </div>
@@ -189,14 +189,14 @@
                 <div v-else-if="propertySearchResults.length === 0 && propertySearchPerformed" class="text-center py-4 text-sm text-gray-500">
                   {{ $t('banking.noPropertiesFound') }}
                 </div>
-                <div v-else-if="propertySearchResults.length > 0" class="max-h-60 overflow-y-auto border border-gray-300 rounded-md">
+                <div v-else-if="propertySearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
                   <div
                     v-for="property in propertySearchResults"
                     :key="property.id"
                     @click="togglePropertySelection(property)"
                     :class="[
-                      'p-3 border-b border-gray-200 hover:bg-blue-50 cursor-pointer transition-colors',
-                      selectedProperties.includes(property.id) ? 'bg-blue-100 border-blue-300' : ''
+                      'p-3 border-b border-white/10 hover:bg-yellow-500/20 cursor-pointer transition-colors',
+                      selectedProperties.includes(property.id) ? 'bg-yellow-500/20 border-yellow-400' : ''
                     ]"
                   >
                     <div class="flex items-start justify-between">
@@ -206,9 +206,9 @@
                             type="checkbox"
                             :checked="selectedProperties.includes(property.id)"
                             @click.stop="togglePropertySelection(property)"
-                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                            class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
                           />
-                          <h4 class="font-semibold text-gray-900">{{ property.title }}</h4>
+                          <h4 class="font-semibold text-white">{{ property.title }}</h4>
                         </div>
                         <p class="text-xs text-gray-600 mt-1 ml-6">
                           {{ property.city }}, {{ property.country || 'Ethiopia' }}
@@ -233,15 +233,15 @@
               </div>
               
               <!-- Selected Properties Summary -->
-              <div v-if="selectedProperties.length > 0" class="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
-                <p class="text-sm font-medium text-gray-700 mb-2">
+              <div v-if="selectedProperties.length > 0" class="mt-3 p-3 bg-yellow-500/10 rounded-md border border-yellow-400/50">
+                <p class="text-sm font-medium text-gray-400 mb-2">
                   {{ $t('banking.selected') }}: {{ selectedProperties.length }} {{ selectedProperties.length === 1 ? $t('banking.property') : $t('banking.properties') }}
                 </p>
                 <div class="flex flex-wrap gap-2">
                   <span
                     v-for="propertyId in selectedProperties"
                     :key="propertyId"
-                    class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium"
+                    class="inline-flex items-center px-2 py-1 bg-blue-500/30 text-blue-200 rounded text-xs font-medium"
                   >
                     {{ getPropertyDisplayName(propertyId) }}
                     <button
@@ -257,7 +257,7 @@
 
             <!-- Building Search -->
             <div v-if="linkType === 'building'">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-gray-400 mb-2">
                 {{ $t('banking.searchSelectBuildings') }} *
                 <span class="text-xs font-normal text-gray-500">({{ $t('banking.youCanSelectMultiple') }})</span>
               </label>
@@ -268,28 +268,28 @@
                   v-model="buildingSearch.companyName"
                   type="text"
                   :placeholder="$t('banking.companyName') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.city"
                   type="text"
                   :placeholder="$t('property.city') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.name"
                   type="text"
                   :placeholder="$t('banking.buildingName') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.country"
                   type="text"
                   :placeholder="$t('property.country') + '...'"
-                  class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
               </div>
@@ -302,14 +302,14 @@
                 <div v-else-if="buildingSearchResults.length === 0 && buildingSearchPerformed" class="text-center py-4 text-sm text-gray-500">
                   {{ $t('banking.noBuildingsFound') }}
                 </div>
-                <div v-else-if="buildingSearchResults.length > 0" class="max-h-60 overflow-y-auto border border-gray-300 rounded-md">
+                <div v-else-if="buildingSearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
                   <div
                     v-for="building in buildingSearchResults"
                     :key="building.id"
                     @click="toggleBuildingSelection(building)"
                     :class="[
-                      'p-3 border-b border-gray-200 hover:bg-blue-50 cursor-pointer transition-colors',
-                      selectedBuildings.includes(building.id) ? 'bg-blue-100 border-blue-300' : ''
+                      'p-3 border-b border-white/10 hover:bg-yellow-500/20 cursor-pointer transition-colors',
+                      selectedBuildings.includes(building.id) ? 'bg-yellow-500/20 border-yellow-400' : ''
                     ]"
                   >
                     <div class="flex items-start justify-between">
@@ -319,9 +319,9 @@
                             type="checkbox"
                             :checked="selectedBuildings.includes(building.id)"
                             @click.stop="toggleBuildingSelection(building)"
-                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                            class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
                           />
-                          <h4 class="font-semibold text-gray-900">{{ building.name }}</h4>
+                          <h4 class="font-semibold text-white">{{ building.name }}</h4>
                         </div>
                         <p class="text-xs text-gray-600 mt-1 ml-6">
                           {{ building.city }}, {{ building.country || 'Ethiopia' }}
@@ -340,15 +340,15 @@
               </div>
               
               <!-- Selected Buildings Summary -->
-              <div v-if="selectedBuildings.length > 0" class="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
-                <p class="text-sm font-medium text-gray-700 mb-2">
+              <div v-if="selectedBuildings.length > 0" class="mt-3 p-3 bg-yellow-500/10 rounded-md border border-yellow-400/50">
+                <p class="text-sm font-medium text-gray-400 mb-2">
                   {{ $t('banking.selected') }}: {{ selectedBuildings.length }} {{ selectedBuildings.length === 1 ? $t('banking.building') : $t('banking.buildings') }}
                 </p>
                 <div class="flex flex-wrap gap-2">
                   <span
                     v-for="buildingId in selectedBuildings"
                     :key="buildingId"
-                    class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium"
+                    class="inline-flex items-center px-2 py-1 bg-blue-500/30 text-blue-200 rounded text-xs font-medium"
                   >
                     {{ getBuildingDisplayName(buildingId) }}
                     <button
@@ -363,30 +363,30 @@
             </div>
 
             <div v-if="linkType === 'none'">
-              <label class="block text-sm font-medium text-gray-700">{{ $t('banking.projectIdOptional') }}</label>
+              <label class="block text-sm font-medium text-gray-400">{{ $t('banking.projectIdOptional') }}</label>
               <input
                 v-model="offerForm.projectId"
                 type="text"
                 :placeholder="$t('banking.leaveEmptyNotApplicable')"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
               />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('banking.specialInterestRate') }}</label>
+                <label class="block text-sm font-medium text-gray-400">{{ $t('banking.specialInterestRate') }}</label>
                 <input
                   v-model.number="offerForm.specialInterestRate"
                   type="number"
                   step="0.01"
                   min="0"
                   :placeholder="$t('banking.overrideProductRate')"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">{{ $t('banking.specialLtvRatio') }}</label>
+                <label class="block text-sm font-medium text-gray-400">{{ $t('banking.specialLtvRatio') }}</label>
                 <input
                   v-model.number="offerForm.specialLTVRatio"
                   type="number"
@@ -394,18 +394,18 @@
                   min="0"
                   max="1"
                   :placeholder="$t('banking.overrideProductLtv')"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">{{ $t('loan.specialTerms') }}</label>
+              <label class="block text-sm font-medium text-gray-400">{{ $t('loan.specialTerms') }}</label>
               <textarea
                 v-model="offerForm.specialTerms"
                 rows="3"
                 :placeholder="$t('banking.additionalTermsSpecificOffer')"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
               />
             </div>
 
@@ -413,7 +413,7 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
               >
                 {{ $t('common.cancel') }}
               </button>

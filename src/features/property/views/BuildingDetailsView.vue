@@ -1,33 +1,33 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-primary-600 hover:text-primary-700 font-medium mb-4"
+        class="text-white hover:text-yellow-400 font-medium mb-4"
       >
         ← {{ $t('common.back') }}
       </button>
-      <h1 class="text-3xl font-bold text-gray-900">{{ building?.name || $t('building.buildingDetails') }}</h1>
+      <h1 class="text-3xl font-bold text-white">{{ building?.name || $t('building.buildingDetails') }}</h1>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Building Details -->
     <div v-if="!loading && building" class="space-y-6">
       <!-- Building Info Card -->
-      <div class="bg-white rounded-lg shadow p-6">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
         <div class="flex items-start justify-between mb-4">
           <div>
-            <h2 class="text-2xl font-semibold text-gray-900">{{ building.name }}</h2>
-            <p class="text-sm text-gray-600 mt-1">{{ building.address }}, {{ building.city }}, {{ building.country }}</p>
+            <h2 class="text-2xl font-semibold text-white">{{ building.name }}</h2>
+            <p class="text-sm text-gray-400 mt-1">{{ building.address }}, {{ building.city }}, {{ building.country }}</p>
           </div>
           <span :class="[
             'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',
@@ -39,91 +39,91 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           <div>
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.totalUnits') }}</label>
-            <p class="text-lg font-semibold text-gray-900">{{ building.totalUnits }}</p>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.totalUnits') }}</label>
+            <p class="text-lg font-semibold text-white">{{ building.totalUnits }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.available') }}</label>
-            <p class="text-lg font-semibold text-green-600">{{ building.availableUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.available') }}</label>
+            <p class="text-lg font-semibold text-green-400">{{ building.availableUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.occupied') }}</label>
-            <p class="text-lg font-semibold text-gray-600">{{ building.occupiedUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.occupied') }}</label>
+            <p class="text-lg font-semibold text-gray-300">{{ building.occupiedUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.totalFloors') }}</label>
-            <p class="text-lg font-semibold text-gray-900">{{ building.totalFloors }}</p>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.totalFloors') }}</label>
+            <p class="text-lg font-semibold text-white">{{ building.totalFloors }}</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
           <div>
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.category') }}</label>
-            <p class="text-sm text-gray-900 mt-1">
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.category') }}</label>
+            <p class="text-sm mt-1">
               <span :class="{
-                'bg-blue-100 text-blue-800': building.category === 'FOR_SALE',
-                'bg-green-100 text-green-800': building.category === 'FOR_RENTAL'
+                'bg-blue-500/30 text-blue-200': building.category === 'FOR_SALE',
+                'bg-green-500/30 text-green-200': building.category === 'FOR_RENTAL'
               }" class="px-2 py-1 rounded text-xs font-medium">
                 {{ building.category === 'FOR_SALE' ? $t('common.forSale') : $t('common.forRental') }}
               </span>
             </p>
           </div>
           <div v-if="building.constructionPercentage !== null && building.constructionPercentage !== undefined">
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.constructionProgress') }}</label>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.constructionProgress') }}</label>
             <div class="mt-1">
               <div class="flex items-center gap-2">
-                <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="flex-1 bg-white/20 rounded-full h-2">
                   <div 
-                    class="bg-primary-600 h-2 rounded-full transition-all"
+                    class="bg-yellow-400 h-2 rounded-full transition-all"
                     :style="{ width: building.constructionPercentage + '%' }"
                   ></div>
                 </div>
-                <span class="text-xs text-gray-600">{{ building.constructionPercentage }}%</span>
+                <span class="text-xs text-gray-400">{{ building.constructionPercentage }}%</span>
               </div>
             </div>
           </div>
           <div v-if="building.isFullyFurnished">
-            <label class="text-xs font-medium text-gray-500">{{ $t('building.furnishing') }}</label>
-            <p class="text-sm text-gray-900 mt-1">
-              <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs font-medium">{{ $t('common.fullyFurnished') }}</span>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.furnishing') }}</label>
+            <p class="text-sm mt-1">
+              <span class="px-2 py-1 bg-purple-500/30 text-purple-200 rounded text-xs font-medium">{{ $t('common.fullyFurnished') }}</span>
             </p>
           </div>
         </div>
 
         <div v-if="building.description" class="mt-4">
-          <label class="text-sm font-medium text-gray-700">{{ $t('property.description') }}</label>
-          <p class="text-sm text-gray-900 mt-1">{{ building.description }}</p>
+          <label class="text-sm font-medium text-gray-400">{{ $t('property.description') }}</label>
+          <p class="text-sm text-white mt-1">{{ building.description }}</p>
         </div>
 
         <div v-if="building.amenities" class="mt-4">
-          <label class="text-sm font-medium text-gray-700">{{ $t('building.amenities') }}</label>
-          <p class="text-sm text-gray-900 mt-1">{{ building.amenities }}</p>
+          <label class="text-sm font-medium text-gray-400">{{ $t('building.amenities') }}</label>
+          <p class="text-sm text-white mt-1">{{ building.amenities }}</p>
         </div>
 
         <div v-if="building.facilities" class="mt-4">
-          <label class="text-sm font-medium text-gray-700">{{ $t('building.facilities') }}</label>
-          <p class="text-sm text-gray-900 mt-1">{{ building.facilities }}</p>
+          <label class="text-sm font-medium text-gray-400">{{ $t('building.facilities') }}</label>
+          <p class="text-sm text-white mt-1">{{ building.facilities }}</p>
         </div>
 
         <div v-if="building.yearBuilt" class="mt-4">
-          <label class="text-sm font-medium text-gray-700">{{ $t('building.yearBuilt') }}</label>
-          <p class="text-sm text-gray-900 mt-1">{{ building.yearBuilt }}</p>
+          <label class="text-sm font-medium text-gray-400">{{ $t('building.yearBuilt') }}</label>
+          <p class="text-sm text-white mt-1">{{ building.yearBuilt }}</p>
         </div>
       </div>
 
       <!-- Map Section -->
-      <div class="bg-white rounded-lg shadow p-6 mb-6">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('building.locationMap') }}</h3>
-        <div class="bg-gray-200 rounded-lg overflow-hidden" style="height: 400px; position: relative;">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('building.locationMap') }}</h3>
+        <div class="bg-white/10 rounded-lg overflow-hidden" style="height: 400px; position: relative;">
           <!-- Map Placeholder (Replace with actual map library like Leaflet or Google Maps) -->
-          <div class="h-full w-full relative bg-gray-200">
+          <div class="h-full w-full relative bg-white/5">
             <!-- Map Background Pattern -->
             <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
             
             <!-- Map Title -->
-            <div class="absolute top-4 left-4 z-10 bg-white px-4 py-2 rounded-lg shadow-md">
-              <h4 class="text-sm font-semibold text-gray-900">{{ building.city }}{{ building.country ? `, ${building.country}` : '' }}</h4>
-              <p class="text-xs text-gray-600 mt-1">{{ building.address }}</p>
+            <div class="absolute top-4 left-4 z-10 bg-zinc-900 border border-white/10 px-4 py-2 rounded-lg">
+              <h4 class="text-sm font-semibold text-white">{{ building.city }}{{ building.country ? `, ${building.country}` : '' }}</h4>
+              <p class="text-xs text-gray-400 mt-1">{{ building.address }}</p>
             </div>
 
             <!-- Building Marker -->
@@ -132,7 +132,7 @@
               style="transform: translate(-50%, -50%);"
             >
               <!-- Marker Pin -->
-              <div class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg border-2 border-white">
+              <div class="bg-yellow-500 text-black px-4 py-2 rounded-lg border-2 border-white">
                 <div class="flex flex-col items-center">
                   <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
@@ -147,81 +147,81 @@
       </div>
 
       <!-- Company Information Section -->
-      <div v-if="company" class="bg-white rounded-lg shadow p-6 mb-6">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Real Estate Company</h3>
-        <div class="bg-gray-50 rounded-lg p-6">
-          <h4 class="text-lg font-semibold text-gray-900 mb-3">{{ company.name }}</h4>
+      <div v-if="company" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <h3 class="text-xl font-semibold text-white mb-4">Real Estate Company</h3>
+        <div class="bg-white/5 rounded-lg p-6 border border-white/10">
+          <h4 class="text-lg font-semibold text-white mb-3">{{ company.name }}</h4>
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div v-if="company.email">
-              <dt class="text-sm font-medium text-gray-500 mb-1">Email:</dt>
-              <dd class="text-sm text-gray-900">
-                <a :href="`mailto:${company.email}`" class="text-primary-600 hover:text-primary-700">{{ company.email }}</a>
+              <dt class="text-sm font-medium text-gray-400 mb-1">Email:</dt>
+              <dd class="text-sm text-white">
+                <a :href="`mailto:${company.email}`" class="text-yellow-400 hover:underline">{{ company.email }}</a>
               </dd>
             </div>
             <div v-if="company.phoneNumber">
-              <dt class="text-sm font-medium text-gray-500 mb-1">Phone:</dt>
-              <dd class="text-sm text-gray-900">
-                <a :href="`tel:${company.phoneNumber}`" class="text-primary-600 hover:text-primary-700">{{ company.phoneNumber }}</a>
+              <dt class="text-sm font-medium text-gray-400 mb-1">Phone:</dt>
+              <dd class="text-sm text-white">
+                <a :href="`tel:${company.phoneNumber}`" class="text-yellow-400 hover:underline">{{ company.phoneNumber }}</a>
               </dd>
             </div>
             <div v-if="company.address" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-500 mb-1">Address:</dt>
-              <dd class="text-sm text-gray-900">{{ company.address }}{{ company.city ? `, ${company.city}` : '' }}{{ company.country ? `, ${company.country}` : '' }}</dd>
+              <dt class="text-sm font-medium text-gray-400 mb-1">Address:</dt>
+              <dd class="text-sm text-white">{{ company.address }}{{ company.city ? `, ${company.city}` : '' }}{{ company.country ? `, ${company.country}` : '' }}</dd>
             </div>
             <div v-if="company.website" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-500 mb-1">Website:</dt>
-              <dd class="text-sm text-gray-900">
-                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700">{{ company.website }}</a>
+              <dt class="text-sm font-medium text-gray-400 mb-1">Website:</dt>
+              <dd class="text-sm text-white">
+                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-yellow-400 hover:underline">{{ company.website }}</a>
               </dd>
             </div>
           </dl>
-          <p v-if="company.description" class="mt-4 text-sm text-gray-700">{{ company.description }}</p>
+          <p v-if="company.description" class="mt-4 text-sm text-gray-300">{{ company.description }}</p>
         </div>
       </div>
 
       <!-- Financing Offers Section -->
-      <div v-if="financingOffers.length" class="bg-white rounded-lg shadow p-6 mb-6">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('property.financingOptions') }}</h3>
+      <div v-if="financingOffers.length" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.financingOptions') }}</h3>
         <div class="space-y-4">
           <div
             v-for="offer in financingOffers"
             :key="offer.id"
-            class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200"
+            class="bg-white/5 rounded-lg p-6 border border-white/10 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors"
           >
             <div class="flex items-start justify-between">
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-2">
-                  <h4 class="text-lg font-semibold text-gray-900">{{ offer.creditProductName || 'Financing Offer' }}</h4>
-                  <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
+                  <h4 class="text-lg font-semibold text-white">{{ offer.creditProductName || 'Financing Offer' }}</h4>
+                  <span class="px-2 py-1 bg-green-500/30 text-green-200 rounded text-xs font-medium">
                     {{ $t('banking.active') }}
                   </span>
                 </div>
-                <p v-if="offer.creditProductDescription" class="text-sm text-gray-700 mb-3">{{ offer.creditProductDescription }}</p>
+                <p v-if="offer.creditProductDescription" class="text-sm text-gray-300 mb-3">{{ offer.creditProductDescription }}</p>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                   <div v-if="offer.interestRate || offer.specialInterestRate">
-                    <label class="text-xs font-medium text-gray-500">{{ $t('loan.interestRate') }}</label>
-                    <p class="text-lg font-bold text-primary-600 mt-1">
+                    <label class="text-xs font-medium text-gray-400">{{ $t('loan.interestRate') }}</label>
+                    <p class="text-lg font-bold text-yellow-400 mt-1">
                       {{ (offer.specialInterestRate || offer.interestRate) }}%
                     </p>
                   </div>
                   <div v-if="offer.maxLoanAmount">
-                    <label class="text-xs font-medium text-gray-500">{{ $t('loan.maxLoanAmount') }}</label>
-                    <p class="text-sm font-semibold text-gray-900 mt-1">{{ formatPrice(offer.maxLoanAmount, offer.currency || 'ETB') }}</p>
+                    <label class="text-xs font-medium text-gray-400">{{ $t('loan.maxLoanAmount') }}</label>
+                    <p class="text-sm font-semibold text-white mt-1">{{ formatPrice(offer.maxLoanAmount, offer.currency || 'ETB') }}</p>
                   </div>
                   <div v-if="offer.maxTenureMonths">
-                    <label class="text-xs font-medium text-gray-500">{{ $t('loan.maxTenure') }}</label>
-                    <p class="text-sm font-semibold text-gray-900 mt-1">{{ offer.maxTenureMonths }} {{ $t('loan.tenureMonths') }}</p>
+                    <label class="text-xs font-medium text-gray-400">{{ $t('loan.maxTenure') }}</label>
+                    <p class="text-sm font-semibold text-white mt-1">{{ offer.maxTenureMonths }} {{ $t('loan.tenureMonths') }}</p>
                   </div>
                   <div v-if="offer.maxLoanToValueRatio">
-                    <label class="text-xs font-medium text-gray-500">{{ $t('loan.ltvRatio') }}</label>
-                    <p class="text-sm font-semibold text-gray-900 mt-1">{{ (offer.maxLoanToValueRatio * 100).toFixed(0) }}%</p>
+                    <label class="text-xs font-medium text-gray-400">{{ $t('loan.ltvRatio') }}</label>
+                    <p class="text-sm font-semibold text-white mt-1">{{ (offer.maxLoanToValueRatio * 100).toFixed(0) }}%</p>
                   </div>
                 </div>
                 
-                <div v-if="offer.specialTerms" class="mt-3 p-3 bg-white rounded border border-blue-100">
-                  <label class="text-xs font-medium text-gray-500">{{ $t('loan.specialTerms') }}</label>
-                  <p class="text-sm text-gray-700 mt-1">{{ offer.specialTerms }}</p>
+                <div v-if="offer.specialTerms" class="mt-3 p-3 bg-white/5 rounded border border-white/10">
+                  <label class="text-xs font-medium text-gray-400">{{ $t('loan.specialTerms') }}</label>
+                  <p class="text-sm text-gray-300 mt-1">{{ offer.specialTerms }}</p>
                 </div>
               </div>
             </div>
@@ -230,23 +230,23 @@
       </div>
 
       <!-- Units Section -->
-      <div class="bg-white rounded-lg shadow p-6">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-semibold text-gray-900">Units ({{ units.length }})</h3>
+          <h3 class="text-xl font-semibold text-white">Units ({{ units.length }})</h3>
           <router-link
             v-if="authStore.hasRole('REALTOR')"
             :to="`/submit-property?buildingId=${building.id}`"
-            class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm"
+            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 text-sm transition-colors"
           >
             + Add Unit
           </router-link>
         </div>
 
         <div v-if="unitsLoading" class="text-center py-8">
-          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600"></div>
+          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400"></div>
         </div>
 
-        <div v-else-if="units.length === 0" class="text-center py-8 text-gray-500">
+        <div v-else-if="units.length === 0" class="text-center py-8 text-gray-400">
           <p>No units in this building yet</p>
         </div>
 
@@ -255,10 +255,10 @@
             v-for="unit in units"
             :key="unit.id"
             @click="$router.push(`/properties/${unit.id}`)"
-            class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+            class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2">
-              <h4 class="font-semibold text-gray-900">{{ unit.title }}</h4>
+              <h4 class="font-semibold text-white">{{ unit.title }}</h4>
               <span :class="[
                 'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
                 getPropertyStatusColor(unit.status)
@@ -267,19 +267,19 @@
               </span>
             </div>
             
-            <p v-if="unit.unitNumber" class="text-xs text-gray-500 mb-2">Unit: {{ unit.unitNumber }}</p>
+            <p v-if="unit.unitNumber" class="text-xs text-gray-400 mb-2">Unit: {{ unit.unitNumber }}</p>
             <div class="flex flex-col gap-1">
-              <p v-if="unit.priceETB" class="text-lg font-bold text-primary-600">
+              <p v-if="unit.priceETB" class="text-lg font-bold text-yellow-400">
                 {{ formatPrice(unit.priceETB, 'ETB') }}
-                <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-500 font-normal">/month</span>
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-400 font-normal">/month</span>
               </p>
-              <p v-if="unit.priceUSD" class="text-base font-semibold text-gray-600">
+              <p v-if="unit.priceUSD" class="text-base font-semibold text-gray-300">
                 {{ formatPrice(unit.priceUSD, 'USD') }}
-                <span v-if="unit.category === 'FOR_RENTAL'" class="text-xs text-gray-500 font-normal">/month</span>
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-xs text-gray-400 font-normal">/month</span>
               </p>
             </div>
             
-            <div class="mt-2 flex gap-4 text-xs text-gray-600">
+            <div class="mt-2 flex gap-4 text-xs text-gray-400">
               <span v-if="unit.bedrooms">{{ unit.bedrooms }} bed</span>
               <span v-if="unit.bathrooms">{{ unit.bathrooms }} bath</span>
               <span v-if="unit.area">{{ unit.area }} m²</span>
@@ -357,22 +357,22 @@ const loadFinancingOffers = async () => {
 
 const getStatusColor = (status) => {
   const colors = {
-    PLANNED: 'bg-gray-100 text-gray-800',
-    UNDER_CONSTRUCTION: 'bg-yellow-100 text-yellow-800',
-    COMPLETED: 'bg-green-100 text-green-800',
-    RENOVATION: 'bg-blue-100 text-blue-800'
+    PLANNED: 'bg-gray-500/30 text-gray-300',
+    UNDER_CONSTRUCTION: 'bg-yellow-500/30 text-yellow-200',
+    COMPLETED: 'bg-green-500/30 text-green-200',
+    RENOVATION: 'bg-blue-500/30 text-blue-200'
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const getPropertyStatusColor = (status) => {
   const colors = {
-    AVAILABLE: 'bg-green-100 text-green-800',
-    SOLD: 'bg-red-100 text-red-800',
-    RESERVED: 'bg-yellow-100 text-yellow-800',
-    WITHDRAWN: 'bg-gray-100 text-gray-800'
+    AVAILABLE: 'bg-green-500/30 text-green-200',
+    SOLD: 'bg-red-500/30 text-red-200',
+    RESERVED: 'bg-yellow-500/30 text-yellow-200',
+    WITHDRAWN: 'bg-gray-500/30 text-gray-300'
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const formatPrice = (price, currency = 'ETB') => {

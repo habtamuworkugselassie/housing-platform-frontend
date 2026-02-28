@@ -1,13 +1,13 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Credit Products</h1>
-        <p class="mt-2 text-sm text-gray-600">Manage your bank's credit products</p>
+        <h1 class="text-3xl font-bold text-white">Credit Products</h1>
+        <p class="mt-2 text-sm text-gray-400">Manage your bank's credit products</p>
       </div>
       <button
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
       >
         + Create Credit Product
       </button>
@@ -15,12 +15,12 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Credit Products List -->
@@ -28,39 +28,39 @@
       <div
         v-for="product in products"
         :key="product.id"
-        class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">{{ product.name }}</h3>
+              <h3 class="text-lg font-semibold text-white">{{ product.name }}</h3>
               <span :class="[
                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                product.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                product.status === 'PENDING_APPROVAL' ? 'bg-yellow-100 text-yellow-800' :
-                'bg-gray-100 text-gray-800'
+                product.status === 'ACTIVE' ? 'bg-green-500/30 text-green-200' :
+                product.status === 'PENDING_APPROVAL' ? 'bg-yellow-500/30 text-yellow-200' :
+                'bg-gray-500/30 text-gray-300'
               ]">
                 {{ product.status }}
               </span>
             </div>
-            <p class="text-sm text-gray-600 mb-4">{{ product.description || 'No description' }}</p>
+            <p class="text-sm text-gray-400 mb-4">{{ product.description || 'No description' }}</p>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label class="text-xs font-medium text-gray-500">Product Type</label>
-                <p class="text-sm text-gray-900 mt-1">{{ product.productType }}</p>
+                <label class="text-xs font-medium text-gray-400">Product Type</label>
+                <p class="text-sm text-white mt-1">{{ product.productType }}</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Interest Rate</label>
-                <p class="text-sm text-gray-900 mt-1">{{ product.interestRate }}%</p>
+                <label class="text-xs font-medium text-gray-400">Interest Rate</label>
+                <p class="text-sm text-white mt-1">{{ product.interestRate }}%</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Loan Amount</label>
-                <p class="text-sm text-gray-900 mt-1">{{ formatPrice(product.minLoanAmount, product.currency || 'ETB') }} - {{ formatPrice(product.maxLoanAmount, product.currency || 'ETB') }}</p>
+                <label class="text-xs font-medium text-gray-400">Loan Amount</label>
+                <p class="text-sm text-white mt-1">{{ formatPrice(product.minLoanAmount, product.currency || 'ETB') }} - {{ formatPrice(product.maxLoanAmount, product.currency || 'ETB') }}</p>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500">Tenure</label>
-                <p class="text-sm text-gray-900 mt-1">{{ product.minTenureMonths }} - {{ product.maxTenureMonths }} months</p>
+                <label class="text-xs font-medium text-gray-400">Tenure</label>
+                <p class="text-sm text-white mt-1">{{ product.minTenureMonths }} - {{ product.maxTenureMonths }} months</p>
               </div>
             </div>
           </div>
@@ -68,13 +68,13 @@
           <div class="ml-4 flex gap-2">
             <button
               @click="editProduct(product)"
-              class="px-3 py-1 text-sm text-primary-600 hover:text-primary-700 font-medium"
+              class="px-3 py-1 text-sm text-white hover:text-yellow-400 font-medium transition-colors"
             >
               Edit
             </button>
             <button
               @click="deleteProduct(product.id)"
-              class="px-3 py-1 text-sm text-red-600 hover:text-red-700 font-medium"
+              class="px-3 py-1 text-sm text-red-300 hover:text-yellow-400 font-medium transition-colors"
             >
               Delete
             </button>
@@ -82,50 +82,50 @@
         </div>
       </div>
 
-      <div v-if="products.length === 0" class="text-center py-12 bg-white rounded-lg shadow">
-        <p class="text-sm text-gray-500">No credit products yet. Create your first one!</p>
+      <div v-if="products.length === 0" class="text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
+        <p class="text-sm text-gray-400">No credit products yet. Create your first one!</p>
       </div>
     </div>
 
     <!-- Create/Edit Modal -->
     <div
       v-if="showCreateModal || editingProduct"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeModal"
     >
-      <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
-        <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-white mb-4">
             {{ editingProduct ? 'Edit Credit Product' : 'Create Credit Product' }}
           </h3>
           
           <form @submit.prevent="saveProduct" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Product Name *</label>
+              <label class="block text-sm font-medium text-gray-400">Product Name *</label>
               <input
                 v-model="productForm.name"
                 type="text"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Description</label>
+              <label class="block text-sm font-medium text-gray-400">Description</label>
               <textarea
                 v-model="productForm.description"
                 rows="3"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">Product Type *</label>
+                <label class="block text-sm font-medium text-gray-400">Product Type *</label>
                 <select
                   v-model="productForm.productType"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 >
                   <option value="HOME_PURCHASE">Home Purchase</option>
                   <option value="CONSTRUCTION_LOAN">Construction Loan</option>
@@ -135,7 +135,7 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">Interest Rate (%) *</label>
+                <label class="block text-sm font-medium text-gray-400">Interest Rate (%) *</label>
                 <input
                   v-model.number="productForm.interestRate"
                   type="number"
@@ -143,37 +143,37 @@
                   min="0"
                   max="100"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">Min Tenure (months) *</label>
+                <label class="block text-sm font-medium text-gray-400">Min Tenure (months) *</label>
                 <input
                   v-model.number="productForm.minTenureMonths"
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">Max Tenure (months) *</label>
+                <label class="block text-sm font-medium text-gray-400">Max Tenure (months) *</label>
                 <input
                   v-model.number="productForm.maxTenureMonths"
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Max Loan-to-Value Ratio *</label>
+              <label class="block text-sm font-medium text-gray-400">Max Loan-to-Value Ratio *</label>
               <input
                 v-model.number="productForm.maxLoanToValueRatio"
                 type="number"
@@ -181,25 +181,25 @@
                 min="0"
                 max="1"
                 required
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">Min Loan Amount *</label>
+                <label class="block text-sm font-medium text-gray-400">Min Loan Amount *</label>
                 <div class="mt-1 flex gap-2">
                   <input
                     v-model.number="productForm.minLoanAmount"
                     type="number"
                     min="0"
                     required
-                    class="flex-1 border border-gray-300 rounded-md px-3 py-2"
+                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   />
                   <select
                     v-model="productForm.currency"
                     required
-                    class="w-32 border border-gray-300 rounded-md px-3 py-2"
+                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   >
                     <option value="ETB">ETB</option>
                     <option value="USD">USD</option>
@@ -208,19 +208,19 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">Max Loan Amount *</label>
+                <label class="block text-sm font-medium text-gray-400">Max Loan Amount *</label>
                 <div class="mt-1 flex gap-2">
                   <input
                     v-model.number="productForm.maxLoanAmount"
                     type="number"
                     min="0"
                     required
-                    class="flex-1 border border-gray-300 rounded-md px-3 py-2"
+                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   />
                   <select
                     v-model="productForm.currency"
                     required
-                    class="w-32 border border-gray-300 rounded-md px-3 py-2"
+                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   >
                     <option value="ETB">ETB</option>
                     <option value="USD">USD</option>
@@ -231,32 +231,32 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">Processing Fee</label>
+                <label class="block text-sm font-medium text-gray-400">Processing Fee</label>
                 <input
                   v-model.number="productForm.processingFee"
                   type="number"
                   min="0"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700">Prepayment Penalty</label>
+                <label class="block text-sm font-medium text-gray-400">Prepayment Penalty</label>
                 <input
                   v-model.number="productForm.prepaymentPenalty"
                   type="number"
                   min="0"
-                  class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Eligibility Criteria</label>
+              <label class="block text-sm font-medium text-gray-400">Eligibility Criteria</label>
               <textarea
                 v-model="productForm.eligibilityCriteria"
                 rows="3"
-                class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
 
@@ -264,13 +264,13 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
               >
                 {{ editingProduct ? 'Update' : 'Create' }}
               </button>

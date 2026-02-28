@@ -1,34 +1,34 @@
 <template>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-primary-600 hover:text-primary-700 font-medium mb-4"
+        class="text-white hover:text-yellow-400 font-medium mb-4 transition-colors"
       >
         ← Back
       </button>
-      <h1 class="text-3xl font-bold text-gray-900">Loan Application Details</h1>
+      <h1 class="text-3xl font-bold text-white">Loan Application Details</h1>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-800">{{ error }}</p>
+    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-200">{{ error }}</p>
     </div>
 
     <!-- Loan Application Details -->
-    <div v-if="!loading && application" class="bg-white rounded-lg shadow p-6 space-y-6">
+    <div v-if="!loading && application" class="bg-zinc-900 border border-white/10 rounded-lg p-6 space-y-6">
       <!-- Header -->
-      <div class="flex items-start justify-between border-b pb-4">
+      <div class="flex items-start justify-between border-b border-white/10 pb-4">
         <div>
-          <h2 class="text-xl font-semibold text-gray-900">
+          <h2 class="text-xl font-semibold text-white">
             Loan Application #{{ application.id.substring(0, 8) }}
           </h2>
-          <p class="text-sm text-gray-500 mt-1">Applied on {{ formatDate(application.createdAt) }}</p>
+          <p class="text-sm text-gray-400 mt-1">Applied on {{ formatDate(application.createdAt) }}</p>
         </div>
         <span :class="[
           'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',
@@ -41,48 +41,48 @@
       <!-- Application Details -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="text-sm font-medium text-gray-500">Requested Amount</label>
-          <p class="text-lg font-semibold text-gray-900 mt-1">{{ formatPrice(application.requestedAmount, application.currency || 'ETB') }}</p>
+          <label class="text-sm font-medium text-gray-400">Requested Amount</label>
+          <p class="text-lg font-semibold text-white mt-1">{{ formatPrice(application.requestedAmount, application.currency || 'ETB') }}</p>
         </div>
         <div>
-          <label class="text-sm font-medium text-gray-500">Requested Tenure</label>
-          <p class="text-lg font-semibold text-gray-900 mt-1">{{ application.requestedTenureMonths }} months</p>
+          <label class="text-sm font-medium text-gray-400">Requested Tenure</label>
+          <p class="text-lg font-semibold text-white mt-1">{{ application.requestedTenureMonths }} months</p>
         </div>
         <div v-if="application.approvedAmount">
-          <label class="text-sm font-medium text-gray-500">Approved Amount</label>
-          <p class="text-lg font-semibold text-green-600 mt-1">{{ formatPrice(application.approvedAmount, application.approvedCurrency || application.currency || 'ETB') }}</p>
+          <label class="text-sm font-medium text-gray-400">Approved Amount</label>
+          <p class="text-lg font-semibold text-green-400 mt-1">{{ formatPrice(application.approvedAmount, application.approvedCurrency || application.currency || 'ETB') }}</p>
         </div>
         <div v-if="application.approvedInterestRate">
-          <label class="text-sm font-medium text-gray-500">Approved Interest Rate</label>
-          <p class="text-lg font-semibold text-gray-900 mt-1">{{ application.approvedInterestRate }}%</p>
+          <label class="text-sm font-medium text-gray-400">Approved Interest Rate</label>
+          <p class="text-lg font-semibold text-white mt-1">{{ application.approvedInterestRate }}%</p>
         </div>
         <div v-if="application.approvedTenureMonths">
-          <label class="text-sm font-medium text-gray-500">Approved Tenure</label>
-          <p class="text-lg font-semibold text-gray-900 mt-1">{{ application.approvedTenureMonths }} months</p>
+          <label class="text-sm font-medium text-gray-400">Approved Tenure</label>
+          <p class="text-lg font-semibold text-white mt-1">{{ application.approvedTenureMonths }} months</p>
         </div>
       </div>
 
       <!-- Purpose -->
       <div v-if="application.purpose">
-        <label class="text-sm font-medium text-gray-500">Purpose</label>
-        <p class="text-sm text-gray-900 mt-1">{{ application.purpose }}</p>
+        <label class="text-sm font-medium text-gray-400">Purpose</label>
+        <p class="text-sm text-white mt-1">{{ application.purpose }}</p>
       </div>
 
       <!-- Approval Notes -->
       <div v-if="application.approvalNotes">
-        <label class="text-sm font-medium text-gray-500">Approval Notes</label>
-        <p class="text-sm text-gray-900 mt-1">{{ application.approvalNotes }}</p>
+        <label class="text-sm font-medium text-gray-400">Approval Notes</label>
+        <p class="text-sm text-white mt-1">{{ application.approvalNotes }}</p>
       </div>
 
       <!-- Rejection Reason -->
-      <div v-if="application.rejectionReason" class="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <label class="text-sm font-medium text-red-800">Rejection Reason</label>
-        <p class="text-sm text-red-700 mt-1">{{ application.rejectionReason }}</p>
+      <div v-if="application.rejectionReason" class="p-4 bg-red-900/40 border border-red-500/30 rounded-lg">
+        <label class="text-sm font-medium text-red-200">Rejection Reason</label>
+        <p class="text-sm text-red-200 mt-1">{{ application.rejectionReason }}</p>
       </div>
 
       <!-- Status History -->
-      <div class="border-t pt-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Status History</h3>
+      <div class="border-t border-white/10 pt-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Status History</h3>
         <div class="space-y-4">
           <div
             v-for="(history, index) in statusHistory"
@@ -90,15 +90,15 @@
             class="flex items-start gap-4"
           >
             <div class="flex-shrink-0">
-              <div class="w-2 h-2 rounded-full bg-primary-600 mt-2"></div>
-              <div v-if="index < statusHistory.length - 1" class="w-0.5 h-12 bg-gray-200 ml-1"></div>
+              <div class="w-2 h-2 rounded-full bg-yellow-400 mt-2"></div>
+              <div v-if="index < statusHistory.length - 1" class="w-0.5 h-12 bg-white/20 ml-1"></div>
             </div>
             <div class="flex-1">
-              <p class="text-sm font-medium text-gray-900">
+              <p class="text-sm font-medium text-white">
                 {{ history.fromStatus }} → {{ history.toStatus }}
               </p>
               <p class="text-xs text-gray-500 mt-1">{{ formatDate(history.changedAt) }}</p>
-              <p v-if="history.notes" class="text-xs text-gray-600 mt-1">{{ history.notes }}</p>
+              <p v-if="history.notes" class="text-xs text-gray-400 mt-1">{{ history.notes }}</p>
             </div>
           </div>
         </div>
@@ -149,15 +149,15 @@ const loadApplication = async () => {
 
 const getStatusColor = (status) => {
   const colors = {
-    DRAFT: 'bg-gray-100 text-gray-800',
-    SUBMITTED: 'bg-blue-100 text-blue-800',
-    UNDER_REVIEW: 'bg-yellow-100 text-yellow-800',
-    APPROVED: 'bg-green-100 text-green-800',
-    REJECTED: 'bg-red-100 text-red-800',
-    DISBURSED: 'bg-purple-100 text-purple-800',
-    CLOSED: 'bg-gray-100 text-gray-800'
+    DRAFT: 'bg-gray-500/30 text-gray-300',
+    SUBMITTED: 'bg-blue-500/30 text-blue-200',
+    UNDER_REVIEW: 'bg-yellow-500/30 text-yellow-200',
+    APPROVED: 'bg-green-500/30 text-green-200',
+    REJECTED: 'bg-red-500/30 text-red-200',
+    DISBURSED: 'bg-purple-500/30 text-purple-200',
+    CLOSED: 'bg-gray-500/30 text-gray-300'
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500/30 text-gray-300'
 }
 
 const formatPrice = (price, currency = 'ETB') => {

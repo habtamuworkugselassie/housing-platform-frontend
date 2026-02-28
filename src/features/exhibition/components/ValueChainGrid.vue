@@ -3,10 +3,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-16">
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4">
-          Construction value chain
+          {{ $t('exhibition.valueChain.title') }}
         </h2>
         <p class="text-lg text-gray-400 max-w-2xl">
-          We cover the entire spectrum of the industry. Find the niche that matters to your business.
+          {{ $t('exhibition.valueChain.subtitle') }}
         </p>
       </div>
 
@@ -14,7 +14,7 @@
         <div
           v-for="(sector, index) in sectors"
           :key="index"
-          class="group relative h-40 overflow-hidden rounded-sm border border-gray-800 hover:border-amber-500/50 transition-all duration-300"
+          class="group relative h-40 overflow-hidden rounded-sm border border-gray-800 hover:border-yellow-400 hover:bg-yellow-500/10 transition-all duration-300"
         >
           <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 z-0 group-hover:from-gray-800 group-hover:to-gray-800/95 transition-all duration-300"></div>
           <div class="relative z-10 p-5 h-full flex flex-col justify-end">
@@ -30,18 +30,21 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const sectors = [
-  'Building Materials',
-  'Concrete & Cement',
-  'Interiors & Finishes',
-  'Urban Design',
-  'Building Services (MEP)',
-  'Construction Tools',
-  'HVAC & Cooling',
-  'Digital Construction',
-  'Solar Energy',
-  'Heavy Machinery',
-  'Intelligent Building',
-  'Sustainable Construction'
+  t('exhibition.valueChain.buildingMaterials'),
+  t('exhibition.valueChain.concreteCement'),
+  t('exhibition.valueChain.interiorsFinishes'),
+  t('exhibition.valueChain.urbanDesign'),
+  t('exhibition.valueChain.buildingServices'),
+  t('exhibition.valueChain.constructionTools'),
+  t('exhibition.valueChain.hvacCooling'),
+  t('exhibition.valueChain.digitalConstruction'),
+  t('exhibition.valueChain.solarEnergy'),
+  t('exhibition.valueChain.heavyMachinery'),
+  t('exhibition.valueChain.intelligentBuilding'),
+  t('exhibition.valueChain.sustainableConstruction')
 ]
 </script>

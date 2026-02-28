@@ -1,75 +1,67 @@
 <template>
   <div class="exhibition-landing overflow-x-hidden bg-black text-white">
-    <HeroSection />
-
-    <!-- Why Exhibit -->
-    <section id="why-exhibit" class="py-20 lg:py-28 bg-white text-black">
+    <!-- Paged properties list (main content below the two carousels) -->
+    <section id="properties" class="bg-zinc-950 border-t border-white/10 py-10 lg:py-14">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-          <div>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight mb-6">
-              Inspire industry leaders at the exhibition
-            </h2>
-            <p class="text-lg text-gray-600 leading-relaxed mb-6">
-              Showcase your vision alongside global influencers and decision-makers. Connect with institutional investors, developers, and government bodies driving the future of construction and real estate.
-            </p>
-            <ul class="space-y-3 text-gray-700 mb-8">
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
-                Unmatched access to high-value projects and partnerships
-              </li>
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
-                Elevate your presence through sponsorship opportunities
-              </li>
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
-                Conferences, networking sessions, and investor programs
-              </li>
-            </ul>
-            <a href="#register" class="inline-flex px-8 py-4 bg-black text-white font-semibold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
-              Book a stand
-            </a>
-          </div>
-          <div class="aspect-[4/3] bg-gray-200 rounded overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center text-gray-500 text-sm">Exhibitor imagery</div>
-          </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-6">
+          {{ $t('property.properties') }}
+        </h2>
+        <div v-if="propertiesLoading" class="flex justify-center py-12">
+          <div class="inline-block h-12 w-12 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
         </div>
-      </div>
-    </section>
-
-    <!-- Why Visit -->
-    <section id="why-visit" class="py-20 lg:py-28 bg-black">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-          <div class="order-2 lg:order-1 aspect-[4/3] bg-gray-900 rounded overflow-hidden">
-            <div class="w-full h-full flex items-center justify-center text-gray-600 text-sm">Visitor experience</div>
-          </div>
-          <div class="order-1 lg:order-2">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight mb-6">
-              Explore the future of living at the region’s largest real estate event
-            </h2>
-            <p class="text-lg text-gray-400 leading-relaxed mb-6">
-              Immerse yourself in groundbreaking urban innovations and connect with global real estate leaders.
-            </p>
-            <ul class="space-y-3 text-gray-300 mb-8">
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                300+ exhibitors · 500+ speakers · 6 stages
-              </li>
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                180+ hours of conference content
-              </li>
-              <li class="flex items-center gap-3">
-                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                Interactive show features and networking
-              </li>
-            </ul>
-            <a href="#register" class="inline-flex px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-gray-100 transition-colors">
-              Register to visit
-            </a>
-          </div>
+        <div v-else-if="propertiesList.length" class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+          <a
+            v-for="item in propertiesList"
+            :key="item.id"
+            :href="`/properties/${item.id}`"
+            class="group overflow-hidden rounded-lg bg-white/5 border border-white/10 shadow transition hover:bg-yellow-500/20 hover:border-yellow-400"
+          >
+            <div class="aspect-[4/3] bg-zinc-800">
+              <img
+                v-if="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                :alt="item.title"
+                class="h-full w-full object-cover transition group-hover:scale-105"
+              />
+              <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-white">{{ item.title }}</h3>
+              <p class="mt-1 text-sm text-gray-400">
+                {{ item.city }}{{ item.country ? `, ${item.country}` : '' }}
+              </p>
+              <p v-if="item.priceETB || item.priceUSD" class="mt-2 text-lg font-bold text-primary-400">
+                {{ item.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
+                <span v-if="item.priceETB && item.priceUSD"> / </span>
+                {{ item.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
+              </p>
+            </div>
+          </a>
+        </div>
+        <p v-else class="py-8 text-center text-gray-400">
+          {{ $t('property.noProperties') }}
+        </p>
+        <!-- Pagination -->
+        <div v-if="propertiesTotalPages > 1" class="mt-8 flex items-center justify-center gap-2">
+          <button
+            type="button"
+            :disabled="propertiesPage === 0"
+            class="rounded border border-white/30 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 disabled:text-gray-500"
+            @click="propertiesPage = Math.max(0, propertiesPage - 1)"
+          >
+            {{ $t('common.previous') }}
+          </button>
+          <span class="px-4 text-sm text-gray-300">
+            {{ $t('common.page') }} {{ propertiesPage + 1 }} {{ $t('common.of') }} {{ propertiesTotalPages }}
+          </span>
+          <button
+            type="button"
+            :disabled="propertiesPage >= propertiesTotalPages - 1"
+            class="rounded border border-white/30 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 disabled:text-gray-500"
+            @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
+          >
+            {{ $t('common.next') }}
+          </button>
         </div>
       </div>
     </section>
@@ -78,25 +70,25 @@
     <section class="py-20 lg:py-28 bg-zinc-950 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white/90 mb-12">
-          What happened at the exhibition
+          {{ $t('exhibition.whatHappened.title') }}
         </h2>
         <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-          <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/[0.08] transition-colors">
-            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">The region’s biggest projects</h3>
+          <div class="bg-white/5 border border-white/10 p-8 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors">
+            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">{{ $t('exhibition.whatHappened.card1Title') }}</h3>
             <p class="text-sm text-gray-400 leading-relaxed">
-              Latest launches, visionary masterplans, and breakthrough developments — all under one roof. 550+ exhibitors showcasing the future of real estate and construction.
+              {{ $t('exhibition.whatHappened.card1Body') }}
             </p>
           </div>
-          <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/[0.08] transition-colors">
-            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">Network with decision-makers</h3>
+          <div class="bg-white/5 border border-white/10 p-8 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors">
+            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">{{ $t('exhibition.whatHappened.card2Title') }}</h3>
             <p class="text-sm text-gray-400 leading-relaxed">
-              Connect with investors, developers, and city leaders through curated networking. Unlock new capital, forge partnerships, and expand in the markets that matter.
+              {{ $t('exhibition.whatHappened.card2Body') }}
             </p>
           </div>
-          <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/[0.08] transition-colors">
-            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">Insights that matter</h3>
+          <div class="bg-white/5 border border-white/10 p-8 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors">
+            <h3 class="text-lg font-bold uppercase tracking-tight text-white mb-3">{{ $t('exhibition.whatHappened.card3Title') }}</h3>
             <p class="text-sm text-gray-400 leading-relaxed">
-              Actionable insights from global visionaries — ministers, CEOs, and award-winning architects — on the trends reshaping how we live, invest, and build.
+              {{ $t('exhibition.whatHappened.card3Body') }}
             </p>
           </div>
         </div>
@@ -104,16 +96,16 @@
     </section>
 
     <!-- Key Show Features -->
-    <section id="show-features" class="py-20 lg:py-28 bg-white text-black">
+    <section id="show-features" class="py-20 lg:py-28 bg-zinc-950 border-t border-white/10 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4">Key show features</h2>
-        <p class="text-gray-600 max-w-2xl mb-10">
-          World-class conferences, major announcements, developer programme, and specialised tracks.
+        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-white">{{ $t('exhibition.keyShowFeatures.title') }}</h2>
+        <p class="text-gray-400 max-w-2xl mb-10">
+          {{ $t('exhibition.keyShowFeatures.subtitle') }}
         </p>
-        <PillarGrid compact />
+        <PillarGrid compact dark />
         <div class="mt-10 text-center">
-          <a href="#features" class="inline-flex px-8 py-4 border-2 border-black font-semibold text-sm uppercase tracking-wider hover:bg-black hover:text-white transition-colors">
-            Explore more
+          <a href="#features" class="inline-flex px-8 py-4 bg-white font-semibold text-sm uppercase tracking-wider text-black hover:bg-yellow-400 transition-colors">
+            {{ $t('exhibition.keyShowFeatures.exploreMore') }}
           </a>
         </div>
       </div>
@@ -122,19 +114,19 @@
     <!-- Who Attends (Cityscape-style audience cards) -->
     <section id="who-attends" class="py-20 lg:py-28 bg-black border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4">Who attends</h2>
+        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4">{{ $t('exhibition.whoAttends.title') }}</h2>
         <p class="text-gray-400 max-w-2xl mb-12">
-          The event brings together real estate leaders — investors, developers, architects, government officials, and home buyers.
+          {{ $t('exhibition.whoAttends.subtitle') }}
         </p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <a
             v-for="audience in whoAttends"
-            :key="audience.title"
+            :key="audience.key"
             href="#"
-            class="block p-6 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors group"
+            class="block p-6 bg-white/5 border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors group"
           >
-            <h3 class="text-sm font-bold uppercase tracking-tight text-white group-hover:text-white mb-1">{{ audience.title }}</h3>
-            <p class="text-xs text-gray-500">{{ audience.desc }}</p>
+            <h3 class="text-sm font-bold uppercase tracking-tight text-white group-hover:text-white mb-1">{{ $t(audience.titleKey) }}</h3>
+            <p class="text-xs text-gray-500">{{ $t(audience.descKey) }}</p>
           </a>
         </div>
       </div>
@@ -147,24 +139,24 @@
     <section class="py-20 bg-zinc-950 border-t border-white/10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white/90 mb-8">
-          World-class leaders building the future
+          {{ $t('exhibition.testimonial.title') }}
         </h2>
         <blockquote class="text-lg sm:text-xl text-gray-300 leading-relaxed mb-6">
-          “The exhibition is a perfect destination for international investors to meet and exchange ideas and explore how they can develop their own product and the wider market.”
+          "{{ $t('exhibition.testimonial.quote') }}"
         </blockquote>
-        <p class="text-sm text-gray-500 uppercase tracking-wider">Industry Leader</p>
+        <p class="text-sm text-gray-500 uppercase tracking-wider">{{ $t('exhibition.testimonial.author') }}</p>
       </div>
     </section>
 
     <!-- Plan your visit -->
-    <section class="py-20 lg:py-28 bg-white text-black">
+    <section class="py-20 lg:py-28 bg-zinc-950 border-t border-white/10 text-white">
       <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4">Plan your trip</h2>
-        <p class="text-lg text-gray-600 mb-10">
-          Join us for an event that pushes the boundaries of what’s possible in real estate and urban development.
+        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4 text-white">{{ $t('exhibition.planVisit.title') }}</h2>
+        <p class="text-lg text-gray-400 mb-10">
+          {{ $t('exhibition.planVisit.body') }}
         </p>
-        <a href="#register" class="inline-flex px-8 py-4 bg-black text-white font-semibold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
-          Plan your visit
+        <a href="#register" class="inline-flex px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors">
+          {{ $t('exhibition.planVisit.planYourVisit') }}
         </a>
       </div>
     </section>
@@ -172,10 +164,10 @@
     <!-- Foundation Partners -->
     <section id="partners" class="py-16 bg-black border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-white/50 text-xs font-semibold uppercase tracking-[0.25em] mb-8">Foundation Partners</p>
+        <p class="text-white/50 text-xs font-semibold uppercase tracking-[0.25em] mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
           <div v-for="i in 6" :key="i" class="h-10 w-28 bg-white/10 flex items-center justify-center text-white/40 text-xs">
-            Partner {{ i }}
+            {{ $t('exhibition.partners.partner') }} {{ i }}
           </div>
         </div>
       </div>
@@ -184,16 +176,16 @@
     <!-- Final CTA -->
     <section class="py-20 bg-zinc-900 border-t border-white/10">
       <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white mb-4">Ready to join the leaders?</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white mb-4">{{ $t('exhibition.cta.title') }}</h2>
         <p class="text-gray-400 mb-10">
-          Book your stand or register to visit the most anticipated real estate and construction event of the year.
+          {{ $t('exhibition.cta.body') }}
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#register" class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-gray-100 transition-colors min-w-[200px]">
-            Stand enquiry
+          <a href="#register" class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[200px]">
+            {{ $t('exhibition.cta.standEnquiry') }}
           </a>
-          <a href="#brochure" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[200px]">
-            View event brochure
+          <a href="#brochure" class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[200px] border-2 border-white">
+            {{ $t('exhibition.cta.viewBrochure') }}
           </a>
         </div>
       </div>
@@ -202,11 +194,11 @@
     <!-- Footer -->
     <footer class="py-10 bg-black border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-gray-500 text-sm">&copy; 2026 Construction Exhibition. All rights reserved.</p>
+        <p class="text-gray-500 text-sm">{{ $t('exhibition.footer.copyright') }}</p>
         <div class="flex items-center gap-8 text-sm text-gray-500">
-          <a href="#" class="hover:text-white transition">Privacy</a>
-          <a href="#" class="hover:text-white transition">Terms</a>
-          <a href="#" class="hover:text-white transition">Contact</a>
+          <a href="#" class="hover:text-yellow-400 transition">{{ $t('exhibition.footer.privacy') }}</a>
+          <a href="#" class="hover:text-yellow-400 transition">{{ $t('exhibition.footer.terms') }}</a>
+          <a href="#" class="hover:text-white transition">{{ $t('exhibition.footer.contact') }}</a>
         </div>
       </div>
     </footer>
@@ -214,13 +206,44 @@
 </template>
 
 <script setup>
-import { onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import HeroSection from '../components/HeroSection.vue'
+import { propertyApi } from '@/features/property/api/property.api'
+import { formatPrice } from '@/shared/utils'
 import PillarGrid from '../components/PillarGrid.vue'
 import ValueChainGrid from '../components/ValueChainGrid.vue'
 
 const route = useRoute()
+
+// Paged properties list
+const propertiesList = ref([])
+const propertiesLoading = ref(false)
+const propertiesPage = ref(0)
+const propertiesTotalPages = ref(0)
+const propertiesPageSize = 12
+
+const loadProperties = async () => {
+  propertiesLoading.value = true
+  try {
+    const res = await propertyApi.getProperties(
+      { status: 'AVAILABLE' },
+      { page: propertiesPage.value, size: propertiesPageSize }
+    )
+    const content = res.content ?? (Array.isArray(res) ? res : [])
+    propertiesList.value = content
+    propertiesTotalPages.value = res.totalPages ?? (Math.ceil((res.totalElements ?? 0) / propertiesPageSize) || 1)
+  } catch (err) {
+    console.error('Failed to load properties:', err)
+    propertiesList.value = []
+    propertiesTotalPages.value = 0
+  } finally {
+    propertiesLoading.value = false
+  }
+}
+
+
+watch(propertiesPage, loadProperties)
+onMounted(loadProperties)
 
 function scrollToHash() {
   const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')
@@ -238,14 +261,14 @@ onMounted(scrollToHash)
 watch(() => route.hash, scrollToHash)
 
 const whoAttends = [
-  { title: 'Real Estate Developers', desc: 'Master planners and project leads' },
-  { title: 'Proptech Innovators', desc: 'Tech and property market solutions' },
-  { title: 'Architects & Designers', desc: 'Sustainable and futuristic design' },
-  { title: 'Government Officials', desc: 'National development strategies' },
-  { title: 'Construction Professionals', desc: 'Contractors and infrastructure' },
-  { title: 'Brokers & Consultants', desc: 'Market intelligence and advisory' },
-  { title: 'Investors & Financiers', desc: 'High-value real estate opportunities' },
-  { title: 'Homebuyers', desc: 'Residential trends and smart living' }
+  { key: 'developers', titleKey: 'exhibition.whoAttends.developers', descKey: 'exhibition.whoAttends.developersDesc' },
+  { key: 'proptech', titleKey: 'exhibition.whoAttends.proptech', descKey: 'exhibition.whoAttends.proptechDesc' },
+  { key: 'architects', titleKey: 'exhibition.whoAttends.architects', descKey: 'exhibition.whoAttends.architectsDesc' },
+  { key: 'government', titleKey: 'exhibition.whoAttends.government', descKey: 'exhibition.whoAttends.governmentDesc' },
+  { key: 'construction', titleKey: 'exhibition.whoAttends.construction', descKey: 'exhibition.whoAttends.constructionDesc' },
+  { key: 'brokers', titleKey: 'exhibition.whoAttends.brokers', descKey: 'exhibition.whoAttends.brokersDesc' },
+  { key: 'investors', titleKey: 'exhibition.whoAttends.investors', descKey: 'exhibition.whoAttends.investorsDesc' },
+  { key: 'homebuyers', titleKey: 'exhibition.whoAttends.homebuyers', descKey: 'exhibition.whoAttends.homebuyersDesc' }
 ]
 </script>
 

@@ -39,9 +39,12 @@ export interface AdContent {
   id: string
   title: string
   imageUrl?: string
+  /** Optional video URL for sponsor carousel (e.g. ad video). */
+  videoUrl?: string
   priceETB?: number
   priceUSD?: number
   city?: string
+  address?: string
   type: 'property' | 'building'
   sponsorshipType: string
   basePrice: number
@@ -126,6 +129,7 @@ export function useAds() {
           priceETB: prop.priceETB,
           priceUSD: prop.priceUSD,
           city: prop.city,
+          address: prop.address,
           type: 'property' as const,
           sponsorshipType: prop.sponsorshipType || '',
           basePrice: sponsorshipTypeMap.value.get(prop.sponsorshipType || '') || 0,
@@ -140,6 +144,7 @@ export function useAds() {
           title: building.name,
           imageUrl: building.images?.[0]?.imageUrl,
           city: building.city,
+          address: building.address,
           type: 'building' as const,
           sponsorshipType: building.sponsorshipType || '',
           basePrice: sponsorshipTypeMap.value.get(building.sponsorshipType || '') || 0,
@@ -175,6 +180,26 @@ export function useAds() {
   const loadBasicAds = async (limit: number = 10): Promise<void> => {
     await loadAllAds(limit)
   }
+
+  /**
+   * Premium & Gold sponsor slides for landing carousel (top two tiers by base price).
+   * Deduplicated by realEstateCompanyId so each company appears once.
+   */
+  const premiumSponsorSlides = computed<AdContent[]>(() => {
+    if (allAds.value.length === 0) return []
+    const prices = [...new Set(allAds.value.map(a => a.basePrice || 0))].sort((a, b) => b - a)
+    const topPrices = prices.slice(0, 2) // premium (highest) and gold (second)
+    const seen = new Set<string>()
+    return allAds.value
+      .filter(ad => topPrices.includes(ad.basePrice || 0))
+      .filter(ad => {
+        const key = ad.realEstateCompanyId || ad.id
+        if (seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+      .sort((a, b) => (b.basePrice || 0) - (a.basePrice || 0))
+  })
 
   /**
    * Top ads (highest base_price) - for banner display
@@ -253,6 +278,7 @@ export function useAds() {
     error,
     allAds,
     sponsorships,
+    premiumSponsorSlides,
     topAds,
     sideAds,
     premierAds, // Legacy compatibility

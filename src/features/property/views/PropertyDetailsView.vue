@@ -1,18 +1,18 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-black text-white">
     <!-- Loading State -->
     <div v-if="loading" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
       <div class="text-center">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-        <p class="mt-4 text-gray-600">Loading property details...</p>
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+        <p class="mt-4 text-gray-400">Loading property details...</p>
       </div>
     </div>
 
     <!-- Property Not Found -->
     <div v-else-if="!property" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
       <div class="text-center py-12">
-        <p class="text-gray-600 mb-4">Property not found.</p>
-        <router-link to="/properties" class="inline-block text-primary-600 hover:text-primary-700 font-medium">
+        <p class="text-gray-400 mb-4">Property not found.</p>
+        <router-link to="/properties" class="inline-block text-white hover:text-yellow-400 font-medium">
           ← Back to Properties
         </router-link>
       </div>
@@ -23,7 +23,7 @@
       <!-- Back Button -->
       <button
         @click="$router.back()"
-        class="mb-6 flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium transition-colors"
+        class="mb-6 flex items-center gap-2 text-white hover:text-yellow-400 font-medium transition-colors"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>

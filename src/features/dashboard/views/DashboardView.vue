@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-black text-white">
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">dashboard</span>
@@ -9,15 +9,15 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 mdc-typography--body1 text-gray-600">Loading dashboard...</p>
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+        <p class="mt-4 mdc-typography--body1 text-gray-400">Loading dashboard...</p>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="mdc-card mb-6" style="background-color: #ffebee; border-left: 4px solid #f44336;">
+      <div v-else-if="error" class="mdc-card mb-6 bg-red-900/30 border border-red-500/30 rounded-lg p-4">
         <div class="flex items-center">
-          <span class="material-icons text-red-600 mr-2">error</span>
-          <div class="mdc-typography--body1 text-red-800">{{ error }}</div>
+          <span class="material-icons text-red-400 mr-2">error</span>
+          <div class="mdc-typography--body1 text-red-200">{{ error }}</div>
         </div>
       </div>
 

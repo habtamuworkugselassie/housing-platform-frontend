@@ -1,25 +1,25 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex">
+  <div class="min-h-screen bg-black text-white flex">
     <!-- Sidebar -->
     <aside
       :class="[
-        'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out',
+        'fixed inset-y-0 left-0 z-50 w-64 bg-zinc-900 border-r border-white/10 transform transition-transform duration-300 ease-in-out',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         'lg:translate-x-0 lg:static lg:inset-0'
       ]"
     >
       <div class="flex flex-col h-full">
         <!-- Logo/Brand -->
-        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-white/10">
           <div class="flex items-center">
-            <div class="flex-shrink-0 w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-lg">H</span>
+            <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+              <span class="text-black font-bold text-lg">H</span>
             </div>
-            <span class="ml-3 text-xl font-semibold text-gray-900">Admin Portal</span>
+            <span class="ml-3 text-xl font-semibold text-white">Admin Portal</span>
           </div>
           <button
             @click="sidebarOpen = false"
-            class="lg:hidden text-gray-500 hover:text-gray-700"
+            class="lg:hidden text-gray-400 hover:text-yellow-400"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -36,8 +36,8 @@
             :class="[
               'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
               isActive(item.path)
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-gray-700 hover:bg-gray-50'
+                ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-400/50'
+                : 'text-gray-300 hover:bg-yellow-500/20 hover:text-yellow-400'
             ]"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
             {{ item.name }}
             <span
               v-if="item.badge"
-              class="ml-auto px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded-full"
+              class="ml-auto px-2 py-0.5 text-xs font-medium bg-red-500/30 text-red-200 rounded-full"
             >
               {{ item.badge }}
             </span>
@@ -54,21 +54,21 @@
         </nav>
 
         <!-- User Section -->
-        <div class="p-4 border-t border-gray-200">
+        <div class="p-4 border-t border-white/10">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                <span class="text-gray-600 font-medium">{{ userInitials }}</span>
+              <div class="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center font-medium">
+                {{ userInitials }}
               </div>
             </div>
             <div class="ml-3 flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate">{{ userName }}</p>
-              <p class="text-xs text-gray-500 truncate">Administrator</p>
+              <p class="text-sm font-medium text-white truncate">{{ userName }}</p>
+              <p class="text-xs text-gray-400 truncate">Administrator</p>
             </div>
           </div>
           <button
             @click="handleLogout"
-            class="mt-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+            class="mt-3 w-full px-4 py-2 text-sm bg-white text-black hover:bg-yellow-400 rounded-lg transition-colors font-medium"
           >
             <span class="flex items-center justify-center">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,10 +84,10 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col lg:ml-0">
       <!-- Top Bar -->
-      <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 lg:px-6">
+      <header class="bg-zinc-900 border-b border-white/10 h-16 flex items-center justify-between px-4 lg:px-6">
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="lg:hidden text-gray-500 hover:text-gray-700"
+          class="lg:hidden text-gray-400 hover:text-yellow-400"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -100,7 +100,7 @@
             <input
               type="text"
               placeholder="Search..."
-              class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
             <svg
               class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -113,7 +113,7 @@
           </div>
 
           <!-- Notifications -->
-          <button class="relative p-2 text-gray-500 hover:text-gray-700">
+          <button class="relative p-2 text-gray-400 hover:text-yellow-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -124,7 +124,7 @@
           </button>
 
           <!-- Theme Toggle -->
-          <button class="p-2 text-gray-500 hover:text-gray-700">
+          <button class="p-2 text-gray-400 hover:text-yellow-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
@@ -133,7 +133,7 @@
       </header>
 
       <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto bg-gray-50 p-4 lg:p-6">
+      <main class="flex-1 overflow-y-auto bg-black text-white p-4 lg:p-6">
         <slot />
       </main>
     </div>
@@ -142,7 +142,7 @@
     <div
       v-if="sidebarOpen"
       @click="sidebarOpen = false"
-      class="fixed inset-0 bg-gray-600 bg-opacity-75 z-40 lg:hidden"
+      class="fixed inset-0 bg-black/70 z-40 lg:hidden"
     ></div>
   </div>
 </template>
