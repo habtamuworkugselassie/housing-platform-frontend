@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
+# Work around npm optional deps bug: explicitly install Rollup native binary for Linux (https://github.com/npm/cli/issues/4828)
+RUN npm install @rollup/rollup-linux-x64-gnu@4.59.0 --no-save
 
 COPY . .
 RUN npm run build
