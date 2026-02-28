@@ -125,4 +125,4 @@ These will be removed in a future version.
 
 ## Need Help?
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed architecture documentation.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture documentation.

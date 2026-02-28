@@ -129,9 +129,9 @@ import api from '@/services/api'
 
 ## Documentation
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Detailed architecture guide
-- [MIGRATION.md](./MIGRATION.md) - Step-by-step migration guide
-- [README_ARCHITECTURE.md](./README_ARCHITECTURE.md) - Quick reference
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed architecture guide
+- [MIGRATION.md](MIGRATION.md) - Step-by-step migration guide
+- [README_ARCHITECTURE.md](README_ARCHITECTURE.md) - Quick reference
 
 ## Status
 

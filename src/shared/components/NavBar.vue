@@ -40,7 +40,7 @@
               {{ $t('nav.buildings') }}
             </router-link>
           </div>
-          <div class="hidden md:ml-6 md:flex md:space-x-6">
+          <div v-if="isExhibitionPage" class="hidden md:ml-6 md:flex md:space-x-6">
             <router-link to="/#why-exhibit" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Why Exhibit</router-link>
             <router-link to="/#why-visit" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Why Visit</router-link>
             <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">Show Features</router-link>
@@ -180,11 +180,12 @@
           >
             {{ $t('nav.properties') }}
           </router-link>
-          <router-link to="/#why-exhibit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Exhibit</router-link>
-          <router-link to="/#why-visit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Visit</router-link>
-          <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Show Features</router-link>
-          <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Who Attends</router-link>
-          
+          <template v-if="isExhibitionPage">
+            <router-link to="/#why-exhibit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Exhibit</router-link>
+            <router-link to="/#why-visit" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Why Visit</router-link>
+            <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Show Features</router-link>
+            <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-primary-600 hover:bg-gray-50 rounded-md">Who Attends</router-link>
+          </template>
           <template v-if="authStore.isAuthenticated">
             <router-link
               v-if="authStore.hasRole('REALTOR')"
@@ -301,15 +302,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/features/auth'
 import { useLocaleStore } from '@/stores/locale'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
 const router = useRouter()
+const route = useRoute()
 const mobileMenuOpen = ref(false)
+
+const isExhibitionPage = computed(() => route.path === '/' || route.path === '/exhibition')
 
 const toggleLanguage = () => {
   localeStore.toggleLocale()

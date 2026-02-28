@@ -95,8 +95,8 @@ import NavBar from '@/components/NavBar.vue'  // ❌
 
 ## 📚 Documentation
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Detailed architecture guide
-- [MIGRATION.md](./MIGRATION.md) - Migration guide
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed architecture guide
+- [MIGRATION.md](MIGRATION.md) - Migration guide
 
 ## ✨ Benefits Achieved
 
