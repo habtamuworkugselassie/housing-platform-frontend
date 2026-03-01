@@ -997,8 +997,11 @@ async function suspendOrg() {
 
 const mediaUrl = (path) => {
   if (!path) return ''
+  if (path.startsWith('http')) return path
   const base = import.meta.env.VITE_API_BASE_URL?.trim() || ''
-  return path.startsWith('http') ? path : (base ? base.replace(/\/$/, '') + path : path)
+  if (!base) return path
+  const p = path.replace(/^\/api\/v1/, '')
+  return base.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p)
 }
 
 const onUploadLogo = async (ev, orgId) => {

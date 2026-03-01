@@ -641,8 +641,10 @@ function setGroupPage(groupKey, page) {
 function mediaUrl(url) {
   if (!url) return ''
   if (url.startsWith('http')) return url
-  const base = import.meta.env.VITE_API_BASE_URL || ''
-  return base ? `${base.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}` : url
+  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
+  if (!base) return url
+  const p = url.replace(/^\/api\/v1/, '')
+  return `${base.replace(/\/$/, '')}${p.startsWith('/') ? p : '/' + p}`
 }
 
 // Search and pagination for the organization list (orgs from API have name, address, etc.)

@@ -115,8 +115,10 @@ const backLink = computed(() => {
 function mediaUrl(url) {
   if (!url) return ''
   if (url.startsWith('http')) return url
-  const base = import.meta.env.VITE_API_BASE_URL || ''
-  return base ? `${base.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}` : url
+  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
+  if (!base) return url
+  const p = url.replace(/^\/api\/v1/, '')
+  return `${base.replace(/\/$/, '')}${p.startsWith('/') ? p : '/' + p}`
 }
 
 async function loadOrganization() {
