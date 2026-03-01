@@ -914,7 +914,7 @@
       "title": "Register your interest",
       "subtitle": "Leave your details and we'll keep you informed about the exhibition — dates, exhibitor info, and how to participate.",
       "email": "Email",
-      "emailPlaceholder": "you@company.com",
+      "emailPlaceholder": "you{'@'}company.com",
       "phone": "Phone number",
       "phonePlaceholder": "+251 …",
       "interestType": "I'm interested as",

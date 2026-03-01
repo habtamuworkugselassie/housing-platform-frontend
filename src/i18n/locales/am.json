@@ -930,7 +930,7 @@
       "title": "ፍላጎትዎን ይመዝግቡ",
       "subtitle": "ዝርዝሮችዎን ይተው እና ስለ ኤግዚቢሽኑ — ቀናት፣ የተሳተፊ መረጃ እና እንዴት እንደሚሳተፉ — እንደሚያስታውስዎ እናሳውቃለን።",
       "email": "ኢሜይል",
-      "emailPlaceholder": "you@company.com",
+      "emailPlaceholder": "you{'@'}company.com",
       "phone": "ስልክ ቁጥር",
       "phonePlaceholder": "+251 …",
       "interestType": "እንደ ይጠበቃል",
