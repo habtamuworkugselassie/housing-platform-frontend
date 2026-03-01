@@ -49,34 +49,34 @@
         <div v-if="propertiesLoading" class="flex justify-center py-12">
           <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
         </div>
-        <div v-else-if="propertiesList.length" class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
           <a
-            v-for="item in propertiesList"
-            :key="item.id"
-            :href="`/properties/${item.id}`"
+            v-for="(item, index) in (propertiesList || [])"
+            :key="item?.id ?? index"
+            :href="item?.id ? `/properties/${item.id}` : '#'"
             class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:shadow-lg hover:shadow-yellow-400/5"
           >
             <div class="relative aspect-[5/3] flex-shrink-0 overflow-hidden bg-zinc-800">
               <img
-                v-if="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
                 :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
-                :alt="item.title"
+                :alt="item?.title || ''"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
               />
               <div v-else class="flex h-full items-center justify-center text-3xl text-gray-500">🏠</div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
               <span class="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
-                {{ item.city }}{{ item.country ? `, ${item.country}` : '' }}
+                {{ item?.city ?? '' }}{{ item?.country ? `, ${item.country}` : '' }}
               </span>
             </div>
             <div class="flex min-h-0 flex-1 flex-col p-3 sm:p-3.5">
               <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-yellow-400/95">
-                {{ item.title }}
+                {{ item?.title ?? '' }}
               </h3>
-              <p v-if="item.priceETB || item.priceUSD" class="mt-1.5 text-sm font-bold text-yellow-400">
-                {{ item.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
-                <span v-if="item.priceETB && item.priceUSD" class="font-normal text-gray-500">/</span>
-                {{ item.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
+              <p v-if="item?.priceETB || item?.priceUSD" class="mt-1.5 text-sm font-bold text-yellow-400">
+                {{ item?.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
+                <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-gray-500">/</span>
+                {{ item?.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
               </p>
             </div>
           </a>
@@ -456,9 +456,9 @@ const loadProperties = async () => {
       { status: 'AVAILABLE' },
       { page: propertiesPage.value, size: propertiesPageSize }
     )
-    const content = res.content ?? (Array.isArray(res) ? res : [])
-    propertiesList.value = content
-    propertiesTotalPages.value = res.totalPages ?? (Math.ceil((res.totalElements ?? 0) / propertiesPageSize) || 1)
+    const content = res?.content ?? (Array.isArray(res) ? res : [])
+    propertiesList.value = Array.isArray(content) ? content : []
+    propertiesTotalPages.value = res?.totalPages ?? (Math.ceil((res?.totalElements ?? 0) / propertiesPageSize) || 1)
   } catch (err) {
     console.error('Failed to load properties:', err)
     propertiesList.value = []
