@@ -108,27 +108,29 @@ export const adminApi = {
 
   /**
    * Upload organization media (logo, images, videos). Use FormData: files + mediaKind (LOGO | IMAGE | VIDEO).
+   * Returns full AxiosResponse so useApi.execute can extract response.data (updated organization).
    */
   uploadOrganizationMedia: async (
     id: string,
     files: File[],
     mediaKind: 'LOGO' | 'IMAGE' | 'VIDEO' = 'IMAGE'
-  ): Promise<any> => {
+  ): Promise<AxiosResponse<any>> => {
     const formData = new FormData()
     files.forEach((f) => formData.append('files', f))
     formData.append('mediaKind', mediaKind)
     const response = await api.post(`/organizations/${id}/media`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
-    return response.data
+    return response
   },
 
   /**
-   * Delete organization media attachment
+   * Delete organization media attachment.
+   * Returns full AxiosResponse so useApi.execute can extract response.data (updated organization).
    */
-  deleteOrganizationMedia: async (id: string, attachmentId: string): Promise<any> => {
+  deleteOrganizationMedia: async (id: string, attachmentId: string): Promise<AxiosResponse<any>> => {
     const response = await api.delete(`/organizations/${id}/media/${attachmentId}`)
-    return response.data
+    return response
   },
 
   /**

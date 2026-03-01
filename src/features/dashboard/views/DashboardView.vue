@@ -1458,11 +1458,15 @@ const deletePropertyImage = async (propertyId, imageId) => {
   if (!confirm('Are you sure you want to delete this image?')) return
   
   try {
-    await api.delete(`/properties/${propertyId}/images/${imageId}`)
+    const res = await api.delete(`/properties/${propertyId}/images/${imageId}`)
+    const updated = res?.data
+    if (updated && editingProperty.value?.id === propertyId) {
+      editingProperty.value = updated
+    }
     await loadProperties()
-    // Update editingProperty to reflect deleted image
-    if (editingProperty.value && editingProperty.value.images) {
-      editingProperty.value.images = editingProperty.value.images.filter(img => img.id !== imageId)
+    const inList = properties.value?.find(p => p.id === propertyId)
+    if (inList && updated?.images) {
+      inList.images = updated.images
     }
     alert('Image deleted successfully')
   } catch (err) {
@@ -1504,18 +1508,22 @@ const updateProperty = async () => {
     
     await api.put(`/properties/${editingProperty.value.id}`, payload)
     
-    // Then upload new files if any
+    // Then upload new files if any and use response so new images show
     if (selectedFiles.value.length > 0) {
       const formData = new FormData()
       selectedFiles.value.forEach(fileObj => {
         formData.append('files', fileObj.file)
       })
       
-      await api.post(`/properties/${editingProperty.value.id}/images`, formData, {
+      const uploadRes = await api.post(`/properties/${editingProperty.value.id}/images`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
+      const updatedWithImages = uploadRes?.data
+      if (updatedWithImages?.images) {
+        editingProperty.value = updatedWithImages
+      }
     }
     
     await loadProperties()

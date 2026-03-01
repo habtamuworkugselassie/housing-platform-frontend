@@ -1006,7 +1006,12 @@ const onUploadLogo = async (ev, orgId) => {
   if (!files?.length || !orgId) return
   try {
     const updated = await uploadOrganizationMedia(orgId, Array.from(files), 'LOGO')
-    if (updated) viewingOrg.value = updated
+    if (updated) {
+      viewingOrg.value = updated
+    } else {
+      const full = await getOrganizationById(orgId)
+      viewingOrg.value = full
+    }
     await loadOrgs()
   } catch (e) {
     console.error('Upload logo failed:', e)
@@ -1019,7 +1024,12 @@ const onUploadVideo = async (ev, orgId) => {
   if (!files?.length || !orgId) return
   try {
     const updated = await uploadOrganizationMedia(orgId, Array.from(files), 'VIDEO')
-    if (updated) viewingOrg.value = updated
+    if (updated) {
+      viewingOrg.value = updated
+    } else {
+      const full = await getOrganizationById(orgId)
+      viewingOrg.value = full
+    }
     await loadOrgs()
   } catch (e) {
     console.error('Upload video failed:', e)
@@ -1031,7 +1041,12 @@ const deleteMedia = async (orgId, attachmentId) => {
   if (!orgId || !attachmentId) return
   try {
     const updated = await deleteOrganizationMedia(orgId, attachmentId)
-    if (updated) viewingOrg.value = updated
+    if (updated) {
+      viewingOrg.value = updated
+    } else {
+      const full = await getOrganizationById(orgId)
+      viewingOrg.value = full
+    }
     await loadOrgs()
   } catch (e) {
     console.error('Delete media failed:', e)
