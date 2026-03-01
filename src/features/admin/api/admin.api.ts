@@ -204,10 +204,46 @@ export const adminApi = {
   },
 
   /**
-   * Update property (admin)
+   * Get property by ID (full details including images)
+   */
+  getPropertyById: async (id: string): Promise<any> => {
+    const response = await api.get(`/properties/${id}`)
+    return response.data
+  },
+
+  /**
+   * Create property (admin can create for any real estate company)
+   */
+  createProperty: async (property: PropertyManagementRequest): Promise<any> => {
+    const response = await api.post('/properties', property)
+    return response.data
+  },
+
+  /**
+   * Update property (admin can update any property)
    */
   updateProperty: async (id: string, property: PropertyManagementRequest): Promise<any> => {
     const response = await api.put(`/properties/${id}`, property)
+    return response.data
+  },
+
+  /**
+   * Upload property media (images/videos)
+   */
+  uploadPropertyMedia: async (propertyId: string, files: File[]): Promise<any> => {
+    const formData = new FormData()
+    files.forEach((f) => formData.append('files', f))
+    const response = await api.post(`/properties/${propertyId}/images`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return response.data
+  },
+
+  /**
+   * Delete property image
+   */
+  deletePropertyImage: async (propertyId: string, imageId: string): Promise<any> => {
+    const response = await api.delete(`/properties/${propertyId}/images/${imageId}`)
     return response.data
   },
 

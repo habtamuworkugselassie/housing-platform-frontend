@@ -89,8 +89,29 @@ export interface OrganizationUpdateRequest {
 }
 
 export interface PropertyManagementRequest {
+  title?: string
+  description?: string
+  type?: 'APARTMENT' | 'HOUSE' | 'VILLA' | 'CONDOMINIUM' | 'TOWNHOUSE' | 'LAND' | 'COMMERCIAL'
   status?: 'AVAILABLE' | 'RESERVED' | 'SOLD' | 'WITHDRAWN'
+  priceETB?: number | null
+  priceUSD?: number | null
+  address?: string
+  city?: string
+  state?: string
+  country?: string
+  zipCode?: string
+  bedrooms?: number | null
+  bathrooms?: number | null
+  area?: number | null
+  floorNumber?: number | null
+  totalFloors?: number | null
+  constructionStatus?: 'READY_TO_MOVE' | 'UNDER_CONSTRUCTION' | 'PLANNED' | 'COMPLETED'
+  category?: 'FOR_SALE' | 'FOR_RENTAL'
+  constructionPercentage?: number | null
+  isFullyFurnished?: boolean
   featured?: boolean
+  realEstateCompanyId?: string
+  agentId?: string
 }
 
 export interface AdminFilters {

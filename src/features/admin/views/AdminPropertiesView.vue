@@ -6,6 +6,13 @@
           <h1 class="text-3xl font-bold text-white">Property Management</h1>
           <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageProperties') }}</p>
         </div>
+        <button
+          type="button"
+          @click="openCreateModal"
+          class="px-4 py-2 bg-white text-black font-medium rounded-md hover:bg-yellow-400 transition-colors"
+        >
+          Create property
+        </button>
       </div>
 
       <!-- Filters -->
@@ -225,6 +232,377 @@
           </div>
         </div>
       </div>
+
+      <!-- Edit Property Modal -->
+      <div
+        v-if="showEditDialog"
+        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        @click.self="showEditDialog = false"
+      >
+        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-medium text-white">Edit Property</h3>
+            <button
+              @click="showEditDialog = false"
+              class="text-gray-400 hover:text-yellow-400 transition-colors"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <form v-if="editingProperty" @submit.prevent="submitEdit" class="space-y-4">
+            <p v-if="editError" class="text-sm text-red-400">{{ editError }}</p>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
+              <input
+                v-model="editForm.title"
+                type="text"
+                required
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
+              <textarea
+                v-model="editForm.description"
+                rows="3"
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Type *</label>
+                <select
+                  v-model="editForm.type"
+                  required
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="APARTMENT">Apartment</option>
+                  <option value="HOUSE">House</option>
+                  <option value="VILLA">Villa</option>
+                  <option value="CONDOMINIUM">Condominium</option>
+                  <option value="TOWNHOUSE">Townhouse</option>
+                  <option value="LAND">Land</option>
+                  <option value="COMMERCIAL">Commercial</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Status</label>
+                <select
+                  v-model="editForm.status"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="AVAILABLE">Available</option>
+                  <option value="RESERVED">Reserved</option>
+                  <option value="SOLD">Sold</option>
+                  <option value="WITHDRAWN">Withdrawn</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Price (ETB)</label>
+                <input
+                  v-model.number="editForm.priceETB"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
+                <input
+                  v-model.number="editForm.priceUSD"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
+              <input
+                v-model="editForm.address"
+                type="text"
+                required
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">City *</label>
+                <input
+                  v-model="editForm.city"
+                  type="text"
+                  required
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">State</label>
+                <input
+                  v-model="editForm.state"
+                  type="text"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Country *</label>
+                <input
+                  v-model="editForm.country"
+                  type="text"
+                  required
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
+                <input
+                  v-model.number="editForm.bedrooms"
+                  type="number"
+                  min="0"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Bathrooms</label>
+                <input
+                  v-model.number="editForm.bathrooms"
+                  type="number"
+                  min="0"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Area (sqm)</label>
+                <input
+                  v-model.number="editForm.area"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Construction status</label>
+                <select
+                  v-model="editForm.constructionStatus"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="READY_TO_MOVE">Ready to move</option>
+                  <option value="UNDER_CONSTRUCTION">Under construction</option>
+                  <option value="PLANNED">Planned</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                <select
+                  v-model="editForm.category"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="FOR_SALE">For Sale</option>
+                  <option value="FOR_RENTAL">For Rental</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <label class="flex items-center gap-2 text-sm text-gray-400">
+                <input
+                  v-model="editForm.isFullyFurnished"
+                  type="checkbox"
+                  class="rounded border-white/30 text-yellow-400 focus:ring-yellow-400"
+                />
+                Fully furnished
+              </label>
+              <label class="flex items-center gap-2 text-sm text-gray-400">
+                <input
+                  v-model="editForm.featured"
+                  type="checkbox"
+                  class="rounded border-white/30 text-yellow-400 focus:ring-yellow-400"
+                />
+                Featured
+              </label>
+            </div>
+            <!-- Edit: Media section -->
+            <div class="border-t border-white/10 pt-4 mt-4">
+              <label class="block text-sm font-medium text-gray-400 mb-2">Photos / media</label>
+              <div v-if="editingProperty?.images?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                <div v-for="img in editingProperty.images" :key="img.id" class="relative group">
+                  <img :src="mediaUrl(img.imageUrl)" :alt="img.caption" class="w-full h-20 object-cover rounded border border-white/20" />
+                  <button
+                    type="button"
+                    @click="deleteEditPropertyImage(img.id)"
+                    class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 flex items-center justify-center"
+                  >
+                    <span class="text-xs">×</span>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <input
+                  ref="editMediaInput"
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  class="hidden"
+                  @change="onEditMediaSelect"
+                />
+                <button
+                  type="button"
+                  @click="editMediaInput?.click()"
+                  class="px-3 py-1.5 text-sm border border-white/30 text-white rounded-md hover:bg-white/10"
+                >
+                  Add photos / videos
+                </button>
+                <span v-if="editMediaUploading" class="text-sm text-gray-400">Uploading…</span>
+              </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-4">
+              <button
+                type="button"
+                @click="showEditDialog = false"
+                class="px-4 py-2 border border-white/30 text-white rounded-md hover:bg-white/10 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                :disabled="editSaving"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:bg-white/50"
+              >
+                {{ editSaving ? 'Saving…' : 'Save' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Create Property Modal -->
+      <div
+        v-if="showCreateDialog"
+        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        @click.self="showCreateDialog = false"
+      >
+        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-medium text-white">Create property</h3>
+            <button type="button" @click="showCreateDialog = false" class="text-gray-400 hover:text-yellow-400">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <form @submit.prevent="submitCreate" class="space-y-4">
+            <p v-if="createError" class="text-sm text-red-400">{{ createError }}</p>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Real estate company *</label>
+              <select
+                v-model="createForm.realEstateCompanyId"
+                required
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              >
+                <option value="">Select company</option>
+                <option v-for="org in realEstateOrgs" :key="org.id" :value="org.id">{{ org.name }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
+              <input v-model="createForm.title" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
+              <textarea v-model="createForm.description" rows="3" class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Type *</label>
+                <select v-model="createForm.type" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                  <option value="APARTMENT">Apartment</option>
+                  <option value="HOUSE">House</option>
+                  <option value="VILLA">Villa</option>
+                  <option value="CONDOMINIUM">Condominium</option>
+                  <option value="TOWNHOUSE">Townhouse</option>
+                  <option value="LAND">Land</option>
+                  <option value="COMMERCIAL">Commercial</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Category *</label>
+                <select v-model="createForm.category" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                  <option value="FOR_SALE">For Sale</option>
+                  <option value="FOR_RENTAL">For Rental</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Price (ETB)</label>
+                <input v-model.number="createForm.priceETB" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
+                <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
+              <input v-model="createForm.address" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">City *</label>
+                <input v-model="createForm.city" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">State</label>
+                <input v-model="createForm.state" type="text" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Country *</label>
+                <input v-model="createForm.country" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
+                <input v-model.number="createForm.bedrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Bathrooms</label>
+                <input v-model.number="createForm.bathrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Area (sqm)</label>
+                <input v-model.number="createForm.area" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Construction status *</label>
+              <select v-model="createForm.constructionStatus" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                <option value="READY_TO_MOVE">Ready to move</option>
+                <option value="UNDER_CONSTRUCTION">Under construction</option>
+                <option value="PLANNED">Planned</option>
+                <option value="COMPLETED">Completed</option>
+              </select>
+            </div>
+            <div class="border-t border-white/10 pt-4">
+              <label class="block text-sm font-medium text-gray-400 mb-2">Photos / videos (optional)</label>
+              <input ref="createMediaInput" type="file" accept="image/*,video/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-white file:text-black file:font-medium file:hover:bg-yellow-400" @change="onCreateMediaSelect" />
+              <p v-if="createFormMediaFiles.length" class="mt-1 text-xs text-gray-500">{{ createFormMediaFiles.length }} file(s) selected</p>
+            </div>
+            <div class="flex justify-end gap-2 pt-4">
+              <button type="button" @click="showCreateDialog = false" class="px-4 py-2 border border-white/30 text-white rounded-md hover:bg-white/10">Cancel</button>
+              <button type="submit" :disabled="createSaving" class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50">{{ createSaving ? 'Creating…' : 'Create' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
@@ -245,6 +623,73 @@ const filters = ref({
 
 const showViewDialog = ref(false)
 const viewingProperty = ref(null)
+
+const showEditDialog = ref(false)
+const editingProperty = ref(null)
+const editSaving = ref(false)
+const editError = ref('')
+const editMediaInput = ref(null)
+const editMediaUploading = ref(false)
+const editForm = ref({
+  title: '',
+  description: '',
+  type: 'APARTMENT',
+  status: 'AVAILABLE',
+  priceETB: null,
+  priceUSD: null,
+  address: '',
+  city: '',
+  state: '',
+  country: '',
+  zipCode: '',
+  bedrooms: null,
+  bathrooms: null,
+  area: null,
+  floorNumber: null,
+  totalFloors: null,
+  constructionStatus: 'READY_TO_MOVE',
+  category: 'FOR_SALE',
+  constructionPercentage: null,
+  isFullyFurnished: false,
+  featured: false
+})
+
+const showCreateDialog = ref(false)
+const createSaving = ref(false)
+const createError = ref('')
+const realEstateOrgs = ref([])
+const createFormMediaFiles = ref([])
+const createForm = ref({
+  realEstateCompanyId: '',
+  title: '',
+  description: '',
+  type: 'APARTMENT',
+  category: 'FOR_SALE',
+  priceETB: null,
+  priceUSD: null,
+  address: '',
+  city: '',
+  state: '',
+  country: '',
+  zipCode: '',
+  bedrooms: null,
+  bathrooms: null,
+  area: null,
+  floorNumber: null,
+  totalFloors: null,
+  constructionStatus: 'READY_TO_MOVE',
+  constructionPercentage: null,
+  isFullyFurnished: false
+})
+
+function mediaUrl(path) {
+  if (!path) return ''
+  if (path.startsWith('http')) return path
+  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
+  if (!base) return path
+  const p = path.replace(/^\/api\/v1/, '')
+  return base.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p)
+}
 
 const loadProperties = async () => {
   loading.value = true
@@ -273,12 +718,215 @@ const viewProperty = (property) => {
   showViewDialog.value = true
 }
 
-const editProperty = (property) => {
-  // TODO: Open edit modal
-  console.log('Edit property:', property)
+const editProperty = async (property) => {
+  editError.value = ''
+  try {
+    const full = await adminApi.getPropertyById(property.id)
+    editingProperty.value = full
+    editForm.value = {
+      title: full.title ?? '',
+      description: full.description ?? '',
+      type: full.type ?? 'APARTMENT',
+      status: full.status ?? 'AVAILABLE',
+      priceETB: full.priceETB ?? null,
+      priceUSD: full.priceUSD ?? null,
+      address: full.address ?? '',
+      city: full.city ?? '',
+      state: full.state ?? '',
+      country: full.country ?? '',
+      zipCode: full.zipCode ?? '',
+      bedrooms: full.bedrooms ?? null,
+      bathrooms: full.bathrooms ?? null,
+      area: full.area ?? null,
+      floorNumber: full.floorNumber ?? null,
+      totalFloors: full.totalFloors ?? null,
+      constructionStatus: full.constructionStatus ?? 'READY_TO_MOVE',
+      category: full.category ?? 'FOR_SALE',
+      constructionPercentage: full.constructionPercentage ?? null,
+      isFullyFurnished: full.isFullyFurnished ?? false,
+      featured: full.featured ?? false,
+      realEstateCompanyId: full.realEstateCompanyId ?? undefined,
+      agentId: full.agentId ?? undefined
+    }
+    showEditDialog.value = true
+  } catch (err) {
+    console.error('Failed to load property for edit:', err)
+    editError.value = err?.response?.data?.message || err?.message || 'Failed to load property'
+  }
+}
+
+const submitEdit = async () => {
+  if (!editingProperty.value?.id) return
+  if (!editForm.value.priceETB && !editForm.value.priceUSD) {
+    editError.value = 'At least one price (ETB or USD) is required'
+    return
+  }
+  editError.value = ''
+  editSaving.value = true
+  try {
+    const payload = {
+      title: editForm.value.title,
+      description: editForm.value.description || null,
+      type: editForm.value.type,
+      status: editForm.value.status,
+      priceETB: editForm.value.priceETB ?? null,
+      priceUSD: editForm.value.priceUSD ?? null,
+      address: editForm.value.address,
+      city: editForm.value.city,
+      state: editForm.value.state || null,
+      country: editForm.value.country,
+      zipCode: editForm.value.zipCode || null,
+      bedrooms: editForm.value.bedrooms ?? null,
+      bathrooms: editForm.value.bathrooms ?? null,
+      area: editForm.value.area ?? null,
+      floorNumber: editForm.value.floorNumber ?? null,
+      totalFloors: editForm.value.totalFloors ?? null,
+      constructionStatus: editForm.value.constructionStatus,
+      category: editForm.value.category,
+      constructionPercentage: editForm.value.constructionPercentage ?? null,
+      isFullyFurnished: editForm.value.isFullyFurnished ?? false,
+      featured: editForm.value.featured ?? false,
+      realEstateCompanyId: editForm.value.realEstateCompanyId || editingProperty.value.realEstateCompanyId,
+      agentId: editForm.value.agentId || editingProperty.value.agentId
+    }
+    await adminApi.updateProperty(editingProperty.value.id, payload)
+    showEditDialog.value = false
+    editingProperty.value = null
+    await loadProperties()
+  } catch (err) {
+    editError.value = err?.response?.data?.message || err?.message || 'Failed to update property'
+  } finally {
+    editSaving.value = false
+  }
+}
+
+async function deleteEditPropertyImage(imageId) {
+  if (!editingProperty.value?.id) return
+  try {
+    const updated = await adminApi.deletePropertyImage(editingProperty.value.id, imageId)
+    editingProperty.value = updated
+  } catch (err) {
+    editError.value = err?.response?.data?.message || err?.message || 'Failed to delete image'
+  }
+}
+
+function onEditMediaSelect(ev) {
+  const files = ev.target?.files
+  if (!files?.length || !editingProperty.value?.id) return
+  editMediaUploading.value = true
+  editError.value = ''
+  adminApi.uploadPropertyMedia(editingProperty.value.id, Array.from(files))
+    .then((updated) => {
+      editingProperty.value = updated
+      ev.target.value = ''
+    })
+    .catch((err) => {
+      editError.value = err?.response?.data?.message || err?.message || 'Upload failed'
+    })
+    .finally(() => {
+      editMediaUploading.value = false
+    })
+}
+
+const loadRealEstateOrgs = async () => {
+  try {
+    const res = await adminApi.getOrganizations({ type: 'REAL_ESTATE_COMPANY' })
+    const list = Array.isArray(res?.data) ? res.data : []
+    realEstateOrgs.value = list
+  } catch (err) {
+    console.error('Failed to load real estate organizations:', err)
+    realEstateOrgs.value = []
+  }
+}
+
+function openCreateModal() {
+  createError.value = ''
+  createForm.value = {
+    realEstateCompanyId: '',
+    title: '',
+    description: '',
+    type: 'APARTMENT',
+    category: 'FOR_SALE',
+    priceETB: null,
+    priceUSD: null,
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    zipCode: '',
+    bedrooms: null,
+    bathrooms: null,
+    area: null,
+    floorNumber: null,
+    totalFloors: null,
+    constructionStatus: 'READY_TO_MOVE',
+    constructionPercentage: null,
+    isFullyFurnished: false
+  }
+  createFormMediaFiles.value = []
+  showCreateDialog.value = true
+}
+
+function onCreateMediaSelect(ev) {
+  const files = ev.target?.files
+  if (!files?.length) return
+  createFormMediaFiles.value = Array.from(files)
+}
+
+async function submitCreate() {
+  if (!createForm.value.realEstateCompanyId || !createForm.value.title || !createForm.value.address || !createForm.value.city || !createForm.value.country) {
+    createError.value = 'Please fill required fields (company, title, address, city, country)'
+    return
+  }
+  if (!createForm.value.priceETB && !createForm.value.priceUSD) {
+    createError.value = 'At least one price (ETB or USD) is required'
+    return
+  }
+  if (!createForm.value.category || !createForm.value.constructionStatus) {
+    createError.value = 'Category and construction status are required'
+    return
+  }
+  createError.value = ''
+  createSaving.value = true
+  try {
+    const payload = {
+      realEstateCompanyId: createForm.value.realEstateCompanyId,
+      title: createForm.value.title,
+      description: createForm.value.description || null,
+      type: createForm.value.type,
+      category: createForm.value.category,
+      constructionStatus: createForm.value.constructionStatus,
+      priceETB: createForm.value.priceETB ?? null,
+      priceUSD: createForm.value.priceUSD ?? null,
+      address: createForm.value.address,
+      city: createForm.value.city,
+      state: createForm.value.state || null,
+      country: createForm.value.country,
+      zipCode: createForm.value.zipCode || null,
+      bedrooms: createForm.value.bedrooms ?? null,
+      bathrooms: createForm.value.bathrooms ?? null,
+      area: createForm.value.area ?? null,
+      floorNumber: createForm.value.floorNumber ?? null,
+      totalFloors: createForm.value.totalFloors ?? null,
+      constructionPercentage: createForm.value.constructionPercentage ?? null,
+      isFullyFurnished: createForm.value.isFullyFurnished ?? false
+    }
+    const created = await adminApi.createProperty(payload)
+    if (createFormMediaFiles.value.length > 0) {
+      await adminApi.uploadPropertyMedia(created.id, createFormMediaFiles.value)
+    }
+    showCreateDialog.value = false
+    createFormMediaFiles.value = []
+    await loadProperties()
+  } catch (err) {
+    createError.value = err?.response?.data?.message || err?.message || 'Failed to create property'
+  } finally {
+    createSaving.value = false
+  }
 }
 
 onMounted(() => {
   loadProperties()
+  loadRealEstateOrgs()
 })
 </script>
