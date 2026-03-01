@@ -16,7 +16,7 @@
           v-for="(pillar, index) in pillars"
           :key="index"
           :class="[
-            'group p-8 rounded-sm transition-all duration-300',
+            'group p-8 rounded-lg transition-all duration-300',
             dark
               ? 'bg-white/5 border border-white/10 hover:border-yellow-400 hover:bg-yellow-500/20'
               : 'bg-white border border-gray-200 hover:border-yellow-400 hover:bg-yellow-500/20 hover:shadow-lg'

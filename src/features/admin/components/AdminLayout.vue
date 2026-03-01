@@ -15,7 +15,7 @@
             <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center">
               <span class="text-black font-bold text-lg">H</span>
             </div>
-            <span class="ml-3 text-xl font-semibold text-white">Admin Portal</span>
+            <span class="ml-3 text-xl font-semibold text-white">{{ $t('admin.portalTitle') }}</span>
           </div>
           <button
             @click="sidebarOpen = false"
@@ -63,7 +63,7 @@
             </div>
             <div class="ml-3 flex-1 min-w-0">
               <p class="text-sm font-medium text-white truncate">{{ userName }}</p>
-              <p class="text-xs text-gray-400 truncate">Administrator</p>
+              <p class="text-xs text-gray-400 truncate">{{ $t('admin.administrator') }}</p>
             </div>
           </div>
           <button
@@ -99,7 +99,7 @@
           <div class="hidden md:block relative">
             <input
               type="text"
-              placeholder="Search..."
+              :placeholder="$t('admin.searchPlaceholder')"
               class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
             <svg
@@ -150,8 +150,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
@@ -161,7 +163,7 @@ const pendingApprovals = ref(0) // TODO: Load from stats
 
 const userName = computed(() => {
   const user = authStore.user
-  return user ? `${user.firstName} ${user.lastName}` : 'Admin'
+  return user ? `${user.firstName} ${user.lastName}` : t('nav.admin')
 })
 
 const userInitials = computed(() => {

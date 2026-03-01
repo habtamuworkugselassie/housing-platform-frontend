@@ -12,7 +12,7 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
         <div class="rounded-md -space-y-px">
           <div>
-            <label for="newPassword" class="sr-only">New password</label>
+            <label for="newPassword" class="sr-only">{{ $t('auth.newPassword') }}</label>
             <input
               id="newPassword"
               v-model="form.newPassword"
@@ -25,7 +25,7 @@
             />
           </div>
           <div>
-            <label for="confirmPassword" class="sr-only">Confirm password</label>
+            <label for="confirmPassword" class="sr-only">{{ $t('auth.confirmNewPassword') }}</label>
             <input
               id="confirmPassword"
               v-model="form.confirmPassword"

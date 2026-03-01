@@ -167,12 +167,79 @@ export function useAdminOrganizations() {
     return await executeReject(() => adminApi.rejectOrganization(id, reason))
   }
 
+  const createOrganization = async (payload) => {
+    const { execute: executeCreate } = useApi()
+    return await executeCreate(() => adminApi.createOrganization(payload))
+  }
+
+  const updateOrganization = async (id, payload) => {
+    const { execute: executeUpdate } = useApi()
+    return await executeUpdate(() => adminApi.updateOrganization(id, payload))
+  }
+
+  const getOrganizationById = async (id) => {
+    return await adminApi.getOrganizationById(id)
+  }
+
+  const uploadOrganizationMedia = async (id, files, mediaKind = 'IMAGE') => {
+    const { execute: executeUpload } = useApi()
+    return await executeUpload(() => adminApi.uploadOrganizationMedia(id, files, mediaKind))
+  }
+
+  const deleteOrganizationMedia = async (id, attachmentId) => {
+    const { execute: executeDelete } = useApi()
+    return await executeDelete(() => adminApi.deleteOrganizationMedia(id, attachmentId))
+  }
+
+  const suspendOrganization = async (id, reason) => {
+    const { execute: executeSuspend } = useApi()
+    return await executeSuspend(() => adminApi.suspendOrganization(id, reason))
+  }
+
+  const getActiveSponsorships = async () => {
+    return await adminApi.getActiveSponsorships()
+  }
+
+  const getSponsorshipApplicationsByOrganization = async (organizationId) => {
+    return await adminApi.getSponsorshipApplicationsByOrganization(organizationId)
+  }
+
+  const assignOrganizationToSponsorship = async (body) => {
+    const { execute: executeAssign } = useApi()
+    return await executeAssign(() => adminApi.assignOrganizationToSponsorship(body))
+  }
+
+  const approveSponsorshipApplication = async (applicationId, notes) => {
+    const { execute: executeApprove } = useApi()
+    return await executeApprove(() =>
+      adminApi.approveSponsorshipApplication(applicationId, notes)
+    )
+  }
+
+  const rejectSponsorshipApplication = async (applicationId, reason) => {
+    const { execute: executeReject } = useApi()
+    return await executeReject(() =>
+      adminApi.rejectSponsorshipApplication(applicationId, reason)
+    )
+  }
+
   return {
     organizations,
     loading,
     error,
     loadOrganizations,
     approveOrganization,
-    rejectOrganization
+    rejectOrganization,
+    suspendOrganization,
+    createOrganization,
+    updateOrganization,
+    getOrganizationById,
+    uploadOrganizationMedia,
+    deleteOrganizationMedia,
+    getActiveSponsorships,
+    getSponsorshipApplicationsByOrganization,
+    assignOrganizationToSponsorship,
+    approveSponsorshipApplication,
+    rejectSponsorshipApplication
   }
 }

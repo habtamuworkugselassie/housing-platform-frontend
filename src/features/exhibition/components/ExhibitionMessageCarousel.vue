@@ -1,6 +1,6 @@
 <template>
   <section
-    class="message-carousel relative flex w-full flex-col overflow-hidden bg-zinc-950 m-0"
+    class="message-carousel relative flex w-full flex-col overflow-hidden bg-zinc-950 m-0 min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
     :class="heightClass"
   >
     <div class="relative flex-1 min-h-0 w-full overflow-hidden">
@@ -14,24 +14,24 @@
         <div
           v-for="(slide, slideIndex) in slides"
           :key="slideIndex"
-          class="flex h-full w-full flex-shrink-0 flex-col md:flex-row"
+          class="flex h-full min-h-0 w-full min-w-0 flex-shrink-0 flex-col md:flex-row"
         >
-          <!-- Imagery - full bleed -->
+          <!-- Imagery: responsive height on mobile, fixed ratio on desktop -->
           <div
-            class="relative h-48 flex-shrink-0 md:h-full md:min-w-[300px] md:w-2/5 lg:min-w-[380px]"
+            class="relative h-36 flex-shrink-0 sm:h-40 md:h-full md:min-h-0 md:min-w-[260px] md:w-2/5 lg:h-full lg:min-w-[340px] xl:min-w-[400px]"
             :class="slide.imagePosition === 'right' ? 'md:order-2' : ''"
           >
             <img
               v-if="slide.imageUrl"
               :src="slide.imageUrl"
               :alt="slide.imageAlt"
-              class="h-full w-full object-cover"
+              class="h-full w-full object-cover object-center"
             />
             <div
               v-else
               class="flex h-full w-full items-center justify-center bg-zinc-800/80 text-zinc-500"
             >
-              <PhotoIcon class="h-16 w-16" />
+              <PhotoIcon class="h-12 w-12 sm:h-16 sm:w-16" />
             </div>
             <div
               class="absolute inset-0 bg-gradient-to-r from-zinc-950/50 via-transparent to-transparent md:from-zinc-950/60"
@@ -39,36 +39,38 @@
               aria-hidden
             />
           </div>
-          <!-- Content -->
+          <!-- Content: responsive padding, typography, spacing; top-aligned on mobile, centered on desktop -->
           <div
-            class="flex flex-1 flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-14 lg:px-16"
+            class="flex min-h-0 min-w-0 flex-1 flex-col justify-start overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5 md:justify-center md:overflow-visible md:px-8 md:py-10 lg:px-12 lg:py-12 xl:px-16 xl:py-14"
             :class="slide.imagePosition === 'right' ? 'md:order-1' : ''"
           >
-            <h2 class="text-xl font-bold uppercase tracking-wider text-white sm:text-2xl md:text-3xl">
-              {{ $t(slide.titleKey) }}
-            </h2>
-            <p class="mt-4 text-sm leading-relaxed text-gray-400 sm:text-base">
-              {{ $t(slide.bodyKey) }}
-            </p>
-            <ul class="mt-5 space-y-2.5 text-sm text-gray-400 sm:text-base">
-              <li v-for="(bulletKey, i) in slide.bulletKeys" :key="i" class="flex items-start gap-3">
-                <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-white/80" />
-                <span>{{ $t(bulletKey) }}</span>
-              </li>
-            </ul>
-            <a
-              :href="slide.ctaHref"
-              class="mt-8 inline-flex w-fit bg-white px-6 py-3 text-sm font-semibold uppercase tracking-wider text-black transition-all duration-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            >
-              {{ $t(slide.ctaKey) }}
-            </a>
+            <div class="max-w-xl">
+              <h2 class="text-base font-bold uppercase leading-snug tracking-wider text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+                {{ $t(slide.titleKey) }}
+              </h2>
+              <p class="mt-2.5 text-sm leading-relaxed text-gray-400 sm:mt-3 sm:text-base md:mt-4 md:leading-6">
+                {{ $t(slide.bodyKey) }}
+              </p>
+              <ul class="mt-2.5 space-y-1.5 text-sm leading-snug text-gray-400 sm:mt-4 sm:space-y-2 sm:text-base md:space-y-2.5">
+                <li v-for="(bulletKey, i) in slide.bulletKeys" :key="i" class="flex items-start gap-2 sm:gap-2.5">
+                  <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-white/80" />
+                  <span class="min-w-0">{{ $t(bulletKey) }}</span>
+                </li>
+              </ul>
+              <a
+                :href="slide.ctaHref"
+                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-black transition-all duration-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
+              >
+                {{ $t(slide.ctaKey) }}
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Dots - minimal, fluid -->
-    <div class="flex flex-shrink-0 justify-center py-4">
+    <!-- Dots: responsive padding -->
+    <div class="flex flex-shrink-0 justify-center py-3 sm:py-4">
       <div class="flex items-center gap-2">
         <button
           v-for="(_, index) in slides.length"

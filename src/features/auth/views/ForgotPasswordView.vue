@@ -11,7 +11,7 @@
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
         <div>
-          <label for="email" class="sr-only">Email address</label>
+          <label for="email" class="sr-only">{{ $t('auth.emailAddress') }}</label>
           <input
             id="email"
             v-model="form.email"

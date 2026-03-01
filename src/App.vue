@@ -1,20 +1,24 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-black text-white flex flex-col">
     <NavBar />
-    <PublicLayout v-if="isPublicRoute">
-      <template v-if="isExhibitionLanding" #top>
+    <div class="flex-1 min-h-0 flex flex-col">
+      <PublicLayout v-if="isPublicRoute">
+<template v-if="isExhibitionLanding" #top>
+        <LandingHero />
         <ExhibitionTopSection />
       </template>
-      <router-view />
-    </PublicLayout>
-    <router-view v-else />
+        <router-view />
+      </PublicLayout>
+      <router-view v-else />
+    </div>
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { NavBar, PublicLayout } from '@/shared/components'
+import { NavBar, PublicLayout, Footer, LandingHero } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
 
 const route = useRoute()

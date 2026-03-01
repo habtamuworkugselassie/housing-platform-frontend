@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold text-white">User Management</h1>
-          <p class="mt-2 text-sm text-gray-400">Manage platform users and their roles</p>
+          <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageUsers') }}</p>
         </div>
         <button
           class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
@@ -22,7 +22,7 @@
             <input
               v-model="filters.search"
               type="text"
-              placeholder="Search users..."
+              :placeholder="$t('admin.searchUsers')"
               @input="loadUsersData"
               class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             />
@@ -39,7 +39,7 @@
               <option value="REALTOR">Realtor</option>
               <option value="BANKER">Banker</option>
               <option value="SUPPLIER">Supplier</option>
-              <option value="ADMIN">Admin</option>
+              <option value="ADMIN">{{ $t('nav.admin') }}</option>
             </select>
           </div>
           <div>
@@ -84,7 +84,7 @@
                 <td colspan="6" class="px-6 py-12 text-center bg-zinc-900">
                   <div class="flex flex-col items-center">
                     <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mb-2"></div>
-                    <span class="text-sm text-gray-400">Loading users...</span>
+                    <span class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</span>
                   </div>
                 </td>
               </tr>
@@ -93,7 +93,7 @@
               <tr>
                 <td colspan="6" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
                   <div class="space-y-2">
-                    <div class="font-semibold">Error loading users:</div>
+                    <div class="font-semibold">{{ $t('admin.errorLoadingUsers') }}</div>
                     <div>{{ error }}</div>
                     <div class="text-xs text-gray-400 mt-2">
                       Please check your browser console for more details.

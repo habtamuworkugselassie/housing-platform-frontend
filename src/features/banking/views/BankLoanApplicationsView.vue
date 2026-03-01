@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-white">Loan Applications Review</h1>
-      <p class="mt-2 text-sm text-gray-400">Review and manage loan applications for your bank</p>
+      <p class="mt-2 text-sm text-gray-400">{{ $t('banking.reviewManageLoanApplications') }}</p>
     </div>
 
     <!-- Filter Tabs -->
@@ -114,7 +114,7 @@
       </div>
 
       <div v-if="filteredApplications.length === 0" class="text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
-        <p class="text-sm text-gray-400">No loan applications found</p>
+        <p class="text-sm text-gray-400">{{ $t('banking.noLoanApplicationsFound') }}</p>
       </div>
     </div>
 
@@ -170,7 +170,7 @@
               <textarea
                 v-model="approvalForm.approvalNotes"
                 rows="3"
-                placeholder="Additional notes about the approval"
+                :placeholder="$t('banking.approvalNotesPlaceholder')"
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
@@ -213,7 +213,7 @@
                 v-model="rejectionForm.rejectionReason"
                 rows="4"
                 required
-                placeholder="Please provide a reason for rejection"
+                :placeholder="$t('banking.rejectionReasonPlaceholder')"
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>

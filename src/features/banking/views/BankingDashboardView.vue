@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-white">Banking Dashboard</h1>
-      <p class="mt-2 text-sm text-gray-400">Manage your credit products and financing offers</p>
+      <p class="mt-2 text-sm text-gray-400">{{ $t('banking.dashboardSubtitle') }}</p>
     </div>
 
     <!-- Loading State -->
@@ -109,7 +109,7 @@
           </div>
           <div class="ml-4">
             <h3 class="text-lg font-medium text-white">Manage Credit Products</h3>
-            <p class="text-sm text-gray-400">Create and manage your credit products</p>
+            <p class="text-sm text-gray-400">{{ $t('banking.createManageCreditProducts') }}</p>
           </div>
         </router-link>
 
@@ -127,7 +127,7 @@
           </div>
           <div class="ml-4">
             <h3 class="text-lg font-medium text-white">Manage Financing Offers</h3>
-            <p class="text-sm text-gray-400">Create and manage property financing offers</p>
+            <p class="text-sm text-gray-400">{{ $t('banking.createManageFinancingOffers') }}</p>
           </div>
         </router-link>
 
@@ -142,7 +142,7 @@
           </div>
           <div class="ml-4">
             <h3 class="text-lg font-medium text-white">Review Loan Applications</h3>
-            <p class="text-sm text-gray-400">Review and approve/reject loan applications</p>
+            <p class="text-sm text-gray-400">{{ $t('banking.reviewApproveLoans') }}</p>
           </div>
         </router-link>
       </div>
@@ -155,7 +155,7 @@
       </div>
       <div class="p-6">
         <div v-if="recentProducts.length === 0" class="text-center py-8">
-          <p class="text-sm text-gray-400">No credit products yet. Create your first one!</p>
+          <p class="text-sm text-gray-400">{{ $t('banking.noCreditProductsCreateFirst') }}</p>
         </div>
         <div v-else class="space-y-4">
           <div

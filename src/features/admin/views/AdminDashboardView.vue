@@ -4,7 +4,7 @@
       <!-- Page Header -->
       <div>
         <h1 class="text-3xl font-bold text-white">Dashboard</h1>
-        <p class="mt-2 text-sm text-gray-400">Overview of platform activity and statistics</p>
+        <p class="mt-2 text-sm text-gray-400">{{ $t('admin.overviewSubtitle') }}</p>
       </div>
 
       <!-- Stats Cards -->

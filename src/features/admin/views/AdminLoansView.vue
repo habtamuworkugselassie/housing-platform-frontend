@@ -3,7 +3,7 @@
     <div class="space-y-6">
       <div>
         <h1 class="text-3xl font-bold text-white">Loan Management</h1>
-        <p class="mt-2 text-sm text-gray-400">Manage loan applications</p>
+        <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageLoanApplications') }}</p>
       </div>
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg p-4">

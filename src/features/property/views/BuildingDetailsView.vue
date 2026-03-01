@@ -148,28 +148,28 @@
 
       <!-- Company Information Section -->
       <div v-if="company" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
-        <h3 class="text-xl font-semibold text-white mb-4">Real Estate Company</h3>
+        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.realEstateCompany') }}</h3>
         <div class="bg-white/5 rounded-lg p-6 border border-white/10">
           <h4 class="text-lg font-semibold text-white mb-3">{{ company.name }}</h4>
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div v-if="company.email">
-              <dt class="text-sm font-medium text-gray-400 mb-1">Email:</dt>
+              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('auth.email') }}:</dt>
               <dd class="text-sm text-white">
                 <a :href="`mailto:${company.email}`" class="text-yellow-400 hover:underline">{{ company.email }}</a>
               </dd>
             </div>
             <div v-if="company.phoneNumber">
-              <dt class="text-sm font-medium text-gray-400 mb-1">Phone:</dt>
+              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.phoneLabel') }}:</dt>
               <dd class="text-sm text-white">
                 <a :href="`tel:${company.phoneNumber}`" class="text-yellow-400 hover:underline">{{ company.phoneNumber }}</a>
               </dd>
             </div>
             <div v-if="company.address" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-400 mb-1">Address:</dt>
+              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('property.address') }}:</dt>
               <dd class="text-sm text-white">{{ company.address }}{{ company.city ? `, ${company.city}` : '' }}{{ company.country ? `, ${company.country}` : '' }}</dd>
             </div>
             <div v-if="company.website" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-400 mb-1">Website:</dt>
+              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.websiteLabel') }}:</dt>
               <dd class="text-sm text-white">
                 <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-yellow-400 hover:underline">{{ company.website }}</a>
               </dd>
@@ -232,13 +232,13 @@
       <!-- Units Section -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-semibold text-white">Units ({{ units.length }})</h3>
+          <h3 class="text-xl font-semibold text-white">{{ $t('building.unitsWithCount', { count: units.length }) }}</h3>
           <router-link
             v-if="authStore.hasRole('REALTOR')"
             :to="`/submit-property?buildingId=${building.id}`"
             class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 text-sm transition-colors"
           >
-            + Add Unit
+            + {{ $t('building.addUnit') }}
           </router-link>
         </div>
 
@@ -247,7 +247,7 @@
         </div>
 
         <div v-else-if="units.length === 0" class="text-center py-8 text-gray-400">
-          <p>No units in this building yet</p>
+          <p>{{ $t('building.noUnits') }}</p>
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

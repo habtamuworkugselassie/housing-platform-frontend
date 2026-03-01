@@ -12,6 +12,47 @@ const routes = [
     name: 'RealEstateSearch',
     component: () => import('@/features/property/views/HomeView.vue')
   },
+  // Marketplace: real estate = current home/property search; others = organization list by type
+  {
+    path: '/marketplace/real-estate',
+    name: 'MarketplaceRealEstate',
+    component: () => import('@/features/property/views/HomeView.vue')
+  },
+  {
+    path: '/marketplace/banks',
+    name: 'MarketplaceBanks',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/marketplace/insurance',
+    name: 'MarketplaceInsurance',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/marketplace/contractors',
+    name: 'MarketplaceContractors',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/marketplace/consultants-and-architects',
+    name: 'MarketplaceConsultantsArchitects',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/marketplace/suppliers',
+    name: 'MarketplaceSuppliers',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/marketplace/finishing-work',
+    name: 'MarketplaceFinishingWork',
+    component: () => import('@/features/marketplace/views/MarketplaceOrganizationsView.vue')
+  },
+  {
+    path: '/organizations/:id',
+    name: 'OrganizationDetail',
+    component: () => import('@/features/marketplace/views/OrganizationDetailView.vue')
+  },
   {
     path: '/properties',
     name: 'Properties',

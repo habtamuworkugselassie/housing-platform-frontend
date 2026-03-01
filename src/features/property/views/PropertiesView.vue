@@ -2,8 +2,8 @@
   <div class="min-h-screen bg-black text-white">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-white">Properties & Buildings</h1>
-      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-400">Browse available properties and buildings</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ t('property.propertiesAndBuildings') }}</h1>
+      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-400">{{ t('property.browsePropertiesBuildings') }}</p>
     </div>
 
     <!-- Filters -->
@@ -67,7 +67,7 @@
         <div v-if="item.type === 'building'" class="absolute top-2 left-2 z-20">
           <div class="bg-indigo-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
             <span>🏢</span>
-            <span>BUILDING</span>
+            <span>{{ $t('common.buildingBadge') }}</span>
           </div>
         </div>
         
@@ -82,14 +82,14 @@
           >
             <span v-if="item.sponsorshipType === 'PREMIER'" class="text-sm sm:text-base">⭐</span>
             <span v-else class="text-sm sm:text-base">✨</span>
-            <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}</span>
+            <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIER' ? $t('property.premier') : $t('property.sponsored') }}</span>
             <span class="sm:hidden uppercase">{{ item.sponsorshipType === 'PREMIER' ? 'P' : 'S' }}</span>
           </div>
           <!-- Additional Premier Crown Badge -->
           <div v-if="item.sponsorshipType === 'PREMIER' && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
             <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
               <span class="text-xs sm:text-sm">👑</span>
-              <span class="hidden sm:inline">FEATURED</span>
+              <span class="hidden sm:inline">{{ $t('property.featured') }}</span>
             </div>
           </div>
         </div>
@@ -135,17 +135,17 @@
             </div>
             <!-- Building Units Info -->
             <div v-else class="flex flex-col gap-1">
-              <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} Units</p>
-              <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} Available</p>
+              <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
+              <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} {{ $t('property.availableCount') }}</p>
             </div>
             <span v-if="item.category" :class="{
               'bg-blue-500/30 text-blue-200': item.category === 'FOR_SALE',
               'bg-green-500/30 text-green-200': item.category === 'FOR_RENTAL'
             }" class="px-2 py-0.5 rounded text-xs font-medium">
-              {{ item.category === 'FOR_SALE' ? 'Sale' : 'Rental' }}
+              {{ item.category === 'FOR_SALE' ? $t('property.saleShort') : $t('property.rentalShort') }}
             </span>
             <span v-if="item.isFullyFurnished" class="px-2 py-0.5 bg-purple-500/30 text-purple-200 rounded text-xs font-medium">
-              Furnished
+              {{ $t('property.furnished') }}
             </span>
           </div>
           <p class="text-sm text-gray-400 mb-2">
@@ -153,7 +153,7 @@
           </p>
           <div v-if="item.constructionPercentage !== null && item.constructionPercentage !== undefined" class="mb-2">
             <div class="flex items-center gap-2">
-              <span class="text-xs text-gray-500">Construction:</span>
+              <span class="text-xs text-gray-500">{{ $t('property.constructionLabel') }}:</span>
               <div class="flex-1 bg-zinc-700 rounded-full h-2">
                 <div 
                   class="bg-yellow-400 h-2 rounded-full transition-all"
@@ -171,15 +171,15 @@
           </div>
           <!-- Property Features -->
           <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
-            <span v-if="item.bedrooms">🛏️ {{ item.bedrooms }} beds</span>
-            <span v-if="item.bathrooms">🚿 {{ item.bathrooms }} baths</span>
-            <span v-if="item.area">📐 {{ item.area }} sqm</span>
+            <span v-if="item.bedrooms">🛏️ {{ item.bedrooms }} {{ $t('property.beds') }}</span>
+            <span v-if="item.bathrooms">🚿 {{ item.bathrooms }} {{ $t('property.baths') }}</span>
+            <span v-if="item.area">📐 {{ item.area }} {{ $t('property.areaUnit') }}</span>
           </div>
           <!-- Building Features -->
           <div v-else class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
-            <span>🏢 {{ item.totalUnits || 0 }} Units</span>
-            <span v-if="item.totalFloors">📊 {{ item.totalFloors }} Floors</span>
-            <span v-if="item.availableUnits" class="text-green-400 font-semibold">{{ item.availableUnits }} Available</span>
+            <span>🏢 {{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</span>
+            <span v-if="item.totalFloors">📊 {{ item.totalFloors }} {{ $t('building.floorsLabel') }}</span>
+            <span v-if="item.availableUnits" class="text-green-400 font-semibold">{{ item.availableUnits }} {{ $t('property.availableCount') }}</span>
           </div>
           <div class="mt-4 flex items-center justify-between">
             <span
@@ -199,7 +199,7 @@
 
     <!-- Empty State -->
     <div v-else class="text-center py-12">
-      <p class="text-gray-400">No properties or buildings found. Try adjusting your filters.</p>
+      <p class="text-gray-400">{{ $t('property.noPropertiesOrBuildings') }}</p>
     </div>
 
     <!-- Pagination -->
@@ -210,17 +210,17 @@
           :disabled="currentPage === 0"
           class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
         >
-          Previous
+          {{ $t('common.previous') }}
         </button>
         <span class="px-4 py-2 text-sm text-gray-300">
-          Page {{ currentPage + 1 }} of {{ totalPages }}
+          {{ $t('common.page') }} {{ currentPage + 1 }} {{ $t('common.of') }} {{ totalPages }}
         </span>
         <button
           @click="changePage(currentPage + 1)"
           :disabled="currentPage >= totalPages - 1"
           class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
         >
-          Next
+          {{ $t('common.next') }}
         </button>
       </nav>
     </div>
@@ -230,9 +230,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
+const { t } = useI18n()
 const properties = ref([])
 const buildings = ref([])
 const combinedList = ref([])

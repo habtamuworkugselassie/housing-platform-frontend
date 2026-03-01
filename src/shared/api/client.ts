@@ -79,7 +79,8 @@ api.interceptors.response.use(
         '/buildings/',
         '/organizations/',
         '/credit-products',
-        '/financing-offers'
+        '/financing-offers',
+        '/exhibition/'
       ]
       
       const isPublicEndpoint = publicEndpoints.some(endpoint => 

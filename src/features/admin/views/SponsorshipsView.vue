@@ -3,21 +3,21 @@
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">star</span>
-      <span class="mdc-top-app-bar__title">Sponsorship Management</span>
+      <span class="mdc-top-app-bar__title">{{ $t('admin.sponsorshipManagement') }}</span>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="mb-8 flex justify-between items-center">
         <div>
-          <h1 class="mdc-typography--headline5 mb-2">Sponsorship Management</h1>
-          <p class="mdc-typography--body2 text-gray-600">Create and manage sponsorship packages for real estate companies</p>
+          <h1 class="mdc-typography--headline5 mb-2">{{ $t('admin.sponsorshipManagement') }}</h1>
+          <p class="mdc-typography--body2 text-gray-600">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
         </div>
         <button
           @click="showCreateModal = true"
           class="mdc-button mdc-button--raised"
         >
           <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-          Create Sponsorship
+          {{ $t('admin.createSponsorship') }}
         </button>
       </div>
 
@@ -65,7 +65,7 @@
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 mdc-typography--body1 text-gray-600">Loading sponsorships...</p>
+        <p class="mt-4 mdc-typography--body1 text-gray-600">{{ $t('admin.loadingSponsorships') }}</p>
       </div>
 
       <!-- Sponsorships Table -->
@@ -132,7 +132,7 @@
       <!-- Empty State -->
       <div v-else class="mdc-card text-center py-12">
         <span class="material-icons text-gray-400" style="font-size: 64px;">star_border</span>
-        <p class="mdc-typography--body1 text-gray-600 mt-4">No sponsorships found.</p>
+        <p class="mdc-typography--body1 text-gray-600 mt-4">{{ $t('admin.noSponsorshipsFound') }}</p>
       </div>
 
       <!-- Create/Edit Modal -->

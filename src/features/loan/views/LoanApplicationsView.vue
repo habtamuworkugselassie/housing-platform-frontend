@@ -154,7 +154,7 @@
               <input
                 v-model="applicationForm.propertyId"
                 type="text"
-                placeholder="Leave empty if not property-specific"
+                :placeholder="$t('loan.leaveEmptyPropertySpecific')"
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
@@ -198,7 +198,7 @@
               <textarea
                 v-model="applicationForm.purpose"
                 rows="3"
-                placeholder="Describe the purpose of this loan"
+                :placeholder="$t('loan.describePurpose')"
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>

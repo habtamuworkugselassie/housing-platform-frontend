@@ -9,7 +9,7 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="rounded-md -space-y-px">
           <div>
-            <label for="username" class="sr-only">Email or Phone</label>
+            <label for="username" class="sr-only">{{ $t('auth.email') }} {{ $t('common.or') }} {{ $t('auth.phoneNumber') }}</label>
             <input
               id="username"
               v-model="form.username"

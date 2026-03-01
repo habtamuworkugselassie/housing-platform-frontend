@@ -3,7 +3,7 @@
     <div class="mb-8 flex items-center justify-between">
       <div>
         <h1 class="text-3xl font-bold text-white">Credit Products</h1>
-        <p class="mt-2 text-sm text-gray-400">Manage your bank's credit products</p>
+        <p class="mt-2 text-sm text-gray-400">{{ $t('banking.manageCreditProductsSubtitle') }}</p>
       </div>
       <button
         @click="showCreateModal = true"
@@ -83,7 +83,7 @@
       </div>
 
       <div v-if="products.length === 0" class="text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
-        <p class="text-sm text-gray-400">No credit products yet. Create your first one!</p>
+        <p class="text-sm text-gray-400">{{ $t('banking.noCreditProductsCreateFirst') }}</p>
       </div>
     </div>
 
@@ -130,7 +130,7 @@
                   <option value="HOME_PURCHASE">Home Purchase</option>
                   <option value="CONSTRUCTION_LOAN">Construction Loan</option>
                   <option value="MATERIAL_FINANCING">Material Financing</option>
-                  <option value="REFINANCING">Refinancing</option>
+                  <option value="REFINANCING">{{ $t('banking.refinancing') }}</option>
                 </select>
               </div>
 

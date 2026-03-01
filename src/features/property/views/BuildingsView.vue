@@ -2,8 +2,8 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-white">{{ isManagementMode ? $t('building.buildings') : 'Buildings' }}</h1>
-        <p class="mt-2 text-sm text-gray-400">{{ isManagementMode ? $t('building.manageBuildings') : 'Browse all available buildings' }}</p>
+        <h1 class="text-3xl font-bold text-white">{{ $t('building.buildings') }}</h1>
+        <p class="mt-2 text-sm text-gray-400">{{ isManagementMode ? $t('building.manageBuildings') : $t('building.browseBuildings') }}</p>
       </div>
       <button
         v-if="isManagementMode && organization"
@@ -18,30 +18,30 @@
     <div v-if="!isManagementMode" class="mb-6 bg-zinc-900 border border-white/10 p-4 rounded-lg">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label for="cityFilter" class="block text-sm font-medium text-gray-300">City</label>
+          <label for="cityFilter" class="block text-sm font-medium text-gray-300">{{ $t('property.city') }}</label>
           <input
             id="cityFilter"
             v-model="filters.city"
             type="text"
-            placeholder="Filter by city"
+            :placeholder="$t('property.filterByCity')"
             class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             @input="loadBuildings"
           />
         </div>
         <div>
-          <label for="buildingTypeFilter" class="block text-sm font-medium text-gray-300">Building Type</label>
+          <label for="buildingTypeFilter" class="block text-sm font-medium text-gray-300">{{ $t('building.buildingTypeLabel') }}</label>
           <select
             id="buildingTypeFilter"
             v-model="filters.buildingType"
             class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             @change="loadBuildings"
           >
-            <option value="">All Types</option>
-            <option value="APARTMENT_COMPLEX">Apartment Complex</option>
-            <option value="CONDOMINIUM">Condominium</option>
-            <option value="RESIDENTIAL_COMPLEX">Residential Complex</option>
-            <option value="MIXED_USE">Mixed Use</option>
-            <option value="COMMERCIAL_RESIDENTIAL">Commercial Residential</option>
+            <option value="">{{ $t('filters.all') }}</option>
+            <option value="APARTMENT_COMPLEX">{{ $t('building.apartmentComplex') }}</option>
+            <option value="CONDOMINIUM">{{ $t('building.condominium') }}</option>
+            <option value="RESIDENTIAL_COMPLEX">{{ $t('building.residentialComplex') }}</option>
+            <option value="MIXED_USE">{{ $t('building.mixedUse') }}</option>
+            <option value="COMMERCIAL_RESIDENTIAL">{{ $t('building.commercialResidential') }}</option>
           </select>
         </div>
         <div class="flex items-end">
@@ -49,7 +49,7 @@
             @click="clearFilters"
             class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
           >
-            Clear Filters
+            {{ $t('filters.clearFilters') }}
           </button>
         </div>
       </div>
@@ -94,7 +94,7 @@
             >
               <span v-if="building.sponsorshipType === 'PREMIER'" class="mr-1">⭐</span>
               <span v-else class="mr-1">✨</span>
-              {{ building.sponsorshipType === 'PREMIER' ? 'PREMIER' : 'SPONSORED' }}
+              {{ building.sponsorshipType === 'PREMIER' ? $t('property.premier') : $t('property.sponsored') }}
             </span>
             <span :class="[
               'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
@@ -117,19 +117,19 @@
         
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <label class="text-xs font-medium text-gray-400">Total Units</label>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.totalUnitsLabel') }}</label>
             <p class="text-sm font-semibold text-white">{{ building.totalUnits }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">Floors</label>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.floorsLabel') }}</label>
             <p class="text-sm font-semibold text-white">{{ building.totalFloors }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">Available</label>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.availableLabel') }}</label>
             <p class="text-sm font-semibold text-green-400">{{ building.availableUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">Occupied</label>
+            <label class="text-xs font-medium text-gray-400">{{ $t('building.occupiedLabel') }}</label>
             <p class="text-sm font-semibold text-gray-300">{{ building.occupiedUnits || 0 }}</p>
           </div>
         </div>
@@ -156,13 +156,13 @@
             @click.stop="viewBuilding(building.id)"
             class="w-full px-3 py-2 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
           >
-            View Details
+            {{ $t('building.viewDetails') }}
           </button>
         </div>
       </div>
 
       <div v-if="buildings.length === 0" class="col-span-full text-center py-12 bg-zinc-900 border border-white/10 rounded-lg">
-        <p class="text-sm text-gray-400">{{ isManagementMode ? $t('building.noBuildings') : 'No buildings found' }}</p>
+        <p class="text-sm text-gray-400">{{ $t('building.noBuildings') }}</p>
         <button
           v-if="isManagementMode && organization"
           @click="showCreateModal = true"
@@ -182,7 +182,7 @@
       <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
         <div class="mt-3">
           <h3 class="text-lg font-medium text-white mb-4">
-            {{ showEditModal ? 'Edit Building' : 'Create Building' }}
+            {{ showEditModal ? $t('building.editBuilding') : $t('building.createBuilding') }}
           </h3>
           
           <form @submit.prevent="submitBuilding" class="space-y-4">

@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold text-white">Sponsorship Management</h1>
-          <p class="mt-2 text-sm text-gray-400">Create sponsorship packages and assign them to real estate companies</p>
+          <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
         </div>
         <div class="flex space-x-3">
           <button
@@ -342,7 +342,7 @@
                   type="text"
                   required
                   class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                  placeholder="e.g., Basic Sponsorship"
+                  :placeholder="$t('admin.placeholderPackageName')"
                 />
               </div>
 
@@ -352,7 +352,7 @@
                   v-model="form.description"
                   rows="3"
                   class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                  placeholder="Describe the sponsorship package benefits..."
+                  :placeholder="$t('admin.placeholderDescribeBenefits')"
                 />
               </div>
 
@@ -364,7 +364,7 @@
                     required
                     class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   >
-                    <option value="">Select type</option>
+                    <option value="">{{ $t('propertyTypes.selectType') }}</option>
                     <option value="BASIC">Basic</option>
                     <option value="PREMIER">Premier</option>
                   </select>
@@ -389,7 +389,7 @@
                   v-model="form.features"
                   rows="4"
                   class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                  placeholder="List key features (one per line)..."
+                  :placeholder="$t('admin.placeholderFeatures')"
                 />
               </div>
 
@@ -399,7 +399,7 @@
                   v-model="form.notes"
                   rows="2"
                   class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                  placeholder="Internal notes..."
+                  :placeholder="$t('admin.placeholderInternalNotes')"
                 />
               </div>
 
@@ -605,7 +605,7 @@
                 rows="3"
                 required
                 class="w-full border border-gray-300 rounded-md px-3 py-2"
-                placeholder="Enter rejection reason..."
+                :placeholder="$t('admin.placeholderRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">

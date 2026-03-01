@@ -28,7 +28,7 @@
           <h2 class="text-xl font-semibold text-white">
             Loan Application #{{ application.id.substring(0, 8) }}
           </h2>
-          <p class="text-sm text-gray-400 mt-1">Applied on {{ formatDate(application.createdAt) }}</p>
+          <p class="text-sm text-gray-400 mt-1">{{ $t('loan.appliedOn') }} {{ formatDate(application.createdAt) }}</p>
         </div>
         <span :class="[
           'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',

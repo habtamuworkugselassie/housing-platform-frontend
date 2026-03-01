@@ -45,13 +45,30 @@ export interface AdContent {
   priceUSD?: number
   city?: string
   address?: string
-  type: 'property' | 'building'
+  type: 'property' | 'building' | 'organization'
   sponsorshipType: string
   basePrice: number
   realEstateCompanyName?: string
   realEstateCompanyId?: string
   companyEmail?: string
   companyPhone?: string
+}
+
+export interface SponsoredOrganizationResponse {
+  id: string
+  name: string
+  logoUrl?: string
+  videoUrl?: string
+  address?: string
+  city?: string
+  country?: string
+  sponsorshipType: string
+  basePrice: number
+}
+
+export interface FirstPropertyMediaResponse {
+  imageUrl?: string | null
+  videoUrl?: string | null
 }
 
 export function useAds() {
@@ -88,37 +105,75 @@ export function useAds() {
   }
 
   /**
-   * Fetch all sponsored properties and buildings, ordered by base price
+   * Fetch all sponsored content: organizations (active sponsorship), properties, and buildings; ordered by base price.
    */
   const loadAllAds = async (limit: number = 20): Promise<void> => {
     loading.value = true
     error.value = null
-    
+
     try {
       // First, load sponsorships to get base prices
       await loadSponsorships()
-      
+
+      // Load sponsored organizations (landing carousel – organizations with active sponsorship)
+      let orgAds: AdContent[] = []
+      try {
+        const orgResponse = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/sponsored-organizations')
+        const orgs = Array.isArray(orgResponse.data) ? orgResponse.data : []
+        orgAds = orgs.map(org => ({
+          id: org.id,
+          title: org.name,
+          imageUrl: org.logoUrl ?? undefined,
+          videoUrl: org.videoUrl ?? undefined,
+          city: org.city,
+          address: org.address,
+          type: 'organization' as const,
+          sponsorshipType: org.sponsorshipType || '',
+          basePrice: typeof org.basePrice === 'number' ? org.basePrice : Number(org.basePrice) || 0,
+          realEstateCompanyName: org.name,
+          realEstateCompanyId: org.id
+        }))
+        // If an organization has no logo/video, use first media from its properties
+        const needFallback = orgAds.filter(ad => !ad.imageUrl || !ad.videoUrl)
+        if (needFallback.length > 0) {
+          const fallbackResults = await Promise.all(
+            needFallback.map(ad =>
+              api.get<FirstPropertyMediaResponse>(`/properties/organization/${ad.id}/first-media`).then(r => r.data)
+            )
+          )
+          needFallback.forEach((ad, i) => {
+            const fallback = fallbackResults[i]
+            if (fallback) {
+              if (!ad.imageUrl && fallback.imageUrl) ad.imageUrl = fallback.imageUrl
+              if (!ad.videoUrl && fallback.videoUrl) ad.videoUrl = fallback.videoUrl
+            }
+          })
+        }
+      } catch (err) {
+        console.error('Failed to load sponsored organizations for ads:', err)
+      }
+
       // Load sponsored properties
       const propertiesResponse = await propertyApi.getProperties(
         { status: 'AVAILABLE' },
         { page: 0, size: 100 }
       )
-      
-      const properties = 'content' in propertiesResponse 
-        ? propertiesResponse.content 
+
+      const properties = 'content' in propertiesResponse
+        ? propertiesResponse.content
         : propertiesResponse as PropertyResponse[]
-      
+
       // Load sponsored buildings
       let buildings: BuildingResponse[] = []
       try {
         const buildingsResponse = await api.get('/buildings')
-        buildings = Array.isArray(buildingsResponse.data) 
+        buildings = Array.isArray(buildingsResponse.data)
           ? buildingsResponse.data as BuildingResponse[]
           : []
       } catch (err) {
         console.error('Failed to load buildings for ads:', err)
       }
-      
+
       // Combine properties and buildings, filter for sponsored items
       const propertyAds: AdContent[] = properties
         .filter(p => p.isSponsored && p.sponsorshipType)
@@ -136,7 +191,7 @@ export function useAds() {
           realEstateCompanyName: prop.realEstateCompanyName,
           realEstateCompanyId: prop.realEstateCompanyId
         }))
-      
+
       const buildingAds: AdContent[] = buildings
         .filter(b => b.isSponsored && b.sponsorshipType)
         .map(building => ({
@@ -151,12 +206,12 @@ export function useAds() {
           realEstateCompanyName: building.realEstateCompanyName,
           realEstateCompanyId: building.realEstateCompanyId
         }))
-      
-      // Combine and sort by basePrice descending
-      const combined = [...propertyAds, ...buildingAds]
+
+      // Combine organizations first (for carousel), then properties and buildings; sort by basePrice descending
+      const combined = [...orgAds, ...propertyAds, ...buildingAds]
         .sort((a, b) => b.basePrice - a.basePrice)
         .slice(0, limit)
-      
+
       allAds.value = combined
     } catch (err) {
       console.error('Failed to load ads:', err)

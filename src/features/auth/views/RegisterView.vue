@@ -34,7 +34,7 @@
             />
           </div>
           <div>
-            <label for="email" class="sr-only">Email address</label>
+            <label for="email" class="sr-only">{{ $t('auth.emailAddress') }}</label>
             <input
               id="email"
               v-model="form.email"

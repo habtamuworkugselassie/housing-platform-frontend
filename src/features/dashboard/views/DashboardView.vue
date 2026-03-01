@@ -3,14 +3,14 @@
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">dashboard</span>
-      <span class="mdc-top-app-bar__title">Dashboard</span>
+      <span class="mdc-top-app-bar__title">{{ $t('nav.dashboard') }}</span>
     </div>
 
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
-        <p class="mt-4 mdc-typography--body1 text-gray-400">Loading dashboard...</p>
+        <p class="mt-4 mdc-typography--body1 text-gray-400">{{ $t('dashboard.loadingDashboard') }}</p>
       </div>
 
       <!-- Error State -->
@@ -29,19 +29,19 @@
           <div class="mdc-card">
             <div class="flex items-center mb-4">
               <span class="material-icons text-blue-600 mr-2">account_circle</span>
-              <h2 class="mdc-typography--headline6 m-0">Your Account</h2>
+              <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.yourAccount') }}</h2>
             </div>
             <dl class="space-y-3">
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Name:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.nameLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ authStore.user?.firstName }} {{ authStore.user?.lastName }}</dd>
               </div>
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Email:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.emailLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ authStore.user?.email }}</dd>
               </div>
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Roles:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.rolesLabel') }}:</dt>
                 <dd class="mdc-typography--body1">
                   <span v-for="role in authStore.user?.roles" :key="role" class="mdc-chip mdc-chip--primary mr-1">
                     {{ role }}
@@ -55,11 +55,11 @@
           <div v-if="agent" class="mdc-card">
             <div class="flex items-center mb-4">
               <span class="material-icons text-green-600 mr-2">badge</span>
-              <h2 class="mdc-typography--headline6 m-0">Agent Profile</h2>
+              <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.agentProfile') }}</h2>
             </div>
             <dl class="space-y-3">
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Status:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.statusLabel') }}:</dt>
                 <dd class="mdc-typography--body1">
                   <span :class="{
                     'mdc-chip mdc-chip--success': agent.status === 'ACTIVE',
@@ -71,12 +71,12 @@
                 </dd>
               </div>
               <div v-if="agent.licenseNumber" class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">License:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.licenseLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ agent.licenseNumber }}</dd>
               </div>
               <div v-if="agent.isSuperAgent" class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Role:</dt>
-                <dd class="mdc-chip mdc-chip--primary">Super Agent</dd>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.roleLabel') }}:</dt>
+                <dd class="mdc-chip mdc-chip--primary">{{ $t('dashboard.superAgent') }}</dd>
               </div>
             </dl>
           </div>
@@ -86,7 +86,7 @@
             <div class="flex justify-between items-center mb-4">
               <div class="flex items-center">
                 <span class="material-icons text-purple-600 mr-2">business</span>
-                <h2 class="mdc-typography--headline6 m-0">Your Company</h2>
+                <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.yourCompany') }}</h2>
               </div>
               <button
                 v-if="isSuperAgent"
@@ -94,16 +94,16 @@
                 class="mdc-button mdc-button--text"
               >
                 <span class="material-icons mr-1" style="font-size: 18px;">edit</span>
-                Edit
+                {{ $t('common.edit') }}
               </button>
             </div>
             <dl class="space-y-3">
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Name:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.nameLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ organization.name }}</dd>
               </div>
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Status:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.statusLabel') }}:</dt>
                 <dd class="mdc-typography--body1">
                   <span :class="{
                     'mdc-chip mdc-chip--warning': organization.status === 'PENDING_APPROVAL',
@@ -115,7 +115,7 @@
                 </dd>
               </div>
               <div class="flex items-center">
-                <dt class="mdc-typography--body2 text-gray-600 w-32">Email:</dt>
+                <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.emailLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ organization.email }}</dd>
               </div>
               <div class="flex items-center">
@@ -129,17 +129,17 @@
           <div v-else-if="authStore.hasRole('REALTOR')" class="mdc-card">
             <div class="flex items-center mb-4">
               <span class="material-icons text-blue-600 mr-2">add_business</span>
-              <h2 class="mdc-typography--headline6 m-0">Register Your Company</h2>
+              <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.registerYourCompany') }}</h2>
             </div>
             <p class="mdc-typography--body2 text-gray-600 mb-4">
-              Register your real estate company to start managing agents and properties.
+              {{ $t('dashboard.registerCompanyDescription') }}
             </p>
             <router-link
               to="/register-company"
               class="mdc-button mdc-button--raised"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-              Register Company
+              {{ $t('dashboard.registerCompany') }}
             </router-link>
           </div>
         </div>
@@ -149,20 +149,20 @@
           <div class="flex justify-between items-center mb-4">
             <div class="flex items-center">
               <span class="material-icons text-amber-600 mr-2">star</span>
-              <h2 class="mdc-typography--headline6 m-0">Sponsorships</h2>
+              <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.sponsorships') }}</h2>
             </div>
             <button
               @click="showSponsorshipModal = true"
               class="mdc-button mdc-button--raised"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-              Apply for Sponsorship
+              {{ $t('dashboard.applyForSponsorship') }}
             </button>
           </div>
           <div v-if="sponsorshipApplications.length === 0" class="text-center py-8">
             <span class="material-icons text-gray-400" style="font-size: 48px;">star_border</span>
-            <p class="mdc-typography--body1 text-gray-500 mt-2">No sponsorship applications yet.</p>
-            <p class="mdc-typography--body2 text-gray-400">Click "Apply for Sponsorship" to get started.</p>
+            <p class="mdc-typography--body1 text-gray-500 mt-2">{{ $t('dashboard.noSponsorshipApplications') }}</p>
+            <p class="mdc-typography--body2 text-gray-400">{{ $t('dashboard.clickApplySponsorship') }}</p>
           </div>
           <div v-else class="space-y-3">
             <div v-for="app in sponsorshipApplications" :key="app.id" class="mdc-card" style="padding: 16px;">
@@ -194,7 +194,7 @@
               <div v-if="app.rejectionReason" class="mt-3 p-2 rounded" style="background-color: #ffebee;">
                 <p class="mdc-typography--caption text-red-600">
                   <span class="material-icons" style="font-size: 14px; vertical-align: middle;">info</span>
-                  Rejection reason: {{ app.rejectionReason }}
+                  {{ $t('dashboard.rejectionReasonLabel') }}: {{ app.rejectionReason }}
                 </p>
               </div>
             </div>
@@ -206,54 +206,54 @@
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
             <div class="flex items-center">
               <span class="material-icons text-indigo-600 mr-2">people</span>
-              <h2 class="mdc-typography--headline6 m-0">Agents</h2>
+              <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.agents') }}</h2>
             </div>
             <button
               @click="$router.push('/create-agent')"
               class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">person_add</span>
-              <span class="hidden sm:inline">Create Agent</span>
-              <span class="sm:hidden">Create</span>
+              <span class="hidden sm:inline">{{ $t('dashboard.createAgent') }}</span>
+              <span class="sm:hidden">{{ $t('dashboard.createShort') }}</span>
             </button>
           </div>
           <div v-if="agentsLoading" class="text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p class="mdc-typography--body2 text-gray-500 mt-2">Loading agents...</p>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <p class="mdc-typography--body2 text-gray-400 mt-2">{{ $t('dashboard.loadingAgents') }}</p>
           </div>
           <div v-else-if="agents.length === 0" class="text-center py-8">
             <span class="material-icons text-gray-400" style="font-size: 48px;">people_outline</span>
-            <p class="mdc-typography--body1 text-gray-500 mt-2">No agents registered yet.</p>
-            <p class="mdc-typography--body2 text-gray-400">Click "Create Agent" to add one.</p>
+            <p class="mdc-typography--body1 text-gray-500 mt-2">{{ $t('dashboard.noAgentsYet') }}</p>
+            <p class="mdc-typography--body2 text-gray-400">{{ $t('dashboard.clickCreateAgent') }}</p>
           </div>
           <template v-else>
             <!-- Mobile Card View -->
             <div class="block sm:hidden space-y-3">
-              <div v-for="agent in agents" :key="agent.id" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div v-for="agent in agents" :key="agent.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
                 <div class="flex items-start justify-between mb-2">
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
-                      <span class="material-icons mr-2 text-gray-600" style="font-size: 20px;">person</span>
-                      <span class="font-semibold text-gray-900">{{ agent.user?.firstName }} {{ agent.user?.lastName }}</span>
+                      <span class="material-icons mr-2 text-gray-400" style="font-size: 20px;">person</span>
+                      <span class="font-semibold text-white">{{ agent.user?.firstName }} {{ agent.user?.lastName }}</span>
                     </div>
-                    <p class="text-sm text-gray-600 ml-7">{{ agent.user?.email }}</p>
+                    <p class="text-sm text-gray-400 ml-7">{{ agent.user?.email }}</p>
                   </div>
                   <button
                     @click="editAgent(agent)"
-                    class="p-2 text-gray-600 hover:text-primary-600"
+                    class="p-2 text-gray-400 hover:text-yellow-400"
                   >
                     <span class="material-icons" style="font-size: 20px;">edit</span>
                   </button>
                 </div>
                 <div class="flex flex-wrap gap-2 ml-7">
                   <span :class="{
-                    'px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800': agent.status === 'ACTIVE',
-                    'px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800': agent.status === 'INACTIVE',
-                    'px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800': agent.status === 'SUSPENDED'
+                    'px-2 py-1 rounded text-xs font-medium bg-green-500/30 text-green-200': agent.status === 'ACTIVE',
+                    'px-2 py-1 rounded text-xs font-medium bg-gray-500/30 text-gray-200': agent.status === 'INACTIVE',
+                    'px-2 py-1 rounded text-xs font-medium bg-red-500/30 text-red-200': agent.status === 'SUSPENDED'
                   }">
                     {{ agent.status }}
                   </span>
-                  <span v-if="agent.isSuperAgent" class="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">Super Agent</span>
+                  <span v-if="agent.isSuperAgent" class="px-2 py-1 rounded text-xs font-medium bg-blue-500/30 text-blue-200">{{ $t('dashboard.superAgent') }}</span>
                 </div>
               </div>
             </div>
@@ -263,11 +263,11 @@
             <table class="mdc-data-table min-w-full">
               <thead class="mdc-data-table__header-row">
                 <tr>
-                  <th class="mdc-data-table__header-cell">Name</th>
-                  <th class="mdc-data-table__header-cell">Email</th>
-                  <th class="mdc-data-table__header-cell">Status</th>
-                  <th class="mdc-data-table__header-cell">Super Agent</th>
-                  <th class="mdc-data-table__header-cell">Actions</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.nameLabel') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.emailLabel') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.statusLabel') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.superAgent') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.actions') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -289,8 +289,8 @@
                     </span>
                   </td>
                   <td class="mdc-data-table__cell">
-                    <span v-if="agent.isSuperAgent" class="mdc-chip mdc-chip--primary">Yes</span>
-                    <span v-else class="mdc-typography--body2 text-gray-500">No</span>
+                    <span v-if="agent.isSuperAgent" class="mdc-chip mdc-chip--primary">{{ $t('common.yes') }}</span>
+                    <span v-else class="mdc-typography--body2 text-gray-500">{{ $t('common.no') }}</span>
                   </td>
                   <td class="mdc-data-table__cell">
                     <button
@@ -313,7 +313,7 @@
             <div class="flex items-center">
               <span class="material-icons text-teal-600 mr-2">home</span>
               <h2 class="mdc-typography--headline6 m-0">
-                {{ isSuperAgent ? 'Company Properties' : 'My Properties' }}
+                {{ isSuperAgent ? $t('dashboard.companyProperties') : $t('dashboard.myProperties') }}
               </h2>
             </div>
             <button
@@ -321,56 +321,56 @@
               class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-              <span class="hidden sm:inline">Submit Property</span>
-              <span class="sm:hidden">Submit</span>
+              <span class="hidden sm:inline">{{ $t('property.submitProperty') }}</span>
+              <span class="sm:hidden">{{ $t('dashboard.submitShort') }}</span>
             </button>
           </div>
           <div v-if="propertiesLoading" class="text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p class="mdc-typography--body2 text-gray-500 mt-2">Loading properties...</p>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <p class="mdc-typography--body2 text-gray-400 mt-2">{{ $t('dashboard.loadingProperties') }}</p>
           </div>
           <div v-else-if="properties.length === 0" class="text-center py-8">
             <span class="material-icons text-gray-400" style="font-size: 48px;">home_work</span>
-            <p class="mdc-typography--body1 text-gray-500 mt-2">No properties listed yet.</p>
-            <p class="mdc-typography--body2 text-gray-400">Click "Submit Property" to add one.</p>
+            <p class="mdc-typography--body1 text-gray-500 mt-2">{{ $t('dashboard.noPropertiesYet') }}</p>
+            <p class="mdc-typography--body2 text-gray-400">{{ $t('dashboard.clickSubmitProperty') }}</p>
           </div>
           <template v-else>
             <!-- Mobile Card View -->
             <div class="block sm:hidden space-y-3">
-              <div v-for="property in properties" :key="property.id" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div v-for="property in properties" :key="property.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
                 <div class="flex items-start justify-between mb-2">
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
-                      <span class="material-icons mr-2 text-gray-600" style="font-size: 20px;">home</span>
-                      <span class="font-semibold text-gray-900">{{ property.title }}</span>
+                      <span class="material-icons mr-2 text-gray-400" style="font-size: 20px;">home</span>
+                      <span class="font-semibold text-white">{{ property.title }}</span>
                     </div>
-                    <p class="text-sm text-gray-600 ml-7">{{ property.city }}</p>
+                    <p class="text-sm text-gray-400 ml-7">{{ property.city }}</p>
                   </div>
                   <div class="flex gap-1">
                     <router-link
                       :to="`/properties/${property.id}`"
-                      class="p-2 text-gray-600 hover:text-primary-600"
+                      class="p-2 text-gray-400 hover:text-yellow-400"
                     >
                       <span class="material-icons" style="font-size: 20px;">visibility</span>
                     </router-link>
                     <button
                       @click="editProperty(property)"
-                      class="p-2 text-gray-600 hover:text-primary-600"
+                      class="p-2 text-gray-400 hover:text-yellow-400"
                     >
                       <span class="material-icons" style="font-size: 20px;">edit</span>
                     </button>
                   </div>
                 </div>
                 <div class="flex flex-wrap gap-2 ml-7">
-                  <span class="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">{{ property.type }}</span>
+                  <span class="px-2 py-1 rounded text-xs font-medium bg-blue-500/30 text-blue-200">{{ property.type }}</span>
                   <div class="flex flex-col gap-0.5">
-                    <span v-if="property.priceETB" class="px-2 py-1 rounded text-xs font-medium font-semibold text-gray-900">{{ formatPrice(property.priceETB, 'ETB') }}</span>
-                    <span v-if="property.priceUSD" class="px-2 py-1 rounded text-xs font-medium text-gray-700">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                    <span v-if="property.priceETB" class="px-2 py-1 rounded text-xs font-medium font-semibold text-white">{{ formatPrice(property.priceETB, 'ETB') }}</span>
+                    <span v-if="property.priceUSD" class="px-2 py-1 rounded text-xs font-medium text-gray-400">{{ formatPrice(property.priceUSD, 'USD') }}</span>
                   </div>
                   <span :class="{
-                    'px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800': property.status === 'AVAILABLE',
-                    'px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800': property.status === 'RESERVED',
-                    'px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800': property.status === 'SOLD'
+                    'px-2 py-1 rounded text-xs font-medium bg-green-500/30 text-green-200': property.status === 'AVAILABLE',
+                    'px-2 py-1 rounded text-xs font-medium bg-yellow-500/30 text-yellow-200': property.status === 'RESERVED',
+                    'px-2 py-1 rounded text-xs font-medium bg-gray-500/30 text-gray-200': property.status === 'SOLD'
                   }">
                     {{ property.status }}
                   </span>
@@ -383,12 +383,12 @@
             <table class="mdc-data-table min-w-full">
               <thead class="mdc-data-table__header-row">
                 <tr>
-                  <th class="mdc-data-table__header-cell">Title</th>
-                  <th class="mdc-data-table__header-cell">Type</th>
-                  <th class="mdc-data-table__header-cell">Price</th>
-                  <th class="mdc-data-table__header-cell">City</th>
-                  <th class="mdc-data-table__header-cell">Status</th>
-                  <th class="mdc-data-table__header-cell">Actions</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('property.propertyTitle') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('property.type') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('property.price') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('property.city') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('property.status') }}</th>
+                  <th class="mdc-data-table__header-cell">{{ $t('dashboard.actions') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -449,7 +449,7 @@
           <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 600px; margin-left: auto; margin-right: auto;">
             <div class="flex items-center mb-4">
               <span class="material-icons text-blue-600 mr-2">business</span>
-              <h3 class="mdc-dialog__title">Edit Organization</h3>
+              <h3 class="mdc-dialog__title">{{ $t('dashboard.editOrganization') }}</h3>
             </div>
         <form @submit.prevent="updateOrganization" class="space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -461,7 +461,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">Name *</label>
+              <label class="mdc-text-field__label">{{ $t('dashboard.nameLabel') }} *</label>
             </div>
             <div class="mdc-text-field">
               <input
@@ -470,7 +470,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">Registration Number</label>
+              <label class="mdc-text-field__label">{{ $t('dashboard.registrationNumber') }}</label>
             </div>
           </div>
           <div class="mdc-text-field">
@@ -480,7 +480,7 @@
               placeholder=" "
               class="mdc-text-field__input"
             />
-            <label class="mdc-text-field__label">Address</label>
+            <label class="mdc-text-field__label">{{ $t('property.address') }}</label>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mdc-text-field">
@@ -490,7 +490,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">City</label>
+              <label class="mdc-text-field__label">{{ $t('property.city') }}</label>
             </div>
             <div class="mdc-text-field">
               <input
@@ -499,7 +499,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">Country</label>
+              <label class="mdc-text-field__label">{{ $t('property.country') }}</label>
             </div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -510,7 +510,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">Phone Number</label>
+              <label class="mdc-text-field__label">{{ $t('auth.phoneNumber') }}</label>
             </div>
             <div class="mdc-text-field">
               <input
@@ -519,7 +519,7 @@
                 placeholder=" "
                 class="mdc-text-field__input"
               />
-              <label class="mdc-text-field__label">Email</label>
+              <label class="mdc-text-field__label">{{ $t('dashboard.emailLabel') }}</label>
             </div>
           </div>
           <div class="mdc-text-field">
@@ -529,7 +529,7 @@
               placeholder=" "
               class="mdc-text-field__input"
             />
-            <label class="mdc-text-field__label">Website</label>
+            <label class="mdc-text-field__label">{{ $t('dashboard.website') }}</label>
           </div>
           <div class="mdc-text-field">
             <textarea
@@ -539,7 +539,7 @@
               class="mdc-text-field__input"
               style="min-height: 80px;"
             ></textarea>
-            <label class="mdc-text-field__label">Description</label>
+            <label class="mdc-text-field__label">{{ $t('property.description') }}</label>
           </div>
             <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
               <button
@@ -547,14 +547,14 @@
                 @click="showEditOrganizationModal = false"
                 class="mdc-button mdc-button--outlined w-full sm:w-auto"
               >
-                Cancel
+                {{ $t('common.cancel') }}
               </button>
               <button
                 type="submit"
                 class="mdc-button mdc-button--raised w-full sm:w-auto"
               >
                 <span class="material-icons mr-1" style="font-size: 18px;">save</span>
-                Update
+                {{ $t('common.update') }}
               </button>
             </div>
           </form>
@@ -566,7 +566,7 @@
         <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 500px; margin-left: auto; margin-right: auto;">
           <div class="flex items-center mb-4">
             <span class="material-icons text-green-600 mr-2">badge</span>
-            <h3 class="mdc-dialog__title">Edit Agent</h3>
+            <h3 class="mdc-dialog__title">{{ $t('dashboard.editAgent') }}</h3>
           </div>
         <form @submit.prevent="updateAgent" class="space-y-4">
           <div class="mdc-text-field">
@@ -578,7 +578,7 @@
               class="mdc-text-field__input"
               style="background-color: #f5f5f5;"
             />
-            <label class="mdc-text-field__label">Agent Name</label>
+            <label class="mdc-text-field__label">{{ $t('dashboard.agentName') }}</label>
           </div>
           <div class="mdc-text-field">
             <input
@@ -589,7 +589,7 @@
               class="mdc-text-field__input"
               style="background-color: #f5f5f5;"
             />
-            <label class="mdc-text-field__label">Email</label>
+            <label class="mdc-text-field__label">{{ $t('dashboard.emailLabel') }}</label>
           </div>
           <div class="mdc-text-field">
             <input
@@ -598,7 +598,7 @@
               placeholder=" "
               class="mdc-text-field__input"
             />
-            <label class="mdc-text-field__label">License Number</label>
+            <label class="mdc-text-field__label">{{ $t('dashboard.licenseNumber') }}</label>
           </div>
           <div class="mdc-text-field">
             <select
@@ -606,12 +606,12 @@
               :disabled="editingAgent?.isSuperAgent"
               class="mdc-text-field__input"
             >
-              <option value="ACTIVE">Active</option>
-              <option value="INACTIVE">Inactive</option>
-              <option value="SUSPENDED">Suspended</option>
+              <option value="ACTIVE">{{ $t('dashboard.active') }}</option>
+              <option value="INACTIVE">{{ $t('dashboard.inactive') }}</option>
+              <option value="SUSPENDED">{{ $t('dashboard.suspended') }}</option>
             </select>
-            <label class="mdc-text-field__label">Status</label>
-            <p v-if="editingAgent?.isSuperAgent" class="mdc-typography--caption text-gray-500 mt-1">Super agent status cannot be changed</p>
+            <label class="mdc-text-field__label">{{ $t('dashboard.statusLabel') }}</label>
+            <p v-if="editingAgent?.isSuperAgent" class="mdc-typography--caption text-gray-500 mt-1">{{ $t('dashboard.superAgentStatusCannotChange') }}</p>
           </div>
           <div class="mdc-text-field">
             <textarea
@@ -621,7 +621,7 @@
               class="mdc-text-field__input"
               style="min-height: 80px;"
             ></textarea>
-            <label class="mdc-text-field__label">Notes</label>
+            <label class="mdc-text-field__label">{{ $t('dashboard.notesLabel') }}</label>
           </div>
           <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
             <button
@@ -629,14 +629,14 @@
               @click="showEditAgentModal = false"
               class="mdc-button mdc-button--outlined w-full sm:w-auto"
             >
-              Cancel
+              {{ $t('common.cancel') }}
             </button>
             <button
               type="submit"
               class="mdc-button mdc-button--raised w-full sm:w-auto"
             >
               <span class="material-icons mr-1" style="font-size: 18px;">save</span>
-              Update
+              {{ $t('common.update') }}
             </button>
           </div>
         </form>
@@ -644,191 +644,191 @@
     </div>
 
     <!-- Edit Property Modal -->
-    <div v-if="showEditPropertyModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50" @click.self="showEditPropertyModal = false">
-      <div class="bg-white rounded-lg shadow-xl m-4 sm:m-8 p-6" style="max-width: 700px; max-height: 90vh; overflow-y: auto; margin-left: auto; margin-right: auto;">
+    <div v-if="showEditPropertyModal" class="fixed inset-0 z-50 overflow-y-auto bg-black/70" @click.self="showEditPropertyModal = false">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg m-4 sm:m-8 p-6" style="max-width: 700px; max-height: 90vh; overflow-y: auto; margin-left: auto; margin-right: auto;">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <span class="material-icons text-teal-600 mr-2">home</span>
-            <h3 class="text-xl font-semibold text-gray-900">Edit Property</h3>
+            <span class="material-icons text-yellow-400 mr-2">home</span>
+            <h3 class="text-xl font-semibold text-white">{{ $t('property.editProperty') }}</h3>
           </div>
           <button
             type="button"
             @click="showEditPropertyModal = false"
-            class="text-gray-400 hover:text-gray-600"
+            class="text-gray-400 hover:text-yellow-400"
           >
             <span class="material-icons">close</span>
           </button>
         </div>
         <form @submit.prevent="updateProperty" class="space-y-4">
           <div>
-            <label for="edit-title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+            <label for="edit-title" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.propertyTitle') }} *</label>
             <input
               id="edit-title"
               v-model="propertyForm.title"
               type="text"
               required
-              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
           <div>
-            <label for="edit-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label for="edit-description" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.description') }}</label>
             <textarea
               id="edit-description"
               v-model="propertyForm.description"
               rows="3"
-              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               style="min-height: 80px;"
             ></textarea>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="edit-type" class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+              <label for="edit-type" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.type') }} *</label>
               <select
                 id="edit-type"
                 v-model="propertyForm.type"
                 required
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option value="">Select type</option>
-                <option value="APARTMENT">Apartment</option>
-                <option value="HOUSE">House</option>
-                <option value="VILLA">Villa</option>
-                <option value="CONDOMINIUM">Condominium</option>
-                <option value="TOWNHOUSE">Townhouse</option>
-                <option value="LAND">Land</option>
-                <option value="COMMERCIAL">Commercial</option>
+                <option value="">{{ $t('propertyTypes.selectType') }}</option>
+                <option value="APARTMENT">{{ $t('propertyTypes.apartment') }}</option>
+                <option value="HOUSE">{{ $t('propertyTypes.house') }}</option>
+                <option value="VILLA">{{ $t('propertyTypes.villa') }}</option>
+                <option value="CONDOMINIUM">{{ $t('propertyTypes.condominium') }}</option>
+                <option value="TOWNHOUSE">{{ $t('propertyTypes.townhouse') }}</option>
+                <option value="LAND">{{ $t('propertyTypes.land') }}</option>
+                <option value="COMMERCIAL">{{ $t('dashboard.commercial') }}</option>
               </select>
             </div>
           </div>
           
           <!-- Price Fields -->
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Price *</label>
-            <p class="text-xs text-gray-500">Provide at least one price (ETB or USD)</p>
+            <label class="block text-sm font-medium text-gray-700">{{ $t('property.price') }} *</label>
+            <p class="text-xs text-gray-500">{{ $t('dashboard.priceRequiredHint') }}</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="edit-priceETB" class="block text-xs font-medium text-gray-600 mb-1">Price (ETB/Birr)</label>
+                <label for="edit-priceETB" class="block text-xs font-medium text-gray-400 mb-1">{{ $t('dashboard.priceETBBirr') }}</label>
                 <input
                   id="edit-priceETB"
                   v-model.number="propertyForm.priceETB"
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
               <div>
-                <label for="edit-priceUSD" class="block text-xs font-medium text-gray-600 mb-1">Price (USD/Dollar)</label>
+                <label for="edit-priceUSD" class="block text-xs font-medium text-gray-400 mb-1">{{ $t('dashboard.priceUSDDollar') }}</label>
                 <input
                   id="edit-priceUSD"
                   v-model.number="propertyForm.priceUSD"
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
             </div>
-            <p class="text-xs text-gray-500">At least one price (ETB or USD) is required</p>
+            <p class="text-xs text-gray-500">{{ $t('dashboard.atLeastOnePriceRequired') }}</p>
           </div>
           <div>
-            <label for="edit-address" class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+            <label for="edit-address" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.address') }} *</label>
             <input
               id="edit-address"
               v-model="propertyForm.address"
               type="text"
               required
-              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="edit-city" class="block text-sm font-medium text-gray-700 mb-1">City *</label>
+              <label for="edit-city" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.city') }} *</label>
               <input
                 id="edit-city"
                 v-model="propertyForm.city"
                 type="text"
                 required
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
             <div>
-              <label for="edit-country" class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+              <label for="edit-country" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.country') }} *</label>
               <input
                 id="edit-country"
                 v-model="propertyForm.country"
                 type="text"
                 required
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label for="edit-area" class="block text-sm font-medium text-gray-700 mb-1">Area (sqm) *</label>
+              <label for="edit-area" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('dashboard.areaSqm') }} *</label>
               <input
                 id="edit-area"
                 v-model.number="propertyForm.area"
                 type="number"
                 step="0.01"
                 min="0"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
             <div>
-              <label for="edit-bedrooms" class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+              <label for="edit-bedrooms" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.bedrooms') }}</label>
               <input
                 id="edit-bedrooms"
                 v-model.number="propertyForm.bedrooms"
                 type="number"
                 min="0"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
             <div>
-              <label for="edit-bathrooms" class="block text-sm font-medium text-gray-700 mb-1">Bathrooms</label>
+              <label for="edit-bathrooms" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.bathrooms') }}</label>
               <input
                 id="edit-bathrooms"
                 v-model.number="propertyForm.bathrooms"
                 type="number"
                 min="0"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
           </div>
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="edit-floorNumber" class="block text-sm font-medium text-gray-700 mb-1">Floor Number</label>
+              <label for="edit-floorNumber" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('dashboard.floorNumberLabel') }}</label>
               <input
                 id="edit-floorNumber"
                 v-model.number="propertyForm.floorNumber"
                 type="number"
                 min="0"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
             <div>
-              <label for="edit-totalFloors" class="block text-sm font-medium text-gray-700 mb-1">Total Floors</label>
+              <label for="edit-totalFloors" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('dashboard.totalFloorsLabel') }}</label>
               <input
                 id="edit-totalFloors"
                 v-model.number="propertyForm.totalFloors"
                 type="number"
                 min="0"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               />
             </div>
           </div>
           
           <div>
-            <label for="edit-constructionPercentage" class="block text-sm font-medium text-gray-700 mb-1">Construction Percentage (0-100)</label>
+            <label for="edit-constructionPercentage" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('dashboard.constructionPercentageLabel') }}</label>
             <input
               id="edit-constructionPercentage"
               v-model.number="propertyForm.constructionPercentage"
               type="number"
               min="0"
               max="100"
-              class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
           
@@ -837,48 +837,48 @@
               v-model="propertyForm.isFullyFurnished"
               type="checkbox"
               id="isFullyFurnished"
-              class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+              class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
             />
-            <label for="isFullyFurnished" class="ml-2 text-sm text-gray-700">Fully Furnished</label>
+            <label for="isFullyFurnished" class="ml-2 text-sm text-gray-700">{{ $t('property.isFullyFurnished') }}</label>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label for="edit-constructionStatus" class="block text-sm font-medium text-gray-700 mb-1">Construction Status *</label>
+              <label for="edit-constructionStatus" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.constructionStatus') }} *</label>
               <select
                 id="edit-constructionStatus"
                 v-model="propertyForm.constructionStatus"
                 required
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option value="">Select status</option>
-                <option value="COMPLETED">Completed</option>
-                <option value="UNDER_CONSTRUCTION">Under Construction</option>
-                <option value="PLANNED">Planned</option>
-                <option value="READY_TO_MOVE">Ready to Move</option>
+                <option value="">{{ $t('submitProperty.selectStatus') }}</option>
+                <option value="COMPLETED">{{ $t('dashboard.completed') }}</option>
+                <option value="UNDER_CONSTRUCTION">{{ $t('dashboard.underConstruction') }}</option>
+                <option value="PLANNED">{{ $t('dashboard.planned') }}</option>
+                <option value="READY_TO_MOVE">{{ $t('property.readyToMove') }}</option>
               </select>
             </div>
             <div>
-              <label for="edit-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label for="edit-category" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.category') }}</label>
               <select
                 id="edit-category"
                 v-model="propertyForm.category"
-                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option value="">Select category</option>
-                <option value="FOR_SALE">For Sale</option>
-                <option value="FOR_RENTAL">For Rental</option>
+                <option value="">{{ $t('submitProperty.selectCategory') }}</option>
+                <option value="FOR_SALE">{{ $t('property.forSale') }}</option>
+                <option value="FOR_RENTAL">{{ $t('property.forRental') }}</option>
               </select>
             </div>
           </div>
           
           <!-- Image/Video Upload Section -->
           <div class="mt-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Photos/Videos</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('dashboard.photosVideos') }}</label>
             <div class="space-y-3">
               <!-- Existing Images -->
               <div v-if="editingProperty && editingProperty.images && editingProperty.images.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                 <div v-for="image in editingProperty.images" :key="image.id" class="relative group">
-                  <img :src="image.imageUrl" :alt="image.caption || 'Property image'" class="w-full h-24 object-cover rounded border border-gray-300" />
+                  <img :src="image.imageUrl" :alt="image.caption || $t('property.propertyImage')" class="w-full h-24 object-cover rounded border border-white/20" />
                   <button
                     type="button"
                     @click="deletePropertyImage(editingProperty.id, image.id)"
@@ -887,12 +887,12 @@
                   >
                     <span class="material-icons" style="font-size: 16px;">close</span>
                   </button>
-                  <div v-if="image.isPrimary" class="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">Primary</div>
+                  <div v-if="image.isPrimary" class="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">{{ $t('dashboard.primary') }}</div>
                 </div>
               </div>
               
               <!-- File Upload -->
-              <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
+              <div class="border-2 border-dashed border-white/20 rounded-lg p-4">
                 <input
                   type="file"
                   ref="fileInput"
@@ -904,8 +904,8 @@
                 />
                 <label for="property-file-upload" class="cursor-pointer flex flex-col items-center justify-center">
                   <span class="material-icons text-gray-400 mb-2" style="font-size: 48px;">cloud_upload</span>
-                  <span class="text-sm text-gray-600 mb-1">Click to upload photos or videos</span>
-                  <span class="text-xs text-gray-500">Supports: JPG, PNG, GIF, MP4, MOV (Max 10MB each)</span>
+                  <span class="text-sm text-gray-600 mb-1">{{ $t('dashboard.clickToUploadPhotosVideos') }}</span>
+                  <span class="text-xs text-gray-500">{{ $t('dashboard.supportsFormats') }}</span>
                 </label>
               </div>
               
@@ -913,7 +913,7 @@
               <div v-if="selectedFiles.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <div v-for="(file, index) in selectedFiles" :key="index" class="relative">
                   <div v-if="file.type.startsWith('image/')" class="relative">
-                    <img :src="file.preview" :alt="file.name" class="w-full h-24 object-cover rounded border border-gray-300" />
+                    <img :src="file.preview" :alt="file.name" class="w-full h-24 object-cover rounded border border-white/20" />
                     <button
                       type="button"
                       @click="removeSelectedFile(index)"
@@ -923,7 +923,7 @@
                       <span class="material-icons" style="font-size: 16px;">close</span>
                     </button>
                   </div>
-                  <div v-else class="relative bg-gray-100 rounded border border-gray-300 h-24 flex items-center justify-center">
+                  <div v-else class="relative bg-white/10 rounded border border-white/20 h-24 flex items-center justify-center">
                     <span class="material-icons text-gray-400">videocam</span>
                     <button
                       type="button"
@@ -945,14 +945,14 @@
             @click="showEditPropertyModal = false"
             class="mdc-button mdc-button--outlined w-full sm:w-auto"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button
             type="submit"
             class="mdc-button mdc-button--raised w-full sm:w-auto"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">save</span>
-            Update
+            {{ $t('common.update') }}
           </button>
         </div>
         </form>
@@ -964,61 +964,61 @@
     <div class="mdc-dialog__surface" style="max-width: 500px;">
       <div class="flex items-center mb-4">
         <span class="material-icons text-amber-600 mr-2">star</span>
-        <h3 class="mdc-dialog__title">Apply for Sponsorship</h3>
+        <h3 class="mdc-dialog__title">{{ $t('dashboard.applyForSponsorship') }}</h3>
       </div>
         <form @submit.prevent="submitSponsorshipApplication" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Sponsorship Package</label>
+            <label class="block text-sm font-medium text-gray-700">{{ $t('dashboard.sponsorshipPackage') }}</label>
             <select
               v-model="sponsorshipForm.sponsorshipId"
               required
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             >
-              <option value="">Select a package</option>
+              <option value="">{{ $t('dashboard.selectPackage') }}</option>
               <option v-for="sponsorship in availableSponsorships" :key="sponsorship.id" :value="sponsorship.id">
                 {{ sponsorship.name }} ({{ sponsorship.type }}) - ${{ sponsorship.basePrice }}
               </option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Start Date</label>
+            <label class="block text-sm font-medium text-gray-700">{{ $t('dashboard.startDate') }}</label>
             <input
               v-model="sponsorshipForm.startDate"
               type="datetime-local"
               required
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">End Date</label>
+            <label class="block text-sm font-medium text-gray-700">{{ $t('dashboard.endDate') }}</label>
             <input
               v-model="sponsorshipForm.endDate"
               type="datetime-local"
               required
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Notes (optional)</label>
+            <label class="block text-sm font-medium text-gray-700">{{ $t('dashboard.notesOptional') }}</label>
             <textarea
               v-model="sponsorshipForm.notes"
               rows="3"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             ></textarea>
           </div>
           <div class="flex justify-end space-x-3 pt-4">
             <button
               type="button"
               @click="showSponsorshipModal = false"
-              class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              class="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-yellow-400"
             >
-              Cancel
+              {{ $t('common.cancel') }}
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 text-sm font-medium"
+              class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 text-sm font-medium"
             >
-              Apply
+              {{ $t('dashboard.apply') }}
             </button>
           </div>
         </form>
@@ -1031,7 +1031,7 @@
     <div v-if="!agent && !isSuperAgent && authStore.hasRole('REALTOR')" class="mdc-card mb-8">
         <div class="flex items-center mb-4">
           <span class="material-icons text-blue-600 mr-2">dashboard</span>
-          <h2 class="mdc-typography--headline6 m-0">Quick Actions</h2>
+          <h2 class="mdc-typography--headline6 m-0">{{ $t('dashboard.quickActions') }}</h2>
         </div>
         <div class="space-y-3">
           <router-link
@@ -1039,28 +1039,28 @@
             class="mdc-button mdc-button--outlined w-full mb-2"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">add_business</span>
-            Register Real Estate Company
+            {{ $t('dashboard.registerRealEstateCompany') }}
           </router-link>
           <router-link
             to="/register-agent"
             class="mdc-button mdc-button--outlined w-full mb-2"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">person_add</span>
-            Register as Agent
+            {{ $t('dashboard.registerAsAgentShort') }}
           </router-link>
           <router-link
             to="/submit-property"
             class="mdc-button mdc-button--outlined w-full mb-2"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">add</span>
-            Submit Property
+            {{ $t('property.submitProperty') }}
           </router-link>
           <router-link
             to="/properties"
             class="mdc-button mdc-button--outlined w-full"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">home</span>
-            Browse Properties
+            {{ $t('nav.properties') }}
           </router-link>
         </div>
       </div>
@@ -1069,10 +1069,10 @@
       <div v-if="authStore.hasRole('ADMIN')" class="mdc-card mb-6">
         <div class="flex items-center mb-4">
           <span class="material-icons text-red-600 mr-2">admin_panel_settings</span>
-          <h2 class="mdc-typography--headline6 m-0">Admin Portal</h2>
+          <h2 class="mdc-typography--headline6 m-0">{{ $t('admin.portalTitle') }}</h2>
         </div>
         <p class="mdc-typography--body2 text-gray-600 mb-4">
-          Access the admin portal to manage users, organizations, properties, and more.
+          {{ $t('admin.portalSubtitle') }}
         </p>
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <router-link
@@ -1080,28 +1080,28 @@
             class="mdc-button mdc-button--raised w-full"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">dashboard</span>
-            Dashboard
+            {{ $t('nav.dashboard') }}
           </router-link>
           <router-link
             to="/admin/users"
             class="mdc-button mdc-button--outlined w-full"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">people</span>
-            Users
+            {{ $t('admin.users') }}
           </router-link>
           <router-link
             to="/admin/organizations"
             class="mdc-button mdc-button--outlined w-full"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">business</span>
-            Organizations
+            {{ $t('admin.organizations') }}
           </router-link>
           <router-link
             to="/admin/sponsorships"
             class="mdc-button mdc-button--outlined w-full"
           >
             <span class="material-icons mr-1" style="font-size: 18px;">star</span>
-            Sponsorships
+            {{ $t('nav.sponsorships') }}
           </router-link>
         </div>
       </div>
@@ -1113,11 +1113,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 const router = useRouter()
 
