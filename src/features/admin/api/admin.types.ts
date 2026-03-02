@@ -36,6 +36,16 @@ export interface UserManagementRequest {
   enabled?: boolean
 }
 
+/** Create user (admin only). Allows any role including ADMIN. */
+export interface UserCreateRequest {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phoneNumber?: string
+  roles: string[]
+}
+
 export interface OrganizationManagementRequest {
   name?: string
   email?: string

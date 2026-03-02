@@ -8,6 +8,7 @@
           <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageUsers') }}</p>
         </div>
         <button
+          @click="openCreateUser"
           class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
         >
           + Add User
@@ -213,6 +214,119 @@
         </div>
       </div>
 
+      <!-- Create User Modal -->
+      <div
+        v-if="showCreateDialog"
+        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        @click.self="closeCreateUser"
+      >
+        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-lg shadow-lg rounded-md bg-zinc-900 text-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-white">Create User</h3>
+              <button
+                @click="closeCreateUser"
+                class="text-gray-400 hover:text-yellow-400 transition-colors"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form @submit.prevent="submitCreateUser" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300">First name *</label>
+                  <input
+                    v-model="createForm.firstName"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="First name"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300">Last name *</label>
+                  <input
+                    v-model="createForm.lastName"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="Last name"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Email *</label>
+                <input
+                  v-model="createForm.email"
+                  type="email"
+                  required
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  placeholder="user@example.com"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Password *</label>
+                <input
+                  v-model="createForm.password"
+                  type="password"
+                  required
+                  minlength="8"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  placeholder="Min 8 chars, upper, lower, number"
+                />
+                <p class="mt-1 text-xs text-gray-400">At least 8 characters, one uppercase, one lowercase, one number</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Phone</label>
+                <input
+                  v-model="createForm.phoneNumber"
+                  type="text"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  placeholder="Optional"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Roles *</label>
+                <div class="mt-2 flex flex-wrap gap-3">
+                  <label
+                    v-for="opt in roleOptions"
+                    :key="opt.value"
+                    class="inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      v-model="createForm.roles"
+                      type="checkbox"
+                      :value="opt.value"
+                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                    />
+                    <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
+                  </label>
+                </div>
+                <p v-if="createError" class="mt-2 text-sm text-red-400">{{ createError }}</p>
+              </div>
+              <div class="mt-6 flex justify-end gap-2">
+                <button
+                  type="button"
+                  @click="closeCreateUser"
+                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  :disabled="createSubmitting"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                >
+                  {{ createSubmitting ? 'Creating…' : 'Create User' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!-- View User Modal -->
       <div
         v-if="showViewDialog"
@@ -317,7 +431,7 @@ import { ref, onMounted } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminUsers } from '../composables/useAdmin'
 
-const { users, loading, error, currentPage, totalPages, loadUsers, updateUser } = useAdminUsers()
+const { users, loading, error, currentPage, totalPages, loadUsers, updateUser, createUser } = useAdminUsers()
 
 const filters = ref({
   search: '',
@@ -327,6 +441,70 @@ const filters = ref({
 
 const showViewDialog = ref(false)
 const viewingUser = ref(null)
+
+const showCreateDialog = ref(false)
+const createSubmitting = ref(false)
+const createError = ref('')
+const createForm = ref({
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  roles: []
+})
+
+const roleOptions = [
+  { value: 'BUYER', label: 'Buyer' },
+  { value: 'REALTOR', label: 'Realtor' },
+  { value: 'BANKER', label: 'Banker' },
+  { value: 'SUPPLIER', label: 'Supplier' },
+  { value: 'ADMIN', label: 'Admin' }
+]
+
+const openCreateUser = () => {
+  createError.value = ''
+  createForm.value = {
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    roles: []
+  }
+  showCreateDialog.value = true
+}
+
+const closeCreateUser = () => {
+  showCreateDialog.value = false
+  createError.value = ''
+}
+
+const submitCreateUser = async () => {
+  if (!createForm.value.roles || createForm.value.roles.length === 0) {
+    createError.value = 'Select at least one role.'
+    return
+  }
+  createError.value = ''
+  createSubmitting.value = true
+  try {
+    await createUser({
+      email: createForm.value.email.trim(),
+      password: createForm.value.password,
+      firstName: createForm.value.firstName.trim(),
+      lastName: createForm.value.lastName.trim(),
+      phoneNumber: createForm.value.phoneNumber?.trim() || undefined,
+      roles: createForm.value.roles
+    })
+    closeCreateUser()
+    await loadUsersData()
+  } catch (err) {
+    const msg = err?.response?.data?.message || err?.message || 'Failed to create user.'
+    createError.value = msg
+  } finally {
+    createSubmitting.value = false
+  }
+}
 
 const loadUsersData = async () => {
   await loadUsers(filters.value, { size: 20 })

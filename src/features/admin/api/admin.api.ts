@@ -8,6 +8,7 @@ import type { AxiosResponse } from 'axios'
 import type {
   AdminStats,
   UserManagementRequest,
+  UserCreateRequest,
   OrganizationManagementRequest,
   OrganizationCreateRequest,
   OrganizationUpdateRequest,
@@ -47,6 +48,14 @@ export const adminApi = {
     const params = { ...filters, ...pageRequest }
     const response = await api.get('/users', { params })
     return response
+  },
+
+  /**
+   * Create user (admin only). Any role including ADMIN is allowed.
+   */
+  createUser: async (body: UserCreateRequest): Promise<any> => {
+    const response = await api.post('/users', body)
+    return response.data
   },
 
   /**
@@ -141,6 +150,14 @@ export const adminApi = {
   },
 
   /**
+   * Reactivate suspended organization and its sponsorship applications (admin only)
+   */
+  reactivateOrganization: async (id: string): Promise<any> => {
+    const response = await api.put(`/organizations/${id}/reactivate`)
+    return response.data
+  },
+
+  /**
    * Get active sponsorship packages (for assign dropdown)
    */
   getActiveSponsorships: async (): Promise<any[]> => {
@@ -191,6 +208,13 @@ export const adminApi = {
       reason
     })
     return response.data
+  },
+
+  /**
+   * Cancel approved sponsorship application (admin)
+   */
+  cancelSponsorshipApplication: async (applicationId: string): Promise<void> => {
+    await api.put(`/sponsorships/applications/${applicationId}/cancel`)
   },
 
   /**

@@ -227,6 +227,13 @@
                       Suspend
                     </button>
                     <button
+                      v-if="org.status === 'SUSPENDED'"
+                      @click="reactivateOrg(org)"
+                      class="text-green-300 hover:text-yellow-400 transition-colors"
+                    >
+                      {{ $t('admin.reactivate') }}
+                    </button>
+                    <button
                       @click="viewOrg(org)"
                       class="text-white hover:text-yellow-400 transition-colors"
                     >
@@ -422,14 +429,21 @@
                         @click="approveSponsorshipApp(app.id)"
                         class="text-xs text-green-300 hover:text-yellow-400"
                       >
-                        Approve
+                        {{ $t('admin.activate') }}
                       </button>
                       <button
                         v-if="app.status === 'PENDING'"
                         @click="rejectSponsorshipApp(app)"
                         class="text-xs text-red-300 hover:text-yellow-400"
                       >
-                        Reject
+                        {{ $t('admin.reject') }}
+                      </button>
+                      <button
+                        v-if="app.status === 'APPROVED'"
+                        @click="cancelSponsorshipApp(app)"
+                        class="text-xs text-orange-300 hover:text-yellow-400"
+                      >
+                        {{ $t('admin.cancel') }}
                       </button>
                     </div>
                   </div>
@@ -491,6 +505,13 @@
                 class="px-4 py-2 border border-orange-500/50 rounded-md text-orange-300 hover:bg-orange-500/20 transition-colors"
               >
                 {{ $t('admin.suspend') }}
+              </button>
+              <button
+                v-if="viewingOrg?.status === 'SUSPENDED'"
+                @click="reactivateOrg(viewingOrg)"
+                class="px-4 py-2 border border-green-500/50 rounded-md text-green-300 hover:bg-green-500/20 transition-colors"
+              >
+                {{ $t('admin.reactivate') }}
               </button>
               <button
                 @click="openEditModal(viewingOrg)"
@@ -825,6 +846,7 @@ const {
   approveOrganization,
   rejectOrganization,
   suspendOrganization,
+  reactivateOrganization,
   createOrganization,
   updateOrganization,
   getOrganizationById,
@@ -834,7 +856,8 @@ const {
   getSponsorshipApplicationsByOrganization,
   assignOrganizationToSponsorship,
   approveSponsorshipApplication,
-  rejectSponsorshipApplication
+  rejectSponsorshipApplication,
+  cancelSponsorshipApplication
 } = adminOrgs
 
 
@@ -1023,6 +1046,16 @@ async function confirmRejectSponsorship() {
   }
 }
 
+async function cancelSponsorshipApp(app) {
+  if (!app?.id) return
+  try {
+    await cancelSponsorshipApplication(app.id)
+    if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+  } catch (e) {
+    console.error('Cancel sponsorship failed:', e)
+  }
+}
+
 function showSuspendModal(org) {
   selectedOrgForSuspend.value = org
   suspendReason.value = ''
@@ -1032,14 +1065,32 @@ function showSuspendModal(org) {
 
 async function suspendOrg() {
   if (!selectedOrgForSuspend.value?.id) return
+  const suspendedId = selectedOrgForSuspend.value.id
   try {
-    await suspendOrganization(selectedOrgForSuspend.value.id, suspendReason.value || undefined)
+    await suspendOrganization(suspendedId, suspendReason.value || undefined)
     showSuspendDialog.value = false
     selectedOrgForSuspend.value = null
     suspendReason.value = ''
     await loadOrgs()
+    if (viewingOrg.value?.id === suspendedId) {
+      viewingOrg.value = (await getOrganizationById(suspendedId)) || viewingOrg.value
+    }
   } catch (e) {
     console.error('Suspend organization failed:', e)
+  }
+}
+
+async function reactivateOrg(org) {
+  if (!org?.id) return
+  try {
+    await reactivateOrganization(org.id)
+    if (viewingOrg.value?.id === org.id) {
+      const full = await getOrganizationById(org.id)
+      viewingOrg.value = full
+    }
+    await loadOrgs()
+  } catch (e) {
+    console.error('Reactivate organization failed:', e)
   }
 }
 

@@ -510,6 +510,8 @@
     "uploadImages": "Upload images",
     "uploadVideo": "Upload video",
     "delete": "Delete",
+    "reject": "Reject",
+    "activate": "Activate",
     "noSponsorshipApplications": "No sponsorship applications",
     "selectPackage": "Select package",
     "startDate": "Start date",
@@ -519,6 +521,8 @@
     "assignNewSponsorship": "Assign new sponsorship",
     "suspend": "Suspend",
     "suspendOrganization": "Suspend organization",
+    "reactivate": "Reactivate",
+    "reactivateOrganization": "Reactivate organization",
     "reasonOptional": "Reason (optional)",
     "rejectSponsorshipApplication": "Reject sponsorship application"
   },

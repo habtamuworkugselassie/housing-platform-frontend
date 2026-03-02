@@ -103,6 +103,11 @@ export function useAdminUsers() {
     return await executeUpdate(() => adminApi.updateUser(id, user))
   }
 
+  const createUser = async (payload) => {
+    const { execute: executeCreate } = useApi()
+    return await executeCreate(() => adminApi.createUser(payload))
+  }
+
   return {
     users,
     loading,
@@ -110,7 +115,8 @@ export function useAdminUsers() {
     currentPage,
     totalPages,
     loadUsers,
-    updateUser
+    updateUser,
+    createUser
   }
 }
 
@@ -196,6 +202,11 @@ export function useAdminOrganizations() {
     return await executeSuspend(() => adminApi.suspendOrganization(id, reason))
   }
 
+  const reactivateOrganization = async (id) => {
+    const { execute: executeReactivate } = useApi()
+    return await executeReactivate(() => adminApi.reactivateOrganization(id))
+  }
+
   const getActiveSponsorships = async () => {
     return await adminApi.getActiveSponsorships()
   }
@@ -223,6 +234,11 @@ export function useAdminOrganizations() {
     )
   }
 
+  const cancelSponsorshipApplication = async (applicationId) => {
+    const { execute: executeCancel } = useApi()
+    return await executeCancel(() => adminApi.cancelSponsorshipApplication(applicationId))
+  }
+
   return {
     organizations,
     loading,
@@ -231,6 +247,7 @@ export function useAdminOrganizations() {
     approveOrganization,
     rejectOrganization,
     suspendOrganization,
+    reactivateOrganization,
     createOrganization,
     updateOrganization,
     getOrganizationById,
@@ -240,6 +257,7 @@ export function useAdminOrganizations() {
     getSponsorshipApplicationsByOrganization,
     assignOrganizationToSponsorship,
     approveSponsorshipApplication,
-    rejectSponsorshipApplication
+    rejectSponsorshipApplication,
+    cancelSponsorshipApplication
   }
 }

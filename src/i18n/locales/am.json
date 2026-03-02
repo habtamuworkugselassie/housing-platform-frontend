@@ -526,6 +526,8 @@
     "uploadImages": "ምስሎች ጫን",
     "uploadVideo": "ቪዲዮ ጫን",
     "delete": "ሰርዝ",
+    "reject": "አስተባብር",
+    "activate": "አግብር",
     "noSponsorshipApplications": "የስፖንሰርሺፕ ማመልከቻዎች የሉም",
     "selectPackage": "ጥቅል ይምረጡ",
     "startDate": "የመጀመሪያ ቀን",
@@ -535,6 +537,8 @@
     "assignNewSponsorship": "አዲስ ስፖንሰርሺፕ መድብ",
     "suspend": "ማስቆም",
     "suspendOrganization": "ድርጅት ማስቆም",
+    "reactivate": "እንደገና ማግበር",
+    "reactivateOrganization": "ድርጅት እንደገና ማግበር",
     "reasonOptional": "ምክንያት (አማራጭ)",
     "rejectSponsorshipApplication": "የስፖንሰርሺፕ ማመልከቻ ማጥፋት"
   },
