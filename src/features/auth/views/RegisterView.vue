@@ -45,12 +45,10 @@
             />
           </div>
           <div>
-            <label for="phoneNumber" class="sr-only">Phone Number</label>
-            <input
-              id="phoneNumber"
-              v-model="form.phoneNumber"
-              type="tel"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:z-10 sm:text-sm"
+            <label for="phoneNumber" class="sr-only">{{ $t('auth.phoneNumber') }}</label>
+            <CountryCodePhoneInput
+              v-model:country-code="form.phoneCountryCode"
+              v-model:number="form.phoneNumber"
               :placeholder="$t('register.phoneOptional')"
             />
           </div>
@@ -120,6 +118,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/features/auth'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -128,6 +128,7 @@ const form = ref({
   firstName: '',
   lastName: '',
   email: '',
+  phoneCountryCode: DEFAULT_COUNTRY_CODE,
   phoneNumber: '',
   password: '',
   role: ''
@@ -143,7 +144,9 @@ const handleRegister = async () => {
   fieldErrors.value = []
 
   try {
-    await authStore.register(form.value)
+    const { phoneCountryCode, phoneNumber, ...rest } = form.value
+    const combinedPhone = (phoneNumber || '').trim() ? (phoneCountryCode || DEFAULT_COUNTRY_CODE) + (phoneNumber || '').trim() : undefined
+    await authStore.register({ ...rest, phoneNumber: combinedPhone })
     router.push('/dashboard')
   } catch (err) {
     // Handle validation errors with fieldErrors

@@ -44,6 +44,12 @@ export interface OrganizationManagementRequest {
   rejectionReason?: string
 }
 
+/** Single phone with country code (for organization multiple phones) */
+export interface OrganizationPhoneDto {
+  countryCode: string
+  number: string
+}
+
 /** Organization types: real estate and construction related */
 export type OrganizationType =
   | 'REAL_ESTATE_COMPANY'
@@ -64,6 +70,9 @@ export interface OrganizationCreateRequest {
   address?: string
   city?: string
   country?: string
+  /** Multiple phones with country code. Preferred over phoneNumber. */
+  phoneNumbers?: OrganizationPhoneDto[]
+  /** @deprecated Use phoneNumbers */
   phoneNumber?: string
   email?: string
   website?: string
@@ -81,6 +90,7 @@ export interface OrganizationUpdateRequest {
   address?: string
   city?: string
   country?: string
+  phoneNumbers?: OrganizationPhoneDto[]
   phoneNumber?: string
   email?: string
   website?: string

@@ -1,7 +1,7 @@
 <template>
-  <section class="relative flex w-full flex-col bg-black overflow-hidden m-0">
-    <!-- Carousel area -->
-    <div class="relative w-full overflow-hidden flex-shrink-0" :class="heightClass">
+  <section class="relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
+    <!-- Carousel area: inset blur border (visible inside overflow) -->
+    <div class="relative w-full overflow-hidden flex-shrink-0 rounded-b-lg shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_40px_rgba(255,255,255,0.04)]" :class="heightClass">
     <!-- Placeholder when no sponsors (optional message) -->
     <div
       v-if="slides.length === 0 && !loading"
@@ -24,7 +24,7 @@
           :key="slide.id + (slide.realEstateCompanyId || '')"
           class="relative flex-shrink-0 w-full h-full"
         >
-          <!-- Video or image background (organization video used when present) -->
+          <!-- Video or image background (organization video or logo/image – full bleed) -->
           <div class="absolute inset-0 z-0">
             <video
               v-if="slide.videoUrl"
@@ -45,16 +45,17 @@
               v-else
               class="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900"
             />
-            <div class="absolute inset-0 bg-black/60" />
+            <!-- Blurred black overlay (not solid) – soft blur + gradient for attractive hero -->
+            <div class="absolute inset-0 backdrop-blur-[3px] bg-gradient-to-b from-black/25 via-black/35 to-black/60" aria-hidden="true" />
           </div>
 
-          <!-- Content overlay: logo/name/address -->
+          <!-- Content overlay: bordered card with mix of logo + text (glass style) -->
           <div class="relative z-10 flex h-full items-center justify-center px-6 sm:px-10">
-            <div class="max-w-2xl text-center">
+            <div class="max-w-2xl text-center rounded-2xl bg-black/30 backdrop-blur-md px-8 py-8 sm:px-10 sm:py-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_0_30px_rgba(255,255,255,0.06),0_20px_25px_-5px_rgba(0,0,0,0.2),0_8px_10px_-6px_rgba(0,0,0,0.15)]">
               <!-- Logo or initial -->
               <div
                 v-if="slide.imageUrl && useLogo"
-                class="mx-auto mb-4 h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center"
+                class="mx-auto mb-4 h-20 w-20 sm:h-24 sm:w-24 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
               >
                 <img
                   :src="mediaUrl(slide.imageUrl)"
@@ -64,7 +65,7 @@
               </div>
               <div
                 v-else
-                class="mx-auto mb-4 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-white/20 text-2xl sm:text-3xl font-bold text-white"
+                class="mx-auto mb-4 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-white/20 text-2xl sm:text-3xl font-bold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
               >
                 {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
               </div>
@@ -110,10 +111,10 @@
     </template>
     </div>
 
-    <!-- Sponsor list at bottom: overlaps carousel with blur mix (no solid line) -->
+    <!-- Sponsor list at bottom: blurred black transition (no solid), bordered -->
     <div
       v-if="slides.length > 0"
-      class="sponsor-strip relative z-10 -mt-16 flex-shrink-0 py-4 pt-8 px-4 backdrop-blur-md bg-gradient-to-b from-transparent via-black/50 to-black/90"
+      class="sponsor-strip relative z-10 -mt-16 flex-shrink-0 py-4 pt-8 px-4 backdrop-blur-xl bg-gradient-to-b from-transparent via-black/40 to-black/80 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),inset_0_25px_40px_-15px_rgba(255,255,255,0.06)]"
     >
       <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
         <button

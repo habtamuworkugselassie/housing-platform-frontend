@@ -237,17 +237,15 @@ export function useAds() {
   }
 
   /**
-   * Premium & Gold sponsor slides for landing carousel (top two tiers by base price).
+   * Sponsor slides for landing carousel: all sponsored organizations and types.
    * Deduplicated by realEstateCompanyId so each company appears once.
    * Prefers organization slide (with logo/video) over property/building when same company.
+   * Sorted by base price descending (highest tier first).
    */
   const premiumSponsorSlides = computed<AdContent[]>(() => {
     if (allAds.value.length === 0) return []
-    const prices = [...new Set(allAds.value.map(a => a.basePrice || 0))].sort((a, b) => b - a)
-    const topPrices = prices.slice(0, 2) // premium (highest) and gold (second)
     const byCompany = new Map<string, AdContent>()
     for (const ad of allAds.value) {
-      if (!topPrices.includes(ad.basePrice || 0)) continue
       const key = ad.realEstateCompanyId || ad.id
       const existing = byCompany.get(key)
       const preferThis =

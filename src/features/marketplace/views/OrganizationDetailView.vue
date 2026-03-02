@@ -55,9 +55,14 @@
               <a :href="`mailto:${organization.email}`" class="text-yellow-400 hover:underline">{{ organization.email }}</a>
             </dd>
           </template>
-          <template v-if="organization.phoneNumber">
+          <template v-if="organizationPhoneDisplay.length">
             <dt class="text-xs font-medium text-gray-500">{{ $t('admin.orgPhone') }}</dt>
-            <dd class="text-sm text-white">{{ organization.phoneNumber }}</dd>
+            <dd class="text-sm text-white">
+              <template v-for="(phone, i) in organizationPhoneDisplay" :key="i">
+                <span v-if="i > 0">, </span>
+                <a :href="`tel:${phone}`" class="text-yellow-400 hover:underline">{{ phone }}</a>
+              </template>
+            </dd>
           </template>
           <template v-if="organization.website">
             <dt class="text-xs font-medium text-gray-500">{{ $t('admin.orgWebsite') }}</dt>
@@ -79,6 +84,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
+import { formatOrganizationPhones } from '@/shared/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -105,6 +111,7 @@ const orgTypeLabel = computed(() => {
   const key = typeToLabelKey[type] || ''
   return key ? t(key) : type
 })
+const organizationPhoneDisplay = computed(() => formatOrganizationPhones(organization.value || {}))
 
 const backLink = computed(() => {
   const from = route.query.from

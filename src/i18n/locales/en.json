@@ -496,6 +496,9 @@
     "statusApproved": "Approved",
     "orgEmail": "Email",
     "orgPhone": "Phone",
+    "orgPhonePlaceholder": "Number",
+    "addPhone": "Add phone",
+    "removePhone": "Remove phone",
     "orgAddress": "Address",
     "orgCity": "City",
     "orgCountry": "Country",
@@ -504,6 +507,7 @@
     "logoAndMedia": "Logo & media",
     "noLogo": "No logo uploaded",
     "uploadLogo": "Upload logo",
+    "uploadImages": "Upload images",
     "uploadVideo": "Upload video",
     "delete": "Delete",
     "noSponsorshipApplications": "No sponsorship applications",
@@ -823,7 +827,8 @@
     },
     "featuredListings": {
       "eyebrow": "Featured",
-      "subtext": "Browse a selection of properties from our platform. More listings and exhibitor content coming with the event."
+      "subtext": "Browse a selection of properties from our platform. More listings and exhibitor content coming with the event.",
+      "searchPlaceholder": "Search by title, city or company..."
     },
     "whatToExpect": {
       "eyebrow": "At the event"
@@ -916,7 +921,7 @@
       "email": "Email",
       "emailPlaceholder": "you{'@'}company.com",
       "phone": "Phone number",
-      "phonePlaceholder": "+251 …",
+      "phonePlaceholder": "123456789",
       "interestType": "I'm interested as",
       "selectType": "Select…",
       "asExhibitor": "Exhibitor (showcase my company/products)",

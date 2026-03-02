@@ -37,15 +37,40 @@
             />
           </div>
 
-          <div>
-            <label for="phoneNumber" class="block text-sm font-medium text-gray-300">Phone Number *</label>
-            <input
-              id="phoneNumber"
-              v-model="form.phoneNumber"
-              type="tel"
-              required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
-            />
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('auth.phoneNumber') }} *</label>
+            <div class="space-y-2">
+              <div
+                v-for="(phone, idx) in form.phoneNumbers"
+                :key="idx"
+                class="flex items-center gap-2"
+              >
+                <CountryCodePhoneInput
+                  :country-code="phone.countryCode"
+                  :number="phone.number"
+                  :placeholder="$t('admin.orgPhonePlaceholder')"
+                  class="flex-1 min-w-0"
+                  @update:country-code="phone.countryCode = $event"
+                  @update:number="phone.number = $event"
+                />
+                <button
+                  v-if="form.phoneNumbers.length > 1"
+                  type="button"
+                  class="flex-shrink-0 p-2 text-gray-400 hover:text-red-400 rounded border border-white/20 hover:border-red-400 transition-colors"
+                  :aria-label="$t('admin.removePhone')"
+                  @click="form.phoneNumbers.splice(idx, 1)"
+                >
+                  ×
+                </button>
+              </div>
+              <button
+                type="button"
+                class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+                @click="form.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
+              >
+                + {{ $t('admin.addPhone') }}
+              </button>
+            </div>
           </div>
 
           <div>
@@ -132,6 +157,8 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const router = useRouter()
 
@@ -139,7 +166,7 @@ const form = ref({
   name: '',
   registrationNumber: '',
   email: '',
-  phoneNumber: '',
+  phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   address: '',
   city: '',
   country: '',
@@ -174,7 +201,16 @@ const handleSubmit = async () => {
   success.value = ''
 
   try {
-    await api.post('/organizations', form.value)
+    const phoneNumbers = (form.value.phoneNumbers || [])
+      .filter((p) => (p.number || '').trim())
+      .map((p) => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() }))
+    if (!phoneNumbers.length) {
+      error.value = 'Please add at least one phone number.'
+      loading.value = false
+      return
+    }
+    const { phoneNumbers: _pn, ...rest } = form.value
+    await api.post('/organizations', { ...rest, phoneNumbers })
     success.value = 'Company registration submitted successfully! It will be reviewed by administrators.'
     setTimeout(() => {
       router.push('/dashboard')

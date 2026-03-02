@@ -502,25 +502,47 @@
               <label class="mdc-text-field__label">{{ $t('property.country') }}</label>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.phoneNumber"
-                type="text"
-                placeholder=" "
-                class="mdc-text-field__input"
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-400">{{ $t('auth.phoneNumber') }}</label>
+            <div
+              v-for="(phone, idx) in organizationForm.phoneNumbers"
+              :key="idx"
+              class="flex items-center gap-2"
+            >
+              <CountryCodePhoneInput
+                :country-code="phone.countryCode"
+                :number="phone.number"
+                :placeholder="$t('admin.orgPhonePlaceholder')"
+                class="flex-1 min-w-0"
+                @update:country-code="phone.countryCode = $event"
+                @update:number="phone.number = $event"
               />
-              <label class="mdc-text-field__label">{{ $t('auth.phoneNumber') }}</label>
+              <button
+                v-if="organizationForm.phoneNumbers.length > 1"
+                type="button"
+                class="flex-shrink-0 p-2 text-gray-400 hover:text-red-400 rounded border border-white/20 hover:border-red-400 transition-colors"
+                :aria-label="$t('admin.removePhone')"
+                @click="organizationForm.phoneNumbers.splice(idx, 1)"
+              >
+                ×
+              </button>
             </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.email"
-                type="email"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">{{ $t('dashboard.emailLabel') }}</label>
-            </div>
+            <button
+              type="button"
+              class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+              @click="organizationForm.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
+            >
+              + {{ $t('admin.addPhone') }}
+            </button>
+          </div>
+          <div class="mdc-text-field">
+            <input
+              v-model="organizationForm.email"
+              type="email"
+              placeholder=" "
+              class="mdc-text-field__input"
+            />
+            <label class="mdc-text-field__label">{{ $t('dashboard.emailLabel') }}</label>
           </div>
           <div class="mdc-text-field">
             <input
@@ -1117,6 +1139,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
 import api, { mediaUrl } from '@/shared/api/client'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const { t } = useI18n()
@@ -1152,7 +1176,7 @@ const organizationForm = ref({
   address: '',
   city: '',
   country: '',
-  phoneNumber: '',
+  phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   email: '',
   website: '',
   description: ''
@@ -1353,7 +1377,9 @@ const openEditOrganizationModal = () => {
     address: organization.value.address || '',
     city: organization.value.city || '',
     country: organization.value.country || '',
-    phoneNumber: organization.value.phoneNumber || '',
+    phoneNumbers: (organization.value.phoneNumbers && organization.value.phoneNumbers.length > 0)
+      ? organization.value.phoneNumbers.map((p) => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: p.number || '' }))
+      : (organization.value.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: organization.value.phoneNumber.replace(/^\+\d+\s*/, '') }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
     email: organization.value.email || '',
     website: organization.value.website || '',
     description: organization.value.description || ''
@@ -1365,8 +1391,19 @@ const updateOrganization = async () => {
   if (!organization.value) return
   
   try {
+    const phoneNumbers = (organizationForm.value.phoneNumbers || [])
+      .filter((p) => (p.number || '').trim())
+      .map((p) => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() }))
     const response = await api.put(`/organizations/${organization.value.id}`, {
-      ...organizationForm.value,
+      name: organizationForm.value.name,
+      registrationNumber: organizationForm.value.registrationNumber || undefined,
+      address: organizationForm.value.address || undefined,
+      city: organizationForm.value.city || undefined,
+      country: organizationForm.value.country || undefined,
+      phoneNumbers: phoneNumbers.length ? phoneNumbers : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
+      email: organizationForm.value.email || undefined,
+      website: organizationForm.value.website || undefined,
+      description: organizationForm.value.description || undefined,
       type: organization.value.type
     })
     organization.value = response.data

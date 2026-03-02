@@ -45,12 +45,11 @@
             </div>
 
             <div>
-              <label for="phoneNumber" class="block text-sm font-medium text-gray-400">Phone Number</label>
-              <input
-                id="phoneNumber"
-                v-model="form.phoneNumber"
-                type="tel"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              <label for="phoneNumber" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('auth.phoneNumber') }}</label>
+              <CountryCodePhoneInput
+                v-model:country-code="form.phoneCountryCode"
+                v-model:number="form.phoneNumber"
+                :placeholder="$t('admin.orgPhonePlaceholder')"
               />
             </div>
 
@@ -136,6 +135,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const router = useRouter()
 
@@ -143,6 +144,7 @@ const form = ref({
   firstName: '',
   lastName: '',
   email: '',
+  phoneCountryCode: DEFAULT_COUNTRY_CODE,
   phoneNumber: '',
   password: '',
   licenseNumber: '',
@@ -161,7 +163,9 @@ const handleSubmit = async () => {
   fieldErrors.value = []
 
   try {
-    await api.post('/real-estate-agents/create', form.value)
+    const { phoneCountryCode, phoneNumber, ...rest } = form.value
+    const combinedPhone = (phoneNumber || '').trim() ? (phoneCountryCode || DEFAULT_COUNTRY_CODE) + (phoneNumber || '').trim() : undefined
+    await api.post('/real-estate-agents/create', { ...rest, phoneNumber: combinedPhone })
     success.value = 'Agent created successfully!'
     setTimeout(() => {
       router.push('/dashboard')

@@ -195,8 +195,11 @@
                   <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-sm text-gray-400">
                     <span v-if="org.address">{{ org.address }}</span>
                     <span v-if="org.city">{{ org.city }}</span>
-                    <template v-if="org.phoneNumber">
-                      <a :href="`tel:${org.phoneNumber}`" class="text-yellow-400 hover:underline">{{ org.phoneNumber }}</a>
+                    <template v-if="orgPhones(org).length">
+                      <template v-for="(phone, i) in orgPhones(org)" :key="i">
+                        <span v-if="i > 0">, </span>
+                        <a :href="`tel:${phone}`" class="text-yellow-400 hover:underline">{{ phone }}</a>
+                      </template>
                     </template>
                     <template v-if="org.email">
                       <a :href="`mailto:${org.email}`" class="text-yellow-400 hover:underline">{{ org.email }}</a>
@@ -473,7 +476,7 @@ import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import api, { mediaUrl } from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
-import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, formatOrganizationPhones } from '@/shared/utils'
 import { AdSpace } from '@/shared/components'
 import { useAds } from '@/shared/composables/useAds'
 
@@ -643,6 +646,10 @@ const searchQuery = ref('')
 const ORGANIZATIONS_PER_PAGE = 5
 const organizationListPage = ref(1)
 
+function orgPhones(org) {
+  return formatOrganizationPhones(org || {})
+}
+
 const filteredByOrganization = computed(() => {
   const orgs = organizationsList.value || []
   const q = (searchQuery.value || '').trim().toLowerCase()
@@ -653,7 +660,7 @@ const filteredByOrganization = computed(() => {
     const city = (org.city || '').toLowerCase()
     const country = (org.country || '').toLowerCase()
     const email = (org.email || '').toLowerCase()
-    const phone = (org.phoneNumber || '').replace(/\s/g, '')
+    const phone = orgPhones(org).join('').replace(/\s/g, '')
     const website = (org.website || '').toLowerCase()
     const qNorm = q.replace(/\s/g, '')
     return (

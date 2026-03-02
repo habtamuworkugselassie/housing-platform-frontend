@@ -158,10 +158,13 @@
                 <a :href="`mailto:${company.email}`" class="text-yellow-400 hover:underline">{{ company.email }}</a>
               </dd>
             </div>
-            <div v-if="company.phoneNumber">
+            <div v-if="companyPhones.length">
               <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.phoneLabel') }}:</dt>
               <dd class="text-sm text-white">
-                <a :href="`tel:${company.phoneNumber}`" class="text-yellow-400 hover:underline">{{ company.phoneNumber }}</a>
+                <template v-for="(phone, i) in companyPhones" :key="i">
+                  <span v-if="i > 0">, </span>
+                  <a :href="`tel:${phone}`" class="text-yellow-400 hover:underline">{{ phone }}</a>
+                </template>
               </dd>
             </div>
             <div v-if="company.address" class="md:col-span-2">
@@ -292,11 +295,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
-import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, formatOrganizationPhones } from '@/shared/utils'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -308,6 +311,7 @@ const building = ref(null)
 const units = ref([])
 const financingOffers = ref([])
 const company = ref(null)
+const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
 
 const loadBuilding = async () => {
   loading.value = true

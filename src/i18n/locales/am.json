@@ -512,6 +512,9 @@
     "statusApproved": "የተጸድቋል",
     "orgEmail": "ኢሜይል",
     "orgPhone": "ስልክ",
+    "orgPhonePlaceholder": "ቁጥር",
+    "addPhone": "ስልክ ጨምር",
+    "removePhone": "ስልክ አስወግድ",
     "orgAddress": "አድራሻ",
     "orgCity": "ከተማ",
     "orgCountry": "አገር",
@@ -520,6 +523,7 @@
     "logoAndMedia": "ሎጎ እና ሜዲያ",
     "noLogo": "ሎጎ አልተጫነም",
     "uploadLogo": "ሎጎ ጫን",
+    "uploadImages": "ምስሎች ጫን",
     "uploadVideo": "ቪዲዮ ጫን",
     "delete": "ሰርዝ",
     "noSponsorshipApplications": "የስፖንሰርሺፕ ማመልከቻዎች የሉም",
@@ -839,7 +843,8 @@
     },
     "featuredListings": {
       "eyebrow": "የቀረቡ",
-      "subtext": "ከመድረኳችን የተመረጡ ንብረቶችን ይመልከቱ። ተጨማሪ ዝርዝሮች እና የተሳተፊ ይዘት ከዝግጅቱ ጋር ይመጣል።"
+      "subtext": "ከመድረኳችን የተመረጡ ንብረቶችን ይመልከቱ። ተጨማሪ ዝርዝሮች እና የተሳተፊ ይዘት ከዝግጅቱ ጋር ይመጣል።",
+      "searchPlaceholder": "በርዕስ፣ ከተማ ወይም ኩባንያ ፈልግ..."
     },
     "whatToExpect": {
       "eyebrow": "በዝግጅቱ ላይ"
@@ -932,7 +937,7 @@
       "email": "ኢሜይል",
       "emailPlaceholder": "you{'@'}company.com",
       "phone": "ስልክ ቁጥር",
-      "phonePlaceholder": "+251 …",
+      "phonePlaceholder": "123456789",
       "interestType": "እንደ ይጠበቃል",
       "selectType": "ምረጥ…",
       "asExhibitor": "ተሳተፊ (ኩባንያ/ምርቶቼን ማሳየት)",

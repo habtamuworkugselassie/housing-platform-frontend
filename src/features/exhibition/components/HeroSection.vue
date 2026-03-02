@@ -45,7 +45,7 @@
     </div>
 
     <!-- {{ $t('exhibition.hero.foundationPartners') }} strip -->
-    <div class="relative z-10 border-t border-white/20 bg-black/50 py-6">
+    <div class="relative z-10 bg-black/50 py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),inset_0_25px_40px_-15px_rgba(255,255,255,0.08)]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-center text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] mb-5">
           {{ $t('exhibition.hero.foundationPartners') }}

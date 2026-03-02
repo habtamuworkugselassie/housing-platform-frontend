@@ -185,7 +185,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-white">{{ org.email || 'N/A' }}</div>
-                  <div class="text-sm text-gray-400">{{ org.phoneNumber || 'N/A' }}</div>
+                  <div class="text-sm text-gray-400">{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
@@ -306,6 +306,16 @@
                     />
                   </label>
                   <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-yellow-500/20 hover:border-yellow-400 cursor-pointer">
+                    {{ $t('admin.uploadImages') }}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      class="hidden"
+                      @change="onUploadImages($event, viewingOrg.id)"
+                    />
+                  </label>
+                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-yellow-500/20 hover:border-yellow-400 cursor-pointer">
                     {{ $t('admin.uploadVideo') }}
                     <input
                       type="file"
@@ -349,7 +359,7 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Phone</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.phoneNumber || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-white">{{ formatOrganizationPhones(viewingOrg).join(', ') || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-400">City</label>
@@ -580,14 +590,40 @@
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
-              <div>
-                <label for="org-phone" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgPhone') }}</label>
-                <input
-                  id="org-phone"
-                  v-model="form.phoneNumber"
-                  type="tel"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                />
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('admin.orgPhone') }}</label>
+                <div class="space-y-2">
+                  <div
+                    v-for="(phone, idx) in form.phoneNumbers"
+                    :key="idx"
+                    class="flex items-center gap-2"
+                  >
+                    <CountryCodePhoneInput
+                      :country-code="phone.countryCode"
+                      :number="phone.number"
+                      :placeholder="$t('admin.orgPhonePlaceholder')"
+                      class="flex-1"
+                      @update:country-code="phone.countryCode = $event"
+                      @update:number="phone.number = $event"
+                    />
+                    <button
+                      v-if="form.phoneNumbers.length > 1"
+                      type="button"
+                      class="flex-shrink-0 p-2 text-gray-400 hover:text-red-400 rounded border border-white/20 hover:border-red-400 transition-colors"
+                      :aria-label="$t('admin.removePhone')"
+                      @click="form.phoneNumbers.splice(idx, 1)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+                    @click="form.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
+                  >
+                    + {{ $t('admin.addPhone') }}
+                  </button>
+                </div>
               </div>
               <div>
                 <label for="org-address" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgAddress') }}</label>
@@ -772,6 +808,9 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
+import { formatOrganizationPhones } from '@/shared/utils'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 
@@ -1018,6 +1057,20 @@ const onUploadLogo = async (ev, orgId) => {
   ev.target.value = ''
 }
 
+const onUploadImages = async (ev, orgId) => {
+  const files = ev.target?.files
+  if (!files?.length || !orgId) return
+  try {
+    await uploadOrganizationMedia(orgId, Array.from(files), 'IMAGE')
+    const full = await getOrganizationById(orgId)
+    viewingOrg.value = full
+    await loadOrgs()
+  } catch (e) {
+    console.error('Upload images failed:', e)
+  }
+  ev.target.value = ''
+}
+
 const onUploadVideo = async (ev, orgId) => {
   const files = ev.target?.files
   if (!files?.length || !orgId) return
@@ -1061,7 +1114,7 @@ const form = ref({
   address: '',
   city: '',
   country: '',
-  phoneNumber: '',
+  phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   email: '',
   website: '',
   description: '',
@@ -1076,7 +1129,7 @@ function resetForm() {
     address: '',
     city: '',
     country: '',
-    phoneNumber: '',
+    phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
     email: '',
     website: '',
     description: '',
@@ -1102,7 +1155,9 @@ function openEditModal(org) {
     address: org.address ?? '',
     city: org.city ?? '',
     country: org.country ?? '',
-    phoneNumber: org.phoneNumber ?? '',
+    phoneNumbers: (org.phoneNumbers && org.phoneNumbers.length > 0)
+      ? org.phoneNumbers.map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: p.number || '' }))
+      : (org.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: org.phoneNumber }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
     email: org.email ?? '',
     website: org.website ?? '',
     description: org.description ?? '',
@@ -1125,7 +1180,7 @@ async function submitOrganizationForm() {
         address: form.value.address || undefined,
         city: form.value.city || undefined,
         country: form.value.country || undefined,
-        phoneNumber: form.value.phoneNumber || undefined,
+        phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,
         description: form.value.description || undefined,
@@ -1141,7 +1196,7 @@ async function submitOrganizationForm() {
         address: form.value.address || undefined,
         city: form.value.city || undefined,
         country: form.value.country || undefined,
-        phoneNumber: form.value.phoneNumber || undefined,
+        phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,
         description: form.value.description || undefined

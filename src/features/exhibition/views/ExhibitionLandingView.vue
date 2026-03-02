@@ -43,37 +43,52 @@
         <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">
           {{ $t('property.properties') }}
         </h2>
-        <p class="text-sm text-gray-500 max-w-2xl mb-6">
+        <p class="text-sm text-gray-500 max-w-2xl mb-4">
           {{ $t('exhibition.featuredListings.subtext') }}
         </p>
+        <div class="mb-6 max-w-md">
+          <input
+            v-model="propertiesSearchQuery"
+            type="search"
+            :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
+            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            aria-label="Search properties"
+          />
+        </div>
         <div v-if="propertiesLoading" class="flex justify-center py-12">
           <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
         </div>
-        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <a
             v-for="(item, index) in (propertiesList || [])"
             :key="item?.id ?? index"
             :href="item?.id ? `/properties/${item.id}` : '#'"
             class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:shadow-lg hover:shadow-yellow-400/5"
           >
-            <div class="relative aspect-[5/3] flex-shrink-0 overflow-hidden bg-zinc-800">
+            <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-zinc-800">
               <img
                 v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
                 :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
                 :alt="item?.title || ''"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
               />
-              <div v-else class="flex h-full items-center justify-center text-3xl text-gray-500">🏠</div>
+              <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
-              <span class="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+              <span class="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
                 {{ item?.city ?? '' }}{{ item?.country ? `, ${item.country}` : '' }}
               </span>
             </div>
-            <div class="flex min-h-0 flex-1 flex-col p-3 sm:p-3.5">
-              <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-yellow-400/95">
+            <div class="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
+              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-white group-hover:text-yellow-400/95">
                 {{ item?.title ?? '' }}
               </h3>
-              <p v-if="item?.priceETB || item?.priceUSD" class="mt-1.5 text-sm font-bold text-yellow-400">
+              <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-gray-400">
+                {{ item.realEstateCompanyName }}
+              </p>
+              <p v-if="item?.realEstateCompanyPhone" class="mt-0.5 text-sm text-white/80">
+                Tel. {{ item.realEstateCompanyPhone }}
+              </p>
+              <p v-if="item?.priceETB || item?.priceUSD" class="mt-2 text-base font-bold text-yellow-400">
                 {{ item?.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
                 <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-gray-500">/</span>
                 {{ item?.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
@@ -82,28 +97,33 @@
           </a>
         </div>
         <p v-else class="py-8 text-center text-sm text-gray-400">
-          {{ $t('property.noProperties') }}
+          {{ propertiesSearchQuery.trim() ? $t('property.noPropertiesFound') : $t('property.noProperties') }}
         </p>
-        <!-- Pagination -->
-        <div v-if="propertiesTotalPages > 1" class="mt-6 flex items-center justify-center gap-2">
+        <!-- Pagination: shown when not searching (9 per page) -->
+        <div
+          v-if="!propertiesSearchQuery.trim() && (propertiesList || []).length > 0"
+          class="mt-8 flex flex-wrap items-center justify-center gap-0 rounded-xl border border-white/10 bg-white/5 p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+        >
           <button
             type="button"
             :disabled="propertiesPage === 0"
-            class="rounded border border-white/30 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 disabled:text-gray-500"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-yellow-400 hover:bg-yellow-500/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.max(0, propertiesPage - 1)"
           >
-            {{ $t('common.previous') }}
+            <ChevronLeftIcon class="h-4 w-4" aria-hidden="true" />
+            <span>{{ $t('common.previous') }}</span>
           </button>
-          <span class="px-4 text-sm text-gray-300">
-            {{ $t('common.page') }} {{ propertiesPage + 1 }} {{ $t('common.of') }} {{ propertiesTotalPages }}
+          <span class="min-w-[7rem] px-4 py-2.5 text-center text-sm font-medium text-gray-300">
+            {{ $t('common.page') }} <span class="font-semibold text-white">{{ propertiesPage + 1 }}</span> {{ $t('common.of') }} {{ Math.max(1, propertiesTotalPages) }}
           </span>
           <button
             type="button"
             :disabled="propertiesPage >= propertiesTotalPages - 1"
-            class="rounded border border-white/30 bg-white px-4 py-2 text-sm font-medium text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 disabled:text-gray-500"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-yellow-400 hover:bg-yellow-500/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
           >
-            {{ $t('common.next') }}
+            <span>{{ $t('common.next') }}</span>
+            <ChevronRightIcon class="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -270,11 +290,9 @@
           </div>
           <div>
             <label for="interest-phone" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.phone') }}</label>
-            <input
-              id="interest-phone"
-              v-model="interestForm.phoneNumber"
-              type="tel"
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            <CountryCodePhoneInput
+              v-model:country-code="interestForm.phoneCountryCode"
+              v-model:number="interestForm.phoneNumber"
               :placeholder="$t('exhibition.registerInterest.phonePlaceholder')"
             />
           </div>
@@ -397,9 +415,12 @@ import {
   UserGroupIcon,
   LightBulbIcon
 } from '@heroicons/vue/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
 import PillarGrid from '../components/PillarGrid.vue'
 import ValueChainGrid from '../components/ValueChainGrid.vue'
 import ExhibitionMessageCarousel from '../components/ExhibitionMessageCarousel.vue'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const route = useRoute()
 
@@ -413,6 +434,7 @@ const { t } = useI18n()
 // Register interest form (exhibition) – creates Organization and ExhibitionInterest in backend
 const interestForm = ref({
   email: '',
+  phoneCountryCode: DEFAULT_COUNTRY_CODE,
   phoneNumber: '',
   organizationType: '',
   interestType: '',
@@ -426,9 +448,12 @@ async function submitInterest() {
   interestError.value = ''
   interestSubmitting.value = true
   try {
+    const combinedPhone = (interestForm.value.phoneNumber || '').trim()
+      ? (interestForm.value.phoneCountryCode || DEFAULT_COUNTRY_CODE) + (interestForm.value.phoneNumber || '').trim()
+      : undefined
     await exhibitionApi.registerInterest({
       email: interestForm.value.email,
-      phoneNumber: interestForm.value.phoneNumber || undefined,
+      phoneNumber: combinedPhone,
       organizationType: interestForm.value.organizationType,
       interestType: interestForm.value.interestType || 'visitor',
       company: interestForm.value.company || undefined,
@@ -443,12 +468,14 @@ async function submitInterest() {
   }
 }
 
-// Paged properties list
+// Paged properties list (max 9 per page) + simple search
 const propertiesList = ref([])
 const propertiesLoading = ref(false)
 const propertiesPage = ref(0)
 const propertiesTotalPages = ref(0)
-const propertiesPageSize = 12
+const propertiesPageSize = 9
+const propertiesSearchQuery = ref('')
+let propertiesSearchDebounce = null
 
 const loadProperties = async () => {
   propertiesLoading.value = true
@@ -469,8 +496,36 @@ const loadProperties = async () => {
   }
 }
 
+const runPropertiesSearch = async () => {
+  const q = (propertiesSearchQuery.value || '').trim()
+  if (!q) {
+    propertiesPage.value = 0
+    await loadProperties()
+    return
+  }
+  propertiesLoading.value = true
+  try {
+    const list = await propertyApi.searchPropertiesByQuery({ title: q, limit: 50 })
+    propertiesList.value = Array.isArray(list) ? list : []
+    propertiesTotalPages.value = 0
+  } catch (err) {
+    console.error('Search failed:', err)
+    propertiesList.value = []
+    propertiesTotalPages.value = 0
+  } finally {
+    propertiesLoading.value = false
+  }
+}
 
-watch(propertiesPage, loadProperties)
+watch(propertiesSearchQuery, () => {
+  if (propertiesSearchDebounce) clearTimeout(propertiesSearchDebounce)
+  propertiesSearchDebounce = setTimeout(runPropertiesSearch, 400)
+})
+
+watch(propertiesPage, () => {
+  if (!propertiesSearchQuery.value.trim()) loadProperties()
+})
+
 onMounted(loadProperties)
 
 function scrollToHash() {

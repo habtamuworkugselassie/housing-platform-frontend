@@ -57,6 +57,8 @@ export interface PropertyResponse {
   images?: Array<{ imageUrl: string }>
   realEstateCompanyId?: string
   realEstateCompanyName?: string
+  /** Primary contact phone for the real estate (e.g. +251 91 123 4567). */
+  realEstateCompanyPhone?: string
   isSponsored?: boolean
   sponsorshipType?: 'PREMIER' | 'BASIC'
   createdAt: string

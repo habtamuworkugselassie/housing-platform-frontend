@@ -60,5 +60,18 @@ export const propertyApi = {
   searchProperties: async (filters: PropertyFilters): Promise<PropertyResponse[]> => {
     const response = await api.get<PropertyResponse[]>('/properties/search', { params: filters })
     return response.data
+  },
+
+  /**
+   * Search properties by query (title, city, company name). Uses GET /properties/search.
+   */
+  searchPropertiesByQuery: async (params: {
+    title?: string
+    city?: string
+    companyName?: string
+    limit?: number
+  }): Promise<PropertyResponse[]> => {
+    const response = await api.get<PropertyResponse[]>('/properties/search', { params })
+    return response.data
   }
 }

@@ -20,6 +20,15 @@ body {
   color: #fff;
 }
 
+/* Native select dropdowns: dark theme so options list is black in all browsers */
+select {
+  color-scheme: dark;
+}
+option {
+  background-color: #000;
+  color: #fff;
+}
+
 /* Legacy MDC components when inside a dark container */
 .bg-black .mdc-card,
 .bg-black [class*="mdc-card"] {

@@ -344,13 +344,18 @@
                   <span class="text-sm font-medium text-white flex-1">{{ company.email }}</span>
                 </a>
 
-                <a v-if="company.phoneNumber" :href="`tel:${company.phoneNumber}`" class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors group">
+                <a
+                  v-for="(phone, idx) in companyPhones"
+                  :key="idx"
+                  :href="`tel:${phone}`"
+                  class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors group"
+                >
                   <div class="w-10 h-10 bg-yellow-400/20 rounded-lg flex items-center justify-center group-hover:bg-yellow-400/30 transition-colors">
                     <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                     </svg>
                   </div>
-                  <span class="text-sm font-medium text-white flex-1">{{ company.phoneNumber }}</span>
+                  <span class="text-sm font-medium text-white flex-1">{{ phone }}</span>
                 </a>
 
                 <div v-if="company.address" class="p-3 bg-white/5 border border-white/10 rounded-lg">
@@ -511,8 +516,9 @@
             </a>
 
             <a
-              v-if="company.phoneNumber"
-              :href="`tel:${company.phoneNumber}`"
+              v-for="(phone, idx) in companyPhones"
+              :key="idx"
+              :href="`tel:${phone}`"
               class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors group"
             >
               <div class="w-12 h-12 bg-yellow-400/20 rounded-lg flex items-center justify-center group-hover:bg-yellow-400/30 transition-colors">
@@ -522,7 +528,7 @@
               </div>
               <div class="flex-1">
                 <p class="text-xs text-gray-500 mb-1">{{ $t('building.phoneLabel') }}</p>
-                <p class="text-base font-semibold text-white">{{ company.phoneNumber }}</p>
+                <p class="text-base font-semibold text-white">{{ phone }}</p>
               </div>
             </a>
 
@@ -653,12 +659,13 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, formatOrganizationPhones } from '@/shared/utils'
 
 const route = useRoute()
 const { t } = useI18n()
 const property = ref(null)
 const company = ref(null)
+const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
 const financingOffers = ref([])
 const loading = ref(true)
 const currentImageIndex = ref(0)
