@@ -160,7 +160,7 @@ const props = defineProps({
   autoplayMs: { type: Number, default: 5500 }
 })
 
-const { loadAllAds, premiumSponsorSlides, loading } = useAds()
+const { premiumSponsorSlides, loading } = useAds()
 
 const currentIndex = ref(0)
 let autoplayTimer = null
@@ -201,7 +201,8 @@ watch(slides, (val) => {
 }, { immediate: true })
 
 onMounted(() => {
-  loadAllAds(20).then(resetAutoplay)
+  // Sponsor data is loaded by PublicLayout first; we use shared state and just reset autoplay when slides appear
+  resetAutoplay()
 })
 
 onUnmounted(() => {

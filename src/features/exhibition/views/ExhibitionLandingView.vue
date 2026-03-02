@@ -421,8 +421,10 @@ import ValueChainGrid from '../components/ValueChainGrid.vue'
 import ExhibitionMessageCarousel from '../components/ExhibitionMessageCarousel.vue'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
+import { useAds } from '@/shared/composables/useAds'
 
 const route = useRoute()
+const { whenReady } = useAds()
 
 const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card1Title', bodyKey: 'exhibition.whatHappened.card1Body', icon: BuildingOffice2Icon },
@@ -526,7 +528,10 @@ watch(propertiesPage, () => {
   if (!propertiesSearchQuery.value.trim()) loadProperties()
 })
 
-onMounted(loadProperties)
+onMounted(async () => {
+  await whenReady()
+  loadProperties()
+})
 
 function scrollToHash() {
   const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')

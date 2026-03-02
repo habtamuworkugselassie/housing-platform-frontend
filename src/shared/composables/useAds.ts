@@ -1,12 +1,24 @@
 /**
  * Ads Composable
- * 
+ *
  * Business logic for managing sponsored ads from sponsorships.
+ * State is shared (singleton) so sponsor carousel and layout use the same data;
+ * whenReady() lets the feature section wait until sponsor content has loaded first.
  */
 import { ref, computed } from 'vue'
 import { propertyApi } from '@/features/property/api/property.api'
 import type { PropertyResponse } from '@/features/property/api/property.types'
 import api from '@/shared/api/client'
+
+// Shared state so PublicLayout, SponsorCarouselSection and ExhibitionLandingView see the same ads
+const loading = ref(false)
+const error = ref<unknown>(null)
+const allAds = ref<AdContent[]>([])
+const sponsorships = ref<SponsorshipResponse[]>([])
+const sponsorshipTypeMap = ref<Map<string, number>>(new Map())
+let loadResolve: () => void
+const loadPromise = new Promise<void>((resolve) => { loadResolve = resolve })
+let loadStarted = false
 
 export interface BuildingResponse {
   id: string
@@ -72,11 +84,6 @@ export interface FirstPropertyMediaResponse {
 }
 
 export function useAds() {
-  const loading = ref(false)
-  const error = ref(null)
-  const allAds = ref<AdContent[]>([])
-  const sponsorships = ref<SponsorshipResponse[]>([])
-  const sponsorshipTypeMap = ref<Map<string, number>>(new Map())
 
   /**
    * Load sponsorships from backend to get dynamic types and base prices
@@ -106,8 +113,11 @@ export function useAds() {
 
   /**
    * Fetch all sponsored content: organizations (active sponsorship), properties, and buildings; ordered by base price.
+   * First call wins; subsequent callers share the same data and whenReady() resolves when this completes.
    */
   const loadAllAds = async (limit: number = 20): Promise<void> => {
+    if (loadStarted) return
+    loadStarted = true
     loading.value = true
     error.value = null
 
@@ -219,6 +229,7 @@ export function useAds() {
       allAds.value = []
     } finally {
       loading.value = false
+      loadResolve()
     }
   }
 
@@ -329,6 +340,9 @@ export function useAds() {
     return getRandomBasicAd()
   }
 
+  /** Resolves when the initial sponsor/carousel load has completed (so feature section can load after). */
+  const whenReady = (): Promise<void> => loadPromise
+
   return {
     loading,
     error,
@@ -345,6 +359,7 @@ export function useAds() {
     getRandomPremierAd, // Legacy compatibility
     getRandomBasicAd, // Legacy compatibility
     getRandomTopAd,
-    getRandomSideAd
+    getRandomSideAd,
+    whenReady
   }
 }

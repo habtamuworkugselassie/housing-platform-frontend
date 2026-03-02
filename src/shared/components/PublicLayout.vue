@@ -42,13 +42,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { AdSpace } from './index'
 import { useAds } from '../composables/useAds'
 
-const { loadAllAds, sideAds, getRandomSideAd } = useAds()
+const { loadAllAds, sideAds } = useAds()
 const leftSideAdIndex = ref(0)
 const rightSideAdIndex = ref(0)
+
+// Start sponsor/carousel load immediately so it finishes before feature section loads
+loadAllAds(20)
 
 // Get current ads for left and right sidebars (using sideAds which have lower base_price)
 const leftSideAd = computed(() => {
@@ -63,19 +66,22 @@ const rightSideAd = computed(() => {
   return sideAds.value[rightIndex]
 })
 
-// Rotate sidebar ads every 15 seconds
+// Rotate sidebar ads every 15 seconds (start after ads have loaded)
 let adRotationInterval = null
-
 onMounted(() => {
-  loadAllAds(20).then(() => {
-    // Start rotating ads every 15 seconds
+  const startRotation = () => {
+    if (adRotationInterval) return
     adRotationInterval = setInterval(() => {
       if (sideAds.value.length > 0) {
         leftSideAdIndex.value = (leftSideAdIndex.value + 1) % sideAds.value.length
         rightSideAdIndex.value = (rightSideAdIndex.value + 1) % sideAds.value.length
       }
     }, 15000)
-  })
+  }
+  if (sideAds.value.length > 0) startRotation()
+  else {
+    const stop = watch(sideAds, (v) => { if (v.length > 0) { startRotation(); stop() } }, { immediate: true })
+  }
 })
 
 // Cleanup interval on unmount
