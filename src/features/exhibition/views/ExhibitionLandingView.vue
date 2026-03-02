@@ -59,7 +59,7 @@
             <div class="relative aspect-[5/3] flex-shrink-0 overflow-hidden bg-zinc-800">
               <img
                 v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
-                :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
                 :alt="item?.title || ''"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
               />
@@ -388,6 +388,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 import { formatPrice } from '@/shared/utils'

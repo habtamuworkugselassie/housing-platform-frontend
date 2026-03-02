@@ -17,6 +17,33 @@ const getBaseURL = (): string => {
   return '/api/v1'
 }
 
+/** Backend origin for media/upload URLs. Use VITE_BACKEND_ORIGIN to force a host:port (e.g. :8080); else derived from VITE_API_BASE_URL. */
+function getBackendOrigin(): string {
+  const origin = import.meta.env.VITE_BACKEND_ORIGIN
+  if (origin != null && typeof origin === 'string') {
+    const trimmed = origin.trim()
+    if (trimmed !== '') return trimmed.replace(/\/$/, '')
+  }
+  const base = getBaseURL()
+  if (base.startsWith('http://') || base.startsWith('https://')) {
+    try {
+      return new URL(base).origin
+    } catch {
+      return ''
+    }
+  }
+  return ''
+}
+
+/** Resolve a relative API path (e.g. /api/v1/uploads/...) to a full URL using backend origin. Use for img/video src. */
+export function mediaUrl(path: string | null | undefined): string {
+  if (path == null || path === '') return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  const origin = getBackendOrigin()
+  if (!origin) return path
+  return origin + (path.startsWith('/') ? path : '/' + path)
+}
+
 const api: AxiosInstance = axios.create({
   baseURL: getBaseURL(),
   headers: {

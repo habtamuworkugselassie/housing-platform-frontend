@@ -274,7 +274,7 @@
             <div class="relative h-48 sm:h-56 md:h-64 bg-white/10 overflow-hidden">
               <img
                 v-if="(item.images && item.images.length > 0) || (item.imageUrls && item.imageUrls.length > 0)"
-                :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
                 :alt="item.title || item.name"
                 :class="{
                   'w-full h-full object-cover transition-transform duration-300': true,
@@ -471,7 +471,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '@/shared/api/client'
+import api, { mediaUrl } from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 import { AdSpace } from '@/shared/components'
@@ -636,15 +636,6 @@ function totalPagesForGroup(items) {
 }
 function setGroupPage(groupKey, page) {
   groupPage.value = { ...groupPage.value, [groupKey]: page }
-}
-
-function mediaUrl(url) {
-  if (!url) return ''
-  if (url.startsWith('http')) return url
-  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
-  if (!base) return url
-  const p = url.replace(/^\/api\/v1/, '')
-  return `${base.replace(/\/$/, '')}${p.startsWith('/') ? p : '/' + p}`
 }
 
 // Search and pagination for the organization list (orgs from API have name, address, etc.)

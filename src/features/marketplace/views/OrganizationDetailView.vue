@@ -78,7 +78,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import api from '@/shared/api/client'
+import api, { mediaUrl } from '@/shared/api/client'
 
 const route = useRoute()
 const router = useRouter()
@@ -111,15 +111,6 @@ const backLink = computed(() => {
   if (from && typeof from === 'string' && from.startsWith('/marketplace')) return from
   return '/marketplace/banks'
 })
-
-function mediaUrl(url) {
-  if (!url) return ''
-  if (url.startsWith('http')) return url
-  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
-  if (!base) return url
-  const p = url.replace(/^\/api\/v1/, '')
-  return `${base.replace(/\/$/, '')}${p.startsWith('/') ? p : '/' + p}`
-}
 
 async function loadOrganization() {
   const id = route.params.id

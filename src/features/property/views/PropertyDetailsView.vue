@@ -38,7 +38,7 @@
           <!-- Main Image -->
           <div v-if="property.images && property.images.length > 0" class="relative h-full w-full">
             <img
-              :src="property.images[currentImageIndex]?.imageUrl"
+              :src="mediaUrl(property.images[currentImageIndex]?.imageUrl)"
               :alt="property.title"
               class="w-full h-full object-cover transition-opacity duration-300"
             />
@@ -406,7 +406,7 @@
                 class="relative aspect-square bg-white/10 rounded-lg overflow-hidden cursor-pointer group hover:border-yellow-400 hover:bg-yellow-500/10 border border-white/10 transition-colors"
               >
                 <img
-                  :src="image.imageUrl"
+                  :src="mediaUrl(image.imageUrl)"
                   :alt="`${property.title} - Image ${index + 1}`"
                   class="w-full h-full object-cover"
                 />
@@ -591,7 +591,7 @@
         <!-- Main Image -->
         <div class="flex-1 flex items-center justify-center p-4">
           <img
-            :src="property.images[galleryIndex]?.imageUrl"
+            :src="mediaUrl(property.images[galleryIndex]?.imageUrl)"
             :alt="`${property.title} - Image ${galleryIndex + 1}`"
             class="max-w-full max-h-full object-contain"
           />
@@ -636,7 +636,7 @@
               ]"
             >
               <img
-                :src="image.imageUrl"
+                :src="mediaUrl(image.imageUrl)"
                 :alt="`Thumbnail ${index + 1}`"
                 class="w-full h-full object-cover"
               />
@@ -652,7 +652,7 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import api from '@/shared/api/client'
+import api, { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const route = useRoute()

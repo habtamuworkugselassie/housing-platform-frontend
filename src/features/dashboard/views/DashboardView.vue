@@ -878,7 +878,7 @@
               <!-- Existing Images -->
               <div v-if="editingProperty && editingProperty.images && editingProperty.images.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                 <div v-for="image in editingProperty.images" :key="image.id" class="relative group">
-                  <img :src="image.imageUrl" :alt="image.caption || $t('property.propertyImage')" class="w-full h-24 object-cover rounded border border-white/20" />
+                  <img :src="mediaUrl(image.imageUrl)" :alt="image.caption || $t('property.propertyImage')" class="w-full h-24 object-cover rounded border border-white/20" />
                   <button
                     type="button"
                     @click="deletePropertyImage(editingProperty.id, image.id)"
@@ -1116,7 +1116,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
-import api from '@/shared/api/client'
+import api, { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const { t } = useI18n()

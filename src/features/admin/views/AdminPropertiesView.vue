@@ -609,6 +609,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { mediaUrl } from '@/shared/api/client'
 import AdminLayout from '../components/AdminLayout.vue'
 import { adminApi } from '../api/admin.api'
 import { formatPrice } from '@/shared/utils'
@@ -681,15 +682,6 @@ const createForm = ref({
   constructionPercentage: null,
   isFullyFurnished: false
 })
-
-function mediaUrl(path) {
-  if (!path) return ''
-  if (path.startsWith('http')) return path
-  const base = (import.meta.env.VITE_API_BASE_URL || '').trim()
-  if (!base) return path
-  const p = path.replace(/^\/api\/v1/, '')
-  return base.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p)
-}
 
 const loadProperties = async () => {
   loading.value = true

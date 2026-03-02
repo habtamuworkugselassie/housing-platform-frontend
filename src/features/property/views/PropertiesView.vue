@@ -98,7 +98,7 @@
           <span v-if="!item.images && !item.imageUrls" class="text-gray-500 text-4xl">{{ item.type === 'property' ? '🏠' : '🏢' }}</span>
           <img
             v-else
-            :src="item.images?.[0]?.imageUrl || item.imageUrls?.[0]"
+            :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
             :alt="item.title || item.name"
             :class="{
               'w-full h-full object-cover transition-transform duration-300': true,
@@ -231,7 +231,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import api from '@/shared/api/client'
+import api, { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const { t } = useI18n()

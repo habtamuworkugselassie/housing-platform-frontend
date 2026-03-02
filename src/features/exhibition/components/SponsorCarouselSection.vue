@@ -28,7 +28,7 @@
           <div class="absolute inset-0 z-0">
             <video
               v-if="slide.videoUrl"
-              :src="slide.videoUrl"
+              :src="mediaUrl(slide.videoUrl)"
               autoplay
               muted
               loop
@@ -37,7 +37,7 @@
             />
             <img
               v-else-if="slide.imageUrl"
-              :src="slide.imageUrl"
+              :src="mediaUrl(slide.imageUrl)"
               :alt="slide.realEstateCompanyName || slide.title"
               class="w-full h-full object-cover"
             />
@@ -57,7 +57,7 @@
                 class="mx-auto mb-4 h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center"
               >
                 <img
-                  :src="slide.imageUrl"
+                  :src="mediaUrl(slide.imageUrl)"
                   :alt="slide.realEstateCompanyName || slide.title"
                   class="h-full w-full object-contain"
                 />
@@ -128,7 +128,7 @@
         >
           <img
             v-if="slide.imageUrl"
-            :src="slide.imageUrl"
+            :src="mediaUrl(slide.imageUrl)"
             :alt="slide.realEstateCompanyName || slide.title"
             class="h-full w-full object-contain p-0.5"
           />
@@ -147,6 +147,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
+import { mediaUrl } from '@/shared/api/client'
 import { useAds } from '@/shared/composables/useAds'
 
 const props = defineProps({

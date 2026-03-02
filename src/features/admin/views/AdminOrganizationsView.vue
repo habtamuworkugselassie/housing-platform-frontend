@@ -771,6 +771,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { mediaUrl } from '@/shared/api/client'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 
@@ -1001,15 +1002,6 @@ async function suspendOrg() {
   } catch (e) {
     console.error('Suspend organization failed:', e)
   }
-}
-
-const mediaUrl = (path) => {
-  if (!path) return ''
-  if (path.startsWith('http')) return path
-  const base = import.meta.env.VITE_API_BASE_URL?.trim() || ''
-  if (!base) return path
-  const p = path.replace(/^\/api\/v1/, '')
-  return base.replace(/\/$/, '') + (p.startsWith('/') ? p : '/' + p)
 }
 
 const onUploadLogo = async (ev, orgId) => {

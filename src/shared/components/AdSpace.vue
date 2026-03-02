@@ -18,7 +18,7 @@
             class="flex-shrink-0 w-16 sm:w-20 h-16 sm:h-20 rounded-lg overflow-hidden bg-gray-200"
           >
             <img 
-              :src="ad.imageUrl" 
+              :src="mediaUrl(ad.imageUrl)" 
               :alt="ad.title"
               class="w-full h-full object-cover"
             />
@@ -80,7 +80,7 @@
             class="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden bg-gray-200"
           >
             <img 
-              :src="adContent.imageUrl" 
+              :src="mediaUrl(adContent.imageUrl)" 
               :alt="adContent.title"
               class="w-full h-full object-cover"
             />
@@ -138,7 +138,7 @@
         ]"
       >
         <img 
-          :src="adContent.imageUrl" 
+          :src="mediaUrl(adContent.imageUrl)" 
           :alt="adContent.title"
           class="w-full h-full object-cover"
         />
@@ -227,6 +227,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const props = defineProps({
