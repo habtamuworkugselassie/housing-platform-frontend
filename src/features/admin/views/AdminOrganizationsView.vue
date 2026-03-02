@@ -277,6 +277,14 @@
                     :key="m.id"
                     class="flex items-center gap-2 rounded border border-white/20 bg-white/5 px-2 py-1"
                   >
+                    <template v-if="m.url && (m.mediaKind === 'IMAGE' || m.mediaKind === 'LOGO')">
+                      <img
+                        :src="mediaUrl(m.url)"
+                        :alt="m.mediaKind"
+                        class="h-10 w-10 object-cover rounded border border-white/20"
+                        loading="lazy"
+                      />
+                    </template>
                     <span class="text-xs text-gray-400">{{ m.mediaKind }}</span>
                     <button
                       type="button"
@@ -1008,13 +1016,9 @@ const onUploadLogo = async (ev, orgId) => {
   const files = ev.target?.files
   if (!files?.length || !orgId) return
   try {
-    const updated = await uploadOrganizationMedia(orgId, Array.from(files), 'LOGO')
-    if (updated) {
-      viewingOrg.value = updated
-    } else {
-      const full = await getOrganizationById(orgId)
-      viewingOrg.value = full
-    }
+    await uploadOrganizationMedia(orgId, Array.from(files), 'LOGO')
+    const full = await getOrganizationById(orgId)
+    viewingOrg.value = full
     await loadOrgs()
   } catch (e) {
     console.error('Upload logo failed:', e)
@@ -1026,13 +1030,9 @@ const onUploadVideo = async (ev, orgId) => {
   const files = ev.target?.files
   if (!files?.length || !orgId) return
   try {
-    const updated = await uploadOrganizationMedia(orgId, Array.from(files), 'VIDEO')
-    if (updated) {
-      viewingOrg.value = updated
-    } else {
-      const full = await getOrganizationById(orgId)
-      viewingOrg.value = full
-    }
+    await uploadOrganizationMedia(orgId, Array.from(files), 'VIDEO')
+    const full = await getOrganizationById(orgId)
+    viewingOrg.value = full
     await loadOrgs()
   } catch (e) {
     console.error('Upload video failed:', e)

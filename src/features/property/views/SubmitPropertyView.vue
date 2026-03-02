@@ -515,11 +515,8 @@ const handleSubmit = async () => {
         formData.append('files', fileObj.file)
       })
       
-      await api.post(`/properties/${createdProperty.id}/images`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      // Do not set Content-Type: let the browser set multipart/form-data with boundary
+      await api.post(`/properties/${createdProperty.id}/images`, formData)
     }
     
     success.value = t('submitProperty.propertySubmitted')

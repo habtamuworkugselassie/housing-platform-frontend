@@ -24,7 +24,7 @@
           :key="slide.id + (slide.realEstateCompanyId || '')"
           class="relative flex-shrink-0 w-full h-full"
         >
-          <!-- Video or image background -->
+          <!-- Video or image background (organization video used when present) -->
           <div class="absolute inset-0 z-0">
             <video
               v-if="slide.videoUrl"

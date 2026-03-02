@@ -42,9 +42,14 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = []
 }
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token and fix multipart uploads
 api.interceptors.request.use(
   (config) => {
+    // For FormData, do not set Content-Type so the browser sets multipart/form-data with boundary.
+    // Otherwise the default application/json would break file uploads.
+    if (config.data instanceof FormData && config.headers) {
+      delete config.headers['Content-Type']
+    }
     // Import dynamically to avoid circular dependency issues
     const token = localStorage.getItem('accessToken')
     if (token && config.headers) {

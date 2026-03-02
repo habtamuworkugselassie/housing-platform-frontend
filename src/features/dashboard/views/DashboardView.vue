@@ -1515,11 +1515,8 @@ const updateProperty = async () => {
         formData.append('files', fileObj.file)
       })
       
-      const uploadRes = await api.post(`/properties/${editingProperty.value.id}/images`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      // Do not set Content-Type: let the browser set multipart/form-data with boundary
+      const uploadRes = await api.post(`/properties/${editingProperty.value.id}/images`, formData)
       const updatedWithImages = uploadRes?.data
       if (updatedWithImages?.images) {
         editingProperty.value = updatedWithImages

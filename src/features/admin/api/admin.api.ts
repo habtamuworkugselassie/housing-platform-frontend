@@ -118,9 +118,8 @@ export const adminApi = {
     const formData = new FormData()
     files.forEach((f) => formData.append('files', f))
     formData.append('mediaKind', mediaKind)
-    const response = await api.post(`/organizations/${id}/media`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    // Do not set Content-Type: let the browser set multipart/form-data with boundary
+    const response = await api.post(`/organizations/${id}/media`, formData)
     return response
   },
 
@@ -233,9 +232,8 @@ export const adminApi = {
   uploadPropertyMedia: async (propertyId: string, files: File[]): Promise<any> => {
     const formData = new FormData()
     files.forEach((f) => formData.append('files', f))
-    const response = await api.post(`/properties/${propertyId}/images`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    // Do not set Content-Type: let the browser set multipart/form-data with boundary
+    const response = await api.post(`/properties/${propertyId}/images`, formData)
     return response.data
   },
 
