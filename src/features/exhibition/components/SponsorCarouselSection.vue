@@ -35,7 +35,7 @@
                   loop
                   playsinline
                   preload="metadata"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain bg-zinc-950/50"
                 />
               </template>
               <template v-else-if="slide.imageUrl">
@@ -43,15 +43,16 @@
                   :src="mediaUrl(slide.imageUrl)"
                   :alt="slide.realEstateCompanyName || slide.title"
                   :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain bg-zinc-950/50"
                 />
               </template>
               <div
                 v-else
                 class="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900"
               />
-              <!-- Blurred black overlay (not solid) – soft blur + gradient for attractive hero -->
-              <div class="absolute inset-0 backdrop-blur-[3px] bg-gradient-to-b from-black/25 via-black/35 to-black/60" aria-hidden="true" />
+              <!-- Subtle top and bottom shadow/gradient overlays instead of full blur -->
+              <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" aria-hidden="true" />
+              <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" aria-hidden="true" />
             </div>
 
             <!-- Content overlay: previous design, aligned to left -->
