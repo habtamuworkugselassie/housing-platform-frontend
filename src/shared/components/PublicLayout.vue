@@ -8,7 +8,7 @@
     <!-- Main row: Left Ad | Content | Right Ad -->
     <div class="flex flex-1 min-h-0">
     <!-- Left Side Ad (Desktop Only) -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-r border-white/10 sticky top-0 h-screen overflow-y-auto text-white">
+    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-r border-white/10 text-white">
       <div class="p-4 space-y-4">
         <AdSpace
           v-for="(ad, index) in leftSideAds"
@@ -32,7 +32,7 @@
     </main>
 
     <!-- Right Side Ad (Desktop Only) -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-l border-white/10 sticky top-0 h-screen overflow-y-auto text-white">
+    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-l border-white/10 text-white">
       <div class="p-4 space-y-4">
         <AdSpace
           v-for="(ad, index) in rightSideAds"

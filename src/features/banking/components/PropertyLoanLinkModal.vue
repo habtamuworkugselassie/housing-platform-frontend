@@ -57,47 +57,8 @@
           />
         </div>
 
-        <div v-if="selectedBankProduct" class="bg-white/5 border border-white/10 rounded-md p-4 space-y-3">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Credit Product Information</p>
-          <p class="text-xs text-gray-500">Auto-selected from the chosen bank's active products.</p>
-          <p v-if="selectedBankProduct.description" class="text-sm text-gray-300">{{ selectedBankProduct.description }}</p>
 
-          <div class="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <span class="text-gray-400">Product:</span>
-              <span class="text-white ml-1">{{ selectedBankProduct.name }}</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Interest Rate:</span>
-              <span class="text-white ml-1">{{ selectedBankProduct.interestRate }}%</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Tenure:</span>
-              <span class="text-white ml-1">{{ selectedBankProduct.minTenureMonths }} - {{ selectedBankProduct.maxTenureMonths }} months</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Min Amount:</span>
-              <span class="text-white ml-1">{{ formatPrice(selectedBankProduct.minLoanAmount, selectedBankProduct.currency || 'ETB') }}</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Max Amount:</span>
-              <span class="text-white ml-1">{{ formatPrice(selectedBankProduct.maxLoanAmount, selectedBankProduct.currency || 'ETB') }}</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Max LTV:</span>
-              <span class="text-white ml-1">{{ ((selectedBankProduct.maxLoanToValueRatio || 0) * 100).toFixed(0) }}%</span>
-            </div>
-            <div>
-              <span class="text-gray-400">Currency:</span>
-              <span class="text-white ml-1">{{ selectedBankProduct.currency || 'ETB' }}</span>
-            </div>
-          </div>
 
-          <div v-if="selectedBankProduct.eligibilityCriteria">
-            <p class="text-xs font-medium text-gray-400 mb-1">Eligibility</p>
-            <p class="text-sm text-gray-300">{{ selectedBankProduct.eligibilityCriteria }}</p>
-          </div>
-        </div>
 
         <div class="flex justify-end gap-3 pt-2">
           <button
@@ -138,18 +99,11 @@ const submitting = ref(false)
 const loadingLookups = ref(false)
 const error = ref('')
 const banks = ref([])
-const bankCreditProducts = ref([])
+
 
 const form = ref({
   bankId: '',
   coveragePercentage: 80
-})
-
-const selectedBankProduct = computed(() => {
-  if (!bankCreditProducts.value.length) return null
-  return [...bankCreditProducts.value].sort(
-    (a, b) => Number(b.maxLoanAmount || 0) - Number(a.maxLoanAmount || 0)
-  )[0]
 })
 
 watch(
@@ -160,7 +114,6 @@ watch(
       bankId: '',
       coveragePercentage: 80
     }
-    bankCreditProducts.value = []
     error.value = ''
     await loadBanks()
   }
@@ -179,24 +132,8 @@ const loadBanks = async () => {
   }
 }
 
-const onBankChanged = async () => {
-  bankCreditProducts.value = []
-  if (!form.value.bankId) return
-  loadingLookups.value = true
-  try {
-    const response = await api.get(`/banks/${form.value.bankId}/credit-products?status=ACTIVE`)
-    bankCreditProducts.value = response.data || []
-    if (!bankCreditProducts.value.length) {
-      error.value = 'Selected bank has no active credit products'
-    } else {
-      error.value = ''
-    }
-  } catch (err) {
-    bankCreditProducts.value = []
-    error.value = err.response?.data?.message || 'Failed to load credit products for selected bank'
-  } finally {
-    loadingLookups.value = false
-  }
+const onBankChanged = () => {
+  // Logic after bank selection can be added here if needed
 }
 
 const submitLink = async () => {
@@ -207,10 +144,6 @@ const submitLink = async () => {
   }
   if (!form.value.coveragePercentage || form.value.coveragePercentage <= 0 || form.value.coveragePercentage > 100) {
     error.value = 'Coverage percentage must be greater than 0 and up to 100'
-    return
-  }
-  if (!selectedBankProduct.value) {
-    error.value = 'Selected bank has no active credit products'
     return
   }
 

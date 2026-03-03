@@ -452,19 +452,7 @@
                   </div>
                   <p v-if="offer.creditProductDescription" class="text-sm text-gray-400 mb-4">{{ offer.creditProductDescription }}</p>
                   
-                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div v-if="offer.interestRate || offer.specialInterestRate" class="bg-zinc-800/50 rounded-lg p-4 text-center border border-white/10">
-                      <p class="text-xs font-medium text-gray-500 mb-1">{{ $t('loan.interestRate') }}</p>
-                      <p class="text-2xl font-bold text-yellow-400">{{ (offer.specialInterestRate || offer.interestRate) }}%</p>
-                    </div>
-                    <div v-if="offer.maxLoanAmount" class="bg-zinc-800/50 rounded-lg p-4 text-center border border-white/10">
-                      <p class="text-xs font-medium text-gray-500 mb-1">{{ $t('loan.maxLoanAmount') }}</p>
-                      <p class="text-lg font-bold text-white">{{ formatPrice(offer.maxLoanAmount, offer.currency || 'ETB') }}</p>
-                    </div>
-                    <div v-if="offer.maxTenureMonths" class="bg-zinc-800/50 rounded-lg p-4 text-center border border-white/10">
-                      <p class="text-xs font-medium text-gray-500 mb-1">{{ $t('loan.maxTenure') }}</p>
-                      <p class="text-lg font-bold text-white">{{ offer.maxTenureMonths }} {{ $t('loan.tenureMonths') }}</p>
-                    </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div v-if="offer.maxLoanToValueRatio" class="bg-zinc-800/50 rounded-lg p-4 text-center border border-white/10">
                       <p class="text-xs font-medium text-gray-500 mb-1">{{ $t('loan.ltvRatio') }}</p>
                       <p class="text-lg font-bold text-white">{{ (offer.maxLoanToValueRatio * 100).toFixed(0) }}%</p>

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Housing Platform",
+    "appName": "Ethio-Betoch",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -488,6 +488,7 @@
     "typeRealEstate": "Real estate company",
     "typeBank": "Bank",
     "typeSupplier": "Supplier",
+    "typeSilver": "Silver sponsorship",
     "typeContractor": "Contractor",
     "typeDeveloper": "Developer",
     "typeInsurance": "Insurance",
@@ -966,7 +967,7 @@
       "viewBrochure": "View event brochure"
     },
     "footer": {
-      "copyright": "© 2026 Construction Exhibition. All rights reserved.",
+      "copyright": "© 2026 Dream Teams Trading PLC. All rights reserved.",
       "privacy": "Privacy",
       "terms": "Terms",
       "contact": "Contact"

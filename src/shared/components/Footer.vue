@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p class="text-sm font-semibold text-white">{{ companyName }}</p>
+          <p class="text-sm font-semibold text-white">{{  $t('exhibition.footer.copyright') }}</p>
           <p class="text-sm text-gray-400 mt-0.5">{{ address }}</p>
         </div>
         <div class="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-gray-400">

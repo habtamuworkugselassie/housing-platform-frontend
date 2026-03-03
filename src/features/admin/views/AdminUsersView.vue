@@ -306,6 +306,20 @@
                 </div>
                 <p v-if="createError" class="mt-2 text-sm text-red-400">{{ createError }}</p>
               </div>
+
+              <!-- Organization Select -->
+              <div v-if="showOrganizationSelect">
+                <label class="block text-sm font-medium text-gray-300">Organization</label>
+                <select
+                  v-model="createForm.organizationId"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="">None (Optional)</option>
+                  <option v-for="org in organizations" :key="org.id" :value="org.id">
+                    {{ org.name }}
+                  </option>
+                </select>
+              </div>
               <div class="mt-6 flex justify-end gap-2">
                 <button
                   type="button"
@@ -427,11 +441,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
-import { useAdminUsers } from '../composables/useAdmin'
+import { useAdminUsers, useAdminOrganizations } from '../composables/useAdmin'
 
 const { users, loading, error, currentPage, totalPages, loadUsers, updateUser, createUser } = useAdminUsers()
+const { organizations, loadOrganizations } = useAdminOrganizations()
 
 const filters = ref({
   search: '',
@@ -451,7 +466,12 @@ const createForm = ref({
   firstName: '',
   lastName: '',
   phoneNumber: '',
-  roles: []
+  roles: [],
+  organizationId: ''
+})
+
+const showOrganizationSelect = computed(() => {
+  return createForm.value.roles.some(role => role !== 'BUYER')
 })
 
 const roleOptions = [
@@ -462,7 +482,7 @@ const roleOptions = [
   { value: 'ADMIN', label: 'Admin' }
 ]
 
-const openCreateUser = () => {
+const openCreateUser = async () => {
   createError.value = ''
   createForm.value = {
     email: '',
@@ -470,9 +490,14 @@ const openCreateUser = () => {
     firstName: '',
     lastName: '',
     phoneNumber: '',
-    roles: []
+    roles: [],
+    organizationId: ''
   }
   showCreateDialog.value = true
+  
+  if (!organizations.value || organizations.value.length === 0) {
+    await loadOrganizations({ size: 1000 })
+  }
 }
 
 const closeCreateUser = () => {
@@ -494,7 +519,8 @@ const submitCreateUser = async () => {
       firstName: createForm.value.firstName.trim(),
       lastName: createForm.value.lastName.trim(),
       phoneNumber: createForm.value.phoneNumber?.trim() || undefined,
-      roles: createForm.value.roles
+      roles: createForm.value.roles,
+      organizationId: createForm.value.organizationId || undefined
     })
     closeCreateUser()
     await loadUsersData()

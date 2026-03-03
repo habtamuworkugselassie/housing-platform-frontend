@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "የመኖሪያ መድረክ",
+    "appName": "ኢትዮ - ቤቶች",
     "loading": "በመጫን ላይ...",
     "error": "ስህተት",
     "success": "ተሳክቷል",
@@ -504,6 +504,7 @@
     "typeRealEstate": "የንግድ ንብረት ኩባንያ",
     "typeBank": "ባንክ",
     "typeSupplier": "ስፌር",
+    "typeSilver": "የሲልቨር ስፖንሰርሺፕ",
     "typeContractor": "ኮንትራክተር",
     "typeDeveloper": "ገንቢ",
     "typeInsurance": "ኢንሹራንስ",
@@ -982,7 +983,7 @@
       "viewBrochure": "የዝግጅት ብሮሹር ይመልከቱ"
     },
     "footer": {
-      "copyright": "© 2026 የግንባታ ኤግዚቢሽን። ሁሉም መብቶች የተጠበቁ ናቸው።",
+      "copyright": "© 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. መብቱ በህግ የተጠበቀ ነው።",
       "privacy": "ግላዊነት",
       "terms": "ውሎች",
       "contact": "ያግኙን"

@@ -60,7 +60,7 @@ export interface PropertyResponse {
   /** Primary contact phone for the real estate (e.g. +251 91 123 4567). */
   realEstateCompanyPhone?: string
   isSponsored?: boolean
-  sponsorshipType?: 'PREMIUM' | 'GOLD'
+  sponsorshipType?: 'PREMIUM' | 'GOLD' | 'SILVER'
   createdAt: string
   updatedAt: string
 }

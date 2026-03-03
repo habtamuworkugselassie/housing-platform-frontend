@@ -89,6 +89,7 @@
                 <option value="">All Types</option>
                 <option value="GOLD">Gold</option>
                 <option value="PREMIUM">Premium</option>
+                <option value="SILVER">Silver</option>
               </select>
             </div>
             <div class="flex items-end">
@@ -137,7 +138,9 @@
                     <span
                       :class="[
                         'px-2 py-1 text-xs font-medium rounded',
-                        pkg.type === 'PREMIUM' ? 'bg-purple-500/30 text-purple-200' : 'bg-blue-500/30 text-blue-200'
+                        pkg.type === 'PREMIUM' ? 'bg-purple-500/30 text-purple-200' : 
+                        pkg.type === 'GOLD' ? 'bg-yellow-500/30 text-yellow-200' :
+                        'bg-slate-500/30 text-slate-200'
                       ]"
                     >
                       {{ pkg.type }}
@@ -258,8 +261,10 @@
                     <span
                       :class="[
                         'inline-flex px-2 py-1 text-xs font-medium rounded mt-1',
-                        app.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
-                      ]"
+                      app.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
+                      app.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-slate-100 text-slate-800'
+                    ]"
                     >
                       {{ app.sponsorship?.type }}
                     </span>
@@ -367,6 +372,7 @@
                     <option value="">{{ $t('propertyTypes.selectType') }}</option>
                     <option value="GOLD">Gold</option>
                     <option value="PREMIUM">Premium</option>
+                    <option value="SILVER">Silver</option>
                   </select>
                 </div>
 
@@ -453,7 +459,9 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingPackage.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      viewingPackage.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
+                      viewingPackage.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-slate-100 text-slate-800'
                     ]"
                   >
                     {{ viewingPackage.type || 'N/A' }}
@@ -538,7 +546,9 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingApplication.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      viewingApplication.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
+                      viewingApplication.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-slate-100 text-slate-800'
                     ]"
                   >
                     {{ viewingApplication.sponsorship?.type || 'N/A' }}

@@ -29,12 +29,12 @@
               v-if="!currentMediaIsVideo"
               :src="currentMediaUrl"
               :alt="organization.name"
-              class="h-full w-full object-cover"
+              class="h-full w-full object-contain bg-zinc-950/50"
             />
             <video
               v-else
               :src="currentMediaUrl"
-              class="h-full w-full object-cover"
+              class="h-full w-full object-contain bg-zinc-950/50"
               controls
               muted
               playsinline
@@ -75,16 +75,26 @@
           </div>
 
           <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-            <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ organization.name }}</h1>
-            <p class="mt-2 text-sm text-gray-300">{{ locationText || 'Location not provided' }}</p>
-            <div v-if="galleryMedia.length > 1" class="mt-3 flex items-center gap-2">
+            <div class="flex items-end gap-4">
+              <div v-if="organization.logoUrl" class="h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border-2 border-white/20 bg-white shadow-lg">
+                <img :src="mediaUrl(organization.logoUrl)" :alt="organization.name" class="h-full w-full object-contain p-1" />
+              </div>
+              <div v-else class="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border-2 border-white/20 bg-zinc-800 text-2xl font-bold text-white shadow-lg">
+                {{ organizationInitial }}
+              </div>
+              <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">{{ organization.name }}</h1>
+                <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
+              </div>
+            </div>
+            <div v-if="galleryMedia.length > 1" class="mt-4 flex items-center gap-2">
               <button
                 v-for="(item, index) in galleryMedia"
                 :key="item.id || item.url || index"
                 type="button"
                 :class="[
                   'h-2 rounded-full transition-all',
-                  currentMediaIndex === index ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/70'
+                  currentMediaIndex === index ? 'w-8 bg-white shadow-sm' : 'w-2 bg-white/50 hover:bg-white/70'
                 ]"
                 @click="currentMediaIndex = index"
               />
@@ -330,14 +340,10 @@ const galleryMedia = computed(() => {
   const items = []
   const seen = new Set()
 
-  if (org.logoUrl) {
-    items.push({ id: 'logo', url: org.logoUrl, mediaKind: 'LOGO' })
-    seen.add(org.logoUrl)
-  }
-
   const mediaList = Array.isArray(org.media) ? org.media : []
   mediaList.forEach((item) => {
     if (!item?.url || seen.has(item.url)) return
+    if (item.mediaKind === 'LOGO') return
     items.push({
       id: item.id || item.url,
       url: item.url,
