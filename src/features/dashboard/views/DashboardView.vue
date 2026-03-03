@@ -753,6 +753,74 @@
             </div>
             <p class="text-xs text-gray-500">{{ $t('dashboard.atLeastOnePriceRequired') }}</p>
           </div>
+          <div class="border border-white/10 rounded-lg p-4 space-y-3">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h4 class="text-sm font-semibold text-white">Property Credit Offers</h4>
+                <p class="text-xs text-gray-400">Add new bank offers while editing this property.</p>
+              </div>
+              <button
+                type="button"
+                @click="addEditCreditOfferRow"
+                :disabled="!approvedBanks.length"
+                class="px-3 py-1.5 rounded-md border border-white/20 text-xs text-gray-200 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Add Offer
+              </button>
+            </div>
+            <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+              No approved banks are currently available.
+            </p>
+            <div v-if="editExistingCreditOffers.length" class="space-y-2">
+              <p class="text-xs font-medium text-gray-400">Existing offers</p>
+              <div
+                v-for="offer in editExistingCreditOffers"
+                :key="offer.id"
+                class="grid grid-cols-1 sm:grid-cols-2 gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2"
+              >
+                <p class="text-sm text-white">{{ getBankName(offer.bankId) }}</p>
+                <p class="text-sm text-gray-300 sm:text-right">
+                  {{ formatOfferCoverage(offer) != null ? `${formatOfferCoverage(offer)}%` : 'Coverage N/A' }}
+                </p>
+              </div>
+            </div>
+            <div
+              v-for="(offer, index) in editNewCreditOffers"
+              :key="`dashboard-edit-offer-${index}`"
+              class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
+            >
+              <div>
+                <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
+                <select
+                  v-model="offer.bankId"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="">Select bank</option>
+                  <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
+                    {{ bank.name }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-400 mb-1">Coverage (%)</label>
+                <input
+                  v-model.number="offer.coveragePercentage"
+                  type="number"
+                  min="0.01"
+                  max="100"
+                  step="0.01"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <button
+                type="button"
+                @click="removeEditCreditOfferRow(index)"
+                class="px-3 py-2 rounded-md border border-red-300 text-xs text-red-300 hover:bg-red-500/10"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
           <div>
             <label for="edit-address" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.address') }} *</label>
             <input
@@ -1207,6 +1275,14 @@ const propertyForm = ref({
 })
 const selectedFiles = ref([])
 const fileInput = ref(null)
+const approvedBanks = ref([])
+const editExistingCreditOffers = ref([])
+const editNewCreditOffers = ref([])
+
+const newEditCreditOffer = () => ({
+  bankId: '',
+  coveragePercentage: 80
+})
 
 const loadDashboardData = async () => {
   if (!authStore.hasRole('REALTOR')) {
@@ -1236,6 +1312,7 @@ const loadDashboardData = async () => {
       }
       
       isSuperAgent.value = agent.value.isSuperAgent || false
+      await loadApprovedBanks()
       
       // Load data based on role
       if (isSuperAgent.value) {
@@ -1262,6 +1339,7 @@ const loadDashboardData = async () => {
           const orgResponse = await api.get('/organizations/my-company')
           organization.value = orgResponse.data
           isSuperAgent.value = true
+          await loadApprovedBanks()
           await Promise.all([
             loadAgents(),
             loadProperties()
@@ -1320,6 +1398,92 @@ const loadMyProperties = async () => {
   } finally {
     propertiesLoading.value = false
   }
+}
+
+const loadApprovedBanks = async () => {
+  try {
+    const response = await api.get('/organizations', {
+      params: {
+        type: 'BANK',
+        status: 'APPROVED'
+      }
+    })
+    approvedBanks.value = Array.isArray(response.data) ? response.data : []
+  } catch (err) {
+    console.error('Failed to load banks:', err)
+    approvedBanks.value = []
+  }
+}
+
+const loadPropertyFinancingOffers = async (propertyId) => {
+  if (!propertyId) {
+    editExistingCreditOffers.value = []
+    return
+  }
+  try {
+    const response = await api.get(`/properties/${propertyId}/financing-offers`)
+    editExistingCreditOffers.value = Array.isArray(response.data) ? response.data : []
+  } catch (err) {
+    console.error('Failed to load property financing offers:', err)
+    editExistingCreditOffers.value = []
+  }
+}
+
+const addEditCreditOfferRow = () => {
+  editNewCreditOffers.value.push(newEditCreditOffer())
+}
+
+const removeEditCreditOfferRow = (index) => {
+  editNewCreditOffers.value.splice(index, 1)
+}
+
+const getBankName = (bankId) => {
+  if (!bankId) return 'Unknown bank'
+  const match = approvedBanks.value.find((bank) => bank.id === bankId)
+  return match?.name || 'Unknown bank'
+}
+
+const formatOfferCoverage = (offer) => {
+  const ratio = offer?.specialLTVRatio ?? offer?.maxLoanToValueRatio
+  if (ratio == null) return null
+  return Number((Number(ratio) * 100).toFixed(2))
+}
+
+const validateEditCreditOffers = () => {
+  const offers = editNewCreditOffers.value.map((offer) => ({
+    bankId: (offer.bankId || '').trim(),
+    coveragePercentage: Number(offer.coveragePercentage)
+  }))
+
+  if (!offers.length) {
+    return { validOffers: [], validationError: '' }
+  }
+
+  const existingBankIds = new Set(
+    editExistingCreditOffers.value
+      .map((offer) => offer.bankId)
+      .filter(Boolean)
+      .map((bankId) => String(bankId))
+  )
+  const seenBanks = new Set()
+  for (let i = 0; i < offers.length; i += 1) {
+    const offer = offers[i]
+    if (!offer.bankId) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: bank is required` }
+    }
+    if (!offer.coveragePercentage || offer.coveragePercentage <= 0 || offer.coveragePercentage > 100) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: coverage must be between 0 and 100` }
+    }
+    if (existingBankIds.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: selected bank already has an offer` }
+    }
+    if (seenBanks.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: duplicate bank selected` }
+    }
+    seenBanks.add(offer.bankId)
+  }
+
+  return { validOffers: offers, validationError: '' }
 }
 
 const loadSponsorships = async () => {
@@ -1438,7 +1602,10 @@ const updateAgent = async () => {
   }
 }
 
-const editProperty = (propertyData) => {
+const editProperty = async (propertyData) => {
+  if (!approvedBanks.value.length) {
+    await loadApprovedBanks()
+  }
   editingProperty.value = propertyData
   propertyForm.value = {
     title: propertyData.title || '',
@@ -1459,6 +1626,9 @@ const editProperty = (propertyData) => {
     constructionPercentage: propertyData.constructionPercentage || null,
     isFullyFurnished: propertyData.isFullyFurnished || false
   }
+  editExistingCreditOffers.value = []
+  editNewCreditOffers.value = []
+  await loadPropertyFinancingOffers(propertyData.id)
   selectedFiles.value = []
   if (fileInput.value) {
     fileInput.value.value = ''
@@ -1515,6 +1685,12 @@ const updateProperty = async () => {
   if (!editingProperty.value) return
   
   try {
+    const { validOffers: validEditOffers, validationError } = validateEditCreditOffers()
+    if (validationError) {
+      alert(validationError)
+      return
+    }
+
     // First update property details
     const payload = {
       title: propertyForm.value.title,
@@ -1559,15 +1735,35 @@ const updateProperty = async () => {
         editingProperty.value = updatedWithImages
       }
     }
+
+    let failedOffersCount = 0
+    if (validEditOffers.length > 0) {
+      const offerResults = await Promise.allSettled(
+        validEditOffers.map((offer) =>
+          api.post(
+            `/properties/${editingProperty.value.id}/financing-offers`,
+            { coveragePercentage: offer.coveragePercentage },
+            { params: { bankId: offer.bankId } }
+          )
+        )
+      )
+      failedOffersCount = offerResults.filter((result) => result.status === 'rejected').length
+    }
     
     await loadProperties()
     showEditPropertyModal.value = false
     editingProperty.value = null
+    editExistingCreditOffers.value = []
+    editNewCreditOffers.value = []
     selectedFiles.value = []
     if (fileInput.value) {
       fileInput.value.value = ''
     }
-    alert('Property updated successfully')
+    alert(
+      failedOffersCount > 0
+        ? `Property updated, but ${failedOffersCount} credit offer(s) failed to save.`
+        : 'Property updated successfully'
+    )
   } catch (err) {
     alert(err.response?.data?.message || 'Failed to update property')
   }

@@ -70,6 +70,9 @@
   },
   "auth": {
     "login": "Login",
+    "loginWithEmail": "Email",
+    "loginWithPhone": "Phone number",
+    "enterPhoneNumber": "Please enter your phone number.",
     "register": "Register",
     "logout": "Logout",
     "email": "Email",

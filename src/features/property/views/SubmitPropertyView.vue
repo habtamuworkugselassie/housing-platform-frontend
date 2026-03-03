@@ -100,7 +100,7 @@
             </div>
 
             <div class="sm:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('property.price') }} *</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('property.price') }}</label>
               <p class="text-xs text-gray-500 mb-3">{{ $t('property.dualPricingNote') }}</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -128,7 +128,62 @@
                   />
                 </div>
               </div>
-              <p class="mt-2 text-xs text-gray-500">{{ $t('property.atLeastOnePriceRequired') }}</p>
+            </div>
+
+            <div class="sm:col-span-2 border border-white/10 rounded-lg p-4 space-y-3">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-100">Property Credit Offers (optional)</h3>
+                  <p class="text-xs text-gray-400">Add one or more banks and the percentage covered by each loan offer.</p>
+                </div>
+                <button
+                  type="button"
+                  @click="addCreditOfferRow"
+                  :disabled="!approvedBanks.length"
+                  class="px-3 py-1.5 rounded-md border border-white/20 text-xs text-gray-200 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Add Offer
+                </button>
+              </div>
+              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+                No approved banks are currently available. You can submit the property and add offers later.
+              </p>
+              <div
+                v-for="(offer, index) in creditOffers"
+                :key="`offer-${index}`"
+                class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
+              >
+                <div>
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Bank</label>
+                  <select
+                    v-model="offer.bankId"
+                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-zinc-900 text-white focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    <option value="">Select bank</option>
+                    <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
+                      {{ bank.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Coverage (%)</label>
+                  <input
+                    v-model.number="offer.coveragePercentage"
+                    type="number"
+                    min="0.01"
+                    max="100"
+                    step="0.01"
+                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-zinc-900 text-white focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+                <button
+                  type="button"
+                  @click="removeCreditOfferRow(index)"
+                  class="px-3 py-2 rounded-md border border-red-300 text-xs text-red-300 hover:bg-red-500/10"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
 
             <div>
@@ -409,6 +464,13 @@ const error = ref('')
 const success = ref('')
 const selectedFiles = ref([])
 const fileInput = ref(null)
+const approvedBanks = ref([])
+const creditOffers = ref([])
+
+const newCreditOffer = () => ({
+  bankId: '',
+  coveragePercentage: 80
+})
 
 const loadAgent = async () => {
   try {
@@ -444,9 +506,61 @@ const onBuildingChange = () => {
   }
 }
 
+const loadApprovedBanks = async () => {
+  try {
+    const response = await api.get('/organizations', {
+      params: {
+        type: 'BANK',
+        status: 'APPROVED'
+      }
+    })
+    approvedBanks.value = Array.isArray(response.data) ? response.data : []
+  } catch (err) {
+    console.error('Failed to load banks:', err)
+    approvedBanks.value = []
+  }
+}
+
+const addCreditOfferRow = () => {
+  creditOffers.value.push(newCreditOffer())
+}
+
+const removeCreditOfferRow = (index) => {
+  creditOffers.value.splice(index, 1)
+}
+
+const validateCreditOffers = () => {
+  const offers = creditOffers.value.map((offer) => ({
+    bankId: (offer.bankId || '').trim(),
+    coveragePercentage: Number(offer.coveragePercentage)
+  }))
+
+  if (!offers.length) {
+    return { validOffers: [], validationError: '' }
+  }
+
+  const seenBanks = new Set()
+  for (let i = 0; i < offers.length; i += 1) {
+    const offer = offers[i]
+    if (!offer.bankId) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: bank is required` }
+    }
+    if (!offer.coveragePercentage || offer.coveragePercentage <= 0 || offer.coveragePercentage > 100) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: coverage must be between 0 and 100` }
+    }
+    if (seenBanks.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: duplicate bank selected` }
+    }
+    seenBanks.add(offer.bankId)
+  }
+
+  return { validOffers: offers, validationError: '' }
+}
+
 // Check if buildingId is in route params
 onMounted(() => {
   loadAgent()
+  loadApprovedBanks()
   if (route.query.buildingId) {
     form.value.buildingId = route.query.buildingId
   }
@@ -497,6 +611,12 @@ const handleSubmit = async () => {
   success.value = ''
 
   try {
+    const { validOffers, validationError } = validateCreditOffers()
+    if (validationError) {
+      error.value = validationError
+      return
+    }
+
     // Create property first (without images)
     const propertyData = {
       ...form.value
@@ -518,8 +638,24 @@ const handleSubmit = async () => {
       // Do not set Content-Type: let the browser set multipart/form-data with boundary
       await api.post(`/properties/${createdProperty.id}/images`, formData)
     }
+
+    let failedOffersCount = 0
+    if (validOffers.length > 0) {
+      const offerResults = await Promise.allSettled(
+        validOffers.map((offer) =>
+          api.post(
+            `/properties/${createdProperty.id}/financing-offers`,
+            { coveragePercentage: offer.coveragePercentage },
+            { params: { bankId: offer.bankId } }
+          )
+        )
+      )
+      failedOffersCount = offerResults.filter((result) => result.status === 'rejected').length
+    }
     
-    success.value = t('submitProperty.propertySubmitted')
+    success.value = failedOffersCount > 0
+      ? `${t('submitProperty.propertySubmitted')} (${failedOffersCount} credit offer(s) failed to save.)`
+      : t('submitProperty.propertySubmitted')
     setTimeout(() => {
       router.push('/properties')
     }, 2000)
@@ -529,8 +665,4 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
-
-onMounted(() => {
-  loadAgent()
-})
 </script>

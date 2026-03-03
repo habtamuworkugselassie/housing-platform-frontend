@@ -262,6 +262,30 @@ export const adminApi = {
   },
 
   /**
+   * Create simplified property financing offer (bank + coverage percentage)
+   */
+  createPropertyFinancingOffer: async (
+    propertyId: string,
+    bankId: string,
+    coveragePercentage: number
+  ): Promise<any> => {
+    const response = await api.post(
+      `/properties/${propertyId}/financing-offers`,
+      { coveragePercentage },
+      { params: { bankId } }
+    )
+    return response.data
+  },
+
+  /**
+   * Get financing offers linked to a property
+   */
+  getPropertyFinancingOffers: async (propertyId: string): Promise<any[]> => {
+    const response = await api.get(`/properties/${propertyId}/financing-offers`)
+    return Array.isArray(response.data) ? response.data : []
+  },
+
+  /**
    * Delete property image
    */
   deletePropertyImage: async (propertyId: string, imageId: string): Promise<any> => {

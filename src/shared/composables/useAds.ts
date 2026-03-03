@@ -112,8 +112,9 @@ export function useAds() {
   }
 
   /**
-   * Fetch all sponsored content: organizations (active sponsorship), properties, and buildings; ordered by base price.
-   * First call wins; subsequent callers share the same data and whenReady() resolves when this completes.
+   * Fetch all sponsored content. Two-phase for fast carousel:
+   * Phase 1: sponsorships + sponsored-organizations → set allAds (carousel can render) → resolve whenReady().
+   * Phase 2 (background): first-media fallback for orgs, then properties + buildings; merge into allAds.
    */
   const loadAllAds = async (limit: number = 20): Promise<void> => {
     if (loadStarted) return
@@ -122,10 +123,9 @@ export function useAds() {
     error.value = null
 
     try {
-      // First, load sponsorships to get base prices
       await loadSponsorships()
 
-      // Load sponsored organizations (landing carousel – organizations with active sponsorship)
+      // Phase 1: Sponsored organizations only – carousel shows immediately
       let orgAds: AdContent[] = []
       try {
         const orgResponse = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/sponsored-organizations')
@@ -143,14 +143,23 @@ export function useAds() {
           realEstateCompanyName: org.name,
           realEstateCompanyId: org.id
         }))
-        // If an organization has no logo/video, use first media from its properties
-        const needFallback = orgAds.filter(ad => !ad.imageUrl || !ad.videoUrl)
-        if (needFallback.length > 0) {
-          const fallbackResults = await Promise.all(
-            needFallback.map(ad =>
-              api.get<FirstPropertyMediaResponse>(`/properties/organization/${ad.id}/first-media`).then(r => r.data)
-            )
+        allAds.value = [...orgAds]
+        loadResolve()
+      } catch (err) {
+        console.error('Failed to load sponsored organizations for ads:', err)
+        loadResolve()
+      } finally {
+        loading.value = false
+      }
+
+      // Phase 2 (background): first-media fallback for orgs missing logo/video, then properties + buildings
+      const needFallback = orgAds.filter(ad => !ad.imageUrl || !ad.videoUrl)
+      if (needFallback.length > 0) {
+        Promise.all(
+          needFallback.map(ad =>
+            api.get<FirstPropertyMediaResponse>(`/properties/organization/${ad.id}/first-media`).then(r => r.data).catch(() => null)
           )
+        ).then(fallbackResults => {
           needFallback.forEach((ad, i) => {
             const fallback = fallbackResults[i]
             if (fallback) {
@@ -158,76 +167,66 @@ export function useAds() {
               if (!ad.videoUrl && fallback.videoUrl) ad.videoUrl = fallback.videoUrl
             }
           })
+          allAds.value = [...allAds.value]
+        })
+      }
+
+      const loadRest = async () => {
+        let propertyAds: AdContent[] = []
+        let buildingAds: AdContent[] = []
+        try {
+          const propertiesResponse = await propertyApi.getProperties(
+            { status: 'AVAILABLE' },
+            { page: 0, size: 100 }
+          )
+          const properties = 'content' in propertiesResponse
+            ? propertiesResponse.content
+            : (propertiesResponse as PropertyResponse[])
+          propertyAds = (properties || []).filter((p: PropertyResponse & { isSponsored?: boolean }) => p.isSponsored && (p as PropertyResponse & { sponsorshipType?: string }).sponsorshipType).map((prop: PropertyResponse & { sponsorshipType?: string; realEstateCompanyName?: string; realEstateCompanyId?: string; imageUrls?: string[] }) => ({
+            id: prop.id,
+            title: prop.title,
+            imageUrl: prop.images?.[0]?.imageUrl || prop.imageUrls?.[0],
+            priceETB: prop.priceETB,
+            priceUSD: prop.priceUSD,
+            city: prop.city,
+            address: prop.address,
+            type: 'property' as const,
+            sponsorshipType: prop.sponsorshipType || '',
+            basePrice: sponsorshipTypeMap.value.get(prop.sponsorshipType || '') || 0,
+            realEstateCompanyName: prop.realEstateCompanyName,
+            realEstateCompanyId: prop.realEstateCompanyId
+          }))
+        } catch (err) {
+          console.error('Failed to load properties for ads:', err)
         }
-      } catch (err) {
-        console.error('Failed to load sponsored organizations for ads:', err)
+        try {
+          const buildingsResponse = await api.get('/buildings')
+          const buildings = Array.isArray(buildingsResponse.data) ? (buildingsResponse.data as BuildingResponse[]) : []
+          buildingAds = buildings.filter(b => b.isSponsored && b.sponsorshipType).map(building => ({
+            id: building.id,
+            title: building.name,
+            imageUrl: building.images?.[0]?.imageUrl,
+            city: building.city,
+            address: building.address,
+            type: 'building' as const,
+            sponsorshipType: building.sponsorshipType || '',
+            basePrice: sponsorshipTypeMap.value.get(building.sponsorshipType || '') || 0,
+            realEstateCompanyName: building.realEstateCompanyName,
+            realEstateCompanyId: building.realEstateCompanyId
+          }))
+        } catch (err) {
+          console.error('Failed to load buildings for ads:', err)
+        }
+        const combined = [...orgAds, ...propertyAds, ...buildingAds]
+          .sort((a, b) => b.basePrice - a.basePrice)
+          .slice(0, limit)
+        allAds.value = combined
       }
-
-      // Load sponsored properties
-      const propertiesResponse = await propertyApi.getProperties(
-        { status: 'AVAILABLE' },
-        { page: 0, size: 100 }
-      )
-
-      const properties = 'content' in propertiesResponse
-        ? propertiesResponse.content
-        : propertiesResponse as PropertyResponse[]
-
-      // Load sponsored buildings
-      let buildings: BuildingResponse[] = []
-      try {
-        const buildingsResponse = await api.get('/buildings')
-        buildings = Array.isArray(buildingsResponse.data)
-          ? buildingsResponse.data as BuildingResponse[]
-          : []
-      } catch (err) {
-        console.error('Failed to load buildings for ads:', err)
-      }
-
-      // Combine properties and buildings, filter for sponsored items
-      const propertyAds: AdContent[] = properties
-        .filter(p => p.isSponsored && p.sponsorshipType)
-        .map(prop => ({
-          id: prop.id,
-          title: prop.title,
-          imageUrl: prop.images?.[0]?.imageUrl || prop.imageUrls?.[0],
-          priceETB: prop.priceETB,
-          priceUSD: prop.priceUSD,
-          city: prop.city,
-          address: prop.address,
-          type: 'property' as const,
-          sponsorshipType: prop.sponsorshipType || '',
-          basePrice: sponsorshipTypeMap.value.get(prop.sponsorshipType || '') || 0,
-          realEstateCompanyName: prop.realEstateCompanyName,
-          realEstateCompanyId: prop.realEstateCompanyId
-        }))
-
-      const buildingAds: AdContent[] = buildings
-        .filter(b => b.isSponsored && b.sponsorshipType)
-        .map(building => ({
-          id: building.id,
-          title: building.name,
-          imageUrl: building.images?.[0]?.imageUrl,
-          city: building.city,
-          address: building.address,
-          type: 'building' as const,
-          sponsorshipType: building.sponsorshipType || '',
-          basePrice: sponsorshipTypeMap.value.get(building.sponsorshipType || '') || 0,
-          realEstateCompanyName: building.realEstateCompanyName,
-          realEstateCompanyId: building.realEstateCompanyId
-        }))
-
-      // Combine organizations first (for carousel), then properties and buildings; sort by basePrice descending
-      const combined = [...orgAds, ...propertyAds, ...buildingAds]
-        .sort((a, b) => b.basePrice - a.basePrice)
-        .slice(0, limit)
-
-      allAds.value = combined
+      void loadRest()
     } catch (err) {
       console.error('Failed to load ads:', err)
       error.value = err
       allAds.value = []
-    } finally {
       loading.value = false
       loadResolve()
     }

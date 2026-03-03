@@ -70,6 +70,9 @@
   },
   "auth": {
     "login": "ግባ",
+    "loginWithEmail": "ኢሜይል",
+    "loginWithPhone": "የስልክ ቁጥር",
+    "enterPhoneNumber": "እባክዎ የስልክ ቁጥርዎን ያስገቡ።",
     "register": "ተመዝግብ",
     "logout": "ውጣ",
     "email": "ኢሜይል",

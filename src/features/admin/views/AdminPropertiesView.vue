@@ -117,6 +117,12 @@
                 </td>
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
+                    @click="openLoanModal(property)"
+                    class="text-emerald-300 hover:text-yellow-400 mr-4 transition-colors"
+                  >
+                    Create Property Credit
+                  </button>
+                  <button
                     @click="viewProperty(property)"
                     class="text-white hover:text-yellow-400 mr-4 transition-colors"
                   >
@@ -322,6 +328,71 @@
                 />
               </div>
             </div>
+            <div class="border border-white/10 rounded-md p-4 space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div>
+                  <h4 class="text-sm font-semibold text-white">Property Credit Offers</h4>
+                  <p class="text-xs text-gray-400">Add new bank offers while editing this property.</p>
+                </div>
+                <button
+                  type="button"
+                  @click="addEditCreditOfferRow"
+                  :disabled="!approvedBanks.length"
+                  class="px-3 py-1.5 border border-white/30 rounded-md text-xs text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Add Offer
+                </button>
+              </div>
+              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+                No approved banks available.
+              </p>
+              <div v-if="editExistingCreditOffers.length" class="space-y-2">
+                <p class="text-xs font-medium text-gray-400">Existing offers</p>
+                <div
+                  v-for="offer in editExistingCreditOffers"
+                  :key="offer.id"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2"
+                >
+                  <p class="text-sm text-white">{{ getBankName(offer.bankId) }}</p>
+                  <p class="text-sm text-gray-300 sm:text-right">
+                    {{ formatOfferCoverage(offer) != null ? `${formatOfferCoverage(offer)}%` : 'Coverage N/A' }}
+                  </p>
+                </div>
+              </div>
+              <div
+                v-for="(offer, index) in editNewCreditOffers"
+                :key="`edit-offer-${index}`"
+                class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
+              >
+                <div>
+                  <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
+                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                    <option value="">Select bank</option>
+                    <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
+                      {{ bank.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-400 mb-1">Coverage (%)</label>
+                  <input
+                    v-model.number="offer.coveragePercentage"
+                    type="number"
+                    min="0.01"
+                    max="100"
+                    step="0.01"
+                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  />
+                </div>
+                <button
+                  type="button"
+                  @click="removeEditCreditOfferRow(index)"
+                  class="px-3 py-2 border border-red-400/60 text-red-300 rounded-md text-xs hover:bg-red-500/10"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
               <input
@@ -502,14 +573,49 @@
             <p v-if="createError" class="text-sm text-red-400">{{ createError }}</p>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Real estate company *</label>
-              <select
-                v-model="createForm.realEstateCompanyId"
-                required
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              <Combobox
+                :model-value="selectedCreateCompany"
+                nullable
+                by="id"
+                @update:model-value="onCreateCompanySelect"
               >
-                <option value="">Select company</option>
-                <option v-for="org in realEstateOrgs" :key="org.id" :value="org.id">{{ org.name }}</option>
-              </select>
+                <div class="relative">
+                  <ComboboxInput
+                    :display-value="(org) => org?.name ?? ''"
+                    @change="createCompanyQuery = $event.target.value"
+                    placeholder="Search company..."
+                    class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 pr-10 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    :class="{ 'border-red-500/50': submitCreateTouched && !createForm.realEstateCompanyId }"
+                  />
+                  <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 pointer-events-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" /></svg>
+                  </ComboboxButton>
+                  <ComboboxOptions
+                    class="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-white/10 bg-zinc-900 py-1 shadow-lg focus:outline-none"
+                  >
+                  <ComboboxOption
+                    v-for="org in filteredRealEstateOrgs"
+                    :key="org.id"
+                    :value="org"
+                    v-slot="{ active, selected }"
+                    as="template"
+                  >
+                    <li
+                      :class="[
+                        'relative cursor-default select-none py-2 pl-3 pr-9',
+                        active ? 'bg-yellow-500/20 text-white' : 'text-gray-300'
+                      ]"
+                    >
+                      <span :class="['block truncate', selected ? 'font-semibold' : 'font-normal']">{{ org.name }}</span>
+                    </li>
+                  </ComboboxOption>
+                  <li v-if="filteredRealEstateOrgs.length === 0" class="py-2 pl-3 pr-9 text-gray-400">
+                    No company found. Type to search.
+                  </li>
+                  </ComboboxOptions>
+                </div>
+              </Combobox>
+              <p v-if="submitCreateTouched && !createForm.realEstateCompanyId" class="mt-1 text-sm text-red-400">Select a real estate company</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
@@ -548,6 +654,58 @@
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
                 <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+            </div>
+            <div class="border border-white/10 rounded-md p-4 space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div>
+                  <h4 class="text-sm font-semibold text-white">Property Credit Offers (optional)</h4>
+                  <p class="text-xs text-gray-400">Add multiple banks and the loan coverage percentage for each offer.</p>
+                </div>
+                <button
+                  type="button"
+                  @click="addCreateCreditOfferRow"
+                  :disabled="!approvedBanks.length"
+                  class="px-3 py-1.5 border border-white/30 rounded-md text-xs text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Add Offer
+                </button>
+              </div>
+              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+                No approved banks available. You can still create the property and add offers later.
+              </p>
+              <div
+                v-for="(offer, index) in createCreditOffers"
+                :key="`create-offer-${index}`"
+                class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
+              >
+                <div>
+                  <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
+                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                    <option value="">Select bank</option>
+                    <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
+                      {{ bank.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-400 mb-1">Coverage (%)</label>
+                  <input
+                    v-model.number="offer.coveragePercentage"
+                    type="number"
+                    min="0.01"
+                    max="100"
+                    step="0.01"
+                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  />
+                </div>
+                <button
+                  type="button"
+                  @click="removeCreateCreditOfferRow(index)"
+                  class="px-3 py-2 border border-red-400/60 text-red-300 rounded-md text-xs hover:bg-red-500/10"
+                >
+                  Remove
+                </button>
               </div>
             </div>
             <div>
@@ -603,14 +761,25 @@
           </form>
         </div>
       </div>
+
+      <PropertyLoanLinkModal
+        :show="showLoanDialog"
+        :property-id="selectedLoanProperty?.id || ''"
+        :property-label="selectedLoanProperty ? `${selectedLoanProperty.title} (${selectedLoanProperty.city}, ${selectedLoanProperty.country})` : ''"
+        title="Create Property Credit"
+        @close="showLoanDialog = false"
+        @created="handleLoanCreated"
+      />
     </div>
   </AdminLayout>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { mediaUrl } from '@/shared/api/client'
 import AdminLayout from '../components/AdminLayout.vue'
+import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 import { adminApi } from '../api/admin.api'
 import { formatPrice } from '@/shared/utils'
 
@@ -624,6 +793,8 @@ const filters = ref({
 
 const showViewDialog = ref(false)
 const viewingProperty = ref(null)
+const showLoanDialog = ref(false)
+const selectedLoanProperty = ref(null)
 
 const showEditDialog = ref(false)
 const editingProperty = ref(null)
@@ -658,8 +829,36 @@ const editForm = ref({
 const showCreateDialog = ref(false)
 const createSaving = ref(false)
 const createError = ref('')
+const createCompanyQuery = ref('')
+const submitCreateTouched = ref(false)
 const realEstateOrgs = ref([])
 const createFormMediaFiles = ref([])
+const selectedCreateCompany = ref(null)
+const approvedBanks = ref([])
+const createCreditOffers = ref([])
+const editExistingCreditOffers = ref([])
+const editNewCreditOffers = ref([])
+
+const filteredRealEstateOrgs = computed(() => {
+  const q = (createCompanyQuery.value || '').trim().toLowerCase()
+  if (!q) return realEstateOrgs.value
+  return realEstateOrgs.value.filter((org) => (org.name || '').toLowerCase().includes(q))
+})
+
+const newCreateCreditOffer = () => ({
+  bankId: '',
+  coveragePercentage: 80
+})
+
+const newEditCreditOffer = () => ({
+  bankId: '',
+  coveragePercentage: 80
+})
+
+function onCreateCompanySelect(org) {
+  selectedCreateCompany.value = org
+  createForm.value.realEstateCompanyId = org?.id ?? ''
+}
 const createForm = ref({
   realEstateCompanyId: '',
   title: '',
@@ -710,11 +909,27 @@ const viewProperty = (property) => {
   showViewDialog.value = true
 }
 
+const openLoanModal = (property) => {
+  selectedLoanProperty.value = property
+  showLoanDialog.value = true
+}
+
+const handleLoanCreated = () => {
+  alert('Credit product offer created for property successfully')
+  showLoanDialog.value = false
+}
+
 const editProperty = async (property) => {
   editError.value = ''
   try {
+    if (!approvedBanks.value.length) {
+      await loadApprovedBanks()
+    }
     const full = await adminApi.getPropertyById(property.id)
+    const existingOffers = await adminApi.getPropertyFinancingOffers(property.id).catch(() => [])
     editingProperty.value = full
+    editExistingCreditOffers.value = Array.isArray(existingOffers) ? existingOffers : []
+    editNewCreditOffers.value = []
     editForm.value = {
       title: full.title ?? '',
       description: full.description ?? '',
@@ -753,6 +968,11 @@ const submitEdit = async () => {
     editError.value = 'At least one price (ETB or USD) is required'
     return
   }
+  const { validOffers: validEditOffers, validationError } = validateEditCreditOffers()
+  if (validationError) {
+    editError.value = validationError
+    return
+  }
   editError.value = ''
   editSaving.value = true
   try {
@@ -782,8 +1002,21 @@ const submitEdit = async () => {
       agentId: editForm.value.agentId || editingProperty.value.agentId
     }
     await adminApi.updateProperty(editingProperty.value.id, payload)
+    if (validEditOffers.length > 0) {
+      const offerResults = await Promise.allSettled(
+        validEditOffers.map((offer) =>
+          adminApi.createPropertyFinancingOffer(editingProperty.value.id, offer.bankId, offer.coveragePercentage)
+        )
+      )
+      const failedCount = offerResults.filter((result) => result.status === 'rejected').length
+      if (failedCount > 0) {
+        alert(`Property updated, but ${failedCount} credit offer(s) failed to save.`)
+      }
+    }
     showEditDialog.value = false
     editingProperty.value = null
+    editExistingCreditOffers.value = []
+    editNewCreditOffers.value = []
     await loadProperties()
   } catch (err) {
     editError.value = err?.response?.data?.message || err?.message || 'Failed to update property'
@@ -831,8 +1064,114 @@ const loadRealEstateOrgs = async () => {
   }
 }
 
+const loadApprovedBanks = async () => {
+  try {
+    const res = await adminApi.getOrganizations({ type: 'BANK', status: 'APPROVED' })
+    approvedBanks.value = Array.isArray(res?.data) ? res.data : []
+  } catch (err) {
+    console.error('Failed to load banks:', err)
+    approvedBanks.value = []
+  }
+}
+
+const getBankName = (bankId) => {
+  if (!bankId) return 'Unknown bank'
+  const match = approvedBanks.value.find((bank) => bank.id === bankId)
+  return match?.name || 'Unknown bank'
+}
+
+const formatOfferCoverage = (offer) => {
+  const ratio = offer?.specialLTVRatio ?? offer?.maxLoanToValueRatio
+  if (ratio == null) return null
+  return Number((Number(ratio) * 100).toFixed(2))
+}
+
+function addEditCreditOfferRow() {
+  editNewCreditOffers.value.push(newEditCreditOffer())
+}
+
+function removeEditCreditOfferRow(index) {
+  editNewCreditOffers.value.splice(index, 1)
+}
+
+const validateEditCreditOffers = () => {
+  const offers = editNewCreditOffers.value.map((offer) => ({
+    bankId: (offer.bankId || '').trim(),
+    coveragePercentage: Number(offer.coveragePercentage)
+  }))
+
+  if (!offers.length) {
+    return { validOffers: [], validationError: '' }
+  }
+
+  const existingBankIds = new Set(
+    editExistingCreditOffers.value
+      .map((offer) => offer.bankId)
+      .filter(Boolean)
+      .map((bankId) => String(bankId))
+  )
+  const seenBanks = new Set()
+  for (let i = 0; i < offers.length; i += 1) {
+    const offer = offers[i]
+    if (!offer.bankId) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: bank is required` }
+    }
+    if (!offer.coveragePercentage || offer.coveragePercentage <= 0 || offer.coveragePercentage > 100) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: coverage must be between 0 and 100` }
+    }
+    if (existingBankIds.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: selected bank already has an offer` }
+    }
+    if (seenBanks.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: duplicate bank selected` }
+    }
+    seenBanks.add(offer.bankId)
+  }
+
+  return { validOffers: offers, validationError: '' }
+}
+
+function addCreateCreditOfferRow() {
+  createCreditOffers.value.push(newCreateCreditOffer())
+}
+
+function removeCreateCreditOfferRow(index) {
+  createCreditOffers.value.splice(index, 1)
+}
+
+const validateCreateCreditOffers = () => {
+  const offers = createCreditOffers.value.map((offer) => ({
+    bankId: (offer.bankId || '').trim(),
+    coveragePercentage: Number(offer.coveragePercentage)
+  }))
+
+  if (!offers.length) {
+    return { validOffers: [], validationError: '' }
+  }
+
+  const seenBanks = new Set()
+  for (let i = 0; i < offers.length; i += 1) {
+    const offer = offers[i]
+    if (!offer.bankId) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: bank is required` }
+    }
+    if (!offer.coveragePercentage || offer.coveragePercentage <= 0 || offer.coveragePercentage > 100) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: coverage must be between 0 and 100` }
+    }
+    if (seenBanks.has(offer.bankId)) {
+      return { validOffers: [], validationError: `Credit offer ${i + 1}: duplicate bank selected` }
+    }
+    seenBanks.add(offer.bankId)
+  }
+
+  return { validOffers: offers, validationError: '' }
+}
+
 function openCreateModal() {
   createError.value = ''
+  submitCreateTouched.value = false
+  createCompanyQuery.value = ''
+  selectedCreateCompany.value = null
   createForm.value = {
     realEstateCompanyId: '',
     title: '',
@@ -856,6 +1195,7 @@ function openCreateModal() {
     isFullyFurnished: false
   }
   createFormMediaFiles.value = []
+  createCreditOffers.value = []
   showCreateDialog.value = true
 }
 
@@ -866,16 +1206,18 @@ function onCreateMediaSelect(ev) {
 }
 
 async function submitCreate() {
+  submitCreateTouched.value = true
   if (!createForm.value.realEstateCompanyId || !createForm.value.title || !createForm.value.address || !createForm.value.city || !createForm.value.country) {
     createError.value = 'Please fill required fields (company, title, address, city, country)'
     return
   }
-  if (!createForm.value.priceETB && !createForm.value.priceUSD) {
-    createError.value = 'At least one price (ETB or USD) is required'
-    return
-  }
   if (!createForm.value.category || !createForm.value.constructionStatus) {
     createError.value = 'Category and construction status are required'
+    return
+  }
+  const { validOffers, validationError } = validateCreateCreditOffers()
+  if (validationError) {
+    createError.value = validationError
     return
   }
   createError.value = ''
@@ -907,8 +1249,20 @@ async function submitCreate() {
     if (createFormMediaFiles.value.length > 0) {
       await adminApi.uploadPropertyMedia(created.id, createFormMediaFiles.value)
     }
+    if (validOffers.length > 0) {
+      const offerResults = await Promise.allSettled(
+        validOffers.map((offer) =>
+          adminApi.createPropertyFinancingOffer(created.id, offer.bankId, offer.coveragePercentage)
+        )
+      )
+      const failedCount = offerResults.filter((result) => result.status === 'rejected').length
+      if (failedCount > 0) {
+        alert(`Property created, but ${failedCount} credit offer(s) failed to save.`)
+      }
+    }
     showCreateDialog.value = false
     createFormMediaFiles.value = []
+    createCreditOffers.value = []
     await loadProperties()
   } catch (err) {
     createError.value = err?.response?.data?.message || err?.message || 'Failed to create property'
@@ -920,5 +1274,6 @@ async function submitCreate() {
 onMounted(() => {
   loadProperties()
   loadRealEstateOrgs()
+  loadApprovedBanks()
 })
 </script>

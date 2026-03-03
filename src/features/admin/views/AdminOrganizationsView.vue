@@ -85,7 +85,7 @@
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchOrganizations')"
-              @input="loadOrgs"
+              @input="onSearchInput"
               class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             />
           </div>
@@ -93,26 +93,24 @@
             <label class="block text-sm font-medium text-gray-300">Type</label>
             <select
               v-model="filters.type"
-              @change="loadOrgs"
+              @change="onTypeOrStatusChange"
               class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             >
               <option value="">All Types</option>
-              <option value="REAL_ESTATE_COMPANY">{{ $t('admin.typeRealEstate') }}</option>
-              <option value="BANK">{{ $t('admin.typeBank') }}</option>
-              <option value="SUPPLIER">{{ $t('admin.typeSupplier') }}</option>
-              <option value="CONTRACTOR">{{ $t('admin.typeContractor') }}</option>
-              <option value="DEVELOPER">{{ $t('admin.typeDeveloper') }}</option>
-              <option value="INSURANCE">{{ $t('admin.typeInsurance') }}</option>
-              <option value="CONSULTANT">{{ $t('admin.typeConsultant') }}</option>
-              <option value="ARCHITECT">{{ $t('admin.typeArchitect') }}</option>
-              <option value="FINISHING_CONTRACTOR">{{ $t('admin.typeFinishingContractor') }}</option>
+              <option
+                v-for="type in organizationTypeOptions"
+                :key="`filter-type-${type}`"
+                :value="type"
+              >
+                {{ getOrganizationTypeLabel(type) }}
+              </option>
             </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-300">Status</label>
             <select
               v-model="filters.status"
-              @change="loadOrgs"
+              @change="onTypeOrStatusChange"
               class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
             >
               <option value="">All Status</option>
@@ -163,14 +161,14 @@
                 </button>
               </td>
             </tr>
-            <tr v-else-if="!organizations || !Array.isArray(organizations) || organizations.length === 0">
+            <tr v-else-if="!filteredOrganizations.length">
               <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400 bg-zinc-900">
                 No organizations found
               </td>
             </tr>
             <template v-else>
               <tr
-                v-for="org in organizations"
+                v-for="org in paginatedOrganizations"
                 :key="org?.id || org?.name || Math.random()"
                 class="hover:bg-yellow-500/10 transition-colors"
               >
@@ -245,6 +243,47 @@
             </template>
           </tbody>
         </table>
+        <div
+          v-if="!loading && !error && filteredOrganizations.length > 0"
+          class="border-t border-white/10 px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-zinc-900"
+        >
+          <p class="text-xs text-gray-400">
+            Showing {{ paginationStart }}-{{ paginationEnd }} of {{ filteredOrganizations.length }} organizations
+          </p>
+          <div class="flex items-center gap-2">
+            <label class="text-xs text-gray-400">Rows</label>
+            <select
+              v-model.number="pageSize"
+              @change="onPageSizeChange"
+              class="border border-white/20 bg-white/5 text-white rounded-md py-1.5 px-2 text-xs focus:ring-yellow-400 focus:border-yellow-400"
+            >
+              <option
+                v-for="size in pageSizeOptions"
+                :key="`page-size-${size}`"
+                :value="size"
+              >
+                {{ size }}
+              </option>
+            </select>
+            <button
+              type="button"
+              @click="goToPreviousPage"
+              :disabled="currentPage <= 1"
+              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            <span class="text-xs text-gray-300">Page {{ currentPage }} / {{ totalPages }}</span>
+            <button
+              type="button"
+              @click="goToNextPage"
+              :disabled="currentPage >= totalPages"
+              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- View Organization Modal -->
@@ -580,15 +619,13 @@
                   required
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 >
-                  <option value="REAL_ESTATE_COMPANY">{{ $t('admin.typeRealEstate') }}</option>
-                  <option value="BANK">{{ $t('admin.typeBank') }}</option>
-                  <option value="SUPPLIER">{{ $t('admin.typeSupplier') }}</option>
-                  <option value="CONTRACTOR">{{ $t('admin.typeContractor') }}</option>
-                  <option value="DEVELOPER">{{ $t('admin.typeDeveloper') }}</option>
-                  <option value="INSURANCE">{{ $t('admin.typeInsurance') }}</option>
-                  <option value="CONSULTANT">{{ $t('admin.typeConsultant') }}</option>
-                  <option value="ARCHITECT">{{ $t('admin.typeArchitect') }}</option>
-                  <option value="FINISHING_CONTRACTOR">{{ $t('admin.typeFinishingContractor') }}</option>
+                  <option
+                    v-for="type in organizationTypeOptions"
+                    :key="`form-type-${type}`"
+                    :value="type"
+                  >
+                    {{ getOrganizationTypeLabel(type) }}
+                  </option>
                 </select>
               </div>
               <div v-if="formMode === 'create'" class="sm:col-span-2">
@@ -826,7 +863,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
@@ -866,6 +903,21 @@ const filters = ref({
   type: '',
   status: ''
 })
+const currentPage = ref(1)
+const pageSize = ref(10)
+const pageSizeOptions = [10, 20, 50]
+
+const organizationTypeOptions = [
+  'BANK',
+  'INSURANCE',
+  'CONTRACTOR',
+  'CONSULTANT',
+  'ARCHITECT',
+  'SUPPLIER',
+  'FINISHING_CONTRACTOR',
+  'REAL_ESTATE_COMPANY',
+  'DEVELOPER'
+]
 
 const showRejectDialog = ref(false)
 const selectedOrg = ref(null)
@@ -909,13 +961,81 @@ const bankCount = computed(() => {
   return organizations.value.filter(org => org.type === 'BANK').length
 })
 
+const filteredOrganizations = computed(() => {
+  const list = Array.isArray(organizations.value) ? organizations.value : []
+  const selectedType = (filters.value.type || '').trim()
+  const selectedStatus = (filters.value.status || '').trim().toUpperCase()
+  return list.filter((org) => {
+    const typeMatch = !selectedType || org.type === selectedType
+    if (!typeMatch) return false
+    if (!selectedStatus) return true
+    if (selectedStatus === 'PENDING') {
+      return org.status === 'PENDING' || org.status === 'PENDING_APPROVAL'
+    }
+    return org.status === selectedStatus
+  })
+})
+
+const totalPages = computed(() => {
+  const pages = Math.ceil(filteredOrganizations.value.length / pageSize.value)
+  return pages > 0 ? pages : 1
+})
+
+const paginatedOrganizations = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  return filteredOrganizations.value.slice(start, start + pageSize.value)
+})
+
+const paginationStart = computed(() => {
+  if (filteredOrganizations.value.length === 0) return 0
+  return (currentPage.value - 1) * pageSize.value + 1
+})
+
+const paginationEnd = computed(() => {
+  if (filteredOrganizations.value.length === 0) return 0
+  return Math.min(currentPage.value * pageSize.value, filteredOrganizations.value.length)
+})
+
+watch(totalPages, (newTotalPages) => {
+  if (currentPage.value > newTotalPages) {
+    currentPage.value = newTotalPages
+  }
+})
+
 const loadOrgs = async () => {
-  await loadOrganizations(filters.value)
+  const search = (filters.value.search || '').trim()
+  await loadOrganizations(search ? { search } : {})
 }
 
 const clearFilters = () => {
   filters.value = { search: '', type: '', status: '' }
+  currentPage.value = 1
   loadOrgs()
+}
+
+const onSearchInput = async () => {
+  currentPage.value = 1
+  await loadOrgs()
+}
+
+const onTypeOrStatusChange = () => {
+  currentPage.value = 1
+}
+
+const onPageSizeChange = () => {
+  currentPage.value = 1
+}
+
+const goToPreviousPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+  }
+}
+
+const goToNextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value += 1
+  }
 }
 
 const formatDate = (dateString) => {
@@ -925,16 +1045,26 @@ const formatDate = (dateString) => {
 
 const TYPE_LABEL_KEYS = {
   REAL_ESTATE_COMPANY: 'admin.typeRealEstate',
-  BANK: 'admin.typeBank',
-  SUPPLIER: 'admin.typeSupplier',
-  CONTRACTOR: 'admin.typeContractor',
+  BANK: 'nav.marketplaceBanks',
+  SUPPLIER: 'nav.marketplaceSuppliers',
+  CONTRACTOR: 'nav.marketplaceContractors',
   DEVELOPER: 'admin.typeDeveloper',
-  INSURANCE: 'admin.typeInsurance',
-  CONSULTANT: 'admin.typeConsultant',
-  ARCHITECT: 'admin.typeArchitect',
-  FINISHING_CONTRACTOR: 'admin.typeFinishingContractor'
+  INSURANCE: 'nav.marketplaceInsurance',
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
 }
-const getTypeLabel = (type) => (type && TYPE_LABEL_KEYS[type]) ? t(TYPE_LABEL_KEYS[type]) : (type || '')
+
+const getOrganizationTypeLabel = (type) => {
+  if (!type) return ''
+  if (type === 'CONSULTANT') {
+    return `${t('nav.marketplaceConsultantsArchitects')} (${t('admin.typeConsultant')})`
+  }
+  if (type === 'ARCHITECT') {
+    return `${t('nav.marketplaceConsultantsArchitects')} (${t('admin.typeArchitect')})`
+  }
+  return TYPE_LABEL_KEYS[type] ? t(TYPE_LABEL_KEYS[type]) : type
+}
+
+const getTypeLabel = (type) => getOrganizationTypeLabel(type)
 
 const approveOrg = async (id) => {
   try {

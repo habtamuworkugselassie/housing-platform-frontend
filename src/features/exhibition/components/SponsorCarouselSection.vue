@@ -24,23 +24,28 @@
           :key="slide.id + (slide.realEstateCompanyId || '')"
           class="relative flex-shrink-0 w-full h-full"
         >
-          <!-- Video or image background (organization video or logo/image – full bleed) -->
+          <!-- Media: load video only for current and next slide; lazy-load images for others -->
           <div class="absolute inset-0 z-0">
-            <video
-              v-if="slide.videoUrl"
-              :src="mediaUrl(slide.videoUrl)"
-              autoplay
-              muted
-              loop
-              playsinline
-              class="w-full h-full object-cover"
-            />
-            <img
-              v-else-if="slide.imageUrl"
-              :src="mediaUrl(slide.imageUrl)"
-              :alt="slide.realEstateCompanyName || slide.title"
-              class="w-full h-full object-cover"
-            />
+            <template v-if="slide.videoUrl && (index === currentIndex || index === (currentIndex + 1) % slides.length)">
+              <video
+                :key="'v-' + index"
+                :src="mediaUrl(slide.videoUrl)"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                class="w-full h-full object-cover"
+              />
+            </template>
+            <template v-else-if="slide.imageUrl">
+              <img
+                :src="mediaUrl(slide.imageUrl)"
+                :alt="slide.realEstateCompanyName || slide.title"
+                :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
+                class="w-full h-full object-cover"
+              />
+            </template>
             <div
               v-else
               class="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900"
@@ -60,6 +65,7 @@
                 <img
                   :src="mediaUrl(slide.imageUrl)"
                   :alt="slide.realEstateCompanyName || slide.title"
+                  :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
                   class="h-full w-full object-contain"
                 />
               </div>
@@ -131,6 +137,7 @@
             v-if="slide.imageUrl"
             :src="mediaUrl(slide.imageUrl)"
             :alt="slide.realEstateCompanyName || slide.title"
+            loading="lazy"
             class="h-full w-full object-contain p-0.5"
           />
           <span
