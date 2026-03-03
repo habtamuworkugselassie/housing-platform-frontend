@@ -46,8 +46,8 @@
               @change="loadSponsorships"
             >
               <option value="">All</option>
-              <option value="BASIC">Basic</option>
-              <option value="PREMIER">Premier</option>
+              <option value="GOLD">Gold</option>
+              <option value="PREMIUM">Premium</option>
             </select>
           </div>
           <div class="flex items-end">
@@ -90,8 +90,8 @@
               </td>
               <td class="mdc-data-table__cell">
                 <span :class="{
-                  'mdc-chip mdc-chip--primary': sponsorship.type === 'BASIC',
-                  'mdc-chip mdc-chip--warning': sponsorship.type === 'PREMIER'
+                  'mdc-chip mdc-chip--primary': sponsorship.type === 'GOLD',
+                  'mdc-chip mdc-chip--warning': sponsorship.type === 'PREMIUM'
                 }">
                   {{ sponsorship.type }}
                 </span>
@@ -175,8 +175,8 @@
                 class="mdc-text-field__input"
               >
                 <option value="">Select type</option>
-                <option value="BASIC">Basic</option>
-                <option value="PREMIER">Premier</option>
+                <option value="GOLD">Gold</option>
+                <option value="PREMIUM">Premium</option>
               </select>
               <label class="mdc-text-field__label">Type *</label>
             </div>

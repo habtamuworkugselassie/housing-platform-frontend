@@ -58,8 +58,8 @@
         :key="`${item.type}-${item.id}`"
         :class="{
           'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': !item.isSponsored,
-          'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'PREMIER',
-          'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'BASIC'
+          'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'PREMIUM',
+          'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'GOLD'
         }"
         @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
       >
@@ -75,18 +75,18 @@
         <div v-if="item.isSponsored" class="relative">
           <div
             :class="{
-              'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIER',
-              'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'BASIC'
+              'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIUM',
+              'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'GOLD'
             }"
             class="absolute top-2 right-2 sm:top-3 sm:right-3 px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1 sm:gap-1.5 animate-pulse border-2 border-white"
           >
-            <span v-if="item.sponsorshipType === 'PREMIER'" class="text-sm sm:text-base">⭐</span>
+            <span v-if="item.sponsorshipType === 'PREMIUM'" class="text-sm sm:text-base">⭐</span>
             <span v-else class="text-sm sm:text-base">✨</span>
-            <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIER' ? $t('property.premier') : $t('property.sponsored') }}</span>
-            <span class="sm:hidden uppercase">{{ item.sponsorshipType === 'PREMIER' ? 'P' : 'S' }}</span>
+            <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIUM' ? $t('property.premier') : $t('property.sponsored') }}</span>
+            <span class="sm:hidden uppercase">{{ item.sponsorshipType === 'PREMIUM' ? 'P' : 'S' }}</span>
           </div>
-          <!-- Additional Premier Crown Badge -->
-          <div v-if="item.sponsorshipType === 'PREMIER' && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
+          <!-- Additional Premium Crown Badge -->
+          <div v-if="item.sponsorshipType === 'PREMIUM' && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
             <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
               <span class="text-xs sm:text-sm">👑</span>
               <span class="hidden sm:inline">{{ $t('property.featured') }}</span>
@@ -102,21 +102,21 @@
             :alt="item.title || item.name"
             :class="{
               'w-full h-full object-cover transition-transform duration-300': true,
-              'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIER',
-              'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'BASIC'
+              'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIUM',
+              'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'GOLD'
             }"
           />
           <!-- Sponsored Overlay Gradient - More Prominent -->
           <div 
             v-if="item.isSponsored"
             :class="{
-              'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIER',
-              'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'BASIC'
+              'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIUM',
+              'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'GOLD'
             }"
           ></div>
-          <!-- Premier Glow Effect -->
+          <!-- Premium Glow Effect -->
           <div 
-            v-if="item.isSponsored && item.sponsorshipType === 'PREMIER'"
+            v-if="item.isSponsored && item.sponsorshipType === 'PREMIUM'"
             class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
           ></div>
         </div>
@@ -294,13 +294,13 @@ const loadProperties = async () => {
       ...buildings.value.map(b => ({ ...b, type: 'building', title: b.name }))
     ]
     
-    // Sort by sponsorship (PREMIER first, then BASIC, then none), then by creation date
+    // Sort by sponsorship (PREMIUM first, then GOLD, then none), then by creation date
     combined.sort((a, b) => {
       // Sponsorship priority (works for both properties and buildings)
-      const aPriority = a.isSponsored && a.sponsorshipType === 'PREMIER' ? 0 : 
-                       a.isSponsored && a.sponsorshipType === 'BASIC' ? 1 : 2
-      const bPriority = b.isSponsored && b.sponsorshipType === 'PREMIER' ? 0 : 
-                       b.isSponsored && b.sponsorshipType === 'BASIC' ? 1 : 2
+      const aPriority = a.isSponsored && a.sponsorshipType === 'PREMIUM' ? 0 : 
+                       a.isSponsored && a.sponsorshipType === 'GOLD' ? 1 : 2
+      const bPriority = b.isSponsored && b.sponsorshipType === 'PREMIUM' ? 0 : 
+                       b.isSponsored && b.sponsorshipType === 'GOLD' ? 1 : 2
       
       if (aPriority !== bPriority) {
         return aPriority - bPriority

@@ -5,7 +5,7 @@
   >
     <!-- Banner Ad Layout - Supports single or multiple ads -->
     <div v-if="size === 'banner'" class="h-full flex items-center gap-3 p-2 sm:p-3">
-      <!-- Multiple ads (for PREMIER banner) -->
+      <!-- Multiple ads (for PREMIUM banner) -->
       <template v-if="adContents && adContents.length > 0">
         <div 
           v-for="(ad, index) in adContents.slice(0, 2)" 
@@ -29,7 +29,6 @@
                 v-if="ad.sponsorshipType"
                 :class="[
                   'text-xs font-bold px-2 py-0.5 rounded',
-                  ad.sponsorshipType.toUpperCase().includes('PREMIER') || 
                   ad.sponsorshipType.toUpperCase().includes('PREMIUM') ||
                   ad.sponsorshipType.toUpperCase().includes('GOLD')
                     ? 'text-yellow-600 bg-yellow-100'
@@ -91,7 +90,6 @@
                 v-if="adContent.sponsorshipType"
                 :class="[
                   'text-xs font-bold px-2 py-0.5 rounded',
-                  adContent.sponsorshipType.toUpperCase().includes('PREMIER') || 
                   adContent.sponsorshipType.toUpperCase().includes('PREMIUM') ||
                   adContent.sponsorshipType.toUpperCase().includes('GOLD')
                     ? 'text-yellow-600 bg-yellow-100'
@@ -128,20 +126,37 @@
     </div>
 
     <!-- Sidebar/Rectangle Ad Layout -->
-    <div v-else class="h-full flex flex-col">
+    <div v-else class="h-full flex flex-col" @click="handleClick">
       <div 
-        v-if="adContent.imageUrl"
+        v-if="currentSidebarMedia"
         :class="[
-          'w-full overflow-hidden',
+          'w-full overflow-hidden relative',
           dark ? 'bg-zinc-700' : 'bg-gray-200',
           size === 'sidebar' ? 'h-48' : 'h-32'
         ]"
       >
-        <img 
-          :src="mediaUrl(adContent.imageUrl)" 
+        <video
+          v-if="currentSidebarMedia.isVideo"
+          :src="mediaUrl(currentSidebarMedia.url)"
+          class="w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        />
+        <img
+          v-else
+          :src="mediaUrl(currentSidebarMedia.url)"
           :alt="adContent.title"
           class="w-full h-full object-cover"
         />
+        <span
+          v-if="sidebarMediaItems.length > 1"
+          class="absolute top-2 right-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-white"
+        >
+          {{ currentSidebarMediaIndex + 1 }} / {{ sidebarMediaItems.length }}
+        </span>
       </div>
       <div 
         v-else
@@ -163,8 +178,8 @@
             :class="[
               'text-xs font-bold px-2 py-0.5 rounded',
               dark
-                ? (adContent.sponsorshipType.toUpperCase().includes('PREMIER') || adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-amber-200 bg-amber-900/50' : 'text-blue-200 bg-blue-900/50')
-                : (adContent.sponsorshipType.toUpperCase().includes('PREMIER') || adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-yellow-600 bg-yellow-100' : 'text-blue-600 bg-blue-100')
+                ? (adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-amber-200 bg-amber-900/50' : 'text-blue-200 bg-blue-900/50')
+                : (adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-yellow-600 bg-yellow-100' : 'text-blue-600 bg-blue-100')
             ]"
           >
             {{ adContent.sponsorshipType.toUpperCase() }}
@@ -225,7 +240,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
@@ -248,6 +263,57 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const currentSidebarMediaIndex = ref(0)
+let sidebarMediaInterval = null
+
+const isVideoUrl = (url = '') => /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(String(url))
+
+const sidebarMediaItems = computed(() => {
+  if (!props.adContent) return []
+  const list = []
+  const seen = new Set()
+  const addMedia = (url, mediaKind) => {
+    const normalizedUrl = String(url || '').trim()
+    if (!normalizedUrl || seen.has(normalizedUrl)) return
+    seen.add(normalizedUrl)
+    const kind = String(mediaKind || '').toUpperCase()
+    list.push({
+      url: normalizedUrl,
+      isVideo: kind === 'VIDEO' || isVideoUrl(normalizedUrl)
+    })
+  }
+
+  if (Array.isArray(props.adContent.mediaItems)) {
+    props.adContent.mediaItems.forEach(item => addMedia(item?.url, item?.mediaKind))
+  }
+  addMedia(props.adContent.videoUrl, 'VIDEO')
+  addMedia(props.adContent.imageUrl, 'IMAGE')
+  return list
+})
+
+const currentSidebarMedia = computed(() => {
+  if (!sidebarMediaItems.value.length) return null
+  return sidebarMediaItems.value[currentSidebarMediaIndex.value] || sidebarMediaItems.value[0]
+})
+
+const resetSidebarMediaRotation = () => {
+  if (sidebarMediaInterval) {
+    clearInterval(sidebarMediaInterval)
+    sidebarMediaInterval = null
+  }
+  currentSidebarMediaIndex.value = 0
+  if (props.size !== 'sidebar' || sidebarMediaItems.value.length <= 1) return
+  sidebarMediaInterval = setInterval(() => {
+    if (!sidebarMediaItems.value.length) return
+    currentSidebarMediaIndex.value = (currentSidebarMediaIndex.value + 1) % sidebarMediaItems.value.length
+  }, 5000)
+}
+
+watch(
+  () => [props.size, props.adContent?.id, sidebarMediaItems.value.length],
+  resetSidebarMediaRotation,
+  { immediate: true }
+)
 
 const adContainerClass = computed(() => {
   const baseClasses = [
@@ -272,8 +338,7 @@ const adContainerClass = computed(() => {
   if (props.dark) {
     baseClasses.push('bg-zinc-800 border-white/10 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors')
   } else if (checkAd && checkAd.sponsorshipType) {
-    const isPremium = checkAd.sponsorshipType.toUpperCase().includes('PREMIER') || 
-                      checkAd.sponsorshipType.toUpperCase().includes('PREMIUM') ||
+    const isPremium = checkAd.sponsorshipType.toUpperCase().includes('PREMIUM') ||
                       checkAd.sponsorshipType.toUpperCase().includes('GOLD')
     if (isPremium) {
       baseClasses.push('bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-yellow-300')
@@ -298,6 +363,8 @@ const handleClick = () => {
     router.push(`/properties/${props.adContent.id}`)
   } else if (props.adContent.type === 'building') {
     router.push(`/buildings/${props.adContent.id}`)
+  } else if (props.adContent.type === 'organization') {
+    router.push(`/organizations/${props.adContent.id}`)
   }
 }
 
@@ -308,8 +375,16 @@ const handleAdClick = (ad) => {
     router.push(`/properties/${ad.id}`)
   } else if (ad.type === 'building') {
     router.push(`/buildings/${ad.id}`)
+  } else if (ad.type === 'organization') {
+    router.push(`/organizations/${ad.id}`)
   }
 }
+
+onUnmounted(() => {
+  if (sidebarMediaInterval) {
+    clearInterval(sidebarMediaInterval)
+  }
+})
 </script>
 
 <style scoped>

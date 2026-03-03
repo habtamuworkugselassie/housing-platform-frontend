@@ -98,7 +98,7 @@
             >
               <option value="">All Types</option>
               <option
-                v-for="type in organizationTypeOptions"
+                v-for="type in organizationTypeFilterOptions"
                 :key="`filter-type-${type}`"
                 :value="type"
               >
@@ -620,11 +620,11 @@
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 >
                   <option
-                    v-for="type in organizationTypeOptions"
+                    v-for="type in organizationTypeFormOptions"
                     :key="`form-type-${type}`"
                     :value="type"
                   >
-                    {{ getOrganizationTypeLabel(type) }}
+                    {{ getMarketplaceOrganizationTypeLabel(type) }}
                   </option>
                 </select>
               </div>
@@ -907,15 +907,18 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const pageSizeOptions = [10, 20, 50]
 
-const organizationTypeOptions = [
+const marketplaceOrganizationTypeOptions = [
+  'REAL_ESTATE_COMPANY',
   'BANK',
   'INSURANCE',
   'CONTRACTOR',
-  'CONSULTANT',
-  'ARCHITECT',
+  'CONSULTANT_ARCHITECT',
   'SUPPLIER',
-  'FINISHING_CONTRACTOR',
-  'REAL_ESTATE_COMPANY',
+  'FINISHING_CONTRACTOR'
+]
+
+const organizationTypeFilterOptions = [
+  ...marketplaceOrganizationTypeOptions,
   'DEVELOPER'
 ]
 
@@ -1053,15 +1056,27 @@ const TYPE_LABEL_KEYS = {
   FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
 }
 
+const MARKETPLACE_TYPE_LABEL_KEYS = {
+  REAL_ESTATE_COMPANY: 'nav.marketplaceRealEstate',
+  BANK: 'nav.marketplaceBanks',
+  INSURANCE: 'nav.marketplaceInsurance',
+  CONTRACTOR: 'nav.marketplaceContractors',
+  CONSULTANT_ARCHITECT: 'nav.marketplaceConsultantsArchitects',
+  SUPPLIER: 'nav.marketplaceSuppliers',
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
+}
+
 const getOrganizationTypeLabel = (type) => {
   if (!type) return ''
-  if (type === 'CONSULTANT') {
-    return `${t('nav.marketplaceConsultantsArchitects')} (${t('admin.typeConsultant')})`
-  }
-  if (type === 'ARCHITECT') {
-    return `${t('nav.marketplaceConsultantsArchitects')} (${t('admin.typeArchitect')})`
+  if (type === 'CONSULTANT_ARCHITECT') {
+    return t('nav.marketplaceConsultantsArchitects')
   }
   return TYPE_LABEL_KEYS[type] ? t(TYPE_LABEL_KEYS[type]) : type
+}
+
+const getMarketplaceOrganizationTypeLabel = (type) => {
+  if (!type) return ''
+  return MARKETPLACE_TYPE_LABEL_KEYS[type] ? t(MARKETPLACE_TYPE_LABEL_KEYS[type]) : getOrganizationTypeLabel(type)
 }
 
 const getTypeLabel = (type) => getOrganizationTypeLabel(type)
@@ -1300,6 +1315,15 @@ const form = ref({
   website: '',
   description: '',
   initialStatus: 'PENDING_APPROVAL'
+})
+
+const organizationTypeFormOptions = computed(() => {
+  const options = [...marketplaceOrganizationTypeOptions]
+  const currentType = form.value.type
+  if (formMode.value === 'edit' && currentType && !options.includes(currentType)) {
+    options.push(currentType)
+  }
+  return options
 })
 
 function resetForm() {

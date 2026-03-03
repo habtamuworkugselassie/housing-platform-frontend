@@ -309,8 +309,7 @@
               <option value="CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeContractor') }}</option>
               <option value="DEVELOPER">{{ $t('exhibition.registerInterest.orgTypeDeveloper') }}</option>
               <option value="SUPPLIER">{{ $t('exhibition.registerInterest.orgTypeSupplier') }}</option>
-              <option value="CONSULTANT">{{ $t('exhibition.registerInterest.orgTypeConsultant') }}</option>
-              <option value="ARCHITECT">{{ $t('exhibition.registerInterest.orgTypeArchitect') }}</option>
+              <option value="CONSULTANT_ARCHITECT">{{ $t('exhibition.registerInterest.orgTypeConsultantArchitect') }}</option>
               <option value="FINISHING_CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeFinishingContractor') }}</option>
             </select>
           </div>

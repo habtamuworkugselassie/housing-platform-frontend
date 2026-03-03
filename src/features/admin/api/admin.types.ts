@@ -68,8 +68,7 @@ export type OrganizationType =
   | 'CONTRACTOR'
   | 'DEVELOPER'
   | 'INSURANCE'
-  | 'CONSULTANT'
-  | 'ARCHITECT'
+  | 'CONSULTANT_ARCHITECT'
   | 'FINISHING_CONTRACTOR'
 
 /** Full organization create/update payload for admin */

@@ -73,9 +73,9 @@
         @click="viewBuilding(building.id)"
         :class="[
           'rounded-lg border p-6 transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20',
-          building.isSponsored && building.sponsorshipType === 'PREMIER' 
+          building.isSponsored && building.sponsorshipType === 'PREMIUM' 
             ? 'bg-zinc-900 border-2 border-yellow-400' 
-            : building.isSponsored && building.sponsorshipType === 'BASIC'
+            : building.isSponsored && building.sponsorshipType === 'GOLD'
             ? 'bg-zinc-900 border-2 border-blue-400/60'
             : 'bg-zinc-900 border border-white/10'
         ]"
@@ -87,14 +87,14 @@
             <span 
               v-if="building.isSponsored"
               :class="{
-                'bg-yellow-500/40 text-yellow-200': building.sponsorshipType === 'PREMIER',
-                'bg-blue-500/40 text-blue-200': building.sponsorshipType === 'BASIC'
+                'bg-yellow-500/40 text-yellow-200': building.sponsorshipType === 'PREMIUM',
+                'bg-blue-500/40 text-blue-200': building.sponsorshipType === 'GOLD'
               }"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold"
             >
-              <span v-if="building.sponsorshipType === 'PREMIER'" class="mr-1">⭐</span>
+              <span v-if="building.sponsorshipType === 'PREMIUM'" class="mr-1">⭐</span>
               <span v-else class="mr-1">✨</span>
-              {{ building.sponsorshipType === 'PREMIER' ? $t('property.premier') : $t('property.sponsored') }}
+              {{ building.sponsorshipType === 'PREMIUM' ? $t('property.premier') : $t('property.sponsored') }}
             </span>
             <span :class="[
               'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',

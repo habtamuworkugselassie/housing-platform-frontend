@@ -49,7 +49,7 @@ export interface BuildingResponse {
   availableUnits?: number
   occupiedUnits?: number
   isSponsored?: boolean
-  sponsorshipType?: 'PREMIER' | 'BASIC'
+  sponsorshipType?: 'PREMIUM' | 'GOLD'
   createdAt?: string
   updatedAt?: string
 }

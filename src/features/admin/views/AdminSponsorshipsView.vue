@@ -87,8 +87,8 @@
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
               >
                 <option value="">All Types</option>
-                <option value="BASIC">Basic</option>
-                <option value="PREMIER">Premier</option>
+                <option value="GOLD">Gold</option>
+                <option value="PREMIUM">Premium</option>
               </select>
             </div>
             <div class="flex items-end">
@@ -137,7 +137,7 @@
                     <span
                       :class="[
                         'px-2 py-1 text-xs font-medium rounded',
-                        pkg.type === 'PREMIER' ? 'bg-purple-500/30 text-purple-200' : 'bg-blue-500/30 text-blue-200'
+                        pkg.type === 'PREMIUM' ? 'bg-purple-500/30 text-purple-200' : 'bg-blue-500/30 text-blue-200'
                       ]"
                     >
                       {{ pkg.type }}
@@ -258,7 +258,7 @@
                     <span
                       :class="[
                         'inline-flex px-2 py-1 text-xs font-medium rounded mt-1',
-                        app.sponsorship?.type === 'PREMIER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                        app.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
                       ]"
                     >
                       {{ app.sponsorship?.type }}
@@ -365,8 +365,8 @@
                     class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   >
                     <option value="">{{ $t('propertyTypes.selectType') }}</option>
-                    <option value="BASIC">Basic</option>
-                    <option value="PREMIER">Premier</option>
+                    <option value="GOLD">Gold</option>
+                    <option value="PREMIUM">Premium</option>
                   </select>
                 </div>
 
@@ -453,7 +453,7 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingPackage.type === 'PREMIER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      viewingPackage.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
                     ]"
                   >
                     {{ viewingPackage.type || 'N/A' }}
@@ -538,7 +538,7 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingApplication.sponsorship?.type === 'PREMIER' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      viewingApplication.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
                     ]"
                   >
                     {{ viewingApplication.sponsorship?.type || 'N/A' }}

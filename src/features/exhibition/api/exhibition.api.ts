@@ -8,8 +8,7 @@ export type ExhibitionOrganizationType =
   | 'SUPPLIER'
   | 'CONTRACTOR'
   | 'DEVELOPER'
-  | 'CONSULTANT'
-  | 'ARCHITECT'
+  | 'CONSULTANT_ARCHITECT'
   | 'FINISHING_CONTRACTOR'
 
 export interface ExhibitionInterestRequest {
