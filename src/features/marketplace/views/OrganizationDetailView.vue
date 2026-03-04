@@ -87,17 +87,34 @@
                 <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
               </div>
             </div>
-            <div v-if="galleryMedia.length > 1" class="mt-4 flex items-center gap-2">
+            <div v-if="galleryMedia.length > 1" class="mt-4 flex flex-wrap items-center gap-2">
               <button
                 v-for="(item, index) in galleryMedia"
                 :key="item.id || item.url || index"
                 type="button"
                 :class="[
-                  'h-2 rounded-full transition-all',
-                  currentMediaIndex === index ? 'w-8 bg-white shadow-sm' : 'w-2 bg-white/50 hover:bg-white/70'
+                  'h-12 w-16 overflow-hidden rounded-md border-2 object-cover transition-all',
+                  currentMediaIndex === index ? 'border-yellow-400 opacity-100 shadow-md transform scale-105 bg-white/10' : 'border-transparent opacity-60 hover:opacity-100 bg-white/5 hover:border-white/30'
                 ]"
                 @click="currentMediaIndex = index"
-              />
+              >
+                <template v-if="!isVideoItem(item)">
+                  <img
+                    :src="mediaUrl(item.url)"
+                    :alt="organization.name"
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </template>
+                <template v-else>
+                  <video
+                    :src="mediaUrl(item.url)"
+                    class="h-full w-full object-cover"
+                    muted
+                    playsinline
+                  />
+                </template>
+              </button>
             </div>
           </div>
         </div>
@@ -199,12 +216,13 @@
                   class="h-24 w-full object-cover transition-transform duration-200 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div
+                <video
                   v-else
-                  class="flex h-24 w-full items-center justify-center bg-black/40 text-xs text-white"
-                >
-                  VIDEO
-                </div>
+                  :src="mediaUrl(item.url)"
+                  class="h-24 w-full object-cover transition-transform duration-200 group-hover:scale-105"
+                  muted
+                  playsinline
+                />
                 <span
                   :class="[
                     'absolute right-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold',

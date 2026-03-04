@@ -65,7 +65,7 @@ const processQueue = (error: any, token: string | null = null) => {
       prom.resolve(token!)
     }
   })
-  
+
   failedQueue = []
 }
 
@@ -75,12 +75,20 @@ api.interceptors.request.use(
     // For FormData, do not set Content-Type so the browser sets multipart/form-data with boundary.
     // Otherwise the default application/json would break file uploads.
     if (config.data instanceof FormData && config.headers) {
-      delete config.headers['Content-Type']
+      if (typeof config.headers.delete === 'function') {
+        config.headers.delete('Content-Type')
+      } else {
+        delete config.headers['Content-Type']
+      }
     }
     // Import dynamically to avoid circular dependency issues
     const token = localStorage.getItem('accessToken')
     if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
+      if (typeof config.headers.set === 'function') {
+        config.headers.set('Authorization', `Bearer ${token}`)
+      } else {
+        config.headers.Authorization = `Bearer ${token}`
+      }
     }
     return config
   },
@@ -114,22 +122,22 @@ api.interceptors.response.use(
         '/financing-offers',
         '/exhibition/'
       ]
-      
-      const isPublicEndpoint = publicEndpoints.some(endpoint => 
+
+      const isPublicEndpoint = publicEndpoints.some(endpoint =>
         originalRequest.url?.includes(endpoint)
       )
-      
+
       // If it's a public endpoint and user is not authenticated, just reject the error
       // Don't redirect to login for public endpoints
       if (isPublicEndpoint && !authStore.isAuthenticated) {
         return Promise.reject(error)
       }
-      
+
       // Check if it's a JWT expiration error
-      const isJwtError = error.response?.data?.message?.includes('expired') || 
-                        error.response?.data?.message?.includes('JWT') ||
-                        error.response?.data?.error === 'Authentication Failed'
-      
+      const isJwtError = error.response?.data?.message?.includes('expired') ||
+        error.response?.data?.message?.includes('JWT') ||
+        error.response?.data?.error === 'Authentication Failed'
+
       if (isJwtError && authStore.refreshTokenMethod && authStore.refreshToken && !originalRequest._retry) {
         if (isRefreshing) {
           // If already refreshing, queue this request
@@ -151,7 +159,7 @@ api.interceptors.response.use(
         try {
           const newAuthData = await authStore.refreshTokenMethod()
           processQueue(null, newAuthData.accessToken)
-          
+
           // Retry original request with new token
           if (originalRequest.headers) {
             originalRequest.headers.Authorization = `Bearer ${newAuthData.accessToken}`

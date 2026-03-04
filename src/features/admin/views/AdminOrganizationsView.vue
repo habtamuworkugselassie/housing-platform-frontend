@@ -331,6 +331,14 @@
                         loading="lazy"
                       />
                     </template>
+                    <template v-else-if="m.url && m.mediaKind === 'VIDEO'">
+                      <video
+                        :src="mediaUrl(m.url)"
+                        class="h-10 w-10 object-cover rounded border border-white/20"
+                        muted
+                        playsinline
+                      />
+                    </template>
                     <span class="text-xs text-gray-400">{{ m.mediaKind }}</span>
                     <button
                       type="button"

@@ -149,7 +149,7 @@ onMounted(() => {
         leftStartIndex.value = (leftStartIndex.value + 1) % sideAds.value.length
         rightStartIndex.value = (rightStartIndex.value + 1) % sideAds.value.length
       }
-    }, 12000)
+    }, 20000)
   }
   if (sideAds.value.length > 0) startRotation()
   else {

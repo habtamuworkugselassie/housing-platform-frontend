@@ -302,6 +302,29 @@ export const adminApi = {
   },
 
   /**
+   * Create building (admin can create for any real estate company)
+   */
+  createBuilding: async (companyId: string, building: any): Promise<any> => {
+    const response = await api.post(`/buildings/companies/${companyId}`, building)
+    return response.data
+  },
+
+  /**
+   * Update building (admin can update any building)
+   */
+  updateBuilding: async (companyId: string, buildingId: string, building: any): Promise<any> => {
+    const response = await api.put(`/buildings/${buildingId}/companies/${companyId}`, building)
+    return response.data
+  },
+
+  /**
+   * Delete building
+   */
+  deleteBuilding: async (companyId: string, buildingId: string): Promise<void> => {
+    await api.delete(`/buildings/${buildingId}/companies/${companyId}`)
+  },
+
+  /**
    * Get all construction projects
    */
   getConstructionProjects: async (filters, pageRequest) => {

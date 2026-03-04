@@ -737,12 +737,12 @@ let adRotationInterval = null
 onMounted(() => {
   loadOrganizations()
   loadAllAds(20).then(() => {
-    // Start rotating top ads (highest base_price) every 10 seconds
+    // Start rotating top ads (highest base_price) every 15 seconds
     adRotationInterval = setInterval(() => {
       if (topAds.value.length > 0) {
         currentPremierAdIndex.value = (currentPremierAdIndex.value + 1) % topAds.value.length
       }
-    }, 10000)
+    }, 15000)
   })
 })
 

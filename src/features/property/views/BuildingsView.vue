@@ -143,6 +143,12 @@
             {{ $t('common.edit') }}
           </button>
           <button
+            @click.stop="deleteBuilding(building)"
+            class="flex-1 px-3 py-1 text-sm bg-red-500/10 text-red-400 border border-red-500/20 rounded hover:bg-red-500/20 hover:border-red-500 transition-colors"
+          >
+            {{ $t('common.delete') }}
+          </button>
+          <button
             @click.stop="viewBuilding(building.id)"
             class="flex-1 px-3 py-1 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
           >
@@ -571,6 +577,18 @@ const getStatusColor = (status) => {
     RENOVATION: 'bg-blue-500/30 text-blue-200'
   }
   return colors[status] || 'bg-gray-500/30 text-gray-300'
+}
+
+const deleteBuilding = async (building) => {
+  if (!organization.value) return
+  if (confirm(`Are you sure you want to delete the building "${building.name}"?`)) {
+    try {
+      await api.delete(`/buildings/${building.id}/companies/${organization.value.id}`)
+      loadBuildings()
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete building')
+    }
+  }
 }
 
 const closeModal = () => {

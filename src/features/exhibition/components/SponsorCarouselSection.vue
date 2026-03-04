@@ -57,7 +57,11 @@
 
             <!-- Content overlay: previous design, aligned to left -->
             <div class="relative z-10 flex h-full items-center justify-start px-6 sm:px-10">
-              <div class="max-w-2xl text-left rounded-2xl bg-black/30 backdrop-blur-md px-8 py-8 sm:px-10 sm:py-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_0_30px_rgba(255,255,255,0.06),0_20px_25px_-5px_rgba(0,0,0,0.2),0_8px_10px_-6px_rgba(0,0,0,0.15)]">
+              <component
+                :is="slide.realEstateCompanyId ? 'router-link' : 'div'"
+                :to="slide.realEstateCompanyId ? `/organizations/${slide.realEstateCompanyId}?from=${$route.path}` : undefined"
+                class="block max-w-2xl text-left rounded-2xl bg-black/30 backdrop-blur-md px-8 py-8 sm:px-10 sm:py-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_0_30px_rgba(255,255,255,0.06),0_20px_25px_-5px_rgba(0,0,0,0.2),0_8px_10px_-6px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_35px_-10px_rgba(0,0,0,0.4)] hover:bg-black/40 cursor-pointer"
+              >
                 <div
                   v-if="slide.logoUrl && useLogo"
                   class="mb-4 h-20 w-20 sm:h-24 sm:w-24 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
@@ -90,7 +94,7 @@
                 >
                   {{ slide.sponsorshipType || $t('exhibition.sponsorCarousel.sponsor') }}
                 </span>
-              </div>
+              </component>
             </div>
           </div>
         </div>
