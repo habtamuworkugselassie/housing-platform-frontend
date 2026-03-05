@@ -300,6 +300,182 @@
         </div>
       </section>
 
+      <section id="properties-section" v-if="organization.type === 'REAL_ESTATE_COMPANY'" class="mt-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-white">{{ t('property.propertiesAndBuildings') || 'Properties & Buildings' }}</h2>
+        </div>
+        
+        <div v-if="loadingLinkedItems" class="flex items-center justify-center py-12">
+          <div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-yellow-400"></div>
+        </div>
+        
+        <div v-else-if="linkedItems.length">
+          <div class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div
+              v-for="item in paginatedLinkedItems"
+              :key="`${item.type}-${item.id}`"
+            :class="{
+              'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': !item.isSponsored,
+              'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'PREMIUM',
+              'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && item.sponsorshipType === 'GOLD'
+            }"
+            @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
+          >
+            <!-- Type Badge (Building) -->
+            <div v-if="item.type === 'building'" class="absolute top-2 left-2 z-20">
+              <div class="bg-indigo-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+                <span>🏢</span>
+                <span>{{ $t('common.buildingBadge') }}</span>
+              </div>
+            </div>
+            
+            <!-- Sponsored Badge -->
+            <div v-if="item.isSponsored" class="relative">
+              <div
+                :class="{
+                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIUM',
+                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'GOLD'
+                }"
+                class="absolute top-2 right-2 sm:top-3 sm:right-3 px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1 sm:gap-1.5 animate-pulse border-2 border-white"
+              >
+                <span v-if="item.sponsorshipType === 'PREMIUM'" class="text-sm sm:text-base">⭐</span>
+                <span v-else class="text-sm sm:text-base">✨</span>
+                <span class="hidden sm:inline uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIUM' ? $t('property.premier') : $t('property.sponsored') }}</span>
+                <span class="sm:hidden uppercase">{{ item.sponsorshipType === 'PREMIUM' ? 'P' : 'S' }}</span>
+              </div>
+              <!-- Additional Premium Crown Badge -->
+              <div v-if="item.sponsorshipType === 'PREMIUM' && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
+                <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+                  <span class="text-xs sm:text-sm">👑</span>
+                  <span class="hidden sm:inline">{{ $t('property.featured') }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="h-40 sm:h-48 bg-zinc-800 flex items-center justify-center relative overflow-hidden">
+              <span v-if="!item.images && !item.imageUrls" class="text-gray-500 text-4xl">{{ item.type === 'property' ? '🏠' : '🏢' }}</span>
+              <img
+                v-else
+                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0] || '')"
+                :alt="item.title || item.name"
+                :class="{
+                  'w-full h-full object-cover transition-transform duration-300': true,
+                  'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIUM',
+                  'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'GOLD'
+                }"
+              />
+              <div 
+                v-if="item.isSponsored"
+                :class="{
+                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIUM',
+                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'GOLD'
+                }"
+              ></div>
+              <div 
+                v-if="item.isSponsored && item.sponsorshipType === 'PREMIUM'"
+                class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
+              ></div>
+            </div>
+            <div class="p-4 sm:p-6">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="flex-1 pr-2 text-lg sm:text-xl font-semibold text-white">{{ item.title || item.name }}</h3>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <template v-if="item.type === 'property'">
+                  <div class="flex flex-col gap-1">
+                    <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-yellow-400">{{ formatPrice(item.priceETB, 'ETB') }}</p>
+                    <p v-if="item.priceUSD" class="text-base sm:text-lg font-semibold text-gray-400">{{ formatPrice(item.priceUSD, 'USD') }}</p>
+                    <p v-if="!item.priceETB && !item.priceUSD" class="text-base sm:text-lg text-gray-500">
+                      {{ $t('property.priceNotSet') }}
+                    </p>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="flex flex-col gap-1">
+                    <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
+                    <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} {{ $t('property.availableCount') }}</p>
+                  </div>
+                </template>
+                <span v-if="item.category" :class="{
+                  'bg-blue-500/30 text-blue-200': item.category === 'FOR_SALE',
+                  'bg-green-500/30 text-green-200': item.category === 'FOR_RENTAL'
+                }" class="px-2 py-0.5 rounded text-xs font-medium">
+                  {{ item.category === 'FOR_SALE' ? $t('property.saleShort') : $t('property.rentalShort') }}
+                </span>
+                <span v-if="item.isFullyFurnished" class="px-2 py-0.5 bg-purple-500/30 text-purple-200 rounded text-xs font-medium">
+                  {{ $t('property.furnished') }}
+                </span>
+              </div>
+              <p class="text-sm text-gray-400 mb-2">
+                📍 {{ item.city }}, {{ item.country }}
+              </p>
+              <div v-if="item.constructionPercentage !== null && item.constructionPercentage !== undefined" class="mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-gray-500">{{ $t('property.constructionLabel') }}:</span>
+                  <div class="flex-1 bg-zinc-700 rounded-full h-2">
+                    <div 
+                      class="bg-yellow-400 h-2 rounded-full transition-all"
+                      :style="{ width: item.constructionPercentage + '%' }"
+                    ></div>
+                  </div>
+                  <span class="text-xs text-gray-400">{{ item.constructionPercentage }}%</span>
+                </div>
+              </div>
+              <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
+                <span v-if="item.bedrooms">🛏️ {{ item.bedrooms }} {{ $t('property.beds') }}</span>
+                <span v-if="item.bathrooms">🚿 {{ item.bathrooms }} {{ $t('property.baths') }}</span>
+                <span v-if="item.area">📐 {{ item.area }} {{ $t('property.areaUnit') }}</span>
+              </div>
+              <div v-else class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
+                <span>🏢 {{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</span>
+                <span v-if="item.totalFloors">📊 {{ item.totalFloors }} {{ $t('building.floorsLabel') }}</span>
+                <span v-if="item.availableUnits" class="text-green-400 font-semibold">{{ item.availableUnits }} {{ $t('property.availableCount') }}</span>
+              </div>
+              <div class="mt-4 flex items-center justify-between">
+                <span
+                  :class="{
+                    'bg-green-500/30 text-green-200': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
+                    'bg-yellow-500/30 text-yellow-200': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
+                    'bg-gray-500/30 text-gray-300': item.status === 'SOLD' || item.status === 'PLANNED'
+                  }"
+                  class="inline-block px-2 py-1 text-xs font-semibold rounded"
+                >
+                  {{ item.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="linkedItemsTotalPages > 1" class="mt-8 flex justify-center">
+          <nav class="flex space-x-2">
+              <button
+                @click="changeLinkedItemsPage(linkedItemsPage - 1)"
+                :disabled="linkedItemsPage === 0"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+              >
+                {{ $t('common.previous') || 'Previous' }}
+              </button>
+              <span class="px-4 py-2 text-sm text-gray-300">
+                {{ $t('common.page') || 'Page' }} {{ linkedItemsPage + 1 }} {{ $t('common.of') || 'of' }} {{ linkedItemsTotalPages }}
+              </span>
+              <button
+                @click="changeLinkedItemsPage(linkedItemsPage + 1)"
+                :disabled="linkedItemsPage >= linkedItemsTotalPages - 1"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+              >
+                {{ $t('common.next') || 'Next' }}
+              </button>
+            </nav>
+          </div>
+        </div>
+        
+        <div v-else class="rounded-2xl border border-white/10 bg-zinc-900 p-8 text-center">
+          <p class="text-gray-400">{{ t('property.noPropertiesOrBuildings') || 'No properties or buildings found.' }}</p>
+        </div>
+      </section>
+
     <!-- Gallery Modal -->
     <div
       v-if="showGalleryModal && galleryMedia.length > 0"
@@ -405,7 +581,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatOrganizationPhones } from '@/shared/utils'
+import { formatOrganizationPhones, formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -417,6 +593,32 @@ const error = ref(null)
 const currentMediaIndex = ref(0)
 const showGalleryModal = ref(false)
 const galleryIndex = ref(0)
+
+const linkedItems = ref([])
+const loadingLinkedItems = ref(false)
+
+const linkedItemsPage = ref(0)
+const linkedItemsPageSize = 9
+
+const paginatedLinkedItems = computed(() => {
+  const start = linkedItemsPage.value * linkedItemsPageSize
+  const end = start + linkedItemsPageSize
+  return linkedItems.value.slice(start, end)
+})
+
+const linkedItemsTotalPages = computed(() => {
+  return Math.ceil(linkedItems.value.length / linkedItemsPageSize)
+})
+
+const changeLinkedItemsPage = (page) => {
+  if (page >= 0 && page < linkedItemsTotalPages.value) {
+    linkedItemsPage.value = page
+    const section = document.getElementById('properties-section')
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+}
 
 const typeToLabelKey = {
   REAL_ESTATE_COMPANY: 'nav.marketplaceRealEstate',
@@ -578,6 +780,64 @@ function formatDate(value) {
   return date.toLocaleString()
 }
 
+const formatPrice = (price, currency = 'ETB') => {
+  return formatCurrencyPrice(price, currency || 'ETB')
+}
+
+const loadLinkedItems = async () => {
+  if (!organization.value || organization.value.type !== 'REAL_ESTATE_COMPANY') {
+    linkedItems.value = []
+    return
+  }
+  
+  loadingLinkedItems.value = true
+  try {
+    const orgId = organization.value.id
+    const [propertiesRes, buildingsRes] = await Promise.all([
+      api.get(`/properties/organization/${orgId}/list`).catch((e) => {
+        console.warn('Failed to fetch properties', e)
+        return { data: [] }
+      }),
+      api.get(`/buildings/organization/${orgId}/list`).catch((e) => {
+        console.warn('Failed to fetch buildings', e)
+        return { data: [] }
+      })
+    ])
+    
+    const properties = Array.isArray(propertiesRes.data) ? propertiesRes.data : []
+    const buildings = Array.isArray(buildingsRes.data) ? buildingsRes.data : []
+    
+    const combined = [
+      ...properties.map(p => ({ ...p, type: 'property' })),
+      ...buildings.map(b => ({ ...b, type: 'building', title: b.name }))
+    ]
+    
+    // Sort by sponsorship then by creation date
+    combined.sort((a, b) => {
+      const aPriority = a.isSponsored && a.sponsorshipType === 'PREMIUM' ? 0 : 
+                       a.isSponsored && a.sponsorshipType === 'GOLD' ? 1 : 2
+      const bPriority = b.isSponsored && b.sponsorshipType === 'PREMIUM' ? 0 : 
+                       b.isSponsored && b.sponsorshipType === 'GOLD' ? 1 : 2
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority
+      }
+      
+      const aDate = new Date(a.createdAt || 0)
+      const bDate = new Date(b.createdAt || 0)
+      return bDate - aDate
+    })
+    
+    linkedItems.value = combined
+    linkedItemsPage.value = 0
+  } catch (err) {
+    console.error('Failed to load linked items:', err)
+    linkedItems.value = []
+  } finally {
+    loadingLinkedItems.value = false
+  }
+}
+
 async function loadOrganization() {
   const id = route.params.id
   if (!id) {
@@ -591,6 +851,10 @@ async function loadOrganization() {
   try {
     const res = await api.get(`/organizations/${id}`)
     organization.value = res.data
+    
+    if (organization.value?.type === 'REAL_ESTATE_COMPANY') {
+      loadLinkedItems()
+    }
   } catch (e) {
     error.value = e.response?.data?.message || e.message || 'Failed to load organization'
     organization.value = null
