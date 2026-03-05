@@ -415,9 +415,11 @@ import {
   LightBulbIcon
 } from '@heroicons/vue/24/outline'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
-import PillarGrid from '../components/PillarGrid.vue'
-import ValueChainGrid from '../components/ValueChainGrid.vue'
-import ExhibitionMessageCarousel from '../components/ExhibitionMessageCarousel.vue'
+import { defineAsyncComponent } from 'vue'
+
+const PillarGrid = defineAsyncComponent(() => import('../components/PillarGrid.vue'))
+const ValueChainGrid = defineAsyncComponent(() => import('../components/ValueChainGrid.vue'))
+const ExhibitionMessageCarousel = defineAsyncComponent(() => import('../components/ExhibitionMessageCarousel.vue'))
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'
@@ -527,8 +529,7 @@ watch(propertiesPage, () => {
   if (!propertiesSearchQuery.value.trim()) loadProperties()
 })
 
-onMounted(async () => {
-  await whenReady()
+onMounted(() => {
   loadProperties()
 })
 

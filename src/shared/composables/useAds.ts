@@ -6,9 +6,9 @@
  * whenReady() lets the feature section wait until sponsor content has loaded first.
  */
 import { ref, computed } from 'vue'
-import { propertyApi } from '@/features/property/api/property.api'
-import type { PropertyResponse } from '@/features/property/api/property.types'
-import api from '@/shared/api/client'
+import { propertyApi } from '../../features/property/api/property.api'
+import type { PropertyResponse } from '../../features/property/api/property.types'
+import api from '../api/client'
 
 // Shared state so PublicLayout, SponsorCarouselSection and ExhibitionLandingView see the same ads
 const loading = ref(false)
@@ -163,7 +163,7 @@ export function useAds() {
         orgAds.map((ad) =>
           api
             .get<OrganizationDetailForAds>(`/organizations/${ad.id}`)
-            .then((r) => r.data)
+            .then((r: any) => r.data)
             .catch(() => null)
         )
       )
@@ -172,10 +172,10 @@ export function useAds() {
         const org = details[index]
         const mediaItems: AdMediaItem[] = []
         const orgMedia = Array.isArray(org?.media) ? org.media : []
-        const nonLogoMedia = orgMedia.filter(item => normalizeType(item?.mediaKind) !== 'LOGO')
+        const nonLogoMedia = orgMedia.filter((item: any) => normalizeType(item?.mediaKind) !== 'LOGO')
         ad.logoUrl = ad.logoUrl || org?.logoUrl || undefined
 
-        nonLogoMedia.forEach((item) => {
+        nonLogoMedia.forEach((item: any) => {
           appendUniqueMedia(mediaItems, item?.url, item?.mediaKind)
         })
         appendUniqueMedia(mediaItems, ad.videoUrl, 'VIDEO')
@@ -191,7 +191,7 @@ export function useAds() {
           missingMediaAds.map((ad) =>
             api
               .get<FirstPropertyMediaResponse>(`/properties/organization/${ad.id}/first-media`)
-              .then((r) => r.data)
+              .then((r: any) => r.data)
               .catch(() => null)
           )
         )
@@ -230,13 +230,13 @@ export function useAds() {
       const activeSponsorships = Array.isArray(response.data) ? response.data : []
 
       // Sort by basePrice descending
-      activeSponsorships.sort((a, b) => (b.basePrice || 0) - (a.basePrice || 0))
+      activeSponsorships.sort((a: any, b: any) => (b.basePrice || 0) - (a.basePrice || 0))
 
       sponsorships.value = activeSponsorships
 
       // Create a map of sponsorship type to base price
       const typeMap = new Map<string, number>()
-      activeSponsorships.forEach(sponsorship => {
+      activeSponsorships.forEach((sponsorship: any) => {
         typeMap.set(normalizeType(sponsorship.type), sponsorship.basePrice || 0)
       })
       sponsorshipTypeMap.value = typeMap
@@ -259,14 +259,15 @@ export function useAds() {
     error.value = null
 
     try {
-      await loadSponsorships()
-
       // Phase 1: Sponsored organizations only – carousel/side-panels can render immediately
       let orgAds: AdContent[] = []
       try {
-        const orgResponse = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/sponsored-organizations')
+        const [_, orgResponse] = await Promise.all([
+          loadSponsorships(),
+          api.get<SponsoredOrganizationResponse[]>('/sponsorships/sponsored-organizations')
+        ])
         const orgs = Array.isArray(orgResponse.data) ? orgResponse.data : []
-        orgAds = orgs.map(org => {
+        orgAds = orgs.map((org: any) => {
           const mediaItems: AdMediaItem[] = []
           appendUniqueMedia(mediaItems, org.videoUrl, 'VIDEO')
           return {

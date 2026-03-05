@@ -25,6 +25,7 @@
               v-if="slide.imageUrl"
               :src="slide.imageUrl"
               :alt="slide.imageAlt"
+              loading="lazy"
               class="h-full w-full object-cover object-center"
             />
             <div
