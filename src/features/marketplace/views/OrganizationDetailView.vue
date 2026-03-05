@@ -14,13 +14,14 @@
     </div>
 
     <div v-else-if="organization" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      <router-link
-        :to="backLink"
-        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-yellow-400"
+      <button
+        @click="goBack"
+        type="button"
+        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-yellow-400 focus:outline-none"
       >
         <span aria-hidden="true">&larr;</span>
         <span>{{ $t('common.back') }}</span>
-      </router-link>
+      </button>
 
       <section class="overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
         <div class="relative h-56 sm:h-72 lg:h-80 bg-white/10">
@@ -207,7 +208,7 @@
                 :key="item.id || item.url || index"
                 type="button"
                 class="group relative overflow-hidden rounded-lg border border-white/10 bg-white/5"
-                @click="currentMediaIndex = index"
+                @click="openGallery(index)"
               >
                 <img
                   v-if="!isVideoItem(item)"
@@ -225,8 +226,7 @@
                 />
                 <span
                   :class="[
-                    'absolute right-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold',
-                    currentMediaIndex === index ? 'bg-yellow-400 text-black' : 'bg-black/60 text-white'
+                    'absolute right-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold bg-black/60 text-white'
                   ]"
                 >
                   {{ item.mediaKind || 'MEDIA' }}
@@ -299,7 +299,98 @@
           </div>
         </div>
       </section>
+
+    <!-- Gallery Modal -->
+    <div
+      v-if="showGalleryModal && galleryMedia.length > 0"
+      class="fixed inset-0 bg-black/95 flex items-center justify-center z-50"
+      @click.self="showGalleryModal = false"
+    >
+      <button
+        @click="showGalleryModal = false"
+        class="absolute top-4 right-4 text-white hover:text-yellow-400 z-10"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="w-full h-full flex flex-col">
+        <!-- Main Image -->
+        <div class="flex-1 flex items-center justify-center p-4">
+          <img
+            v-if="!isVideoItem(galleryMedia[galleryIndex])"
+            :src="mediaUrl(galleryMedia[galleryIndex]?.url)"
+            :alt="`${organization?.name} - Image ${galleryIndex + 1}`"
+            class="max-w-full max-h-full object-contain"
+          />
+          <video
+            v-else
+            :src="mediaUrl(galleryMedia[galleryIndex]?.url)"
+            class="max-w-full max-h-full object-contain"
+            controls
+            autoplay
+            playsinline
+          />
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between p-4 bg-black/50">
+          <button
+            @click="previousGalleryImage"
+            class="text-white hover:text-gray-300 p-2"
+          >
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+
+          <div class="flex-1 text-center text-white">
+            <p class="text-sm font-medium">{{ galleryIndex + 1 }} / {{ galleryMedia.length }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ organization?.name }}</p>
+          </div>
+
+          <button
+            @click="nextGalleryImage"
+            class="text-white hover:text-gray-300 p-2"
+          >
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Thumbnail Strip -->
+        <div class="p-4 bg-black/50 overflow-x-auto">
+          <div class="flex gap-2 justify-center">
+            <button
+              v-for="(item, index) in galleryMedia"
+              :key="index"
+              @click="galleryIndex = index"
+              :class="[
+                'flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all',
+                galleryIndex === index ? 'border-white' : 'border-transparent opacity-50 hover:opacity-75'
+              ]"
+            >
+              <img
+                v-if="!isVideoItem(item)"
+                :src="mediaUrl(item.url)"
+                :alt="`Thumbnail ${index + 1}`"
+                class="w-full h-full object-cover"
+              />
+              <video
+                v-else
+                :src="mediaUrl(item.url)"
+                class="w-full h-full object-cover"
+                muted
+                playsinline
+              />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+    </div> <!-- Closes the organization block -->
 
     <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <div class="rounded-xl border border-white/10 bg-zinc-900 p-6 text-center">
@@ -311,18 +402,21 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatOrganizationPhones } from '@/shared/utils'
 
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n()
 
 const organization = ref(null)
 const loading = ref(true)
 const error = ref(null)
 const currentMediaIndex = ref(0)
+const showGalleryModal = ref(false)
+const galleryIndex = ref(0)
 
 const typeToLabelKey = {
   REAL_ESTATE_COMPANY: 'nav.marketplaceRealEstate',
@@ -440,11 +534,13 @@ const statusBadgeClass = computed(() => {
   return 'border-red-400/50 bg-red-500/30 text-red-200'
 })
 
-const backLink = computed(() => {
-  const from = route.query.from
-  if (from && typeof from === 'string' && from.startsWith('/marketplace')) return from
-  return '/marketplace/banks'
-})
+function goBack() {
+  if (window.history.length > 1) {
+    router.back()
+  } else {
+    router.push('/marketplace/banks')
+  }
+}
 
 function previousMedia() {
   if (!galleryMedia.value.length) return
@@ -454,6 +550,25 @@ function previousMedia() {
 function nextMedia() {
   if (!galleryMedia.value.length) return
   currentMediaIndex.value = (currentMediaIndex.value + 1) % galleryMedia.value.length
+}
+
+const openGallery = (index) => {
+  galleryIndex.value = index
+  showGalleryModal.value = true
+}
+
+const nextGalleryImage = () => {
+  if (galleryMedia.value && galleryMedia.value.length > 0) {
+    galleryIndex.value = (galleryIndex.value + 1) % galleryMedia.value.length
+  }
+}
+
+const previousGalleryImage = () => {
+  if (galleryMedia.value && galleryMedia.value.length > 0) {
+    galleryIndex.value = galleryIndex.value === 0 
+      ? galleryMedia.value.length - 1 
+      : galleryIndex.value - 1
+  }
 }
 
 function formatDate(value) {
