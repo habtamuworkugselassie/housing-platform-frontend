@@ -46,8 +46,10 @@
               @change="loadSponsorships"
             >
               <option value="">All</option>
+              <option value="EXCLUSIVE">Exclusive</option>
               <option value="GOLD">Gold</option>
               <option value="PREMIUM">Premium</option>
+              <option value="SILVER">Silver</option>
             </select>
           </div>
           <div class="flex items-end">
@@ -175,8 +177,10 @@
                 class="mdc-text-field__input"
               >
                 <option value="">Select type</option>
+                <option value="EXCLUSIVE">Exclusive</option>
                 <option value="GOLD">Gold</option>
                 <option value="PREMIUM">Premium</option>
+                <option value="SILVER">Silver</option>
               </select>
               <label class="mdc-text-field__label">Type *</label>
             </div>

@@ -332,6 +332,17 @@
           </div>
 
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
+            <OsmMapPicker
+              :model-value="(form.latitude != null && form.longitude != null) ? { lat: form.latitude, lng: form.longitude } : null"
+              @update:latitude="(v) => (form.latitude = v)"
+              @update:longitude="(v) => (form.longitude = v)"
+              height="240px"
+              class="rounded-lg border border-gray-300 overflow-hidden"
+            />
+          </div>
+
+          <div>
             <label for="description" class="block text-sm font-medium text-gray-700">{{ $t('property.description') }}</label>
             <textarea
               id="description"
@@ -427,6 +438,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api from '@/shared/api/client'
+import { OsmMapPicker } from '@/shared/components'
 
 const router = useRouter()
 const route = useRoute()
@@ -453,6 +465,8 @@ const form = ref({
   state: '',
   country: '',
   zipCode: '',
+  latitude: null,
+  longitude: null,
   description: '',
   realEstateCompanyId: '',
   buildingId: '',
@@ -502,6 +516,8 @@ const onBuildingChange = () => {
       form.value.state = selectedBuilding.state
       form.value.country = selectedBuilding.country
       form.value.zipCode = selectedBuilding.zipCode
+      form.value.latitude = selectedBuilding.latitude ?? null
+      form.value.longitude = selectedBuilding.longitude ?? null
     }
   }
 }

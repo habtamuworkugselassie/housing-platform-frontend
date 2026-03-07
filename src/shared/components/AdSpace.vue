@@ -53,11 +53,12 @@
                 {{ formatPrice(ad.priceETB, 'ETB') }}
               </span>
             </div>
-            <div v-if="ad.realEstateCompanyName" class="flex items-center gap-1 text-xs">
+            <div v-if="ad.realEstateCompanyName" class="flex items-center gap-1 text-xs flex-wrap">
               <svg class="w-3 h-3 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
               </svg>
               <span class="text-primary-600 font-medium truncate">{{ ad.realEstateCompanyName }}</span>
+              <VerifiedBadge :level="ad.realEstateCompanyVerificationLevel || (ad.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
             </div>
           </div>
           <!-- Divider between ads (except for last) -->
@@ -114,11 +115,12 @@
                 {{ formatPrice(adContent.priceETB, 'ETB') }}
               </span>
             </div>
-            <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs">
+            <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs flex-wrap">
               <svg class="w-3 h-3 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
               </svg>
               <span class="text-primary-600 font-medium truncate">{{ adContent.realEstateCompanyName }}</span>
+              <VerifiedBadge :level="adContent.realEstateCompanyVerificationLevel || (adContent.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
             </div>
           </div>
         </div>
@@ -201,11 +203,12 @@
           <div v-if="adContent.priceETB" :class="['text-sm font-bold', dark ? 'text-primary-400' : 'text-primary-600']">
             {{ formatPrice(adContent.priceETB, 'ETB') }}
           </div>
-          <div v-if="adContent.realEstateCompanyName" :class="['flex items-center gap-1 text-xs pt-1 border-t', dark ? 'border-white/20' : 'border-gray-200']">
+          <div v-if="adContent.realEstateCompanyName" :class="['flex items-center gap-1 text-xs pt-1 border-t flex-wrap', dark ? 'border-white/20' : 'border-gray-200']">
             <svg :class="['w-3 h-3 flex-shrink-0', dark ? 'text-primary-400' : 'text-primary-600']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
             <span :class="['font-medium truncate', dark ? 'text-primary-400' : 'text-primary-600']">{{ adContent.realEstateCompanyName }}</span>
+            <VerifiedBadge :level="adContent.realEstateCompanyVerificationLevel || (adContent.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
           </div>
         </div>
       </div>
@@ -244,6 +247,7 @@ import { computed, ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import VerifiedBadge from './VerifiedBadge.vue'
 
 const props = defineProps({
   size: {

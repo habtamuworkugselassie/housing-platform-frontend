@@ -142,6 +142,22 @@ export const adminApi = {
   },
 
   /**
+   * Upload organization document (business registration, license, VAT, TIN).
+   * documentType: BUSINESS_REGISTRATION | LICENSE | VAT_REGISTRATION | TIN_REGISTRATION.
+   */
+  uploadOrganizationDocument: async (
+    id: string,
+    documentType: 'BUSINESS_REGISTRATION' | 'LICENSE' | 'VAT_REGISTRATION' | 'TIN_REGISTRATION',
+    file: File
+  ): Promise<AxiosResponse<any>> => {
+    const formData = new FormData()
+    formData.append('documentType', documentType)
+    formData.append('file', file)
+    const response = await api.post(`/organizations/${id}/documents`, formData)
+    return response
+  },
+
+  /**
    * Suspend organization (admin only)
    */
   suspendOrganization: async (id: string, reason?: string): Promise<any> => {

@@ -173,7 +173,10 @@
                 class="hover:bg-yellow-500/10 transition-colors"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-white">{{ org.name }}</div>
+                  <div class="text-sm font-medium text-white flex items-center gap-2 flex-wrap">
+                    {{ org.name }}
+                    <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
+                  </div>
                   <div class="text-sm text-gray-400">{{ org.city }}, {{ org.country }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -408,6 +411,38 @@
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
                 </div>
                 <div>
+                  <label class="block text-sm font-medium text-gray-400">Business Registration</label>
+                  <p v-if="viewingOrg.businessRegistrationNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.businessRegistrationNumber }}</p>
+                  <p class="mt-1 text-sm text-white">
+                    <a v-if="isDocumentUrl(viewingOrg.businessRegistration)" :href="mediaUrl(viewingOrg.businessRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
+                    <span v-else>{{ viewingOrg.businessRegistration || 'N/A' }}</span>
+                  </p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400">License</label>
+                  <p v-if="viewingOrg.licenseNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.licenseNumber }}</p>
+                  <p class="mt-1 text-sm text-white">
+                    <a v-if="isDocumentUrl(viewingOrg.license)" :href="mediaUrl(viewingOrg.license)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
+                    <span v-else>{{ viewingOrg.license || 'N/A' }}</span>
+                  </p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400">VAT Registration</label>
+                  <p v-if="viewingOrg.vatNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.vatNumber }}</p>
+                  <p class="mt-1 text-sm text-white">
+                    <a v-if="isDocumentUrl(viewingOrg.vatRegistration)" :href="mediaUrl(viewingOrg.vatRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
+                    <span v-else>{{ viewingOrg.vatRegistration || 'N/A' }}</span>
+                  </p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400">TIN Registration</label>
+                  <p v-if="viewingOrg.tinNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.tinNumber }}</p>
+                  <p class="mt-1 text-sm text-white">
+                    <a v-if="isDocumentUrl(viewingOrg.tinRegistration)" :href="mediaUrl(viewingOrg.tinRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
+                    <span v-else>{{ viewingOrg.tinRegistration || 'N/A' }}</span>
+                  </p>
+                </div>
+                <div>
                   <label class="block text-sm font-medium text-gray-400">Email</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.email || 'N/A' }}</p>
                 </div>
@@ -620,6 +655,102 @@
                 />
               </div>
               <div>
+                <label for="org-bus-reg" class="block text-sm font-medium text-gray-300">Business Registration</label>
+                <input id="org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" placeholder="Registration number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input
+                  id="org-bus-reg"
+                  v-model="form.businessRegistration"
+                  type="text"
+                  placeholder="Document URL or upload below"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept=".pdf,image/*,.doc,.docx"
+                    class="hidden"
+                    :ref="el => { docInputRefs.businessRegistration = el }"
+                    @change="ev => onUploadDocument(ev, editingOrgId, 'BUSINESS_REGISTRATION', 'businessRegistration')"
+                  />
+                  <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
+                    {{ docUploading.businessRegistration ? 'Uploading…' : 'Upload document' }}
+                  </button>
+                  <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
+                </div>
+              </div>
+              <div>
+                <label for="org-license" class="block text-sm font-medium text-gray-300">License</label>
+                <input id="org-license-number" v-model="form.licenseNumber" type="text" placeholder="License number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input
+                  id="org-license"
+                  v-model="form.license"
+                  type="text"
+                  placeholder="Document URL or upload below"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept=".pdf,image/*,.doc,.docx"
+                    class="hidden"
+                    :ref="el => { docInputRefs.license = el }"
+                    @change="ev => onUploadDocument(ev, editingOrgId, 'LICENSE', 'license')"
+                  />
+                  <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
+                    {{ docUploading.license ? 'Uploading…' : 'Upload document' }}
+                  </button>
+                  <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
+                </div>
+              </div>
+              <div>
+                <label for="org-vat-reg" class="block text-sm font-medium text-gray-300">VAT Registration</label>
+                <input id="org-vat-number" v-model="form.vatNumber" type="text" placeholder="VAT number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input
+                  id="org-vat-reg"
+                  v-model="form.vatRegistration"
+                  type="text"
+                  placeholder="Document URL or upload below"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept=".pdf,image/*,.doc,.docx"
+                    class="hidden"
+                    :ref="el => { docInputRefs.vatRegistration = el }"
+                    @change="ev => onUploadDocument(ev, editingOrgId, 'VAT_REGISTRATION', 'vatRegistration')"
+                  />
+                  <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
+                    {{ docUploading.vatRegistration ? 'Uploading…' : 'Upload document' }}
+                  </button>
+                  <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
+                </div>
+              </div>
+              <div>
+                <label for="org-tin-reg" class="block text-sm font-medium text-gray-300">TIN Registration</label>
+                <input id="org-tin-number" v-model="form.tinNumber" type="text" placeholder="TIN number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input
+                  id="org-tin-reg"
+                  v-model="form.tinRegistration"
+                  type="text"
+                  placeholder="Document URL or upload below"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept=".pdf,image/*,.doc,.docx"
+                    class="hidden"
+                    :ref="el => { docInputRefs.tinRegistration = el }"
+                    @change="ev => onUploadDocument(ev, editingOrgId, 'TIN_REGISTRATION', 'tinRegistration')"
+                  />
+                  <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
+                    {{ docUploading.tinRegistration ? 'Uploading…' : 'Upload document' }}
+                  </button>
+                  <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
+                </div>
+              </div>
+              <div>
                 <label for="org-type" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgType') }} *</label>
                 <select
                   id="org-type"
@@ -717,6 +848,19 @@
                   type="text"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
+                <OsmMapPicker
+                  :model-value="(form.latitude != null && form.longitude != null) ? { lat: form.latitude, lng: form.longitude } : null"
+                  @update:latitude="(v) => (form.latitude = v)"
+                  @update:longitude="(v) => (form.longitude = v)"
+                  height="260px"
+                  :hint-text="$t('admin.pickLocationHint')"
+                />
+                <p v-if="form.latitude != null && form.longitude != null" class="mt-1 text-xs text-gray-400">
+                  {{ form.latitude?.toFixed(5) }}, {{ form.longitude?.toFixed(5) }}
+                </p>
               </div>
               <div class="sm:col-span-2">
                 <label for="org-website" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgWebsite') }}</label>
@@ -876,7 +1020,8 @@ import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
-import { formatOrganizationPhones } from '@/shared/utils'
+import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 
@@ -897,6 +1042,7 @@ const {
   getOrganizationById,
   uploadOrganizationMedia,
   deleteOrganizationMedia,
+  uploadOrganizationDocument,
   getActiveSponsorships,
   getSponsorshipApplicationsByOrganization,
   assignOrganizationToSponsorship,
@@ -1053,6 +1199,7 @@ const formatDate = (dateString) => {
   if (!dateString) return 'N/A'
   return new Date(dateString).toLocaleDateString()
 }
+
 
 const TYPE_LABEL_KEYS = {
   REAL_ESTATE_COMPANY: 'admin.typeRealEstate',
@@ -1305,6 +1452,39 @@ const deleteMedia = async (orgId, attachmentId) => {
   }
 }
 
+function isDocumentUrl(value) {
+  if (value == null || typeof value !== 'string') return false
+  const v = value.trim()
+  return v.startsWith('/api/') || v.startsWith('http://') || v.startsWith('https://')
+}
+
+const docInputRefs = { businessRegistration: null, license: null, vatRegistration: null, tinRegistration: null }
+const docUploading = ref({ businessRegistration: false, license: false, vatRegistration: false, tinRegistration: false })
+
+const onUploadDocument = async (ev, orgId, documentType, formKey) => {
+  const file = ev.target?.files?.[0]
+  if (!file || !orgId) {
+    ev.target.value = ''
+    return
+  }
+  docUploading.value[formKey] = true
+  try {
+    const updated = await uploadOrganizationDocument(orgId, documentType, file)
+    if (updated && updated[formKey] != null) {
+      form.value[formKey] = updated[formKey]
+    }
+    if (viewingOrg.value?.id === orgId) {
+      viewingOrg.value = updated || await getOrganizationById(orgId)
+    }
+    await loadOrgs()
+  } catch (e) {
+    console.error('Upload document failed:', e)
+  } finally {
+    docUploading.value[formKey] = false
+    ev.target.value = ''
+  }
+}
+
 // Create / Edit organization form
 const showFormDialog = ref(false)
 const formMode = ref('create') // 'create' | 'edit'
@@ -1314,6 +1494,14 @@ const formError = ref('')
 const form = ref({
   name: '',
   registrationNumber: '',
+  businessRegistration: '',
+  license: '',
+  vatRegistration: '',
+  tinRegistration: '',
+  businessRegistrationNumber: '',
+  licenseNumber: '',
+  vatNumber: '',
+  tinNumber: '',
   type: 'REAL_ESTATE_COMPANY',
   address: '',
   city: '',
@@ -1338,16 +1526,26 @@ function resetForm() {
   form.value = {
     name: '',
     registrationNumber: '',
-    type: 'REAL_ESTATE_COMPANY',
-    address: '',
-    city: '',
-    country: '',
-    phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
-    email: '',
-    website: '',
-    description: '',
-    initialStatus: 'PENDING_APPROVAL'
-  }
+  businessRegistration: '',
+  license: '',
+  vatRegistration: '',
+  tinRegistration: '',
+  businessRegistrationNumber: '',
+  licenseNumber: '',
+  vatNumber: '',
+  tinNumber: '',
+  type: 'REAL_ESTATE_COMPANY',
+  address: '',
+  city: '',
+  country: '',
+  latitude: null,
+  longitude: null,
+  phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
+  email: '',
+  website: '',
+  description: '',
+  initialStatus: 'PENDING_APPROVAL'
+}
   editingOrgId.value = null
   formError.value = ''
 }
@@ -1364,10 +1562,20 @@ function openEditModal(org) {
   form.value = {
     name: org.name ?? '',
     registrationNumber: org.registrationNumber ?? '',
+    businessRegistration: org.businessRegistration ?? '',
+    license: org.license ?? '',
+    vatRegistration: org.vatRegistration ?? '',
+    tinRegistration: org.tinRegistration ?? '',
+    businessRegistrationNumber: org.businessRegistrationNumber ?? '',
+    licenseNumber: org.licenseNumber ?? '',
+    vatNumber: org.vatNumber ?? '',
+    tinNumber: org.tinNumber ?? '',
     type: org.type ?? 'REAL_ESTATE_COMPANY',
     address: org.address ?? '',
     city: org.city ?? '',
     country: org.country ?? '',
+    latitude: org.latitude ?? null,
+    longitude: org.longitude ?? null,
     phoneNumbers: (org.phoneNumbers && org.phoneNumbers.length > 0)
       ? org.phoneNumbers.map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: p.number || '' }))
       : (org.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: org.phoneNumber }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
@@ -1389,10 +1597,20 @@ async function submitOrganizationForm() {
       await createOrganization({
         name: form.value.name,
         registrationNumber: form.value.registrationNumber || undefined,
+        businessRegistration: form.value.businessRegistration || undefined,
+        license: form.value.license || undefined,
+        vatRegistration: form.value.vatRegistration || undefined,
+        tinRegistration: form.value.tinRegistration || undefined,
+        businessRegistrationNumber: form.value.businessRegistrationNumber || undefined,
+        licenseNumber: form.value.licenseNumber || undefined,
+        vatNumber: form.value.vatNumber || undefined,
+        tinNumber: form.value.tinNumber || undefined,
         type: form.value.type,
         address: form.value.address || undefined,
         city: form.value.city || undefined,
         country: form.value.country || undefined,
+        latitude: form.value.latitude ?? undefined,
+        longitude: form.value.longitude ?? undefined,
         phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,
@@ -1405,10 +1623,20 @@ async function submitOrganizationForm() {
       await updateOrganization(editingOrgId.value, {
         name: form.value.name,
         registrationNumber: form.value.registrationNumber || undefined,
+        businessRegistration: form.value.businessRegistration || undefined,
+        license: form.value.license || undefined,
+        vatRegistration: form.value.vatRegistration || undefined,
+        tinRegistration: form.value.tinRegistration || undefined,
+        businessRegistrationNumber: form.value.businessRegistrationNumber || undefined,
+        licenseNumber: form.value.licenseNumber || undefined,
+        vatNumber: form.value.vatNumber || undefined,
+        tinNumber: form.value.tinNumber || undefined,
         type: form.value.type,
         address: form.value.address || undefined,
         city: form.value.city || undefined,
         country: form.value.country || undefined,
+        latitude: form.value.latitude ?? undefined,
+        longitude: form.value.longitude ?? undefined,
         phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,

@@ -69,8 +69,9 @@
                 {{ (org.name || 'O').charAt(0).toUpperCase() }}
               </div>
               <div class="min-w-0 flex-1">
-                <h2 class="text-base sm:text-lg font-semibold text-white truncate">
+                <h2 class="text-base sm:text-lg font-semibold text-white truncate flex items-center flex-wrap gap-2">
                   {{ org.name }}
+                  <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
                 </h2>
                 <p class="mt-1 inline-flex rounded-full border border-white/20 px-2 py-0.5 text-[11px] uppercase tracking-wide text-gray-300">
                   {{ getOrganizationTypeLabel(org.type) }}
@@ -142,7 +143,8 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatOrganizationPhones } from '@/shared/utils'
+import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge } from '@/shared/components'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -252,6 +254,7 @@ const locationLabel = (org) => {
   if (cityCountry) return cityCountry
   return org.address || ''
 }
+
 
 const normalizedWebsite = (website) => {
   if (!website) return ''

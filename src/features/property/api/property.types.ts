@@ -18,6 +18,8 @@ export interface PropertyRequest {
   state?: string
   country: string
   zipCode?: string
+  latitude?: number | null
+  longitude?: number | null
   bedrooms?: number
   bathrooms?: number
   area?: number
@@ -43,6 +45,8 @@ export interface PropertyResponse {
   state?: string
   country: string
   zipCode?: string
+  latitude?: number
+  longitude?: number
   bedrooms?: number
   bathrooms?: number
   area?: number
@@ -59,8 +63,12 @@ export interface PropertyResponse {
   realEstateCompanyName?: string
   /** Primary contact phone for the real estate (e.g. +251 91 123 4567). */
   realEstateCompanyPhone?: string
+  /** True when the real estate company is fully verified (all 8 fields). */
+  realEstateCompanyVerified?: boolean
+  /** Verification level: NONE, HALF, FULL. Use for blue check badge (Verified / Half verified). */
+  realEstateCompanyVerificationLevel?: string
   isSponsored?: boolean
-  sponsorshipType?: 'PREMIUM' | 'GOLD' | 'SILVER'
+  sponsorshipType?: 'EXCLUSIVE' | 'PREMIUM' | 'GOLD' | 'SILVER'
   createdAt: string
   updatedAt: string
 }

@@ -87,6 +87,7 @@
                 class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
               >
                 <option value="">All Types</option>
+                <option value="EXCLUSIVE">Exclusive</option>
                 <option value="GOLD">Gold</option>
                 <option value="PREMIUM">Premium</option>
                 <option value="SILVER">Silver</option>
@@ -138,6 +139,7 @@
                     <span
                       :class="[
                         'px-2 py-1 text-xs font-medium rounded',
+                        pkg.type === 'EXCLUSIVE' ? 'bg-yellow-400/40 text-yellow-200' :
                         pkg.type === 'PREMIUM' ? 'bg-purple-500/30 text-purple-200' : 
                         pkg.type === 'GOLD' ? 'bg-yellow-500/30 text-yellow-200' :
                         'bg-slate-500/30 text-slate-200'
@@ -261,6 +263,7 @@
                     <span
                       :class="[
                         'inline-flex px-2 py-1 text-xs font-medium rounded mt-1',
+                      app.sponsorship?.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
                       app.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
                       app.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-slate-100 text-slate-800'
@@ -371,6 +374,7 @@
                   >
                     <option value="">{{ $t('propertyTypes.selectType') }}</option>
                     <option value="GOLD">Gold</option>
+                    <option value="EXCLUSIVE">Exclusive</option>
                     <option value="PREMIUM">Premium</option>
                     <option value="SILVER">Silver</option>
                   </select>
@@ -459,6 +463,7 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      viewingPackage.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
                       viewingPackage.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
                       viewingPackage.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-slate-100 text-slate-800'
@@ -546,6 +551,7 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
+                      viewingApplication.sponsorship?.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
                       viewingApplication.sponsorship?.type === 'PREMIUM' ? 'bg-purple-100 text-purple-800' : 
                       viewingApplication.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-slate-100 text-slate-800'

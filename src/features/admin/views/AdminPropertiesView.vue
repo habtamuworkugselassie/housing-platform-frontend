@@ -430,6 +430,15 @@
                 />
               </div>
             </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-medium text-gray-400 mb-1">Location (map)</label>
+              <OsmMapPicker
+                :model-value="(editForm.latitude != null && editForm.longitude != null) ? { lat: editForm.latitude, lng: editForm.longitude } : null"
+                @update:latitude="(v) => (editForm.latitude = v)"
+                @update:longitude="(v) => (editForm.longitude = v)"
+                height="220px"
+              />
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
@@ -726,6 +735,15 @@
                 <input v-model="createForm.country" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
               </div>
             </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-medium text-gray-400 mb-1">Location (map)</label>
+              <OsmMapPicker
+                :model-value="(createForm.latitude != null && createForm.longitude != null) ? { lat: createForm.latitude, lng: createForm.longitude } : null"
+                @update:latitude="(v) => (createForm.latitude = v)"
+                @update:longitude="(v) => (createForm.longitude = v)"
+                height="220px"
+              />
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
@@ -779,6 +797,7 @@ import { ref, computed, onMounted } from 'vue'
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { mediaUrl } from '@/shared/api/client'
 import AdminLayout from '../components/AdminLayout.vue'
+import { OsmMapPicker } from '@/shared/components'
 import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 import { adminApi } from '../api/admin.api'
 import { formatPrice } from '@/shared/utils'
@@ -872,6 +891,8 @@ const createForm = ref({
   state: '',
   country: '',
   zipCode: '',
+  latitude: null,
+  longitude: null,
   bedrooms: null,
   bathrooms: null,
   area: null,
@@ -942,6 +963,8 @@ const editProperty = async (property) => {
       state: full.state ?? '',
       country: full.country ?? '',
       zipCode: full.zipCode ?? '',
+      latitude: full.latitude ?? null,
+      longitude: full.longitude ?? null,
       bedrooms: full.bedrooms ?? null,
       bathrooms: full.bathrooms ?? null,
       area: full.area ?? null,
@@ -988,6 +1011,8 @@ const submitEdit = async () => {
       state: editForm.value.state || null,
       country: editForm.value.country,
       zipCode: editForm.value.zipCode || null,
+      latitude: editForm.value.latitude ?? null,
+      longitude: editForm.value.longitude ?? null,
       bedrooms: editForm.value.bedrooms ?? null,
       bathrooms: editForm.value.bathrooms ?? null,
       area: editForm.value.area ?? null,
@@ -1237,6 +1262,8 @@ async function submitCreate() {
       state: createForm.value.state || null,
       country: createForm.value.country,
       zipCode: createForm.value.zipCode || null,
+      latitude: createForm.value.latitude ?? null,
+      longitude: createForm.value.longitude ?? null,
       bedrooms: createForm.value.bedrooms ?? null,
       bathrooms: createForm.value.bathrooms ?? null,
       area: createForm.value.area ?? null,

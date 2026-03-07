@@ -46,6 +46,8 @@ export interface BuildingResponse {
   facilities?: string
   realEstateCompanyId?: string
   realEstateCompanyName?: string
+  realEstateCompanyVerified?: boolean
+  realEstateCompanyVerificationLevel?: string
   availableUnits?: number
   occupiedUnits?: number
   isSponsored?: boolean

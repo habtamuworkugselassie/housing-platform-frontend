@@ -30,7 +30,8 @@
     "fullyFurnished": "ሙሉ ዕቃዎች ያሉት",
     "viewDetails": "ዝርዝሮች ይመልከቱ",
     "buildingBadge": "ሕንፃ",
-    "user": "ተጠቃሚ"
+    "user": "ተጠቃሚ",
+    "openInGoogleMaps": "በጉግል ካርታ ይክፈቱ"
   },
   "nav": {
     "home": "መነሻ",
@@ -63,6 +64,10 @@
     "whyVisit": "ለምን ይጎብኙ",
     "showFeatures": "የማሳያ ባህሪያት",
     "whoAttends": "ማን ይገኛል"
+  },
+  "splash": {
+    "enter": "ግባ",
+    "poweredBy": "በድጋፍ"
   },
   "marketplace": {
     "organizationsByType": "በዚህ ምድብ ውስጥ የተጸድቁ ድርጅቶች",
@@ -161,6 +166,7 @@
     "photoGallery": "የፎቶ ጋለሪ",
     "companyInformation": "የኩባንያ መረጃ",
     "locationMap": "የአካባቢ ካርታ",
+    "locationNotAvailable": "አካባቢ አይገኝም",
     "propertyDetails": "የንብረት ዝርዝሮች",
     "propertyInformation": "የንብረት መረጃ",
     "type": "አይነት",
@@ -522,6 +528,8 @@
     "orgAddress": "አድራሻ",
     "orgCity": "ከተማ",
     "orgCountry": "አገር",
+    "pickLocation": "በካርታ ላይ ቦታ ይምረጡ",
+    "pickLocationHint": "አድራሻ ቦታ ለማስቀመጥ በካርታ ላይ ጠቅ ያድርጉ። ኬክሮስ እና ኬንግሮስ ይቀመጣሉ።",
     "orgWebsite": "ድር ጣቢያ",
     "orgDescription": "መግለጫ",
     "logoAndMedia": "ሎጎ እና ሜዲያ",
@@ -822,7 +830,8 @@
       "registerInterest": "ፍላጎትዎን ይመዝግቡ 2026",
       "downloadBrochure": "የዝግጅት ብሮሹር አውርድ",
       "foundationPartners": "መሠረታዊ አጋሮች",
-      "partner": "አጋር"
+      "partner": "አጋር",
+      "featured": "ተለይቶ የቀረበ"
     },
     "whyExhibit": {
       "title": "በኤግዚቢሽኑ ውስጥ የኢንዱስትሪ መሪዎችን አነሳስ",

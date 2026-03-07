@@ -79,8 +79,9 @@
               </span>
             </div>
             <div class="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
-              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-white group-hover:text-yellow-400/95">
+              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-white group-hover:text-yellow-400/95 flex items-center gap-2 flex-wrap">
                 {{ item?.title ?? '' }}
+                <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
               </h3>
               <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-gray-400">
                 {{ item.realEstateCompanyName }}
@@ -365,14 +366,34 @@
       </div>
     </section>
 
-    <!-- Foundation Partners -->
+    <!-- Foundation Partners (exclusive sponsors only) -->
     <section id="partners" class="py-16 bg-zinc-950 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-yellow-400/90 text-xs font-semibold uppercase tracking-[0.25em] mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
-          <div v-for="i in 6" :key="i" class="h-14 w-32 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 text-xs">
-            {{ $t('exhibition.partners.slotAvailable') }}
-          </div>
+          <template v-if="partnersList.length">
+            <a
+              v-for="partner in partnersList"
+              :key="partner.id"
+              :href="`/organizations/${partner.id}`"
+              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 hover:border-yellow-400 hover:bg-yellow-500/20 transition-all duration-300"
+              :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-yellow-400/50 bg-yellow-500/10' : ''"
+            >
+              <img
+                v-if="partner.logoUrl"
+                :src="mediaUrl(partner.logoUrl)"
+                :alt="partner.name"
+                class="max-h-10 max-w-24 object-contain"
+              />
+              <span v-else class="text-xs font-semibold text-white/80 truncate max-w-full px-1">{{ (partner.name || '').charAt(0) }}</span>
+              <span v-if="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE'" class="text-[10px] uppercase text-yellow-400 font-medium">{{ $t('exhibition.hero.featured') }}</span>
+            </a>
+          </template>
+          <template v-else>
+            <div v-for="i in 6" :key="'slot-' + i" class="h-14 w-32 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 text-xs">
+              {{ $t('exhibition.partners.slotAvailable') }}
+            </div>
+          </template>
         </div>
       </div>
     </section>
@@ -408,7 +429,8 @@ import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
-import { formatPrice } from '@/shared/utils'
+import { formatPrice, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge } from '@/shared/components'
 import {
   BuildingOffice2Icon,
   UserGroupIcon,
@@ -423,6 +445,7 @@ const ExhibitionMessageCarousel = defineAsyncComponent(() => import('../componen
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'
+import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
 
 const route = useRoute()
 const { whenReady } = useAds()
@@ -547,6 +570,16 @@ function scrollToHash() {
 
 onMounted(scrollToHash)
 watch(() => route.hash, scrollToHash)
+
+// Partners list (all sponsored organizations, including exclusive)
+const partnersList = ref([])
+onMounted(async () => {
+  try {
+    partnersList.value = await getExclusiveOrganizations()
+  } catch (err) {
+    console.error('Failed to load partners:', err)
+  }
+})
 
 const whoAttends = [
   { key: 'developers', titleKey: 'exhibition.whoAttends.developers', descKey: 'exhibition.whoAttends.developersDesc' },

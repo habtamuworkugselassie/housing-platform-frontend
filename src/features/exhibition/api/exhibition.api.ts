@@ -1,43 +1,45 @@
 /**
- * Exhibition API – register interest (exhibitor/visitor)
+ * Exhibition & sponsorship public API (splash, hero, partners, register interest).
  */
 import api from '@/shared/api/client'
 
-export type ExhibitionOrganizationType =
-  | 'REAL_ESTATE_COMPANY'
-  | 'SUPPLIER'
-  | 'CONTRACTOR'
-  | 'DEVELOPER'
-  | 'CONSULTANT_ARCHITECT'
-  | 'FINISHING_CONTRACTOR'
-
-export interface ExhibitionInterestRequest {
-  email: string
-  interestType: 'exhibitor' | 'visitor'
-  phoneNumber?: string
-  organizationType: ExhibitionOrganizationType
-  company?: string
-  message?: string
-}
-
-export interface ExhibitionInterestResponse {
+export interface SponsoredOrganizationResponse {
   id: string
-  email: string
-  phoneNumber?: string
-  interestType: string
-  company?: string
-  message?: string
-  organizationId?: string
+  name: string
+  logoUrl?: string
+  videoUrl?: string
+  splashImageUrl?: string
+  address?: string
+  city?: string
+  country?: string
+  sponsorshipType: string
+  basePrice: number
 }
 
+export interface RegisterInterestRequest {
+  email: string
+  phoneNumber?: string
+  organizationType: string
+  interestType: 'exhibitor' | 'visitor'
+  company?: string
+  message?: string
+}
+
+/** All active sponsored organizations (for partners list and carousel). */
+export async function getSponsoredOrganizations(): Promise<SponsoredOrganizationResponse[]> {
+  const { data } = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/sponsored-organizations')
+  return Array.isArray(data) ? data : []
+}
+
+/** Exclusive sponsors only (for splash and hero featured strip). */
+export async function getExclusiveOrganizations(): Promise<SponsoredOrganizationResponse[]> {
+  const { data } = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/exclusive-organizations')
+  return Array.isArray(data) ? data : []
+}
+
+/** Exhibition API: register interest, etc. */
 export const exhibitionApi = {
-  registerInterest: async (
-    body: ExhibitionInterestRequest
-  ): Promise<ExhibitionInterestResponse> => {
-    const response = await api.post<ExhibitionInterestResponse>(
-      '/exhibition/interest',
-      body
-    )
-    return response.data
+  registerInterest(body: RegisterInterestRequest) {
+    return api.post('/exhibition/interest', body)
   }
 }

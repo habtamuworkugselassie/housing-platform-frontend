@@ -84,7 +84,10 @@
                 {{ organizationInitial }}
               </div>
               <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">{{ organization.name }}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md flex items-center flex-wrap gap-2">
+                  {{ organization.name }}
+                  <VerifiedBadge :level="getVerificationLevel(organization)" size="md" />
+                </h1>
                 <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
               </div>
             </div>
@@ -195,6 +198,36 @@
                 </dd>
               </div>
             </dl>
+          </div>
+
+          <!-- Location map: only when organization has coordinates -->
+          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-white mb-4">{{ $t('building.locationMap') }}</h2>
+            <OsmMap
+              v-if="organization.latitude != null && organization.longitude != null"
+              :latitude="organization.latitude"
+              :longitude="organization.longitude"
+              :marker-title="organization.name"
+              height="320px"
+              :zoom="14"
+            />
+            <a
+              v-if="organization.latitude != null && organization.longitude != null"
+              :href="googleMapsDirectionsUrl(organization.latitude, organization.longitude)"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors text-sm font-medium"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
+            </a>
+            <div
+              v-else
+              class="bg-white/10 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
+              style="height: 280px;"
+            >
+              <p class="text-gray-400 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
+            </div>
           </div>
 
           <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
@@ -581,7 +614,8 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatOrganizationPhones, formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge, OsmMap } from '@/shared/components'
 
 const route = useRoute()
 const router = useRouter()
@@ -779,6 +813,9 @@ function formatDate(value) {
   if (Number.isNaN(date.getTime())) return String(value)
   return date.toLocaleString()
 }
+
+const googleMapsDirectionsUrl = (lat, lng) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
 
 const formatPrice = (price, currency = 'ETB') => {
   return formatCurrencyPrice(price, currency || 'ETB')

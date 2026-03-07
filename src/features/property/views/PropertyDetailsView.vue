@@ -93,9 +93,12 @@
 
         <!-- Header Info Bar -->
         <div class="p-4 sm:p-6 border-b border-white/10">
-          <div class="flex flex-col gap-3">
-            <div class="flex items-start gap-3">
-              <h1 class="text-2xl sm:text-3xl font-bold text-white flex-1">{{ property.title }}</h1>
+            <div class="flex flex-col gap-3">
+            <div class="flex items-start gap-3 flex-wrap">
+              <h1 class="text-2xl sm:text-3xl font-bold text-white flex-1 min-w-0 flex items-center gap-2 flex-wrap">
+                {{ property.title }}
+                <VerifiedBadge :level="getVerificationLevel(property)" size="md" />
+              </h1>
               <span
                 :class="{
                   'bg-green-500/30 text-green-200 border-green-400/50': property.status === 'AVAILABLE',
@@ -308,27 +311,30 @@
           <!-- Map Section -->
           <div class="bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8">
             <h2 class="text-2xl font-bold text-white mb-6">{{ $t('property.locationMap') }}</h2>
-            <div class="bg-white/10 rounded-xl overflow-hidden" style="height: 400px; position: relative;">
-              <div class="h-full w-full relative bg-white/10">
-                <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-                
-                <div class="absolute top-4 left-4 z-10 bg-zinc-900 border border-white/10 px-4 py-2 rounded-lg shadow-md">
-                  <h4 class="text-sm font-semibold text-white">{{ property.city }}{{ property.country ? `, ${property.country}` : '' }}</h4>
-                  <p class="text-xs text-gray-400 mt-1">{{ property.address }}</p>
-                </div>
-
-                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                  <div class="bg-yellow-400 text-black px-4 py-2 rounded-lg shadow-lg border-2 border-white">
-                    <div class="flex flex-col items-center">
-                      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                      </svg>
-                      <span class="text-xs font-bold">{{ property.title }}</span>
-                      <span v-if="property.priceETB" class="text-xs font-semibold mt-1">{{ formatPrice(property.priceETB, 'ETB') }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <OsmMap
+              v-if="property.latitude != null && property.longitude != null"
+              :latitude="property.latitude"
+              :longitude="property.longitude"
+              :marker-title="property.title"
+              height="400px"
+              :zoom="15"
+            />
+            <a
+              v-if="property.latitude != null && property.longitude != null"
+              :href="googleMapsDirectionsUrl(property.latitude, property.longitude)"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors text-sm font-medium"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
+            </a>
+            <div
+              v-else
+              class="bg-white/10 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
+              style="height: 400px;"
+            >
+              <p class="text-gray-400 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
             </div>
           </div>
         </div>
@@ -340,7 +346,10 @@
             <h3 class="text-xl font-bold text-white mb-4">{{ $t('property.realEstateCompany') }}</h3>
             <div class="space-y-4">
               <div>
-                <h4 class="text-lg font-semibold text-white mb-3">{{ company.name }}</h4>
+                <h4 class="text-lg font-semibold text-white mb-3 flex items-center gap-2 flex-wrap">
+                  {{ company.name }}
+                  <VerifiedBadge :level="getVerificationLevel(property)" size="md" />
+                </h4>
                 <p v-if="company.description" class="text-sm text-gray-400 mb-4">{{ company.description }}</p>
               </div>
 
@@ -395,7 +404,10 @@
           <!-- Company Name Only (if full details not loaded) -->
           <div v-else-if="property.realEstateCompanyName" class="bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8">
             <h3 class="text-xl font-bold text-white mb-2">{{ $t('property.realEstateCompany') }}</h3>
-            <p class="text-lg font-semibold text-white mb-2">{{ property.realEstateCompanyName }}</p>
+            <p class="text-lg font-semibold text-white mb-2 flex items-center gap-2 flex-wrap">
+              {{ property.realEstateCompanyName }}
+              <VerifiedBadge :level="getVerificationLevel(property)" size="md" />
+            </p>
             <p class="text-sm text-gray-500">{{ $t('property.contactInformationNotAvailable') }}</p>
           </div>
 
@@ -566,7 +578,10 @@
         </div>
 
         <div v-else-if="property.realEstateCompanyName" class="text-center py-8">
-          <p class="text-gray-600 mb-2">{{ property.realEstateCompanyName }}</p>
+          <p class="text-gray-600 mb-2 flex items-center justify-center gap-2 flex-wrap">
+            {{ property.realEstateCompanyName }}
+            <VerifiedBadge :level="getVerificationLevel(property)" size="sm" />
+          </p>
           <p class="text-sm text-gray-500">{{ $t('property.contactInformationNotAvailable') }}</p>
         </div>
 
@@ -666,7 +681,8 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatPrice as formatCurrencyPrice, formatOrganizationPhones } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge, OsmMap } from '@/shared/components'
 import { useAuthStore } from '@/features/auth'
 import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 
@@ -765,6 +781,9 @@ const loadProperty = async () => {
     loading.value = false
   }
 }
+
+const googleMapsDirectionsUrl = (lat, lng) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
 
 const formatPrice = (price, currency = 'ETB') => {
   return formatCurrencyPrice(price, currency || 'ETB')

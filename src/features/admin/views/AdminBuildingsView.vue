@@ -242,6 +242,16 @@
                 </div>
               </div>
 
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-300 mb-1">Location (map)</label>
+                <OsmMapPicker
+                  :model-value="(buildingForm.latitude != null && buildingForm.longitude != null) ? { lat: buildingForm.latitude, lng: buildingForm.longitude } : null"
+                  @update:latitude="(v) => (buildingForm.latitude = v)"
+                  @update:longitude="(v) => (buildingForm.longitude = v)"
+                  height="220px"
+                />
+              </div>
+
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-300">Total Floors *</label>
@@ -322,6 +332,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
+import { OsmMapPicker } from '@/shared/components'
 import { adminApi } from '../api/admin.api'
 
 const loading = ref(false)
@@ -342,6 +353,8 @@ const buildingForm = ref({
   city: '',
   state: '',
   country: '',
+  latitude: null,
+  longitude: null,
   totalFloors: 1,
   totalUnits: 1,
   buildingType: '',
@@ -395,6 +408,8 @@ const editBuilding = (building) => {
     city: building.city,
     state: building.state || '',
     country: building.country,
+    latitude: building.latitude ?? null,
+    longitude: building.longitude ?? null,
     totalFloors: building.totalFloors || 1,
     totalUnits: building.totalUnits || 1,
     buildingType: building.buildingType || '',
@@ -426,6 +441,8 @@ const closeModal = () => {
     city: '',
     state: '',
     country: '',
+    latitude: null,
+    longitude: null,
     totalFloors: 1,
     totalUnits: 1,
     buildingType: '',

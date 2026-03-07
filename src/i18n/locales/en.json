@@ -30,7 +30,8 @@
     "fullyFurnished": "Fully Furnished",
     "viewDetails": "View Details",
     "buildingBadge": "Building",
-    "user": "User"
+    "user": "User",
+    "openInGoogleMaps": "Open in Google Maps"
   },
   "nav": {
     "home": "Home",
@@ -63,6 +64,10 @@
     "whyVisit": "Why Visit",
     "showFeatures": "Show Features",
     "whoAttends": "Who Attends"
+  },
+  "splash": {
+    "enter": "Enter",
+    "poweredBy": "Powered by"
   },
   "marketplace": {
     "organizationsByType": "Approved organizations in this category",
@@ -161,6 +166,7 @@
     "photoGallery": "Photo Gallery",
     "companyInformation": "Company Information",
     "locationMap": "Location Map",
+    "locationNotAvailable": "Location not available",
     "type": "Type",
     "construction": "Construction",
     "progress": "Progress",
@@ -241,7 +247,8 @@
     "viewDetails": "View Details",
     "unitsWithCount": "Units ({count})",
     "phoneLabel": "Phone",
-    "websiteLabel": "Website"
+    "websiteLabel": "Website",
+    "locationMap" : "Location Map"
   },
   "loan": {
     "title": "Loan",
@@ -506,6 +513,8 @@
     "orgAddress": "Address",
     "orgCity": "City",
     "orgCountry": "Country",
+    "pickLocation": "Pick location on map",
+    "pickLocationHint": "Click on the map to set the address location. Latitude and longitude will be saved.",
     "orgWebsite": "Website",
     "orgDescription": "Description",
     "logoAndMedia": "Logo & media",
@@ -806,7 +815,8 @@
       "registerInterest": "Register your interest 2026",
       "downloadBrochure": "Download event brochure",
       "foundationPartners": "Foundation Partners",
-      "partner": "Partner"
+      "partner": "Partner",
+      "featured": "Featured"
     },
     "whyExhibit": {
       "title": "Inspire industry leaders at the exhibition",

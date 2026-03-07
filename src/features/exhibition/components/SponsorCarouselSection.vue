@@ -79,8 +79,9 @@
                 >
                   {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
                 </div>
-                <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white uppercase tracking-tight">
+                <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white uppercase tracking-tight flex items-center gap-2 flex-wrap">
                   {{ slide.realEstateCompanyName || slide.title }}
+                  <VerifiedBadge :level="slide.realEstateCompanyVerificationLevel || (slide.realEstateCompanyVerified ? 'FULL' : null)" size="md" />
                 </h3>
                 <p v-if="slide.address" class="mt-2 text-sm sm:text-base text-white/90">
                   {{ slide.address }}{{ slide.city ? `, ${slide.city}` : '' }}
@@ -161,6 +162,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
 import { mediaUrl } from '@/shared/api/client'
 import { useAds } from '@/shared/composables/useAds'
+import { VerifiedBadge } from '@/shared/components'
 
 const props = defineProps({
   /** Height class (e.g. h-[320px] or h-[50vh]) - fluid hero feel */
@@ -194,6 +196,7 @@ function prev() {
 
 function tierBadgeClass(slide) {
   const t = (slide.sponsorshipType || '').toUpperCase()
+  if (t.includes('EXCLUSIVE')) return 'bg-yellow-400/90 text-black'
   if (t.includes('PREMIUM')) return 'bg-amber-500/90 text-black'
   if (t.includes('GOLD')) return 'bg-yellow-600/90 text-white'
   return 'bg-white/20 text-white'

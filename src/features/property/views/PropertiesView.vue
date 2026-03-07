@@ -121,8 +121,11 @@
           ></div>
         </div>
         <div class="p-4 sm:p-6">
-          <div class="flex items-start justify-between mb-2">
-            <h3 class="flex-1 pr-2 text-lg sm:text-xl font-semibold text-white">{{ item.title || item.name }}</h3>
+          <div class="flex items-start justify-between mb-2 gap-2 flex-wrap">
+            <h3 class="flex-1 min-w-0 text-lg sm:text-xl font-semibold text-white flex items-center gap-2 flex-wrap">
+              {{ item.title || item.name }}
+              <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
+            </h3>
           </div>
           <div class="flex flex-wrap items-center gap-2 mb-2">
             <!-- Property Price -->
@@ -163,11 +166,12 @@
               <span class="text-xs text-gray-400">{{ item.constructionPercentage }}%</span>
             </div>
           </div>
-          <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 mb-2">
-            <svg class="w-3 h-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 mb-2 flex-wrap">
+            <svg class="w-3 h-3 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
             <span class="text-xs font-semibold text-yellow-400">{{ item.realEstateCompanyName }}</span>
+            <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
           </div>
           <!-- Property Features -->
           <div v-if="item.type === 'property'" class="flex flex-wrap items-center text-xs sm:text-sm text-gray-400 gap-2 sm:gap-4">
@@ -232,7 +236,8 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
-import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge } from '@/shared/components'
 
 const { t } = useI18n()
 const properties = ref([])

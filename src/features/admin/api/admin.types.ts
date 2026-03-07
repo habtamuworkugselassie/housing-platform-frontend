@@ -79,6 +79,8 @@ export interface OrganizationCreateRequest {
   address?: string
   city?: string
   country?: string
+  latitude?: number | null
+  longitude?: number | null
   /** Multiple phones with country code. Preferred over phoneNumber. */
   phoneNumbers?: OrganizationPhoneDto[]
   /** @deprecated Use phoneNumbers */
@@ -99,6 +101,8 @@ export interface OrganizationUpdateRequest {
   address?: string
   city?: string
   country?: string
+  latitude?: number | null
+  longitude?: number | null
   phoneNumbers?: OrganizationPhoneDto[]
   phoneNumber?: string
   email?: string
@@ -119,6 +123,8 @@ export interface PropertyManagementRequest {
   state?: string
   country?: string
   zipCode?: string
+  latitude?: number | null
+  longitude?: number | null
   bedrooms?: number | null
   bathrooms?: number | null
   area?: number | null

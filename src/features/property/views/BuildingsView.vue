@@ -80,8 +80,11 @@
             : 'bg-zinc-900 border border-white/10'
         ]"
       >
-        <div class="flex items-start justify-between mb-4">
-          <h3 class="text-lg font-semibold text-white">{{ building.name }}</h3>
+        <div class="flex items-start justify-between mb-4 gap-2 flex-wrap">
+          <h3 class="text-lg font-semibold text-white flex items-center gap-2 flex-wrap min-w-0">
+            {{ building.name }}
+            <VerifiedBadge :level="getVerificationLevel(building)" size="sm" />
+          </h3>
           <div class="flex items-center gap-2">
             <!-- Sponsored Badge -->
             <span 
@@ -261,6 +264,16 @@
               />
             </div>
 
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
+              <OsmMapPicker
+                :model-value="(buildingForm.latitude != null && buildingForm.longitude != null) ? { lat: buildingForm.latitude, lng: buildingForm.longitude } : null"
+                @update:latitude="(v) => (buildingForm.latitude = v)"
+                @update:longitude="(v) => (buildingForm.longitude = v)"
+                height="220px"
+              />
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-300">{{ $t('building.totalFloors') }} *</label>
@@ -411,6 +424,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
+import { getVerificationLevel } from '@/shared/utils'
+import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -441,6 +456,8 @@ const buildingForm = ref({
   state: '',
   country: '',
   zipCode: '',
+  latitude: null,
+  longitude: null,
   totalFloors: 1,
   totalUnits: 1,
   buildingType: '',
@@ -551,6 +568,8 @@ const editBuilding = (building) => {
     state: building.state || '',
     country: building.country,
     zipCode: building.zipCode || '',
+    latitude: building.latitude ?? null,
+    longitude: building.longitude ?? null,
     totalFloors: building.totalFloors,
     totalUnits: building.totalUnits,
     buildingType: building.buildingType,
@@ -603,6 +622,8 @@ const closeModal = () => {
     state: '',
     country: '',
     zipCode: '',
+    latitude: null,
+    longitude: null,
     totalFloors: 1,
     totalUnits: 1,
     buildingType: '',

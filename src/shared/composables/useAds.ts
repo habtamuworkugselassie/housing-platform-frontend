@@ -35,6 +35,8 @@ export interface BuildingResponse {
   sponsorshipType?: string
   realEstateCompanyId?: string
   realEstateCompanyName?: string
+  realEstateCompanyVerified?: boolean
+  realEstateCompanyVerificationLevel?: string
 }
 
 export interface SponsorshipResponse {
@@ -68,6 +70,8 @@ export interface AdContent {
   basePrice: number
   realEstateCompanyName?: string
   realEstateCompanyId?: string
+  realEstateCompanyVerified?: boolean
+  realEstateCompanyVerificationLevel?: string
   companyEmail?: string
   companyPhone?: string
 }
@@ -91,6 +95,8 @@ interface FirstPropertyMediaResponse {
 
 interface OrganizationDetailForAds {
   logoUrl?: string
+  verificationLevel?: string
+  verified?: boolean
   media?: Array<{
     url?: string
     mediaKind?: string
@@ -100,6 +106,9 @@ interface OrganizationDetailForAds {
 const normalizeType = (type: string | undefined | null): string =>
   String(type || '').trim().toUpperCase()
 
+const isExclusiveTier = (type: string | undefined | null): boolean =>
+  normalizeType(type) === 'EXCLUSIVE'
+
 const isPremiumTier = (type: string | undefined | null): boolean =>
   normalizeType(type) === 'PREMIUM'
 
@@ -107,6 +116,7 @@ const isGoldTier = (type: string | undefined | null): boolean =>
   normalizeType(type) === 'GOLD'
 
 const sponsorshipTierRank = (type: string | undefined | null): number => {
+  if (isExclusiveTier(type)) return -1
   if (isPremiumTier(type)) return 0
   if (isGoldTier(type)) return 1
   return 2
@@ -174,6 +184,8 @@ export function useAds() {
         const orgMedia = Array.isArray(org?.media) ? org.media : []
         const nonLogoMedia = orgMedia.filter((item: any) => normalizeType(item?.mediaKind) !== 'LOGO')
         ad.logoUrl = ad.logoUrl || org?.logoUrl || undefined
+        ad.realEstateCompanyVerificationLevel = org?.verificationLevel ?? ad.realEstateCompanyVerificationLevel
+        ad.realEstateCompanyVerified = org?.verified ?? ad.realEstateCompanyVerified
 
         nonLogoMedia.forEach((item: any) => {
           appendUniqueMedia(mediaItems, item?.url, item?.mediaKind)
@@ -312,7 +324,7 @@ export function useAds() {
             : (propertiesResponse as PropertyResponse[])
           propertyAds = (properties || [])
             .filter((p: PropertyResponse & { isSponsored?: boolean }) => p.isSponsored && (p as PropertyResponse & { sponsorshipType?: string }).sponsorshipType)
-            .map((prop: PropertyResponse & { sponsorshipType?: string; realEstateCompanyName?: string; realEstateCompanyId?: string; imageUrls?: string[] }) => ({
+            .map((prop: PropertyResponse & { sponsorshipType?: string; realEstateCompanyName?: string; realEstateCompanyId?: string; realEstateCompanyVerified?: boolean; realEstateCompanyVerificationLevel?: string; imageUrls?: string[] }) => ({
               id: prop.id,
               title: prop.title,
               imageUrl: prop.images?.[0]?.imageUrl || prop.imageUrls?.[0],
@@ -324,7 +336,9 @@ export function useAds() {
               sponsorshipType: normalizeType(prop.sponsorshipType),
               basePrice: sponsorshipTypeMap.value.get(normalizeType(prop.sponsorshipType)) || 0,
               realEstateCompanyName: prop.realEstateCompanyName,
-              realEstateCompanyId: prop.realEstateCompanyId
+              realEstateCompanyId: prop.realEstateCompanyId,
+              realEstateCompanyVerified: prop.realEstateCompanyVerified,
+              realEstateCompanyVerificationLevel: prop.realEstateCompanyVerificationLevel
             }))
         } catch (err) {
           console.error('Failed to load properties for ads:', err)
@@ -345,7 +359,9 @@ export function useAds() {
               sponsorshipType: normalizeType(building.sponsorshipType),
               basePrice: sponsorshipTypeMap.value.get(normalizeType(building.sponsorshipType)) || 0,
               realEstateCompanyName: building.realEstateCompanyName,
-              realEstateCompanyId: building.realEstateCompanyId
+              realEstateCompanyId: building.realEstateCompanyId,
+              realEstateCompanyVerified: building.realEstateCompanyVerified,
+              realEstateCompanyVerificationLevel: building.realEstateCompanyVerificationLevel
             }))
         } catch (err) {
           console.error('Failed to load buildings for ads:', err)
@@ -381,12 +397,16 @@ export function useAds() {
   }
 
   /**
-   * Landing carousel: premium sponsored organizations only.
+   * Landing carousel: exclusive and premium sponsored organizations (exclusive first).
    */
   const premiumSponsorSlides = computed<AdContent[]>(() => {
     const organizations = dedupeOrganizationAds(allAds.value)
-      .filter(ad => isPremiumTier(ad.sponsorshipType))
-    return organizations.sort((a, b) => (b.basePrice || 0) - (a.basePrice || 0))
+      .filter(ad => isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType))
+    return organizations.sort((a, b) => {
+      const rankDiff = sponsorshipTierRank(a.sponsorshipType) - sponsorshipTierRank(b.sponsorshipType)
+      if (rankDiff !== 0) return rankDiff
+      return (b.basePrice || 0) - (a.basePrice || 0)
+    })
   })
 
   /**
@@ -403,12 +423,12 @@ export function useAds() {
   })
 
   /**
-   * Side panel ads: all sponsored organizations (premium and gold), premium first.
+   * Side panel ads: all sponsored organizations (exclusive, premium, gold), exclusive first.
    */
   const sideAds = computed<AdContent[]>(() => {
     const organizations = dedupeOrganizationAds(allAds.value)
     return organizations
-      .filter(ad => isPremiumTier(ad.sponsorshipType) || isGoldTier(ad.sponsorshipType))
+      .filter(ad => isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType) || isGoldTier(ad.sponsorshipType))
       .sort((a, b) => {
         const rankDiff = sponsorshipTierRank(a.sponsorshipType) - sponsorshipTierRank(b.sponsorshipType)
         if (rankDiff !== 0) return rankDiff
