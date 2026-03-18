@@ -11,30 +11,36 @@
           {{ appTitle }}
         </h1>
 
-        <!-- Exclusive sponsor: logo and name horizontal (no carousel) -->
+        <!-- Exclusive sponsors: all orgs displayed horizontally -->
         <div
-          v-if="currentOrg"
-          class="mt-8 sm:mt-10 flex flex-row items-center justify-center gap-4 sm:gap-5"
+          v-if="exclusiveOrgs.length > 0"
+          class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-8"
         >
           <div
-            class="flex h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 items-center justify-center rounded-xl overflow-hidden bg-white/10 border border-white/20"
+            v-for="org in exclusiveOrgs"
+            :key="org.id || org.name"
+            class="flex flex-row items-center gap-3 sm:gap-4"
           >
-            <img
-              v-if="currentOrg.logoUrl"
-              :src="mediaUrl(currentOrg.logoUrl)"
-              :alt="currentOrg.name"
-              class="h-full w-full object-contain"
-            />
-            <span
-              v-else
-              class="text-xl sm:text-2xl font-bold text-white"
+            <div
+              class="flex h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 items-center justify-center rounded-xl overflow-hidden bg-white/10 border border-white/20"
             >
-              {{ (currentOrg.name || '').charAt(0).toUpperCase() }}
-            </span>
+              <img
+                v-if="org.logoUrl"
+                :src="mediaUrl(org.logoUrl)"
+                :alt="org.name"
+                class="h-full w-full object-contain"
+              />
+              <span
+                v-else
+                class="text-xl sm:text-2xl font-bold text-white"
+              >
+                {{ (org.name || '').charAt(0).toUpperCase() }}
+              </span>
+            </div>
+            <p class="text-base sm:text-lg text-white/90 font-medium">
+              {{ org.name }}
+            </p>
           </div>
-          <p class="text-base sm:text-lg text-white/90 font-medium">
-            {{ currentOrg.name }}
-          </p>
         </div>
       </div>
 
@@ -54,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { mediaUrl } from '@/shared/api/client'
 import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
 
@@ -72,11 +78,7 @@ const dismissing = ref(false)
 const exclusiveOrgs = ref([])
 let autoTimer = null
 
-const currentOrg = computed(() => {
-  const list = exclusiveOrgs.value
-  if (!list.length) return null
-  return list[0]
-})
+// All exclusive orgs are displayed directly via exclusiveOrgs ref
 
 function dismiss() {
   if (dismissing.value) return
