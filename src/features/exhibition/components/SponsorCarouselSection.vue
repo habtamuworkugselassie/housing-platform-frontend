@@ -55,16 +55,16 @@
               <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" aria-hidden="true" />
             </div>
 
-            <!-- Content overlay: previous design, aligned to left -->
-            <div class="relative z-10 flex h-full items-center justify-start px-6 sm:px-10">
+            <!-- Content overlay: compact on mobile so background media stays visible -->
+            <div class="relative z-10 flex h-full items-end pb-20 justify-start px-4 sm:items-center sm:pb-0 sm:px-10">
               <component
                 :is="slide.realEstateCompanyId ? 'router-link' : 'div'"
                 :to="slide.realEstateCompanyId ? `/organizations/${slide.realEstateCompanyId}?from=${$route.path}` : undefined"
-                class="block max-w-2xl text-left rounded-2xl bg-black/30 backdrop-blur-md px-8 py-8 sm:px-10 sm:py-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_0_30px_rgba(255,255,255,0.06),0_20px_25px_-5px_rgba(0,0,0,0.2),0_8px_10px_-6px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_35px_-10px_rgba(0,0,0,0.4)] hover:bg-black/40 cursor-pointer"
+                class="block w-full max-w-[min(100%,17rem)] sm:max-w-2xl text-left rounded-xl sm:rounded-2xl bg-black/25 sm:bg-black/30 backdrop-blur-md px-3.5 py-3.5 sm:px-10 sm:py-10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),inset_0_0_30px_rgba(255,255,255,0.06),0_20px_25px_-5px_rgba(0,0,0,0.2),0_8px_10px_-6px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_35px_-10px_rgba(0,0,0,0.4)] hover:bg-black/40 cursor-pointer"
               >
                 <div
                   v-if="slide.logoUrl && useLogo"
-                  class="mb-4 h-20 w-20 sm:h-24 sm:w-24 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
+                  class="mb-2 sm:mb-4 h-12 w-12 sm:h-24 sm:w-24 rounded-lg sm:rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
                 >
                   <img
                     :src="mediaUrl(slide.logoUrl)"
@@ -75,22 +75,24 @@
                 </div>
                 <div
                   v-else
-                  class="mb-4 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-white/20 text-2xl sm:text-3xl font-bold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
+                  class="mb-2 sm:mb-4 flex h-12 w-12 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-white/20 text-lg sm:text-3xl font-bold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_20px_rgba(255,255,255,0.06)]"
                 >
                   {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
                 </div>
-                <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white uppercase tracking-tight flex items-center gap-2 flex-wrap">
+                <h3 class="text-base sm:text-2xl md:text-3xl font-bold text-white uppercase tracking-tight flex items-center gap-1.5 sm:gap-2 flex-wrap leading-tight">
                   {{ slide.realEstateCompanyName || slide.title }}
-                  <VerifiedBadge :level="slide.realEstateCompanyVerificationLevel || (slide.realEstateCompanyVerified ? 'FULL' : null)" size="md" />
+                  <span class="inline-flex shrink-0 scale-[0.85] origin-left sm:scale-100">
+                    <VerifiedBadge :level="slide.realEstateCompanyVerificationLevel || (slide.realEstateCompanyVerified ? 'FULL' : null)" size="md" />
+                  </span>
                 </h3>
-                <p v-if="slide.address" class="mt-2 text-sm sm:text-base text-white/90">
+                <p v-if="slide.address" class="mt-1 sm:mt-2 text-xs sm:text-base text-white/90 line-clamp-2 sm:line-clamp-none">
                   {{ slide.address }}{{ slide.city ? `, ${slide.city}` : '' }}
                 </p>
-                <p v-else-if="slide.city" class="mt-2 text-sm sm:text-base text-white/90">
+                <p v-else-if="slide.city" class="mt-1 sm:mt-2 text-xs sm:text-base text-white/90">
                   {{ slide.city }}
                 </p>
                 <span
-                  class="mt-3 inline-block rounded px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+                  class="mt-2 sm:mt-3 inline-block rounded px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider"
                   :class="tierBadgeClass(slide)"
                 >
                   {{ slide.sponsorshipType || $t('exhibition.sponsorCarousel.sponsor') }}
