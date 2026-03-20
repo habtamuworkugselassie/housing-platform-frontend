@@ -11,17 +11,11 @@
     <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-r border-white/10 text-white">
       <div class="p-4 space-y-4">
         <AdSpace
-          v-for="(ad, index) in leftSideAds"
-          :key="`left-ad-${ad.realEstateCompanyId || ad.id}-${index}`"
+          v-for="(ad, index) in leftSideSlots"
+          :key="`left-ad-${index}`"
           size="sidebar"
           dark
-          :ad-content="ad"
-        />
-        <AdSpace
-          v-for="slot in leftEmptySlots"
-          :key="`left-empty-${slot}`"
-          size="sidebar"
-          dark
+          :ad-content="ad || undefined"
         />
       </div>
     </aside>
@@ -35,17 +29,11 @@
     <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-l border-white/10 text-white">
       <div class="p-4 space-y-4">
         <AdSpace
-          v-for="(ad, index) in rightSideAds"
-          :key="`right-ad-${ad.realEstateCompanyId || ad.id}-${index}`"
+          v-for="(ad, index) in rightSideSlots"
+          :key="`right-ad-${index}`"
           size="sidebar"
           dark
-          :ad-content="ad"
-        />
-        <AdSpace
-          v-for="slot in rightEmptySlots"
-          :key="`right-empty-${slot}`"
-          size="sidebar"
-          dark
+          :ad-content="ad || undefined"
         />
       </div>
     </aside>
@@ -66,27 +54,31 @@ const rightStartIndex = ref(0)
 // Start sponsor/carousel load immediately so it finishes before feature section loads
 loadAllAds(50)
 
-const premiumSideAds = computed(() =>
-  sideAds.value.filter(ad => String(ad.sponsorshipType || '').toUpperCase() === 'PREMIUM')
-)
-
 const adKey = (ad) => ad.realEstateCompanyId || ad.id
+
+/** Exclusive + premium — preferred for the first two sidebar rows per column. */
+const isTopSidebarTier = (ad) => {
+  const t = String(ad.sponsorshipType || '').trim().toUpperCase()
+  return t === 'EXCLUSIVE' || t === 'PREMIUM'
+}
+
+const emptySideColumn = () => Array.from({ length: SIDE_AD_SLOTS }, () => null)
 
 const buildDistinctColumns = (leftSeed, rightSeed) => {
   const ads = sideAds.value
-  if (!ads.length) return { left: [], right: [] }
+  if (!ads.length) return { left: emptySideColumn(), right: emptySideColumn() }
 
-  const left = []
-  const right = []
+  const topTierAds = ads.filter(isTopSidebarTier)
+  const left = emptySideColumn()
+  const right = emptySideColumn()
   const usedKeys = new Set()
 
   const normalizeCursor = (seed, length) => ((seed % length) + length) % length
 
-  const appendUniqueAd = (target, ad) => {
+  const takeUnique = (ad) => {
     if (!ad) return false
     const key = adKey(ad)
     if (usedKeys.has(key)) return false
-    target.push(ad)
     usedKeys.add(key)
     return true
   }
@@ -106,26 +98,60 @@ const buildDistinctColumns = (leftSeed, rightSeed) => {
     return null
   }
 
+  const topLen = Math.max(1, topTierAds.length)
+  const topLeftCursor = { value: normalizeCursor(leftSeed, topLen) }
+  const topRightCursor = { value: normalizeCursor(rightSeed + 1, topLen) }
+
+  for (let i = 0; i < 2; i++) {
+    const ad = nextUniqueFromList(topTierAds, topLeftCursor)
+    if (ad && takeUnique(ad)) left[i] = ad
+  }
+  for (let i = 0; i < 2; i++) {
+    const ad = nextUniqueFromList(topTierAds, topRightCursor)
+    if (ad && takeUnique(ad)) right[i] = ad
+  }
+
   const allLeftCursor = { value: normalizeCursor(leftSeed, ads.length) }
   const allRightCursor = {
     value: normalizeCursor(rightSeed + Math.floor(Math.max(1, ads.length) / 2), ads.length)
   }
 
-  const premium = premiumSideAds.value
-  if (premium.length > 0) {
-    const premiumLeftCursor = { value: normalizeCursor(leftSeed, premium.length) }
-    const premiumRightCursor = { value: normalizeCursor(rightSeed + 1, premium.length) }
-    appendUniqueAd(left, nextUniqueFromList(premium, premiumLeftCursor))
-    appendUniqueAd(right, nextUniqueFromList(premium, premiumRightCursor))
+  // When there are fewer than 4 unique exclusive/premium sponsors, top rows still have gaps —
+  // fill them from all tiers (including gold) so the panel stays populated.
+  const topRowsNeedBackfill = () =>
+    left[0] == null || left[1] == null || right[0] == null || right[1] == null
+
+  while (topRowsNeedBackfill() && usedKeys.size < ads.length) {
+    const before = usedKeys.size
+    if (left[0] == null || left[1] == null) {
+      const idx = left[0] == null ? 0 : 1
+      const ad = nextUniqueFromList(ads, allLeftCursor)
+      if (ad && takeUnique(ad)) left[idx] = ad
+    }
+    if (right[0] == null || right[1] == null) {
+      const idx = right[0] == null ? 0 : 1
+      const ad = nextUniqueFromList(ads, allRightCursor)
+      if (ad && takeUnique(ad)) right[idx] = ad
+    }
+    if (usedKeys.size === before) break
   }
 
-  while ((left.length < SIDE_AD_SLOTS || right.length < SIDE_AD_SLOTS) && usedKeys.size < ads.length) {
-    if (left.length < SIDE_AD_SLOTS) {
-      appendUniqueAd(left, nextUniqueFromList(ads, allLeftCursor))
+  const bottomNeedsWork = () =>
+    left[2] == null || left[3] == null || right[2] == null || right[3] == null
+
+  while (bottomNeedsWork() && usedKeys.size < ads.length) {
+    const before = usedKeys.size
+    if (left[2] == null || left[3] == null) {
+      const idx = left[2] == null ? 2 : 3
+      const ad = nextUniqueFromList(ads, allLeftCursor)
+      if (ad && takeUnique(ad)) left[idx] = ad
     }
-    if (right.length < SIDE_AD_SLOTS) {
-      appendUniqueAd(right, nextUniqueFromList(ads, allRightCursor))
+    if (right[2] == null || right[3] == null) {
+      const idx = right[2] == null ? 2 : 3
+      const ad = nextUniqueFromList(ads, allRightCursor)
+      if (ad && takeUnique(ad)) right[idx] = ad
     }
+    if (usedKeys.size === before) break
   }
 
   return { left, right }
@@ -133,13 +159,10 @@ const buildDistinctColumns = (leftSeed, rightSeed) => {
 
 const sideColumns = computed(() => buildDistinctColumns(leftStartIndex.value, rightStartIndex.value))
 
-const leftSideAds = computed(() => sideColumns.value.left)
-const rightSideAds = computed(() => sideColumns.value.right)
+const leftSideSlots = computed(() => sideColumns.value.left)
+const rightSideSlots = computed(() => sideColumns.value.right)
 
-const leftEmptySlots = computed(() => Math.max(0, SIDE_AD_SLOTS - leftSideAds.value.length))
-const rightEmptySlots = computed(() => Math.max(0, SIDE_AD_SLOTS - rightSideAds.value.length))
-
-// Rotate sidebar ads every 12 seconds (start after ads have loaded)
+// Rotate sidebar ads periodically (start after ads have loaded)
 let adRotationInterval = null
 onMounted(() => {
   const startRotation = () => {
