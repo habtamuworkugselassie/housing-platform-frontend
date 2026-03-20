@@ -118,6 +118,19 @@
                 <dt class="mdc-typography--body2 text-gray-600 w-32">{{ $t('dashboard.emailLabel') }}:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ organization.email }}</dd>
               </div>
+              <div v-if="hasSocialOnOrg(organization)" class="flex items-center">
+                <dt class="sr-only">Social profiles</dt>
+                <dd class="m-0 p-0 flex-1 min-w-0">
+                  <OrganizationSocialLinks
+                    compact
+                    :facebook-url="organization.facebookUrl"
+                    :instagram-url="organization.instagramUrl"
+                    :linkedin-url="organization.linkedinUrl"
+                    :twitter-url="organization.twitterUrl"
+                    :youtube-url="organization.youtubeUrl"
+                  />
+                </dd>
+              </div>
               <div class="flex items-center">
                 <dt class="mdc-typography--body2 text-gray-600 w-32">City:</dt>
                 <dd class="mdc-typography--body1 text-gray-900">{{ organization.city }}</dd>
@@ -445,189 +458,440 @@
 
       <!-- Modals -->
       <!-- Edit Organization Modal -->
-        <div v-if="showEditOrganizationModal" class="mdc-dialog fixed inset-0 z-50 overflow-y-auto" @click.self="showEditOrganizationModal = false">
-          <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-            <div class="flex items-center mb-4">
-              <span class="material-icons text-blue-600 mr-2">business</span>
-              <h3 class="mdc-dialog__title">{{ $t('dashboard.editOrganization') }}</h3>
-            </div>
-        <form @submit.prevent="updateOrganization" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.name"
-                type="text"
-                required
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">{{ $t('dashboard.nameLabel') }} *</label>
-            </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.registrationNumber"
-                type="text"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">{{ $t('dashboard.registrationNumber') }}</label>
-            </div>
-          </div>
-          <div class="mdc-text-field">
-            <input
-              v-model="organizationForm.address"
-              type="text"
-              placeholder=" "
-              class="mdc-text-field__input"
-            />
-            <label class="mdc-text-field__label">{{ $t('property.address') }}</label>
-          </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.city"
-                type="text"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">{{ $t('property.city') }}</label>
-            </div>
-            <div class="mdc-text-field">
-              <input
-                v-model="organizationForm.country"
-                type="text"
-                placeholder=" "
-                class="mdc-text-field__input"
-              />
-              <label class="mdc-text-field__label">{{ $t('property.country') }}</label>
-            </div>
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block text-sm font-medium text-gray-400 mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
-            <OsmMapPicker
-              :model-value="(organizationForm.latitude != null && organizationForm.longitude != null) ? { lat: organizationForm.latitude, lng: organizationForm.longitude } : null"
-              @update:latitude="(v) => (organizationForm.latitude = v)"
-              @update:longitude="(v) => (organizationForm.longitude = v)"
-              height="240px"
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-400">{{ $t('auth.phoneNumber') }}</label>
-            <div
-              v-for="(phone, idx) in organizationForm.phoneNumbers"
-              :key="idx"
-              class="flex items-center gap-2"
-            >
-              <CountryCodePhoneInput
-                :country-code="phone.countryCode"
-                :number="phone.number"
-                :placeholder="$t('admin.orgPhonePlaceholder')"
-                class="flex-1 min-w-0"
-                @update:country-code="phone.countryCode = $event"
-                @update:number="phone.number = $event"
-              />
-              <button
-                v-if="organizationForm.phoneNumbers.length > 1"
-                type="button"
-                class="flex-shrink-0 p-2 text-gray-400 hover:text-red-400 rounded border border-white/20 hover:border-red-400 transition-colors"
-                :aria-label="$t('admin.removePhone')"
-                @click="organizationForm.phoneNumbers.splice(idx, 1)"
-              >
-                ×
-              </button>
+      <div
+        v-if="showEditOrganizationModal"
+        class="fixed inset-0 z-[1100] flex items-start justify-center overflow-y-auto bg-black/70 pt-8 pb-12 px-4"
+        @click.self="showEditOrganizationModal = false"
+      >
+        <div
+          class="relative w-full max-w-2xl rounded-lg border border-white/10 bg-zinc-900 p-6 text-white shadow-xl ring-1 ring-white/5"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dash-org-form-title"
+          @click.stop
+        >
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="material-icons text-yellow-400 shrink-0">business</span>
+              <h3 id="dash-org-form-title" class="text-lg font-semibold text-white">{{ $t('dashboard.editOrganization') }}</h3>
             </div>
             <button
               type="button"
-              class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
-              @click="organizationForm.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
+              class="shrink-0 rounded-md p-1 text-gray-400 transition-colors hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              @click="showEditOrganizationModal = false"
             >
-              + {{ $t('admin.addPhone') }}
+              <span class="material-icons">close</span>
             </button>
           </div>
-          <div class="mdc-text-field">
-            <input
-              v-model="organizationForm.email"
-              type="email"
-              placeholder=" "
-              class="mdc-text-field__input"
-            />
-            <label class="mdc-text-field__label">{{ $t('dashboard.emailLabel') }}</label>
-          </div>
-          <div class="mdc-text-field">
-            <input
-              v-model="organizationForm.website"
-              type="url"
-              placeholder=" "
-              class="mdc-text-field__input"
-            />
-            <label class="mdc-text-field__label">{{ $t('dashboard.website') }}</label>
-          </div>
-          <div class="mdc-text-field">
-            <textarea
-              v-model="organizationForm.description"
-              rows="3"
-              placeholder=" "
-              class="mdc-text-field__input"
-              style="min-height: 80px;"
-            ></textarea>
-            <label class="mdc-text-field__label">{{ $t('property.description') }}</label>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
-            <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Business Registration</label>
-              <input v-model="organizationForm.businessRegistrationNumber" type="text" placeholder="Registration number" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm mb-1" />
-              <input v-model="organizationForm.businessRegistration" type="text" placeholder="Document URL or upload below" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm" />
-              <div class="mt-1 flex items-center gap-2">
-                <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { orgDocInputRefs.businessRegistration = el }" @change="ev => onUploadOrgDocument(ev, 'BUSINESS_REGISTRATION', 'businessRegistration')" />
-                <button type="button" :disabled="orgDocUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-400 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="orgDocInputRefs.businessRegistration?.click()">{{ orgDocUploading.businessRegistration ? 'Uploading…' : 'Upload document' }}</button>
-                <a v-if="isDocumentUrl(organizationForm.businessRegistration)" :href="mediaUrl(organizationForm.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">License</label>
-              <input v-model="organizationForm.licenseNumber" type="text" placeholder="License number" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm mb-1" />
-              <input v-model="organizationForm.license" type="text" placeholder="Document URL or upload below" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm" />
-              <div class="mt-1 flex items-center gap-2">
-                <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { orgDocInputRefs.license = el }" @change="ev => onUploadOrgDocument(ev, 'LICENSE', 'license')" />
-                <button type="button" :disabled="orgDocUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-400 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="orgDocInputRefs.license?.click()">{{ orgDocUploading.license ? 'Uploading…' : 'Upload document' }}</button>
-                <a v-if="isDocumentUrl(organizationForm.license)" :href="mediaUrl(organizationForm.license)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">VAT Registration</label>
-              <input v-model="organizationForm.vatNumber" type="text" placeholder="VAT number" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm mb-1" />
-              <input v-model="organizationForm.vatRegistration" type="text" placeholder="Document URL or upload below" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm" />
-              <div class="mt-1 flex items-center gap-2">
-                <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { orgDocInputRefs.vatRegistration = el }" @change="ev => onUploadOrgDocument(ev, 'VAT_REGISTRATION', 'vatRegistration')" />
-                <button type="button" :disabled="orgDocUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-400 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="orgDocInputRefs.vatRegistration?.click()">{{ orgDocUploading.vatRegistration ? 'Uploading…' : 'Upload document' }}</button>
-                <a v-if="isDocumentUrl(organizationForm.vatRegistration)" :href="mediaUrl(organizationForm.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">TIN Registration</label>
-              <input v-model="organizationForm.tinNumber" type="text" placeholder="TIN number" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm mb-1" />
-              <input v-model="organizationForm.tinRegistration" type="text" placeholder="Document URL or upload below" class="mdc-text-field__input w-full border border-white/20 bg-white/5 text-white rounded py-2 px-3 text-sm" />
-              <div class="mt-1 flex items-center gap-2">
-                <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { orgDocInputRefs.tinRegistration = el }" @change="ev => onUploadOrgDocument(ev, 'TIN_REGISTRATION', 'tinRegistration')" />
-                <button type="button" :disabled="orgDocUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-400 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="orgDocInputRefs.tinRegistration?.click()">{{ orgDocUploading.tinRegistration ? 'Uploading…' : 'Upload document' }}</button>
-                <a v-if="isDocumentUrl(organizationForm.tinRegistration)" :href="mediaUrl(organizationForm.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-              </div>
-            </div>
-          </div>
-            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+          <form @submit.prevent="updateOrganization" class="space-y-4">
+            <div class="flex flex-wrap gap-2 border-b border-white/10 pb-3" role="tablist">
               <button
                 type="button"
+                role="tab"
+                :aria-selected="organizationFormTab === 'profile'"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                :class="
+                  organizationFormTab === 'profile'
+                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
+                "
+                @click="organizationFormTab = 'profile'"
+              >
+                {{ $t('admin.orgFormTabProfile') }}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="organizationFormTab === 'contact'"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                :class="
+                  organizationFormTab === 'contact'
+                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
+                "
+                @click="organizationFormTab = 'contact'"
+              >
+                {{ $t('admin.orgFormTabContact') }}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="organizationFormTab === 'online'"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                :class="
+                  organizationFormTab === 'online'
+                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
+                "
+                @click="organizationFormTab = 'online'"
+              >
+                {{ $t('admin.orgFormTabOnline') }}
+              </button>
+            </div>
+
+            <div v-show="organizationFormTab === 'profile'" class="space-y-4">
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="dash-org-name" class="block text-sm font-medium text-gray-300">{{ $t('dashboard.nameLabel') }} *</label>
+                  <input
+                    id="dash-org-name"
+                    v-model="organizationForm.name"
+                    type="text"
+                    required
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-reg" class="block text-sm font-medium text-gray-300">{{ $t('dashboard.registrationNumber') }}</label>
+                  <input
+                    id="dash-org-reg"
+                    v-model="organizationForm.registrationNumber"
+                    type="text"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 gap-4 border-t border-white/10 pt-4 sm:grid-cols-2">
+                <div>
+                  <label class="mb-1 block text-sm font-medium text-gray-400">Business Registration</label>
+                  <input
+                    v-model="organizationForm.businessRegistrationNumber"
+                    type="text"
+                    placeholder="Registration number"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <input
+                    v-model="organizationForm.businessRegistration"
+                    type="text"
+                    placeholder="Document URL or upload below"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <input
+                      type="file"
+                      accept=".pdf,image/*,.doc,.docx"
+                      class="hidden"
+                      :ref="(el) => { orgDocInputRefs.businessRegistration = el }"
+                      @change="(ev) => onUploadOrgDocument(ev, 'BUSINESS_REGISTRATION', 'businessRegistration')"
+                    />
+                    <button
+                      type="button"
+                      :disabled="orgDocUploading.businessRegistration"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      @click="orgDocInputRefs.businessRegistration?.click()"
+                    >
+                      {{ orgDocUploading.businessRegistration ? 'Uploading…' : 'Upload document' }}
+                    </button>
+                    <a
+                      v-if="isDocumentUrl(organizationForm.businessRegistration)"
+                      :href="mediaUrl(organizationForm.businessRegistration)"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-sm text-yellow-400 hover:underline"
+                      >View document</a
+                    >
+                  </div>
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-medium text-gray-400">License</label>
+                  <input
+                    v-model="organizationForm.licenseNumber"
+                    type="text"
+                    placeholder="License number"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <input
+                    v-model="organizationForm.license"
+                    type="text"
+                    placeholder="Document URL or upload below"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <input
+                      type="file"
+                      accept=".pdf,image/*,.doc,.docx"
+                      class="hidden"
+                      :ref="(el) => { orgDocInputRefs.license = el }"
+                      @change="(ev) => onUploadOrgDocument(ev, 'LICENSE', 'license')"
+                    />
+                    <button
+                      type="button"
+                      :disabled="orgDocUploading.license"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      @click="orgDocInputRefs.license?.click()"
+                    >
+                      {{ orgDocUploading.license ? 'Uploading…' : 'Upload document' }}
+                    </button>
+                    <a
+                      v-if="isDocumentUrl(organizationForm.license)"
+                      :href="mediaUrl(organizationForm.license)"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-sm text-yellow-400 hover:underline"
+                      >View document</a
+                    >
+                  </div>
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-medium text-gray-400">VAT Registration</label>
+                  <input
+                    v-model="organizationForm.vatNumber"
+                    type="text"
+                    placeholder="VAT number"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <input
+                    v-model="organizationForm.vatRegistration"
+                    type="text"
+                    placeholder="Document URL or upload below"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <input
+                      type="file"
+                      accept=".pdf,image/*,.doc,.docx"
+                      class="hidden"
+                      :ref="(el) => { orgDocInputRefs.vatRegistration = el }"
+                      @change="(ev) => onUploadOrgDocument(ev, 'VAT_REGISTRATION', 'vatRegistration')"
+                    />
+                    <button
+                      type="button"
+                      :disabled="orgDocUploading.vatRegistration"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      @click="orgDocInputRefs.vatRegistration?.click()"
+                    >
+                      {{ orgDocUploading.vatRegistration ? 'Uploading…' : 'Upload document' }}
+                    </button>
+                    <a
+                      v-if="isDocumentUrl(organizationForm.vatRegistration)"
+                      :href="mediaUrl(organizationForm.vatRegistration)"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-sm text-yellow-400 hover:underline"
+                      >View document</a
+                    >
+                  </div>
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-medium text-gray-400">TIN Registration</label>
+                  <input
+                    v-model="organizationForm.tinNumber"
+                    type="text"
+                    placeholder="TIN number"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <input
+                    v-model="organizationForm.tinRegistration"
+                    type="text"
+                    placeholder="Document URL or upload below"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <input
+                      type="file"
+                      accept=".pdf,image/*,.doc,.docx"
+                      class="hidden"
+                      :ref="(el) => { orgDocInputRefs.tinRegistration = el }"
+                      @change="(ev) => onUploadOrgDocument(ev, 'TIN_REGISTRATION', 'tinRegistration')"
+                    />
+                    <button
+                      type="button"
+                      :disabled="orgDocUploading.tinRegistration"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      @click="orgDocInputRefs.tinRegistration?.click()"
+                    >
+                      {{ orgDocUploading.tinRegistration ? 'Uploading…' : 'Upload document' }}
+                    </button>
+                    <a
+                      v-if="isDocumentUrl(organizationForm.tinRegistration)"
+                      :href="mediaUrl(organizationForm.tinRegistration)"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-sm text-yellow-400 hover:underline"
+                      >View document</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="dash-org-address" class="block text-sm font-medium text-gray-300">{{ $t('property.address') }}</label>
+                <input
+                  id="dash-org-address"
+                  v-model="organizationForm.address"
+                  type="text"
+                  class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="dash-org-city" class="block text-sm font-medium text-gray-300">{{ $t('property.city') }}</label>
+                  <input
+                    id="dash-org-city"
+                    v-model="organizationForm.city"
+                    type="text"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-country" class="block text-sm font-medium text-gray-300">{{ $t('property.country') }}</label>
+                  <input
+                    id="dash-org-country"
+                    v-model="organizationForm.country"
+                    type="text"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-300">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
+                <OsmMapPicker
+                  :model-value="
+                    organizationForm.latitude != null && organizationForm.longitude != null
+                      ? { lat: organizationForm.latitude, lng: organizationForm.longitude }
+                      : null
+                  "
+                  @update:latitude="(v) => (organizationForm.latitude = v)"
+                  @update:longitude="(v) => (organizationForm.longitude = v)"
+                  height="240px"
+                  :hint-text="$t('admin.pickLocationHint')"
+                />
+              </div>
+            </div>
+
+            <div v-show="organizationFormTab === 'contact'" class="space-y-4">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">{{ $t('auth.phoneNumber') }}</label>
+                <div v-for="(phone, idx) in organizationForm.phoneNumbers" :key="idx" class="flex items-center gap-2">
+                  <CountryCodePhoneInput
+                    :country-code="phone.countryCode"
+                    :number="phone.number"
+                    :placeholder="$t('admin.orgPhonePlaceholder')"
+                    class="min-w-0 flex-1"
+                    @update:country-code="phone.countryCode = $event"
+                    @update:number="phone.number = $event"
+                  />
+                  <button
+                    v-if="organizationForm.phoneNumbers.length > 1"
+                    type="button"
+                    class="flex-shrink-0 rounded border border-white/20 p-2 text-gray-400 transition-colors hover:border-red-400 hover:text-red-400"
+                    :aria-label="$t('admin.removePhone')"
+                    @click="organizationForm.phoneNumbers.splice(idx, 1)"
+                  >
+                    ×
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="text-sm text-yellow-400 transition-colors hover:text-yellow-300"
+                  @click="organizationForm.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
+                >
+                  + {{ $t('admin.addPhone') }}
+                </button>
+              </div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="dash-org-email" class="block text-sm font-medium text-gray-300">{{ $t('dashboard.emailLabel') }}</label>
+                  <input
+                    id="dash-org-email"
+                    v-model="organizationForm.email"
+                    type="email"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-web" class="block text-sm font-medium text-gray-300">{{ $t('dashboard.website') }}</label>
+                  <input
+                    id="dash-org-web"
+                    v-model="organizationForm.website"
+                    type="url"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div v-show="organizationFormTab === 'online'" class="space-y-4">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label for="dash-org-fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
+                  <input
+                    id="dash-org-fb"
+                    v-model="organizationForm.facebookUrl"
+                    type="url"
+                    placeholder="https://…"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
+                  <input
+                    id="dash-org-ig"
+                    v-model="organizationForm.instagramUrl"
+                    type="url"
+                    placeholder="https://…"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
+                  <input
+                    id="dash-org-li"
+                    v-model="organizationForm.linkedinUrl"
+                    type="url"
+                    placeholder="https://…"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label for="dash-org-tw" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
+                  <input
+                    id="dash-org-tw"
+                    v-model="organizationForm.twitterUrl"
+                    type="url"
+                    placeholder="https://…"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="dash-org-yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
+                  <input
+                    id="dash-org-yt"
+                    v-model="organizationForm.youtubeUrl"
+                    type="url"
+                    placeholder="https://…"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="dash-org-desc" class="block text-sm font-medium text-gray-300">{{ $t('property.description') }}</label>
+                <textarea
+                  id="dash-org-desc"
+                  v-model="organizationForm.description"
+                  rows="4"
+                  class="mt-1 min-h-[100px] w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+            </div>
+
+            <div v-if="organizationFormError" class="rounded-md border border-red-500/50 bg-red-500/30 p-3 text-sm text-red-200">
+              {{ organizationFormError }}
+            </div>
+            <div class="flex flex-col justify-end gap-3 border-t border-white/10 pt-4 sm:flex-row">
+              <button
+                type="button"
+                class="w-full rounded-md border border-white/20 px-4 py-2.5 text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/20 sm:w-auto"
                 @click="showEditOrganizationModal = false"
-                class="mdc-button mdc-button--outlined w-full sm:w-auto"
               >
                 {{ $t('common.cancel') }}
               </button>
               <button
                 type="submit"
-                class="mdc-button mdc-button--raised w-full sm:w-auto"
+                :disabled="organizationFormSaving"
+                class="inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2.5 font-medium text-black transition-colors hover:bg-yellow-400 disabled:bg-white/50 disabled:opacity-50 sm:w-auto"
               >
-                <span class="material-icons mr-1" style="font-size: 18px;">save</span>
-                {{ $t('common.update') }}
+                <span class="material-icons mr-1" style="font-size: 18px">save</span>
+                {{ organizationFormSaving ? $t('admin.saving') : $t('common.update') }}
               </button>
             </div>
           </form>
@@ -635,7 +899,7 @@
       </div>
 
       <!-- Edit Agent Modal -->
-      <div v-if="showEditAgentModal" class="mdc-dialog fixed inset-0 z-50 overflow-y-auto" @click.self="showEditAgentModal = false">
+      <div v-if="showEditAgentModal" class="mdc-dialog fixed inset-0 z-[1100] overflow-y-auto" @click.self="showEditAgentModal = false">
         <div class="mdc-dialog__surface m-4 sm:m-8" style="max-width: 500px; margin-left: auto; margin-right: auto;">
           <div class="flex items-center mb-4">
             <span class="material-icons text-green-600 mr-2">badge</span>
@@ -717,7 +981,7 @@
     </div>
 
     <!-- Edit Property Modal -->
-    <div v-if="showEditPropertyModal" class="fixed inset-0 z-50 overflow-y-auto bg-black/70" @click.self="showEditPropertyModal = false">
+    <div v-if="showEditPropertyModal" class="fixed inset-0 z-[1100] overflow-y-auto bg-black/70" @click.self="showEditPropertyModal = false">
       <div class="bg-zinc-900 border border-white/10 rounded-lg m-4 sm:m-8 p-6" style="max-width: 700px; max-height: 90vh; overflow-y: auto; margin-left: auto; margin-right: auto;">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
@@ -1253,13 +1517,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
 import api, { mediaUrl } from '@/shared/api/client'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { OsmMapPicker } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 
@@ -1280,6 +1545,9 @@ const availableSponsorships = ref([])
 const sponsorshipApplications = ref([])
 const showSponsorshipModal = ref(false)
 const showEditOrganizationModal = ref(false)
+const organizationFormTab = ref('profile')
+const organizationFormSaving = ref(false)
+const organizationFormError = ref('')
 const showEditAgentModal = ref(false)
 const showEditPropertyModal = ref(false)
 const editingAgent = ref(null)
@@ -1309,6 +1577,11 @@ const organizationForm = ref({
   phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   email: '',
   website: '',
+  facebookUrl: '',
+  instagramUrl: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  youtubeUrl: '',
   description: ''
 })
 const orgDocUploading = ref({ businessRegistration: false, license: false, vatRegistration: false, tinRegistration: false })
@@ -1597,8 +1870,10 @@ const cancelApplication = async (id) => {
   }
 }
 
-const openEditOrganizationModal = () => {
+const openEditOrganizationModal = async () => {
   if (!organization.value) return
+  organizationFormError.value = ''
+  organizationFormTab.value = 'profile'
   organizationForm.value = {
     name: organization.value.name || '',
     registrationNumber: organization.value.registrationNumber || '',
@@ -1620,9 +1895,23 @@ const openEditOrganizationModal = () => {
       : (organization.value.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: organization.value.phoneNumber.replace(/^\+\d+\s*/, '') }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
     email: organization.value.email || '',
     website: organization.value.website || '',
+    facebookUrl: organization.value.facebookUrl || '',
+    instagramUrl: organization.value.instagramUrl || '',
+    linkedinUrl: organization.value.linkedinUrl || '',
+    twitterUrl: organization.value.twitterUrl || '',
+    youtubeUrl: organization.value.youtubeUrl || '',
     description: organization.value.description || ''
   }
   showEditOrganizationModal.value = true
+  await nextTick()
+  document.getElementById('dash-org-name')?.focus()
+}
+
+function hasSocialOnOrg(org) {
+  if (!org) return false
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
+    String(org[k] || '').trim()
+  )
 }
 
 function isDocumentUrl(value) {
@@ -1655,7 +1944,8 @@ const onUploadOrgDocument = async (ev, documentType, formKey) => {
 
 const updateOrganization = async () => {
   if (!organization.value) return
-  
+  organizationFormError.value = ''
+  organizationFormSaving.value = true
   try {
     const phoneNumbers = (organizationForm.value.phoneNumbers || [])
       .filter((p) => (p.number || '').trim())
@@ -1679,6 +1969,11 @@ const updateOrganization = async () => {
       phoneNumbers: phoneNumbers.length ? phoneNumbers : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
       email: organizationForm.value.email || undefined,
       website: organizationForm.value.website || undefined,
+      facebookUrl: organizationForm.value.facebookUrl || undefined,
+      instagramUrl: organizationForm.value.instagramUrl || undefined,
+      linkedinUrl: organizationForm.value.linkedinUrl || undefined,
+      twitterUrl: organizationForm.value.twitterUrl || undefined,
+      youtubeUrl: organizationForm.value.youtubeUrl || undefined,
       description: organizationForm.value.description || undefined,
       type: organization.value.type
     })
@@ -1686,7 +1981,9 @@ const updateOrganization = async () => {
     showEditOrganizationModal.value = false
     alert('Organization updated successfully')
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to update organization')
+    organizationFormError.value = err.response?.data?.message || err.message || 'Failed to update organization'
+  } finally {
+    organizationFormSaving.value = false
   }
 }
 

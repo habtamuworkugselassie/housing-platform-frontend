@@ -199,6 +199,30 @@
             <label class="block text-sm font-medium text-gray-300">Website</label>
             <input v-model="bankForm.website" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
           </div>
+          <div class="sm:col-span-2 border-t border-white/10 pt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
+                <input v-model="bankForm.facebookUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
+                <input v-model="bankForm.instagramUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
+                <input v-model="bankForm.linkedinUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
+                <input v-model="bankForm.twitterUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
+                <input v-model="bankForm.youtubeUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400" />
+              </div>
+            </div>
+          </div>
           <div>
             <label class="block text-sm font-medium text-gray-300">Description</label>
             <textarea v-model="bankForm.description" rows="3" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400"></textarea>
@@ -385,6 +409,11 @@ const bankForm = ref({
   phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   email: '',
   website: '',
+  facebookUrl: '',
+  instagramUrl: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  youtubeUrl: '',
   description: ''
 })
 const bankDocUploading = ref({ businessRegistration: false, license: false, vatRegistration: false, tinRegistration: false })
@@ -420,6 +449,11 @@ function openEditBankModal() {
       : (b.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: (b.phoneNumber || '').replace(/^\+\d+\s*/, '') }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
     email: b.email || '',
     website: b.website || '',
+    facebookUrl: b.facebookUrl || '',
+    instagramUrl: b.instagramUrl || '',
+    linkedinUrl: b.linkedinUrl || '',
+    twitterUrl: b.twitterUrl || '',
+    youtubeUrl: b.youtubeUrl || '',
     description: b.description || ''
   }
   showEditBankModal.value = true
@@ -452,6 +486,11 @@ async function updateBank() {
       phoneNumbers: phoneNumbers.length ? phoneNumbers : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
       email: bankForm.value.email || undefined,
       website: bankForm.value.website || undefined,
+      facebookUrl: bankForm.value.facebookUrl || undefined,
+      instagramUrl: bankForm.value.instagramUrl || undefined,
+      linkedinUrl: bankForm.value.linkedinUrl || undefined,
+      twitterUrl: bankForm.value.twitterUrl || undefined,
+      youtubeUrl: bankForm.value.youtubeUrl || undefined,
       description: bankForm.value.description || undefined
     })
     bank.value = data

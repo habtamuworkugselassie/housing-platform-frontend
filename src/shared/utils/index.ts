@@ -5,6 +5,7 @@
  */
 
 export * from '@/utils/currency'
+export { normalizeExternalUrl } from './urls'
 export { formatPrice, getCurrencySymbol, getCurrencyName, getAvailableCurrencies, CURRENCIES } from '@/utils/currency'
 
 /** Organization/company with optional phoneNumbers array or legacy phoneNumber. */

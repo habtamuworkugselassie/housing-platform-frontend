@@ -34,11 +34,14 @@
             />
             <video
               v-else
+              :key="currentMediaUrl"
               :src="currentMediaUrl"
               class="h-full w-full object-contain bg-zinc-950/50"
-              controls
+              autoplay
               muted
               playsinline
+              controls
+              preload="auto"
             />
           </template>
           <div v-else class="flex h-full items-center justify-center">
@@ -89,6 +92,19 @@
                   <VerifiedBadge :level="getVerificationLevel(organization)" size="md" />
                 </h1>
                 <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
+                <div
+                  v-if="hasSocialLinks"
+                  class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3"
+                >
+                  <OrganizationSocialLinks
+                    compact
+                    :facebook-url="organization.facebookUrl"
+                    :instagram-url="organization.instagramUrl"
+                    :linkedin-url="organization.linkedinUrl"
+                    :twitter-url="organization.twitterUrl"
+                    :youtube-url="organization.youtubeUrl"
+                  />
+                </div>
               </div>
             </div>
             <div v-if="galleryMedia.length > 1" class="mt-4 flex flex-wrap items-center gap-2">
@@ -116,6 +132,7 @@
                     class="h-full w-full object-cover"
                     muted
                     playsinline
+                    preload="none"
                   />
                 </template>
               </button>
@@ -256,6 +273,7 @@
                   class="h-24 w-full object-cover transition-transform duration-200 group-hover:scale-105"
                   muted
                   playsinline
+                  preload="none"
                 />
                 <span
                   :class="[
@@ -312,6 +330,16 @@
                   {{ websiteDisplay }}
                 </a>
                 <p v-else class="mt-2 text-white">N/A</p>
+              </div>
+
+              <div v-if="hasSocialLinks" class="rounded-lg border border-white/10 bg-white/5 p-3">
+                <OrganizationSocialLinks
+                  :facebook-url="organization.facebookUrl"
+                  :instagram-url="organization.instagramUrl"
+                  :linkedin-url="organization.linkedinUrl"
+                  :twitter-url="organization.twitterUrl"
+                  :youtube-url="organization.youtubeUrl"
+                />
               </div>
             </div>
           </div>
@@ -539,7 +567,9 @@
             class="max-w-full max-h-full object-contain"
             controls
             autoplay
+            muted
             playsinline
+            preload="metadata"
           />
         </div>
 
@@ -593,6 +623,7 @@
                 class="w-full h-full object-cover"
                 muted
                 playsinline
+                preload="none"
               />
             </button>
           </div>
@@ -614,8 +645,10 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
+import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -703,6 +736,19 @@ const galleryMedia = computed(() => {
   return items
 })
 
+const organizationMediaUrlsForWarmup = computed(() => {
+  const org = organization.value
+  if (!org) return []
+  const urls = []
+  if (org.logoUrl) urls.push(org.logoUrl)
+  galleryMedia.value.forEach((item) => {
+    if (item?.url) urls.push(item.url)
+  })
+  return urls
+})
+
+useMediaWarmup(organizationMediaUrlsForWarmup)
+
 const isVideoItem = (item) => {
   const kind = String(item?.mediaKind || '').toUpperCase()
   if (kind === 'VIDEO') return true
@@ -733,11 +779,22 @@ const websiteDisplay = computed(() => {
   return website.replace(/^https?:\/\//i, '').replace(/\/$/, '')
 })
 
+const hasSocialLinks = computed(() => {
+  const o = organization.value || {}
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some(
+    (k) => String(o[k] || '').trim()
+  )
+})
+
 const contactChannelsCount = computed(() => {
   let count = 0
   if (organizationPhoneDisplay.value.length) count += 1
   if (organization.value?.email) count += 1
   if (organization.value?.website) count += 1
+  const o = organization.value || {}
+  ;['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].forEach((k) => {
+    if (String(o[k] || '').trim()) count += 1
+  })
   return count
 })
 

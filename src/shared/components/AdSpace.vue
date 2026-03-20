@@ -139,13 +139,14 @@
       >
         <video
           v-if="currentSidebarMedia.isVideo"
+          :key="'ad-video-' + currentSidebarMediaIndex + '-' + currentSidebarMedia.url"
           :src="mediaUrl(currentSidebarMedia.url)"
           class="w-full h-full object-cover"
           autoplay
           muted
           loop
           playsinline
-          preload="metadata"
+          preload="auto"
         />
         <img
           v-else
@@ -246,6 +247,7 @@
 import { computed, ref, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
+import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
 import VerifiedBadge from './VerifiedBadge.vue'
 
@@ -299,6 +301,23 @@ const currentSidebarMedia = computed(() => {
   if (!sidebarMediaItems.value.length) return null
   return sidebarMediaItems.value[currentSidebarMediaIndex.value] || sidebarMediaItems.value[0]
 })
+
+const adMediaUrlsForWarmup = computed(() => {
+  const urls = []
+  if (Array.isArray(props.adContents)) {
+    props.adContents.forEach((ad) => {
+      if (ad?.imageUrl) urls.push(ad.imageUrl)
+    })
+  }
+  if (props.adContent?.imageUrl) urls.push(props.adContent.imageUrl)
+  if (props.adContent?.videoUrl) urls.push(props.adContent.videoUrl)
+  sidebarMediaItems.value.forEach((m) => {
+    if (m?.url) urls.push(m.url)
+  })
+  return urls
+})
+
+useMediaWarmup(adMediaUrlsForWarmup)
 
 const resetSidebarMediaRotation = () => {
   if (sidebarMediaInterval) {

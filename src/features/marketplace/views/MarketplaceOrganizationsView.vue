@@ -43,14 +43,19 @@
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <router-link
+        <div
           v-for="org in paginatedOrganizations"
           :key="org.id"
-          :to="{ path: `/organizations/${org.id}`, query: { from: route.fullPath } }"
-          class="group block overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 hover:border-yellow-400/70 transition-colors"
+          class="group overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 hover:border-yellow-400/70 transition-colors"
         >
           <div class="h-1 w-full bg-gradient-to-r from-yellow-400/80 via-orange-300/70 to-transparent" />
-          <div class="p-4 sm:p-5">
+          <div
+            class="p-4 sm:p-5 cursor-pointer"
+            role="link"
+            tabindex="0"
+            @click="goToOrganization(org.id)"
+            @keydown.enter.prevent="goToOrganization(org.id)"
+          >
             <div class="flex items-start gap-4">
               <div
                 v-if="org.logoUrl"
@@ -109,7 +114,21 @@
               <span class="text-yellow-300 transition-transform duration-200 group-hover:translate-x-1">-&gt;</span>
             </div>
           </div>
-        </router-link>
+          <div
+            v-if="hasOrgSocial(org)"
+            class="px-4 pb-4 border-t border-white/5 bg-zinc-950/40"
+            @click.stop
+          >
+            <OrganizationSocialLinks
+              compact
+              :facebook-url="org.facebookUrl"
+              :instagram-url="org.instagramUrl"
+              :linkedin-url="org.linkedinUrl"
+              :twitter-url="org.twitterUrl"
+              :youtube-url="org.youtubeUrl"
+            />
+          </div>
+        </div>
       </div>
 
       <div
@@ -140,13 +159,15 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n()
 
 const categoryToType = {
@@ -199,6 +220,11 @@ const filteredOrganizations = computed(() => {
       org.country,
       org.email,
       org.website,
+      org.facebookUrl,
+      org.instagramUrl,
+      org.linkedinUrl,
+      org.twitterUrl,
+      org.youtubeUrl,
       ...formatOrganizationPhones(org)
     ]
       .filter(Boolean)
@@ -259,6 +285,18 @@ const locationLabel = (org) => {
 const normalizedWebsite = (website) => {
   if (!website) return ''
   return String(website).replace(/^https?:\/\//i, '').replace(/\/$/, '')
+}
+
+function hasOrgSocial(org) {
+  if (!org) return false
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
+    String(org[k] || '').trim()
+  )
+}
+
+function goToOrganization(id) {
+  const path = `/organizations/${id}`
+  router.push({ path, query: { from: route.fullPath } })
 }
 
 const goToPreviousPage = () => {

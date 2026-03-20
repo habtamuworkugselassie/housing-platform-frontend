@@ -34,7 +34,7 @@
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  :preload="index === currentIndex ? 'auto' : 'metadata'"
                   class="w-full h-full object-contain bg-zinc-950/50"
                 />
               </template>
@@ -161,6 +161,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
 import { mediaUrl } from '@/shared/api/client'
+import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { useAds } from '@/shared/composables/useAds'
 import { VerifiedBadge } from '@/shared/components'
 
@@ -179,6 +180,18 @@ const currentIndex = ref(0)
 let autoplayTimer = null
 
 const slides = computed(() => premiumSponsorSlides.value)
+
+const sponsorSlideMediaUrlsForWarmup = computed(() => {
+  const urls = []
+  for (const s of slides.value) {
+    if (s?.logoUrl) urls.push(s.logoUrl)
+    if (s?.videoUrl) urls.push(s.videoUrl)
+    if (s?.imageUrl) urls.push(s.imageUrl)
+  }
+  return urls
+})
+
+useMediaWarmup(sponsorSlideMediaUrlsForWarmup)
 
 function goTo(index) {
   if (slides.value.length === 0) return

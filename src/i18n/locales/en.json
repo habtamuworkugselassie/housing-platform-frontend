@@ -73,6 +73,14 @@
     "organizationsByType": "Approved organizations in this category",
     "noOrganizations": "No organizations in this category yet."
   },
+  "organization": {
+    "socialMedia": "Social media",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "twitter": "X / Twitter",
+    "youtube": "YouTube"
+  },
   "auth": {
     "login": "Login",
     "loginWithEmail": "Email",
@@ -517,6 +525,17 @@
     "pickLocationHint": "Click on the map to set the address location. Latitude and longitude will be saved.",
     "orgWebsite": "Website",
     "orgDescription": "Description",
+    "orgFormTabProfile": "Profile & legal",
+    "orgFormTabContact": "Contact & location",
+    "orgFormTabOnline": "Web & social",
+    "organizationDetails": "Organization details",
+    "orgFormCreateSubtitle": "Company profile, compliance, and contact — use the tabs below.",
+    "orgFormEditSubtitle": "Update any tab, then save. Document uploads apply in edit mode.",
+    "sectionMedia": "Media & branding",
+    "sectionOverview": "Overview",
+    "sectionCompliance": "Registration & compliance",
+    "sectionContact": "Contact & location",
+    "sectionOnline": "Web & social",
     "logoAndMedia": "Logo & media",
     "noLogo": "No logo uploaded",
     "uploadLogo": "Upload logo",

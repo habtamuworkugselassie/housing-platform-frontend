@@ -292,26 +292,81 @@
       <!-- View Organization Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showViewDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
-          <div class="mt-3">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-white">Organization Details</h3>
+        <div
+          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-2xl shadow-black/50 ring-1 ring-white/5"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="admin-org-view-title"
+          @click.stop
+        >
+          <div
+            class="border-b border-white/10 bg-gradient-to-br from-yellow-500/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex min-w-0 flex-1 items-start gap-4">
+                <div
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/40 bg-yellow-500/15 shadow-inner shadow-yellow-900/20"
+                >
+                  <svg class="h-8 w-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                </div>
+                <div class="min-w-0 pt-0.5">
+                  <h3 id="admin-org-view-title" class="text-xl font-semibold tracking-tight text-white">
+                    {{ $t('admin.organizationDetails') }}
+                  </h3>
+                  <p v-if="viewingOrg" class="mt-1 truncate text-base text-gray-200">{{ viewingOrg.name }}</p>
+                  <div v-if="viewingOrg" class="mt-3 flex flex-wrap items-center gap-2">
+                    <span
+                      :class="[
+                        'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1',
+                        viewingOrg.status === 'APPROVED'
+                          ? 'bg-green-500/25 text-green-200 ring-green-400/30'
+                          : viewingOrg.status === 'SUSPENDED'
+                            ? 'bg-orange-500/25 text-orange-200 ring-orange-400/30'
+                            : viewingOrg.status === 'PENDING_APPROVAL' || viewingOrg.status === 'PENDING'
+                              ? 'bg-yellow-500/25 text-yellow-200 ring-yellow-400/30'
+                              : 'bg-red-500/25 text-red-200 ring-red-400/30'
+                      ]"
+                    >
+                      {{ viewingOrg.status }}
+                    </span>
+                    <span
+                      class="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-gray-200 ring-1 ring-white/15"
+                    >
+                      {{ getTypeLabel(viewingOrg.type) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
               <button
+                type="button"
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-yellow-400 transition-colors"
+                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <div v-if="viewingOrg" class="space-y-4">
+          </div>
+          <div class="max-h-[min(72vh,calc(100vh-10rem))] overflow-y-auto px-6 py-6 sm:px-7">
+            <div v-if="viewingOrg" class="space-y-6">
               <!-- Logo & media -->
-              <div class="col-span-2 rounded-lg border border-white/10 bg-white/5 p-4">
-                <label class="block text-sm font-medium text-gray-400 mb-2">{{ $t('admin.logoAndMedia') }}</label>
+              <section class="rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionMedia') }}
+                </h4>
+                <label class="mb-2 block text-xs font-medium uppercase tracking-wide text-gray-500">{{ $t('admin.logoAndMedia') }}</label>
                 <div v-if="viewingOrg.logoUrl" class="mb-3">
                   <img
                     :src="mediaUrl(viewingOrg.logoUrl)"
@@ -382,34 +437,31 @@
                     />
                   </label>
                 </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
+              </section>
+
+              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionOverview') }}
+                </h4>
+                <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Name</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.name }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Type</label>
-                  <p class="mt-1 text-sm text-white">{{ getTypeLabel(viewingOrg.type) }}</p>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-400">Status</label>
-                  <span
-                    :class="[
-                      'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingOrg.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                      (viewingOrg.status === 'PENDING_APPROVAL' || viewingOrg.status === 'PENDING') ? 'bg-yellow-500/30 text-yellow-200' :
-                      viewingOrg.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
-                      'bg-red-500/30 text-red-200'
-                    ]"
-                  >
-                    {{ viewingOrg.status }}
-                  </span>
-                </div>
-                <div>
                   <label class="block text-sm font-medium text-gray-400">Registration Number</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
                 </div>
+                </div>
+              </section>
+
+              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionCompliance') }}
+                </h4>
+                <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Business Registration</label>
                   <p v-if="viewingOrg.businessRegistrationNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.businessRegistrationNumber }}</p>
@@ -442,6 +494,15 @@
                     <span v-else>{{ viewingOrg.tinRegistration || 'N/A' }}</span>
                   </p>
                 </div>
+                </div>
+              </section>
+
+              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionContact') }}
+                </h4>
+                <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Email</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.email || 'N/A' }}</p>
@@ -462,9 +523,18 @@
                   <label class="block text-sm font-medium text-gray-400">Address</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.address || 'N/A' }}</p>
                 </div>
+                </div>
+              </section>
+
+              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionOnline') }}
+                </h4>
+                <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div class="col-span-2">
                   <label class="block text-sm font-medium text-gray-400">Description</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.description || 'N/A' }}</p>
+                  <p class="mt-1 text-sm leading-relaxed text-white">{{ viewingOrg.description || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Website</label>
@@ -475,15 +545,35 @@
                     <span v-else>N/A</span>
                   </p>
                 </div>
+                <div class="col-span-2">
+                  <div v-if="hasSocialOnOrg(viewingOrg)" class="flex flex-wrap gap-2">
+                    <OrganizationSocialLinks
+                      :facebook-url="viewingOrg.facebookUrl"
+                      :instagram-url="viewingOrg.instagramUrl"
+                      :linkedin-url="viewingOrg.linkedinUrl"
+                      :twitter-url="viewingOrg.twitterUrl"
+                      :youtube-url="viewingOrg.youtubeUrl"
+                    />
+                  </div>
+                  <p v-else class="mt-1 text-sm text-gray-500">N/A</p>
+                </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Created</label>
                   <p class="mt-1 text-sm text-white">{{ formatDate(viewingOrg.createdAt) }}</p>
                 </div>
-              </div>
+                </div>
+              </section>
 
               <!-- Sponsorship management -->
-              <div class="mt-6 rounded-lg border border-white/10 bg-zinc-800/50 p-4 sm:p-5">
-                <h4 class="text-sm font-semibold text-white mb-3">{{ $t('admin.sponsorshipManagement') }}</h4>
+              <div class="rounded-xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
+                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-yellow-500/20 text-yellow-300">
+                    <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </span>
+                  {{ $t('admin.sponsorshipManagement') }}
+                </h4>
                 <div v-if="orgSponsorshipApplications.length" class="space-y-2 mb-4">
                   <div
                     v-for="app in orgSponsorshipApplications"
@@ -580,34 +670,40 @@
                 </div>
               </div>
             </div>
-            <div class="mt-6 flex flex-wrap justify-end gap-3">
-              <button
-                v-if="viewingOrg?.status === 'APPROVED'"
-                @click="showSuspendModal(viewingOrg)"
-                class="px-4 py-2 border border-orange-500/50 rounded-md text-orange-300 hover:bg-orange-500/20 transition-colors"
-              >
-                {{ $t('admin.suspend') }}
-              </button>
-              <button
-                v-if="viewingOrg?.status === 'SUSPENDED'"
-                @click="reactivateOrg(viewingOrg)"
-                class="px-4 py-2 border border-green-500/50 rounded-md text-green-300 hover:bg-green-500/20 transition-colors"
-              >
-                {{ $t('admin.reactivate') }}
-              </button>
-              <button
-                @click="openEditModal(viewingOrg)"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
-              >
-                {{ $t('admin.edit') }}
-              </button>
-              <button
-                @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
-              >
-                {{ $t('admin.close') }}
-              </button>
-            </div>
+          </div>
+          <div
+            class="flex flex-wrap justify-end gap-2 border-t border-white/10 bg-zinc-950/70 px-6 py-4 sm:gap-3 sm:px-7"
+          >
+            <button
+              v-if="viewingOrg?.status === 'APPROVED'"
+              type="button"
+              @click="showSuspendModal(viewingOrg)"
+              class="rounded-lg border border-orange-500/40 px-4 py-2.5 text-sm font-medium text-orange-200 transition-colors hover:bg-orange-500/20"
+            >
+              {{ $t('admin.suspend') }}
+            </button>
+            <button
+              v-if="viewingOrg?.status === 'SUSPENDED'"
+              type="button"
+              @click="reactivateOrg(viewingOrg)"
+              class="rounded-lg border border-green-500/40 px-4 py-2.5 text-sm font-medium text-green-200 transition-colors hover:bg-green-500/20"
+            >
+              {{ $t('admin.reactivate') }}
+            </button>
+            <button
+              type="button"
+              @click="openEditModal(viewingOrg)"
+              class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/15"
+            >
+              {{ $t('admin.edit') }}
+            </button>
+            <button
+              type="button"
+              @click="showViewDialog = false"
+              class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-yellow-400"
+            >
+              {{ $t('admin.close') }}
+            </button>
           </div>
         </div>
       </div>
@@ -615,26 +711,107 @@
       <!-- Create / Edit Organization Modal -->
       <div
         v-if="showFormDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-12 pb-12"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showFormDialog = false"
       >
-        <div class="relative mx-auto p-6 border border-white/10 w-full max-w-2xl shadow-lg rounded-lg bg-zinc-900 text-white">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-medium text-white">
-              {{ formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.editOrganization') }}
-            </h3>
-            <button
-              type="button"
-              @click="showFormDialog = false"
-              class="text-gray-400 hover:text-yellow-400 transition-colors"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+        <div
+          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-2xl shadow-black/50 ring-1 ring-white/5"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="admin-org-form-title"
+          @click.stop
+        >
+          <div
+            class="border-b border-white/10 bg-gradient-to-br from-yellow-500/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex min-w-0 flex-1 items-start gap-4">
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/35 bg-yellow-500/15 shadow-inner sm:h-14 sm:w-14"
+                >
+                  <svg class="h-7 w-7 text-yellow-300 sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                </div>
+                <div class="min-w-0 pt-0.5">
+                  <h3 id="admin-org-form-title" class="text-xl font-semibold tracking-tight text-white">
+                    {{ formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.editOrganization') }}
+                  </h3>
+                  <p class="mt-1.5 max-w-lg text-sm leading-relaxed text-gray-400">
+                    {{
+                      formMode === 'create' ? $t('admin.orgFormCreateSubtitle') : $t('admin.orgFormEditSubtitle')
+                    }}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                @click="showFormDialog = false"
+                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              >
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <form @submit.prevent="submitOrganizationForm" class="space-y-4">
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <form @submit.prevent="submitOrganizationForm" class="flex max-h-[min(78vh,calc(100vh-7rem))] flex-col">
+            <div class="min-h-0 flex-1 overflow-y-auto px-6 py-5 sm:px-7">
+              <div class="space-y-5">
+            <div
+              class="flex flex-wrap gap-1.5 rounded-xl bg-zinc-950/80 p-1.5 ring-1 ring-white/10"
+              role="tablist"
+              :aria-label="$t('admin.organizationManagement')"
+            >
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="orgFormTab === 'profile'"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                :class="
+                  orgFormTab === 'profile'
+                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                "
+                @click="orgFormTab = 'profile'"
+              >
+                {{ $t('admin.orgFormTabProfile') }}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="orgFormTab === 'contact'"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                :class="
+                  orgFormTab === 'contact'
+                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                "
+                @click="orgFormTab = 'contact'"
+              >
+                {{ $t('admin.orgFormTabContact') }}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="orgFormTab === 'online'"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                :class="
+                  orgFormTab === 'online'
+                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                "
+                @click="orgFormTab = 'online'"
+              >
+                {{ $t('admin.orgFormTabOnline') }}
+              </button>
+            </div>
+            <div v-show="orgFormTab === 'profile'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="sm:col-span-2">
                 <label for="org-name" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgName') }} *</label>
                 <input
@@ -778,6 +955,8 @@
                   <option value="APPROVED">{{ $t('admin.statusApproved') }}</option>
                 </select>
               </div>
+            </div>
+            <div v-show="orgFormTab === 'contact'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label for="org-email" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgEmail') }}</label>
                 <input
@@ -862,6 +1041,8 @@
                   {{ form.latitude?.toFixed(5) }}, {{ form.longitude?.toFixed(5) }}
                 </p>
               </div>
+            </div>
+            <div v-show="orgFormTab === 'online'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="sm:col-span-2">
                 <label for="org-website" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgWebsite') }}</label>
                 <input
@@ -870,6 +1051,30 @@
                   type="url"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
+              </div>
+              <div class="sm:col-span-2 border-t border-white/10 pt-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="org-fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
+                    <input id="org-fb" v-model="form.facebookUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  </div>
+                  <div>
+                    <label for="org-ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
+                    <input id="org-ig" v-model="form.instagramUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  </div>
+                  <div>
+                    <label for="org-li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
+                    <input id="org-li" v-model="form.linkedinUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  </div>
+                  <div>
+                    <label for="org-xt" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
+                    <input id="org-xt" v-model="form.twitterUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="org-yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
+                    <input id="org-yt" v-model="form.youtubeUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  </div>
+                </div>
               </div>
               <div class="sm:col-span-2">
                 <label for="org-description" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgDescription') }}</label>
@@ -881,24 +1086,28 @@
                 />
               </div>
             </div>
-            <div v-if="formError" class="rounded-md bg-red-500/30 border border-red-500/50 p-3 text-sm text-red-200">
+              </div>
+            </div>
+            <div class="shrink-0 space-y-3 border-t border-white/10 bg-zinc-950/70 px-6 py-4 sm:px-7">
+            <div v-if="formError" class="rounded-lg border border-red-500/40 bg-red-500/20 p-3 text-sm text-red-100">
               {{ formError }}
             </div>
-            <div class="mt-6 flex justify-end gap-3">
+            <div class="flex flex-wrap justify-end gap-2 sm:gap-3">
               <button
                 type="button"
                 @click="showFormDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/15"
               >
                 {{ $t('admin.cancel') }}
               </button>
               <button
                 type="submit"
                 :disabled="formSaving"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-yellow-400 disabled:bg-white/50 disabled:opacity-50"
               >
                 {{ formSaving ? $t('admin.saving') : (formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.updateOrganization')) }}
               </button>
+            </div>
             </div>
           </form>
         </div>
@@ -1015,13 +1224,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
+import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 
@@ -1200,6 +1411,13 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString()
 }
 
+function hasSocialOnOrg(org) {
+  if (!org) return false
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
+    String(org[k] || '').trim()
+  )
+}
+
 
 const TYPE_LABEL_KEYS = {
   REAL_ESTATE_COMPANY: 'admin.typeRealEstate',
@@ -1268,6 +1486,21 @@ const rejectOrg = async () => {
 
 const showViewDialog = ref(false)
 const viewingOrg = ref(null)
+
+const viewingOrgMediaUrlsForWarmup = computed(() => {
+  const o = viewingOrg.value
+  if (!o) return []
+  const urls = []
+  if (o.logoUrl) urls.push(o.logoUrl)
+  if (Array.isArray(o.media)) {
+    o.media.forEach((m) => {
+      if (m?.url) urls.push(m.url)
+    })
+  }
+  return urls
+})
+
+useMediaWarmup(viewingOrgMediaUrlsForWarmup)
 
 const viewOrg = async (org) => {
   viewingOrg.value = org
@@ -1491,6 +1724,8 @@ const formMode = ref('create') // 'create' | 'edit'
 const editingOrgId = ref(null)
 const formSaving = ref(false)
 const formError = ref('')
+/** Tab: profile | contact | online */
+const orgFormTab = ref('profile')
 const form = ref({
   name: '',
   registrationNumber: '',
@@ -1509,6 +1744,11 @@ const form = ref({
   phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
   email: '',
   website: '',
+  facebookUrl: '',
+  instagramUrl: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  youtubeUrl: '',
   description: '',
   initialStatus: 'PENDING_APPROVAL'
 })
@@ -1541,22 +1781,30 @@ function resetForm() {
   latitude: null,
   longitude: null,
   phoneNumbers: [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }],
-  email: '',
-  website: '',
-  description: '',
-  initialStatus: 'PENDING_APPROVAL'
+    email: '',
+    website: '',
+    facebookUrl: '',
+    instagramUrl: '',
+    linkedinUrl: '',
+    twitterUrl: '',
+    youtubeUrl: '',
+    description: '',
+    initialStatus: 'PENDING_APPROVAL'
 }
   editingOrgId.value = null
   formError.value = ''
+  orgFormTab.value = 'profile'
 }
 
-function openCreateModal() {
+async function openCreateModal() {
   formMode.value = 'create'
   resetForm()
   showFormDialog.value = true
+  await nextTick()
+  document.getElementById('org-name')?.focus()
 }
 
-function openEditModal(org) {
+async function openEditModal(org) {
   formMode.value = 'edit'
   editingOrgId.value = org.id
   form.value = {
@@ -1581,12 +1829,20 @@ function openEditModal(org) {
       : (org.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: org.phoneNumber }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
     email: org.email ?? '',
     website: org.website ?? '',
+    facebookUrl: org.facebookUrl ?? '',
+    instagramUrl: org.instagramUrl ?? '',
+    linkedinUrl: org.linkedinUrl ?? '',
+    twitterUrl: org.twitterUrl ?? '',
+    youtubeUrl: org.youtubeUrl ?? '',
     description: org.description ?? '',
     initialStatus: 'PENDING_APPROVAL'
   }
   formError.value = ''
+  orgFormTab.value = 'profile'
   showViewDialog.value = false
   showFormDialog.value = true
+  await nextTick()
+  document.getElementById('org-name')?.focus()
 }
 
 async function submitOrganizationForm() {
@@ -1614,6 +1870,11 @@ async function submitOrganizationForm() {
         phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,
+        facebookUrl: form.value.facebookUrl || undefined,
+        instagramUrl: form.value.instagramUrl || undefined,
+        linkedinUrl: form.value.linkedinUrl || undefined,
+        twitterUrl: form.value.twitterUrl || undefined,
+        youtubeUrl: form.value.youtubeUrl || undefined,
         description: form.value.description || undefined,
         initialStatus: form.value.initialStatus
       })
@@ -1640,6 +1901,11 @@ async function submitOrganizationForm() {
         phoneNumbers: form.value.phoneNumbers?.filter(p => (p.number || '').trim()).map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: (p.number || '').trim() })) || [],
         email: form.value.email || undefined,
         website: form.value.website || undefined,
+        facebookUrl: form.value.facebookUrl || undefined,
+        instagramUrl: form.value.instagramUrl || undefined,
+        linkedinUrl: form.value.linkedinUrl || undefined,
+        twitterUrl: form.value.twitterUrl || undefined,
+        youtubeUrl: form.value.youtubeUrl || undefined,
         description: form.value.description || undefined
       })
       showFormDialog.value = false

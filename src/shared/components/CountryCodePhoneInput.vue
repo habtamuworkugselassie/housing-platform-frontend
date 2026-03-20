@@ -19,7 +19,7 @@
       <!-- Backdrop (close on click outside) -->
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-10"
+        class="fixed inset-0 z-[10000]"
         aria-hidden="true"
         @click="isOpen = false"
       />
@@ -35,7 +35,7 @@
       >
         <div
           v-if="isOpen"
-          class="absolute left-0 top-full mt-1 z-20 w-72 max-h-64 flex flex-col rounded-lg border border-white/20 shadow-xl overflow-hidden country-code-dropdown"
+          class="absolute left-0 top-full mt-1 z-[10001] w-72 max-h-64 flex flex-col rounded-lg border border-white/20 shadow-xl overflow-hidden country-code-dropdown"
         >
           <div class="p-2 border-b border-white/10 sticky top-0 country-code-dropdown-header">
             <input

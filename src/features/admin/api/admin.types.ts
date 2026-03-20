@@ -87,6 +87,11 @@ export interface OrganizationCreateRequest {
   phoneNumber?: string
   email?: string
   website?: string
+  facebookUrl?: string
+  instagramUrl?: string
+  linkedinUrl?: string
+  twitterUrl?: string
+  youtubeUrl?: string
   description?: string
   primaryContactUserId?: string
   /** When creating as admin: APPROVED, PENDING_APPROVAL, etc. */
@@ -107,6 +112,11 @@ export interface OrganizationUpdateRequest {
   phoneNumber?: string
   email?: string
   website?: string
+  facebookUrl?: string
+  instagramUrl?: string
+  linkedinUrl?: string
+  twitterUrl?: string
+  youtubeUrl?: string
   description?: string
   primaryContactUserId?: string
 }

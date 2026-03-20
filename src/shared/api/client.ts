@@ -97,51 +97,91 @@ api.interceptors.request.use(
   }
 )
 
+/**
+ * Perform logout using raw axios (not the intercepted `api` instance).
+ *
+ * IMPORTANT: Never use `api.post('/auth/logout')` inside this interceptor.
+ * Doing so would re-enter this same response interceptor on a 401, causing
+ * an infinite loop. Instead we use a plain axios call and clear state directly.
+ */
+const performLogout = async (): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken')
+  try {
+    // Plain axios — NOT the `api` singleton — to avoid interceptor re-entry.
+    await axios.post(
+      `${getBaseURL()}/auth/logout`,
+      {},
+      {
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+      }
+    )
+  } catch {
+    // Swallow backend errors: the endpoint is UNSECURED so it should always
+    // succeed, but even if it doesn't we must still clear client-side state.
+  }
+
+  // Clear all persisted auth state
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('user')
+
+  // Sync Pinia store if it is already instantiated (won't fail if it isn't)
+  try {
+    const { getActivePinia } = await import('pinia')
+    const { useAuthStore } = await import('@/features/auth')
+    if (getActivePinia()) {
+      const authStore = useAuthStore()
+      authStore.$patch({ token: null, refreshToken: null, user: null } as any)
+    }
+  } catch {
+    // Pinia may not be ready during early boot — localStorage is already cleared.
+  }
+}
+
 // Response interceptor to handle errors and token refresh
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: any) => {
     const originalRequest = error.config
-    // Import dynamically to avoid circular dependency issues
-    const { useAuthStore } = await import('@/features/auth')
-    const authStore = useAuthStore()
 
-    // Skip refresh logic for refresh endpoint itself
-    if (originalRequest.url?.includes('/auth/refresh')) {
+    // Skip ALL auth endpoints (login, refresh, logout, otp, etc.)
+    // This prevents the interceptor from looping on auth-related 401s.
+    if (originalRequest.url?.includes('/auth/')) {
       return Promise.reject(error)
     }
 
     // Check if error is due to expired/invalid token
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // List of public endpoints that should not trigger login redirect
+      // Public endpoints that should NOT trigger a login redirect.
+      // Note: /sponsorships/active is a PROTECTED endpoint — omitted intentionally.
       const publicEndpoints = [
         '/properties/',
         '/buildings/',
         '/organizations/',
         '/credit-products',
         '/financing-offers',
-        '/exhibition/',
-        '/sponsorships/'
+        '/exhibition/'
       ]
 
       const isPublicEndpoint = publicEndpoints.some(endpoint =>
         originalRequest.url?.includes(endpoint)
       )
 
-      // If it's a public endpoint and user is not authenticated, just reject the error
-      // Don't redirect to login for public endpoints
-      if (isPublicEndpoint && !authStore.isAuthenticated) {
+      // For public endpoints with no active session, just let the error through
+      if (isPublicEndpoint && !localStorage.getItem('accessToken')) {
         return Promise.reject(error)
       }
 
-      // Check if it's a JWT expiration error
+      // Detect JWT-related 401s (expired or invalid token)
       const isJwtError = error.response?.data?.message?.includes('expired') ||
         error.response?.data?.message?.includes('JWT') ||
         error.response?.data?.error === 'Authentication Failed'
 
-      if (isJwtError && authStore.refreshTokenMethod && authStore.refreshToken && !originalRequest._retry) {
+      const storedRefreshToken = localStorage.getItem('refreshToken')
+
+      if (isJwtError && storedRefreshToken && !originalRequest._retry) {
         if (isRefreshing) {
-          // If already refreshing, queue this request
+          // Queue concurrent requests that arrive while a refresh is in-flight
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject })
           })
@@ -158,31 +198,32 @@ api.interceptors.response.use(
         isRefreshing = true
 
         try {
+          const { useAuthStore } = await import('@/features/auth')
+          const authStore = useAuthStore()
           const newAuthData = await authStore.refreshTokenMethod()
           processQueue(null, newAuthData.accessToken)
 
-          // Retry original request with new token
+          // Retry the original request with the fresh token
           if (originalRequest.headers) {
             originalRequest.headers.Authorization = `Bearer ${newAuthData.accessToken}`
           }
           return api(originalRequest)
         } catch (refreshError) {
           processQueue(refreshError, null)
-          // Refresh failed, logout user
-          await authStore.logout()
+          // Token refresh failed — force full logout and redirect
+          await performLogout()
           window.location.href = '/login'
           return Promise.reject(refreshError)
         } finally {
           isRefreshing = false
         }
       } else {
-        // Not a JWT error or no refresh token
-        // Only redirect to login if user was authenticated (had a token)
-        if (authStore.isAuthenticated) {
-          await authStore.logout()
+        // Not a JWT error, or no refresh token is stored.
+        // Only force logout+redirect when the user had an active session.
+        if (localStorage.getItem('accessToken')) {
+          await performLogout()
           window.location.href = '/login'
         }
-        // If user is not authenticated and it's not a public endpoint, just reject
         return Promise.reject(error)
       }
     }

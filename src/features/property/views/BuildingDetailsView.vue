@@ -175,6 +175,18 @@
                 <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-yellow-400 hover:underline">{{ company.website }}</a>
               </dd>
             </div>
+            <div v-if="hasSocialOnOrg(company)" class="md:col-span-2">
+              <dt class="sr-only">Social profiles</dt>
+              <dd class="m-0 p-0">
+                <OrganizationSocialLinks
+                  :facebook-url="company.facebookUrl"
+                  :instagram-url="company.instagramUrl"
+                  :linkedin-url="company.linkedinUrl"
+                  :twitter-url="company.twitterUrl"
+                  :youtube-url="company.youtubeUrl"
+                />
+              </dd>
+            </div>
           </dl>
           <p v-if="company.description" class="mt-4 text-sm text-gray-300">{{ company.description }}</p>
         </div>
@@ -288,6 +300,7 @@ import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -300,6 +313,13 @@ const units = ref([])
 const financingOffers = ref([])
 const company = ref(null)
 const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
+
+function hasSocialOnOrg(org) {
+  if (!org) return false
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
+    String(org[k] || '').trim()
+  )
+}
 
 const loadBuilding = async () => {
   loading.value = true

@@ -115,6 +115,31 @@
             />
           </div>
 
+          <div class="sm:col-span-2 border-t border-white/10 pt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
+                <input id="fb" v-model="form.facebookUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label for="ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
+                <input id="ig" v-model="form.instagramUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label for="li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
+                <input id="li" v-model="form.linkedinUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div>
+                <label for="tw" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
+                <input id="tw" v-model="form.twitterUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
+                <input id="yt" v-model="form.youtubeUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+              </div>
+            </div>
+          </div>
+
           <div class="sm:col-span-2">
             <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
             <textarea
@@ -171,6 +196,11 @@ const form = ref({
   city: '',
   country: '',
   website: '',
+  facebookUrl: '',
+  instagramUrl: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  youtubeUrl: '',
   description: '',
   type: 'REAL_ESTATE_COMPANY'
 })

@@ -351,6 +351,19 @@
                   <VerifiedBadge :level="getVerificationLevel(property)" size="md" />
                 </h4>
                 <p v-if="company.description" class="text-sm text-gray-400 mb-4">{{ company.description }}</p>
+                <div
+                  v-if="hasSocialOnOrg(company)"
+                  class="flex flex-wrap items-center gap-2 mb-4 pb-4 border-b border-white/10"
+                >
+                  <OrganizationSocialLinks
+                    compact
+                    :facebook-url="company.facebookUrl"
+                    :instagram-url="company.instagramUrl"
+                    :linkedin-url="company.linkedinUrl"
+                    :twitter-url="company.twitterUrl"
+                    :youtube-url="company.youtubeUrl"
+                  />
+                </div>
               </div>
 
               <div class="space-y-3">
@@ -506,6 +519,19 @@
           <div class="mb-6">
             <h4 class="text-lg font-semibold text-white mb-2">{{ company.name }}</h4>
             <p v-if="company.description" class="text-sm text-gray-400">{{ company.description }}</p>
+            <div
+              v-if="hasSocialOnOrg(company)"
+              class="mt-4 flex flex-wrap items-center gap-2 pb-4 border-b border-white/10"
+            >
+              <OrganizationSocialLinks
+                compact
+                :facebook-url="company.facebookUrl"
+                :instagram-url="company.instagramUrl"
+                :linkedin-url="company.linkedinUrl"
+                :twitter-url="company.twitterUrl"
+                :youtube-url="company.youtubeUrl"
+              />
+            </div>
           </div>
 
           <div class="space-y-4">
@@ -681,8 +707,10 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
+import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
+import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import { useAuthStore } from '@/features/auth'
 import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 
@@ -692,6 +720,13 @@ const authStore = useAuthStore()
 const property = ref(null)
 const company = ref(null)
 const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
+
+function hasSocialOnOrg(org) {
+  if (!org) return false
+  return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
+    String(org[k] || '').trim()
+  )
+}
 const financingOffers = ref([])
 const loading = ref(true)
 const currentImageIndex = ref(0)
@@ -705,6 +740,20 @@ const canCreatePropertyLoan = computed(
     authStore.isAuthenticated &&
     (authStore.hasRole('REALTOR') || authStore.hasRole('ADMIN'))
 )
+
+const propertyPageMediaUrlsForWarmup = computed(() => {
+  const urls = []
+  const imgs = property.value?.images
+  if (Array.isArray(imgs)) {
+    imgs.forEach((i) => {
+      if (i?.imageUrl) urls.push(i.imageUrl)
+    })
+  }
+  if (company.value?.logoUrl) urls.push(company.value.logoUrl)
+  return urls
+})
+
+useMediaWarmup(propertyPageMediaUrlsForWarmup)
 
 const FAVORITES_STORAGE_KEY = 'housing_platform_favorites'
 
