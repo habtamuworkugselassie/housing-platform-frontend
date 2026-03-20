@@ -1010,7 +1010,8 @@
     },
     "sponsorCarousel": {
       "noSponsors": "ፕሪሚየም እና ጎልድ ስፖንሰር ቦታዎች ይገኛሉ",
-      "sponsor": "ስፖንሰር"
+      "sponsor": "ስፖንሰር",
+      "featuredPartner": "የተመረጠ አጋር"
     }
   }
 }
