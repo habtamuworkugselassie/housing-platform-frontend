@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Ethio-Betoch",
+    "appName": "Ethio Build Connect",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -57,6 +57,7 @@
     "signUp": "Sign Up",
     "logout": "Logout",
     "language": "Language",
+    "selectLanguage": "Select a language",
     "toggleMenu": "Toggle menu",
     "admin": "Admin",
     "adminPortal": "Admin Portal",
@@ -451,6 +452,9 @@
     "portalTitle": "Admin Portal",
     "administrator": "Administrator",
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
+    "nav": {
+      "settings": "Settings"
+    },
     "users": "Users",
     "organizations": "Organizations",
     "manageSponsorshipsSubtitle": "Create sponsorship packages and assign them to real estate companies",
@@ -556,7 +560,23 @@
     "reactivate": "Reactivate",
     "reactivateOrganization": "Reactivate organization",
     "reasonOptional": "Reason (optional)",
-    "rejectSponsorshipApplication": "Reject sponsorship application"
+    "rejectSponsorshipApplication": "Reject sponsorship application",
+    "displaySettings": {
+      "title": "Display settings",
+      "subtitle": "Control how long sponsor content stays on screen on the public home page (carousel and side ads).",
+      "sponsorCarousel": "Sponsor carousel",
+      "sponsorCarouselHint": "Time between slides in the top sponsor carousel.",
+      "sidebarMedia": "Sidebar ad media",
+      "sidebarMediaHint": "When a sponsor has multiple images or videos, how long each one shows before switching.",
+      "sidebarLayout": "Sidebar column rotation",
+      "sidebarLayoutHint": "How often the left and right side columns advance to the next sponsors.",
+      "seconds": "seconds",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved.",
+      "loadError": "Could not load display settings.",
+      "saveError": "Could not save display settings."
+    }
   },
   "validation": {
     "required": "This field is required",
@@ -826,10 +846,11 @@
   },
   "exhibition": {
     "hero": {
+      "eventName": "Ethio Build Connect Expo",
       "tagline1": "Bold Projects.",
       "tagline2": "Big Connections.",
       "tagline3": "Bigger Opportunities.",
-      "dateVenue": "10–13 November 2026 — Exhibition & Convention Center — Addis Ababa, Ethiopia",
+      "dateVenue": "10–13 November 2026 — Addis Convention Center — Addis Ababa, Ethiopia",
       "subtitle": "Meet global visionaries, explore iconic projects, and unlock pathways to growth and collaboration at the region's biggest real estate and construction show.",
       "registerInterest": "Register your interest 2026",
       "downloadBrochure": "Download event brochure",
@@ -854,6 +875,11 @@
       "bullet3": "Interactive show features and networking",
       "registerToVisit": "Register to visit",
       "visitorExperience": "Visitor experience"
+    },
+    "brochureStrip": {
+      "eyebrow": "Download",
+      "title": "Event brochure",
+      "intro": "Open the print-ready overview in a new tab. Use your browser’s Print dialog to save as PDF or print copies for your team."
     },
     "planning": {
       "badge": "Coming 2026",
@@ -997,8 +1023,23 @@
     },
     "footer": {
       "copyright": "© 2026 Dream Teams Trading PLC. All rights reserved.",
+      "columns": {
+        "business": "Business",
+        "media": "Media services",
+        "support": "Support"
+      },
+      "links": {
+        "aboutExhibition": "About the exhibition",
+        "registerInterest": "Register your interest",
+        "partners": "Partners & sponsors",
+        "brochure": "Event brochure",
+        "featuredListings": "Featured listings",
+        "faq": "FAQs",
+        "contactUs": "Contact us"
+      },
       "privacy": "Privacy",
       "terms": "Terms",
+      "legal": "Legal",
       "contact": "Contact"
     },
     "sponsorCarousel": {

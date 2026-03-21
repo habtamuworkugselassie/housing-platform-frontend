@@ -261,6 +261,29 @@
       </div>
     </section>
 
+    <!-- Event brochure (scroll target for #brochure) -->
+    <section id="brochure" class="py-14 lg:py-20 bg-zinc-900 border-t border-white/10 scroll-mt-20">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-3">
+          {{ $t('exhibition.brochureStrip.eyebrow') }}
+        </p>
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-3">
+          {{ $t('exhibition.brochureStrip.title') }}
+        </h2>
+        <p class="text-sm text-gray-400 mb-8 max-w-xl mx-auto">
+          {{ $t('exhibition.brochureStrip.intro') }}
+        </p>
+        <a
+          :href="brochureHref"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+        >
+          {{ $t('exhibition.hero.downloadBrochure') }}
+        </a>
+      </div>
+    </section>
+
     <!-- Register your interest (scroll target for #register) -->
     <section id="register" class="py-20 lg:py-28 bg-black border-t border-white/10 text-white scroll-mt-20">
       <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,7 +433,12 @@
           <a href="#register" class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-black">
             {{ $t('exhibition.cta.standEnquiry') }}
           </a>
-          <a href="#brochure" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
+          <a
+            :href="brochureHref"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+          >
             {{ $t('exhibition.cta.viewBrochure') }}
           </a>
         </div>
@@ -423,7 +451,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
@@ -455,7 +483,12 @@ const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card2Title', bodyKey: 'exhibition.whatHappened.card2Body', icon: UserGroupIcon },
   { titleKey: 'exhibition.whatHappened.card3Title', bodyKey: 'exhibition.whatHappened.card3Body', icon: LightBulbIcon }
 ]
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const brochureHref = computed(() =>
+  locale.value === 'am'
+    ? '/docs/ethio-build-connect-expo-2026-brochure-am.html'
+    : '/docs/ethio-build-connect-expo-2026-brochure.html'
+)
 
 // Register interest form (exhibition) – creates Organization and ExhibitionInterest in backend
 const interestForm = ref({

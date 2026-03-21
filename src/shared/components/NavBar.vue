@@ -12,8 +12,18 @@
             <span class="material-icons">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
           </button>
           
-          <router-link to="/" class="flex items-center px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-yellow-400">
-            🏠 <span class="hidden xs:inline">{{ $t('common.appName') }}</span>
+          <router-link
+            to="/"
+            class="flex items-center gap-2 px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-yellow-400"
+          >
+            <img
+              src="/ethio-build-connect-mark.png"
+              alt=""
+              width="36"
+              height="36"
+              class="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0"
+            />
+            <span class="hidden xs:inline">{{ $t('common.appName') }}</span>
           </router-link>
           
           <!-- Marketplace dropdown (fluid, hover + click) -->
@@ -220,15 +230,7 @@
             </template>
           </div>
           
-          <!-- Language Switcher -->
-          <button
-            @click="toggleLanguage"
-            class="px-2 sm:px-3 py-2 text-xs sm:text-sm font-medium text-gray-300 hover:text-yellow-400 border border-white/30 rounded-md hover:bg-yellow-500/20 hover:border-yellow-400"
-            :title="$t('nav.language')"
-          >
-            <span class="hidden sm:inline">{{ localeStore.currentLocale === 'en' ? '🇬🇧 EN' : '🇪🇹 አማ' }}</span>
-            <span class="sm:hidden">{{ localeStore.currentLocale === 'en' ? 'EN' : 'አማ' }}</span>
-          </button>
+          <LocaleSwitcher />
         </div>
       </div>
       
@@ -372,11 +374,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/features/auth'
-import { useLocaleStore } from '@/stores/locale'
 import { useRouter, useRoute } from 'vue-router'
+import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 
 const authStore = useAuthStore()
-const localeStore = useLocaleStore()
 const router = useRouter()
 const route = useRoute()
 const mobileMenuOpen = ref(false)
@@ -387,10 +388,6 @@ const onMarketplaceBlur = () => {
 }
 
 const isExhibitionPage = computed(() => route.path === '/' || route.path === '/exhibition')
-
-const toggleLanguage = () => {
-  localeStore.toggleLocale()
-}
 
 const handleLogout = async () => {
   await authStore.logout()

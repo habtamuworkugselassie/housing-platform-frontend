@@ -108,7 +108,7 @@ function initMap(L: typeof import('leaflet').default) {
 }
 
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
-const NOMINATIM_UA = 'HousingPlatform/1.0 (Address search)'
+const NOMINATIM_UA = 'EthioBuildConnect/1.0 (Address search)'
 
 async function doSearch() {
   const q = (searchQuery.value || '').trim()

@@ -13,7 +13,8 @@ import type {
   OrganizationCreateRequest,
   OrganizationUpdateRequest,
   PropertyManagementRequest,
-  AdminFilters
+  AdminFilters,
+  DisplaySettings
 } from './admin.types'
 // Pagination types
 interface PageRequest {
@@ -363,6 +364,17 @@ export const adminApi = {
    */
   getCreditProducts: async (filters?: AdminFilters): Promise<any[]> => {
     const response = await api.get('/credit-products', { params: filters })
+    return response.data
+  },
+
+  /** Landing page carousel / sidebar rotation timings (admin) */
+  getDisplaySettings: async (): Promise<DisplaySettings> => {
+    const response = await api.get<DisplaySettings>('/admin/display-settings')
+    return response.data
+  },
+
+  updateDisplaySettings: async (body: DisplaySettings): Promise<DisplaySettings> => {
+    const response = await api.put<DisplaySettings>('/admin/display-settings', body)
     return response.data
   }
 }

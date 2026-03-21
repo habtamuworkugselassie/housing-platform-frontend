@@ -4,6 +4,7 @@
 export { default as SponsorshipsView } from './views/SponsorshipsView.vue'
 export { default as AdminSponsorshipsView } from './views/AdminSponsorshipsView.vue'
 export { default as AdminDashboardView } from './views/AdminDashboardView.vue'
+export { default as AdminDisplaySettingsView } from './views/AdminDisplaySettingsView.vue'
 export { default as AdminUsersView } from './views/AdminUsersView.vue'
 export { default as AdminOrganizationsView } from './views/AdminOrganizationsView.vue'
 export { default as AdminLayout } from './components/AdminLayout.vue'

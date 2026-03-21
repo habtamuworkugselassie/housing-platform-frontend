@@ -12,19 +12,22 @@
 
     <!-- Hero content: Cityscape pattern (main nav is in App.vue NavBar) -->
     <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-12">
+      <p class="mb-4 text-sm sm:text-base font-semibold uppercase tracking-[0.2em] text-yellow-400 max-w-5xl mx-auto">
+        {{ $t('exhibition.hero.eventName') }}
+      </p>
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white uppercase tracking-tight leading-[1.1] max-w-5xl mx-auto">
-        Bold Projects.<br />
-        Big Connections.<br />
-        Bigger Opportunities.
+        {{ $t('exhibition.hero.tagline1') }}<br />
+        {{ $t('exhibition.hero.tagline2') }}<br />
+        {{ $t('exhibition.hero.tagline3') }}
       </h1>
 
       <!-- Single line: date - venue - city (Cityscape style) -->
       <p class="mt-8 text-sm sm:text-base text-white/95 tracking-wide uppercase font-medium">
-        10–13 November 2026 — Exhibition & Convention Center — Addis Ababa, Ethiopia
+        {{ $t('exhibition.hero.dateVenue') }}
       </p>
 
       <p class="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-white/80">
-        Meet global visionaries, explore iconic projects, and unlock pathways to growth and collaboration at the region’s biggest real estate and construction show.
+        {{ $t('exhibition.hero.subtitle') }}
       </p>
 
       <!-- CTAs: primary + secondary -->
@@ -33,13 +36,15 @@
           href="#register"
           class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[240px]"
         >
-          Register your interest 2026
+          {{ $t('exhibition.hero.registerInterest') }}
         </a>
         <a
-          href="#brochure"
+          :href="brochureHref"
+          target="_blank"
+          rel="noopener noreferrer"
           class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[240px]"
         >
-          Download event brochure
+          {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
       </div>
     </div>
@@ -93,9 +98,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
+
+const { locale } = useI18n()
+const brochureHref = computed(() =>
+  locale.value === 'am'
+    ? '/docs/ethio-build-connect-expo-2026-brochure-am.html'
+    : '/docs/ethio-build-connect-expo-2026-brochure.html'
+)
 
 const partners = ref([])
 

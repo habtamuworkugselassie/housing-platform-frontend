@@ -1,9 +1,9 @@
 import { createI18n } from 'vue-i18n'
 import en from './locales/en.json'
 import am from './locales/am.json'
+import { normalizeLocale } from './localeConfig'
 
-// Get saved locale from localStorage or default to 'en'
-const savedLocale = localStorage.getItem('locale') || 'en'
+const savedLocale = normalizeLocale(localStorage.getItem('locale'))
 
 const i18n = createI18n({
   legacy: false,
@@ -11,7 +11,10 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages: {
     en,
-    am
+    am,
+    // Until dedicated catalogs exist, Oromo and Arabic use English copy (all keys resolve).
+    om: en,
+    ar: en
   }
 })
 

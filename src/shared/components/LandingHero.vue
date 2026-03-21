@@ -19,7 +19,7 @@
     />
 
     <!-- Content (compact hero) -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
+<!--    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
       <div class="max-w-2xl">
         <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight">
           {{ $t('home.heroHeadline') }}
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <!-- Scroll hint -->
+    &lt;!&ndash; Scroll hint &ndash;&gt;
     <div class="relative z-10 flex justify-center pb-2">
       <button
         type="button"
@@ -63,7 +63,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </button>
-    </div>
+    </div>-->
   </section>
 </template>
 

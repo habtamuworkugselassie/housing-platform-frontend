@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "ኢትዮ - ቤቶች",
+    "appName": "ኢትዮ ብልድ ኮነክት",
     "loading": "በመጫን ላይ...",
     "error": "ስህተት",
     "success": "ተሳክቷል",
@@ -57,6 +57,7 @@
     "signUp": "ይመዝግቡ",
     "logout": "ውጣ",
     "language": "ቋንቋ",
+    "selectLanguage": "ቋንቋ ይምረጡ",
     "toggleMenu": "ሜኑ ቀይር",
     "admin": "አስተዳዳሪ",
     "adminPortal": "የአስተዳዳሪ መግቢያ",
@@ -458,6 +459,9 @@
     "portalTitle": "የአስተዳዳሪ መግቢያ",
     "administrator": "አስተዳዳሪ",
     "portalSubtitle": "ተጠቃሚዎችን፣ ድርጅቶችን፣ ንብረቶችን እና ሌሎችን ለማስተዳድር የአስተዳዳሪ መግቢያውን ይድረሱ።",
+    "nav": {
+      "settings": "ቅንብሮች"
+    },
     "users": "ተጠቃሚዎች",
     "organizations": "ድርጅቶች",
     "manageSponsorshipsSubtitle": "የስፖንሰርሺፕ ጥቅሎችን ይፍጠሩ እና ለንብረት ኩባንያዎች ይመድቡ",
@@ -563,7 +567,23 @@
     "reactivate": "እንደገና ማግበር",
     "reactivateOrganization": "ድርጅት እንደገና ማግበር",
     "reasonOptional": "ምክንያት (አማራጭ)",
-    "rejectSponsorshipApplication": "የስፖንሰርሺፕ ማመልከቻ ማጥፋት"
+    "rejectSponsorshipApplication": "የስፖንሰርሺፕ ማመልከቻ ማጥፋት",
+    "displaySettings": {
+      "title": "የማሳያ ቅንብሮች",
+      "subtitle": "በህዝባዊ መነሻ ገጽ ላይ የስፖንሰር ይዘት ለምን ያህል ጊዜ እንደሚቆይ (ካሮሴል እና የጎን ማስታወቂያዎች) ይቆጣጠሩ።",
+      "sponsorCarousel": "የስፖንሰር ካሮሴል",
+      "sponsorCarouselHint": "በላይኛው የስፖንሰር ካሮሴል መካከል ያለው ጊዜ።",
+      "sidebarMedia": "የጎን ማስታወቂያ ሚዲያ",
+      "sidebarMediaHint": "ስፖንሰር ብዙ ምስሎች ወይም ቪዲዮዎች ሲኖሩት እያንዳንዱ ለምን ያህል ጊዜ እንደሚታይ።",
+      "sidebarLayout": "የጎን ዓምድ ማራወሪያ",
+      "sidebarLayoutHint": "ግራ እና ቀኝ ዓምዶች ወደ ቀጣዩ ስፖንሰሮች ለምን ያህል ጊዜ በየጊዜው ይለዋወጣሉ።",
+      "seconds": "ሰከንዶች",
+      "save": "አስቀምጥ",
+      "saving": "በመቀመጥ ላይ…",
+      "saved": "ተቀምጧል።",
+      "loadError": "የማሳያ ቅንብሮችን መጫን አልተሳካም።",
+      "saveError": "የማሳያ ቅንብሮችን ማስቀመጥ አልተሳካም።"
+    }
   },
   "validation": {
     "required": "ይህ መስክ ያስፈልጋል",
@@ -833,10 +853,11 @@
   },
   "exhibition": {
     "hero": {
+      "eventName": "ኢትዮ ቢልድ ኮነክት ኤክስፖ",
       "tagline1": "ድጋሜ ፕሮጀክቶች።",
       "tagline2": "ታላቅ ግንኙነቶች።",
       "tagline3": "ይበልጥ ታላቅ እድሎች።",
-      "dateVenue": "10–13 ኖቬምበር 2026 — የኤግዚቢሽን እና የስብሰባ ማእከል — አዲስ አበባ፣ ኢትዮጵያ",
+      "dateVenue": "10–13 ኖቬምበር 2026 — አዲስ ኮንቬንሽን ማእከል — አዲስ አበባ፣ ኢትዮጵያ",
       "subtitle": "የአለም ቪዥነሪዎችን ይግኙ፣ ታዋቂ ፕሮጀክቶችን ይመልከቱ እና በክልሉ ትልቁ የንብረት እና የግንባታ ማሳያ ላይ ዕድገት እና ትብብር መንገዶችን ይክፈቱ።",
       "registerInterest": "ፍላጎትዎን ይመዝግቡ 2026",
       "downloadBrochure": "የዝግጅት ብሮሹር አውርድ",
@@ -861,6 +882,11 @@
       "bullet3": "በተሳተፊ የማሳያ ባህሪያት እና ኔትወርኪንግ",
       "registerToVisit": "ለመጎብኘት ይመዝግቡ",
       "visitorExperience": "የጎብኚ ልምድ"
+    },
+    "brochureStrip": {
+      "eyebrow": "አውርድ",
+      "title": "የዝግጅት ብሮሹር",
+      "intro": "ለማተሚያ የተዘጋጀውን አጠቃላይ እይታ በአዲስ ትር ይክፈቱ። እንደ PDF ለማስቀመጥ ወይም ለቡድንዎ ቅጂዎች ለማተም የአሳሽዎን የማተም አማራጭ ይጠቀሙ።"
     },
     "planning": {
       "badge": "በ2026 ይመጣል",
@@ -1004,8 +1030,23 @@
     },
     "footer": {
       "copyright": "© 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. መብቱ በህግ የተጠበቀ ነው።",
+      "columns": {
+        "business": "ንግድ",
+        "media": "መገናኛ",
+        "support": "ድጋፍ"
+      },
+      "links": {
+        "aboutExhibition": "ስለ ኤግዚቢሽኑ",
+        "registerInterest": "ፍላጎትዎን ይመዝግቡ",
+        "partners": "አጋሮች እና ስፖንሰሮች",
+        "brochure": "የዝግጅት ብሮሹር",
+        "featuredListings": "የቀረቡ ዝርዝሮች",
+        "faq": "ተደጋጋሚ ጥያቄዎች",
+        "contactUs": "ያግኙን"
+      },
       "privacy": "ግላዊነት",
       "terms": "ውሎች",
+      "legal": "ህጋዊ",
       "contact": "ያግኙን"
     },
     "sponsorCarousel": {

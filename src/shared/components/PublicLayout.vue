@@ -45,8 +45,10 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { AdSpace } from './index'
 import { useAds } from '../composables/useAds'
+import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 
 const { loadAllAds, sideAds } = useAds()
+const { settings, loadDisplaySettings } = useDisplaySettings()
 const SIDE_AD_SLOTS = 4
 const leftStartIndex = ref(0)
 const rightStartIndex = ref(0)
@@ -162,29 +164,56 @@ const sideColumns = computed(() => buildDistinctColumns(leftStartIndex.value, ri
 const leftSideSlots = computed(() => sideColumns.value.left)
 const rightSideSlots = computed(() => sideColumns.value.right)
 
-// Rotate sidebar ads periodically (start after ads have loaded)
+// Rotate sidebar ads periodically (interval from admin display settings)
 let adRotationInterval = null
-onMounted(() => {
-  const startRotation = () => {
-    if (adRotationInterval) return
-    adRotationInterval = setInterval(() => {
-      if (sideAds.value.length > 0) {
-        leftStartIndex.value = (leftStartIndex.value + 1) % sideAds.value.length
-        rightStartIndex.value = (rightStartIndex.value + 1) % sideAds.value.length
-      }
-    }, 20000)
-  }
-  if (sideAds.value.length > 0) startRotation()
-  else {
-    const stop = watch(sideAds, (v) => { if (v.length > 0) { startRotation(); stop() } }, { immediate: true })
-  }
-})
 
-// Cleanup interval on unmount
-onUnmounted(() => {
+function clearAdRotation() {
   if (adRotationInterval) {
     clearInterval(adRotationInterval)
+    adRotationInterval = null
   }
+}
+
+function startAdRotation() {
+  clearAdRotation()
+  if (sideAds.value.length === 0) return
+  const ms = settings.sidebarLayoutRotationMs
+  if (ms <= 0) return
+  adRotationInterval = setInterval(() => {
+    if (sideAds.value.length > 0) {
+      leftStartIndex.value = (leftStartIndex.value + 1) % sideAds.value.length
+      rightStartIndex.value = (rightStartIndex.value + 1) % sideAds.value.length
+    }
+  }, ms)
+}
+
+onMounted(() => {
+  loadDisplaySettings().then(() => {
+    if (sideAds.value.length > 0) startAdRotation()
+    else {
+      const stop = watch(
+        sideAds,
+        (v) => {
+          if (v.length > 0) {
+            startAdRotation()
+            stop()
+          }
+        },
+        { immediate: true }
+      )
+    }
+  })
+})
+
+watch(
+  () => settings.sidebarLayoutRotationMs,
+  () => {
+    if (sideAds.value.length > 0) startAdRotation()
+  }
+)
+
+onUnmounted(() => {
+  clearAdRotation()
 })
 </script>
 

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ኢትዮ ቢልድ ኮነክት ኤክስፖ 2026 — የዝግጅት ብሮሹር</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    @page { size: A4; margin: 14mm; }
+    * { box-sizing: border-box; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body.brochure-lang-am {
+      font-family: "Noto Sans Ethiopic", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      margin: 0;
+      font-family: "Noto Sans Ethiopic", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      background: #0a0a0a;
+      color: #fafafa;
+      line-height: 1.55;
+      font-size: 10.5pt;
+    }
+    body.brochure-lang-am h1 {
+      text-transform: none;
+      letter-spacing: normal;
+      font-size: 22pt;
+      line-height: 1.15;
+    }
+    body.brochure-lang-am h2 {
+      text-transform: none;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+    }
+    body.brochure-lang-am h3 {
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    body.brochure-lang-am .eyebrow {
+      text-transform: none;
+      letter-spacing: 0.08em;
+    }
+    body.brochure-lang-am .date-line {
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    body.brochure-lang-am .pill {
+      text-transform: none;
+      letter-spacing: 0.06em;
+    }
+    .sheet {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 12mm 14mm 18mm;
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .sheet { padding: 0; max-width: none; page-break-after: always; }
+      .sheet:last-child { page-break-after: auto; }
+      .no-print { display: none !important; }
+      a { color: inherit; text-decoration: none; }
+    }
+    .accent { color: #facc15; }
+    .muted { color: rgba(250, 250, 250, 0.65); }
+    @media print { .muted { color: #444; } }
+    h1 {
+      font-size: 28pt;
+      line-height: 1.05;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    h2 {
+      font-size: 13pt;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: #facc15;
+    }
+    @media print { h2 { color: #b45309; } }
+    h3 {
+      font-size: 11pt;
+      margin: 14px 0 6px;
+      font-weight: 700;
+      color: #fff;
+    }
+    @media print { h3 { color: #111; } }
+    p { margin: 0 0 8px; }
+    ul { margin: 6px 0 12px; padding-left: 1.1em; }
+    li { margin-bottom: 4px; }
+    .cover {
+      min-height: 255mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 18mm;
+      background: linear-gradient(165deg, #18181b 0%, #0a0a0a 55%, #09090b 100%);
+    }
+    @media print {
+      .cover {
+        border: 1px solid #ddd;
+        background: #fafafa;
+        min-height: auto;
+      }
+      .cover h1 { color: #111; }
+      .cover .eyebrow { color: #b45309; }
+      .cover .tagline { color: #222; }
+    }
+    .cover-logo-wrap {
+      margin-bottom: 10px;
+    }
+    .cover-logo {
+      display: block;
+      max-width: min(100%, 300px);
+      height: auto;
+    }
+    .expo-logo-mark {
+      max-width: min(100%, 300px);
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+    }
+    .expo-logo-mark__graphic {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: top;
+    }
+    .expo-logo-mark__text {
+      padding: 8px 10px 10px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      text-align: center;
+    }
+    .expo-logo-mark__en1 {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.35em;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      line-height: 1.25;
+      margin: 0 0 5px;
+    }
+    .expo-logo-mark__eth { color: #166534; }
+    .expo-logo-mark__gold { color: #b45309; }
+    @media print {
+      .expo-logo-mark__eth { color: #14532d; }
+      .expo-logo-mark__gold { color: #92400e; }
+    }
+    .expo-logo-mark__en2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 0 6px;
+    }
+    .expo-logo-mark__en2 .expo-logo-mark__rule {
+      flex: 1;
+      height: 2px;
+      max-width: 52px;
+      border-radius: 1px;
+    }
+    .expo-logo-mark__en2 .expo-logo-mark__rule--g { background: #166534; }
+    .expo-logo-mark__en2 .expo-logo-mark__rule--r { background: #dc2626; }
+    .expo-logo-mark__expo {
+      font-size: 11px;
+      font-weight: 800;
+      color: #dc2626;
+      letter-spacing: 0.1em;
+    }
+    .expo-logo-mark__am {
+      font-family: "Noto Sans Ethiopic", system-ui, sans-serif;
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #171717;
+      margin: 0 0 6px;
+      line-height: 1.35;
+    }
+    .expo-logo-mark__bar {
+      height: 3px;
+      border-radius: 1px;
+      background: linear-gradient(90deg, #166534 0%, #166534 33%, #facc15 33%, #facc15 66%, #dc2626 66%, #dc2626 100%);
+    }
+    .cover-connect {
+      font-size: 11pt;
+      font-weight: 800;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #facc15;
+      margin: 8px 0 10px;
+    }
+    @media print { .cover-connect { color: #b45309; } }
+    .cover-en-subtitle {
+      font-size: 9pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(250, 250, 250, 0.78);
+      margin: 0 0 14px;
+    }
+    @media print { .cover-en-subtitle { color: #444; } }
+    .eyebrow {
+      font-size: 9pt;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #facc15;
+      margin-bottom: 12px;
+    }
+    .tagline {
+      font-size: 15pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+    .date-line {
+      margin-top: 18px;
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .sub {
+      margin-top: 14px;
+      font-size: 11pt;
+      max-width: 40em;
+      color: rgba(255,255,255,0.82);
+    }
+    @media print { .sub { color: #333; } }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 20px;
+    }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+    .box {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+    }
+    @media print {
+      .box { border-color: #ddd; background: #f9fafb; }
+    }
+    .pill {
+      display: inline-block;
+      font-size: 8pt;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #facc15;
+      margin-bottom: 6px;
+    }
+    @media print { .pill { color: #b45309; } }
+    .cols-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      font-size: 9pt;
+    }
+    @media (max-width: 700px) { .cols-3 { grid-template-columns: 1fr; } }
+    .sector-tag {
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 6px 8px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 8.5pt;
+    }
+    @media print { .sector-tag { border-color: #ccc; background: #fff; } }
+    blockquote {
+      margin: 12px 0;
+      padding-left: 14px;
+      border-left: 3px solid #facc15;
+      font-style: italic;
+      color: rgba(255,255,255,0.88);
+    }
+    @media print { blockquote { color: #333; border-color: #ca8a04; } }
+    .footer-note {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-size: 8.5pt;
+      color: rgba(255,255,255,0.5);
+    }
+    @media print { .footer-note { border-color: #ddd; color: #666; } }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+    .toolbar button {
+      cursor: pointer;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: none;
+      background: #fff;
+      color: #000;
+      border-radius: 4px;
+    }
+    .toolbar button:hover { background: #facc15; }
+    .toolbar span { font-size: 11px; color: #9ca3af; }
+    .toolbar a.lang {
+      color: #facc15;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .toolbar a.lang:hover { color: #fde047; }
+    .sponsor-cover-strip { margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); }
+    @media print { .sponsor-cover-strip { border-color: #ddd; } }
+    .logo-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px 18px;
+    }
+    .logo-strip-item {
+      height: 36px;
+      width: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+    }
+    @media print {
+      .logo-strip-item { border-color: #ddd; background: #fff; }
+    }
+    .logo-strip-item img { max-height: 100%; max-width: 100%; object-fit: contain; }
+    .logo-strip-placeholder {
+      font-size: 14px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    @media print { .logo-strip-placeholder { color: #b45309; } }
+    .sponsor-spotlight-page h2 { margin-bottom: 14px; }
+    .sponsor-spotlight-root {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 700px) { .sponsor-spotlight-root { grid-template-columns: 1fr; } }
+    .sponsor-card {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      break-inside: avoid;
+    }
+    @media print {
+      .sponsor-card { border-color: #ddd; background: #f9fafb; }
+    }
+    .sponsor-card-media { position: relative; height: 120px; background: #18181b; }
+    @media print { .sponsor-card-media { background: #eee; } }
+    .sponsor-card-hero {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sponsor-card-hero-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .sponsor-card-hero-fallback img { max-height: 100%; max-width: 100%; object-fit: contain; }
+    .sponsor-card-hero-fallback.text-only {
+      font-size: 32px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    @media print { .sponsor-card-hero-fallback.text-only { color: #b45309; } }
+    .sponsor-card-body { padding: 10px 12px 12px; position: relative; }
+    .sponsor-card-logo {
+      position: absolute;
+      top: -22px;
+      right: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: #0a0a0a;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media print { .sponsor-card-logo { background: #fff; border-color: #ccc; } }
+    .sponsor-card-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .sponsor-card-body h3 {
+      margin: 0 52px 4px 0;
+      font-size: 11pt;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #fff;
+    }
+    @media print { .sponsor-card-body h3 { color: #111; } }
+    .sponsor-tier {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #facc15;
+    }
+    @media print { .sponsor-tier { color: #b45309; } }
+    .sponsor-thumbs {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .sponsor-thumbs img {
+      width: 56px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    @media print { .sponsor-thumbs img { border-color: #ccc; } }
+    .sponsor-loading { font-size: 9pt; color: rgba(250,250,250,0.5); }
+    @media print { .sponsor-loading { color: #666; } }
+    #sponsor-load-error { color: #f87171; font-size: 10pt; text-align: center; padding: 8px; }
+  </style>
+</head>
+<body class="brochure-lang-am">
+  <div class="toolbar no-print">
+    <span>ኢትዮ ቢልድ ኮነክት ኤክስፖ — አትም ወይም እንደ PDF ያስቀምጡ</span>
+    <button type="button" onclick="window.print()">አትም / እንደ PDF አስቀምጥ</button>
+    <a class="lang" href="ethio-build-connect-expo-2026-brochure.html">English brochure</a>
+  </div>
+
+  <!-- ገጽ 1: ሽፋን -->
+  <section class="sheet cover">
+    <div>
+      <div class="cover-logo-wrap">
+        <div class="expo-logo-mark" role="img" aria-label="ኢትዮ ቢልድ ኮነክት ኤክስፖ — Ethio Build Connect Expo">
+          <img
+            class="expo-logo-mark__graphic"
+            src="/images/exhibition/ethio-build-connect-expo-logo-graphic.png"
+            width="300"
+            height="87"
+            alt=""
+          />
+          <div class="expo-logo-mark__text">
+            <p class="expo-logo-mark__en1">
+              <span class="expo-logo-mark__eth">ethio</span>
+              <span class="expo-logo-mark__gold">build</span>
+              <span class="expo-logo-mark__gold">connect</span>
+            </p>
+            <div class="expo-logo-mark__en2">
+              <span class="expo-logo-mark__rule expo-logo-mark__rule--g" aria-hidden="true"></span>
+              <span class="expo-logo-mark__expo">Expo</span>
+              <span class="expo-logo-mark__rule expo-logo-mark__rule--r" aria-hidden="true"></span>
+            </div>
+            <p class="expo-logo-mark__am" lang="am">ኢትዮ ቢልድ ኮነክት ኤክስፖ</p>
+            <div class="expo-logo-mark__bar" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <h1>ድጋሜ ፕሮጀክቶች።<br />ታላቅ ግንኙነቶች።<br />ይበልጥ ታላቅ እድሎች።</h1>
+      <p class="date-line accent">10–13 ኖቬምበር 2026</p>
+      <p class="date-line muted" style="margin-top: 4px;">አዲስ ኮንቬንሽን ማእከል — አዲስ አበባ፣ ኢትዮጵያ</p>
+      <p class="sub">
+        የአለም ቪዥነሪዎችን ይግኙ፣ ታዋቂ ፕሮጀክቶችን ይመልከቱ እና በክልሉ ትልቁ የንብረት እና የግንባታ ማሳያ ላይ ዕድገት እና ትብብር መንገዶችን ይክፈቱ።
+      </p>
+    </div>
+    <div>
+      <p class="pill">በ2026 ይመጣል</p>
+      <p class="muted" style="font-size: 9.5pt;">
+        የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን እና ምርቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት ልዩ መድረክ። ተሳተፊዎች ገንቢዎች፣ ተቋራጮች፣ አርኪቴክቶች፣ የግንባታ ቁሳቁሶች እና የመጨረሻ ስራ አቅራቢዎች እና አገልግሎት ሰጪዎችን ያካትታሉ — ሁሉም በአንድ ጣራ ሥር።
+      </p>
+      <div id="sponsor-cover-strip" class="sponsor-cover-strip">
+        <p class="sponsor-loading muted">የአጋር አርማዎች በመጫን ላይ…</p>
+      </div>
+      <p class="footer-note">© 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. ኢትዮ ቢልድ ኮነክት ኤክስፖ።</p>
+    </div>
+  </section>
+
+  <!-- ገጽ 2: ስፖንሰሮች -->
+  <section class="sheet sponsor-spotlight-page">
+    <p id="sponsor-load-error" class="no-print" style="display: none;">
+      የአጋር ሚዲያ ማምጣት አልተቻለም። የአርማ እና ምስሎች እንዲታዩ ይህን ብሮሹር ከ Ethio Build Connect ድር ጣቢያዎ (ከ API ጋር ተመሳሳይ መነሻ) ይክፈቱ — ከዚያ አትም ወይም እንደ PDF ያስቀምጡ።
+    </p>
+    <h2>መሠረታዊ አጋሮች እና ስፖንሰሮች</h2>
+    <p class="muted" style="margin-bottom: 14px; font-size: 9.5pt;">
+      በመድረኩ ላይ ንቁ ስፖንሰር ላላቸው ድርጅቶች — ከታተሙ ሚዲያዎቻቸው አርማዎች እና ምስሎች።
+    </p>
+    <div id="sponsor-spotlight-root" class="sponsor-spotlight-root">
+      <p class="sponsor-loading muted">የስፖንሰር ማሳያ በመጫን ላይ…</p>
+    </div>
+  </section>
+
+  <!-- ገጽ 3 -->
+  <section class="sheet">
+    <h2>ለምን ይጎብኙ</h2>
+    <p class="muted" style="margin-bottom: 12px;">
+      በክልሉ ትልቁ የንብረት ዝግጅት የመኖሪያ የወደፊት እድገትን ያስሱ። በፈጠራ የከተማ ጥበቃዎች ውስጥ ይግቡ እና ከአለም አቀፍ የንብረት መሪዎች ጋር ይግኙ።
+    </p>
+    <ul>
+      <li>300+ ተሳተፊዎች · 500+ ተናጋሪዎች · 6 ደረጃዎች</li>
+      <li>180+ ሰዓት የስብሰባ ይዘት</li>
+      <li>በተሳተፊ የማሳያ ባህሪያት እና ኔትወርኪንግ</li>
+    </ul>
+
+    <h2>ለምን ይሳተፉ (ተሳተፊ)</h2>
+    <p class="muted" style="margin-bottom: 12px;">
+      ቪዥንዎን ከአለም አቀፍ ተጽዕኖ ፈጣሪዎች እና ውሳኔ ተሳታፊዎች ጋር ያሳዩ። የግንባታ እና የንብረት የወደፊት እድገትን የሚያስተዳድሩ ተቋራጭ ባለሃብቶች፣ ገንቢዎች እና የመንግሥት አካላት ይግኙ።
+    </p>
+    <ul>
+      <li>ለከፍተኛ ዋጋ ያላቸው ፕሮጀክቶች እና ትብብሮች ያልተበላሸ መድረስ</li>
+      <li>በስፖንሰርሺፕ እድሎች በኩል መገኘትዎን ከፍ ማድረግ</li>
+      <li>የስብሰባ፣ የኔትወርኪንግ እና የባለሃብት ፕሮግራሞች</li>
+    </ul>
+
+    <h2>በኤግዚቢሽኑ ምን እንደሚጠበቅ</h2>
+    <div class="grid-2">
+      <div class="box">
+        <h3>የክልሉ ትልልቅ ፕሮጀክቶች</h3>
+        <p class="muted" style="font-size: 9.5pt;">
+          የቅርብ ጊዜ ማስጀመሪያዎች፣ ቪዥነሪ ዋና ዕቅዶች እና ፈጠራ እድገቶች — ሁሉም በአንድ ጣራ ሥር። 550+ ተሳተፊዎች የንብረት እና የግንባታ የወደፊት እድገትን ያሳያሉ።
+        </p>
+      </div>
+      <div class="box">
+        <h3>ከውሳኔ ተሳታፊዎች ጋር ይግኙ</h3>
+        <p class="muted" style="font-size: 9.5pt;">
+          በተዘጋጁ ኔትወርኪንግ በባለሃብቶች፣ ገንቢዎች እና የከተማ መሪዎች ጋር ይግኙ። አዲስ ካፒታል፣ ትብብሮች ይፍጠሩ እና በሚጠቅሙ ገበያዎች ያስፋፉ።
+        </p>
+      </div>
+      <div class="box" style="grid-column: 1 / -1;">
+        <h3>ጠቃሚ ግንዛቤዎች</h3>
+        <p class="muted" style="font-size: 9.5pt;">
+          ከኢንዱስትሪ መሪዎች በእንዴት እንኖራለን፣ እንትወድማለን እና እንገነባለን በሚለው አዝማሚያ ላይ ተግባራዊ ግንዛቤዎች። ለገበያ የተዘጋጁ የስብሰባ እና የዝግጅት ክፍሎች።
+        </p>
+      </div>
+    </div>
+    <p class="footer-note">
+      ዋና የማሳያ ባህሪያት፦ የዓለም ደረጃ ስብሰባዎች፣ ትልልቅ ማስታወቂያዎች፣ የገንቢ ፕሮግራም እና ልዩ ትራክቶች። ብትሳተፍ ወይም ብትጎብኝ፣ እዚህ ለእርስዎ ያለው ጥቅም ነው።
+    </p>
+  </section>
+
+  <!-- ገጽ 4 -->
+  <section class="sheet">
+    <h2>ማን ይገኛል</h2>
+    <p class="muted" style="margin-bottom: 10px;">
+      ዝግጅቱ የንብረት መሪዎችን — ባለሃብቶች፣ ገንቢዎች፣ አርኪቴክቶች፣ የመንግሥት ባለስልጣናት እና የቤት ገዢዎች — ያስተካክላል።
+    </p>
+    <div class="grid-2" style="font-size: 9.5pt;">
+      <div class="box"><strong>የንብረት ገንቢዎች</strong><br /><span class="muted">ዋና ዕቅድ አዘጋጆች እና የፕሮጀክት መሪዎች</span></div>
+      <div class="box"><strong>ፕሮፕቴክ ፈጣሪዎች</strong><br /><span class="muted">ቴክ እና የንብረት ገበያ መፍትሄዎች</span></div>
+      <div class="box"><strong>አርኪቴክቶች እና ዲዛይነሮች</strong><br /><span class="muted">ዘላቂ እና የወደፊት ዲዛይን</span></div>
+      <div class="box"><strong>የመንግሥት ባለስልጣናት</strong><br /><span class="muted">የብሔራዊ እድገት ስትራቴጂዎች</span></div>
+      <div class="box"><strong>የግንባታ ባለሙያዎች</strong><br /><span class="muted">ተቋራጮች እና መሠረታዊ ግንባታ</span></div>
+      <div class="box"><strong>ብሮከርስ እና ኮንሳልታንቶች</strong><br /><span class="muted">የገበያ ብልጥ ግንዛቤ እና ምክር</span></div>
+      <div class="box"><strong>ባለሃብቶች እና ፋይናንሺያሎች</strong><br /><span class="muted">ከፍተኛ ዋጋ ያላቸው የንብረት እድሎች</span></div>
+      <div class="box"><strong>የቤት ገዢዎች</strong><br /><span class="muted">የመኖሪያ አዝማሚያዎች እና ብልጽግና መኖር</span></div>
+    </div>
+
+    <h2 style="margin-top: 18px;">የግንባታ ዋጋ ሰንሰለት</h2>
+    <p class="muted" style="margin-bottom: 10px;">ሙሉውን የኢንዱስትሪ ስፔክትረም እንሸፍናለን። ለንግድዎ ጠቃሚ የሆነውን አካባቢ ያግኙ።</p>
+    <div class="cols-3">
+      <div class="sector-tag">የግንባታ ቁሳቁሶች</div>
+      <div class="sector-tag">ኮንክሪት እና ሲሚንቶ</div>
+      <div class="sector-tag">ውስጣዊ እና መጨረሻዎች</div>
+      <div class="sector-tag">የከተማ ዲዛይን</div>
+      <div class="sector-tag">የሕንፃ አገልግሎቶች (MEP)</div>
+      <div class="sector-tag">የግንባታ መሳሪያዎች</div>
+      <div class="sector-tag">HVAC እና ቀዝቃዛ</div>
+      <div class="sector-tag">ዲጂታል ግንባታ</div>
+      <div class="sector-tag">የፀሐይ ኢነርጂ</div>
+      <div class="sector-tag">ከባድ ማሽኖች</div>
+      <div class="sector-tag">ብልጥ ሕንፃ</div>
+      <div class="sector-tag">ዘላቂ ግንባታ</div>
+    </div>
+  </section>
+
+  <!-- ገጽ 5 -->
+  <section class="sheet">
+    <h2>ለምን ይሳተፉ</h2>
+    <p class="muted" style="margin-bottom: 12px;">የቅርብ ጊዜ ፈጠራዎችን ያግኙ እና ዘርፉን የሚያስቀድም የከፍተኛ ደረጃ ኔትወርኪንግ።</p>
+    <div class="grid-2">
+      <div class="box">
+        <h3>ንግድዎን ያስፋፉ</h3>
+        <p class="muted" style="font-size: 9.5pt;">አዲስ ትብብሮች ይፍጠሩ እና በፈጣን ማስፋፋት ላይ ባለው ገበያ ኔትወርክዎን ያድጉ።</p>
+      </div>
+      <div class="box">
+        <h3>ምርቶችዎን ያሳዩ</h3>
+        <p class="muted" style="font-size: 9.5pt;">የቅርብ ጊዜ ፈጠራዎችዎን ለሺዎች የሚሆኑ ግብአቶች እና ውሳኔ ተሳታፊዎች ያሳዩ።</p>
+      </div>
+      <div class="box">
+        <h3>ቁርጥ የሆኑ ገዢዎችን ይግኙ</h3>
+        <p class="muted" style="font-size: 9.5pt;">ከግዥ ስራ አስኪያጆች፣ አርኪቴክቶች እና ገንቢዎች በቀጥታ ይግኙ።</p>
+      </div>
+      <div class="box">
+        <h3>ጥራት ያላቸው ሊድስ ይፍጠሩ</h3>
+        <p class="muted" style="font-size: 9.5pt;">ፒፓይላይንዎን ከከፍተኛ ዋጋ ያላቸው እውቂያዎች እና እውነተኛ የንግድ እድሎች ያስቀምጡ።</p>
+      </div>
+    </div>
+
+    <p class="pill" style="margin-top: 18px;">በእነርሱ ቃል</p>
+    <blockquote>
+      «ኤግዚቢሽኑ አለም አቀፍ ባለሃብቶች የሚገናኙበት እና ሀሳቦችን የሚለዋወጡበት እና የራሳቸውን ምርት እና ተወሳሽነት ያለውን ገበያ እንዴት ማዳበር እንደሚችሉ የሚያስሱበት ፍጹም መድረሻ ነው።»
+    </blockquote>
+    <p class="muted" style="font-size: 9pt;">— የኢንዱስትሪ መሪ</p>
+
+    <h2 style="margin-top: 20px;">ጉዞዎን ይዋቅሩ እና ይመዝግቡ</h2>
+    <p class="muted">
+      በንብረት እና የከተማ እድገት ውስጥ በሚቻል ነገር ድንበሮችን የሚያሻሽል ዝግጅት ጋር ይግኙን። ስታንድዎን ይያዙ ወይም በዓመቱ በጣም የሚጠበቀውን የንብረት እና የግንባታ ዝግጅት ለመጎብኘት ይመዝግቡ።
+    </p>
+    <p style="margin-top: 12px; font-weight: 600;">
+      ስለ ቀናት፣ የተሳተፊ መረጃ እና እንዴት እንደሚሳተፉ ዝማሬዎች ለማግኘት በ Ethio Build Connect የኤግዚቢሽን ገጽ ላይ ፍላጎትዎን ይመዝግቡ።
+    </p>
+    <p class="footer-note">
+      ተሳተፊዎች ገንቢዎች፣ ተቋራጮች፣ አርኪቴክቶች፣ የግንባታ ቁሳቁሶች እና የመጨረሻ ስራ አቅራቢዎች እና አገልግሎት ሰጪዎችን ያካትታሉ። ፕሪሚየም እና ጎልድ ስፖንሰር እድሎች ይገኛሉ።<br />
+      © 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. መብቱ በህግ የተጠበቀ ነው።
+    </p>
+  </section>
+  <script>
+    (function () {
+      var API = '/api/v1'
+      var L = {
+        foundationPartners: 'መሠረታዊ አጋሮች',
+        noSponsorSlots: 'ፕሪሚየም እና ጎልድ ስፖንሰር ቦታዎች ይገኛሉ',
+        noOrgsYet: 'ተሳተፊ ድርጅቶች በመድረኩ ሲገኙ እዚህ ይታያሉ።',
+        fileOpenHint: 'የአጋር አርማዎች እንዲጫኑ ይህን ብሮሹር ከ ድር ጣቢያዎ (እንደ አካባቢ ፋይል ሳይሆን) ይክፈቱ።',
+        httpHint: 'የስፖንሰር ሚዲያ ከ Ethio Build Connect መተግበሪያ በ HTTP(S) ሲቀርብ ይጫናል።',
+        loadFailed: 'ስፖንሰሮችን ማምጣት አልተቻለም። API ከዚህ መነሻ ሊደርስ እንደሚችል ያረጋግጡ።'
+      }
+      function resolveMediaUrl(path) {
+        if (!path) return ''
+        if (/^https?:\/\//i.test(path)) return path
+        return window.location.origin + (path.charAt(0) === '/' ? path : '/' + path)
+      }
+      function escapeHtml(s) {
+        var d = document.createElement('div')
+        d.textContent = s == null ? '' : String(s)
+        return d.innerHTML
+      }
+      function tierRank(t) {
+        var u = String(t || '').toUpperCase()
+        if (u === 'EXCLUSIVE') return 0
+        if (u === 'PREMIUM') return 1
+        if (u === 'GOLD') return 2
+        return 3
+      }
+      function collectOrgImages(sponsored, detail) {
+        var urls = []
+        var seen = {}
+        function push(u) {
+          if (!u || seen[u]) return
+          seen[u] = true
+          urls.push(u)
+        }
+        push(sponsored.splashImageUrl)
+        if (detail && Array.isArray(detail.media)) {
+          detail.media.forEach(function (m) {
+            if (!m || !m.url) return
+            var k = String(m.mediaKind || '').toUpperCase()
+            if (k === 'IMAGE') push(m.url)
+          })
+        }
+        return urls
+      }
+      function fetchJson(url) {
+        return fetch(url, { credentials: 'same-origin' }).then(function (r) {
+          if (!r.ok) throw new Error(String(r.status))
+          return r.json()
+        })
+      }
+      function loadSponsors() {
+        var coverStrip = document.getElementById('sponsor-cover-strip')
+        var spotlight = document.getElementById('sponsor-spotlight-root')
+        var errEl = document.getElementById('sponsor-load-error')
+        if (window.location.protocol === 'file:') {
+          if (coverStrip) {
+            coverStrip.innerHTML = '<p class="muted" style="font-size:9pt">' + L.fileOpenHint + '</p>'
+          }
+          if (spotlight) {
+            spotlight.innerHTML = '<p class="muted">' + L.httpHint + '</p>'
+          }
+          if (errEl) errEl.style.display = 'block'
+          return
+        }
+        fetchJson(API + '/sponsorships/sponsored-organizations')
+          .then(function (orgs) {
+            if (!Array.isArray(orgs) || orgs.length === 0) {
+              if (coverStrip) {
+                coverStrip.innerHTML =
+                  '<p class="pill" style="margin-bottom:10px">' +
+                  L.foundationPartners +
+                  '</p><p class="muted" style="font-size:9pt">' +
+                  L.noSponsorSlots +
+                  '</p>'
+              }
+              if (spotlight) {
+                spotlight.innerHTML = '<p class="muted">' + L.noOrgsYet + '</p>'
+              }
+              return null
+            }
+            orgs.sort(function (a, b) {
+              var rd = tierRank(a.sponsorshipType) - tierRank(b.sponsorshipType)
+              if (rd !== 0) return rd
+              var pa = parseFloat(a.basePrice) || 0
+              var pb = parseFloat(b.basePrice) || 0
+              return pb - pa
+            })
+            return Promise.all(
+              orgs.map(function (o) {
+                return fetchJson(API + '/organizations/' + o.id)
+                  .then(function (d) {
+                    return { sponsored: o, detail: d }
+                  })
+                  .catch(function () {
+                    return { sponsored: o, detail: null }
+                  })
+              })
+            ).then(function (pairs) {
+              return { orgs: orgs, pairs: pairs }
+            })
+          })
+          .then(function (data) {
+            if (!data) return
+            var orgs = data.orgs
+            var pairs = data.pairs
+            if (coverStrip) {
+              coverStrip.innerHTML =
+                '<p class="pill" style="margin-bottom:10px">' +
+                L.foundationPartners +
+                '</p><div class="logo-strip">' +
+                orgs
+                  .map(function (o) {
+                    var logo = resolveMediaUrl(o.logoUrl)
+                    var name = escapeHtml(o.name || '')
+                    if (logo) {
+                      return (
+                        '<div class="logo-strip-item"><img src="' +
+                        escapeHtml(logo) +
+                        '" alt="' +
+                        name +
+                        '" /></div>'
+                      )
+                    }
+                    var initial = (o.name || '?').charAt(0).toUpperCase()
+                    return (
+                      '<div class="logo-strip-item logo-strip-placeholder">' + escapeHtml(initial) + '</div>'
+                    )
+                  })
+                  .join('') +
+                '</div>'
+            }
+            if (spotlight) {
+              spotlight.innerHTML = pairs
+                .map(function (_ref) {
+                  var o = _ref.sponsored
+                  var detail = _ref.detail
+                  var name = escapeHtml(o.name || '')
+                  var tier = escapeHtml(o.sponsorshipType || 'Sponsor')
+                  var images = collectOrgImages(o, detail)
+                  var mainRaw = images[0]
+                  var mainImg = mainRaw ? resolveMediaUrl(mainRaw) : ''
+                  var thumbs = images
+                    .slice(1, 5)
+                    .map(function (u) {
+                      return resolveMediaUrl(u)
+                    })
+                    .filter(Boolean)
+                  var logo = resolveMediaUrl(o.logoUrl)
+                  var card = '<article class="sponsor-card"><div class="sponsor-card-media">'
+                  if (mainImg) {
+                    card += '<img class="sponsor-card-hero" src="' + escapeHtml(mainImg) + '" alt="" />'
+                  } else if (logo) {
+                    card +=
+                      '<div class="sponsor-card-hero-fallback"><img src="' +
+                      escapeHtml(logo) +
+                      '" alt="' +
+                      name +
+                      '" /></div>'
+                  } else {
+                    card +=
+                      '<div class="sponsor-card-hero-fallback text-only">' +
+                      escapeHtml((o.name || '?').charAt(0).toUpperCase()) +
+                      '</div>'
+                  }
+                  card += '</div><div class="sponsor-card-body">'
+                  if (logo && mainImg) {
+                    card +=
+                      '<div class="sponsor-card-logo"><img src="' +
+                      escapeHtml(logo) +
+                      '" alt="" /></div>'
+                  }
+                  card += '<h3>' + name + '</h3>'
+                  card += '<span class="sponsor-tier">' + tier + '</span>'
+                  if (thumbs.length) {
+                    card +=
+                      '<div class="sponsor-thumbs">' +
+                      thumbs
+                        .map(function (src) {
+                          return '<img src="' + escapeHtml(src) + '" alt="" />'
+                        })
+                        .join('') +
+                      '</div>'
+                  }
+                  card += '</div></article>'
+                  return card
+                })
+                .join('')
+            }
+          })
+          .catch(function (e) {
+            console.error(e)
+            if (errEl) errEl.style.display = 'block'
+            if (coverStrip) {
+              coverStrip.innerHTML = ''
+            }
+            if (spotlight) {
+              spotlight.innerHTML = '<p class="muted">' + L.loadFailed + '</p>'
+            }
+          })
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadSponsors)
+      } else {
+        loadSponsors()
+      }
+    })()
+  </script>
+</body>
+</html>

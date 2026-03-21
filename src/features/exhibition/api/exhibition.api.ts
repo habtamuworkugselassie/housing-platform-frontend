@@ -8,6 +8,7 @@ export interface SponsoredOrganizationResponse {
   name: string
   logoUrl?: string
   videoUrl?: string
+  /** First IMAGE from organization media (splash / hero). */
   splashImageUrl?: string
   address?: string
   city?: string

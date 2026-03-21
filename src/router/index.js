@@ -175,6 +175,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
+    path: '/admin/settings',
+    name: 'AdminDisplaySettings',
+    component: () => import('@/features/admin/views/AdminDisplaySettingsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/banking/dashboard',
     name: 'BankingDashboard',
     component: () => import('@/features/banking/views/BankingDashboardView.vue'),

@@ -245,6 +245,7 @@
 
 <script setup>
 import { computed, ref, watch, onUnmounted } from 'vue'
+import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
@@ -265,7 +266,17 @@ const props = defineProps({
   adContents: {
     type: Array,
     default: null
+  },
+  /** Sidebar media rotation (ms). Omit to use admin / public display settings. */
+  sidebarMediaRotationMs: { type: Number, default: undefined }
+})
+
+const { settings } = useDisplaySettings()
+const effectiveSidebarMediaMs = computed(() => {
+  if (props.sidebarMediaRotationMs !== undefined && props.sidebarMediaRotationMs !== null) {
+    return props.sidebarMediaRotationMs
   }
+  return settings.sidebarMediaRotationMs
 })
 
 const router = useRouter()
@@ -326,14 +337,16 @@ const resetSidebarMediaRotation = () => {
   }
   currentSidebarMediaIndex.value = 0
   if (props.size !== 'sidebar' || sidebarMediaItems.value.length <= 1) return
+  const ms = effectiveSidebarMediaMs.value
+  if (ms <= 0) return
   sidebarMediaInterval = setInterval(() => {
     if (!sidebarMediaItems.value.length) return
     currentSidebarMediaIndex.value = (currentSidebarMediaIndex.value + 1) % sidebarMediaItems.value.length
-  }, 5000)
+  }, ms)
 }
 
 watch(
-  () => [props.size, props.adContent?.id, sidebarMediaItems.value.length],
+  () => [props.size, props.adContent?.id, sidebarMediaItems.value.length, effectiveSidebarMediaMs.value],
   resetSidebarMediaRotation,
   { immediate: true }
 )

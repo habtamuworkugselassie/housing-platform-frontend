@@ -5,11 +5,20 @@
       class="fixed inset-0 z-[9999] flex flex-col bg-black"
       aria-label="Splash screen"
     >
-      <!-- Content: app title + sponsor logo and name (no background media) -->
+      <!-- Content: event logo (full lockup) + sr-only title + sponsor logo and name -->
       <div class="flex-1 flex flex-col items-center justify-center px-4 text-center">
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white uppercase tracking-tight">
-          {{ appTitle }}
-        </h1>
+        <div
+          class="rounded-2xl bg-white p-5 sm:p-6 max-w-[min(100%,360px)] sm:max-w-[400px] w-full shadow-[0_0_0_1px_rgba(255,255,255,0.12)]"
+        >
+          <img
+            src="/images/exhibition/ethio-build-connect-expo-logo-full.png"
+            alt="Ethio Build Connect Expo — English and Amharic: ኢትዮ ቢልድ ኮነክት ኤክስፖ"
+            width="360"
+            class="mx-auto w-full h-auto object-contain select-none"
+            draggable="false"
+          />
+        </div>
+        <h1 class="sr-only">{{ appTitle }}</h1>
 
         <!-- Exclusive sponsors: all orgs displayed horizontally -->
         <div
@@ -66,7 +75,7 @@ import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.
 
 const props = defineProps({
   /** App title shown on splash */
-  appTitle: { type: String, default: 'Housing Platform' },
+  appTitle: { type: String, default: 'Ethio Build Connect' },
   /** Auto-dismiss after this many ms (0 = disabled) */
   autoDismissMs: { type: Number, default: 5000 }
 })

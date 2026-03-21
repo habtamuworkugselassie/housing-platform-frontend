@@ -156,3 +156,10 @@ export interface AdminFilters {
   dateTo?: string
   search?: string
 }
+
+/** Public landing timings (ms); admin GET/PUT /admin/display-settings */
+export interface DisplaySettings {
+  sponsorCarouselAutoplayMs: number
+  sidebarMediaRotationMs: number
+  sidebarLayoutRotationMs: number
+}

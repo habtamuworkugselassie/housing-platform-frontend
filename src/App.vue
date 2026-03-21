@@ -27,6 +27,10 @@ import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
+import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
+
+const { loadDisplaySettings } = useDisplaySettings()
+loadDisplaySettings()
 
 const SPLASH_SHOWN_KEY = 'splashShown'
 
