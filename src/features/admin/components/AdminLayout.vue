@@ -53,31 +53,7 @@
           </router-link>
         </nav>
 
-        <!-- User Section -->
-        <div class="p-4 border-t border-white/10">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center font-medium">
-                {{ userInitials }}
-              </div>
-            </div>
-            <div class="ml-3 flex-1 min-w-0">
-              <p class="text-sm font-medium text-white truncate">{{ userName }}</p>
-              <p class="text-xs text-gray-400 truncate">{{ $t('admin.administrator') }}</p>
-            </div>
-          </div>
-          <button
-            @click="handleLogout"
-            class="mt-3 w-full px-4 py-2 text-sm bg-white text-black hover:bg-yellow-400 rounded-lg transition-colors font-medium"
-          >
-            <span class="flex items-center justify-center">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              Sign Out
-            </span>
-          </button>
-        </div>
+
       </div>
     </aside>
 
@@ -129,6 +105,11 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
+
+          <!-- User Profile Dropdown -->
+          <div class="pl-4 border-l border-white/10">
+            <UserDropdown :showName="false" avatarClass="w-8 h-8 sm:w-10 sm:h-10 text-black bg-white" />
+          </div>
         </div>
       </header>
 
@@ -152,6 +133,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
+import UserDropdown from '@/shared/components/UserDropdown.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -161,24 +143,8 @@ const authStore = useAuthStore()
 const sidebarOpen = ref(false)
 const pendingApprovals = ref(0) // TODO: Load from stats
 
-const userName = computed(() => {
-  const user = authStore.user
-  return user ? `${user.firstName} ${user.lastName}` : t('nav.admin')
-})
-
-const userInitials = computed(() => {
-  const user = authStore.user
-  if (!user) return 'A'
-  return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase() || 'A'
-})
-
 const isActive = (path) => {
   return route.path === path || route.path.startsWith(path + '/')
-}
-
-const handleLogout = async () => {
-  await authStore.logout()
-  router.push('/login')
 }
 
 // Navigation items

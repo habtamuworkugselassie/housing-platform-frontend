@@ -1283,7 +1283,8 @@
               <!-- Existing Images -->
               <div v-if="editingProperty && editingProperty.images && editingProperty.images.length > 0" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                 <div v-for="image in editingProperty.images" :key="image.id" class="relative group">
-                  <img :src="mediaUrl(image.imageUrl)" :alt="image.caption || $t('property.propertyImage')" class="w-full h-24 object-cover rounded border border-white/20" />
+                  <img v-if="!isVideoUrl(image.imageUrl)" :src="mediaUrl(image.imageUrl)" :alt="image.caption || $t('property.propertyImage')" class="w-full h-24 object-cover rounded border border-white/20" />
+                  <video v-else :src="mediaUrl(image.imageUrl)" class="w-full h-24 object-cover rounded border border-white/20" muted playsinline></video>
                   <button
                     type="button"
                     @click="deletePropertyImage(editingProperty.id, image.id)"
@@ -1526,7 +1527,7 @@ import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue
 import { OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
-import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { formatPrice as formatCurrencyPrice, isVideoUrl } from '@/shared/utils'
 
 const { t } = useI18n()
 const authStore = useAuthStore()

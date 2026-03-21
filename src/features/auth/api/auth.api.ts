@@ -11,7 +11,8 @@ import type {
   AuthResponse,
   RefreshTokenResponse,
   ForgotPasswordRequest,
-  ResetPasswordRequest
+  ResetPasswordRequest,
+  User
 } from './auth.types'
 
 export const authApi = {
@@ -42,6 +43,14 @@ export const authApi = {
   },
 
   /**
+   * Current user (includes profileImageUrl from server — avoids stale localStorage URLs).
+   */
+  getCurrentUser: async (): Promise<User> => {
+    const response = await api.get<User>('/users/me')
+    return response.data
+  },
+
+  /**
    * Logout user (if backend supports it)
    */
   logout: async (): Promise<void> => {
@@ -60,5 +69,15 @@ export const authApi = {
    */
   resetPassword: async (data: ResetPasswordRequest): Promise<void> => {
     await api.post('/auth/reset-password', data)
+  },
+
+  /**
+   * Upload profile image
+   */
+  uploadProfileImage: async (file: File): Promise<User> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.post<User>('/users/me/profile-image', formData)
+    return response.data
   }
 }

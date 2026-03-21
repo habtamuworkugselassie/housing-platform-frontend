@@ -114,6 +114,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/profile',
+    name: 'UserProfile',
+    component: () => import('@/features/identity/views/UserProfileView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/sponsorships',
     name: 'Sponsorships',
     component: () => import('@/features/admin/views/SponsorshipsView.vue'),

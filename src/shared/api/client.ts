@@ -44,6 +44,16 @@ export function mediaUrl(path: string | null | undefined): string {
   return origin + (path.startsWith('/') ? path : '/' + path)
 }
 
+/**
+ * User profile must not use property image URLs (legacy bad data). Prefer /api/v1/uploads/... from
+ * GET /users/me or re-upload.
+ */
+export function sanitizeProfileImageUrl(url: string | null | undefined): string | undefined {
+  if (url == null || url === '') return undefined
+  if (url.includes('/api/v1/properties/')) return undefined
+  return url
+}
+
 const api: AxiosInstance = axios.create({
   baseURL: getBaseURL(),
   headers: {

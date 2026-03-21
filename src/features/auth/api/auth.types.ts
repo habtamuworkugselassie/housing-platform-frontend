@@ -49,6 +49,8 @@ export interface User {
   firstName: string
   lastName: string
   phoneNumber?: string
+  /** From GET /users/me or profile-image upload; use /api/v1/uploads/... for new uploads */
+  profileImageUrl?: string | null
   roles: string[]
   scopes: string[]
 }

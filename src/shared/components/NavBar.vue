@@ -193,24 +193,9 @@
                 {{ $t('nav.dashboard') }}
               </router-link>
               
-              <!-- User Profile Section -->
               <div class="flex items-center gap-2 pl-4 border-l border-white/20">
-                <div class="text-right hidden md:block">
-                  <div class="text-sm font-medium text-white">{{ authStore.user?.firstName || $t('common.user') }}</div>
-                  <div class="text-xs text-gray-400">{{ authStore.user?.phoneNumber || '+251 9XX XXX XXX' }}</div>
-                </div>
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white text-black flex items-center justify-center font-semibold text-sm sm:text-base">
-                  {{ (authStore.user?.firstName?.[0] || 'U').toUpperCase() }}
-                </div>
+                <UserDropdown />
               </div>
-              
-              <button
-                @click="handleLogout"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-yellow-400"
-              >
-                <span class="hidden sm:inline">{{ $t('nav.logout') }}</span>
-                <span class="material-icons sm:hidden">logout</span>
-              </button>
             </template>
             <template v-else>
               <router-link
@@ -332,8 +317,9 @@
             <!-- User Info in Mobile Menu -->
             <div class="px-3 py-2 border-t border-white/10 mt-2">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-semibold">
-                  {{ (authStore.user?.firstName?.[0] || 'U').toUpperCase() }}
+                <div class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-semibold overflow-hidden shrink-0">
+                  <img v-if="authStore.user?.profileImageUrl" :src="mediaUrl(authStore.user.profileImageUrl)" alt="Profile" class="w-full h-full object-cover" />
+                  <template v-else>{{ (authStore.user?.firstName?.[0] || 'U').toUpperCase() }}</template>
                 </div>
                 <div>
                   <div class="text-sm font-medium text-white">{{ authStore.user?.firstName || 'User' }} {{ authStore.user?.lastName }}</div>
@@ -342,11 +328,25 @@
               </div>
             </div>
             
-            <button
-              @click="handleLogout; mobileMenuOpen = false"
+            <router-link
+              to="/profile"
+              @click="mobileMenuOpen = false"
               class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/20 rounded-md"
             >
-              {{ $t('nav.logout') }}
+              <div class="flex items-center gap-2">
+                <span class="material-icons text-xl" aria-hidden="true">person</span>
+                <span>{{ $t('common.profile') || 'Profile' }}</span>
+              </div>
+            </router-link>
+            
+            <button
+              @click="handleLogout"
+              class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-red-400 hover:bg-red-500/10 rounded-md"
+            >
+              <div class="flex items-center gap-2">
+                <span class="material-icons text-xl" aria-hidden="true">logout</span>
+                <span>{{ $t('nav.logout') }}</span>
+              </div>
             </button>
           </template>
           <template v-else>
@@ -374,8 +374,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/features/auth'
+import { mediaUrl } from '@/shared/api/client'
 import { useRouter, useRoute } from 'vue-router'
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
+import UserDropdown from '@/shared/components/UserDropdown.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()

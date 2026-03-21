@@ -6,8 +6,15 @@
  */
 import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { sanitizeProfileImageUrl } from '@/shared/api/client'
 import { authApi } from '../api/auth.api'
-import type { LoginRequest, RegisterRequest, AuthResponse, User } from '../api/auth.types'
+import type {
+  LoginRequest,
+  RegisterRequest,
+  AuthResponse,
+  RefreshTokenResponse,
+  User
+} from '../api/auth.types'
 
 export const useAuthStore = defineStore('auth', () => {
   const user: Ref<User | null> = ref(null)
@@ -24,10 +31,34 @@ export const useAuthStore = defineStore('auth', () => {
     return user.value?.scopes?.includes(scope) || false
   }
 
+  const hydrateUser = async (): Promise<void> => {
+    if (!token.value) return
+    try {
+      const me = await authApi.getCurrentUser()
+      const roles = Array.isArray(me.roles)
+        ? (me.roles as unknown as string[])
+        : user.value?.roles ?? []
+      user.value = {
+        id: String(me.id),
+        email: me.email,
+        firstName: me.firstName,
+        lastName: me.lastName,
+        phoneNumber: me.phoneNumber ?? user.value?.phoneNumber,
+        profileImageUrl: sanitizeProfileImageUrl(me.profileImageUrl ?? undefined),
+        roles,
+        scopes: user.value?.scopes ?? []
+      }
+      localStorage.setItem('user', JSON.stringify(user.value))
+    } catch {
+      // Network or 401 — keep minimal user from setAuth / storage
+    }
+  }
+
   const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
     try {
       const authData = await authApi.login(credentials)
       setAuth(authData)
+      await hydrateUser()
       return authData
     } catch (error: any) {
       throw error.response?.data || error
@@ -38,6 +69,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const authData = await authApi.register(userData)
       setAuth(authData)
+      await hydrateUser()
       return authData
     } catch (error: any) {
       const errorData = error.response?.data || { message: error.message || 'Registration failed' }
@@ -104,12 +136,19 @@ export const useAuthStore = defineStore('auth', () => {
   const loadUserFromStorage = (): void => {
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
-      user.value = JSON.parse(storedUser)
+      const parsed = JSON.parse(storedUser) as User
+      user.value = {
+        ...parsed,
+        profileImageUrl: sanitizeProfileImageUrl(parsed.profileImageUrl)
+      }
     }
   }
 
-  // Load user from storage on initialization
+  // Load user from storage on initialization, then refresh profile from API (correct profileImageUrl)
   loadUserFromStorage()
+  if (token.value) {
+    void hydrateUser()
+  }
 
   return {
     user,
@@ -122,6 +161,7 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     logout,
     refreshTokenMethod: refreshToken,
-    setAuth
+    setAuth,
+    hydrateUser
   }
 })

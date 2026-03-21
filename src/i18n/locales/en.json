@@ -31,7 +31,8 @@
     "viewDetails": "View Details",
     "buildingBadge": "Building",
     "user": "User",
-    "openInGoogleMaps": "Open in Google Maps"
+    "openInGoogleMaps": "Open in Google Maps",
+    "profile": "Profile"
   },
   "nav": {
     "home": "Home",

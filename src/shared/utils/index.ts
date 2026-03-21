@@ -8,6 +8,12 @@ export * from '@/utils/currency'
 export { normalizeExternalUrl } from './urls'
 export { formatPrice, getCurrencySymbol, getCurrencyName, getAvailableCurrencies, CURRENCIES } from '@/utils/currency'
 
+/** True if a media URL corresponds to a video file. */
+export function isVideoUrl(url: string | null | undefined): boolean {
+  if (!url) return false
+  return /\.((mp4)|(mov)|(avi)|(webm)|(mkv))($|\?)/i.test(String(url))
+}
+
 /** Organization/company with optional phoneNumbers array or legacy phoneNumber. */
 export function formatOrganizationPhones(org: {
   phoneNumbers?: { countryCode?: string; number?: string }[]

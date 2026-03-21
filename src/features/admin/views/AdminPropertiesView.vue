@@ -516,7 +516,8 @@
               <label class="block text-sm font-medium text-gray-400 mb-2">Photos / media</label>
               <div v-if="editingProperty?.images?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                 <div v-for="img in editingProperty.images" :key="img.id" class="relative group">
-                  <img :src="mediaUrl(img.imageUrl)" :alt="img.caption" class="w-full h-20 object-cover rounded border border-white/20" />
+                  <img v-if="!isVideoUrl(img.imageUrl)" :src="mediaUrl(img.imageUrl)" :alt="img.caption" class="w-full h-20 object-cover rounded border border-white/20" />
+                  <video v-else :src="mediaUrl(img.imageUrl)" class="w-full h-20 object-cover rounded border border-white/20" muted playsinline></video>
                   <button
                     type="button"
                     @click="deleteEditPropertyImage(img.id)"
@@ -800,7 +801,7 @@ import AdminLayout from '../components/AdminLayout.vue'
 import { OsmMapPicker } from '@/shared/components'
 import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 import { adminApi } from '../api/admin.api'
-import { formatPrice } from '@/shared/utils'
+import { formatPrice, isVideoUrl } from '@/shared/utils'
 
 const loading = ref(false)
 const properties = ref([])
