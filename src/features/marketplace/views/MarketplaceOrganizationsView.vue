@@ -1,5 +1,20 @@
 <template>
   <div class="min-h-screen bg-black text-white">
+    <!-- Same top banner as real-estate home: GOLD sponsors for this organization type -->
+    <div
+      v-if="config?.type"
+      class="bg-zinc-900 border-b border-white/10"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <AdSpace
+          v-if="currentTopBannerAds && currentTopBannerAds.length > 0"
+          size="banner"
+          :ad-contents="currentTopBannerAds"
+        />
+        <AdSpace v-else size="banner" />
+      </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">
         {{ pageTitle }}
@@ -46,9 +61,19 @@
         <div
           v-for="org in paginatedOrganizations"
           :key="org.id"
-          class="group overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 hover:border-yellow-400/70 transition-colors"
+          :class="[
+            'group relative overflow-hidden rounded-2xl bg-zinc-900/90 transition-colors',
+            orgCardBorderClass(org),
+            'hover:border-yellow-400 hover:bg-yellow-500/20'
+          ]"
         >
-          <div class="h-1 w-full bg-gradient-to-r from-yellow-400/80 via-orange-300/70 to-transparent" />
+          <div :class="orgCardTopBarClass(org)" />
+          <div
+            v-if="org.isSponsored && isPremierListingTier(org.sponsorshipType)"
+            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide border-2 border-white bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-950 shadow-lg"
+          >
+            {{ $t('property.premier') }}
+          </div>
           <div
             class="p-4 sm:p-5 cursor-pointer"
             role="link"
@@ -158,17 +183,20 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
-import { VerifiedBadge } from '@/shared/components'
+import { isGoldListingTier, isPremierListingTier } from '@/shared/utils/sponsorshipTier'
+import { useAds } from '@/shared/composables/useAds'
+import { AdSpace, VerifiedBadge } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
+const { loadAllAds, goldSponsorBannerAdsForOrganizationType } = useAds()
 
 const categoryToType = {
   banks: { type: 'BANK', titleKey: 'nav.marketplaceBanks' },
@@ -199,6 +227,27 @@ const pageTitle = computed(() => {
   if (!config.value) return t('nav.marketplace')
   return t(config.value.titleKey)
 })
+
+const topGoldBannerPool = computed(() => {
+  const orgType = config.value?.type
+  if (!orgType) return []
+  return goldSponsorBannerAdsForOrganizationType(orgType)
+})
+
+const currentTopBannerAdIndex = ref(0)
+
+const currentTopBannerAds = computed(() => {
+  const pool = topGoldBannerPool.value
+  if (pool.length === 0) return []
+  const ads = []
+  const start = currentTopBannerAdIndex.value % pool.length
+  for (let i = 0; i < 2; i++) {
+    ads.push(pool[(start + i) % pool.length])
+  }
+  return ads
+})
+
+let bannerRotationInterval = null
 
 const organizations = ref([])
 const loading = ref(true)
@@ -264,6 +313,13 @@ watch(totalPages, (pages) => {
   }
 })
 
+watch(
+  () => config.value?.type,
+  () => {
+    currentTopBannerAdIndex.value = 0
+  }
+)
+
 const getOrganizationTypeLabel = (type) => {
   if (!type) return ''
   if (typeLabelKeys[type]) return t(typeLabelKeys[type])
@@ -292,6 +348,26 @@ function hasOrgSocial(org) {
   return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
     String(org[k] || '').trim()
   )
+}
+
+function orgCardBorderClass(org) {
+  if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
+    return 'border-2 border-yellow-400'
+  }
+  if (org?.isSponsored) {
+    return 'border border-white/10 ring-1 ring-white/15'
+  }
+  return 'border border-white/10'
+}
+
+function orgCardTopBarClass(org) {
+  if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
+    return 'h-1 w-full bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500'
+  }
+  if (org?.isSponsored && isGoldListingTier(org.sponsorshipType)) {
+    return 'h-1 w-full bg-gradient-to-r from-blue-400/90 via-indigo-400/70 to-purple-500/50'
+  }
+  return 'h-1 w-full bg-gradient-to-r from-yellow-400/80 via-orange-300/70 to-transparent'
 }
 
 function goToOrganization(id) {
@@ -330,7 +406,24 @@ async function loadOrganizations() {
   }
 }
 
-onMounted(loadOrganizations)
+onMounted(() => {
+  void loadAllAds(50)
+  loadOrganizations()
+  bannerRotationInterval = setInterval(() => {
+    if (topGoldBannerPool.value.length > 0) {
+      currentTopBannerAdIndex.value =
+        (currentTopBannerAdIndex.value + 1) % topGoldBannerPool.value.length
+    }
+  }, 15000)
+})
+
+onUnmounted(() => {
+  if (bannerRotationInterval) {
+    clearInterval(bannerRotationInterval)
+    bannerRotationInterval = null
+  }
+})
+
 watch(() => route.params.category, loadOrganizations)
 watch(() => route.path, loadOrganizations)
 </script>

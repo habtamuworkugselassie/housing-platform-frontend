@@ -1,12 +1,12 @@
 <template>
   <div class="min-h-screen bg-black text-white">
-    <!-- Ad Space under NavBar - PREMIUM Sponsored Properties (Two Side by Side) -->
+    <!-- Ad Space under NavBar — GOLD-sponsored real estate companies (two side by side) -->
     <div class="bg-zinc-900 border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <AdSpace 
-          v-if="currentPremierAds && currentPremierAds.length > 0"
+          v-if="currentTopBannerAds && currentTopBannerAds.length > 0"
           size="banner" 
-          :ad-contents="currentPremierAds"
+          :ad-contents="currentTopBannerAds"
         />
         <AdSpace v-else size="banner" />
       </div>
@@ -236,17 +236,17 @@
             @click="item.type === 'property' ? selectProperty(item) : selectBuilding(item)"
             :class="[
               'relative rounded-xl shadow-md transition-all duration-200 cursor-pointer overflow-hidden border-2 hover:border-yellow-400 hover:bg-yellow-500/10',
-              item.isSponsored && item.sponsorshipType === 'PREMIUM' 
-                ? 'bg-zinc-900 border-yellow-400/60 shadow-lg' 
-                : item.isSponsored && item.sponsorshipType === 'GOLD'
+              item.isSponsored && isPremierListingTier(item.sponsorshipType)
+                ? 'bg-zinc-900 border-yellow-400/60 shadow-lg'
+                : item.isSponsored && isGoldListingTier(item.sponsorshipType)
                 ? 'bg-zinc-900 border-blue-400/50 shadow-md'
                 : 'bg-zinc-900 border-white/10'
             ]"
           >
-            <!-- Sponsored Badges - top right: Featured next to PREMIUM/SPONSORED -->
+            <!-- Sponsored badges — premier tier (exclusive/platinum) vs gold vs other -->
             <div v-if="item.isSponsored" class="absolute top-3 right-3 z-20 flex items-center gap-2">
               <div
-                v-if="item.sponsorshipType === 'PREMIUM'"
+                v-if="isPremierListingTier(item.sponsorshipType)"
                 class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1"
               >
                 <span>👑</span>
@@ -254,14 +254,14 @@
               </div>
               <div
                 :class="{
-                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': item.sponsorshipType === 'PREMIUM',
-                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': item.sponsorshipType === 'GOLD'
+                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': isPremierListingTier(item.sponsorshipType),
+                  'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': isGoldListingTier(item.sponsorshipType)
                 }"
                 class="px-4 py-2 rounded-full text-xs font-extrabold flex items-center gap-1.5 animate-pulse border-2 border-white"
               >
-                <span v-if="item.sponsorshipType === 'PREMIUM'" class="text-base">⭐</span>
+                <span v-if="isPremierListingTier(item.sponsorshipType)" class="text-base">⭐</span>
                 <span v-else class="text-base">✨</span>
-                <span class="uppercase tracking-wide">{{ item.sponsorshipType === 'PREMIUM' ? 'PREMIUM' : 'SPONSORED' }}</span>
+                <span class="uppercase tracking-wide">{{ isPremierListingTier(item.sponsorshipType) ? $t('property.premier') : (isGoldListingTier(item.sponsorshipType) ? 'GOLD' : $t('property.sponsored')) }}</span>
               </div>
             </div>
             
@@ -281,8 +281,8 @@
                 :alt="item.title || item.name"
                 :class="{
                   'w-full h-full object-cover transition-transform duration-300': true,
-                  'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && item.sponsorshipType === 'PREMIUM',
-                  'brightness-105 scale-102 hover:scale-105': item.isSponsored && item.sponsorshipType === 'GOLD'
+                  'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                  'brightness-105 scale-102 hover:scale-105': item.isSponsored && isGoldListingTier(item.sponsorshipType)
                 }"
               />
               <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
@@ -298,13 +298,13 @@
               <div 
                 v-if="item.isSponsored"
                 :class="{
-                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': item.sponsorshipType === 'PREMIUM',
-                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': item.sponsorshipType === 'GOLD'
+                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': isPremierListingTier(item.sponsorshipType),
+                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': isGoldListingTier(item.sponsorshipType)
                 }"
               ></div>
               <!-- Premium Glow Effect -->
               <div 
-                v-if="item.isSponsored && item.sponsorshipType === 'PREMIUM'"
+                v-if="item.isSponsored && isPremierListingTier(item.sponsorshipType)"
                 class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
               ></div>
             </div>
@@ -314,8 +314,8 @@
               v-if="item.type === 'property' && item.priceETB"
               :class="{
                 'bg-zinc-800/90 border border-white/20': !item.isSponsored,
-                'bg-yellow-500/30 border-2 border-yellow-400 shadow-xl': item.isSponsored && item.sponsorshipType === 'PREMIUM',
-                'bg-blue-500/30 border-2 border-blue-400 shadow-lg': item.isSponsored && item.sponsorshipType === 'GOLD'
+                'bg-yellow-500/30 border-2 border-yellow-400 shadow-xl': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                'bg-blue-500/30 border-2 border-blue-400 shadow-lg': item.isSponsored && isGoldListingTier(item.sponsorshipType)
               }"
               class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-30"
             >
@@ -323,8 +323,8 @@
                 <span 
                   :class="{
                     'text-white font-bold': !item.isSponsored,
-                    'text-yellow-200 font-extrabold': item.isSponsored && item.sponsorshipType === 'PREMIUM',
-                    'text-blue-200 font-bold': item.isSponsored && item.sponsorshipType === 'GOLD'
+                    'text-yellow-200 font-extrabold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                    'text-blue-200 font-bold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
                   }"
                   class="text-lg"
                 >{{ formatPrice(item.priceETB, 'ETB') }}</span>
@@ -332,8 +332,8 @@
                   v-if="item.priceUSD"
                   :class="{
                     'text-gray-300': !item.isSponsored,
-                    'text-yellow-200/90 font-bold': item.isSponsored && item.sponsorshipType === 'PREMIUM',
-                    'text-blue-200/90 font-semibold': item.isSponsored && item.sponsorshipType === 'GOLD'
+                    'text-yellow-200/90 font-bold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                    'text-blue-200/90 font-semibold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
                   }"
                   class="text-sm font-semibold"
                 >{{ formatPrice(item.priceUSD, 'USD') }}</span>
@@ -481,31 +481,34 @@ import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { AdSpace, VerifiedBadge } from '@/shared/components'
 import { useAds } from '@/shared/composables/useAds'
+import {
+  isPremierListingTier,
+  isGoldListingTier,
+  listingSortTierRank
+} from '@/shared/utils/sponsorshipTier'
 
 const router = useRouter()
 const authStore = useAuthStore()
-const { loadAllAds, topAds, getRandomTopAd } = useAds()
+const { loadAllAds, topAds } = useAds()
 
 const loadingOrgs = ref(false)
 const organizationsList = ref([])
 const rawOrgListings = ref({})
 const orgListingsLoading = ref({})
-const currentPremierAdIndex = ref(0)
+const currentTopBannerAdIndex = ref(0)
 
-// Get current top ads (two ads side by side, rotates through available ads)
-// These are ads with the highest base_price
-const currentPremierAds = computed(() => {
+// Top banner: GOLD-tier real estate orgs from useAds.topAds (rotates two slots)
+const currentTopBannerAds = computed(() => {
   if (topAds.value.length === 0) return []
-  
+
   const ads = []
-  const startIndex = currentPremierAdIndex.value % topAds.value.length
-  
-  // Get two ads, wrapping around if needed
+  const startIndex = currentTopBannerAdIndex.value % topAds.value.length
+
   for (let i = 0; i < 2; i++) {
     const index = (startIndex + i) % topAds.value.length
     ads.push(topAds.value[index])
   }
-  
+
   return ads
 })
 
@@ -583,18 +586,8 @@ function getFilteredItemsForOrg(orgId) {
     })
   }
   list.sort((a, b) => {
-    const aPriority =
-      a.isSponsored && a.sponsorshipType === 'PREMIUM'
-        ? 0
-        : a.isSponsored && a.sponsorshipType === 'GOLD'
-          ? 1
-          : 2
-    const bPriority =
-      b.isSponsored && b.sponsorshipType === 'PREMIUM'
-        ? 0
-        : b.isSponsored && b.sponsorshipType === 'GOLD'
-          ? 1
-          : 2
+    const aPriority = a.isSponsored ? listingSortTierRank(a.sponsorshipType) : 100
+    const bPriority = b.isSponsored ? listingSortTierRank(b.sponsorshipType) : 100
     if (aPriority !== bPriority) return aPriority - bPriority
     const aDate = new Date(a.createdAt || 0)
     const bDate = new Date(b.createdAt || 0)
@@ -739,10 +732,10 @@ let adRotationInterval = null
 onMounted(() => {
   loadOrganizations()
   loadAllAds(20).then(() => {
-    // Start rotating top ads (highest base_price) every 15 seconds
+    // Rotate GOLD real-estate banner slots every 15 seconds
     adRotationInterval = setInterval(() => {
       if (topAds.value.length > 0) {
-        currentPremierAdIndex.value = (currentPremierAdIndex.value + 1) % topAds.value.length
+        currentTopBannerAdIndex.value = (currentTopBannerAdIndex.value + 1) % topAds.value.length
       }
     }, 15000)
   })

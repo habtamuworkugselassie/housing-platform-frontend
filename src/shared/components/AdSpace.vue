@@ -1,139 +1,170 @@
 <template>
-  <div 
-    v-if="adContent || (adContents && adContents.length > 0)"
-    :class="adContainerClass"
-  >
-    <!-- Banner Ad Layout - Supports single or multiple ads -->
-    <div v-if="size === 'banner'" class="h-full flex items-center gap-3 p-2 sm:p-3">
-      <!-- Multiple ads (for PREMIUM banner) -->
+  <div v-if="adContent || (adContents && adContents.length > 0)">
+    <!-- Top banner: exhibition tier chrome (EXCLUSIVE / PLATINUM / GOLD from shared theme) -->
+    <div
+      v-if="size === 'banner'"
+      class="flex h-full min-h-[5.5rem] sm:min-h-28 w-full gap-2 sm:gap-3"
+    >
       <template v-if="adContents && adContents.length > 0">
-        <div 
-          v-for="(ad, index) in adContents.slice(0, 2)" 
+        <div
+          v-for="ad in adContents.slice(0, 2)"
           :key="ad.id"
-          class="flex-1 flex items-center gap-2 sm:gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-transparent hover:border-gray-200"
+          role="link"
+          tabindex="0"
+          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-yellow-400/40 cursor-pointer"
+          :class="tierFor(ad).shadowGlow"
           @click="handleAdClick(ad)"
+          @keydown.enter.prevent="handleAdClick(ad)"
         >
-          <div 
-            v-if="ad.imageUrl"
-            class="flex-shrink-0 w-16 sm:w-20 h-16 sm:h-20 rounded-lg overflow-hidden bg-gray-200"
+          <div
+            class="h-1 w-full shrink-0"
+            :class="[tierFor(ad).stripe, tierFor(ad).stripeAnimate ? 'ad-tier-stripe-shimmer' : '']"
+          />
+          <div
+            class="flex-1 flex items-center gap-2 sm:gap-3 p-2 sm:p-3 min-h-0"
+            :class="tierFor(ad).headerBg"
           >
-            <img 
-              :src="mediaUrl(ad.imageUrl)" 
-              :alt="ad.title"
-              class="w-full h-full object-cover"
-            />
+            <div
+              v-if="bannerThumbUrl(ad)"
+              class="flex-shrink-0 w-14 sm:w-20 h-14 sm:h-20 rounded-md overflow-hidden ring-1 ring-white/15 bg-black/30"
+            >
+              <img
+                :src="mediaUrl(bannerThumbUrl(ad))"
+                :alt="ad.title"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                <span
+                  v-if="ad.sponsorshipType"
+                  class="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em]"
+                  :class="tierFor(ad).hintChip"
+                >
+                  {{ String(ad.sponsorshipType).toUpperCase() }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex rounded-md border border-white/12 bg-white/[0.06] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-100"
+                >
+                  SPONSORED
+                </span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-semibold text-white truncate">
+                {{ ad.title }}
+              </h3>
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-0 text-[11px] sm:text-xs mt-0.5">
+                <span v-if="ad.city" class="truncate text-gray-400">{{ ad.city }}</span>
+                <span
+                  v-if="ad.priceETB"
+                  class="font-semibold whitespace-nowrap"
+                  :class="tierFor(ad).price"
+                >
+                  {{ formatPrice(ad.priceETB, 'ETB') }}
+                </span>
+              </div>
+              <div v-if="ad.realEstateCompanyName" class="flex items-center gap-1 text-[11px] mt-1 flex-wrap">
+                <svg class="w-3 h-3 shrink-0 opacity-90" :class="tierFor(ad).eyebrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <span class="font-medium truncate text-gray-200">{{ ad.realEstateCompanyName }}</span>
+                <VerifiedBadge :level="ad.realEstateCompanyVerificationLevel || (ad.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
+              </div>
+            </div>
           </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span 
-                v-if="ad.sponsorshipType"
-                :class="[
-                  'text-xs font-bold px-2 py-0.5 rounded',
-                  ad.sponsorshipType.toUpperCase().includes('PREMIUM') ||
-                  ad.sponsorshipType.toUpperCase().includes('GOLD')
-                    ? 'text-yellow-600 bg-yellow-100'
-                    : 'text-blue-600 bg-blue-100'
-                ]"
-              >
-                {{ ad.sponsorshipType.toUpperCase() }}
-              </span>
-              <span 
-                v-else
-                class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded"
-              >
-                SPONSORED
-              </span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-semibold text-gray-900 truncate mb-1">
-              {{ ad.title }}
-            </h3>
-            <div class="flex items-center gap-2 text-xs text-gray-600 mb-1">
-              <span v-if="ad.city" class="truncate">{{ ad.city }}</span>
-              <span v-if="ad.priceETB" class="font-semibold text-primary-600 whitespace-nowrap">
-                {{ formatPrice(ad.priceETB, 'ETB') }}
-              </span>
-            </div>
-            <div v-if="ad.realEstateCompanyName" class="flex items-center gap-1 text-xs flex-wrap">
-              <svg class="w-3 h-3 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-              </svg>
-              <span class="text-primary-600 font-medium truncate">{{ ad.realEstateCompanyName }}</span>
-              <VerifiedBadge :level="ad.realEstateCompanyVerificationLevel || (ad.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
-            </div>
-          </div>
-          <!-- Divider between ads (except for last) -->
-          <div 
-            v-if="index < adContents.slice(0, 2).length - 1" 
-            class="hidden sm:block w-px h-12 bg-gray-300 mx-1"
-          ></div>
         </div>
       </template>
-      
-      <!-- Single ad (fallback) -->
       <template v-else-if="adContent">
-        <div 
-          class="flex-1 flex items-center gap-3 p-2"
+        <div
+          role="link"
+          tabindex="0"
+          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-yellow-400/40 cursor-pointer"
+          :class="tierFor(adContent).shadowGlow"
           @click="handleClick"
+          @keydown.enter.prevent="handleClick"
         >
-          <div 
-            v-if="adContent.imageUrl"
-            class="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden bg-gray-200"
+          <div
+            class="h-1 w-full shrink-0"
+            :class="[tierFor(adContent).stripe, tierFor(adContent).stripeAnimate ? 'ad-tier-stripe-shimmer' : '']"
+          />
+          <div
+            class="flex-1 flex items-center gap-2 sm:gap-3 p-2 sm:p-3 min-h-0"
+            :class="tierFor(adContent).headerBg"
           >
-            <img 
-              :src="mediaUrl(adContent.imageUrl)" 
-              :alt="adContent.title"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span 
-                v-if="adContent.sponsorshipType"
-                :class="[
-                  'text-xs font-bold px-2 py-0.5 rounded',
-                  adContent.sponsorshipType.toUpperCase().includes('PREMIUM') ||
-                  adContent.sponsorshipType.toUpperCase().includes('GOLD')
-                    ? 'text-yellow-600 bg-yellow-100'
-                    : 'text-blue-600 bg-blue-100'
-                ]"
-              >
-                {{ adContent.sponsorshipType.toUpperCase() }}
-              </span>
-              <span 
-                v-else
-                class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded"
-              >
-                SPONSORED
-              </span>
+            <div
+              v-if="bannerThumbUrl(adContent)"
+              class="flex-shrink-0 w-16 sm:w-24 h-16 sm:h-24 rounded-md overflow-hidden ring-1 ring-white/15 bg-black/30"
+            >
+              <img
+                :src="mediaUrl(bannerThumbUrl(adContent))"
+                :alt="adContent.title"
+                class="w-full h-full object-cover"
+              />
             </div>
-            <h3 class="text-sm sm:text-base font-semibold text-gray-900 truncate mb-1">
-              {{ adContent.title }}
-            </h3>
-            <div class="flex items-center gap-2 text-xs text-gray-600 mb-1">
-              <span v-if="adContent.city">{{ adContent.city }}</span>
-              <span v-if="adContent.priceETB" class="font-semibold text-primary-600">
-                {{ formatPrice(adContent.priceETB, 'ETB') }}
-              </span>
-            </div>
-            <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs flex-wrap">
-              <svg class="w-3 h-3 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-              </svg>
-              <span class="text-primary-600 font-medium truncate">{{ adContent.realEstateCompanyName }}</span>
-              <VerifiedBadge :level="adContent.realEstateCompanyVerificationLevel || (adContent.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                <span
+                  v-if="adContent.sponsorshipType"
+                  class="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em]"
+                  :class="tierFor(adContent).hintChip"
+                >
+                  {{ String(adContent.sponsorshipType).toUpperCase() }}
+                </span>
+                <span
+                  v-else
+                  class="inline-flex rounded-md border border-white/12 bg-white/[0.06] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-100"
+                >
+                  SPONSORED
+                </span>
+              </div>
+              <h3 class="text-sm sm:text-base font-semibold text-white truncate">
+                {{ adContent.title }}
+              </h3>
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-0 text-xs mt-0.5">
+                <span v-if="adContent.city" class="text-gray-400 truncate">{{ adContent.city }}</span>
+                <span
+                  v-if="adContent.priceETB"
+                  class="font-semibold whitespace-nowrap"
+                  :class="tierFor(adContent).price"
+                >
+                  {{ formatPrice(adContent.priceETB, 'ETB') }}
+                </span>
+              </div>
+              <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs mt-1 flex-wrap">
+                <svg class="w-3 h-3 shrink-0 opacity-90" :class="tierFor(adContent).eyebrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <span class="font-medium truncate text-gray-200">{{ adContent.realEstateCompanyName }}</span>
+                <VerifiedBadge :level="adContent.realEstateCompanyVerificationLevel || (adContent.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
+              </div>
             </div>
           </div>
         </div>
       </template>
     </div>
 
-    <!-- Sidebar/Rectangle Ad Layout -->
-    <div v-else class="h-full flex flex-col" @click="handleClick">
-      <div 
+    <!-- Sidebar / rectangle: same exhibition tier system -->
+    <div
+      v-else
+      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-yellow-400/40 w-full"
+      :class="[
+        sidebarTier.shadowGlow,
+        size === 'sidebar' ? 'min-h-[300px]' : '',
+        size === 'rectangle' ? 'min-h-[8rem] sm:min-h-[10rem]' : ''
+      ]"
+      role="link"
+      tabindex="0"
+      @click="handleClick"
+      @keydown.enter.prevent="handleClick"
+    >
+      <div
+        class="h-1 w-full shrink-0"
+        :class="[sidebarTier.stripe, sidebarTier.stripeAnimate ? 'ad-tier-stripe-shimmer' : '']"
+      />
+      <div
         v-if="currentSidebarMedia"
         :class="[
-          'w-full overflow-hidden relative',
-          dark ? 'bg-zinc-700' : 'bg-gray-200',
+          'w-full overflow-hidden relative bg-zinc-950',
           size === 'sidebar' ? 'h-48' : 'h-32'
         ]"
       >
@@ -161,54 +192,49 @@
           {{ currentSidebarMediaIndex + 1 }} / {{ sidebarMediaItems.length }}
         </span>
       </div>
-      <div 
+      <div
         v-else
         :class="[
-          'w-full flex items-center justify-center',
-          dark ? 'bg-zinc-700' : 'bg-gray-200',
+          'w-full flex items-center justify-center bg-zinc-900',
           size === 'sidebar' ? 'h-48' : 'h-32'
         ]"
       >
-        <svg :class="['w-12 h-12', dark ? 'text-gray-500' : 'text-gray-400']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+        <svg class="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
       </div>
-      <div class="flex-1 p-3 flex flex-col">
-        <div class="flex items-center gap-2 mb-2">
-          <span 
+      <div class="flex-1 p-3 flex flex-col border-t border-white/5" :class="sidebarTier.headerBg">
+        <div class="flex items-center gap-2 mb-2 flex-wrap">
+          <span
             v-if="adContent.sponsorshipType"
-            :class="[
-              'text-xs font-bold px-2 py-0.5 rounded',
-              dark
-                ? (adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-amber-200 bg-amber-900/50' : 'text-blue-200 bg-blue-900/50')
-                : (adContent.sponsorshipType.toUpperCase().includes('PREMIUM') || adContent.sponsorshipType.toUpperCase().includes('GOLD') ? 'text-yellow-600 bg-yellow-100' : 'text-blue-600 bg-blue-100')
-            ]"
+            class="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em]"
+            :class="sidebarTier.hintChip"
           >
             {{ adContent.sponsorshipType.toUpperCase() }}
           </span>
-          <span 
+          <span
             v-else
-            :class="dark ? 'text-xs font-semibold text-blue-200 bg-blue-900/50 px-2 py-0.5 rounded' : 'text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded'"
+            class="inline-flex rounded-md border border-white/12 bg-white/[0.06] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-100"
           >
             SPONSORED
           </span>
         </div>
-        <h3 :class="['text-sm font-semibold mb-1 line-clamp-2', dark ? 'text-white' : 'text-gray-900']">
+        <h3 class="text-sm font-semibold mb-1 line-clamp-2 text-white">
           {{ adContent.title }}
         </h3>
         <div class="mt-auto space-y-1">
-          <div v-if="adContent.city" :class="['text-xs', dark ? 'text-gray-400' : 'text-gray-600']">
+          <div v-if="adContent.city" class="text-xs text-gray-400">
             {{ adContent.city }}
           </div>
-          <div v-if="adContent.priceETB" :class="['text-sm font-bold', dark ? 'text-primary-400' : 'text-primary-600']">
+          <div v-if="adContent.priceETB" class="text-sm font-bold" :class="sidebarTier.price">
             {{ formatPrice(adContent.priceETB, 'ETB') }}
           </div>
-          <div v-if="adContent.realEstateCompanyName" :class="['flex items-center gap-1 text-xs pt-1 border-t flex-wrap', dark ? 'border-white/20' : 'border-gray-200']">
-            <svg :class="['w-3 h-3 flex-shrink-0', dark ? 'text-primary-400' : 'text-primary-600']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div v-if="adContent.realEstateCompanyName" class="flex items-center gap-1 text-xs pt-2 border-t border-white/10 flex-wrap">
+            <svg class="w-3 h-3 shrink-0 opacity-90" :class="sidebarTier.eyebrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            <span :class="['font-medium truncate', dark ? 'text-primary-400' : 'text-primary-600']">{{ adContent.realEstateCompanyName }}</span>
+            <span class="font-medium truncate text-gray-200">{{ adContent.realEstateCompanyName }}</span>
             <VerifiedBadge :level="adContent.realEstateCompanyVerificationLevel || (adContent.realEstateCompanyVerified ? 'FULL' : null)" size="sm" />
           </div>
         </div>
@@ -217,7 +243,7 @@
   </div>
 
   <!-- Placeholder when no ad content -->
-  <div 
+  <div
     v-else
     :class="[
       'rounded-lg flex items-center justify-center',
@@ -229,7 +255,7 @@
   >
     <div class="text-center p-4">
       <div class="text-gray-400 text-sm mb-2">Advertisement</div>
-      <div 
+      <div
         :class="[
           'text-gray-500 text-xs',
           size === 'banner' ? 'text-sm' : '',
@@ -250,6 +276,7 @@ import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice } from '@/shared/utils'
+import { getTierModalTheme } from '@/shared/utils/exhibitionSponsorshipTierTheme'
 import VerifiedBadge from './VerifiedBadge.vue'
 
 const props = defineProps({
@@ -271,6 +298,12 @@ const props = defineProps({
   sidebarMediaRotationMs: { type: Number, default: undefined }
 })
 
+function tierFor(ad) {
+  return getTierModalTheme(ad?.sponsorshipType)
+}
+
+const sidebarTier = computed(() => getTierModalTheme(props.adContent?.sponsorshipType))
+
 const { settings } = useDisplaySettings()
 const effectiveSidebarMediaMs = computed(() => {
   if (props.sidebarMediaRotationMs !== undefined && props.sidebarMediaRotationMs !== null) {
@@ -284,6 +317,15 @@ const currentSidebarMediaIndex = ref(0)
 let sidebarMediaInterval = null
 
 const isVideoUrl = (url = '') => /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(String(url))
+
+/** Banner thumbnails: prefer property/building image, else org splash, else logo. */
+function bannerThumbUrl(ad) {
+  if (!ad) return ''
+  const img = String(ad.imageUrl || '').trim()
+  if (img) return img
+  const logo = String(ad.logoUrl || '').trim()
+  return logo
+}
 
 const sidebarMediaItems = computed(() => {
   if (!props.adContent) return []
@@ -317,10 +359,12 @@ const adMediaUrlsForWarmup = computed(() => {
   const urls = []
   if (Array.isArray(props.adContents)) {
     props.adContents.forEach((ad) => {
-      if (ad?.imageUrl) urls.push(ad.imageUrl)
+      const u = bannerThumbUrl(ad)
+      if (u) urls.push(u)
     })
   }
-  if (props.adContent?.imageUrl) urls.push(props.adContent.imageUrl)
+  const single = bannerThumbUrl(props.adContent)
+  if (single) urls.push(single)
   if (props.adContent?.videoUrl) urls.push(props.adContent.videoUrl)
   sidebarMediaItems.value.forEach((m) => {
     if (m?.url) urls.push(m.url)
@@ -351,50 +395,13 @@ watch(
   { immediate: true }
 )
 
-const adContainerClass = computed(() => {
-  const baseClasses = [
-    'border rounded-lg overflow-hidden transition-all'
-  ]
-  
-  if (props.size === 'banner') {
-    baseClasses.push('h-24 sm:h-28')
-  } else if (props.size === 'sidebar') {
-    baseClasses.push('w-full min-h-[300px] cursor-pointer hover:shadow-lg')
-  } else if (props.size === 'rectangle') {
-    baseClasses.push('h-32 sm:h-40 cursor-pointer hover:shadow-lg')
-  }
-  
-  // Check sponsorship type from either single ad or first ad in array
-  const checkAd = props.adContents && props.adContents.length > 0 
-    ? props.adContents[0] 
-    : props.adContent
-  
-  // Dynamic sponsorship styling - check if it's a top-tier sponsorship (highest base price)
-  // For now, we'll use a general check - can be enhanced to check actual base price
-  if (props.dark) {
-    baseClasses.push('bg-zinc-800 border-white/10 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors')
-  } else if (checkAd && checkAd.sponsorshipType) {
-    const isPremium = checkAd.sponsorshipType.toUpperCase().includes('PREMIUM') ||
-                      checkAd.sponsorshipType.toUpperCase().includes('GOLD')
-    if (isPremium) {
-      baseClasses.push('bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-yellow-300')
-    } else {
-      baseClasses.push('bg-white border-gray-200')
-    }
-  } else {
-    baseClasses.push('bg-white border-gray-200')
-  }
-  
-  return baseClasses
-})
-
 const formatPrice = (price, currency = 'ETB') => {
   return formatCurrencyPrice(price, currency || 'ETB')
 }
 
 const handleClick = () => {
   if (!props.adContent) return
-  
+
   if (props.adContent.type === 'property') {
     router.push(`/properties/${props.adContent.id}`)
   } else if (props.adContent.type === 'building') {
@@ -406,7 +413,7 @@ const handleClick = () => {
 
 const handleAdClick = (ad) => {
   if (!ad) return
-  
+
   if (ad.type === 'property') {
     router.push(`/properties/${ad.id}`)
   } else if (ad.type === 'building') {
@@ -429,5 +436,21 @@ onUnmounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Match exhibition package stripe pulse (EXCLUSIVE / PLATINUM) */
+@keyframes ad-tier-stripe-shimmer {
+  0%,
+  100% {
+    opacity: 0.88;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.12);
+  }
+}
+.ad-tier-stripe-shimmer {
+  animation: ad-tier-stripe-shimmer 2.8s ease-in-out infinite;
 }
 </style>

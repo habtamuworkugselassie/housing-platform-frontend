@@ -301,75 +301,12 @@
           class="space-y-5 rounded-xl border border-white/10 bg-white/5 p-6 sm:p-8"
           @submit.prevent="submitInterest"
         >
-          <div>
-            <label for="interest-email" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.email') }}</label>
-            <input
-              id="interest-email"
-              v-model="interestForm.email"
-              type="email"
-              required
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-              :placeholder="$t('exhibition.registerInterest.emailPlaceholder')"
-            />
-          </div>
-          <div>
-            <label for="interest-phone" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.phone') }}</label>
-            <CountryCodePhoneInput
-              v-model:country-code="interestForm.phoneCountryCode"
-              v-model:number="interestForm.phoneNumber"
-              :placeholder="$t('exhibition.registerInterest.phonePlaceholder')"
-            />
-          </div>
-          <div>
-            <label for="interest-org-type" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.organizationType') }}</label>
-            <select
-              id="interest-org-type"
-              v-model="interestForm.organizationType"
-              required
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-            >
-              <option value="" disabled>{{ $t('exhibition.registerInterest.selectOrganizationType') }}</option>
-              <option value="REAL_ESTATE_COMPANY">{{ $t('exhibition.registerInterest.orgTypeRealEstate') }}</option>
-              <option value="CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeContractor') }}</option>
-              <option value="DEVELOPER">{{ $t('exhibition.registerInterest.orgTypeDeveloper') }}</option>
-              <option value="SUPPLIER">{{ $t('exhibition.registerInterest.orgTypeSupplier') }}</option>
-              <option value="CONSULTANT_ARCHITECT">{{ $t('exhibition.registerInterest.orgTypeConsultantArchitect') }}</option>
-              <option value="FINISHING_CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeFinishingContractor') }}</option>
-            </select>
-          </div>
-          <div>
-            <label for="interest-type" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.interestType') }}</label>
-            <select
-              id="interest-type"
-              v-model="interestForm.interestType"
-              required
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-            >
-              <option value="" disabled>{{ $t('exhibition.registerInterest.selectType') }}</option>
-              <option value="exhibitor">{{ $t('exhibition.registerInterest.asExhibitor') }}</option>
-              <option value="visitor">{{ $t('exhibition.registerInterest.asVisitor') }}</option>
-            </select>
-          </div>
-          <div>
-            <label for="interest-company" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.companyOptional') }}</label>
-            <input
-              id="interest-company"
-              v-model="interestForm.company"
-              type="text"
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-              :placeholder="$t('exhibition.registerInterest.companyPlaceholder')"
-            />
-          </div>
-          <div>
-            <label for="interest-message" class="block text-sm font-medium text-gray-400 mb-1">{{ $t('exhibition.registerInterest.messageOptional') }}</label>
-            <textarea
-              id="interest-message"
-              v-model="interestForm.message"
-              rows="3"
-              class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 resize-none"
-              :placeholder="$t('exhibition.registerInterest.messagePlaceholder')"
-            />
-          </div>
+          <ExhibitionInterestFormFields
+            v-model="interestForm"
+            :interest-packages="interestPackages"
+            :interest-packages-loading="interestPackagesLoading"
+            field-id-prefix="landing-register"
+          />
           <p v-if="interestError" class="text-sm text-red-400">{{ interestError }}</p>
           <button
             type="submit"
@@ -421,29 +358,8 @@
       </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="relative py-20 lg:py-24 bg-gradient-to-b from-zinc-900 to-black border-t-2 border-yellow-400/50">
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <p class="text-yellow-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">{{ $t('exhibition.cta.eyebrow') }}</p>
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white mb-4">{{ $t('exhibition.cta.title') }}</h2>
-        <p class="text-gray-400 mb-10">
-          {{ $t('exhibition.cta.body') }}
-        </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#register" class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-black">
-            {{ $t('exhibition.cta.standEnquiry') }}
-          </a>
-          <a
-            :href="brochureHref"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
-          >
-            {{ $t('exhibition.cta.viewBrochure') }}
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Sponsorship packages — gated by admin Display settings feature flag -->
+    <ExhibitionSponsorshipPackagesSection v-if="showExhibitionSponsorshipPackages" />
 
     <!-- Message carousel (Why exhibit / Why visit) — at end for optional engagement -->
     <ExhibitionMessageCarousel />
@@ -456,7 +372,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
-import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
+import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
 import { formatPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge } from '@/shared/components'
 import {
@@ -470,13 +386,20 @@ import { defineAsyncComponent } from 'vue'
 const PillarGrid = defineAsyncComponent(() => import('../components/PillarGrid.vue'))
 const ValueChainGrid = defineAsyncComponent(() => import('../components/ValueChainGrid.vue'))
 const ExhibitionMessageCarousel = defineAsyncComponent(() => import('../components/ExhibitionMessageCarousel.vue'))
-import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
+  () => import('../components/ExhibitionSponsorshipPackagesSection.vue')
+)
+import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'
-import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
-
+import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 const route = useRoute()
 const { whenReady } = useAds()
+const { settings } = useDisplaySettings()
+
+const showExhibitionSponsorshipPackages = computed(
+  () => settings.exhibitionSponsorshipPackagesVisible !== false
+)
 
 const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card1Title', bodyKey: 'exhibition.whatHappened.card1Body', icon: BuildingOffice2Icon },
@@ -497,27 +420,52 @@ const interestForm = ref({
   phoneNumber: '',
   organizationType: '',
   interestType: '',
+  sponsorshipId: '',
   company: '',
   message: ''
 })
+const interestPackages = ref([])
+const interestPackagesLoading = ref(false)
 const interestSubmitting = ref(false)
 const interestSubmitted = ref(false)
 const interestError = ref('')
+
+async function loadInterestPackages() {
+  interestPackagesLoading.value = true
+  try {
+    interestPackages.value = await getActiveSponsorshipPackages()
+  } catch (err) {
+    console.error('Failed to load sponsorship packages for interest form:', err)
+    interestPackages.value = []
+  } finally {
+    interestPackagesLoading.value = false
+  }
+}
+
 async function submitInterest() {
   interestError.value = ''
+  const it = interestForm.value.interestType || 'visitor'
+  if (it === 'exhibitor' && !(interestForm.value.sponsorshipId || '').trim()) {
+    interestError.value = t('exhibition.registerInterest.sponsorshipPackageRequired')
+    return
+  }
   interestSubmitting.value = true
   try {
     const combinedPhone = (interestForm.value.phoneNumber || '').trim()
       ? (interestForm.value.phoneCountryCode || DEFAULT_COUNTRY_CODE) + (interestForm.value.phoneNumber || '').trim()
       : undefined
-    await exhibitionApi.registerInterest({
+    const payload = {
       email: interestForm.value.email,
       phoneNumber: combinedPhone,
       organizationType: interestForm.value.organizationType,
-      interestType: interestForm.value.interestType || 'visitor',
+      interestType: it,
       company: interestForm.value.company || undefined,
       message: interestForm.value.message || undefined
-    })
+    }
+    if (it === 'exhibitor' && interestForm.value.sponsorshipId) {
+      payload.sponsorshipId = interestForm.value.sponsorshipId
+    }
+    await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
@@ -587,6 +535,7 @@ watch(propertiesPage, () => {
 
 onMounted(() => {
   loadProperties()
+  loadInterestPackages()
 })
 
 function scrollToHash() {

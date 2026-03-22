@@ -17,11 +17,30 @@ export interface SponsoredOrganizationResponse {
   basePrice: number
 }
 
+/** Active sponsorship tier for public pricing / benefits (exhibition page). */
+export interface PublicSponsorshipPackage {
+  id: string
+  name: string
+  description?: string
+  type: string
+  basePrice: number
+  features?: string
+  notes?: string
+  status: string
+}
+
+export async function getActiveSponsorshipPackages(): Promise<PublicSponsorshipPackage[]> {
+  const { data } = await api.get<PublicSponsorshipPackage[]>('/sponsorships/active')
+  return Array.isArray(data) ? data : []
+}
+
 export interface RegisterInterestRequest {
   email: string
   phoneNumber?: string
   organizationType: string
   interestType: 'exhibitor' | 'visitor'
+  /** Required when interestType is exhibitor (active sponsorship package id). */
+  sponsorshipId?: string
   company?: string
   message?: string
 }

@@ -73,9 +73,9 @@
         @click="viewBuilding(building.id)"
         :class="[
           'rounded-lg border p-6 transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20',
-          building.isSponsored && building.sponsorshipType === 'PREMIUM' 
-            ? 'bg-zinc-900 border-2 border-yellow-400' 
-            : building.isSponsored && building.sponsorshipType === 'GOLD'
+          building.isSponsored && isPremierListingTier(building.sponsorshipType)
+            ? 'bg-zinc-900 border-2 border-yellow-400'
+            : building.isSponsored && isGoldListingTier(building.sponsorshipType)
             ? 'bg-zinc-900 border-2 border-blue-400/60'
             : 'bg-zinc-900 border border-white/10'
         ]"
@@ -90,14 +90,14 @@
             <span 
               v-if="building.isSponsored"
               :class="{
-                'bg-yellow-500/40 text-yellow-200': building.sponsorshipType === 'PREMIUM',
-                'bg-blue-500/40 text-blue-200': building.sponsorshipType === 'GOLD'
+                'bg-yellow-500/40 text-yellow-200': isPremierListingTier(building.sponsorshipType),
+                'bg-blue-500/40 text-blue-200': isGoldListingTier(building.sponsorshipType)
               }"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold"
             >
-              <span v-if="building.sponsorshipType === 'PREMIUM'" class="mr-1">⭐</span>
+              <span v-if="isPremierListingTier(building.sponsorshipType)" class="mr-1">⭐</span>
               <span v-else class="mr-1">✨</span>
-              {{ building.sponsorshipType === 'PREMIUM' ? $t('property.premier') : $t('property.sponsored') }}
+              {{ isPremierListingTier(building.sponsorshipType) ? $t('property.premier') : (isGoldListingTier(building.sponsorshipType) ? 'GOLD' : $t('property.sponsored')) }}
             </span>
             <span :class="[
               'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
@@ -426,6 +426,7 @@ import api from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import { getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
+import { isPremierListingTier, isGoldListingTier } from '@/shared/utils/sponsorshipTier'
 
 const router = useRouter()
 const authStore = useAuthStore()

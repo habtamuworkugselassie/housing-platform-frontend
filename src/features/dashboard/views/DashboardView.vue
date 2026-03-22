@@ -1382,7 +1382,7 @@
             >
               <option value="">{{ $t('dashboard.selectPackage') }}</option>
               <option v-for="sponsorship in availableSponsorships" :key="sponsorship.id" :value="sponsorship.id">
-                {{ sponsorship.name }} ({{ sponsorship.type }}) - ${{ sponsorship.basePrice }}
+                {{ sponsorship.name }} ({{ sponsorship.type }}) — ETB {{ Number(sponsorship.basePrice).toLocaleString() }}
               </option>
             </select>
           </div>

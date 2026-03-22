@@ -68,7 +68,7 @@ export interface PropertyResponse {
   /** Verification level: NONE, HALF, FULL. Use for blue check badge (Verified / Half verified). */
   realEstateCompanyVerificationLevel?: string
   isSponsored?: boolean
-  sponsorshipType?: 'EXCLUSIVE' | 'PREMIUM' | 'GOLD' | 'SILVER'
+  sponsorshipType?: 'EXCLUSIVE' | 'PLATINUM' | 'PREMIUM' | 'GOLD' | 'SILVER' | 'SPECIAL'
   createdAt: string
   updatedAt: string
 }

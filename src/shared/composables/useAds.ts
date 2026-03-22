@@ -9,6 +9,7 @@ import { ref, computed } from 'vue'
 import { propertyApi } from '../../features/property/api/property.api'
 import type { PropertyResponse } from '../../features/property/api/property.types'
 import api from '../api/client'
+import { normalizeSponsorshipType } from '../utils/sponsorshipTier'
 
 // Shared state so PublicLayout, SponsorCarouselSection and ExhibitionLandingView see the same ads
 const loading = ref(false)
@@ -68,6 +69,8 @@ export interface AdContent {
   type: 'property' | 'building' | 'organization'
   sponsorshipType: string
   basePrice: number
+  /** Organization.OrganizationType name when type is organization (e.g. REAL_ESTATE_COMPANY). */
+  organizationType?: string
   realEstateCompanyName?: string
   realEstateCompanyId?: string
   realEstateCompanyVerified?: boolean
@@ -86,6 +89,7 @@ export interface SponsoredOrganizationResponse {
   country?: string
   sponsorshipType: string
   basePrice: number
+  organizationType?: string
 }
 
 interface FirstPropertyMediaResponse {
@@ -94,6 +98,8 @@ interface FirstPropertyMediaResponse {
 }
 
 interface OrganizationDetailForAds {
+  /** Organization.OrganizationType enum name from public org API, e.g. BANK */
+  type?: string
   logoUrl?: string
   verificationLevel?: string
   verified?: boolean
@@ -103,23 +109,39 @@ interface OrganizationDetailForAds {
   }>
 }
 
+function organizationTypeFromOrgPayload(org: OrganizationDetailForAds | null | undefined): string {
+  if (!org) return ''
+  const t = org.type as unknown
+  if (t == null || t === '') return ''
+  if (typeof t === 'string') return normalizeType(t)
+  if (typeof t === 'object' && t !== null && 'name' in t) {
+    return normalizeType(String((t as { name?: string }).name))
+  }
+  return normalizeType(String(t))
+}
+
 const normalizeType = (type: string | undefined | null): string =>
-  String(type || '').trim().toUpperCase()
+  normalizeSponsorshipType(type)
 
 const isExclusiveTier = (type: string | undefined | null): boolean =>
   normalizeType(type) === 'EXCLUSIVE'
 
-const isPremiumTier = (type: string | undefined | null): boolean =>
-  normalizeType(type) === 'PREMIUM'
+const isPremiumTier = (type: string | undefined | null): boolean => {
+  const t = normalizeType(type)
+  return t === 'PLATINUM' || t === 'PREMIUM'
+}
 
 const isGoldTier = (type: string | undefined | null): boolean =>
   normalizeType(type) === 'GOLD'
 
 const sponsorshipTierRank = (type: string | undefined | null): number => {
-  if (isExclusiveTier(type)) return -1
-  if (isPremiumTier(type)) return 0
-  if (isGoldTier(type)) return 1
-  return 2
+  const t = normalizeType(type)
+  if (t === 'EXCLUSIVE') return -1
+  if (t === 'PLATINUM' || t === 'PREMIUM') return 0
+  if (t === 'GOLD') return 1
+  if (t === 'SILVER') return 2
+  if (t === 'SPECIAL') return 3
+  return 4
 }
 
 const isVideoUrl = (url: string | undefined | null): boolean =>
@@ -184,6 +206,10 @@ export function useAds() {
         const orgMedia = Array.isArray(org?.media) ? org.media : []
         const nonLogoMedia = orgMedia.filter((item: any) => normalizeType(item?.mediaKind) !== 'LOGO')
         ad.logoUrl = ad.logoUrl || org?.logoUrl || undefined
+        const resolvedOrgType = organizationTypeFromOrgPayload(org)
+        if (resolvedOrgType) {
+          ad.organizationType = resolvedOrgType
+        }
         ad.realEstateCompanyVerificationLevel = org?.verificationLevel ?? ad.realEstateCompanyVerificationLevel
         ad.realEstateCompanyVerified = org?.verified ?? ad.realEstateCompanyVerified
 
@@ -218,13 +244,18 @@ export function useAds() {
         })
       }
 
-      // Pick display media from prepared media list.
+      // Pick display media from prepared media list (keep logo / prior imageUrl as fallback for banner).
       orgAds.forEach((ad) => {
         const current = Array.isArray(ad.mediaItems) ? ad.mediaItems : []
         const firstVideo = current.find(item => item.mediaKind === 'VIDEO')
         const firstImage = current.find(item => item.mediaKind !== 'VIDEO')
         ad.videoUrl = firstVideo?.url
-        ad.imageUrl = firstImage?.url
+        const img =
+          firstImage?.url ||
+          ad.imageUrl ||
+          (ad.logoUrl ? String(ad.logoUrl).trim() : '') ||
+          undefined
+        ad.imageUrl = img
       })
     } catch (err) {
       console.error('Failed to enrich sponsored organization media:', err)
@@ -282,11 +313,13 @@ export function useAds() {
         orgAds = orgs.map((org: any) => {
           const mediaItems: AdMediaItem[] = []
           appendUniqueMedia(mediaItems, org.videoUrl, 'VIDEO')
+          appendUniqueMedia(mediaItems, org.splashImageUrl, 'IMAGE')
+          const splash = String(org.splashImageUrl || '').trim()
           return {
             id: org.id,
             title: org.name,
             logoUrl: org.logoUrl,
-            imageUrl: undefined,
+            imageUrl: splash || undefined,
             videoUrl: org.videoUrl ?? undefined,
             mediaItems,
             city: org.city,
@@ -294,6 +327,9 @@ export function useAds() {
             type: 'organization' as const,
             sponsorshipType: normalizeType(org.sponsorshipType),
             basePrice: typeof org.basePrice === 'number' ? org.basePrice : Number(org.basePrice) || 0,
+            organizationType: org.organizationType
+              ? normalizeType(org.organizationType)
+              : undefined,
             realEstateCompanyName: org.name,
             realEstateCompanyId: org.id
           }
@@ -410,17 +446,26 @@ export function useAds() {
   })
 
   /**
-   * Top ads (highest base_price) - for banner display
+   * Top banner pool: GOLD-sponsored organizations of a given {@link Organization.OrganizationType}
+   * name (e.g. REAL_ESTATE_COMPANY, BANK). Used by HomeView and marketplace category pages.
    */
-  const topAds = computed<AdContent[]>(() => {
-    if (allAds.value.length === 0) return []
-    const basePrices = allAds.value.map(ad => ad.basePrice || 0)
-    if (basePrices.length === 0) return []
-    const maxBasePrice = Math.max(...basePrices)
-    return allAds.value
-      .filter(ad => (ad.basePrice || 0) === maxBasePrice)
-      .slice(0, 3)
-  })
+  const goldSponsorBannerAdsForOrganizationType = (organizationType: string): AdContent[] => {
+    const want = normalizeType(organizationType)
+    if (!want) return []
+    const list = dedupeOrganizationAds(allAds.value).filter(
+      (ad) =>
+        ad.type === 'organization' &&
+        isGoldTier(ad.sponsorshipType) &&
+        normalizeType(ad.organizationType) === want
+    )
+    if (list.length === 0) return []
+    return [...list].sort((a, b) => (b.basePrice || 0) - (a.basePrice || 0)).slice(0, 3)
+  }
+
+  /** Home / real-estate: GOLD real estate companies under the nav banner. */
+  const topAds = computed<AdContent[]>(() =>
+    goldSponsorBannerAdsForOrganizationType('REAL_ESTATE_COMPANY')
+  )
 
   /**
    * Side panel ads: all sponsored organizations (exclusive, premium, gold), exclusive first.
@@ -486,6 +531,7 @@ export function useAds() {
     getRandomBasicAd, // Legacy compatibility
     getRandomTopAd,
     getRandomSideAd,
-    whenReady
+    whenReady,
+    goldSponsorBannerAdsForOrganizationType
   }
 }

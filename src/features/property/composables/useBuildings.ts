@@ -51,7 +51,7 @@ export interface BuildingResponse {
   availableUnits?: number
   occupiedUnits?: number
   isSponsored?: boolean
-  sponsorshipType?: 'PREMIUM' | 'GOLD'
+  sponsorshipType?: 'EXCLUSIVE' | 'PLATINUM' | 'PREMIUM' | 'GOLD' | 'SILVER' | 'SPECIAL'
   createdAt?: string
   updatedAt?: string
 }

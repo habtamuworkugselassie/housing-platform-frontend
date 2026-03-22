@@ -61,7 +61,7 @@ const adKey = (ad) => ad.realEstateCompanyId || ad.id
 /** Exclusive + premium — preferred for the first two sidebar rows per column. */
 const isTopSidebarTier = (ad) => {
   const t = String(ad.sponsorshipType || '').trim().toUpperCase()
-  return t === 'EXCLUSIVE' || t === 'PREMIUM'
+  return t === 'EXCLUSIVE' || t === 'PLATINUM' || t === 'PREMIUM'
 }
 
 const emptySideColumn = () => Array.from({ length: SIDE_AD_SLOTS }, () => null)

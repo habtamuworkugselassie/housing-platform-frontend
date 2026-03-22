@@ -162,4 +162,6 @@ export interface DisplaySettings {
   sponsorCarouselAutoplayMs: number
   sidebarMediaRotationMs: number
   sidebarLayoutRotationMs: number
+  exhibitionSponsorshipPackagesVisible: boolean
+  exhibitionSponsorshipPackagePricesVisible: boolean
 }

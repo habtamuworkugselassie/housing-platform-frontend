@@ -47,9 +47,10 @@
             >
               <option value="">All</option>
               <option value="EXCLUSIVE">Exclusive</option>
-              <option value="GOLD">Gold</option>
-              <option value="PREMIUM">Premium</option>
-              <option value="SILVER">Silver</option>
+              <option value="PLATINUM">Platinum (1st tier)</option>
+              <option value="GOLD">Gold (2nd tier)</option>
+              <option value="SILVER">Silver (3rd tier)</option>
+              <option value="SPECIAL">Special participant</option>
             </select>
           </div>
           <div class="flex items-end">
@@ -93,13 +94,13 @@
               <td class="mdc-data-table__cell">
                 <span :class="{
                   'mdc-chip mdc-chip--primary': sponsorship.type === 'GOLD',
-                  'mdc-chip mdc-chip--warning': sponsorship.type === 'PREMIUM'
+                  'mdc-chip mdc-chip--warning': sponsorship.type === 'PLATINUM'
                 }">
                   {{ sponsorship.type }}
                 </span>
               </td>
               <td class="mdc-data-table__cell">
-                <span class="mdc-typography--subtitle2 font-medium">${{ formatPrice(sponsorship.basePrice) }}</span>
+                <span class="mdc-typography--subtitle2 font-medium">ETB {{ formatPrice(sponsorship.basePrice) }}</span>
               </td>
               <td class="mdc-data-table__cell">
                 <span :class="{
@@ -178,9 +179,10 @@
               >
                 <option value="">Select type</option>
                 <option value="EXCLUSIVE">Exclusive</option>
-                <option value="GOLD">Gold</option>
-                <option value="PREMIUM">Premium</option>
-                <option value="SILVER">Silver</option>
+                <option value="PLATINUM">Platinum (1st tier)</option>
+                <option value="GOLD">Gold (2nd tier)</option>
+                <option value="SILVER">Silver (3rd tier)</option>
+                <option value="SPECIAL">Special participant</option>
               </select>
               <label class="mdc-text-field__label">Type *</label>
             </div>

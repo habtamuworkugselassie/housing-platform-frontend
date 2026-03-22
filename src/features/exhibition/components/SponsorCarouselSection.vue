@@ -175,6 +175,7 @@ import { mediaUrl } from '@/shared/api/client'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 import { useAds } from '@/shared/composables/useAds'
+import { getTierModalTheme } from '@/shared/utils/exhibitionSponsorshipTierTheme'
 import { VerifiedBadge } from '@/shared/components'
 
 const props = defineProps({
@@ -226,11 +227,12 @@ function prev() {
 }
 
 function tierBadgeClass(slide) {
-  const t = (slide.sponsorshipType || '').toUpperCase()
-  if (t.includes('EXCLUSIVE')) return 'bg-yellow-400/90 text-black'
-  if (t.includes('PREMIUM')) return 'bg-amber-500/90 text-black'
-  if (t.includes('GOLD')) return 'bg-yellow-600/90 text-white'
-  return 'bg-white/20 text-white'
+  const theme = getTierModalTheme(slide?.sponsorshipType)
+  return [
+    'inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 sm:rounded-md sm:px-3 sm:py-1',
+    'text-[9px] sm:text-xs font-semibold uppercase tracking-wide sm:tracking-wider md:tracking-[0.12em]',
+    theme.hintChip
+  ].join(' ')
 }
 
 function resetAutoplay() {

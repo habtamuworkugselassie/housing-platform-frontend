@@ -68,6 +68,41 @@
           <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
 
+        <div class="space-y-4 rounded-lg border border-white/10 bg-white/5 px-4 py-4">
+          <div class="flex cursor-pointer items-start gap-3">
+            <input
+              id="exhibition-sponsorship-packages"
+              v-model="form.exhibitionSponsorshipPackagesVisible"
+              type="checkbox"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-yellow-400 focus:ring-yellow-400"
+            />
+            <label for="exhibition-sponsorship-packages" class="min-w-0 cursor-pointer">
+              <span class="block text-sm font-medium text-gray-200">
+                {{ $t('admin.displaySettings.exhibitionSponsorshipPackages') }}
+              </span>
+              <span class="mt-1 block text-xs text-gray-500">
+                {{ $t('admin.displaySettings.exhibitionSponsorshipPackagesHint') }}
+              </span>
+            </label>
+          </div>
+          <div class="flex cursor-pointer items-start gap-3 sm:pl-7">
+            <input
+              id="exhibition-sponsorship-package-prices"
+              v-model="form.exhibitionSponsorshipPackagePricesVisible"
+              type="checkbox"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-yellow-400 focus:ring-yellow-400"
+            />
+            <label for="exhibition-sponsorship-package-prices" class="min-w-0 cursor-pointer">
+              <span class="block text-sm font-medium text-gray-200">
+                {{ $t('admin.displaySettings.exhibitionSponsorshipPackagePrices') }}
+              </span>
+              <span class="mt-1 block text-xs text-gray-500">
+                {{ $t('admin.displaySettings.exhibitionSponsorshipPackagePricesHint') }}
+              </span>
+            </label>
+          </div>
+        </div>
+
         <div class="flex flex-wrap items-center gap-3 pt-2">
           <button
             type="submit"
@@ -89,6 +124,7 @@ import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import { adminApi } from '../api/admin.api'
 import { mergeDisplaySettings } from '@/shared/composables/useDisplaySettings'
+import { coerceDisplayBool } from '@/shared/utils/displaySettingsBooleans'
 
 const { t } = useI18n()
 const loading = ref(true)
@@ -99,7 +135,9 @@ const error = ref('')
 const form = reactive({
   sponsorCarouselSec: 10,
   sidebarMediaSec: 12,
-  sidebarLayoutSec: 35
+  sidebarLayoutSec: 35,
+  exhibitionSponsorshipPackagesVisible: true,
+  exhibitionSponsorshipPackagePricesVisible: true
 })
 
 function clamp(n, min, max) {
@@ -115,6 +153,14 @@ onMounted(async () => {
     form.sponsorCarouselSec = d.sponsorCarouselAutoplayMs / 1000
     form.sidebarMediaSec = d.sidebarMediaRotationMs / 1000
     form.sidebarLayoutSec = d.sidebarLayoutRotationMs / 1000
+    form.exhibitionSponsorshipPackagesVisible = coerceDisplayBool(
+      d.exhibitionSponsorshipPackagesVisible,
+      true
+    )
+    form.exhibitionSponsorshipPackagePricesVisible = coerceDisplayBool(
+      d.exhibitionSponsorshipPackagePricesVisible,
+      true
+    )
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('admin.displaySettings.loadError')
   } finally {
@@ -126,10 +172,16 @@ async function save() {
   saving.value = true
   saved.value = false
   error.value = ''
+  const intendedPackagesVisible = Boolean(form.exhibitionSponsorshipPackagesVisible)
+  const intendedPricesVisible = Boolean(form.exhibitionSponsorshipPackagePricesVisible)
   const body = {
     sponsorCarouselAutoplayMs: Math.round(clamp(form.sponsorCarouselSec, 3, 300) * 1000),
     sidebarMediaRotationMs: Math.round(clamp(form.sidebarMediaSec, 3, 300) * 1000),
-    sidebarLayoutRotationMs: Math.round(clamp(form.sidebarLayoutSec, 5, 600) * 1000)
+    sidebarLayoutRotationMs: Math.round(clamp(form.sidebarLayoutSec, 5, 600) * 1000),
+    exhibitionSponsorshipPackagesVisible: Boolean(form.exhibitionSponsorshipPackagesVisible),
+    exhibitionSponsorshipPackagePricesVisible: Boolean(
+      form.exhibitionSponsorshipPackagePricesVisible
+    )
   }
   try {
     const updated = await adminApi.updateDisplaySettings(body)
@@ -137,6 +189,14 @@ async function save() {
     form.sponsorCarouselSec = updated.sponsorCarouselAutoplayMs / 1000
     form.sidebarMediaSec = updated.sidebarMediaRotationMs / 1000
     form.sidebarLayoutSec = updated.sidebarLayoutRotationMs / 1000
+    form.exhibitionSponsorshipPackagesVisible = coerceDisplayBool(
+      updated.exhibitionSponsorshipPackagesVisible,
+      intendedPackagesVisible
+    )
+    form.exhibitionSponsorshipPackagePricesVisible = coerceDisplayBool(
+      updated.exhibitionSponsorshipPackagePricesVisible,
+      intendedPricesVisible
+    )
     saved.value = true
     setTimeout(() => {
       saved.value = false

@@ -65,6 +65,14 @@
                 {{ $t('exhibition.footer.links.partners') }}
               </RouterLink>
             </li>
+            <li v-if="showSponsorshipPackagesNavLink">
+              <RouterLink
+                :to="{ name: 'Home', hash: '#sponsorship-packages' }"
+                class="text-gray-300 hover:text-yellow-400 transition-colors"
+              >
+                {{ $t('exhibition.footer.links.sponsorshipPackages') }}
+              </RouterLink>
+            </li>
           </ul>
         </div>
 
@@ -158,6 +166,10 @@ const FALLBACK = {
 }
 
 const { settings } = useDisplaySettings()
+
+const showSponsorshipPackagesNavLink = computed(
+  () => settings.exhibitionSponsorshipPackagesVisible !== false
+)
 
 const address = computed(() => settings.footer?.address || FALLBACK.address)
 const phone = computed(() => settings.footer?.phoneDisplay || FALLBACK.phoneDisplay)
