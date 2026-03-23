@@ -608,6 +608,10 @@ async function submitRegisterModal() {
     registerError.value = t('exhibition.registerInterest.sponsorshipPackageRequired')
     return
   }
+  if (!(registerForm.value.organizationType || '').trim()) {
+    registerError.value = t('exhibition.registerInterest.organizationCategoryRequired')
+    return
+  }
   registerSubmitting.value = true
   try {
     const combinedPhone = (registerForm.value.phoneNumber || '').trim()

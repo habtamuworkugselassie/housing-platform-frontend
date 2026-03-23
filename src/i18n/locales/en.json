@@ -454,7 +454,22 @@
     "administrator": "Administrator",
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
     "nav": {
-      "settings": "Settings"
+      "settings": "Settings",
+      "exhibitionInterests": "Exhibition leads"
+    },
+    "exhibitionInterests": {
+      "title": "Exhibition interest",
+      "subtitle": "Public registrations from the exhibition page: visitor or exhibitor, optional sponsorship package, and the organization record created for approval.",
+      "empty": "No exhibition interest submissions yet.",
+      "colDate": "Registered",
+      "colContact": "Contact",
+      "colInterest": "Interest",
+      "colPackage": "Package",
+      "colOrganization": "Organization",
+      "colMessage": "Message",
+      "colActions": "Actions",
+      "viewOrg": "View org",
+      "pageOf": "Page {current} of {total}"
     },
     "users": "Users",
     "organizations": "Organizations",
@@ -999,8 +1014,10 @@
       "sponsorshipPackageRequired": "Please choose which sponsorship package you are interested in.",
       "packagesLoading": "Loading packages…",
       "packagesLoadEmpty": "No active packages are available right now. Please try again later or contact us.",
-      "organizationType": "Organization type",
-      "selectOrganizationType": "Select organization type…",
+      "organizationType": "Organization category",
+      "organizationCategorySponsorHint": "All organization categories can sponsor — choose the one that best describes your organization.",
+      "organizationCategoryRequired": "Please select your organization category.",
+      "selectOrganizationType": "Select a category…",
       "orgTypeRealEstate": "Real estate company",
       "orgTypeContractor": "Contractor",
       "orgTypeDeveloper": "Developer",

@@ -461,7 +461,22 @@
     "administrator": "አስተዳዳሪ",
     "portalSubtitle": "ተጠቃሚዎችን፣ ድርጅቶችን፣ ንብረቶችን እና ሌሎችን ለማስተዳድር የአስተዳዳሪ መግቢያውን ይድረሱ።",
     "nav": {
-      "settings": "ቅንብሮች"
+      "settings": "ቅንብሮች",
+      "exhibitionInterests": "የኤግዚቢሽን ፍላጎቶች"
+    },
+    "exhibitionInterests": {
+      "title": "የኤግዚቢሽን ፍላጎት",
+      "subtitle": "ከየህዝብ ኤግዚቢሽን ገጽ ምዝገባዎች፡ ጎብኚ ወይም ተሳተፊ፣ አማራጭ የስፖንሰርሺፕ ፓኬጅ፣ እና ለማጽደቅ የተፈጠረ የድርጅት መዝገብ።",
+      "empty": "እስካሁን የኤግዚቢሽን ፍላጎት ምዝገባ የለም።",
+      "colDate": "የተመዘገበ",
+      "colContact": "አድራሻ",
+      "colInterest": "ፍላጎት",
+      "colPackage": "ፓኬጅ",
+      "colOrganization": "ድርጅት",
+      "colMessage": "መልእክት",
+      "colActions": "ድርጊቶች",
+      "viewOrg": "ድርጅት ይመልከቱ",
+      "pageOf": "ገጽ {current} ከ {total}"
     },
     "users": "ተጠቃሚዎች",
     "organizations": "ድርጅቶች",
@@ -1006,8 +1021,10 @@
       "sponsorshipPackageRequired": "እባክዎ የሚያስኩትን የስፖንሰርሺፕ ፓኬጅ ይምረጡ።",
       "packagesLoading": "ፓኬጆች በመጫን ላይ…",
       "packagesLoadEmpty": "በዚህ ጊዜ ንቁ ፓኬጆች የሉም። እባክዎ ቆይተው ይሞክሩ ወይም ያግኙን።",
-      "organizationType": "የድርጅት አይነት",
-      "selectOrganizationType": "የድርጅት አይነት ምረጥ…",
+      "organizationType": "የድርጅት ምድብ",
+      "organizationCategorySponsorHint": "ሁሉም የድርጅት ምድቦች ስፖንሰር ሊሆኑ ይችላሉ — ድርጅትዎን በጥሩ ሁኔታ የሚገልጽውን ይምረጡ።",
+      "organizationCategoryRequired": "እባክዎ የድርጅት ምድብ ይምረጡ።",
+      "selectOrganizationType": "ምድብ ምረጥ…",
       "orgTypeRealEstate": "የንብረት ኩባንያ",
       "orgTypeContractor": "ተቋራጭ",
       "orgTypeDeveloper": "ገንቢ",

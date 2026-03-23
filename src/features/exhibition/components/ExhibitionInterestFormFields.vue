@@ -24,25 +24,6 @@
       />
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-org-type`" class="block text-sm font-medium text-gray-400 mb-1">{{
-        $t('exhibition.registerInterest.organizationType')
-      }}</label>
-      <select
-        :id="`${fieldIdPrefix}-org-type`"
-        v-model="form.organizationType"
-        required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-      >
-        <option value="" disabled>{{ $t('exhibition.registerInterest.selectOrganizationType') }}</option>
-        <option value="REAL_ESTATE_COMPANY">{{ $t('exhibition.registerInterest.orgTypeRealEstate') }}</option>
-        <option value="CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeContractor') }}</option>
-        <option value="DEVELOPER">{{ $t('exhibition.registerInterest.orgTypeDeveloper') }}</option>
-        <option value="SUPPLIER">{{ $t('exhibition.registerInterest.orgTypeSupplier') }}</option>
-        <option value="CONSULTANT_ARCHITECT">{{ $t('exhibition.registerInterest.orgTypeConsultantArchitect') }}</option>
-        <option value="FINISHING_CONTRACTOR">{{ $t('exhibition.registerInterest.orgTypeFinishingContractor') }}</option>
-      </select>
-    </div>
-    <div>
       <label :for="`${fieldIdPrefix}-interest-type`" class="block text-sm font-medium text-gray-400 mb-1">{{
         $t('exhibition.registerInterest.interestType')
       }}</label>
@@ -78,6 +59,25 @@
       </p>
     </div>
     <div>
+      <label :for="`${fieldIdPrefix}-org-type`" class="block text-sm font-medium text-gray-400 mb-1">{{
+        $t('exhibition.registerInterest.organizationType')
+      }}</label>
+      <p v-if="form.interestType === 'exhibitor'" class="mb-2 text-xs text-gray-500 leading-relaxed">
+        {{ $t('exhibition.registerInterest.organizationCategorySponsorHint') }}
+      </p>
+      <select
+        :id="`${fieldIdPrefix}-org-type`"
+        v-model="form.organizationType"
+        required
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+      >
+        <option value="" disabled>{{ $t('exhibition.registerInterest.selectOrganizationType') }}</option>
+        <option v-for="opt in organizationTypeOptions" :key="opt.value" :value="opt.value">
+          {{ $t(opt.labelKey) }}
+        </option>
+      </select>
+    </div>
+    <div>
       <label :for="`${fieldIdPrefix}-company`" class="block text-sm font-medium text-gray-400 mb-1">{{
         $t('exhibition.registerInterest.companyOptional')
       }}</label>
@@ -107,6 +107,9 @@
 <script setup>
 import { watch } from 'vue'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { EXHIBITION_REGISTER_INTEREST_ORGANIZATION_TYPES } from '@/features/exhibition/constants/exhibitionOrganizationTypes'
+
+const organizationTypeOptions = EXHIBITION_REGISTER_INTEREST_ORGANIZATION_TYPES
 
 const form = defineModel({ type: Object, required: true })
 

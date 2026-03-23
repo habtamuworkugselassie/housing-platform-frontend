@@ -14,7 +14,8 @@ import type {
   OrganizationUpdateRequest,
   PropertyManagementRequest,
   AdminFilters,
-  DisplaySettings
+  DisplaySettings,
+  AdminExhibitionInterest
 } from './admin.types'
 // Pagination types
 interface PageRequest {
@@ -31,6 +32,8 @@ interface PaginatedResponse<T> {
   number: number
 }
 
+export type ExhibitionInterestsPage = PaginatedResponse<AdminExhibitionInterest>
+
 export const adminApi = {
   /**
    * Get admin dashboard statistics
@@ -38,6 +41,18 @@ export const adminApi = {
    */
   getStats: async (): Promise<AxiosResponse<AdminStats>> => {
     const response = await api.get('/admin/stats')
+    return response
+  },
+
+  /**
+   * Exhibition interest leads (public form submissions), paginated. Admin only.
+   */
+  getExhibitionInterests: async (
+    pageRequest?: PageRequest
+  ): Promise<AxiosResponse<ExhibitionInterestsPage>> => {
+    const response = await api.get<ExhibitionInterestsPage>('/admin/exhibition-interests', {
+      params: pageRequest || {}
+    })
     return response
   },
 

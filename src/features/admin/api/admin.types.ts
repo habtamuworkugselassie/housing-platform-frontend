@@ -157,6 +157,23 @@ export interface AdminFilters {
   search?: string
 }
 
+/** GET /admin/exhibition-interests (Spring Page content item) */
+export interface AdminExhibitionInterest {
+  id: string
+  createdAt: string
+  email: string
+  phoneNumber?: string | null
+  interestType: string
+  company?: string | null
+  message?: string | null
+  organizationId?: string | null
+  organizationName?: string | null
+  organizationType?: string | null
+  organizationStatus?: string | null
+  sponsorshipId?: string | null
+  sponsorshipPackageName?: string | null
+}
+
 /** Public landing timings (ms); admin GET/PUT /admin/display-settings */
 export interface DisplaySettings {
   sponsorCarouselAutoplayMs: number

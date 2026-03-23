@@ -449,6 +449,10 @@ async function submitInterest() {
     interestError.value = t('exhibition.registerInterest.sponsorshipPackageRequired')
     return
   }
+  if (!(interestForm.value.organizationType || '').trim()) {
+    interestError.value = t('exhibition.registerInterest.organizationCategoryRequired')
+    return
+  }
   interestSubmitting.value = true
   try {
     const combinedPhone = (interestForm.value.phoneNumber || '').trim()

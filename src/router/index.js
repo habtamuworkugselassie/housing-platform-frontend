@@ -181,6 +181,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
+    path: '/admin/exhibition-interests',
+    name: 'AdminExhibitionInterests',
+    component: () => import('@/features/admin/views/AdminExhibitionInterestsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/admin/settings',
     name: 'AdminDisplaySettings',
     component: () => import('@/features/admin/views/AdminDisplaySettingsView.vue'),
