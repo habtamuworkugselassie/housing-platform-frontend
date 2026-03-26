@@ -12,7 +12,18 @@ const getBaseURL = (): string => {
   const envUrl = import.meta.env.VITE_API_BASE_URL
   if (envUrl != null && typeof envUrl === 'string') {
     const trimmed = envUrl.trim()
-    if (trimmed !== '') return trimmed
+    if (trimmed !== '') {
+      // If the app is loaded over HTTPS, never use an HTTP API base URL from build-time env.
+      // Fallback to same-origin /api/v1 to avoid mixed-content/CORS issues with legacy IP URLs.
+      if (
+        typeof window !== 'undefined' &&
+        window.location.protocol === 'https:' &&
+        trimmed.startsWith('http://')
+      ) {
+        return '/api/v1'
+      }
+      return trimmed
+    }
   }
   return '/api/v1'
 }

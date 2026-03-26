@@ -304,6 +304,60 @@ const router = createRouter({
   }
 })
 
+const defaultSeo = {
+  title: 'Ethio Build Connect - Ethiopia Real Estate and Construction Marketplace',
+  description:
+    'Find Addis Ababa real estate, betoch, apartments, developers, contractors, and suppliers in one Ethiopia marketplace.'
+}
+
+const seoByRouteName = {
+  Home: {
+    title: 'Ethio Build Connect - Addis Ababa Real Estate, Betoch and Construction',
+    description:
+      'Search Addis Ababa real estate, betoch for sale or rent, and trusted construction companies in Ethiopia.'
+  },
+  RealEstateSearch: {
+    title: 'Addis Ababa Real Estate Listings - Ethio Build Connect',
+    description:
+      'Browse Ethiopia property listings including houses, apartments, and betoch in Addis Ababa.'
+  },
+  MarketplaceRealEstate: {
+    title: 'Ethiopia Real Estate Marketplace - Ethio Build Connect',
+    description:
+      'Discover verified real estate opportunities, developers, and agents across Ethiopia.'
+  },
+  MarketplaceContractors: {
+    title: 'Construction Contractors in Ethiopia - Ethio Build Connect',
+    description:
+      'Find construction contractors and project partners for residential and commercial development.'
+  },
+  MarketplaceSuppliers: {
+    title: 'Construction Material Suppliers in Ethiopia - Ethio Build Connect',
+    description:
+      'Connect with trusted construction suppliers and material partners in Addis Ababa and beyond.'
+  },
+  Properties: {
+    title: 'Property Listings Ethiopia - Houses, Betoch and Apartments',
+    description:
+      'Explore verified property listings in Ethiopia, including Addis Ababa houses and apartments.'
+  },
+  PropertyDetails: {
+    title: 'Property Details - Ethio Build Connect',
+    description:
+      'View complete property information, media, and location insights on Ethio Build Connect.'
+  }
+}
+
+const ensureMetaTag = (name, attr = 'name') => {
+  let tag = document.head.querySelector(`meta[${attr}="${name}"]`)
+  if (!tag) {
+    tag = document.createElement('meta')
+    tag.setAttribute(attr, name)
+    document.head.appendChild(tag)
+  }
+  return tag
+}
+
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
@@ -322,6 +376,20 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+
+router.afterEach((to) => {
+  const seo = seoByRouteName[to.name] || defaultSeo
+  document.title = seo.title
+
+  const descriptionTag = ensureMetaTag('description')
+  descriptionTag.setAttribute('content', seo.description)
+
+  const ogTitleTag = ensureMetaTag('og:title', 'property')
+  ogTitleTag.setAttribute('content', seo.title)
+
+  const ogDescriptionTag = ensureMetaTag('og:description', 'property')
+  ogDescriptionTag.setAttribute('content', seo.description)
 })
 
 export default router
