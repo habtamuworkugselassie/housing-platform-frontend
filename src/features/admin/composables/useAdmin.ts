@@ -232,6 +232,20 @@ export function useAdminOrganizations() {
     )
   }
 
+  const verifyOrganizationForSponsorshipApplication = async (applicationId) => {
+    const { execute: executeVerify } = useApi()
+    return await executeVerify(() =>
+      adminApi.verifyOrganizationForSponsorshipApplication(applicationId)
+    )
+  }
+
+  const verifyUserForSponsorshipApplication = async (applicationId, body) => {
+    const { execute: executeVerify } = useApi()
+    return await executeVerify(() =>
+      adminApi.verifyUserForSponsorshipApplication(applicationId, body ?? null)
+    )
+  }
+
   const rejectSponsorshipApplication = async (applicationId, reason) => {
     const { execute: executeReject } = useApi()
     return await executeReject(() =>
@@ -263,6 +277,8 @@ export function useAdminOrganizations() {
     getSponsorshipApplicationsByOrganization,
     assignOrganizationToSponsorship,
     approveSponsorshipApplication,
+    verifyOrganizationForSponsorshipApplication,
+    verifyUserForSponsorshipApplication,
     rejectSponsorshipApplication,
     cancelSponsorshipApplication
   }

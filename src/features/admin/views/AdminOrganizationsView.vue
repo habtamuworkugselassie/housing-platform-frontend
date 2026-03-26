@@ -115,6 +115,7 @@
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
+              <option value="SPONSORSHIP_PENDING">Sponsorship review</option>
               <option value="APPROVED">Approved</option>
               <option value="REJECTED">Rejected</option>
               <option value="SUSPENDED">Suspended</option>
@@ -194,6 +195,7 @@
                       'px-2 py-1 text-xs font-medium rounded',
                       org.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
                       (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-yellow-500/30 text-yellow-200' :
+                      org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
                       org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
                       'bg-red-500/30 text-red-200'
                     ]"
@@ -578,45 +580,95 @@
                   <div
                     v-for="app in orgSponsorshipApplications"
                     :key="app.id"
-                    class="flex flex-wrap items-center justify-between gap-2 rounded border border-white/20 bg-white/5 px-3 py-2"
+                    class="rounded border border-white/20 bg-white/5 px-3 py-2 space-y-2"
                   >
-                    <div class="min-w-0">
-                      <span class="text-sm text-white">{{ app.sponsorshipName }}</span>
-                      <span class="ml-2 text-xs text-gray-400">({{ app.sponsorship?.type }})</span>
-                      <span
-                        :class="[
-                          'ml-2 px-2 py-0.5 text-xs rounded',
-                          app.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                          app.status === 'PENDING' ? 'bg-yellow-500/30 text-yellow-200' :
-                          'bg-red-500/30 text-red-200'
-                        ]"
-                      >
-                        {{ app.status }}
-                      </span>
-                      <span v-if="app.isActive" class="ml-2 text-xs text-green-300">(active)</span>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <div class="min-w-0">
+                        <span class="text-sm text-white">{{ app.sponsorshipName }}</span>
+                        <span class="ml-2 text-xs text-gray-400">({{ app.sponsorship?.type }})</span>
+                        <span
+                          :class="[
+                            'ml-2 px-2 py-0.5 text-xs rounded',
+                            app.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
+                            app.status === 'PENDING' ? 'bg-yellow-500/30 text-yellow-200' :
+                            'bg-red-500/30 text-red-200'
+                          ]"
+                        >
+                          {{ app.status }}
+                        </span>
+                        <span v-if="app.isActive" class="ml-2 text-xs text-green-300">(active)</span>
+                      </div>
+                      <div v-if="app.status !== 'PENDING'" class="flex gap-2 flex-shrink-0">
+                        <button
+                          v-if="app.status === 'APPROVED'"
+                          @click="cancelSponsorshipApp(app)"
+                          class="text-xs text-orange-300 hover:text-yellow-400"
+                        >
+                          {{ $t('admin.cancel') }}
+                        </button>
+                      </div>
                     </div>
-                    <div class="flex gap-2 flex-shrink-0">
-                      <button
-                        v-if="app.status === 'PENDING'"
-                        @click="approveSponsorshipApp(app.id)"
-                        class="text-xs text-green-300 hover:text-yellow-400"
-                      >
-                        {{ $t('admin.activate') }}
-                      </button>
-                      <button
-                        v-if="app.status === 'PENDING'"
-                        @click="rejectSponsorshipApp(app)"
-                        class="text-xs text-red-300 hover:text-yellow-400"
-                      >
-                        {{ $t('admin.reject') }}
-                      </button>
-                      <button
-                        v-if="app.status === 'APPROVED'"
-                        @click="cancelSponsorshipApp(app)"
-                        class="text-xs text-orange-300 hover:text-yellow-400"
-                      >
-                        {{ $t('admin.cancel') }}
-                      </button>
+                    <div v-if="app.status === 'PENDING'" class="border-t border-white/10 pt-2 space-y-2">
+                      <p v-if="app.organizationStatus" class="text-xs text-gray-400">
+                        {{ $t('admin.orgStatus') }}:
+                        <span class="text-amber-200/90">{{ app.organizationStatus }}</span>
+                      </p>
+                      <p v-if="app.verificationUser" class="text-xs text-gray-400 break-words">
+                        {{ $t('admin.sponsorshipContactToVerify') }}:
+                        {{ app.verificationUser.firstName }} {{ app.verificationUser.lastName }}
+                        · {{ app.verificationUser.email }}
+                      </p>
+                      <div class="flex flex-wrap gap-3 text-xs">
+                        <span :class="app.organizationVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+                          {{ app.organizationVerifiedAt ? $t('admin.sponsorshipOrgVerified') : $t('admin.sponsorshipOrgNotVerified') }}
+                        </span>
+                        <span :class="app.userVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+                          {{ app.userVerifiedAt ? $t('admin.sponsorshipUserVerified') : $t('admin.sponsorshipUserNotVerified') }}
+                        </span>
+                      </div>
+                      <p v-if="!canApproveSponsorshipApplication(app)" class="text-xs text-yellow-500/90">
+                        {{ $t('admin.sponsorshipPendingApproval') }}
+                      </p>
+                      <div class="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          :disabled="!!app.organizationVerifiedAt"
+                          @click="verifyOrgSponsorshipApp(app.id)"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {{ $t('admin.sponsorshipVerifyOrg') }}
+                        </button>
+                        <button
+                          type="button"
+                          :disabled="!!app.userVerifiedAt"
+                          @click="verifyUserSponsorshipApp(app)"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {{ $t('admin.sponsorshipVerifyUser') }}
+                        </button>
+                        <button
+                          type="button"
+                          :disabled="!canApproveSponsorshipApplication(app)"
+                          @click="approveSponsorshipApp(app.id)"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-green-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {{ $t('admin.activate') }}
+                        </button>
+                        <button
+                          type="button"
+                          @click="rejectSponsorshipApp(app)"
+                          class="text-xs text-red-300 hover:text-yellow-400"
+                        >
+                          {{ $t('admin.reject') }}
+                        </button>
+                        <button
+                          type="button"
+                          @click="cancelPendingSponsorshipApp(app)"
+                          class="text-xs text-orange-300 hover:text-yellow-400"
+                        >
+                          {{ $t('admin.cancelPendingSponsorship') }}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1220,6 +1272,15 @@
         </div>
       </div>
     </div>
+    <ProvisionPrimaryUserModal
+      v-model="showProvisionPrimaryUserModal"
+      :email="provisionPrimaryUserEmail"
+      :title="t('admin.exhibitionInterests.verifyContactDialogTitle')"
+      :confirm-label="t('admin.sponsorshipVerifyUser')"
+      :busy="provisionPrimaryUserBusy"
+      :initial-names="provisionPrimaryUserNames"
+      @confirm="onProvisionPrimaryUserConfirm"
+    />
   </AdminLayout>
 </template>
 
@@ -1234,6 +1295,7 @@ import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import AdminLayout from '../components/AdminLayout.vue'
+import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 
 const { t } = useI18n()
@@ -1258,6 +1320,8 @@ const {
   getSponsorshipApplicationsByOrganization,
   assignOrganizationToSponsorship,
   approveSponsorshipApplication,
+  verifyOrganizationForSponsorshipApplication,
+  verifyUserForSponsorshipApplication,
   rejectSponsorshipApplication,
   cancelSponsorshipApplication
 } = adminOrgs
@@ -1309,9 +1373,20 @@ const showRejectSponsorshipDialog = ref(false)
 const rejectSponsorshipReason = ref('')
 const selectedSponsorshipAppToReject = ref(null)
 
+const showProvisionPrimaryUserModal = ref(false)
+const provisionPrimaryUserEmail = ref('')
+const provisionPrimaryUserNames = ref({ firstName: '', lastName: '' })
+const provisionPrimaryUserApp = ref(null)
+const provisionPrimaryUserBusy = ref(false)
+
 const pendingCount = computed(() => {
   if (!Array.isArray(organizations.value)) return 0
-  return organizations.value.filter(org => org.status === 'PENDING_APPROVAL' || org.status === 'PENDING').length
+  return organizations.value.filter(
+    org =>
+      org.status === 'PENDING_APPROVAL' ||
+      org.status === 'PENDING' ||
+      org.status === 'SPONSORSHIP_PENDING'
+  ).length
 })
 
 const approvedCount = computed(() => {
@@ -1531,6 +1606,10 @@ async function loadSponsorshipData(organizationId) {
   }
 }
 
+function canApproveSponsorshipApplication(app) {
+  return !!(app?.organizationVerifiedAt && app?.userVerifiedAt)
+}
+
 async function submitAssignSponsorship() {
   if (!viewingOrg.value?.id || !assignSponsorship.value.sponsorshipId || !assignSponsorship.value.startDate || !assignSponsorship.value.endDate) return
   assigningSponsorship.value = true
@@ -1544,6 +1623,11 @@ async function submitAssignSponsorship() {
       autoApprove: !!assignSponsorship.value.autoApprove
     })
     await loadSponsorshipData(viewingOrg.value.id)
+    try {
+      viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+    } catch (_) {
+      /* keep existing */
+    }
     assignSponsorship.value = { sponsorshipId: '', startDate: '', endDate: '', autoApprove: true }
   } catch (e) {
     console.error('Assign sponsorship failed:', e)
@@ -1555,9 +1639,92 @@ async function submitAssignSponsorship() {
 async function approveSponsorshipApp(applicationId) {
   try {
     await approveSponsorshipApplication(applicationId)
-    if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+    if (viewingOrg.value?.id) {
+      await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    }
   } catch (e) {
     console.error('Approve sponsorship failed:', e)
+  }
+}
+
+async function verifyOrgSponsorshipApp(applicationId) {
+  try {
+    await verifyOrganizationForSponsorshipApplication(applicationId)
+    if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+  } catch (e) {
+    console.error('Verify organization failed:', e)
+  }
+}
+
+function defaultProvisionFirstName(app) {
+  const c = (app?.organizationName || '').trim()
+  if (c) {
+    const parts = c.split(/\s+/).filter(Boolean)
+    return parts[0] || 'Contact'
+  }
+  return 'Contact'
+}
+
+function defaultProvisionLastName(app) {
+  const c = (app?.organizationName || '').trim()
+  if (c) {
+    const parts = c.split(/\s+/).filter(Boolean)
+    if (parts.length > 1) {
+      return parts.slice(1).join(' ')
+    }
+  }
+  return 'User'
+}
+
+async function verifyUserSponsorshipApp(app) {
+  if (!app?.id) return
+  if (app.verificationUser?.id) {
+    try {
+      await verifyUserForSponsorshipApplication(app.id)
+      if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    } catch (e) {
+      console.error('Verify user failed:', e)
+    }
+    return
+  }
+  provisionPrimaryUserApp.value = app
+  provisionPrimaryUserEmail.value = app.verificationUser?.email || ''
+  provisionPrimaryUserNames.value = {
+    firstName: defaultProvisionFirstName(app),
+    lastName: defaultProvisionLastName(app)
+  }
+  showProvisionPrimaryUserModal.value = true
+}
+
+async function onProvisionPrimaryUserConfirm(payload) {
+  if (!provisionPrimaryUserApp.value?.id) return
+  provisionPrimaryUserBusy.value = true
+  try {
+    await verifyUserForSponsorshipApplication(provisionPrimaryUserApp.value.id, payload)
+    showProvisionPrimaryUserModal.value = false
+    provisionPrimaryUserApp.value = null
+    if (viewingOrg.value?.id) {
+      await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    }
+  } catch (e) {
+    console.error('Verify user failed:', e)
+  } finally {
+    provisionPrimaryUserBusy.value = false
   }
 }
 
@@ -1573,7 +1740,14 @@ async function confirmRejectSponsorship() {
     await rejectSponsorshipApplication(selectedSponsorshipAppToReject.value.id, rejectSponsorshipReason.value || 'Rejected by admin')
     showRejectSponsorshipDialog.value = false
     selectedSponsorshipAppToReject.value = null
-    if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+    if (viewingOrg.value?.id) {
+      await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    }
   } catch (e) {
     console.error('Reject sponsorship failed:', e)
   }
@@ -1583,9 +1757,33 @@ async function cancelSponsorshipApp(app) {
   if (!app?.id) return
   try {
     await cancelSponsorshipApplication(app.id)
-    if (viewingOrg.value?.id) await loadSponsorshipData(viewingOrg.value.id)
+    if (viewingOrg.value?.id) {
+      await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    }
   } catch (e) {
     console.error('Cancel sponsorship failed:', e)
+  }
+}
+
+async function cancelPendingSponsorshipApp(app) {
+  if (!app?.id) return
+  try {
+    await cancelSponsorshipApplication(app.id)
+    if (viewingOrg.value?.id) {
+      await loadSponsorshipData(viewingOrg.value.id)
+      try {
+        viewingOrg.value = await getOrganizationById(viewingOrg.value.id)
+      } catch (_) {
+        /* keep */
+      }
+    }
+  } catch (e) {
+    console.error('Cancel pending sponsorship failed:', e)
   }
 }
 

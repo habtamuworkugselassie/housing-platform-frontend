@@ -15,7 +15,8 @@ import type {
   PropertyManagementRequest,
   AdminFilters,
   DisplaySettings,
-  AdminExhibitionInterest
+  AdminExhibitionInterest,
+  ProvisionOrganizationPrimaryUserPayload
 } from './admin.types'
 // Pagination types
 interface PageRequest {
@@ -54,6 +55,20 @@ export const adminApi = {
       params: pageRequest || {}
     })
     return response
+  },
+
+  /**
+   * Verify exhibition lead: create primary org user (admin-chosen password) and mark contact verified.
+   */
+  verifyExhibitionInterestContact: async (
+    interestId: string,
+    body: ProvisionOrganizationPrimaryUserPayload
+  ): Promise<AdminExhibitionInterest> => {
+    const response = await api.put<AdminExhibitionInterest>(
+      `/admin/exhibition-interests/${interestId}/verify-contact`,
+      body
+    )
+    return response.data
   },
 
   /**
@@ -206,6 +221,14 @@ export const adminApi = {
   },
 
   /**
+   * All pending marketplace sponsorship applications (admin). For Exhibition Leads / review queues.
+   */
+  getPendingSponsorshipApplications: async (): Promise<any[]> => {
+    const response = await api.get('/sponsorships/applications/pending')
+    return response.data
+  },
+
+  /**
    * Assign organization to sponsorship (admin) – create application, optional auto-approve
    */
   assignOrganizationToSponsorship: async (body: {
@@ -229,6 +252,24 @@ export const adminApi = {
     const response = await api.put(`/sponsorships/applications/${applicationId}/approve`, {
       notes: notes ?? 'Approved by admin'
     })
+    return response.data
+  },
+
+  verifyOrganizationForSponsorshipApplication: async (applicationId: string): Promise<any> => {
+    const response = await api.put(
+      `/sponsorships/applications/${applicationId}/verify-organization`
+    )
+    return response.data
+  },
+
+  verifyUserForSponsorshipApplication: async (
+    applicationId: string,
+    body?: ProvisionOrganizationPrimaryUserPayload | null
+  ): Promise<any> => {
+    const response = await api.put(
+      `/sponsorships/applications/${applicationId}/verify-user`,
+      body ?? undefined
+    )
     return response.data
   },
 

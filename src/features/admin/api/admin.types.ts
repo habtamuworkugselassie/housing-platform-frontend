@@ -172,7 +172,21 @@ export interface AdminExhibitionInterest {
   organizationStatus?: string | null
   sponsorshipId?: string | null
   sponsorshipPackageName?: string | null
+  /** ISO timestamp when admin verified registrant contact (exhibition lead workflow). */
+  contactVerifiedAt?: string | null
+  /** Set when the org has a primary contact user (often after verify-contact). */
+  primaryContactUserId?: string | null
 }
+
+/** Create primary org user (admin sets first password); same body for exhibition verify-contact and sponsorship verify-user. */
+export interface ProvisionOrganizationPrimaryUserPayload {
+  password: string
+  firstName: string
+  lastName: string
+}
+
+/** @deprecated use ProvisionOrganizationPrimaryUserPayload */
+export type VerifyExhibitionContactPayload = ProvisionOrganizationPrimaryUserPayload
 
 /** Public landing timings (ms); admin GET/PUT /admin/display-settings */
 export interface DisplaySettings {
