@@ -26,7 +26,27 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ethiobuildconnect.et/marketplace/banks</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ethiobuildconnect.et/marketplace/insurance</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ethiobuildconnect.et/marketplace/consultants-and-architects</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ethiobuildconnect.et/marketplace/suppliers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ethiobuildconnect.et/marketplace/finishing-work</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

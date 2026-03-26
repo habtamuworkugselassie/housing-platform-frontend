@@ -397,6 +397,7 @@
                         class="h-10 w-10 object-cover rounded border border-white/20"
                         muted
                         playsinline
+                        preload="none"
                       />
                     </template>
                     <span class="text-xs text-gray-400">{{ m.mediaKind }}</span>

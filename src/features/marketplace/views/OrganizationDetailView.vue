@@ -37,11 +37,10 @@
               :key="currentMediaUrl"
               :src="currentMediaUrl"
               class="h-full w-full object-contain bg-zinc-950/50"
-              autoplay
               muted
               playsinline
               controls
-              preload="auto"
+              preload="metadata"
             />
           </template>
           <div v-else class="flex h-full items-center justify-center">
