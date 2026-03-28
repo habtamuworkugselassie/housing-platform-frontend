@@ -12,6 +12,8 @@ import type {
   OrganizationManagementRequest,
   OrganizationCreateRequest,
   OrganizationUpdateRequest,
+  SupplierSubcategory,
+  SupplierSubcategoryRequest,
   PropertyManagementRequest,
   AdminFilters,
   DisplaySettings,
@@ -142,6 +144,43 @@ export const adminApi = {
   getOrganizationById: async (id: string): Promise<any> => {
     const response = await api.get(`/organizations/${id}`)
     return response.data
+  },
+
+  patchOrganizationSupplierSubcategories: async (
+    id: string,
+    body: { supplierSubcategoryIds: string[] }
+  ): Promise<any> => {
+    const response = await api.patch(`/organizations/${id}/supplier-subcategories`, body)
+    return response.data
+  },
+
+  getSupplierSubcategoriesPublic: async (): Promise<SupplierSubcategory[]> => {
+    const response = await api.get<SupplierSubcategory[]>('/supplier-subcategories')
+    return response.data
+  },
+
+  getSupplierSubcategoriesAdmin: async (): Promise<SupplierSubcategory[]> => {
+    const response = await api.get<SupplierSubcategory[]>('/supplier-subcategories/admin')
+    return response.data
+  },
+
+  createSupplierSubcategory: async (
+    body: SupplierSubcategoryRequest
+  ): Promise<SupplierSubcategory> => {
+    const response = await api.post<SupplierSubcategory>('/supplier-subcategories', body)
+    return response.data
+  },
+
+  updateSupplierSubcategory: async (
+    id: string,
+    body: SupplierSubcategoryRequest
+  ): Promise<SupplierSubcategory> => {
+    const response = await api.put<SupplierSubcategory>(`/supplier-subcategories/${id}`, body)
+    return response.data
+  },
+
+  deleteSupplierSubcategory: async (id: string): Promise<void> => {
+    await api.delete(`/supplier-subcategories/${id}`)
   },
 
   /**

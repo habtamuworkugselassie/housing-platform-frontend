@@ -130,6 +130,18 @@
             </button>
           </div>
         </div>
+        <div
+          v-if="filters.type === 'SUPPLIER'"
+          class="mt-4 flex flex-wrap items-center gap-2 border-t border-white/10 pt-4"
+        >
+          <button
+            type="button"
+            class="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium border border-white/20 bg-white/5 text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+            @click="openSubcategoryCatalog"
+          >
+            {{ $t('admin.manageMaterialSubcategories') }}
+          </button>
+        </div>
       </div>
 
       <!-- Organizations Table -->
@@ -567,6 +579,43 @@
                 </div>
               </section>
 
+              <section
+                v-if="viewingOrg?.type === 'SUPPLIER'"
+                class="rounded-xl border border-white/10 bg-zinc-950/40 p-5"
+              >
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.viewMaterialSpecialties') }}
+                </h4>
+                <p class="mb-3 text-xs text-gray-500">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
+                <div v-if="!activeSupplierSubcategoryOptions.length && !subcategoryOptionsLoading" class="text-sm text-gray-500">
+                  {{ $t('admin.noSubcategoriesLoaded') }}
+                </div>
+                <div v-else class="flex max-h-44 flex-wrap gap-x-4 gap-y-2 overflow-y-auto">
+                  <label
+                    v-for="s in activeSupplierSubcategoryOptions"
+                    :key="s.id"
+                    class="flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+                  >
+                    <input
+                      v-model="viewingSubcategoryIds"
+                      type="checkbox"
+                      :value="s.id"
+                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                    />
+                    {{ s.name }}
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  class="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+                  :disabled="supplierSubcatSaveBusy"
+                  @click="saveViewingSupplierSubcategories"
+                >
+                  {{ supplierSubcatSaveBusy ? $t('admin.saving') : $t('admin.saveMaterialSpecialties') }}
+                </button>
+              </section>
+
               <!-- Sponsorship management -->
               <div class="rounded-xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
                 <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
@@ -884,6 +933,13 @@
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
               </div>
+              <div
+                v-if="formMode === 'create' && !editingOrgId"
+                class="sm:col-span-2 rounded-lg border border-white/10 bg-zinc-950/40 p-3 text-sm text-gray-400"
+                role="note"
+              >
+                {{ $t('admin.orgFormCreateDocumentUploadHint') }}
+              </div>
               <div>
                 <label for="org-bus-reg" class="block text-sm font-medium text-gray-300">Business Registration</label>
                 <input id="org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" placeholder="Registration number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
@@ -894,7 +950,7 @@
                   placeholder="Document URL or upload below"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
-                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                   <input
                     type="file"
                     accept=".pdf,image/*,.doc,.docx"
@@ -918,7 +974,7 @@
                   placeholder="Document URL or upload below"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
-                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                   <input
                     type="file"
                     accept=".pdf,image/*,.doc,.docx"
@@ -942,7 +998,7 @@
                   placeholder="Document URL or upload below"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
-                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                   <input
                     type="file"
                     accept=".pdf,image/*,.doc,.docx"
@@ -966,7 +1022,7 @@
                   placeholder="Document URL or upload below"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
-                <div v-if="formMode === 'edit' && editingOrgId" class="mt-1 flex items-center gap-2">
+                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                   <input
                     type="file"
                     accept=".pdf,image/*,.doc,.docx"
@@ -996,6 +1052,28 @@
                     {{ getMarketplaceOrganizationTypeLabel(type) }}
                   </option>
                 </select>
+              </div>
+              <div v-if="form.type === 'SUPPLIER'" class="sm:col-span-2 rounded-lg border border-white/10 bg-zinc-950/40 p-4">
+                <label class="block text-sm font-medium text-gray-300">{{ $t('admin.materialSupplierSubcategories') }}</label>
+                <p class="mt-1 text-xs text-gray-500">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
+                <div v-if="!activeSupplierSubcategoryOptions.length" class="mt-2 text-sm text-gray-500">
+                  {{ subcategoryOptionsLoading ? '…' : $t('admin.noSubcategoriesLoaded') }}
+                </div>
+                <div v-else class="mt-3 flex max-h-44 flex-wrap gap-x-4 gap-y-2 overflow-y-auto">
+                  <label
+                    v-for="s in activeSupplierSubcategoryOptions"
+                    :key="s.id"
+                    class="flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+                  >
+                    <input
+                      v-model="form.supplierSubcategoryIds"
+                      type="checkbox"
+                      :value="s.id"
+                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                    />
+                    {{ s.name }}
+                  </label>
+                </div>
               </div>
               <div v-if="formMode === 'create'" class="sm:col-span-2">
                 <label for="org-initial-status" class="block text-sm font-medium text-gray-300">{{ $t('admin.initialStatus') }}</label>
@@ -1273,6 +1351,112 @@
         </div>
       </div>
     </div>
+    <!-- Supplier subcategory catalog (admin) -->
+    <div
+      v-if="showSubcategoryCatalogModal"
+      class="fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10"
+      @click.self="showSubcategoryCatalogModal = false"
+    >
+      <div
+        class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-xl"
+        role="dialog"
+        aria-modal="true"
+        @click.stop
+      >
+        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <h3 class="text-lg font-semibold">{{ $t('admin.subcategoryCatalogTitle') }}</h3>
+          <button
+            type="button"
+            class="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-yellow-400"
+            @click="showSubcategoryCatalogModal = false"
+          >
+            ×
+          </button>
+        </div>
+        <div class="max-h-[min(70vh,32rem)] overflow-y-auto px-5 py-4">
+          <p class="mb-4 text-xs text-gray-500">{{ $t('admin.subcategoryCatalogHelp') }}</p>
+          <div v-if="subcategoryCatalogError" class="mb-3 text-sm text-red-300">{{ subcategoryCatalogError }}</div>
+          <div v-if="subcategoryCatalogLoading" class="py-8 text-center text-gray-400">{{ $t('admin.loadingOrganizations') }}</div>
+          <table v-else class="w-full text-left text-sm">
+            <thead>
+              <tr class="border-b border-white/10 text-xs text-gray-400">
+                <th class="py-2 pr-2">{{ $t('admin.subcategoryName') }}</th>
+                <th class="py-2 pr-2">{{ $t('admin.subcategorySlug') }}</th>
+                <th class="py-2 pr-2">{{ $t('admin.subcategorySort') }}</th>
+                <th class="py-2 pr-2">{{ $t('admin.subcategoryActive') }}</th>
+                <th class="py-2" />
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in subcategoryCatalogRows" :key="row.id" class="border-b border-white/5">
+                <td class="py-2 pr-2">
+                  <input
+                    v-model="row.name"
+                    type="text"
+                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                  />
+                </td>
+                <td class="py-2 pr-2">
+                  <input
+                    v-model="row.slug"
+                    type="text"
+                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-xs text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                  />
+                </td>
+                <td class="py-2 pr-2">
+                  <input
+                    v-model.number="row.sortOrder"
+                    type="number"
+                    class="w-20 rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                  />
+                </td>
+                <td class="py-2 pr-2">
+                  <input v-model="row.active" type="checkbox" class="rounded border-white/20 bg-white/5 text-yellow-400" />
+                </td>
+                <td class="py-2 whitespace-nowrap">
+                  <button
+                    type="button"
+                    class="mr-2 text-xs text-yellow-300 hover:text-yellow-200"
+                    @click="saveCatalogRow(row)"
+                  >
+                    {{ $t('common.save') }}
+                  </button>
+                  <button type="button" class="text-xs text-red-300 hover:text-red-200" @click="deleteCatalogRow(row)">
+                    {{ $t('common.delete') }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mt-4 rounded-lg border border-white/10 bg-zinc-950/50 p-4">
+            <p class="mb-2 text-xs font-medium text-gray-400">{{ $t('admin.addSubcategory') }}</p>
+            <div class="flex flex-wrap gap-2">
+              <input
+                v-model="newSubcategoryName"
+                type="text"
+                :placeholder="$t('admin.subcategoryName')"
+                class="min-w-[8rem] flex-1 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+              />
+              <input
+                v-model="newSubcategorySlug"
+                type="text"
+                :placeholder="$t('admin.subcategorySlugOptional')"
+                class="w-36 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+              />
+              <button
+                type="button"
+                class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400"
+                :disabled="catalogAddBusy"
+                @click="addCatalogSubcategory"
+              >
+                {{ catalogAddBusy ? '…' : $t('common.create') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <ProvisionPrimaryUserModal
       v-model="showProvisionPrimaryUserModal"
       :email="provisionPrimaryUserEmail"
@@ -1298,6 +1482,7 @@ import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks
 import AdminLayout from '../components/AdminLayout.vue'
 import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
+import { adminApi } from '../api/admin.api'
 
 const { t } = useI18n()
 const adminOrgs = useAdminOrganizations()
@@ -1563,6 +1748,19 @@ const rejectOrg = async () => {
 const showViewDialog = ref(false)
 const viewingOrg = ref(null)
 
+const activeSupplierSubcategoryOptions = ref([])
+const subcategoryOptionsLoading = ref(false)
+const viewingSubcategoryIds = ref([])
+const supplierSubcatSaveBusy = ref(false)
+
+const showSubcategoryCatalogModal = ref(false)
+const subcategoryCatalogLoading = ref(false)
+const subcategoryCatalogError = ref('')
+const subcategoryCatalogRows = ref([])
+const newSubcategoryName = ref('')
+const newSubcategorySlug = ref('')
+const catalogAddBusy = ref(false)
+
 const viewingOrgMediaUrlsForWarmup = computed(() => {
   const o = viewingOrg.value
   if (!o) return []
@@ -1585,9 +1783,117 @@ const viewOrg = async (org) => {
   try {
     const full = await getOrganizationById(org.id)
     viewingOrg.value = full
+    if (full.type === 'SUPPLIER') {
+      viewingSubcategoryIds.value = (full.supplierSubcategories || []).map((s) => s.id)
+      await loadActiveSupplierSubcategories()
+    } else {
+      viewingSubcategoryIds.value = []
+    }
     await loadSponsorshipData(full.id)
   } catch (e) {
     console.error('Failed to load organization details:', e)
+  }
+}
+
+async function loadActiveSupplierSubcategories() {
+  subcategoryOptionsLoading.value = true
+  try {
+    activeSupplierSubcategoryOptions.value = await adminApi.getSupplierSubcategoriesPublic()
+  } catch {
+    activeSupplierSubcategoryOptions.value = []
+  } finally {
+    subcategoryOptionsLoading.value = false
+  }
+}
+
+async function saveViewingSupplierSubcategories() {
+  if (!viewingOrg.value?.id) return
+  supplierSubcatSaveBusy.value = true
+  try {
+    const updated = await adminApi.patchOrganizationSupplierSubcategories(viewingOrg.value.id, {
+      supplierSubcategoryIds: [...viewingSubcategoryIds.value]
+    })
+    viewingOrg.value = updated
+    await loadOrgs()
+  } catch (e) {
+    console.error('Failed to save supplier subcategories:', e)
+  } finally {
+    supplierSubcatSaveBusy.value = false
+  }
+}
+
+async function fetchSubcategoryCatalogRows() {
+  subcategoryCatalogError.value = ''
+  subcategoryCatalogLoading.value = true
+  try {
+    const list = await adminApi.getSupplierSubcategoriesAdmin()
+    subcategoryCatalogRows.value = (list || []).map((s) => ({
+      id: s.id,
+      name: s.name,
+      slug: s.slug,
+      sortOrder: s.sortOrder,
+      active: s.active
+    }))
+  } catch (e) {
+    subcategoryCatalogError.value =
+      e?.response?.data?.message || e?.message || 'Failed to load subcategories'
+    subcategoryCatalogRows.value = []
+  } finally {
+    subcategoryCatalogLoading.value = false
+  }
+}
+
+async function openSubcategoryCatalog() {
+  showSubcategoryCatalogModal.value = true
+  await fetchSubcategoryCatalogRows()
+}
+
+async function saveCatalogRow(row) {
+  try {
+    subcategoryCatalogError.value = ''
+    await adminApi.updateSupplierSubcategory(row.id, {
+      name: row.name,
+      slug: row.slug || undefined,
+      sortOrder: row.sortOrder,
+      active: row.active
+    })
+    await fetchSubcategoryCatalogRows()
+    await loadActiveSupplierSubcategories()
+  } catch (e) {
+    subcategoryCatalogError.value = e?.response?.data?.message || e?.message || 'Save failed'
+  }
+}
+
+async function deleteCatalogRow(row) {
+  if (!confirm('Delete this subcategory? Organizations must be unassigned first.')) return
+  try {
+    subcategoryCatalogError.value = ''
+    await adminApi.deleteSupplierSubcategory(row.id)
+    subcategoryCatalogRows.value = subcategoryCatalogRows.value.filter((r) => r.id !== row.id)
+    await loadActiveSupplierSubcategories()
+  } catch (e) {
+    subcategoryCatalogError.value = e?.response?.data?.message || e?.message || 'Delete failed'
+  }
+}
+
+async function addCatalogSubcategory() {
+  if (!newSubcategoryName.value?.trim()) return
+  catalogAddBusy.value = true
+  subcategoryCatalogError.value = ''
+  try {
+    await adminApi.createSupplierSubcategory({
+      name: newSubcategoryName.value.trim(),
+      slug: newSubcategorySlug.value?.trim() || undefined,
+      active: true
+    })
+    newSubcategoryName.value = ''
+    newSubcategorySlug.value = ''
+    await fetchSubcategoryCatalogRows()
+    await loadActiveSupplierSubcategories()
+  } catch (e) {
+    subcategoryCatalogError.value = e?.response?.data?.message || e?.message || 'Create failed'
+  } finally {
+    catalogAddBusy.value = false
   }
 }
 
@@ -1949,7 +2255,8 @@ const form = ref({
   twitterUrl: '',
   youtubeUrl: '',
   description: '',
-  initialStatus: 'PENDING_APPROVAL'
+  initialStatus: 'PENDING_APPROVAL',
+  supplierSubcategoryIds: []
 })
 
 const organizationTypeFormOptions = computed(() => {
@@ -1988,7 +2295,8 @@ function resetForm() {
     twitterUrl: '',
     youtubeUrl: '',
     description: '',
-    initialStatus: 'PENDING_APPROVAL'
+    initialStatus: 'PENDING_APPROVAL',
+    supplierSubcategoryIds: []
 }
   editingOrgId.value = null
   formError.value = ''
@@ -2034,12 +2342,16 @@ async function openEditModal(org) {
     twitterUrl: org.twitterUrl ?? '',
     youtubeUrl: org.youtubeUrl ?? '',
     description: org.description ?? '',
-    initialStatus: 'PENDING_APPROVAL'
+    initialStatus: 'PENDING_APPROVAL',
+    supplierSubcategoryIds: (org.supplierSubcategories || []).map((s) => s.id)
   }
   formError.value = ''
   orgFormTab.value = 'profile'
   showViewDialog.value = false
   showFormDialog.value = true
+  if (form.value.type === 'SUPPLIER') {
+    await loadActiveSupplierSubcategories()
+  }
   await nextTick()
   document.getElementById('org-name')?.focus()
 }
@@ -2049,7 +2361,7 @@ async function submitOrganizationForm() {
   formSaving.value = true
   try {
     if (formMode.value === 'create') {
-      await createOrganization({
+      const created = await createOrganization({
         name: form.value.name,
         registrationNumber: form.value.registrationNumber || undefined,
         businessRegistration: form.value.businessRegistration || undefined,
@@ -2075,10 +2387,24 @@ async function submitOrganizationForm() {
         twitterUrl: form.value.twitterUrl || undefined,
         youtubeUrl: form.value.youtubeUrl || undefined,
         description: form.value.description || undefined,
-        initialStatus: form.value.initialStatus
+        initialStatus: form.value.initialStatus,
+        ...(form.value.type === 'SUPPLIER'
+          ? { supplierSubcategoryIds: [...(form.value.supplierSubcategoryIds || [])] }
+          : {})
       })
-      showFormDialog.value = false
       await loadOrgs()
+      if (created?.id) {
+        try {
+          const full = await getOrganizationById(created.id)
+          await openEditModal(full || created)
+        } catch (e) {
+          console.error(e)
+          formMode.value = 'edit'
+          editingOrgId.value = created.id
+        }
+      } else {
+        showFormDialog.value = false
+      }
     } else {
       await updateOrganization(editingOrgId.value, {
         name: form.value.name,
@@ -2105,7 +2431,10 @@ async function submitOrganizationForm() {
         linkedinUrl: form.value.linkedinUrl || undefined,
         twitterUrl: form.value.twitterUrl || undefined,
         youtubeUrl: form.value.youtubeUrl || undefined,
-        description: form.value.description || undefined
+        description: form.value.description || undefined,
+        ...(form.value.type === 'SUPPLIER'
+          ? { supplierSubcategoryIds: [...(form.value.supplierSubcategoryIds || [])] }
+          : {})
       })
       showFormDialog.value = false
       await loadOrgs()
@@ -2116,6 +2445,18 @@ async function submitOrganizationForm() {
     formSaving.value = false
   }
 }
+
+watch(
+  () => form.value.type,
+  async (t) => {
+    if (!showFormDialog.value) return
+    if (t === 'SUPPLIER') {
+      await loadActiveSupplierSubcategories()
+    } else {
+      form.value.supplierSubcategoryIds = []
+    }
+  }
+)
 
 onMounted(async () => {
   await loadOrgs()

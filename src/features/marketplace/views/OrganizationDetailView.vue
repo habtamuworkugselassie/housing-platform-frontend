@@ -92,6 +92,18 @@
                 </h1>
                 <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
                 <div
+                  v-if="organization.type === 'SUPPLIER' && organization.supplierSubcategories?.length"
+                  class="mt-2 flex flex-wrap gap-2"
+                >
+                  <span
+                    v-for="sc in organization.supplierSubcategories"
+                    :key="sc.id"
+                    class="inline-flex rounded-full border border-yellow-400/40 bg-yellow-500/20 px-2.5 py-1 text-xs font-medium text-yellow-100"
+                  >
+                    {{ sc.name }}
+                  </span>
+                </div>
+                <div
                   v-if="hasSocialLinks"
                   class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3"
                 >
@@ -177,6 +189,26 @@
               <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                 <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgType') }}</dt>
                 <dd class="text-sm font-semibold text-white text-right">{{ orgTypeLabel }}</dd>
+              </div>
+              <div
+                v-if="organization.type === 'SUPPLIER'"
+                class="flex flex-col gap-2 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <dt class="text-sm font-medium text-gray-400">{{ $t('marketplace.materialSpecialties') }}</dt>
+                <dd class="text-sm text-white sm:text-right">
+                  <template v-if="organization.supplierSubcategories?.length">
+                    <span class="flex flex-wrap justify-end gap-1.5">
+                      <span
+                        v-for="sc in organization.supplierSubcategories"
+                        :key="sc.id"
+                        class="rounded-full border border-yellow-400/35 bg-yellow-500/15 px-2 py-0.5 text-xs text-yellow-100"
+                      >
+                        {{ sc.name }}
+                      </span>
+                    </span>
+                  </template>
+                  <span v-else class="text-gray-500">—</span>
+                </dd>
               </div>
               <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
                 <dt class="text-sm font-medium text-gray-400">Status</dt>

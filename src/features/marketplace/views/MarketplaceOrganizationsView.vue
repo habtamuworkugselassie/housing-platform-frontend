@@ -23,17 +23,35 @@
         {{ $t('marketplace.organizationsByType') }}
       </p>
 
-      <div v-if="!loading && !error && organizations.length" class="mb-6 rounded-xl border border-white/10 bg-zinc-900/80 p-4 sm:p-5">
+      <div v-if="!loading && !error && config?.type" class="mb-6 rounded-xl border border-white/10 bg-zinc-900/80 p-4 sm:p-5">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div class="w-full sm:max-w-md">
-            <label for="marketplace-org-search" class="sr-only">{{ $t('common.search') }}</label>
-            <input
-              id="marketplace-org-search"
-              v-model.trim="searchQuery"
-              type="search"
-              :placeholder="$t('home.searchCompanies')"
-              class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
-            />
+          <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+            <div v-if="config?.type === 'SUPPLIER' && supplierSubcategories.length" class="w-full sm:w-56 shrink-0">
+              <label for="marketplace-supplier-subcat" class="mb-1 block text-xs font-medium text-gray-400">
+                {{ $t('marketplace.materialSubcategory') }}
+              </label>
+              <select
+                id="marketplace-supplier-subcat"
+                v-model="selectedSubcategoryId"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
+                @change="onSubcategoryFilterChange"
+              >
+                <option value="">{{ $t('marketplace.allSubcategories') }}</option>
+                <option v-for="s in supplierSubcategories" :key="s.id" :value="s.id">
+                  {{ s.name }}
+                </option>
+              </select>
+            </div>
+            <div class="w-full sm:max-w-md flex-1">
+              <label for="marketplace-org-search" class="sr-only">{{ $t('common.search') }}</label>
+              <input
+                id="marketplace-org-search"
+                v-model.trim="searchQuery"
+                type="search"
+                :placeholder="$t('home.searchCompanies')"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
+              />
+            </div>
           </div>
           <p class="text-xs text-gray-400">
             Showing {{ paginationStart }}-{{ paginationEnd }} of {{ filteredOrganizations.length }}
@@ -106,6 +124,18 @@
                 <p class="mt-1 inline-flex rounded-full border border-white/20 px-2 py-0.5 text-[11px] uppercase tracking-wide text-gray-300">
                   {{ getOrganizationTypeLabel(org.type) }}
                 </p>
+                <div
+                  v-if="org.type === 'SUPPLIER' && org.supplierSubcategories?.length"
+                  class="mt-2 flex flex-wrap gap-1.5"
+                >
+                  <span
+                    v-for="sc in org.supplierSubcategories"
+                    :key="sc.id"
+                    class="inline-flex rounded-full border border-yellow-400/40 bg-yellow-500/15 px-2 py-0.5 text-[10px] font-medium text-yellow-200/95"
+                  >
+                    {{ sc.name }}
+                  </span>
+                </div>
                 <p v-if="locationLabel(org)" class="text-xs text-gray-400 mt-2">
                   {{ locationLabel(org) }}
                 </p>
@@ -253,14 +283,22 @@ const organizations = ref([])
 const loading = ref(true)
 const error = ref(null)
 const searchQuery = ref('')
+const supplierSubcategories = ref([])
+const selectedSubcategoryId = ref('')
 const currentPage = ref(1)
 const pageSize = 9
+
+function onSubcategoryFilterChange() {
+  currentPage.value = 1
+  void loadOrganizationsKeepFilters()
+}
 
 const filteredOrganizations = computed(() => {
   const list = Array.isArray(organizations.value) ? organizations.value : []
   const query = (searchQuery.value || '').trim().toLowerCase()
   if (!query) return list
   return list.filter((org) => {
+    const subcatNames = (org.supplierSubcategories || []).map((s) => s?.name).filter(Boolean)
     const searchable = [
       org.name,
       org.description,
@@ -274,6 +312,7 @@ const filteredOrganizations = computed(() => {
       org.linkedinUrl,
       org.twitterUrl,
       org.youtubeUrl,
+      ...subcatNames,
       ...formatOrganizationPhones(org)
     ]
       .filter(Boolean)
@@ -393,10 +432,44 @@ async function loadOrganizations() {
   error.value = null
   searchQuery.value = ''
   currentPage.value = 1
+  selectedSubcategoryId.value = ''
   try {
+    if (config.value.type === 'SUPPLIER') {
+      try {
+        const subRes = await api.get('/supplier-subcategories')
+        supplierSubcategories.value = Array.isArray(subRes.data) ? subRes.data : []
+      } catch {
+        supplierSubcategories.value = []
+      }
+    } else {
+      supplierSubcategories.value = []
+    }
     const res = await api.get('/organizations/marketplace', {
       params: { type: config.value.type }
     })
+    organizations.value = Array.isArray(res.data) ? res.data : []
+  } catch (e) {
+    error.value = e.response?.data?.message || e.message || 'Failed to load organizations'
+    organizations.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+async function loadOrganizationsKeepFilters() {
+  if (!config.value?.type) {
+    organizations.value = []
+    loading.value = false
+    return
+  }
+  loading.value = true
+  error.value = null
+  try {
+    const params = { type: config.value.type }
+    if (config.value.type === 'SUPPLIER' && selectedSubcategoryId.value) {
+      params.subcategoryId = selectedSubcategoryId.value
+    }
+    const res = await api.get('/organizations/marketplace', { params })
     organizations.value = Array.isArray(res.data) ? res.data : []
   } catch (e) {
     error.value = e.response?.data?.message || e.message || 'Failed to load organizations'

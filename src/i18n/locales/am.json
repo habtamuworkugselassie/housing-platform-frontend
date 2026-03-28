@@ -583,6 +583,7 @@
     "orgFormTabOnline": "ድር እና ማህበራዊ",
     "organizationDetails": "የድርጅት ዝርዝሮች",
     "orgFormCreateSubtitle": "መገለጫ፣ ህጋዊ እና ግንኙነት — ከታች ትሮችን ይጠቀሙ።",
+    "orgFormCreateDocumentUploadHint": "የሰነድ ፋይል ጭነቶች ከድርጅቱን ካስመዘገቡ በኋላ ይታያሉ፦ የስም፣ ዓይነት እና ሌሎች የሚያስፈልጉ መስኮችን በመሙላት ቅጹን ያስረክቡ። ይህ መስኮት ይቆያል እና ከዚያ ፋይሎችን ማስተላለፍ ይችላሉ። ከመመዝገብዎ በፊት በታች ያሉትን መስኮች ለሰነድ URL መጠቀም ይችላሉ።",
     "orgFormEditSubtitle": "ትሮችን ያዘምኑ፣ ከዚያ ያስቀምጡ። ሰነዶች በአርትዖት ሁኔታ ይጫናሉ።",
     "sectionMedia": "ሜዲያ እና ብራንድ",
     "sectionOverview": "አጠቃላይ",

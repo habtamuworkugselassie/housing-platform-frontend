@@ -182,8 +182,8 @@ export function useAdminOrganizations() {
   }
 
   const createOrganization = async (payload) => {
-    const { execute: executeCreate } = useApi()
-    return await executeCreate(() => adminApi.createOrganization(payload))
+    // adminApi.createOrganization returns response.data, not AxiosResponse — do not wrap in useApi.execute
+    return await adminApi.createOrganization(payload)
   }
 
   const updateOrganization = async (id, payload) => {

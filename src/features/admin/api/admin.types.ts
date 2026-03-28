@@ -101,6 +101,8 @@ export interface OrganizationCreateRequest {
   primaryContactUserId?: string
   /** When creating as admin: APPROVED, PENDING_APPROVAL, etc. */
   initialStatus?: 'PENDING_APPROVAL' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'
+  /** When type is SUPPLIER: material marketplace subcategories (cement, steel, …). */
+  supplierSubcategoryIds?: string[]
 }
 
 /** Same fields for update (all optional except what is being changed) */
@@ -124,6 +126,24 @@ export interface OrganizationUpdateRequest {
   youtubeUrl?: string
   description?: string
   primaryContactUserId?: string
+  /** When type is SUPPLIER: replaces linked subcategories when provided. */
+  supplierSubcategoryIds?: string[]
+}
+
+/** Construction material supplier marketplace subcategory */
+export interface SupplierSubcategory {
+  id: string
+  name: string
+  slug: string
+  sortOrder: number
+  active: boolean
+}
+
+export interface SupplierSubcategoryRequest {
+  name: string
+  slug?: string
+  sortOrder?: number
+  active?: boolean
 }
 
 export interface PropertyManagementRequest {
