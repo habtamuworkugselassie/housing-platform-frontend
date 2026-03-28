@@ -84,17 +84,15 @@ export const adminApi = {
   /**
    * Create user (admin only). Any role including ADMIN is allowed.
    */
-  createUser: async (body: UserCreateRequest): Promise<any> => {
-    const response = await api.post('/users', body)
-    return response.data
+  createUser: async (body: UserCreateRequest): Promise<AxiosResponse<any>> => {
+    return api.post('/users', body)
   },
 
   /**
    * Update user (admin)
    */
-  updateUser: async (id: string, user: UserManagementRequest): Promise<any> => {
-    const response = await api.put(`/users/${id}`, user)
-    return response.data
+  updateUser: async (id: string, user: UserManagementRequest): Promise<AxiosResponse<any>> => {
+    return api.put(`/users/${id}`, user)
   },
 
   /**

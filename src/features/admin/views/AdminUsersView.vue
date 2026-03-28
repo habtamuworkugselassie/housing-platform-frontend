@@ -74,6 +74,7 @@
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Roles</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Organization</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Joined</th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
@@ -82,7 +83,7 @@
           <tbody class="divide-y divide-white/10">
             <template v-if="loading">
               <tr>
-                <td colspan="6" class="px-6 py-12 text-center bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center bg-zinc-900">
                   <div class="flex flex-col items-center">
                     <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mb-2"></div>
                     <span class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</span>
@@ -92,7 +93,7 @@
             </template>
             <template v-else-if="error">
               <tr>
-                <td colspan="6" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
                   <div class="space-y-2">
                     <div class="font-semibold">{{ $t('admin.errorLoadingUsers') }}</div>
                     <div>{{ error }}</div>
@@ -108,7 +109,7 @@
             </template>
             <template v-else-if="!users || users.length === 0">
               <tr>
-                <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400 bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400 bg-zinc-900">
                   No users found
                 </td>
               </tr>
@@ -149,6 +150,23 @@
                       {{ role }}
                     </span>
                   </div>
+                </td>
+                <td class="px-6 py-4 text-sm max-w-xs">
+                  <template v-for="cell in [linkedOrganizationCell(user)]" :key="`org-cell-${user.id}`">
+                    <template v-if="cell.kind === 'linked'">
+                      <RouterLink
+                        :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
+                        class="font-medium text-white hover:text-yellow-400 hover:underline"
+                      >
+                        {{ cell.org.name || 'Organization' }}
+                      </RouterLink>
+                      <div v-if="cell.typeLabel" class="text-xs text-gray-400 mt-0.5">
+                        {{ cell.typeLabel }}
+                      </div>
+                    </template>
+                    <span v-else-if="cell.kind === 'missing'" class="text-amber-200/90">Not linked</span>
+                    <span v-else class="text-gray-500">—</span>
+                  </template>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
@@ -307,18 +325,40 @@
                 <p v-if="createError" class="mt-2 text-sm text-red-400">{{ createError }}</p>
               </div>
 
-              <!-- Organization Select -->
-              <div v-if="showOrganizationSelect">
+              <!-- Organization: list filtered by role — realtor → real estate, banker → bank, supplier → supplier -->
+              <div v-if="showOrganizationSelect" class="space-y-2">
                 <label class="block text-sm font-medium text-gray-300">Organization</label>
+                <p class="text-xs text-gray-400">
+                  Only <strong class="text-gray-300">approved</strong> organizations matching the selected role(s) are
+                  listed (grouped by type). Register a new one in
+                  <RouterLink
+                    to="/admin/organizations"
+                    class="text-yellow-400 hover:underline"
+                    @click="closeCreateUser"
+                  >
+                    Organization management
+                  </RouterLink>
+                  , then reopen Add User to refresh.
+                </p>
+                <p v-if="organizationFilterSummary" class="text-xs text-yellow-400/90 font-medium">
+                  {{ organizationFilterSummary }}
+                </p>
                 <select
                   v-model="createForm.organizationId"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 >
-                  <option value="">None (Optional)</option>
-                  <option v-for="org in organizations" :key="org.id" :value="org.id">
-                    {{ org.name }}
-                  </option>
+                  <option value="">None (optional)</option>
+                  <template v-for="group in organizationsGroupedForCreate" :key="group.type">
+                    <optgroup :label="group.label">
+                      <option v-for="org in group.orgs" :key="org.id" :value="org.id">
+                        {{ org.name }}
+                      </option>
+                    </optgroup>
+                  </template>
                 </select>
+                <p v-if="approvedOrganizationsForCreate.length === 0" class="text-xs text-amber-200/90">
+                  No approved organizations for this role filter. Add or approve an organization first.
+                </p>
               </div>
               <div class="mt-6 flex justify-end gap-2">
                 <button
@@ -334,6 +374,152 @@
                   class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
                 >
                   {{ createSubmitting ? 'Creating…' : 'Create User' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit User Modal -->
+      <div
+        v-if="showEditDialog"
+        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        @click.self="closeEditUser"
+      >
+        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-lg shadow-lg rounded-md bg-zinc-900 text-white">
+          <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-white">Edit User</h3>
+              <button
+                type="button"
+                @click="closeEditUser"
+                class="text-gray-400 hover:text-yellow-400 transition-colors"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form @submit.prevent="submitEditUser" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-300">First name *</label>
+                  <input
+                    v-model="editForm.firstName"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300">Last name *</label>
+                  <input
+                    v-model="editForm.lastName"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Email *</label>
+                <input
+                  v-model="editForm.email"
+                  type="email"
+                  required
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Phone</label>
+                <input
+                  v-model="editForm.phoneNumber"
+                  type="text"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  placeholder="Optional"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Status *</label>
+                <select
+                  v-model="editForm.status"
+                  required
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option v-for="s in userStatusOptions" :key="s" :value="s">{{ s.replace(/_/g, ' ') }}</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-300">Roles *</label>
+                <div class="mt-2 flex flex-wrap gap-3">
+                  <label
+                    v-for="opt in roleOptions"
+                    :key="`edit-${opt.value}`"
+                    class="inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      v-model="editForm.roles"
+                      type="checkbox"
+                      :value="opt.value"
+                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                    />
+                    <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
+                  </label>
+                </div>
+                <p class="mt-2 text-xs text-gray-400">
+                  Saved roles apply to the account right away. JWT scopes for that user update after they sign in again
+                  or when the client refreshes the access token.
+                </p>
+                <p v-if="editError" class="mt-2 text-sm text-red-400">{{ editError }}</p>
+              </div>
+              <div v-if="showOrganizationSelectEdit" class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">Organization</label>
+                <p class="text-xs text-gray-400">
+                  Approved organizations for the selected role(s). Manage orgs in
+                  <RouterLink
+                    to="/admin/organizations"
+                    class="text-yellow-400 hover:underline"
+                    @click="closeEditUser"
+                  >
+                    Organization management
+                  </RouterLink>
+                  .
+                </p>
+                <p v-if="organizationFilterSummaryEdit" class="text-xs text-yellow-400/90 font-medium">
+                  {{ organizationFilterSummaryEdit }}
+                </p>
+                <select
+                  v-model="editForm.organizationId"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                >
+                  <option value="">None (optional)</option>
+                  <template v-for="group in organizationsGroupedForEdit" :key="`edit-${group.type}`">
+                    <optgroup :label="group.label">
+                      <option v-for="org in group.orgs" :key="org.id" :value="org.id">
+                        {{ org.name }}
+                      </option>
+                    </optgroup>
+                  </template>
+                </select>
+                <p v-if="approvedOrganizationsForEdit.length === 0" class="text-xs text-amber-200/90">
+                  No approved organizations for this role filter.
+                </p>
+              </div>
+              <div class="mt-6 flex justify-end gap-2">
+                <button
+                  type="button"
+                  @click="closeEditUser"
+                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  :disabled="editSubmitting"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                >
+                  {{ editSubmitting ? 'Saving…' : 'Save changes' }}
                 </button>
               </div>
             </form>
@@ -404,6 +590,21 @@
                     <span v-if="!viewingUser.roles || viewingUser.roles.length === 0" class="text-sm text-gray-400">N/A</span>
                   </div>
                 </div>
+                <div v-if="userExpectsOrganizationLink(viewingUser.roles)" class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-400">Linked organization</label>
+                  <template v-for="cell in [linkedOrganizationCell(viewingUser)]" :key="`view-org-${viewingUser.id}`">
+                    <div v-if="cell.kind === 'linked'" class="mt-1">
+                      <RouterLink
+                        :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
+                        class="text-sm font-medium text-white hover:text-yellow-400 hover:underline"
+                      >
+                        {{ cell.org.name || 'Organization' }}
+                      </RouterLink>
+                      <p v-if="cell.typeLabel" class="text-xs text-gray-400 mt-0.5">{{ cell.typeLabel }}</p>
+                    </div>
+                    <p v-else-if="cell.kind === 'missing'" class="mt-1 text-sm text-amber-200/90">Not linked</p>
+                  </template>
+                </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Status</label>
                   <span
@@ -441,12 +642,69 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import { useAdminUsers, useAdminOrganizations } from '../composables/useAdmin'
 
+const { t } = useI18n()
 const { users, loading, error, currentPage, totalPages, loadUsers, updateUser, createUser } = useAdminUsers()
 const { organizations, loadOrganizations } = useAdminOrganizations()
+
+/** Roles that are tied to a marketplace organization (real estate, bank, supplier). */
+const ROLES_WITH_ORGANIZATION = new Set(['REALTOR', 'BANKER', 'SUPPLIER'])
+
+const ORG_TYPE_LABEL_KEYS = {
+  REAL_ESTATE_COMPANY: 'admin.typeRealEstate',
+  BANK: 'nav.marketplaceBanks',
+  SUPPLIER: 'nav.marketplaceSuppliers',
+  CONTRACTOR: 'nav.marketplaceContractors',
+  DEVELOPER: 'admin.typeDeveloper',
+  INSURANCE: 'nav.marketplaceInsurance',
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
+}
+
+function organizationTypeLabel(type) {
+  if (!type) return ''
+  if (type === 'CONSULTANT_ARCHITECT') return t('nav.marketplaceConsultantsArchitects')
+  return ORG_TYPE_LABEL_KEYS[type] ? t(ORG_TYPE_LABEL_KEYS[type]) : type
+}
+
+const organizationById = computed(() => {
+  const map = new Map()
+  for (const org of organizations.value || []) {
+    if (org?.id != null) map.set(String(org.id), org)
+  }
+  return map
+})
+
+function userExpectsOrganizationLink(roles) {
+  if (!Array.isArray(roles)) return false
+  return roles.some((r) => ROLES_WITH_ORGANIZATION.has(r))
+}
+
+/**
+ * @returns {{ kind: 'na' } | { kind: 'missing' } | { kind: 'linked', org: { id: string, name?: string }, typeLabel: string }}
+ */
+function linkedOrganizationCell(user) {
+  if (!userExpectsOrganizationLink(user?.roles)) return { kind: 'na' }
+  const id = user?.organizationId
+  if (!id) return { kind: 'missing' }
+  const org = organizationById.value.get(String(id))
+  if (!org) {
+    return {
+      kind: 'linked',
+      org: { id, name: 'Unknown organization' },
+      typeLabel: ''
+    }
+  }
+  return {
+    kind: 'linked',
+    org,
+    typeLabel: organizationTypeLabel(org.type)
+  }
+}
 
 const filters = ref({
   search: '',
@@ -470,9 +728,142 @@ const createForm = ref({
   organizationId: ''
 })
 
+const ROLE_TO_ORG_TYPES = {
+  REALTOR: ['REAL_ESTATE_COMPANY'],
+  BANKER: ['BANK'],
+  SUPPLIER: ['SUPPLIER']
+}
+
+const ORG_TYPES_IN_ORDER = ['REAL_ESTATE_COMPANY', 'BANK', 'SUPPLIER']
+
+const userStatusOptions = ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING_VERIFICATION']
+
+function isApprovedOrganization(org) {
+  const s = org?.status
+  return typeof s === 'string' && s.toUpperCase() === 'APPROVED'
+}
+
+function orgTypesForRoles(roles) {
+  const types = new Set()
+  for (const role of roles || []) {
+    const mapped = ROLE_TO_ORG_TYPES[role]
+    if (mapped) mapped.forEach((t) => types.add(t))
+  }
+  return types
+}
+
+function filteredApprovedOrgsForRoles(roles) {
+  const types = orgTypesForRoles(roles)
+  if (types.size === 0) return []
+  return (organizations.value || []).filter(
+    (org) => isApprovedOrganization(org) && types.has(org.type)
+  )
+}
+
+function groupedApprovedOrgsForRoles(roles) {
+  const types = orgTypesForRoles(roles)
+  const groups = []
+  for (const type of ORG_TYPES_IN_ORDER) {
+    if (!types.has(type)) continue
+    const orgs = (organizations.value || []).filter(
+      (org) => isApprovedOrganization(org) && org.type === type
+    )
+    groups.push({
+      type,
+      label: organizationTypeLabel(type),
+      orgs
+    })
+  }
+  return groups
+}
+
+function organizationFilterSummaryForRoles(roles) {
+  const r = roles || []
+  const parts = []
+  if (r.includes('REALTOR')) parts.push(`Realtor → ${organizationTypeLabel('REAL_ESTATE_COMPANY')}`)
+  if (r.includes('BANKER')) parts.push(`Banker → ${organizationTypeLabel('BANK')}`)
+  if (r.includes('SUPPLIER')) parts.push(`Supplier → ${organizationTypeLabel('SUPPLIER')}`)
+  return parts.length ? `Showing: ${parts.join(' · ')}` : ''
+}
+
 const showOrganizationSelect = computed(() => {
-  return createForm.value.roles.some(role => role !== 'BUYER')
+  return createForm.value.roles.some((role) => ROLES_WITH_ORGANIZATION.has(role))
 })
+
+const approvedOrganizationsForCreate = computed(() =>
+  filteredApprovedOrgsForRoles(createForm.value.roles)
+)
+
+const organizationsGroupedForCreate = computed(() =>
+  groupedApprovedOrgsForRoles(createForm.value.roles)
+)
+
+const organizationFilterSummary = computed(() =>
+  organizationFilterSummaryForRoles(createForm.value.roles)
+)
+
+const showEditDialog = ref(false)
+const editingUserId = ref(null)
+const editingUserSnapshot = ref(null)
+const editSubmitting = ref(false)
+const editError = ref('')
+const editForm = ref({
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  roles: [],
+  status: 'ACTIVE',
+  organizationId: ''
+})
+
+const showOrganizationSelectEdit = computed(() =>
+  (editForm.value.roles || []).some((role) => ROLES_WITH_ORGANIZATION.has(role))
+)
+
+const approvedOrganizationsForEdit = computed(() =>
+  filteredApprovedOrgsForRoles(editForm.value.roles)
+)
+
+const organizationsGroupedForEdit = computed(() =>
+  groupedApprovedOrgsForRoles(editForm.value.roles)
+)
+
+const organizationFilterSummaryEdit = computed(() =>
+  organizationFilterSummaryForRoles(editForm.value.roles)
+)
+
+function normalizeUserRoles(roles) {
+  if (Array.isArray(roles)) return [...roles]
+  if (roles && typeof roles === 'object') return Object.values(roles)
+  return []
+}
+
+watch(
+  () => [...(createForm.value.roles || [])],
+  () => {
+    const allowed = new Set(
+      filteredApprovedOrgsForRoles(createForm.value.roles).map((o) => String(o.id))
+    )
+    const id = createForm.value.organizationId
+    if (id && !allowed.has(String(id))) {
+      createForm.value.organizationId = ''
+    }
+  }
+)
+
+watch(
+  () => [...(editForm.value.roles || [])],
+  () => {
+    const allowed = new Set(
+      filteredApprovedOrgsForRoles(editForm.value.roles).map((o) => String(o.id))
+    )
+    const id = editForm.value.organizationId
+    if (id && !allowed.has(String(id))) {
+      editForm.value.organizationId = ''
+    }
+  }
+)
 
 const roleOptions = [
   { value: 'BUYER', label: 'Buyer' },
@@ -525,8 +916,9 @@ const submitCreateUser = async () => {
     closeCreateUser()
     await loadUsersData()
   } catch (err) {
-    const msg = err?.response?.data?.message || err?.message || 'Failed to create user.'
-    createError.value = msg
+    const msg =
+      err?.response?.data?.message || err?.message || err?.error || 'Failed to create user.'
+    createError.value = typeof msg === 'string' ? msg : 'Failed to create user.'
   } finally {
     createSubmitting.value = false
   }
@@ -561,9 +953,83 @@ const viewUser = (user) => {
   showViewDialog.value = true
 }
 
+function rolesIncludeOrgLinked(roles) {
+  return (roles || []).some((r) => ROLES_WITH_ORGANIZATION.has(r))
+}
+
+const openEditUser = async (user) => {
+  editError.value = ''
+  editingUserId.value = user.id
+  const roles = normalizeUserRoles(user.roles)
+  const rawStatus = user.status || (user.enabled !== false ? 'ACTIVE' : 'INACTIVE')
+  const status = userStatusOptions.includes(rawStatus) ? rawStatus : 'ACTIVE'
+  const orgId = user.organizationId != null ? String(user.organizationId) : ''
+  editingUserSnapshot.value = { organizationId: orgId || null }
+  editForm.value = {
+    firstName: user.firstName || '',
+    lastName: user.lastName || '',
+    email: user.email || '',
+    phoneNumber: user.phoneNumber || '',
+    roles,
+    status,
+    organizationId: orgId
+  }
+  showEditDialog.value = true
+  if (!organizations.value || organizations.value.length === 0) {
+    await loadOrganizations({ size: 1000 })
+  }
+}
+
+const closeEditUser = () => {
+  showEditDialog.value = false
+  editingUserId.value = null
+  editingUserSnapshot.value = null
+  editError.value = ''
+}
+
+const submitEditUser = async () => {
+  if (!editForm.value.roles || editForm.value.roles.length === 0) {
+    editError.value = 'Select at least one role.'
+    return
+  }
+  editError.value = ''
+  editSubmitting.value = true
+  try {
+    const rolesNormalized = (editForm.value.roles || []).map((r) => String(r).toUpperCase())
+    const payload = {
+      firstName: editForm.value.firstName.trim(),
+      lastName: editForm.value.lastName.trim(),
+      email: editForm.value.email.trim(),
+      phoneNumber: editForm.value.phoneNumber?.trim() || undefined,
+      roles: rolesNormalized,
+      status: editForm.value.status
+    }
+    if (showOrganizationSelectEdit.value) {
+      if (editForm.value.organizationId) {
+        payload.organizationId = editForm.value.organizationId
+      } else {
+        payload.clearOrganization = true
+      }
+    } else if (
+      editingUserSnapshot.value?.organizationId &&
+      !rolesIncludeOrgLinked(editForm.value.roles)
+    ) {
+      payload.clearOrganization = true
+    }
+    await updateUser(editingUserId.value, payload)
+    closeEditUser()
+    await loadUsersData()
+  } catch (err) {
+    const msg =
+      err?.response?.data?.message || err?.message || err?.error || 'Failed to update user.'
+    editError.value = typeof msg === 'string' ? msg : 'Failed to update user.'
+  } finally {
+    editSubmitting.value = false
+  }
+}
+
 const editUser = (user) => {
-  // TODO: Open edit modal
-  console.log('Edit user:', user)
+  openEditUser(user)
 }
 
 const isUserActive = (user) => {
@@ -591,7 +1057,7 @@ const toggleUserStatus = async (user) => {
   }
 }
 
-onMounted(() => {
-  loadUsersData()
+onMounted(async () => {
+  await Promise.all([loadUsersData(), loadOrganizations({})])
 })
 </script>

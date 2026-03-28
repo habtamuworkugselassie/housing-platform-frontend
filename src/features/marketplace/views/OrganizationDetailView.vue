@@ -343,6 +343,54 @@
             </div>
           </div>
 
+          <div
+            v-if="showSponsorshipApplicationsSection"
+            class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="text-xl font-bold text-white">Sponsorship applications</h2>
+              <router-link
+                v-if="authStore.hasRole('ADMIN')"
+                to="/admin/sponsorships"
+                class="shrink-0 text-xs font-medium text-yellow-300 hover:text-yellow-200 hover:underline"
+              >
+                Manage in admin
+              </router-link>
+            </div>
+            <div v-if="loadingSponsorshipApplications" class="mt-4 flex items-center gap-2 text-sm text-gray-400">
+              <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
+              Loading…
+            </div>
+            <template v-else>
+              <ul v-if="pendingSponsorshipApplications.length" class="mt-4 space-y-3">
+                <li
+                  v-for="app in pendingSponsorshipApplications"
+                  :key="app.id"
+                  class="rounded-lg border border-yellow-400/30 bg-yellow-500/10 p-3"
+                >
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <p class="text-sm font-semibold text-white">
+                      {{ app.sponsorshipName || app.sponsorship?.name || 'Sponsorship package' }}
+                    </p>
+                    <span class="rounded-full border border-yellow-400/40 bg-yellow-500/30 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-yellow-200">
+                      Pending
+                    </span>
+                  </div>
+                  <p v-if="app.amount != null" class="mt-2 text-sm text-gray-300">
+                    {{ formatSponsorshipAmount(app.amount) }}
+                  </p>
+                  <p v-if="app.createdAt" class="mt-1 text-xs text-gray-500">
+                    Submitted {{ formatDate(app.createdAt) }}
+                  </p>
+                  <p v-if="app.notes" class="mt-2 text-xs text-gray-400 line-clamp-3 whitespace-pre-line">
+                    {{ app.notes }}
+                  </p>
+                </li>
+              </ul>
+              <p v-else class="mt-4 text-sm text-gray-500">No pending sponsorship applications.</p>
+            </template>
+          </div>
+
           <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
             <h2 class="text-xl font-bold text-white">Activity Log</h2>
             <div v-if="timelineEntries.length" class="mt-4 space-y-3">
@@ -642,6 +690,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl } from '@/shared/api/client'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
@@ -656,6 +705,7 @@ import {
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
+const authStore = useAuthStore()
 
 const organization = ref(null)
 const loading = ref(true)
@@ -666,6 +716,15 @@ const galleryIndex = ref(0)
 
 const linkedItems = ref([])
 const loadingLinkedItems = ref(false)
+
+const sponsorshipApplications = ref([])
+const loadingSponsorshipApplications = ref(false)
+/** True when this user is allowed to see sponsorship apps for this org (admin or same-org realtor). */
+const showSponsorshipApplicationsSection = ref(false)
+
+const pendingSponsorshipApplications = computed(() =>
+  sponsorshipApplications.value.filter((app) => String(app?.status || '').toUpperCase() === 'PENDING')
+)
 
 const linkedItemsPage = ref(0)
 const linkedItemsPageSize = 9
@@ -881,6 +940,63 @@ const formatPrice = (price, currency = 'ETB') => {
   return formatCurrencyPrice(price, currency || 'ETB')
 }
 
+function formatSponsorshipAmount(amount) {
+  if (amount == null || amount === '') return ''
+  const n = typeof amount === 'number' ? amount : Number(amount)
+  if (!Number.isFinite(n)) return String(amount)
+  return formatPrice(n, 'ETB')
+}
+
+async function loadSponsorshipApplications(orgId) {
+  showSponsorshipApplicationsSection.value = false
+  sponsorshipApplications.value = []
+
+  if (!orgId || !authStore.isAuthenticated) {
+    return
+  }
+
+  loadingSponsorshipApplications.value = true
+  try {
+    if (authStore.hasRole('ADMIN')) {
+      const res = await api.get('/sponsorships/applications', {
+        params: { organizationId: orgId }
+      })
+      sponsorshipApplications.value = Array.isArray(res.data) ? res.data : []
+      showSponsorshipApplicationsSection.value = true
+      return
+    }
+
+    if (authStore.hasRole('REALTOR')) {
+      let myOrgId = null
+      try {
+        const agentRes = await api.get('/real-estate-agents/me')
+        myOrgId = agentRes.data?.organizationId || agentRes.data?.organization?.id
+      } catch (e) {
+        if (e.response?.status === 404) {
+          try {
+            const orgRes = await api.get('/organizations/my-company')
+            myOrgId = orgRes.data?.id
+          } catch {
+            /* not linked to a company */
+          }
+        }
+      }
+
+      if (myOrgId && String(myOrgId) === String(orgId)) {
+        const res = await api.get('/sponsorships/applications/my-organization')
+        sponsorshipApplications.value = Array.isArray(res.data) ? res.data : []
+        showSponsorshipApplicationsSection.value = true
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to load sponsorship applications:', err)
+    showSponsorshipApplicationsSection.value = false
+    sponsorshipApplications.value = []
+  } finally {
+    loadingSponsorshipApplications.value = false
+  }
+}
+
 const loadLinkedItems = async () => {
   if (!organization.value || organization.value.type !== 'REAL_ESTATE_COMPANY') {
     linkedItems.value = []
@@ -946,7 +1062,9 @@ async function loadOrganization() {
   try {
     const res = await api.get(`/organizations/${id}`)
     organization.value = res.data
-    
+
+    await loadSponsorshipApplications(organization.value?.id)
+
     if (organization.value?.type === 'REAL_ESTATE_COMPANY') {
       loadLinkedItems()
     }

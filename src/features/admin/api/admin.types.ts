@@ -34,6 +34,10 @@ export interface UserManagementRequest {
   phoneNumber?: string
   roles?: string[]
   enabled?: boolean
+  status?: string
+  organizationId?: string
+  /** When true, backend clears organization link (use with empty org selection on edit). */
+  clearOrganization?: boolean
 }
 
 /** Create user (admin only). Allows any role including ADMIN. */
@@ -44,6 +48,7 @@ export interface UserCreateRequest {
   lastName: string
   phoneNumber?: string
   roles: string[]
+  organizationId?: string
 }
 
 export interface OrganizationManagementRequest {

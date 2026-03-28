@@ -99,13 +99,21 @@ export function useAdminUsers() {
   }
 
   const updateUser = async (id, user) => {
-    const { execute: executeUpdate } = useApi()
-    return await executeUpdate(() => adminApi.updateUser(id, user))
+    try {
+      const res = await adminApi.updateUser(id, user)
+      return res.data
+    } catch (err) {
+      throw err.response?.data || err
+    }
   }
 
   const createUser = async (payload) => {
-    const { execute: executeCreate } = useApi()
-    return await executeCreate(() => adminApi.createUser(payload))
+    try {
+      const res = await adminApi.createUser(payload)
+      return res.data
+    } catch (err) {
+      throw err.response?.data || err
+    }
   }
 
   return {

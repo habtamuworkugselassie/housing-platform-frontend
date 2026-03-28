@@ -16,6 +16,8 @@ export interface RegisterRequest {
   lastName: string
   phoneNumber?: string
   role: 'BUYER' | 'REALTOR' | 'BANKER' | 'SUPPLIER'
+  /** Approved organization on the marketplace, when joining an existing org */
+  organizationId?: string
 }
 
 export interface AuthResponse {
