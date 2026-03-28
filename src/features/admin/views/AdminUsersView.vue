@@ -329,8 +329,8 @@
               <div v-if="showOrganizationSelect" class="space-y-2">
                 <label class="block text-sm font-medium text-gray-300">Organization</label>
                 <p class="text-xs text-gray-400">
-                  Only <strong class="text-gray-300">approved</strong> organizations matching the selected role(s) are
-                  listed (grouped by type). Register a new one in
+                  All organizations matching the selected role(s) are listed (any approval status), grouped by type.
+                  Register a new one in
                   <RouterLink
                     to="/admin/organizations"
                     class="text-yellow-400 hover:underline"
@@ -351,13 +351,13 @@
                   <template v-for="group in organizationsGroupedForCreate" :key="group.type">
                     <optgroup :label="group.label">
                       <option v-for="org in group.orgs" :key="org.id" :value="org.id">
-                        {{ org.name }}
+                        {{ organizationSelectLabel(org) }}
                       </option>
                     </optgroup>
                   </template>
                 </select>
-                <p v-if="approvedOrganizationsForCreate.length === 0" class="text-xs text-amber-200/90">
-                  No approved organizations for this role filter. Add or approve an organization first.
+                <p v-if="organizationsForCreateSelect.length === 0" class="text-xs text-amber-200/90">
+                  No organizations for this role filter yet. Add one in Organization management.
                 </p>
               </div>
               <div class="mt-6 flex justify-end gap-2">
@@ -476,7 +476,7 @@
               <div v-if="showOrganizationSelectEdit" class="space-y-2">
                 <label class="block text-sm font-medium text-gray-300">Organization</label>
                 <p class="text-xs text-gray-400">
-                  Approved organizations for the selected role(s). Manage orgs in
+                  All organizations for the selected role(s) (any status). Manage orgs in
                   <RouterLink
                     to="/admin/organizations"
                     class="text-yellow-400 hover:underline"
@@ -497,13 +497,13 @@
                   <template v-for="group in organizationsGroupedForEdit" :key="`edit-${group.type}`">
                     <optgroup :label="group.label">
                       <option v-for="org in group.orgs" :key="org.id" :value="org.id">
-                        {{ org.name }}
+                        {{ organizationSelectLabel(org) }}
                       </option>
                     </optgroup>
                   </template>
                 </select>
-                <p v-if="approvedOrganizationsForEdit.length === 0" class="text-xs text-amber-200/90">
-                  No approved organizations for this role filter.
+                <p v-if="organizationsForEditSelect.length === 0" class="text-xs text-amber-200/90">
+                  No organizations for this role filter yet.
                 </p>
               </div>
               <div class="mt-6 flex justify-end gap-2">
@@ -738,11 +738,6 @@ const ORG_TYPES_IN_ORDER = ['REAL_ESTATE_COMPANY', 'BANK', 'SUPPLIER']
 
 const userStatusOptions = ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING_VERIFICATION']
 
-function isApprovedOrganization(org) {
-  const s = org?.status
-  return typeof s === 'string' && s.toUpperCase() === 'APPROVED'
-}
-
 function orgTypesForRoles(roles) {
   const types = new Set()
   for (const role of roles || []) {
@@ -752,22 +747,19 @@ function orgTypesForRoles(roles) {
   return types
 }
 
-function filteredApprovedOrgsForRoles(roles) {
+/** Admin can link users to any org of the right type (not only APPROVED). */
+function filteredOrgsForRoles(roles) {
   const types = orgTypesForRoles(roles)
   if (types.size === 0) return []
-  return (organizations.value || []).filter(
-    (org) => isApprovedOrganization(org) && types.has(org.type)
-  )
+  return (organizations.value || []).filter((org) => org?.type && types.has(org.type))
 }
 
-function groupedApprovedOrgsForRoles(roles) {
+function groupedOrgsForRoles(roles) {
   const types = orgTypesForRoles(roles)
   const groups = []
   for (const type of ORG_TYPES_IN_ORDER) {
     if (!types.has(type)) continue
-    const orgs = (organizations.value || []).filter(
-      (org) => isApprovedOrganization(org) && org.type === type
-    )
+    const orgs = (organizations.value || []).filter((org) => org?.type === type)
     groups.push({
       type,
       label: organizationTypeLabel(type),
@@ -775,6 +767,13 @@ function groupedApprovedOrgsForRoles(roles) {
     })
   }
   return groups
+}
+
+function organizationSelectLabel(org) {
+  const name = org?.name || 'Organization'
+  const st = org?.status
+  if (st == null || st === '') return name
+  return `${name} (${st})`
 }
 
 function organizationFilterSummaryForRoles(roles) {
@@ -790,12 +789,12 @@ const showOrganizationSelect = computed(() => {
   return createForm.value.roles.some((role) => ROLES_WITH_ORGANIZATION.has(role))
 })
 
-const approvedOrganizationsForCreate = computed(() =>
-  filteredApprovedOrgsForRoles(createForm.value.roles)
+const organizationsForCreateSelect = computed(() =>
+  filteredOrgsForRoles(createForm.value.roles)
 )
 
 const organizationsGroupedForCreate = computed(() =>
-  groupedApprovedOrgsForRoles(createForm.value.roles)
+  groupedOrgsForRoles(createForm.value.roles)
 )
 
 const organizationFilterSummary = computed(() =>
@@ -821,12 +820,12 @@ const showOrganizationSelectEdit = computed(() =>
   (editForm.value.roles || []).some((role) => ROLES_WITH_ORGANIZATION.has(role))
 )
 
-const approvedOrganizationsForEdit = computed(() =>
-  filteredApprovedOrgsForRoles(editForm.value.roles)
+const organizationsForEditSelect = computed(() =>
+  filteredOrgsForRoles(editForm.value.roles)
 )
 
 const organizationsGroupedForEdit = computed(() =>
-  groupedApprovedOrgsForRoles(editForm.value.roles)
+  groupedOrgsForRoles(editForm.value.roles)
 )
 
 const organizationFilterSummaryEdit = computed(() =>
@@ -843,7 +842,7 @@ watch(
   () => [...(createForm.value.roles || [])],
   () => {
     const allowed = new Set(
-      filteredApprovedOrgsForRoles(createForm.value.roles).map((o) => String(o.id))
+      filteredOrgsForRoles(createForm.value.roles).map((o) => String(o.id))
     )
     const id = createForm.value.organizationId
     if (id && !allowed.has(String(id))) {
@@ -856,7 +855,7 @@ watch(
   () => [...(editForm.value.roles || [])],
   () => {
     const allowed = new Set(
-      filteredApprovedOrgsForRoles(editForm.value.roles).map((o) => String(o.id))
+      filteredOrgsForRoles(editForm.value.roles).map((o) => String(o.id))
     )
     const id = editForm.value.organizationId
     if (id && !allowed.has(String(id))) {
