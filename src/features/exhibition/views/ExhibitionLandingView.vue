@@ -69,7 +69,7 @@
               <img
                 v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
                 :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
-                :alt="item?.title || ''"
+                :alt="item?.title ? `${item.title} — property listing` : 'Property listing on Ethio Build Connect and Expo'"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
               />
               <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>

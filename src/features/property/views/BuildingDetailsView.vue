@@ -294,9 +294,16 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '@/shared/api/client'
+import {
+  applyPageSeo,
+  truncateMetaDescription,
+  getPublicSiteUrl,
+  setJsonLdById,
+  removeJsonLdById
+} from '@/utils/seo'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -304,6 +311,8 @@ import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks
 
 const route = useRoute()
 const authStore = useAuthStore()
+
+const BUILDING_JSON_LD_ID = 'dynamic-building-jsonld'
 
 const loading = ref(false)
 const unitsLoading = ref(false)
@@ -319,6 +328,37 @@ function hasSocialOnOrg(org) {
   return ['facebookUrl', 'instagramUrl', 'linkedinUrl', 'twitterUrl', 'youtubeUrl'].some((k) =>
     String(org[k] || '').trim()
   )
+}
+
+function syncBuildingSeo(b) {
+  if (!b) return
+  const title = `${b.name} | Ethio Build Connect`
+  const locationLine = [b.address, b.city, b.country].filter(Boolean).join(', ')
+  const description = truncateMetaDescription(
+    (b.description && String(b.description).trim()) ||
+      [b.status, locationLine].filter(Boolean).join(' · ') ||
+      'Building details on Ethio Build Connect.'
+  )
+  applyPageSeo({
+    title,
+    description,
+    pagePath: `/buildings/${b.id}`
+  })
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'ApartmentComplex',
+    name: b.name,
+    url: `${getPublicSiteUrl()}/buildings/${b.id}`
+  }
+  if (locationLine) {
+    ld.address = {
+      '@type': 'PostalAddress',
+      streetAddress: b.address || undefined,
+      addressLocality: b.city || undefined,
+      addressCountry: b.country || undefined
+    }
+  }
+  setJsonLdById(BUILDING_JSON_LD_ID, ld)
 }
 
 const loadBuilding = async () => {
@@ -338,9 +378,14 @@ const loadBuilding = async () => {
         console.error('Failed to load company:', err)
       }
     }
+
+    await nextTick()
+    syncBuildingSeo(building.value)
   } catch (err) {
     console.error('Failed to load building:', err)
     error.value = err.response?.data?.message || 'Failed to load building'
+    building.value = null
+    removeJsonLdById(BUILDING_JSON_LD_ID)
   } finally {
     loading.value = false
   }
@@ -398,5 +443,19 @@ onMounted(() => {
   loadBuilding()
   loadUnits()
   loadFinancingOffers()
+})
+
+watch(
+  () => route.params.id,
+  () => {
+    removeJsonLdById(BUILDING_JSON_LD_ID)
+    loadBuilding()
+    loadUnits()
+    loadFinancingOffers()
+  }
+)
+
+onUnmounted(() => {
+  removeJsonLdById(BUILDING_JSON_LD_ID)
 })
 </script>

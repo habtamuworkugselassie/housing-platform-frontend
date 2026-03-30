@@ -4,7 +4,7 @@
     <div class="absolute inset-0 z-0">
       <img
         src="/images/exhibition/hero-bg.png"
-        alt=""
+        alt="Ethio Build Connect property and construction exhibition — cityscape background"
         class="w-full h-full object-cover"
       />
       <div class="absolute inset-0 bg-black/70" />

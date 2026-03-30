@@ -682,7 +682,7 @@
             >
               <img
                 :src="mediaUrl(image.imageUrl)"
-                :alt="`Thumbnail ${index + 1}`"
+                :alt="`${property.title} - Thumbnail ${index + 1}`"
                 class="w-full h-full object-cover"
               />
             </button>
@@ -707,6 +707,13 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
+import {
+  applyPageSeo,
+  truncateMetaDescription,
+  getPublicSiteUrl,
+  setJsonLdById,
+  removeJsonLdById
+} from '@/utils/seo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -717,6 +724,56 @@ import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLin
 const route = useRoute()
 const { t } = useI18n()
 const authStore = useAuthStore()
+
+const PROPERTY_JSON_LD_ID = 'dynamic-property-jsonld'
+
+function syncPropertySeo(p) {
+  if (!p) return
+  const title = `${p.title} | Ethio Build Connect`
+  const locationLine = [p.address, p.city, p.country].filter(Boolean).join(', ')
+  const priceLine =
+    p.priceETB != null
+      ? `${formatCurrencyPrice(p.priceETB, 'ETB')}${p.category === 'FOR_RENTAL' ? ' /month' : ''}`
+      : p.priceUSD != null
+        ? formatCurrencyPrice(p.priceUSD, 'USD')
+        : ''
+  const fallbackDesc = [p.type, priceLine, locationLine].filter(Boolean).join(' · ')
+  const description = truncateMetaDescription(
+    (p.description && String(p.description).trim()) || fallbackDesc
+  )
+  const firstImg = p.images?.[0]?.imageUrl
+  applyPageSeo({
+    title,
+    description,
+    imageUrl: firstImg,
+    pagePath: `/properties/${p.id}`
+  })
+
+  const offerPrice = p.priceETB ?? p.priceUSD
+  const currency = p.priceETB != null ? 'ETB' : 'USD'
+  const listingLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: p.title,
+    url: `${getPublicSiteUrl()}/properties/${p.id}`
+  }
+  if (offerPrice != null) {
+    listingLd.offers = {
+      '@type': 'Offer',
+      priceCurrency: currency,
+      price: String(offerPrice)
+    }
+  }
+  if (locationLine) {
+    listingLd.address = {
+      '@type': 'PostalAddress',
+      streetAddress: p.address || undefined,
+      addressLocality: p.city || undefined,
+      addressCountry: p.country || undefined
+    }
+  }
+  setJsonLdById(PROPERTY_JSON_LD_ID, listingLd)
+}
 const property = ref(null)
 const company = ref(null)
 const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
@@ -824,8 +881,12 @@ const loadProperty = async () => {
     } catch (err) {
       console.error('Failed to load financing offers:', err)
     }
+
+    syncPropertySeo(property.value)
   } catch (err) {
     console.error('Failed to load property:', err)
+    property.value = null
+    removeJsonLdById(PROPERTY_JSON_LD_ID)
   } finally {
     loading.value = false
   }
@@ -895,7 +956,17 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeyPress)
 })
 
+watch(
+  () => route.params.id,
+  () => {
+    loading.value = true
+    removeJsonLdById(PROPERTY_JSON_LD_ID)
+    loadProperty()
+  }
+)
+
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyPress)
+  removeJsonLdById(PROPERTY_JSON_LD_ID)
 })
 </script>

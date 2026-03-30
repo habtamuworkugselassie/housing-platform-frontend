@@ -132,7 +132,7 @@
                 <template v-if="!isVideoItem(item)">
                   <img
                     :src="mediaUrl(item.url)"
-                    :alt="organization.name"
+                    :alt="`${organization.name} - Gallery image ${index + 1}`"
                     class="h-full w-full object-cover"
                     loading="lazy"
                   />
@@ -719,11 +719,18 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl } from '@/shared/api/client'
+import {
+  applyPageSeo,
+  truncateMetaDescription,
+  getPublicSiteUrl,
+  setJsonLdById,
+  removeJsonLdById
+} from '@/utils/seo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -738,6 +745,8 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const authStore = useAuthStore()
+
+const ORG_JSON_LD_ID = 'dynamic-organization-jsonld'
 
 const organization = ref(null)
 const loading = ref(true)
@@ -1081,11 +1090,48 @@ const loadLinkedItems = async () => {
   }
 }
 
+function syncOrganizationSeo() {
+  const org = organization.value
+  if (!org) return
+  const title = `${org.name} | Ethio Build Connect`
+  const loc = locationText.value || ''
+  const description = truncateMetaDescription(
+    org.description?.trim() ||
+      `${orgTypeLabel.value}${loc ? ` in ${loc}` : ''} on Ethio Build Connect.`
+  )
+  const img = imageMedia.value[0]?.url || org.logoUrl
+  applyPageSeo({
+    title,
+    description,
+    imageUrl: img,
+    pagePath: `/organizations/${org.id}`
+  })
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: org.name,
+    url: `${getPublicSiteUrl()}/organizations/${org.id}`
+  }
+  if (org.description) {
+    ld.description = org.description
+  }
+  if (org.city || org.country || org.address) {
+    ld.address = {
+      '@type': 'PostalAddress',
+      streetAddress: org.address || undefined,
+      addressLocality: org.city || undefined,
+      addressCountry: org.country || undefined
+    }
+  }
+  setJsonLdById(ORG_JSON_LD_ID, ld)
+}
+
 async function loadOrganization() {
   const id = route.params.id
   if (!id) {
     loading.value = false
     organization.value = null
+    removeJsonLdById(ORG_JSON_LD_ID)
     return
   }
   loading.value = true
@@ -1100,9 +1146,12 @@ async function loadOrganization() {
     if (organization.value?.type === 'REAL_ESTATE_COMPANY') {
       loadLinkedItems()
     }
+    await nextTick()
+    syncOrganizationSeo()
   } catch (e) {
     error.value = e.response?.data?.message || e.message || 'Failed to load organization'
     organization.value = null
+    removeJsonLdById(ORG_JSON_LD_ID)
   } finally {
     loading.value = false
   }
@@ -1119,5 +1168,12 @@ watch(galleryMedia, (items) => {
 })
 
 onMounted(loadOrganization)
-watch(() => route.params.id, loadOrganization)
+watch(() => route.params.id, () => {
+  removeJsonLdById(ORG_JSON_LD_ID)
+  loadOrganization()
+})
+
+onUnmounted(() => {
+  removeJsonLdById(ORG_JSON_LD_ID)
+})
 </script>
