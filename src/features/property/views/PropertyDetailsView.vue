@@ -708,12 +708,12 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import {
-  applyPageSeo,
-  truncateMetaDescription,
   getPublicSiteUrl,
+  truncateMetaDescription,
   setJsonLdById,
   removeJsonLdById
 } from '@/utils/seo'
+import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -742,12 +742,13 @@ function syncPropertySeo(p) {
     (p.description && String(p.description).trim()) || fallbackDesc
   )
   const firstImg = p.images?.[0]?.imageUrl
-  applyPageSeo({
+  
+  seoOptions.value = {
     title,
     description,
     imageUrl: firstImg,
     pagePath: `/properties/${p.id}`
-  })
+  }
 
   const offerPrice = p.priceETB ?? p.priceUSD
   const currency = p.priceETB != null ? 'ETB' : 'USD'
@@ -775,6 +776,9 @@ function syncPropertySeo(p) {
   setJsonLdById(PROPERTY_JSON_LD_ID, listingLd)
 }
 const property = ref(null)
+const seoOptions = ref({})
+useDynamicSeo(seoOptions)
+
 const company = ref(null)
 const companyPhones = computed(() => formatOrganizationPhones(company.value || {}))
 

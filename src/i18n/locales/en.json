@@ -1154,7 +1154,8 @@
     "sponsorCarousel": {
       "noSponsors": "Premium & Gold sponsor spots available",
       "sponsor": "Sponsor",
-      "featuredPartner": "Featured partner"
+      "featuredPartner": "Featured partner",
+      "playVideo": "Play sponsor video"
     }
   }
 }

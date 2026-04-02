@@ -4,6 +4,10 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
+  optimizeDeps: {
+    // Avoid pre-bundle stripping named re-exports (e.g. createHead) from @unhead/vue on Vite 6
+    exclude: ['@unhead/vue', 'unhead'],
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')

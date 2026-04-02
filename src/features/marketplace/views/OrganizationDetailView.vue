@@ -725,12 +725,12 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl } from '@/shared/api/client'
 import {
-  applyPageSeo,
   truncateMetaDescription,
   getPublicSiteUrl,
   setJsonLdById,
   removeJsonLdById
 } from '@/utils/seo'
+import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -754,6 +754,9 @@ const error = ref(null)
 const currentMediaIndex = ref(0)
 const showGalleryModal = ref(false)
 const galleryIndex = ref(0)
+
+const seoOptions = ref({})
+useDynamicSeo(seoOptions)
 
 const linkedItems = ref([])
 const loadingLinkedItems = ref(false)
@@ -1100,12 +1103,12 @@ function syncOrganizationSeo() {
       `${orgTypeLabel.value}${loc ? ` in ${loc}` : ''} on Ethio Build Connect.`
   )
   const img = imageMedia.value[0]?.url || org.logoUrl
-  applyPageSeo({
+  seoOptions.value = {
     title,
     description,
     imageUrl: img,
     pagePath: `/organizations/${org.id}`
-  })
+  }
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

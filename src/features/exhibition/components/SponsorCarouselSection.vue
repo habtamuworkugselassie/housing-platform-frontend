@@ -27,30 +27,39 @@
           >
             <!-- Media: load video only for current and next slide; lazy-load images for others -->
             <div class="absolute inset-0 z-0">
-              <template v-if="slide.videoUrl && (index === currentIndex || index === (currentIndex + 1) % slides.length)">
-                <video
-                  :key="'v-' + index"
-                  :src="mediaUrl(slide.videoUrl)"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  :preload="index === currentIndex ? 'auto' : 'metadata'"
-                  class="w-full h-full object-contain bg-zinc-950/50"
-                />
-              </template>
-              <template v-else-if="slide.imageUrl">
-                <img
-                  :src="mediaUrl(slide.imageUrl)"
-                  :alt="slide.realEstateCompanyName || slide.title"
-                  :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
-                  class="w-full h-full object-contain bg-zinc-950/50"
-                />
+              <template v-if="getSlideActiveMedia(index)">
+                <template v-if="getSlideActiveMedia(index).isVideo && (index === currentIndex || index === (currentIndex + 1) % slides.length)">
+                  <div class="relative h-full w-full bg-zinc-950/50">
+                    <video
+                      :key="'v-' + slide.id + index + '-' + getSlideActiveMedia(index).url"
+                      :src="mediaUrl(getSlideActiveMedia(index).url)"
+                      :poster="slidePoster(slide) ? mediaUrl(slidePoster(slide)) : ''"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="auto"
+                      class="absolute inset-0 h-full w-full object-contain bg-zinc-950/50"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <img
+                    :key="'img-' + slide.id + index + '-' + getSlideActiveMedia(index).url"
+                    :src="mediaUrl(getSlideActiveMedia(index).url)"
+                    :alt="slide.realEstateCompanyName || slide.title"
+                    :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
+                    class="w-full h-full object-contain bg-zinc-950/50 transition-opacity duration-500"
+                  />
+                </template>
               </template>
               <div
                 v-else
                 class="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900"
               />
+              <div v-if="slidesMediaMap[index] && slidesMediaMap[index].length > 1 && index === currentIndex" class="absolute top-4 right-4 z-20 flex gap-1.5 pointer-events-none">
+                <div v-for="(_m, mIdx) in slidesMediaMap[index]" :key="mIdx" class="h-1.5 rounded-full bg-white/80 transition-all duration-300 shadow-sm" :class="((slideMediaIndexes[slide.id] || 0) % slidesMediaMap[index].length) === mIdx ? 'w-4' : 'w-1.5 opacity-50'" />
+              </div>
               <!-- Readability scrim: stronger on desktop so the card reads over bright media -->
               <div class="absolute inset-x-0 top-0 h-28 md:h-36 bg-gradient-to-b from-black/55 to-transparent pointer-events-none md:from-black/50" aria-hidden="true" />
               <div class="absolute inset-x-0 bottom-0 h-36 md:h-48 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none md:from-black/75 md:via-black/30" aria-hidden="true" />
@@ -200,21 +209,82 @@ let autoplayTimer = null
 
 const slides = computed(() => premiumSponsorSlides.value)
 
+const slideMediaIndexes = ref({})
+
+const isVideoUrl = (url = '') => /\.(mp4|mov|avi|webm|mkv)(\?|$)/i.test(String(url))
+
+function getMediaItemsForSlide(slide) {
+  if (!slide) return []
+  const list = []
+  const seen = new Set()
+  const addMedia = (url, mediaKind) => {
+    const normalizedUrl = String(url || '').trim()
+    if (!normalizedUrl || seen.has(normalizedUrl)) return
+    seen.add(normalizedUrl)
+    const kind = String(mediaKind || '').toUpperCase()
+    list.push({
+      url: normalizedUrl,
+      isVideo: kind === 'VIDEO' || isVideoUrl(normalizedUrl)
+    })
+  }
+
+  if (Array.isArray(slide.mediaItems)) {
+    slide.mediaItems.forEach(item => addMedia(item?.url, item?.mediaKind))
+  }
+  addMedia(slide.videoUrl, 'VIDEO')
+  addMedia(slide.imageUrl, 'IMAGE')
+  
+  return list.sort((a, b) => {
+    if (a.isVideo && !b.isVideo) return -1
+    if (!a.isVideo && b.isVideo) return 1
+    return 0
+  })
+}
+
+const slidesMediaMap = computed(() => {
+  return slides.value.map(slide => getMediaItemsForSlide(slide))
+})
+
+function getSlideActiveMedia(index) {
+  const items = slidesMediaMap.value[index]
+  if (!items || !items.length) return null
+  
+  const slideId = slides.value[index]?.id
+  const mIndex = slideMediaIndexes.value[slideId] || 0
+  
+  return items[mIndex % items.length] || items[0]
+}
+
+function markSlideActive(index) {
+  const slideId = slides.value[index]?.id
+  if (!slideId) return
+  if (slideMediaIndexes.value[slideId] === undefined) {
+    slideMediaIndexes.value[slideId] = 0
+  } else {
+    slideMediaIndexes.value[slideId] += 1
+  }
+}
+
 const sponsorSlideMediaUrlsForWarmup = computed(() => {
   const urls = []
   for (const s of slides.value) {
     if (s?.logoUrl) urls.push(s.logoUrl)
-    if (s?.videoUrl) urls.push(s.videoUrl)
-    if (s?.imageUrl) urls.push(s.imageUrl)
+    const items = getMediaItemsForSlide(s)
+    items.forEach(i => urls.push(i.url))
   }
   return urls
 })
 
 useMediaWarmup(sponsorSlideMediaUrlsForWarmup)
 
+function slidePoster(slide) {
+  return String(slide?.logoUrl || slide?.imageUrl || '').trim()
+}
+
 function goTo(index) {
   if (slides.value.length === 0) return
   currentIndex.value = (index + slides.value.length) % slides.value.length
+  markSlideActive(currentIndex.value)
   resetAutoplay()
 }
 
@@ -244,6 +314,12 @@ function resetAutoplay() {
 
 watch(slides, (val) => {
   if (val.length > 0 && currentIndex.value >= val.length) currentIndex.value = 0
+  if (val.length > 0) {
+    const slideId = val[currentIndex.value]?.id
+    if (slideId && slideMediaIndexes.value[slideId] === undefined) {
+      slideMediaIndexes.value[slideId] = 0
+    }
+  }
   resetAutoplay()
 }, { immediate: true })
 

@@ -298,12 +298,12 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '@/shared/api/client'
 import {
-  applyPageSeo,
   truncateMetaDescription,
   getPublicSiteUrl,
   setJsonLdById,
   removeJsonLdById
 } from '@/utils/seo'
+import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
@@ -318,6 +318,9 @@ const loading = ref(false)
 const unitsLoading = ref(false)
 const error = ref('')
 const building = ref(null)
+
+const seoOptions = ref({})
+useDynamicSeo(seoOptions)
 const units = ref([])
 const financingOffers = ref([])
 const company = ref(null)
@@ -339,11 +342,11 @@ function syncBuildingSeo(b) {
       [b.status, locationLine].filter(Boolean).join(' · ') ||
       'Building details on Ethio Build Connect.'
   )
-  applyPageSeo({
+  seoOptions.value = {
     title,
     description,
     pagePath: `/buildings/${b.id}`
-  })
+  }
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'ApartmentComplex',

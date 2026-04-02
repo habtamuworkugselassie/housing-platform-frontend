@@ -172,12 +172,12 @@
           v-if="currentSidebarMedia.isVideo"
           :key="'ad-video-' + currentSidebarMediaIndex + '-' + currentSidebarMedia.url"
           :src="mediaUrl(currentSidebarMedia.url)"
-          class="w-full h-full object-cover"
+          :poster="sidebarVideoPosterSrc ? mediaUrl(sidebarVideoPosterSrc) : ''"
           autoplay
           muted
           loop
           playsinline
-          preload="auto"
+          class="w-full h-full object-cover"
         />
         <img
           v-else
@@ -347,12 +347,24 @@ const sidebarMediaItems = computed(() => {
   }
   addMedia(props.adContent.videoUrl, 'VIDEO')
   addMedia(props.adContent.imageUrl, 'IMAGE')
-  return list
+  
+  return list.sort((a, b) => {
+    if (a.isVideo && !b.isVideo) return -1
+    if (!a.isVideo && b.isVideo) return 1
+    return 0
+  })
 })
 
 const currentSidebarMedia = computed(() => {
   if (!sidebarMediaItems.value.length) return null
   return sidebarMediaItems.value[currentSidebarMediaIndex.value] || sidebarMediaItems.value[0]
+})
+
+/** Poster for video items so we do not embed MP4 in sidebar HTML on every route. */
+const sidebarVideoPosterSrc = computed(() => {
+  const poster = bannerThumbUrl(props.adContent)
+  if (poster) return poster
+  return String(props.adContent?.logoUrl || '').trim()
 })
 
 const adMediaUrlsForWarmup = computed(() => {
