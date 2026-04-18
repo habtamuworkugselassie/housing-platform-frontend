@@ -374,6 +374,42 @@
           </div>
           <div class="max-h-[min(72vh,calc(100vh-10rem))] overflow-y-auto px-6 py-6 sm:px-7">
             <div v-if="viewingOrg" class="space-y-6">
+              <div
+                class="flex flex-wrap gap-1.5 rounded-xl bg-zinc-950/80 p-1.5 ring-1 ring-white/10"
+                role="tablist"
+                :aria-label="$t('admin.organizationDetails')"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  :aria-selected="viewOrgPaneTab === 'overview'"
+                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                  :class="
+                    viewOrgPaneTab === 'overview'
+                      ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  "
+                  @click="viewOrgPaneTab = 'overview'"
+                >
+                  {{ $t('admin.orgViewTabOverview') }}
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  :aria-selected="viewOrgPaneTab === 'documents'"
+                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                  :class="
+                    viewOrgPaneTab === 'documents'
+                      ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  "
+                  @click="viewOrgPaneTab = 'documents'"
+                >
+                  {{ $t('admin.orgViewTabDocuments') }}
+                </button>
+              </div>
+
+              <div v-show="viewOrgPaneTab === 'overview'" class="space-y-6">
               <!-- Logo & media -->
               <section class="rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
@@ -467,47 +503,6 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Registration Number</label>
                   <p class="mt-1 text-sm text-white">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
-                </div>
-                </div>
-              </section>
-
-              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
-                  {{ $t('admin.sectionCompliance') }}
-                </h4>
-                <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                <div>
-                  <label class="block text-sm font-medium text-gray-400">Business Registration</label>
-                  <p v-if="viewingOrg.businessRegistrationNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.businessRegistrationNumber }}</p>
-                  <p class="mt-1 text-sm text-white">
-                    <a v-if="isDocumentUrl(viewingOrg.businessRegistration)" :href="mediaUrl(viewingOrg.businessRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
-                    <span v-else>{{ viewingOrg.businessRegistration || 'N/A' }}</span>
-                  </p>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-400">License</label>
-                  <p v-if="viewingOrg.licenseNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.licenseNumber }}</p>
-                  <p class="mt-1 text-sm text-white">
-                    <a v-if="isDocumentUrl(viewingOrg.license)" :href="mediaUrl(viewingOrg.license)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
-                    <span v-else>{{ viewingOrg.license || 'N/A' }}</span>
-                  </p>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-400">VAT Registration</label>
-                  <p v-if="viewingOrg.vatNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.vatNumber }}</p>
-                  <p class="mt-1 text-sm text-white">
-                    <a v-if="isDocumentUrl(viewingOrg.vatRegistration)" :href="mediaUrl(viewingOrg.vatRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
-                    <span v-else>{{ viewingOrg.vatRegistration || 'N/A' }}</span>
-                  </p>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-400">TIN Registration</label>
-                  <p v-if="viewingOrg.tinNumber" class="mt-1 text-sm text-white">Number: {{ viewingOrg.tinNumber }}</p>
-                  <p class="mt-1 text-sm text-white">
-                    <a v-if="isDocumentUrl(viewingOrg.tinRegistration)" :href="mediaUrl(viewingOrg.tinRegistration)" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">View document</a>
-                    <span v-else>{{ viewingOrg.tinRegistration || 'N/A' }}</span>
-                  </p>
                 </div>
                 </div>
               </section>
@@ -772,6 +767,96 @@
                 </div>
               </div>
             </div>
+
+              <div
+                v-show="viewOrgPaneTab === 'documents'"
+                class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+              >
+                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  {{ $t('admin.sectionCompliance') }}
+                </h4>
+                <div
+                  class="flex flex-wrap gap-1.5 rounded-xl bg-black/40 p-1.5 ring-1 ring-white/10"
+                  role="tablist"
+                  :aria-label="$t('admin.orgViewTabDocuments')"
+                >
+                  <button
+                    v-for="tab in documentViewTabs"
+                    :key="tab.id"
+                    type="button"
+                    role="tab"
+                    :aria-selected="viewDocTab === tab.id"
+                    class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:text-sm"
+                    :class="
+                      viewDocTab === tab.id
+                        ? 'bg-yellow-500/25 text-yellow-100 ring-1 ring-yellow-400/40'
+                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    "
+                    @click="viewDocTab = tab.id"
+                  >
+                    {{ $t(tab.labelKey) }}
+                  </button>
+                </div>
+
+                <div v-show="viewDocTab === 'business'" class="space-y-4">
+                  <OrgDocumentReviewPanel
+                    :title="$t('admin.docBusinessRegistration')"
+                    :number-label="$t('admin.docRegistrationNumber')"
+                    :number-value="viewingOrg.businessRegistrationNumber"
+                    :document-url="viewingOrg.businessRegistration"
+                    :status="docReviewDraft.businessRegistrationReviewStatus"
+                    :comment="docReviewDraft.businessRegistrationReviewComment"
+                    :saving="documentReviewSaving"
+                    @update:status="docReviewDraft.businessRegistrationReviewStatus = $event"
+                    @update:comment="docReviewDraft.businessRegistrationReviewComment = $event"
+                    @save="saveViewDocumentReview('business')"
+                  />
+                </div>
+                <div v-show="viewDocTab === 'license'" class="space-y-4">
+                  <OrgDocumentReviewPanel
+                    :title="$t('admin.docLicense')"
+                    :number-label="$t('admin.docLicenseNumber')"
+                    :number-value="viewingOrg.licenseNumber"
+                    :document-url="viewingOrg.license"
+                    :status="docReviewDraft.licenseReviewStatus"
+                    :comment="docReviewDraft.licenseReviewComment"
+                    :saving="documentReviewSaving"
+                    @update:status="docReviewDraft.licenseReviewStatus = $event"
+                    @update:comment="docReviewDraft.licenseReviewComment = $event"
+                    @save="saveViewDocumentReview('license')"
+                  />
+                </div>
+                <div v-show="viewDocTab === 'vat'" class="space-y-4">
+                  <OrgDocumentReviewPanel
+                    :title="$t('admin.docVatRegistration')"
+                    :number-label="$t('admin.docVatNumber')"
+                    :number-value="viewingOrg.vatNumber"
+                    :document-url="viewingOrg.vatRegistration"
+                    :status="docReviewDraft.vatRegistrationReviewStatus"
+                    :comment="docReviewDraft.vatRegistrationReviewComment"
+                    :saving="documentReviewSaving"
+                    @update:status="docReviewDraft.vatRegistrationReviewStatus = $event"
+                    @update:comment="docReviewDraft.vatRegistrationReviewComment = $event"
+                    @save="saveViewDocumentReview('vat')"
+                  />
+                </div>
+                <div v-show="viewDocTab === 'tin'" class="space-y-4">
+                  <OrgDocumentReviewPanel
+                    :title="$t('admin.docTinRegistration')"
+                    :number-label="$t('admin.docTinNumber')"
+                    :number-value="viewingOrg.tinNumber"
+                    :document-url="viewingOrg.tinRegistration"
+                    :status="docReviewDraft.tinRegistrationReviewStatus"
+                    :comment="docReviewDraft.tinRegistrationReviewComment"
+                    :saving="documentReviewSaving"
+                    @update:status="docReviewDraft.tinRegistrationReviewStatus = $event"
+                    @update:comment="docReviewDraft.tinRegistrationReviewComment = $event"
+                    @save="saveViewDocumentReview('tin')"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div
             class="flex flex-wrap justify-end gap-2 border-t border-white/10 bg-zinc-950/70 px-6 py-4 sm:gap-3 sm:px-7"
@@ -912,6 +997,20 @@
               >
                 {{ $t('admin.orgFormTabOnline') }}
               </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="orgFormTab === 'documents'"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                :class="
+                  orgFormTab === 'documents'
+                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                "
+                @click="orgFormTab = 'documents'"
+              >
+                {{ $t('admin.orgFormTabDocuments') }}
+              </button>
             </div>
             <div v-show="orgFormTab === 'profile'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="sm:col-span-2">
@@ -932,109 +1031,6 @@
                   type="text"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                 />
-              </div>
-              <div
-                v-if="formMode === 'create' && !editingOrgId"
-                class="sm:col-span-2 rounded-lg border border-white/10 bg-zinc-950/40 p-3 text-sm text-gray-400"
-                role="note"
-              >
-                {{ $t('admin.orgFormCreateDocumentUploadHint') }}
-              </div>
-              <div>
-                <label for="org-bus-reg" class="block text-sm font-medium text-gray-300">Business Registration</label>
-                <input id="org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" placeholder="Registration number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
-                <input
-                  id="org-bus-reg"
-                  v-model="form.businessRegistration"
-                  type="text"
-                  placeholder="Document URL or upload below"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                />
-                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
-                  <input
-                    type="file"
-                    accept=".pdf,image/*,.doc,.docx"
-                    class="hidden"
-                    :ref="el => { docInputRefs.businessRegistration = el }"
-                    @change="ev => onUploadDocument(ev, editingOrgId, 'BUSINESS_REGISTRATION', 'businessRegistration')"
-                  />
-                  <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
-                    {{ docUploading.businessRegistration ? 'Uploading…' : 'Upload document' }}
-                  </button>
-                  <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-                </div>
-              </div>
-              <div>
-                <label for="org-license" class="block text-sm font-medium text-gray-300">License</label>
-                <input id="org-license-number" v-model="form.licenseNumber" type="text" placeholder="License number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
-                <input
-                  id="org-license"
-                  v-model="form.license"
-                  type="text"
-                  placeholder="Document URL or upload below"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                />
-                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
-                  <input
-                    type="file"
-                    accept=".pdf,image/*,.doc,.docx"
-                    class="hidden"
-                    :ref="el => { docInputRefs.license = el }"
-                    @change="ev => onUploadDocument(ev, editingOrgId, 'LICENSE', 'license')"
-                  />
-                  <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
-                    {{ docUploading.license ? 'Uploading…' : 'Upload document' }}
-                  </button>
-                  <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-                </div>
-              </div>
-              <div>
-                <label for="org-vat-reg" class="block text-sm font-medium text-gray-300">VAT Registration</label>
-                <input id="org-vat-number" v-model="form.vatNumber" type="text" placeholder="VAT number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
-                <input
-                  id="org-vat-reg"
-                  v-model="form.vatRegistration"
-                  type="text"
-                  placeholder="Document URL or upload below"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                />
-                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
-                  <input
-                    type="file"
-                    accept=".pdf,image/*,.doc,.docx"
-                    class="hidden"
-                    :ref="el => { docInputRefs.vatRegistration = el }"
-                    @change="ev => onUploadDocument(ev, editingOrgId, 'VAT_REGISTRATION', 'vatRegistration')"
-                  />
-                  <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
-                    {{ docUploading.vatRegistration ? 'Uploading…' : 'Upload document' }}
-                  </button>
-                  <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-                </div>
-              </div>
-              <div>
-                <label for="org-tin-reg" class="block text-sm font-medium text-gray-300">TIN Registration</label>
-                <input id="org-tin-number" v-model="form.tinNumber" type="text" placeholder="TIN number" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
-                <input
-                  id="org-tin-reg"
-                  v-model="form.tinRegistration"
-                  type="text"
-                  placeholder="Document URL or upload below"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                />
-                <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
-                  <input
-                    type="file"
-                    accept=".pdf,image/*,.doc,.docx"
-                    class="hidden"
-                    :ref="el => { docInputRefs.tinRegistration = el }"
-                    @change="ev => onUploadDocument(ev, editingOrgId, 'TIN_REGISTRATION', 'tinRegistration')"
-                  />
-                  <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
-                    {{ docUploading.tinRegistration ? 'Uploading…' : 'Upload document' }}
-                  </button>
-                  <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">View document</a>
-                </div>
               </div>
               <div>
                 <label for="org-type" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgType') }} *</label>
@@ -1214,6 +1210,140 @@
                   v-model="form.description"
                   rows="3"
                   class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                />
+              </div>
+            </div>
+            <div
+              v-show="orgFormTab === 'documents'"
+              class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+            >
+              <div
+                v-if="formMode === 'create' && !editingOrgId"
+                class="rounded-lg border border-white/10 bg-zinc-950/40 p-3 text-sm text-gray-400"
+                role="note"
+              >
+                {{ $t('admin.orgFormCreateDocumentUploadHint') }}
+              </div>
+              <div
+                class="flex flex-wrap gap-1.5 rounded-xl bg-black/40 p-1.5 ring-1 ring-white/10"
+                role="tablist"
+                :aria-label="$t('admin.orgFormTabDocuments')"
+              >
+                <button
+                  v-for="tab in documentViewTabs"
+                  :key="`form-${tab.id}`"
+                  type="button"
+                  role="tab"
+                  :aria-selected="formDocTab === tab.id"
+                  class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:text-sm"
+                  :class="
+                    formDocTab === tab.id
+                      ? 'bg-yellow-500/25 text-yellow-100 ring-1 ring-yellow-400/40'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  "
+                  @click="formDocTab = tab.id"
+                >
+                  {{ $t(tab.labelKey) }}
+                </button>
+              </div>
+              <div v-show="formDocTab === 'business'" class="space-y-4">
+                <div>
+                  <label for="form-org-bus-reg-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docRegistrationNumber') }}</label>
+                  <input id="form-org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <label for="form-org-bus-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-bus-reg" v-model="form.businessRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
+                    <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.businessRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'BUSINESS_REGISTRATION', 'businessRegistration')" />
+                    <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
+                      {{ docUploading.businessRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
+                    </button>
+                    <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                  </div>
+                </div>
+                <OrgDocumentReviewPanel
+                  v-if="editingOrgId"
+                  review-only
+                  :status="form.businessRegistrationReviewStatus"
+                  :comment="form.businessRegistrationReviewComment"
+                  :saving="documentReviewSaving"
+                  @update:status="form.businessRegistrationReviewStatus = $event"
+                  @update:comment="form.businessRegistrationReviewComment = $event"
+                  @save="saveFormDocumentReview('business')"
+                />
+              </div>
+              <div v-show="formDocTab === 'license'" class="space-y-4">
+                <div>
+                  <label for="form-org-license-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docLicenseNumber') }}</label>
+                  <input id="form-org-license-number" v-model="form.licenseNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <label for="form-org-license" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-license" v-model="form.license" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
+                    <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.license = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'LICENSE', 'license')" />
+                    <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
+                      {{ docUploading.license ? 'Uploading…' : $t('admin.uploadDocument') }}
+                    </button>
+                    <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                  </div>
+                </div>
+                <OrgDocumentReviewPanel
+                  v-if="editingOrgId"
+                  review-only
+                  :status="form.licenseReviewStatus"
+                  :comment="form.licenseReviewComment"
+                  :saving="documentReviewSaving"
+                  @update:status="form.licenseReviewStatus = $event"
+                  @update:comment="form.licenseReviewComment = $event"
+                  @save="saveFormDocumentReview('license')"
+                />
+              </div>
+              <div v-show="formDocTab === 'vat'" class="space-y-4">
+                <div>
+                  <label for="form-org-vat-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docVatNumber') }}</label>
+                  <input id="form-org-vat-number" v-model="form.vatNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <label for="form-org-vat-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-vat-reg" v-model="form.vatRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
+                    <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.vatRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'VAT_REGISTRATION', 'vatRegistration')" />
+                    <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
+                      {{ docUploading.vatRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
+                    </button>
+                    <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                  </div>
+                </div>
+                <OrgDocumentReviewPanel
+                  v-if="editingOrgId"
+                  review-only
+                  :status="form.vatRegistrationReviewStatus"
+                  :comment="form.vatRegistrationReviewComment"
+                  :saving="documentReviewSaving"
+                  @update:status="form.vatRegistrationReviewStatus = $event"
+                  @update:comment="form.vatRegistrationReviewComment = $event"
+                  @save="saveFormDocumentReview('vat')"
+                />
+              </div>
+              <div v-show="formDocTab === 'tin'" class="space-y-4">
+                <div>
+                  <label for="form-org-tin-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docTinNumber') }}</label>
+                  <input id="form-org-tin-number" v-model="form.tinNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <label for="form-org-tin-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-tin-reg" v-model="form.tinRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
+                    <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.tinRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'TIN_REGISTRATION', 'tinRegistration')" />
+                    <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
+                      {{ docUploading.tinRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
+                    </button>
+                    <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                  </div>
+                </div>
+                <OrgDocumentReviewPanel
+                  v-if="editingOrgId"
+                  review-only
+                  :status="form.tinRegistrationReviewStatus"
+                  :comment="form.tinRegistrationReviewComment"
+                  :saving="documentReviewSaving"
+                  @update:status="form.tinRegistrationReviewStatus = $event"
+                  @update:comment="form.tinRegistrationReviewComment = $event"
+                  @save="saveFormDocumentReview('tin')"
                 />
               </div>
             </div>
@@ -1480,6 +1610,7 @@ import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import AdminLayout from '../components/AdminLayout.vue'
+import OrgDocumentReviewPanel from '../components/OrgDocumentReviewPanel.vue'
 import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 import { adminApi } from '../api/admin.api'
@@ -1502,6 +1633,7 @@ const {
   uploadOrganizationMedia,
   deleteOrganizationMedia,
   uploadOrganizationDocument,
+  patchOrganizationDocumentReviews,
   getActiveSponsorships,
   getSponsorshipApplicationsByOrganization,
   assignOrganizationToSponsorship,
@@ -1747,6 +1879,130 @@ const rejectOrg = async () => {
 
 const showViewDialog = ref(false)
 const viewingOrg = ref(null)
+const viewOrgPaneTab = ref('overview')
+const viewDocTab = ref('business')
+const formDocTab = ref('business')
+const documentViewTabs = [
+  { id: 'business', labelKey: 'admin.docTabBusiness' },
+  { id: 'license', labelKey: 'admin.docTabLicense' },
+  { id: 'vat', labelKey: 'admin.docTabVat' },
+  { id: 'tin', labelKey: 'admin.docTabTin' }
+]
+
+const docReviewDraft = ref({
+  businessRegistrationReviewStatus: null,
+  businessRegistrationReviewComment: '',
+  licenseReviewStatus: null,
+  licenseReviewComment: '',
+  vatRegistrationReviewStatus: null,
+  vatRegistrationReviewComment: '',
+  tinRegistrationReviewStatus: null,
+  tinRegistrationReviewComment: ''
+})
+
+const documentReviewSaving = ref(false)
+
+function syncDocReviewDraftFromOrg(org) {
+  if (!org) return
+  docReviewDraft.value = {
+    businessRegistrationReviewStatus: org.businessRegistrationReviewStatus ?? null,
+    businessRegistrationReviewComment: org.businessRegistrationReviewComment ?? '',
+    licenseReviewStatus: org.licenseReviewStatus ?? null,
+    licenseReviewComment: org.licenseReviewComment ?? '',
+    vatRegistrationReviewStatus: org.vatRegistrationReviewStatus ?? null,
+    vatRegistrationReviewComment: org.vatRegistrationReviewComment ?? '',
+    tinRegistrationReviewStatus: org.tinRegistrationReviewStatus ?? null,
+    tinRegistrationReviewComment: org.tinRegistrationReviewComment ?? ''
+  }
+}
+
+watch(viewingOrg, (o) => syncDocReviewDraftFromOrg(o), { deep: true })
+
+async function saveViewDocumentReview(which) {
+  if (!viewingOrg.value?.id) return
+  documentReviewSaving.value = true
+  try {
+    const d = docReviewDraft.value
+    const payload = {}
+    if (which === 'business') {
+      if (d.businessRegistrationReviewStatus != null && d.businessRegistrationReviewStatus !== '') {
+        payload.businessRegistrationReviewStatus = d.businessRegistrationReviewStatus
+      }
+      payload.businessRegistrationReviewComment = d.businessRegistrationReviewComment
+    } else if (which === 'license') {
+      if (d.licenseReviewStatus != null && d.licenseReviewStatus !== '') {
+        payload.licenseReviewStatus = d.licenseReviewStatus
+      }
+      payload.licenseReviewComment = d.licenseReviewComment
+    } else if (which === 'vat') {
+      if (d.vatRegistrationReviewStatus != null && d.vatRegistrationReviewStatus !== '') {
+        payload.vatRegistrationReviewStatus = d.vatRegistrationReviewStatus
+      }
+      payload.vatRegistrationReviewComment = d.vatRegistrationReviewComment
+    } else if (which === 'tin') {
+      if (d.tinRegistrationReviewStatus != null && d.tinRegistrationReviewStatus !== '') {
+        payload.tinRegistrationReviewStatus = d.tinRegistrationReviewStatus
+      }
+      payload.tinRegistrationReviewComment = d.tinRegistrationReviewComment
+    }
+    const updated = await patchOrganizationDocumentReviews(viewingOrg.value.id, payload)
+    viewingOrg.value = updated
+    await loadOrgs()
+    syncDocReviewDraftFromOrg(updated)
+  } catch (e) {
+    console.error('Failed to save document review:', e)
+  } finally {
+    documentReviewSaving.value = false
+  }
+}
+
+async function saveFormDocumentReview(which) {
+  if (!editingOrgId.value) return
+  documentReviewSaving.value = true
+  try {
+    const f = form.value
+    const payload = {}
+    if (which === 'business') {
+      if (f.businessRegistrationReviewStatus != null && f.businessRegistrationReviewStatus !== '') {
+        payload.businessRegistrationReviewStatus = f.businessRegistrationReviewStatus
+      }
+      payload.businessRegistrationReviewComment = f.businessRegistrationReviewComment
+    } else if (which === 'license') {
+      if (f.licenseReviewStatus != null && f.licenseReviewStatus !== '') {
+        payload.licenseReviewStatus = f.licenseReviewStatus
+      }
+      payload.licenseReviewComment = f.licenseReviewComment
+    } else if (which === 'vat') {
+      if (f.vatRegistrationReviewStatus != null && f.vatRegistrationReviewStatus !== '') {
+        payload.vatRegistrationReviewStatus = f.vatRegistrationReviewStatus
+      }
+      payload.vatRegistrationReviewComment = f.vatRegistrationReviewComment
+    } else if (which === 'tin') {
+      if (f.tinRegistrationReviewStatus != null && f.tinRegistrationReviewStatus !== '') {
+        payload.tinRegistrationReviewStatus = f.tinRegistrationReviewStatus
+      }
+      payload.tinRegistrationReviewComment = f.tinRegistrationReviewComment
+    }
+    const updated = await patchOrganizationDocumentReviews(editingOrgId.value, payload)
+    if (viewingOrg.value?.id === editingOrgId.value) {
+      viewingOrg.value = updated
+    }
+    syncDocReviewDraftFromOrg(updated)
+    form.value.businessRegistrationReviewStatus = updated.businessRegistrationReviewStatus ?? null
+    form.value.businessRegistrationReviewComment = updated.businessRegistrationReviewComment ?? ''
+    form.value.licenseReviewStatus = updated.licenseReviewStatus ?? null
+    form.value.licenseReviewComment = updated.licenseReviewComment ?? ''
+    form.value.vatRegistrationReviewStatus = updated.vatRegistrationReviewStatus ?? null
+    form.value.vatRegistrationReviewComment = updated.vatRegistrationReviewComment ?? ''
+    form.value.tinRegistrationReviewStatus = updated.tinRegistrationReviewStatus ?? null
+    form.value.tinRegistrationReviewComment = updated.tinRegistrationReviewComment ?? ''
+    await loadOrgs()
+  } catch (e) {
+    console.error('Failed to save document review:', e)
+  } finally {
+    documentReviewSaving.value = false
+  }
+}
 
 const activeSupplierSubcategoryOptions = ref([])
 const subcategoryOptionsLoading = ref(false)
@@ -1779,10 +2035,13 @@ useMediaWarmup(viewingOrgMediaUrlsForWarmup)
 const viewOrg = async (org) => {
   viewingOrg.value = org
   showViewDialog.value = true
+  viewOrgPaneTab.value = 'overview'
+  viewDocTab.value = 'business'
   assignSponsorship.value = { sponsorshipId: '', startDate: '', endDate: '', autoApprove: true }
   try {
     const full = await getOrganizationById(org.id)
     viewingOrg.value = full
+    syncDocReviewDraftFromOrg(full)
     if (full.type === 'SUPPLIER') {
       viewingSubcategoryIds.value = (full.supplierSubcategories || []).map((s) => s.id)
       await loadActiveSupplierSubcategories()
@@ -2256,7 +2515,15 @@ const form = ref({
   youtubeUrl: '',
   description: '',
   initialStatus: 'PENDING_APPROVAL',
-  supplierSubcategoryIds: []
+  supplierSubcategoryIds: [],
+  businessRegistrationReviewStatus: null,
+  businessRegistrationReviewComment: '',
+  licenseReviewStatus: null,
+  licenseReviewComment: '',
+  vatRegistrationReviewStatus: null,
+  vatRegistrationReviewComment: '',
+  tinRegistrationReviewStatus: null,
+  tinRegistrationReviewComment: ''
 })
 
 const organizationTypeFormOptions = computed(() => {
@@ -2296,11 +2563,20 @@ function resetForm() {
     youtubeUrl: '',
     description: '',
     initialStatus: 'PENDING_APPROVAL',
-    supplierSubcategoryIds: []
-}
+    supplierSubcategoryIds: [],
+    businessRegistrationReviewStatus: null,
+    businessRegistrationReviewComment: '',
+    licenseReviewStatus: null,
+    licenseReviewComment: '',
+    vatRegistrationReviewStatus: null,
+    vatRegistrationReviewComment: '',
+    tinRegistrationReviewStatus: null,
+    tinRegistrationReviewComment: ''
+  }
   editingOrgId.value = null
   formError.value = ''
   orgFormTab.value = 'profile'
+  formDocTab.value = 'business'
 }
 
 async function openCreateModal() {
@@ -2314,39 +2590,54 @@ async function openCreateModal() {
 async function openEditModal(org) {
   formMode.value = 'edit'
   editingOrgId.value = org.id
+  let full = org
+  try {
+    full = await getOrganizationById(org.id)
+  } catch (_) {
+    /* use table row */
+  }
   form.value = {
-    name: org.name ?? '',
-    registrationNumber: org.registrationNumber ?? '',
-    businessRegistration: org.businessRegistration ?? '',
-    license: org.license ?? '',
-    vatRegistration: org.vatRegistration ?? '',
-    tinRegistration: org.tinRegistration ?? '',
-    businessRegistrationNumber: org.businessRegistrationNumber ?? '',
-    licenseNumber: org.licenseNumber ?? '',
-    vatNumber: org.vatNumber ?? '',
-    tinNumber: org.tinNumber ?? '',
-    type: org.type ?? 'REAL_ESTATE_COMPANY',
-    address: org.address ?? '',
-    city: org.city ?? '',
-    country: org.country ?? '',
-    latitude: org.latitude ?? null,
-    longitude: org.longitude ?? null,
-    phoneNumbers: (org.phoneNumbers && org.phoneNumbers.length > 0)
-      ? org.phoneNumbers.map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: p.number || '' }))
-      : (org.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: org.phoneNumber }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
-    email: org.email ?? '',
-    website: org.website ?? '',
-    facebookUrl: org.facebookUrl ?? '',
-    instagramUrl: org.instagramUrl ?? '',
-    linkedinUrl: org.linkedinUrl ?? '',
-    twitterUrl: org.twitterUrl ?? '',
-    youtubeUrl: org.youtubeUrl ?? '',
-    description: org.description ?? '',
+    name: full.name ?? '',
+    registrationNumber: full.registrationNumber ?? '',
+    businessRegistration: full.businessRegistration ?? '',
+    license: full.license ?? '',
+    vatRegistration: full.vatRegistration ?? '',
+    tinRegistration: full.tinRegistration ?? '',
+    businessRegistrationNumber: full.businessRegistrationNumber ?? '',
+    licenseNumber: full.licenseNumber ?? '',
+    vatNumber: full.vatNumber ?? '',
+    tinNumber: full.tinNumber ?? '',
+    type: full.type ?? 'REAL_ESTATE_COMPANY',
+    address: full.address ?? '',
+    city: full.city ?? '',
+    country: full.country ?? '',
+    latitude: full.latitude ?? null,
+    longitude: full.longitude ?? null,
+    phoneNumbers: (full.phoneNumbers && full.phoneNumbers.length > 0)
+      ? full.phoneNumbers.map(p => ({ countryCode: p.countryCode || DEFAULT_COUNTRY_CODE, number: p.number || '' }))
+      : (full.phoneNumber ? [{ countryCode: DEFAULT_COUNTRY_CODE, number: full.phoneNumber }] : [{ countryCode: DEFAULT_COUNTRY_CODE, number: '' }]),
+    email: full.email ?? '',
+    website: full.website ?? '',
+    facebookUrl: full.facebookUrl ?? '',
+    instagramUrl: full.instagramUrl ?? '',
+    linkedinUrl: full.linkedinUrl ?? '',
+    twitterUrl: full.twitterUrl ?? '',
+    youtubeUrl: full.youtubeUrl ?? '',
+    description: full.description ?? '',
     initialStatus: 'PENDING_APPROVAL',
-    supplierSubcategoryIds: (org.supplierSubcategories || []).map((s) => s.id)
+    supplierSubcategoryIds: (full.supplierSubcategories || []).map((s) => s.id),
+    businessRegistrationReviewStatus: full.businessRegistrationReviewStatus ?? null,
+    businessRegistrationReviewComment: full.businessRegistrationReviewComment ?? '',
+    licenseReviewStatus: full.licenseReviewStatus ?? null,
+    licenseReviewComment: full.licenseReviewComment ?? '',
+    vatRegistrationReviewStatus: full.vatRegistrationReviewStatus ?? null,
+    vatRegistrationReviewComment: full.vatRegistrationReviewComment ?? '',
+    tinRegistrationReviewStatus: full.tinRegistrationReviewStatus ?? null,
+    tinRegistrationReviewComment: full.tinRegistrationReviewComment ?? ''
   }
   formError.value = ''
   orgFormTab.value = 'profile'
+  formDocTab.value = 'business'
   showViewDialog.value = false
   showFormDialog.value = true
   if (form.value.type === 'SUPPLIER') {

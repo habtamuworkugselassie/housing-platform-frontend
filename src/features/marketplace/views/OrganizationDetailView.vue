@@ -615,6 +615,18 @@
         </div>
       </section>
 
+      <!-- Reviews Section -->
+      <section class="mt-8">
+        <ReviewSection 
+          v-if="organization"
+          target-type="organization" 
+          :target-id="organization.id" 
+          :average-rating="organization.averageRating" 
+          :review-count="organization.reviewCount" 
+          @review-added="fetchOrganizationDetails" 
+        />
+      </section>
+
     <!-- Gallery Modal -->
     <div
       v-if="showGalleryModal && galleryMedia.length > 0"
@@ -733,6 +745,7 @@ import {
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
+import ReviewSection from '@/shared/components/ReviewSection.vue'
 import { VerifiedBadge, OsmMap } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import {

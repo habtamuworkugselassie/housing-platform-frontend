@@ -233,7 +233,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
@@ -245,6 +246,7 @@ import {
 } from '@/shared/utils/sponsorshipTier'
 
 const { t } = useI18n()
+const route = useRoute()
 const properties = ref([])
 const buildings = ref([])
 const combinedList = ref([])
@@ -327,6 +329,21 @@ const loadProperties = async () => {
   }
 }
 
+function queryParamString(q) {
+  if (q == null) return ''
+  const s = Array.isArray(q) ? q[0] : q
+  return typeof s === 'string' ? s.trim() : ''
+}
+
+function applyFiltersFromRoute() {
+  const city = queryParamString(route.query.city)
+  const statusRaw = queryParamString(route.query.status).toUpperCase()
+  const status =
+    statusRaw === 'AVAILABLE' || statusRaw === 'RESERVED' || statusRaw === 'SOLD' ? statusRaw : ''
+  filters.value = { city, status }
+  currentPage.value = 0
+}
+
 const clearFilters = () => {
   filters.value = { city: '', status: '' }
   currentPage.value = 0
@@ -343,6 +360,15 @@ const formatPrice = (price, currency = 'ETB') => {
 }
 
 onMounted(() => {
+  applyFiltersFromRoute()
   loadProperties()
 })
+
+watch(
+  () => [route.query.city, route.query.status],
+  () => {
+    applyFiltersFromRoute()
+    loadProperties()
+  }
+)
 </script>

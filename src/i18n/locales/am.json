@@ -32,7 +32,30 @@
     "buildingBadge": "ሕንፃ",
     "user": "ተጠቃሚ",
     "openInGoogleMaps": "በጉግል ካርታ ይክፈቱ",
-    "profile": "መገለጫ"
+    "profile": "መገለጫ",
+    "reviews": "ግምገማዎች",
+    "supportChat": {
+      "title": "እገዛ",
+      "open": "የድጋፍ ውይይት ክፈት",
+      "welcome": "ሰላም — በቀላሉ እርዳዎታለሁ። ዝርዝሮች ለማየት ከላይ ካለው ገበያ → ንግድ ንብረት ይጠቀሙ (ወይም /properties)። ማሳያ መረጃ በመነሻ ገጽ በማሸብልል ይገኛል—በላይ ባሪያ የለውም። የሚፈልጉትን ይንገሩ ወይም አማራጮችን ይጫኑ። የመለያ ጉዳዮች ላይ አግኙን ይጠቀሙ።",
+      "placeholder": "ለምሳሌ በቦሌ አፓርታማ፣ ወይም በሀዋሳ በጀትዎ ውስጥ ቤት…",
+      "send": "ላክ",
+      "faq": "ተደጋጋሚ ጥያቄዎች",
+      "contact": "አግኙን",
+      "browseMarketplaceRealEstate": "ገበያ፣ ንግድ ንብረት",
+      "browseProperties": "ሁሉም ዝርዝሮች (/properties)",
+      "exampleCity": "አዲስ አበባ",
+      "quickRepliesLabel": "ለምሳሌ ይሞክሩ:",
+      "quickReplies": {
+        "neighborhood": "በአካባቢ ለምሳሌ በቦሌ ቦታ እፈልጋለሁ",
+        "rent": "ለመከራየት እፈልጋለሁ — በመጀመሪያ ምን ልናደርግ?",
+        "buy": "ለመግዛት እፈልጋለሁ — ፍለጋው እንዴት ነው?",
+        "howCityFilter": "የከተማ ማጣሪያ ከቦሌ ያሉ አካባቢዎች ጋር እንዴት ይሰራል?"
+      },
+      "error": "የሆነ ስህተት ተፈጥሯል። እንደገና ይሞክሩ ወይም በመነሻ ገጹ የግንኙነት ቅጽ ይጠቀሙ።",
+      "typing": "በማሰብ ላይ…",
+      "resizeHandle": "የውይይት ፓነል መጠን ለውጥ"
+    }
   },
   "nav": {
     "home": "መነሻ",
@@ -74,6 +97,9 @@
   "marketplace": {
     "organizationsByType": "በዚህ ምድብ ውስጥ የተጸድቁ ድርጅቶች",
     "noOrganizations": "በዚህ ምድብ ውስጥ ገና ድርጅቶች የሉም።"
+  },
+  "organization": {
+    "documentReviewSummaryTitle": "በማረጋገጫ ሰነዶችዎ ላይ የአስተዳዳር አስተያየት"
   },
   "auth": {
     "login": "ግባ",
@@ -581,6 +607,35 @@
     "orgFormTabProfile": "መገለጫ እና ህጋዊ",
     "orgFormTabContact": "አድራሻ እና ግንኙነት",
     "orgFormTabOnline": "ድር እና ማህበራዊ",
+    "orgFormTabDocuments": "ሰነዶች እና ግምገማ",
+    "orgViewTabOverview": "አጠቃላይ",
+    "orgViewTabDocuments": "ሰነዶች",
+    "docTabBusiness": "የንግድ ምዝገባ",
+    "docTabLicense": "ፍቃድ",
+    "docTabVat": "የVAT ምዝገባ",
+    "docTabTin": "የTIN ምዝገባ",
+    "docBusinessRegistration": "የንግድ ምዝገባ",
+    "docLicense": "ፍቃድ",
+    "docVatRegistration": "የVAT ምዝገባ",
+    "docTinRegistration": "የTIN ምዝገባ",
+    "docRegistrationNumber": "የምዝገባ ቁጥር",
+    "docLicenseNumber": "የፍቃድ ቁጥር",
+    "docVatNumber": "የVAT ቁጥር",
+    "docTinNumber": "የTIN ቁጥር",
+    "docUrlOrUpload": "የሰነድ URL ወይም ጭነት",
+    "docNotUploaded": "ሰነድ አልተጫነም",
+    "viewDocument": "ሰነድ ይመልከቱ",
+    "uploadDocument": "ሰነድ ጫን",
+    "documentReviewHeading": "የአስተዳዳር ግምገማ",
+    "documentReviewStatus": "የግምገማ ሁኔታ",
+    "documentReviewComment": "የአስተዳዳር አስተያየት",
+    "documentReviewCommentPlaceholder": "ለድርጅቱ ማስታወሻዎች",
+    "documentReviewSave": "ግምገማ አስቀምጥ",
+    "documentReviewUnset": "አልተቀመጠም",
+    "documentReviewStatusPending": "በመጠባበቅ ላይ",
+    "documentReviewStatusApproved": "ጸድቋል",
+    "documentReviewStatusRejected": "ተቀባይነት አላገኘም",
+    "documentReviewStatusNeedsRevision": "እንደገና ማስተካከል ያስፈልጋል",
     "organizationDetails": "የድርጅት ዝርዝሮች",
     "orgFormCreateSubtitle": "መገለጫ፣ ህጋዊ እና ግንኙነት — ከታች ትሮችን ይጠቀሙ።",
     "orgFormCreateDocumentUploadHint": "የሰነድ ፋይል ጭነቶች ከድርጅቱን ካስመዘገቡ በኋላ ይታያሉ፦ የስም፣ ዓይነት እና ሌሎች የሚያስፈልጉ መስኮችን በመሙላት ቅጹን ያስረክቡ። ይህ መስኮት ይቆያል እና ከዚያ ፋይሎችን ማስተላለፍ ይችላሉ። ከመመዝገብዎ በፊት በታች ያሉትን መስኮች ለሰነድ URL መጠቀም ይችላሉ።",

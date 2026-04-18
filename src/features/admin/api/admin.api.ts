@@ -11,6 +11,7 @@ import type {
   UserCreateRequest,
   OrganizationManagementRequest,
   OrganizationCreateRequest,
+  OrganizationDocumentReviewsPatchRequest,
   OrganizationUpdateRequest,
   SupplierSubcategory,
   SupplierSubcategoryRequest,
@@ -135,6 +136,17 @@ export const adminApi = {
    */
   updateOrganization: async (id: string, body: OrganizationUpdateRequest): Promise<any> => {
     const response = await api.put(`/organizations/${id}`, body)
+    return response.data
+  },
+
+  /**
+   * Admin only: partial update of document review status/comments.
+   */
+  patchOrganizationDocumentReviews: async (
+    id: string,
+    body: OrganizationDocumentReviewsPatchRequest
+  ): Promise<any> => {
+    const response = await api.patch(`/organizations/${id}/document-reviews`, body)
     return response.data
   },
 

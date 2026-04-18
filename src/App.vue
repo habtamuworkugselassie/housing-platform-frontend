@@ -19,13 +19,14 @@
       <router-view v-else />
     </div>
     <Footer />
+    <PublicSupportChat />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen } from '@/shared/components'
+import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 

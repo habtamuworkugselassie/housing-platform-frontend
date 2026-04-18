@@ -210,6 +210,11 @@ export function useAdminOrganizations() {
     return await executeUpload(() => adminApi.uploadOrganizationDocument(id, documentType, file))
   }
 
+  const patchOrganizationDocumentReviews = async (id, body) => {
+    const { execute: executePatch } = useApi()
+    return await executePatch(() => adminApi.patchOrganizationDocumentReviews(id, body))
+  }
+
   const suspendOrganization = async (id, reason) => {
     const { execute: executeSuspend } = useApi()
     return await executeSuspend(() => adminApi.suspendOrganization(id, reason))
@@ -281,6 +286,7 @@ export function useAdminOrganizations() {
     uploadOrganizationMedia,
     deleteOrganizationMedia,
     uploadOrganizationDocument,
+    patchOrganizationDocumentReviews,
     getActiveSponsorships,
     getSponsorshipApplicationsByOrganization,
     assignOrganizationToSponsorship,

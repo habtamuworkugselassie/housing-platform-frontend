@@ -105,6 +105,25 @@ export interface OrganizationCreateRequest {
   supplierSubcategoryIds?: string[]
 }
 
+/** Admin workflow for a single uploaded verification document */
+export type OrganizationDocumentReviewStatus =
+  | 'PENDING'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'NEEDS_REVISION'
+
+/** PATCH /organizations/:id/document-reviews — only send fields to update */
+export interface OrganizationDocumentReviewsPatchRequest {
+  businessRegistrationReviewStatus?: OrganizationDocumentReviewStatus | null
+  businessRegistrationReviewComment?: string | null
+  licenseReviewStatus?: OrganizationDocumentReviewStatus | null
+  licenseReviewComment?: string | null
+  vatRegistrationReviewStatus?: OrganizationDocumentReviewStatus | null
+  vatRegistrationReviewComment?: string | null
+  tinRegistrationReviewStatus?: OrganizationDocumentReviewStatus | null
+  tinRegistrationReviewComment?: string | null
+}
+
 /** Same fields for update (all optional except what is being changed) */
 export interface OrganizationUpdateRequest {
   name?: string

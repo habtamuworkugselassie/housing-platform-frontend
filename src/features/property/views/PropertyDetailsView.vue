@@ -494,6 +494,16 @@
           </div>
         </div>
       </div>
+      
+      <!-- Reviews Section -->
+      <ReviewSection 
+        v-if="property"
+        target-type="property" 
+        :target-id="property.id" 
+        :average-rating="property.averageRating" 
+        :review-count="property.reviewCount" 
+        @review-added="fetchProperty" 
+      />
     </div>
 
     <!-- Contact Modal -->
@@ -719,6 +729,7 @@ import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerifi
 import { VerifiedBadge, OsmMap } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import { useAuthStore } from '@/features/auth'
+import ReviewSection from '@/shared/components/ReviewSection.vue'
 import PropertyLoanLinkModal from '@/features/banking/components/PropertyLoanLinkModal.vue'
 
 const route = useRoute()

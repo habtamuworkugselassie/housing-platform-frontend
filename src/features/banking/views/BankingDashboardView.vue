@@ -18,6 +18,7 @@
 
     <!-- Bank Info -->
     <div v-if="bank" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <OrgDocumentReviewsSummary :org="bank" class="mb-4" />
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-white">Bank Information</h2>
         <button
@@ -375,6 +376,7 @@ import api, { mediaUrl } from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { OsmMapPicker } from '@/shared/components'
+import OrgDocumentReviewsSummary from '@/shared/components/OrgDocumentReviewsSummary.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const authStore = useAuthStore()

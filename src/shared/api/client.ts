@@ -181,7 +181,8 @@ api.interceptors.response.use(
         '/organizations/',
         '/credit-products',
         '/financing-offers',
-        '/exhibition/'
+        '/exhibition/',
+        '/public/support/'
       ]
 
       const isPublicEndpoint = publicEndpoints.some(endpoint =>

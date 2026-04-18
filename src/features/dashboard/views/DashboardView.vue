@@ -530,6 +530,7 @@
             </div>
 
             <div v-show="organizationFormTab === 'profile'" class="space-y-4">
+              <OrgDocumentReviewsSummary v-if="organization" :org="organization" />
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label for="dash-org-name" class="block text-sm font-medium text-gray-300">{{ $t('dashboard.nameLabel') }} *</label>
@@ -1526,6 +1527,7 @@ import api, { mediaUrl } from '@/shared/api/client'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
+import OrgDocumentReviewsSummary from '@/shared/components/OrgDocumentReviewsSummary.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatPrice as formatCurrencyPrice, isVideoUrl } from '@/shared/utils'
 
@@ -1636,14 +1638,16 @@ const loadDashboardData = async () => {
       const agentResponse = await api.get('/real-estate-agents/me')
       agent.value = agentResponse.data
       
-      // Get organization from agent
+      // Resolve org from agent, then GET full org (includes member-only fields such as document reviews)
       if (agent.value.organization) {
         organization.value = agent.value.organization
       } else if (agent.value.organizationId) {
-        // Fetch organization details if not included
+        organization.value = { id: agent.value.organizationId }
+      }
+      if (organization.value?.id) {
         try {
-          const orgResponse = await api.get(`/organizations/${agent.value.organizationId}`)
-          organization.value = orgResponse.data
+          const fullOrg = await api.get(`/organizations/${organization.value.id}`)
+          organization.value = fullOrg.data
         } catch (err) {
           console.error('Failed to load organization:', err)
         }
