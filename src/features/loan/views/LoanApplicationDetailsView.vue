@@ -3,7 +3,7 @@
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-white hover:text-yellow-400 font-medium mb-4 transition-colors"
+        class="text-white hover:text-black font-medium mb-4 transition-colors"
       >
         ← Back
       </button>
@@ -12,7 +12,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -90,7 +90,7 @@
             class="flex items-start gap-4"
           >
             <div class="flex-shrink-0">
-              <div class="w-2 h-2 rounded-full bg-yellow-400 mt-2"></div>
+              <div class="w-2 h-2 rounded-full bg-violet-950 mt-2"></div>
               <div v-if="index < statusHistory.length - 1" class="w-0.5 h-12 bg-white/20 ml-1"></div>
             </div>
             <div class="flex-1">
@@ -151,7 +151,7 @@ const getStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-500/30 text-gray-300',
     SUBMITTED: 'bg-blue-500/30 text-blue-200',
-    UNDER_REVIEW: 'bg-yellow-500/30 text-yellow-200',
+    UNDER_REVIEW: 'bg-violet-950/30 text-black',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200',
     DISBURSED: 'bg-purple-500/30 text-purple-200',

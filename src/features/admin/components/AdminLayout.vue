@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white flex">
+  <div class="min-h-screen bg-violet-950 text-white flex">
     <!-- Sidebar -->
     <aside
       :class="[
@@ -12,14 +12,16 @@
         <!-- Logo/Brand -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-white/10">
           <div class="flex items-center">
-            <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <span class="text-black font-bold text-lg">H</span>
-            </div>
+            <img
+              src="/ethio-build-connect-mark.png"
+              alt="Ethio Build Connect"
+              class="flex-shrink-0 w-8 h-8 rounded-md object-contain"
+            />
             <span class="ml-3 text-xl font-semibold text-white">{{ $t('admin.portalTitle') }}</span>
           </div>
           <button
             @click="sidebarOpen = false"
-            class="lg:hidden text-gray-400 hover:text-yellow-400"
+            class="lg:hidden text-gray-400 hover:text-black"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -36,8 +38,8 @@
             :class="[
               'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
               isActive(item.path)
-                ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-400/50'
-                : 'text-gray-300 hover:bg-yellow-500/20 hover:text-yellow-400'
+                ? 'bg-violet-950/20 text-black border border-black/50'
+                : 'text-gray-300 hover:bg-violet-950/20 hover:text-black'
             ]"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +65,7 @@
       <header class="bg-zinc-900 border-b border-white/10 h-16 flex items-center justify-between px-4 lg:px-6">
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="lg:hidden text-gray-400 hover:text-yellow-400"
+          class="lg:hidden text-gray-400 hover:text-black"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -76,7 +78,7 @@
             <input
               type="text"
               :placeholder="$t('admin.searchPlaceholder')"
-              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
             />
             <svg
               class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -89,7 +91,7 @@
           </div>
 
           <!-- Notifications -->
-          <button class="relative p-2 text-gray-400 hover:text-yellow-400">
+          <button class="relative p-2 text-gray-400 hover:text-black">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -100,7 +102,7 @@
           </button>
 
           <!-- Theme Toggle -->
-          <button class="p-2 text-gray-400 hover:text-yellow-400">
+          <button class="p-2 text-gray-400 hover:text-black">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
@@ -114,7 +116,7 @@
       </header>
 
       <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto bg-black text-white p-4 lg:p-6">
+      <main class="flex-1 overflow-y-auto bg-violet-950 text-white p-4 lg:p-6">
         <slot />
       </main>
     </div>
@@ -123,7 +125,7 @@
     <div
       v-if="sidebarOpen"
       @click="sidebarOpen = false"
-      class="fixed inset-0 bg-black/70 z-40 lg:hidden"
+      class="fixed inset-0 bg-violet-950/70 z-40 lg:hidden"
     ></div>
   </div>
 </template>

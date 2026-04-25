@@ -1,31 +1,31 @@
 <template>
-  <div class="exhibition-landing overflow-x-hidden bg-black text-white">
+  <div class="exhibition-landing overflow-x-hidden bg-violet-950 text-white">
     <!-- Planning the exhibition — professional intro for market -->
-    <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-zinc-900 to-black py-12 sm:py-16 lg:py-20">
+    <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl border-l-2 border-yellow-400 pl-6 sm:pl-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-4">
+        <div class="max-w-3xl border-l-2 border-black pl-6 sm:pl-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4">
             {{ $t('exhibition.planning.badge') }}
           </p>
           <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight">
             {{ $t('exhibition.planning.title') }}
           </h2>
-          <p class="mt-4 text-base sm:text-lg text-gray-400 leading-relaxed">
+          <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed">
             {{ $t('exhibition.planning.body') }}
           </p>
-          <p class="mt-4 text-sm text-gray-500">
+          <p class="mt-4 text-sm text-white/70">
             {{ $t('exhibition.planning.whoShowcases') }}
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-4">
             <a
               href="#register"
-              class="inline-flex items-center justify-center px-6 py-3 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors"
+              class="inline-flex items-center justify-center px-6 py-3 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors"
             >
               {{ $t('exhibition.planning.cta') }}
             </a>
             <a
               href="#show-features"
-              class="inline-flex items-center justify-center px-6 py-3 border border-white/30 text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:border-yellow-400 transition-colors"
+              class="inline-flex items-center justify-center px-6 py-3 border border-white/30 text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:border-black transition-colors"
             >
               {{ $t('exhibition.keyShowFeatures.exploreMore') }}
             </a>
@@ -35,15 +35,15 @@
     </section>
 
     <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
-    <section id="main-listings" class="bg-zinc-950 border-t border-white/10 py-12 lg:py-16">
+    <section id="main-listings" class="bg-violet-950 border-t border-white/10 py-12 lg:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2">
           {{ $t('exhibition.featuredListings.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">
           {{ $t('property.properties') }}
         </h2>
-        <p class="text-sm text-gray-500 max-w-2xl mb-4">
+        <p class="text-sm text-white/70 max-w-2xl mb-4">
           {{ $t('exhibition.featuredListings.subtext') }}
         </p>
         <div class="mb-6 max-w-md">
@@ -51,19 +51,19 @@
             v-model="propertiesSearchQuery"
             type="search"
             :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
-            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-white placeholder-gray-400 focus:ring-2 focus:ring-black focus:border-black"
             aria-label="Search properties"
           />
         </div>
         <div v-if="propertiesLoading" class="flex justify-center py-12">
-          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
+          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-black border-t-transparent" />
         </div>
         <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <a
             v-for="(item, index) in (propertiesList || [])"
             :key="item?.id ?? index"
             :href="item?.id ? `/properties/${item.id}` : '#'"
-            class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:shadow-lg hover:shadow-yellow-400/5"
+            class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-black hover:bg-violet-950/10 hover:shadow-lg hover:shadow-black/5"
           >
             <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-zinc-800">
               <img
@@ -72,32 +72,32 @@
                 :alt="item?.title ? `${item.title} — property listing` : 'Property listing on Ethio Build Connect and Expo'"
                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
               />
-              <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>
+              <div v-else class="flex h-full items-center justify-center text-4xl text-white/70">🏠</div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
-              <span class="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              <span class="absolute bottom-2 left-2 rounded bg-violet-950/60 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
                 {{ item?.city ?? '' }}{{ item?.country ? `, ${item.country}` : '' }}
               </span>
             </div>
             <div class="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
-              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-white group-hover:text-yellow-400/95 flex items-center gap-2 flex-wrap">
+              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-white group-hover:text-white flex items-center gap-2 flex-wrap">
                 {{ item?.title ?? '' }}
                 <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
               </h3>
-              <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-gray-400">
+              <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-white/80">
                 {{ item.realEstateCompanyName }}
               </p>
               <p v-if="item?.realEstateCompanyPhone" class="mt-0.5 text-sm text-white/80">
                 Tel. {{ item.realEstateCompanyPhone }}
               </p>
-              <p v-if="item?.priceETB || item?.priceUSD" class="mt-2 text-base font-bold text-yellow-400">
+              <p v-if="item?.priceETB || item?.priceUSD" class="mt-2 text-base font-bold text-white">
                 {{ item?.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
-                <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-gray-500">/</span>
+                <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-white/70">/</span>
                 {{ item?.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
               </p>
             </div>
           </a>
         </div>
-        <p v-else class="py-8 text-center text-sm text-gray-400">
+        <p v-else class="py-8 text-center text-sm text-white/80">
           {{ propertiesSearchQuery.trim() ? $t('property.noPropertiesFound') : $t('property.noProperties') }}
         </p>
         <!-- Pagination: shown when not searching (9 per page) -->
@@ -108,19 +108,19 @@
           <button
             type="button"
             :disabled="propertiesPage === 0"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-yellow-400 hover:bg-yellow-500/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-black hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.max(0, propertiesPage - 1)"
           >
             <ChevronLeftIcon class="h-4 w-4" aria-hidden="true" />
             <span>{{ $t('common.previous') }}</span>
           </button>
-          <span class="min-w-[7rem] px-4 py-2.5 text-center text-sm font-medium text-gray-300">
+          <span class="min-w-[7rem] px-4 py-2.5 text-center text-sm font-medium text-white/85">
             {{ $t('common.page') }} <span class="font-semibold text-white">{{ propertiesPage + 1 }}</span> {{ $t('common.of') }} {{ Math.max(1, propertiesTotalPages) }}
           </span>
           <button
             type="button"
             :disabled="propertiesPage >= propertiesTotalPages - 1"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-yellow-400 hover:bg-yellow-500/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-black hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
           >
             <span>{{ $t('common.next') }}</span>
@@ -131,39 +131,39 @@
     </section>
 
     <!-- What to expect (3 cards with icons + numbers) -->
-    <section class="py-16 lg:py-24 bg-black border-t border-white/10">
+    <section class="py-16 lg:py-24 bg-violet-950 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2">
           {{ $t('exhibition.whatToExpect.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white mb-3">
           {{ $t('exhibition.whatHappened.title') }}
         </h2>
-        <p class="text-gray-400 max-w-2xl mb-10">
+        <p class="text-white/80 max-w-2xl mb-10">
           {{ $t('exhibition.whatHappened.subtitle') }}
         </p>
         <div class="grid md:grid-cols-3 gap-5 lg:gap-6">
           <div
             v-for="(card, index) in whatToExpectCards"
             :key="card.titleKey"
-            class="group relative flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 sm:p-7 transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-500/10"
+            class="group relative flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 sm:p-7 transition-all duration-300 hover:border-black hover:bg-violet-950/10"
           >
             <div class="mb-4 flex items-center justify-between">
-              <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-yellow-400/20 text-yellow-400 transition-colors group-hover:bg-yellow-400/30">
+              <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-violet-950/20 text-white transition-colors group-hover:bg-violet-950/30">
                 <component :is="card.icon" class="h-6 w-6" aria-hidden="true" />
               </div>
               <span class="text-2xl font-bold tabular-nums text-white/25" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             </div>
-            <h3 class="text-base font-bold uppercase tracking-tight text-white mb-2 group-hover:text-yellow-400/95">
+            <h3 class="text-base font-bold uppercase tracking-tight text-white mb-2 group-hover:text-white">
               {{ $t(card.titleKey) }}
             </h3>
-            <p class="text-sm text-gray-400 leading-relaxed flex-1">
+            <p class="text-sm text-white/80 leading-relaxed flex-1">
               {{ $t(card.bodyKey) }}
             </p>
           </div>
         </div>
         <div class="mt-10 text-center">
-          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-yellow-400 hover:text-yellow-300 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-black rounded px-2 py-1">
+          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950 rounded px-2 py-1">
             {{ $t('exhibition.planning.cta') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -174,28 +174,28 @@
     </section>
 
     <!-- Why participate / Key show features -->
-    <section id="show-features" class="py-16 lg:py-24 bg-zinc-950 border-t border-white/10 text-white">
+    <section id="show-features" class="py-16 lg:py-24 bg-violet-950 border-t border-white/10 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2">
           {{ $t('exhibition.keyShowFeatures.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-3 text-white">
           {{ $t('exhibition.keyShowFeatures.title') }}
         </h2>
-        <p class="text-gray-400 max-w-2xl mb-2">
+        <p class="text-white/80 max-w-2xl mb-2">
           {{ $t('exhibition.keyShowFeatures.subtitle') }}
         </p>
-        <p class="text-sm text-gray-500 max-w-2xl mb-10">
+        <p class="text-sm text-white/70 max-w-2xl mb-10">
           {{ $t('exhibition.keyShowFeatures.intro') }}
         </p>
         <PillarGrid compact dark />
         <div class="mt-12 rounded-xl border border-white/10 bg-white/5 px-6 py-8 sm:px-8 sm:py-10 text-center">
-          <p class="text-sm text-gray-400 max-w-xl mx-auto mb-5">
+          <p class="text-sm text-white/80 max-w-xl mx-auto mb-5">
             {{ $t('exhibition.keyShowFeatures.exploreMoreHint') }}
           </p>
           <a
             href="#who-attends"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white font-semibold text-sm uppercase tracking-wider text-black rounded-lg hover:bg-yellow-400 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-950"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white font-semibold text-sm uppercase tracking-wider text-violet-950 rounded-lg hover:bg-violet-100 hover:text-violet-950 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950"
           >
             {{ $t('exhibition.keyShowFeatures.exploreMoreLabel') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -207,23 +207,23 @@
     </section>
 
     <!-- Who Attends -->
-    <section id="who-attends" class="py-20 lg:py-28 bg-zinc-950 border-t border-white/10">
+    <section id="who-attends" class="py-20 lg:py-28 bg-violet-950 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2">
           {{ $t('exhibition.whoAttends.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-white">{{ $t('exhibition.whoAttends.title') }}</h2>
-        <p class="text-gray-400 max-w-2xl mb-12">
+        <p class="text-white/80 max-w-2xl mb-12">
           {{ $t('exhibition.whoAttends.subtitle') }}
         </p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <div
             v-for="audience in whoAttends"
             :key="audience.key"
-            class="block p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-yellow-500/10 hover:border-yellow-400 transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-yellow-400"
+            class="block p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-violet-950/10 hover:border-black transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-black"
           >
             <h3 class="text-sm font-bold uppercase tracking-tight text-white mb-1">{{ $t(audience.titleKey) }}</h3>
-            <p class="text-xs text-gray-500 group-hover:text-gray-400">{{ $t(audience.descKey) }}</p>
+            <p class="text-xs text-white/70 group-hover:text-white/80">{{ $t(audience.descKey) }}</p>
           </div>
         </div>
       </div>
@@ -233,51 +233,51 @@
     <ValueChainGrid />
 
     <!-- Testimonial -->
-    <section class="py-20 lg:py-24 bg-black border-t border-white/10">
+    <section class="py-20 lg:py-24 bg-violet-950 border-t border-white/10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-4 text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4 text-center">
           {{ $t('exhibition.testimonial.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white mb-10 text-center">
           {{ $t('exhibition.testimonial.title') }}
         </h2>
-        <blockquote class="pl-6 sm:pl-8 border-l-4 border-yellow-400 text-lg sm:text-xl text-gray-300 leading-relaxed mb-6">
+        <blockquote class="pl-6 sm:pl-8 border-l-4 border-black text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
           {{ $t('exhibition.testimonial.quote') }}
         </blockquote>
-        <p class="text-sm text-gray-500 uppercase tracking-wider">{{ $t('exhibition.testimonial.author') }}</p>
+        <p class="text-sm text-white/70 uppercase tracking-wider">{{ $t('exhibition.testimonial.author') }}</p>
       </div>
     </section>
 
     <!-- Plan your visit -->
-    <section class="py-20 lg:py-28 bg-zinc-950 border-t border-white/10 text-white">
+    <section class="py-20 lg:py-28 bg-violet-950 border-t border-white/10 text-white">
       <div class="max-w-3xl mx-auto px-4 text-center rounded-2xl border border-white/10 bg-white/5 py-16 sm:py-20">
         <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4 text-white">{{ $t('exhibition.planVisit.title') }}</h2>
-        <p class="text-lg text-gray-400 mb-10">
+        <p class="text-lg text-white/80 mb-10">
           {{ $t('exhibition.planVisit.body') }}
         </p>
-        <a href="#register" class="inline-flex px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-950">
+        <a href="#register" class="inline-flex px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950">
           {{ $t('exhibition.planVisit.planYourVisit') }}
         </a>
       </div>
     </section>
 
     <!-- Event brochure (scroll target for #brochure) -->
-    <section id="brochure" class="py-14 lg:py-20 bg-zinc-900 border-t border-white/10 scroll-mt-20">
+    <section id="brochure" class="py-14 lg:py-20 bg-violet-950 border-t border-white/10 scroll-mt-20">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-3">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-3">
           {{ $t('exhibition.brochureStrip.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold text-white mb-3">
           {{ $t('exhibition.brochureStrip.title') }}
         </h2>
-        <p class="text-sm text-gray-400 mb-8 max-w-xl mx-auto">
+        <p class="text-sm text-white/80 mb-8 max-w-xl mx-auto">
           {{ $t('exhibition.brochureStrip.intro') }}
         </p>
         <a
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950"
         >
           {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
@@ -285,15 +285,15 @@
     </section>
 
     <!-- Register your interest (scroll target for #register) -->
-    <section id="register" class="py-20 lg:py-28 bg-black border-t border-white/10 text-white scroll-mt-20">
+    <section id="register" class="py-20 lg:py-28 bg-violet-950 border-t border-white/10 text-white scroll-mt-20">
       <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 mb-2 text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2 text-center">
           {{ $t('exhibition.registerInterest.eyebrow') }}
         </p>
         <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4 text-white text-center">
           {{ $t('exhibition.registerInterest.title') }}
         </h2>
-        <p class="text-gray-400 text-center mb-10">
+        <p class="text-white/80 text-center mb-10">
           {{ $t('exhibition.registerInterest.subtitle') }}
         </p>
         <form
@@ -311,7 +311,7 @@
           <button
             type="submit"
             :disabled="interestSubmitting"
-            class="w-full py-3 px-6 bg-white text-black font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:bg-white/50"
+            class="w-full py-3 px-6 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-violet-100 hover:text-violet-950 transition-colors disabled:opacity-50 disabled:bg-white/60"
           >
             {{ interestSubmitting ? $t('exhibition.registerInterest.submitting') : $t('exhibition.registerInterest.submit') }}
           </button>
@@ -321,23 +321,23 @@
           class="rounded-xl border border-green-500/30 bg-green-500/10 p-8 text-center"
         >
           <p class="text-green-200 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
-          <p class="text-sm text-gray-400">{{ $t('exhibition.registerInterest.successMessage') }}</p>
+          <p class="text-sm text-white/80">{{ $t('exhibition.registerInterest.successMessage') }}</p>
         </div>
       </div>
     </section>
 
     <!-- Foundation Partners (exclusive sponsors only) -->
-    <section id="partners" class="py-16 bg-zinc-950 border-t border-white/10">
+    <section id="partners" class="py-16 bg-violet-950 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-yellow-400/90 text-xs font-semibold uppercase tracking-[0.25em] mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
+        <p class="text-white text-xs font-semibold uppercase tracking-[0.25em] mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
           <template v-if="partnersList.length">
             <a
               v-for="partner in partnersList"
               :key="partner.id"
               :href="`/organizations/${partner.id}`"
-              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 hover:border-yellow-400 hover:bg-yellow-500/20 transition-all duration-300"
-              :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-yellow-400/50 bg-yellow-500/10' : ''"
+              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-white/80 hover:border-black hover:bg-violet-950/20 transition-all duration-300"
+              :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-black/50 bg-violet-950/10' : ''"
             >
               <img
                 v-if="partner.logoUrl"
@@ -346,11 +346,11 @@
                 class="max-h-10 max-w-24 object-contain"
               />
               <span v-else class="text-xs font-semibold text-white/80 truncate max-w-full px-1">{{ (partner.name || '').charAt(0) }}</span>
-              <span v-if="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE'" class="text-[10px] uppercase text-yellow-400 font-medium">{{ $t('exhibition.hero.featured') }}</span>
+              <span v-if="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE'" class="text-[10px] uppercase text-white font-medium">{{ $t('exhibition.hero.featured') }}</span>
             </a>
           </template>
           <template v-else>
-            <div v-for="i in 6" :key="'slot-' + i" class="h-14 w-32 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 text-xs">
+            <div v-for="i in 6" :key="'slot-' + i" class="h-14 w-32 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 text-xs">
               {{ $t('exhibition.partners.slotAvailable') }}
             </div>
           </template>

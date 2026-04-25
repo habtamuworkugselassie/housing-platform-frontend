@@ -9,7 +9,7 @@
         <button
           type="button"
           @click="openCreateModal"
-          class="px-4 py-2 bg-white text-black font-medium rounded-md hover:bg-yellow-400 transition-colors"
+          class="px-4 py-2 bg-white text-black font-medium rounded-md hover:bg-violet-950 transition-colors"
         >
           Create property
         </button>
@@ -24,14 +24,14 @@
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchProperties')"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-300">Status</label>
             <select
               v-model="filters.status"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             >
               <option value="">All Status</option>
               <option value="AVAILABLE">Available</option>
@@ -44,7 +44,7 @@
             <label class="block text-sm font-medium text-gray-300">Category</label>
             <select
               v-model="filters.category"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             >
               <option value="">All Categories</option>
               <option value="FOR_SALE">For Sale</option>
@@ -54,7 +54,7 @@
           <div class="flex items-end">
             <button
               @click="loadProperties"
-              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
+              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
             >
               Apply Filters
             </button>
@@ -65,7 +65,7 @@
       <!-- Properties Table -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
         </div>
 
         <div v-else>
@@ -81,7 +81,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-white/10">
-              <tr v-for="property in properties" :key="property.id" class="hover:bg-yellow-500/10 transition-colors">
+              <tr v-for="property in properties" :key="property.id" class="hover:bg-violet-950/10 transition-colors">
                 <td class="px-6 py-4">
                   <div class="text-sm font-medium text-white">{{ property.title }}</div>
                   <div class="text-sm text-gray-400">{{ property.category }}</div>
@@ -109,7 +109,7 @@
                   <span
                     :class="[
                       'px-2 py-1 text-xs font-medium rounded',
-                      property.featured ? 'bg-yellow-500/30 text-yellow-200' : 'bg-gray-500/30 text-gray-300'
+                      property.featured ? 'bg-violet-950/30 text-black' : 'bg-gray-500/30 text-gray-300'
                     ]"
                   >
                     {{ property.featured ? 'Yes' : 'No' }}
@@ -118,19 +118,19 @@
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
                     @click="openLoanModal(property)"
-                    class="text-emerald-300 hover:text-yellow-400 mr-4 transition-colors"
+                    class="text-emerald-300 hover:text-black mr-4 transition-colors"
                   >
                     Create Property Credit
                   </button>
                   <button
                     @click="viewProperty(property)"
-                    class="text-white hover:text-yellow-400 mr-4 transition-colors"
+                    class="text-white hover:text-black mr-4 transition-colors"
                   >
                     View
                   </button>
                   <button
                     @click="editProperty(property)"
-                    class="text-blue-300 hover:text-yellow-400 transition-colors"
+                    class="text-blue-300 hover:text-black transition-colors"
                   >
                     Edit
                   </button>
@@ -144,7 +144,7 @@
       <!-- View Property Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -153,7 +153,7 @@
               <h3 class="text-lg font-medium text-white">Property Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-yellow-400 transition-colors"
+                class="text-gray-400 hover:text-black transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -230,7 +230,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
               >
                 Close
               </button>
@@ -242,7 +242,7 @@
       <!-- Edit Property Modal -->
       <div
         v-if="showEditDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
         @click.self="showEditDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
@@ -250,7 +250,7 @@
             <h3 class="text-lg font-medium text-white">Edit Property</h3>
             <button
               @click="showEditDialog = false"
-              class="text-gray-400 hover:text-yellow-400 transition-colors"
+              class="text-gray-400 hover:text-black transition-colors"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -265,7 +265,7 @@
                 v-model="editForm.title"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -273,7 +273,7 @@
               <textarea
                 v-model="editForm.description"
                 rows="3"
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -282,7 +282,7 @@
                 <select
                   v-model="editForm.type"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="APARTMENT">Apartment</option>
                   <option value="HOUSE">House</option>
@@ -297,7 +297,7 @@
                 <label class="block text-sm font-medium text-gray-400 mb-1">Status</label>
                 <select
                   v-model="editForm.status"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="AVAILABLE">Available</option>
                   <option value="RESERVED">Reserved</option>
@@ -314,7 +314,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -324,7 +324,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -343,7 +343,7 @@
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+              <p v-if="!approvedBanks.length" class="text-xs text-black">
                 No approved banks available.
               </p>
               <div v-if="editExistingCreditOffers.length" class="space-y-2">
@@ -366,7 +366,7 @@
               >
                 <div>
                   <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
-                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black">
                     <option value="">Select bank</option>
                     <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
                       {{ bank.name }}
@@ -381,7 +381,7 @@
                     min="0.01"
                     max="100"
                     step="0.01"
-                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   />
                 </div>
                 <button
@@ -399,7 +399,7 @@
                 v-model="editForm.address"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -409,7 +409,7 @@
                   v-model="editForm.city"
                   type="text"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -417,7 +417,7 @@
                 <input
                   v-model="editForm.state"
                   type="text"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -426,7 +426,7 @@
                   v-model="editForm.country"
                   type="text"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -446,7 +446,7 @@
                   v-model.number="editForm.bedrooms"
                   type="number"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -455,7 +455,7 @@
                   v-model.number="editForm.bathrooms"
                   type="number"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -465,7 +465,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -474,7 +474,7 @@
                 <label class="block text-sm font-medium text-gray-400 mb-1">Construction status</label>
                 <select
                   v-model="editForm.constructionStatus"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="READY_TO_MOVE">Ready to move</option>
                   <option value="UNDER_CONSTRUCTION">Under construction</option>
@@ -486,7 +486,7 @@
                 <label class="block text-sm font-medium text-gray-400 mb-1">Category</label>
                 <select
                   v-model="editForm.category"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="FOR_SALE">For Sale</option>
                   <option value="FOR_RENTAL">For Rental</option>
@@ -498,7 +498,7 @@
                 <input
                   v-model="editForm.isFullyFurnished"
                   type="checkbox"
-                  class="rounded border-white/30 text-yellow-400 focus:ring-yellow-400"
+                  class="rounded border-white/30 text-black focus:ring-black"
                 />
                 Fully furnished
               </label>
@@ -506,7 +506,7 @@
                 <input
                   v-model="editForm.featured"
                   type="checkbox"
-                  class="rounded border-white/30 text-yellow-400 focus:ring-yellow-400"
+                  class="rounded border-white/30 text-black focus:ring-black"
                 />
                 Featured
               </label>
@@ -557,7 +557,7 @@
               <button
                 type="submit"
                 :disabled="editSaving"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:bg-white/50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ editSaving ? 'Saving…' : 'Save' }}
               </button>
@@ -569,13 +569,13 @@
       <!-- Create Property Modal -->
       <div
         v-if="showCreateDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
         @click.self="showCreateDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-medium text-white">Create property</h3>
-            <button type="button" @click="showCreateDialog = false" class="text-gray-400 hover:text-yellow-400">
+            <button type="button" @click="showCreateDialog = false" class="text-gray-400 hover:text-black">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -594,7 +594,7 @@
                     :display-value="(org) => org?.name ?? ''"
                     @change="createCompanyQuery = $event.target.value"
                     placeholder="Search company..."
-                    class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 pr-10 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 pr-10 focus:ring-2 focus:ring-black focus:border-black"
                     :class="{ 'border-red-500/50': submitCreateTouched && !createForm.realEstateCompanyId }"
                   />
                   <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 pointer-events-none">
@@ -613,7 +613,7 @@
                     <li
                       :class="[
                         'relative cursor-default select-none py-2 pl-3 pr-9',
-                        active ? 'bg-yellow-500/20 text-white' : 'text-gray-300'
+                        active ? 'bg-violet-950/20 text-white' : 'text-gray-300'
                       ]"
                     >
                       <span :class="['block truncate', selected ? 'font-semibold' : 'font-normal']">{{ org.name }}</span>
@@ -629,16 +629,16 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
-              <input v-model="createForm.title" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              <input v-model="createForm.title" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
-              <textarea v-model="createForm.description" rows="3" class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              <textarea v-model="createForm.description" rows="3" class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Type *</label>
-                <select v-model="createForm.type" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                <select v-model="createForm.type" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black">
                   <option value="APARTMENT">Apartment</option>
                   <option value="HOUSE">House</option>
                   <option value="VILLA">Villa</option>
@@ -650,7 +650,7 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Category *</label>
-                <select v-model="createForm.category" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                <select v-model="createForm.category" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black">
                   <option value="FOR_SALE">For Sale</option>
                   <option value="FOR_RENTAL">For Rental</option>
                 </select>
@@ -659,11 +659,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Price (ETB)</label>
-                <input v-model.number="createForm.priceETB" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model.number="createForm.priceETB" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
-                <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
             </div>
             <div class="border border-white/10 rounded-md p-4 space-y-3">
@@ -681,7 +681,7 @@
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+              <p v-if="!approvedBanks.length" class="text-xs text-black">
                 No approved banks available. You can still create the property and add offers later.
               </p>
               <div
@@ -691,7 +691,7 @@
               >
                 <div>
                   <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
-                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black">
                     <option value="">Select bank</option>
                     <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
                       {{ bank.name }}
@@ -706,7 +706,7 @@
                     min="0.01"
                     max="100"
                     step="0.01"
-                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   />
                 </div>
                 <button
@@ -720,20 +720,20 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
-              <input v-model="createForm.address" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+              <input v-model="createForm.address" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">City *</label>
-                <input v-model="createForm.city" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model="createForm.city" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">State</label>
-                <input v-model="createForm.state" type="text" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model="createForm.state" type="text" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Country *</label>
-                <input v-model="createForm.country" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model="createForm.country" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
             </div>
             <div class="sm:col-span-2">
@@ -748,20 +748,20 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
-                <input v-model.number="createForm.bedrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model.number="createForm.bedrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Bathrooms</label>
-                <input v-model.number="createForm.bathrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model.number="createForm.bathrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-400 mb-1">Area (sqm)</label>
-                <input v-model.number="createForm.area" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input v-model.number="createForm.area" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-400 mb-1">Construction status *</label>
-              <select v-model="createForm.constructionStatus" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+              <select v-model="createForm.constructionStatus" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black">
                 <option value="READY_TO_MOVE">Ready to move</option>
                 <option value="UNDER_CONSTRUCTION">Under construction</option>
                 <option value="PLANNED">Planned</option>
@@ -770,12 +770,12 @@
             </div>
             <div class="border-t border-white/10 pt-4">
               <label class="block text-sm font-medium text-gray-400 mb-2">Photos / videos (optional)</label>
-              <input ref="createMediaInput" type="file" accept="image/*,video/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-white file:text-black file:font-medium file:hover:bg-yellow-400" @change="onCreateMediaSelect" />
+              <input ref="createMediaInput" type="file" accept="image/*,video/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-white file:text-black file:font-medium file:hover:bg-violet-950" @change="onCreateMediaSelect" />
               <p v-if="createFormMediaFiles.length" class="mt-1 text-xs text-gray-500">{{ createFormMediaFiles.length }} file(s) selected</p>
             </div>
             <div class="flex justify-end gap-2 pt-4">
               <button type="button" @click="showCreateDialog = false" class="px-4 py-2 border border-white/30 text-white rounded-md hover:bg-white/10">Cancel</button>
-              <button type="submit" :disabled="createSaving" class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50">{{ createSaving ? 'Creating…' : 'Create' }}</button>
+              <button type="submit" :disabled="createSaving" class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50">{{ createSaving ? 'Creating…' : 'Create' }}</button>
             </div>
           </form>
         </div>
@@ -919,7 +919,7 @@ const loadProperties = async () => {
 const getStatusClass = (status) => {
   const classes = {
     AVAILABLE: 'bg-green-500/30 text-green-200',
-    RESERVED: 'bg-yellow-500/30 text-yellow-200',
+    RESERVED: 'bg-violet-950/30 text-black',
     SOLD: 'bg-blue-500/30 text-blue-200',
     WITHDRAWN: 'bg-red-500/30 text-red-200'
   }

@@ -8,7 +8,7 @@
       <button
         v-if="isManagementMode && organization"
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
       >
         + {{ $t('building.addBuilding') }}
       </button>
@@ -24,7 +24,7 @@
             v-model="filters.city"
             type="text"
             :placeholder="$t('property.filterByCity')"
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-black focus:border-black"
             @input="loadBuildings"
           />
         </div>
@@ -33,7 +33,7 @@
           <select
             id="buildingTypeFilter"
             v-model="filters.buildingType"
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             @change="loadBuildings"
           >
             <option value="">{{ $t('filters.all') }}</option>
@@ -47,7 +47,7 @@
         <div class="flex items-end">
           <button
             @click="clearFilters"
-            class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+            class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
           >
             {{ $t('filters.clearFilters') }}
           </button>
@@ -57,7 +57,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -72,9 +72,9 @@
         :key="building.id"
         @click="viewBuilding(building.id)"
         :class="[
-          'rounded-lg border p-6 transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20',
+          'rounded-lg border p-6 transition-all cursor-pointer hover:border-black hover:bg-violet-950/20',
           building.isSponsored && isPremierListingTier(building.sponsorshipType)
-            ? 'bg-zinc-900 border-2 border-yellow-400'
+            ? 'bg-zinc-900 border-2 border-black'
             : building.isSponsored && isGoldListingTier(building.sponsorshipType)
             ? 'bg-zinc-900 border-2 border-blue-400/60'
             : 'bg-zinc-900 border border-white/10'
@@ -90,7 +90,7 @@
             <span 
               v-if="building.isSponsored"
               :class="{
-                'bg-yellow-500/40 text-yellow-200': isPremierListingTier(building.sponsorshipType),
+                'bg-violet-950/40 text-black': isPremierListingTier(building.sponsorshipType),
                 'bg-blue-500/40 text-blue-200': isGoldListingTier(building.sponsorshipType)
               }"
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold"
@@ -112,10 +112,10 @@
         
         <!-- Real Estate Company Name -->
         <div v-if="building.realEstateCompanyName" class="mb-3 flex items-center gap-2">
-          <svg class="w-3 h-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-3 h-3 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
           </svg>
-          <span class="text-xs font-semibold text-yellow-400">{{ building.realEstateCompanyName }}</span>
+          <span class="text-xs font-semibold text-black">{{ building.realEstateCompanyName }}</span>
         </div>
         
         <div class="grid grid-cols-2 gap-4 text-sm">
@@ -141,7 +141,7 @@
         <div v-if="isManagementMode" class="mt-4 flex gap-2">
           <button
             @click.stop="editBuilding(building)"
-            class="flex-1 px-3 py-1 text-sm bg-white/10 text-white border border-white/20 rounded hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+            class="flex-1 px-3 py-1 text-sm bg-white/10 text-white border border-white/20 rounded hover:bg-violet-950/20 hover:border-black transition-colors"
           >
             {{ $t('common.edit') }}
           </button>
@@ -153,7 +153,7 @@
           </button>
           <button
             @click.stop="viewBuilding(building.id)"
-            class="flex-1 px-3 py-1 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
+            class="flex-1 px-3 py-1 text-sm bg-white text-black rounded hover:bg-violet-950 transition-colors"
           >
             {{ $t('building.viewUnits') }}
           </button>
@@ -163,7 +163,7 @@
         <div v-else class="mt-4">
           <button
             @click.stop="viewBuilding(building.id)"
-            class="w-full px-3 py-2 text-sm bg-white text-black rounded hover:bg-yellow-400 transition-colors"
+            class="w-full px-3 py-2 text-sm bg-white text-black rounded hover:bg-violet-950 transition-colors"
           >
             {{ $t('building.viewDetails') }}
           </button>
@@ -175,7 +175,7 @@
         <button
           v-if="isManagementMode && organization"
           @click="showCreateModal = true"
-          class="mt-4 px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 transition-colors"
+          class="mt-4 px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 transition-colors"
         >
           {{ $t('building.createFirstBuilding') }}
         </button>
@@ -185,7 +185,7 @@
     <!-- Create/Edit Building Modal -->
     <div
       v-if="showCreateModal || showEditModal"
-      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+      class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
       @click.self="closeModal"
     >
       <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -201,7 +201,7 @@
                 v-model="buildingForm.name"
                 type="text"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -210,7 +210,7 @@
               <textarea
                 v-model="buildingForm.description"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -221,7 +221,7 @@
                   v-model="buildingForm.address"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -230,7 +230,7 @@
                   v-model="buildingForm.city"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -241,7 +241,7 @@
                 <input
                   v-model="buildingForm.state"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -250,7 +250,7 @@
                   v-model="buildingForm.country"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -260,7 +260,7 @@
               <input
                 v-model="buildingForm.zipCode"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -282,7 +282,7 @@
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -292,7 +292,7 @@
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -303,7 +303,7 @@
               <select
                 v-model="buildingForm.buildingType"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('propertyTypes.selectType') }}</option>
                 <option value="APARTMENT_COMPLEX">{{ $t('building.apartmentComplex') }}</option>
@@ -318,7 +318,7 @@
               <select
                 v-model="buildingForm.category"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('submitProperty.selectCategory') }}</option>
                 <option value="FOR_SALE">{{ $t('property.forSale') }}</option>
@@ -332,7 +332,7 @@
               <label class="block text-sm font-medium text-gray-300">{{ $t('property.status') }}</label>
               <select
                 v-model="buildingForm.status"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               >
                 <option value="PLANNED">{{ $t('building.planned') }}</option>
                 <option value="UNDER_CONSTRUCTION">{{ $t('building.underConstruction') }}</option>
@@ -348,7 +348,7 @@
                   min="0"
                   max="100"
                   placeholder="0-100"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -358,7 +358,7 @@
                 id="isFullyFurnished"
                 v-model="buildingForm.isFullyFurnished"
                 type="checkbox"
-                class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
+                class="h-4 w-4 text-black focus:ring-black border-white/30 rounded"
               />
               <label for="isFullyFurnished" class="ml-2 block text-sm text-gray-300">
                 {{ $t('property.isFullyFurnished') }}
@@ -372,7 +372,7 @@
                 type="number"
                 min="1800"
                 :max="new Date().getFullYear()"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -382,7 +382,7 @@
                 v-model="buildingForm.amenities"
                 rows="2"
                 :placeholder="$t('building.amenitiesPlaceholder')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -392,7 +392,7 @@
                 v-model="buildingForm.facilities"
                 rows="2"
                 :placeholder="$t('building.facilitiesPlaceholder')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -400,14 +400,14 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 {{ $t('common.cancel') }}
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 transition-colors"
               >
                 {{ submitting ? $t('common.loading') : (showEditModal ? $t('common.update') : $t('common.create')) }}
               </button>
@@ -592,7 +592,7 @@ const viewBuilding = (buildingId) => {
 const getStatusColor = (status) => {
   const colors = {
     PLANNED: 'bg-gray-500/30 text-gray-300',
-    UNDER_CONSTRUCTION: 'bg-yellow-500/30 text-yellow-200',
+    UNDER_CONSTRUCTION: 'bg-violet-950/30 text-black',
     COMPLETED: 'bg-green-500/30 text-green-200',
     RENOVATION: 'bg-blue-500/30 text-blue-200'
   }

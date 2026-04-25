@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="bg-zinc-900 border border-white/10 rounded-lg p-8">
         <h2 class="text-2xl font-bold text-white mb-6">Create New Agent</h2>
@@ -17,7 +17,7 @@
                   v-model="form.firstName"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
 
@@ -28,7 +28,7 @@
                   v-model="form.lastName"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -40,7 +40,7 @@
                 v-model="form.email"
                 type="email"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -60,7 +60,7 @@
                 v-model="form.password"
                 type="password"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 :placeholder="$t('register.passwordPlaceholder')"
               />
               <p class="mt-1 text-sm text-gray-500">
@@ -74,7 +74,7 @@
                 id="licenseNumber"
                 v-model="form.licenseNumber"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 :placeholder="$t('register.licensePlaceholder')"
               />
             </div>
@@ -85,7 +85,7 @@
                 id="notes"
                 v-model="form.notes"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 :placeholder="$t('register.notesPlaceholder')"
               />
             </div>
@@ -112,7 +112,7 @@
             <button
               type="submit"
               :disabled="loading"
-              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-yellow-400 focus:ring-2 focus:ring-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950 focus:ring-2 focus:ring-black disabled:opacity-50 disabled:bg-white/50"
             >
               <span v-if="loading">Creating Agent...</span>
               <span v-else>Create Agent</span>
@@ -120,7 +120,7 @@
             <button
               type="button"
               @click="$router.push('/dashboard')"
-              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-yellow-400"
+              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950"
             >
               Cancel
             </button>

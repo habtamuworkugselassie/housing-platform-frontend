@@ -1,6 +1,6 @@
 <template>
   <section
-    class="message-carousel relative flex w-full flex-col overflow-hidden bg-zinc-950 m-0 min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
+    class="message-carousel relative flex w-full flex-col overflow-hidden bg-violet-950 m-0 min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
     :class="heightClass"
   >
     <div class="relative flex-1 min-h-0 w-full overflow-hidden">
@@ -30,13 +30,13 @@
             />
             <div
               v-else
-              class="flex h-full w-full items-center justify-center bg-zinc-800/80 text-zinc-500"
+              class="flex h-full w-full items-center justify-center bg-violet-900/80 text-zinc-500"
             >
               <PhotoIcon class="h-12 w-12 sm:h-16 sm:w-16" />
             </div>
             <div
-              class="absolute inset-0 bg-gradient-to-r from-zinc-950/50 via-transparent to-transparent md:from-zinc-950/60"
-              :class="slide.imagePosition === 'right' ? 'from-transparent via-transparent to-zinc-950/60' : ''"
+              class="absolute inset-0 bg-gradient-to-r from-violet-950/50 via-transparent to-transparent md:from-violet-950/60"
+              :class="slide.imagePosition === 'right' ? 'from-transparent via-transparent to-violet-950/60' : ''"
               aria-hidden
             />
           </div>
@@ -49,10 +49,10 @@
               <h2 class="text-base font-bold uppercase leading-snug tracking-wider text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
                 {{ $t(slide.titleKey) }}
               </h2>
-              <p class="mt-2.5 text-sm leading-relaxed text-gray-400 sm:mt-3 sm:text-base md:mt-4 md:leading-6">
+              <p class="mt-2.5 text-sm leading-relaxed text-white/80 sm:mt-3 sm:text-base md:mt-4 md:leading-6">
                 {{ $t(slide.bodyKey) }}
               </p>
-              <ul class="mt-2.5 space-y-1.5 text-sm leading-snug text-gray-400 sm:mt-4 sm:space-y-2 sm:text-base md:space-y-2.5">
+              <ul class="mt-2.5 space-y-1.5 text-sm leading-snug text-white/80 sm:mt-4 sm:space-y-2 sm:text-base md:space-y-2.5">
                 <li v-for="(bulletKey, i) in slide.bulletKeys" :key="i" class="flex items-start gap-2 sm:gap-2.5">
                   <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-white/80" />
                   <span class="min-w-0">{{ $t(bulletKey) }}</span>
@@ -60,7 +60,7 @@
               </ul>
               <a
                 :href="slide.ctaHref"
-                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-black transition-all duration-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
+                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-violet-950 transition-all duration-300 hover:bg-violet-100 hover:text-violet-950 focus:outline-none focus:ring-2 focus:ring-black sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
               >
                 {{ $t(slide.ctaKey) }}
               </a>
@@ -88,7 +88,7 @@
     <!-- Arrows - subtle, match sponsor carousel -->
     <button
       type="button"
-      class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:left-6"
+      class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-violet-950/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:left-6"
       aria-label="Previous"
       @click="prev"
     >
@@ -96,7 +96,7 @@
     </button>
     <button
       type="button"
-      class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:right-6"
+      class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-violet-950/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:right-6"
       aria-label="Next"
       @click="next"
     >

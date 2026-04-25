@@ -2,18 +2,18 @@
   <Transition name="splash-fade">
     <div
       v-if="visible"
-      class="fixed inset-0 z-[9999] flex flex-col bg-black"
+      class="fixed inset-0 z-[9999] flex flex-col bg-violet-950"
       aria-label="Splash screen"
     >
       <!-- Content: event logo (full lockup) + sr-only title + sponsor logo and name -->
       <div class="flex-1 flex flex-col items-center justify-center px-4 text-center">
         <div
-          class="rounded-2xl bg-white p-5 sm:p-6 max-w-[min(100%,360px)] sm:max-w-[400px] w-full shadow-[0_0_0_1px_rgba(255,255,255,0.12)]"
+          class="rounded-2xl max-w-[min(100%,520px)] w-full"
         >
           <img
-            src="/images/exhibition/ethio-build-connect-expo-logo-full.png"
-            alt="Ethio Build Connect Expo — English and Amharic: ኢትዮ ቢልድ ኮነክት ኤክስፖ"
-            width="360"
+            src="/images/branding/ethio-build-connect-banner.png"
+            alt="Ethio Build Connect banner"
+            width="520"
             class="mx-auto w-full h-auto object-contain select-none"
             draggable="false"
           />
@@ -57,7 +57,7 @@
       <div class="pb-8 sm:pb-10 flex justify-center">
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-yellow-400 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:bg-white/50"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-violet-950 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:bg-white/50"
           :disabled="dismissing"
           @click="dismiss"
         >

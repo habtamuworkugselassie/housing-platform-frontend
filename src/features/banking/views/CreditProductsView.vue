@@ -7,7 +7,7 @@
       </div>
       <button
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
       >
         + Create Credit Product
       </button>
@@ -15,7 +15,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -28,7 +28,7 @@
       <div
         v-for="product in products"
         :key="product.id"
-        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/20 transition-colors"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
@@ -37,7 +37,7 @@
               <span :class="[
                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                 product.status === 'ACTIVE' ? 'bg-green-500/30 text-green-200' :
-                product.status === 'PENDING_APPROVAL' ? 'bg-yellow-500/30 text-yellow-200' :
+                product.status === 'PENDING_APPROVAL' ? 'bg-violet-950/30 text-black' :
                 'bg-gray-500/30 text-gray-300'
               ]">
                 {{ product.status }}
@@ -68,13 +68,13 @@
           <div class="ml-4 flex gap-2">
             <button
               @click="editProduct(product)"
-              class="px-3 py-1 text-sm text-white hover:text-yellow-400 font-medium transition-colors"
+              class="px-3 py-1 text-sm text-white hover:text-black font-medium transition-colors"
             >
               Edit
             </button>
             <button
               @click="deleteProduct(product.id)"
-              class="px-3 py-1 text-sm text-red-300 hover:text-yellow-400 font-medium transition-colors"
+              class="px-3 py-1 text-sm text-red-300 hover:text-black font-medium transition-colors"
             >
               Delete
             </button>
@@ -90,7 +90,7 @@
     <!-- Create/Edit Modal -->
     <div
       v-if="showCreateModal || editingProduct"
-      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeModal"
     >
       <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
@@ -106,7 +106,7 @@
                 v-model="productForm.name"
                 type="text"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -115,7 +115,7 @@
               <textarea
                 v-model="productForm.description"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -125,7 +125,7 @@
                 <select
                   v-model="productForm.productType"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="HOME_PURCHASE">Home Purchase</option>
                   <option value="CONSTRUCTION_LOAN">Construction Loan</option>
@@ -143,7 +143,7 @@
                   min="0"
                   max="100"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -156,7 +156,7 @@
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
 
@@ -167,7 +167,7 @@
                   type="number"
                   min="1"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -181,7 +181,7 @@
                 min="0"
                 max="1"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -194,12 +194,12 @@
                     type="number"
                     min="0"
                     required
-                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                   />
                   <select
                     v-model="productForm.currency"
                     required
-                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                   >
                     <option value="ETB">ETB</option>
                     <option value="USD">USD</option>
@@ -215,12 +215,12 @@
                     type="number"
                     min="0"
                     required
-                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                   />
                   <select
                     v-model="productForm.currency"
                     required
-                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                   >
                     <option value="ETB">ETB</option>
                     <option value="USD">USD</option>
@@ -236,7 +236,7 @@
                   v-model.number="productForm.processingFee"
                   type="number"
                   min="0"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
 
@@ -246,7 +246,7 @@
                   v-model.number="productForm.prepaymentPenalty"
                   type="number"
                   min="0"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -256,7 +256,7 @@
               <textarea
                 v-model="productForm.eligibilityCriteria"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -264,13 +264,13 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
               >
                 {{ editingProduct ? 'Update' : 'Create' }}
               </button>

@@ -3,7 +3,7 @@
     <button
       type="button"
       class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-lg border transition-all duration-200"
-      :class="open ? 'text-yellow-400 bg-yellow-500/10 border-yellow-400/50' : 'text-gray-300 border-white/20 hover:text-yellow-400 hover:bg-yellow-500/10 hover:border-yellow-400/40'"
+      :class="open ? 'text-black bg-violet-950/10 border-black/50' : 'text-gray-300 border-white/20 hover:text-black hover:bg-violet-950/10 hover:border-black/40'"
       :aria-expanded="open"
       aria-haspopup="listbox"
       :aria-label="$t('nav.language')"
@@ -47,8 +47,8 @@
                 :aria-selected="localeStore.currentLocale === opt.code"
                 class="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm transition-colors duration-150 border-l-2"
                 :class="localeStore.currentLocale === opt.code
-                  ? 'bg-yellow-500/15 text-yellow-400 border-yellow-400'
-                  : 'text-gray-300 border-transparent hover:bg-yellow-500/15 hover:text-yellow-400 hover:border-yellow-400/60'"
+                  ? 'bg-violet-950/15 text-black border-black'
+                  : 'text-gray-300 border-transparent hover:bg-violet-950/15 hover:text-black hover:border-black/60'"
                 @click="select(opt.code)"
               >
                 <span class="text-lg leading-none shrink-0 w-7 text-center" aria-hidden="true">{{ opt.flag }}</span>
@@ -56,7 +56,7 @@
                   <span class="block font-medium leading-tight">{{ opt.labelNative }}</span>
                   <span class="block text-xs text-gray-500 mt-0.5">{{ opt.labelEn }}</span>
                 </span>
-                <span v-if="localeStore.currentLocale === opt.code" class="shrink-0 text-yellow-400" aria-hidden="true">
+                <span v-if="localeStore.currentLocale === opt.code" class="shrink-0 text-black" aria-hidden="true">
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                   </svg>

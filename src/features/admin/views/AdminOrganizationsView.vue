@@ -10,7 +10,7 @@
         <button
           type="button"
           @click="openCreateModal"
-          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 focus:ring-2 focus:ring-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 focus:ring-2 focus:ring-black disabled:opacity-50 disabled:bg-white/50 transition-colors"
         >
           <span class="mr-2">+</span>
           {{ $t('admin.registerOrganization') }}
@@ -19,10 +19,10 @@
 
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
           <div class="flex items-center">
-            <div class="flex-shrink-0 bg-yellow-500/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex-shrink-0 bg-violet-950/30 rounded-lg p-3">
+              <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-green-500/30 rounded-lg p-3">
               <svg class="w-6 h-6 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-blue-500/30 rounded-lg p-3">
               <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-purple-500/30 rounded-lg p-3">
               <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
               type="text"
               :placeholder="$t('admin.searchOrganizations')"
               @input="onSearchInput"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
           <div>
@@ -94,7 +94,7 @@
             <select
               v-model="filters.type"
               @change="onTypeOrStatusChange"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             >
               <option value="">All Types</option>
               <option
@@ -111,7 +111,7 @@
             <select
               v-model="filters.status"
               @change="onTypeOrStatusChange"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -124,7 +124,7 @@
           <div class="flex items-end">
             <button
               @click="clearFilters"
-              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
             >
               Clear Filters
             </button>
@@ -136,7 +136,7 @@
         >
           <button
             type="button"
-            class="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium border border-white/20 bg-white/5 text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+            class="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black transition-colors"
             @click="openSubcategoryCatalog"
           >
             {{ $t('admin.manageMaterialSubcategories') }}
@@ -161,7 +161,7 @@
             <tr v-if="loading">
               <td colspan="6" class="px-6 py-12 text-center bg-zinc-900">
                 <div class="flex flex-col items-center">
-                  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mb-2"></div>
+                  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black mb-2"></div>
                   <span class="text-sm text-gray-400">{{ $t('admin.loadingOrganizations') }}</span>
                 </div>
               </td>
@@ -169,7 +169,7 @@
             <tr v-else-if="error">
               <td colspan="6" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
                 <div>Error: {{ error }}</div>
-                <button @click="loadOrgs" class="mt-2 px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors">
+                <button @click="loadOrgs" class="mt-2 px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors">
                   Retry
                 </button>
               </td>
@@ -183,7 +183,7 @@
               <tr
                 v-for="org in paginatedOrganizations"
                 :key="org?.id || org?.name || Math.random()"
-                class="hover:bg-yellow-500/10 transition-colors"
+                class="hover:bg-violet-950/10 transition-colors"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm font-medium text-white flex items-center gap-2 flex-wrap">
@@ -206,7 +206,7 @@
                     :class="[
                       'px-2 py-1 text-xs font-medium rounded',
                       org.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                      (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-yellow-500/30 text-yellow-200' :
+                      (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-violet-950/30 text-black' :
                       org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
                       org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
                       'bg-red-500/30 text-red-200'
@@ -223,34 +223,34 @@
                     <button
                       v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
                       @click="approveOrg(org.id)"
-                      class="text-green-300 hover:text-yellow-400 transition-colors"
+                      class="text-green-300 hover:text-black transition-colors"
                     >
                       Approve
                     </button>
                     <button
                       v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
                       @click="showRejectModal(org)"
-                      class="text-red-300 hover:text-yellow-400 transition-colors"
+                      class="text-red-300 hover:text-black transition-colors"
                     >
                       Reject
                     </button>
                     <button
                       v-if="org.status === 'APPROVED'"
                       @click="showSuspendModal(org)"
-                      class="text-orange-300 hover:text-yellow-400 transition-colors"
+                      class="text-orange-300 hover:text-black transition-colors"
                     >
                       Suspend
                     </button>
                     <button
                       v-if="org.status === 'SUSPENDED'"
                       @click="reactivateOrg(org)"
-                      class="text-green-300 hover:text-yellow-400 transition-colors"
+                      class="text-green-300 hover:text-black transition-colors"
                     >
                       {{ $t('admin.reactivate') }}
                     </button>
                     <button
                       @click="viewOrg(org)"
-                      class="text-white hover:text-yellow-400 transition-colors"
+                      class="text-white hover:text-black transition-colors"
                     >
                       View
                     </button>
@@ -272,7 +272,7 @@
             <select
               v-model.number="pageSize"
               @change="onPageSizeChange"
-              class="border border-white/20 bg-white/5 text-white rounded-md py-1.5 px-2 text-xs focus:ring-yellow-400 focus:border-yellow-400"
+              class="border border-white/20 bg-white/5 text-white rounded-md py-1.5 px-2 text-xs focus:ring-black focus:border-black"
             >
               <option
                 v-for="size in pageSizeOptions"
@@ -286,7 +286,7 @@
               type="button"
               @click="goToPreviousPage"
               :disabled="currentPage <= 1"
-              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -295,7 +295,7 @@
               type="button"
               @click="goToNextPage"
               :disabled="currentPage >= totalPages"
-              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
@@ -306,7 +306,7 @@
       <!-- View Organization Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showViewDialog = false"
       >
         <div
@@ -317,14 +317,14 @@
           @click.stop
         >
           <div
-            class="border-b border-white/10 bg-gradient-to-br from-yellow-500/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-white/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
                 <div
-                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/40 bg-yellow-500/15 shadow-inner shadow-yellow-900/20"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-black/40 bg-violet-950/15 shadow-inner shadow-black/20"
                 >
-                  <svg class="h-8 w-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="h-8 w-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -347,7 +347,7 @@
                           : viewingOrg.status === 'SUSPENDED'
                             ? 'bg-orange-500/25 text-orange-200 ring-orange-400/30'
                             : viewingOrg.status === 'PENDING_APPROVAL' || viewingOrg.status === 'PENDING'
-                              ? 'bg-yellow-500/25 text-yellow-200 ring-yellow-400/30'
+                              ? 'bg-violet-950/25 text-black ring-black/30'
                               : 'bg-red-500/25 text-red-200 ring-red-400/30'
                       ]"
                     >
@@ -364,7 +364,7 @@
               <button
                 type="button"
                 @click="showViewDialog = false"
-                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-black focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -383,10 +383,10 @@
                   type="button"
                   role="tab"
                   :aria-selected="viewOrgPaneTab === 'overview'"
-                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                   :class="
                     viewOrgPaneTab === 'overview'
-                      ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                      ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                       : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   "
                   @click="viewOrgPaneTab = 'overview'"
@@ -397,10 +397,10 @@
                   type="button"
                   role="tab"
                   :aria-selected="viewOrgPaneTab === 'documents'"
-                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                   :class="
                     viewOrgPaneTab === 'documents'
-                      ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                      ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                       : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   "
                   @click="viewOrgPaneTab = 'documents'"
@@ -413,7 +413,7 @@
               <!-- Logo & media -->
               <section class="rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionMedia') }}
                 </h4>
                 <label class="mb-2 block text-xs font-medium uppercase tracking-wide text-gray-500">{{ $t('admin.logoAndMedia') }}</label>
@@ -459,7 +459,7 @@
                   </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-yellow-500/20 hover:border-yellow-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-violet-950/20 hover:border-black cursor-pointer">
                     {{ $t('admin.uploadLogo') }}
                     <input
                       type="file"
@@ -468,7 +468,7 @@
                       @change="onUploadLogo($event, viewingOrg.id)"
                     />
                   </label>
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-yellow-500/20 hover:border-yellow-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-violet-950/20 hover:border-black cursor-pointer">
                     {{ $t('admin.uploadImages') }}
                     <input
                       type="file"
@@ -478,7 +478,7 @@
                       @change="onUploadImages($event, viewingOrg.id)"
                     />
                   </label>
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-yellow-500/20 hover:border-yellow-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-violet-950/20 hover:border-black cursor-pointer">
                     {{ $t('admin.uploadVideo') }}
                     <input
                       type="file"
@@ -492,7 +492,7 @@
 
               <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionOverview') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -509,7 +509,7 @@
 
               <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionContact') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -538,7 +538,7 @@
 
               <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionOnline') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -549,7 +549,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-400">Website</label>
                   <p class="mt-1 text-sm text-white">
-                    <a v-if="viewingOrg.website" :href="viewingOrg.website" target="_blank" class="text-yellow-400 hover:underline">
+                    <a v-if="viewingOrg.website" :href="viewingOrg.website" target="_blank" class="text-black hover:underline">
                       {{ viewingOrg.website }}
                     </a>
                     <span v-else>N/A</span>
@@ -579,7 +579,7 @@
                 class="rounded-xl border border-white/10 bg-zinc-950/40 p-5"
               >
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.viewMaterialSpecialties') }}
                 </h4>
                 <p class="mb-3 text-xs text-gray-500">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
@@ -596,14 +596,14 @@
                       v-model="viewingSubcategoryIds"
                       type="checkbox"
                       :value="s.id"
-                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                      class="rounded border-white/20 bg-white/5 text-black focus:ring-black"
                     />
                     {{ s.name }}
                   </label>
                 </div>
                 <button
                   type="button"
-                  class="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+                  class="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-violet-950 disabled:opacity-50"
                   :disabled="supplierSubcatSaveBusy"
                   @click="saveViewingSupplierSubcategories"
                 >
@@ -612,9 +612,9 @@
               </section>
 
               <!-- Sponsorship management -->
-              <div class="rounded-xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
+              <div class="rounded-xl border border-black/20 bg-gradient-to-br from-black/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
                 <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-yellow-500/20 text-yellow-300">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-violet-950/20 text-black">
                     <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
@@ -635,7 +635,7 @@
                           :class="[
                             'ml-2 px-2 py-0.5 text-xs rounded',
                             app.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                            app.status === 'PENDING' ? 'bg-yellow-500/30 text-yellow-200' :
+                            app.status === 'PENDING' ? 'bg-violet-950/30 text-black' :
                             'bg-red-500/30 text-red-200'
                           ]"
                         >
@@ -647,7 +647,7 @@
                         <button
                           v-if="app.status === 'APPROVED'"
                           @click="cancelSponsorshipApp(app)"
-                          class="text-xs text-orange-300 hover:text-yellow-400"
+                          class="text-xs text-orange-300 hover:text-black"
                         >
                           {{ $t('admin.cancel') }}
                         </button>
@@ -671,7 +671,7 @@
                           {{ app.userVerifiedAt ? $t('admin.sponsorshipUserVerified') : $t('admin.sponsorshipUserNotVerified') }}
                         </span>
                       </div>
-                      <p v-if="!canApproveSponsorshipApplication(app)" class="text-xs text-yellow-500/90">
+                      <p v-if="!canApproveSponsorshipApplication(app)" class="text-xs text-black/90">
                         {{ $t('admin.sponsorshipPendingApproval') }}
                       </p>
                       <div class="flex flex-wrap gap-2">
@@ -679,7 +679,7 @@
                           type="button"
                           :disabled="!!app.organizationVerifiedAt"
                           @click="verifyOrgSponsorshipApp(app.id)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-black disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.sponsorshipVerifyOrg') }}
                         </button>
@@ -687,7 +687,7 @@
                           type="button"
                           :disabled="!!app.userVerifiedAt"
                           @click="verifyUserSponsorshipApp(app)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-black disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.sponsorshipVerifyUser') }}
                         </button>
@@ -695,21 +695,21 @@
                           type="button"
                           :disabled="!canApproveSponsorshipApplication(app)"
                           @click="approveSponsorshipApp(app.id)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-green-300 hover:border-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-green-300 hover:border-black disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.activate') }}
                         </button>
                         <button
                           type="button"
                           @click="rejectSponsorshipApp(app)"
-                          class="text-xs text-red-300 hover:text-yellow-400"
+                          class="text-xs text-red-300 hover:text-black"
                         >
                           {{ $t('admin.reject') }}
                         </button>
                         <button
                           type="button"
                           @click="cancelPendingSponsorshipApp(app)"
-                          class="text-xs text-orange-300 hover:text-yellow-400"
+                          class="text-xs text-orange-300 hover:text-black"
                         >
                           {{ $t('admin.cancelPendingSponsorship') }}
                         </button>
@@ -725,7 +725,7 @@
                       <label class="block text-xs font-medium text-gray-400">{{ $t('admin.packageName') }}</label>
                       <select
                         v-model="assignSponsorship.sponsorshipId"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
                       >
                         <option value="">— {{ $t('admin.selectPackage') }} —</option>
                         <option v-for="pkg in activeSponsorshipsList" :key="pkg.id" :value="pkg.id">
@@ -738,7 +738,7 @@
                       <input
                         v-model="assignSponsorship.startDate"
                         type="date"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
                       />
                     </div>
                     <div>
@@ -746,20 +746,20 @@
                       <input
                         v-model="assignSponsorship.endDate"
                         type="date"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
                       />
                     </div>
                   </div>
                   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-1">
                     <label class="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
-                      <input v-model="assignSponsorship.autoApprove" type="checkbox" class="rounded border-white/20 text-yellow-400 focus:ring-yellow-400" />
+                      <input v-model="assignSponsorship.autoApprove" type="checkbox" class="rounded border-white/20 text-black focus:ring-black" />
                       {{ $t('admin.autoApprove') }}
                     </label>
                     <button
                       type="button"
                       :disabled="!assignSponsorship.sponsorshipId || !assignSponsorship.startDate || !assignSponsorship.endDate || assigningSponsorship"
                       @click="submitAssignSponsorship"
-                      class="w-full sm:w-auto px-4 py-2.5 rounded-md bg-white text-black text-sm font-medium hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                      class="w-full sm:w-auto px-4 py-2.5 rounded-md bg-white text-black text-sm font-medium hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50 transition-colors"
                     >
                       {{ assigningSponsorship ? $t('admin.saving') : $t('admin.assignSponsorship') }}
                     </button>
@@ -773,11 +773,11 @@
                 class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
               >
                 <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 shadow shadow-yellow-500/50" />
+                  <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionCompliance') }}
                 </h4>
                 <div
-                  class="flex flex-wrap gap-1.5 rounded-xl bg-black/40 p-1.5 ring-1 ring-white/10"
+                  class="flex flex-wrap gap-1.5 rounded-xl bg-violet-950/40 p-1.5 ring-1 ring-white/10"
                   role="tablist"
                   :aria-label="$t('admin.orgViewTabDocuments')"
                 >
@@ -787,10 +787,10 @@
                     type="button"
                     role="tab"
                     :aria-selected="viewDocTab === tab.id"
-                    class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:text-sm"
+                    class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
                     :class="
                       viewDocTab === tab.id
-                        ? 'bg-yellow-500/25 text-yellow-100 ring-1 ring-yellow-400/40'
+                        ? 'bg-violet-950/25 text-black ring-1 ring-black/40'
                         : 'text-gray-400 hover:bg-white/5 hover:text-white'
                     "
                     @click="viewDocTab = tab.id"
@@ -880,14 +880,14 @@
             <button
               type="button"
               @click="openEditModal(viewingOrg)"
-              class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/15"
+              class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-black hover:bg-violet-950/15"
             >
               {{ $t('admin.edit') }}
             </button>
             <button
               type="button"
               @click="showViewDialog = false"
-              class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-yellow-400"
+              class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-violet-950"
             >
               {{ $t('admin.close') }}
             </button>
@@ -898,7 +898,7 @@
       <!-- Create / Edit Organization Modal -->
       <div
         v-if="showFormDialog"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showFormDialog = false"
       >
         <div
@@ -909,14 +909,14 @@
           @click.stop
         >
           <div
-            class="border-b border-white/10 bg-gradient-to-br from-yellow-500/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-white/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
                 <div
-                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/35 bg-yellow-500/15 shadow-inner sm:h-14 sm:w-14"
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-black/35 bg-violet-950/15 shadow-inner sm:h-14 sm:w-14"
                 >
-                  <svg class="h-7 w-7 text-yellow-300 sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="h-7 w-7 text-black sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -939,7 +939,7 @@
               <button
                 type="button"
                 @click="showFormDialog = false"
-                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-black focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -959,10 +959,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="orgFormTab === 'profile'"
-                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'profile'
-                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 "
                 @click="orgFormTab = 'profile'"
@@ -973,10 +973,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="orgFormTab === 'contact'"
-                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'contact'
-                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 "
                 @click="orgFormTab = 'contact'"
@@ -987,10 +987,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="orgFormTab === 'online'"
-                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'online'
-                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 "
                 @click="orgFormTab = 'online'"
@@ -1001,10 +1001,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="orgFormTab === 'documents'"
-                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+                class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'documents'
-                    ? 'bg-yellow-500/25 text-yellow-100 shadow-sm ring-1 ring-yellow-400/40'
+                    ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 "
                 @click="orgFormTab = 'documents'"
@@ -1020,7 +1020,7 @@
                   v-model="form.name"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -1029,7 +1029,7 @@
                   id="org-reg"
                   v-model="form.registrationNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -1038,7 +1038,7 @@
                   id="org-type"
                   v-model="form.type"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option
                     v-for="type in organizationTypeFormOptions"
@@ -1065,7 +1065,7 @@
                       v-model="form.supplierSubcategoryIds"
                       type="checkbox"
                       :value="s.id"
-                      class="rounded border-white/20 bg-white/5 text-yellow-400 focus:ring-yellow-400"
+                      class="rounded border-white/20 bg-white/5 text-black focus:ring-black"
                     />
                     {{ s.name }}
                   </label>
@@ -1076,7 +1076,7 @@
                 <select
                   id="org-initial-status"
                   v-model="form.initialStatus"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="PENDING_APPROVAL">{{ $t('admin.statusPendingApproval') }}</option>
                   <option value="APPROVED">{{ $t('admin.statusApproved') }}</option>
@@ -1090,7 +1090,7 @@
                   id="org-email"
                   v-model="form.email"
                   type="email"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div class="sm:col-span-2">
@@ -1121,7 +1121,7 @@
                   </div>
                   <button
                     type="button"
-                    class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+                    class="text-sm text-black hover:text-black transition-colors"
                     @click="form.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
                   >
                     + {{ $t('admin.addPhone') }}
@@ -1134,7 +1134,7 @@
                   id="org-address"
                   v-model="form.address"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -1143,7 +1143,7 @@
                   id="org-city"
                   v-model="form.city"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -1152,7 +1152,7 @@
                   id="org-country"
                   v-model="form.country"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div class="sm:col-span-2">
@@ -1176,30 +1176,30 @@
                   id="org-website"
                   v-model="form.website"
                   type="url"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div class="sm:col-span-2 border-t border-white/10 pt-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label for="org-fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
-                    <input id="org-fb" v-model="form.facebookUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                    <input id="org-fb" v-model="form.facebookUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   </div>
                   <div>
                     <label for="org-ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
-                    <input id="org-ig" v-model="form.instagramUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                    <input id="org-ig" v-model="form.instagramUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   </div>
                   <div>
                     <label for="org-li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
-                    <input id="org-li" v-model="form.linkedinUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                    <input id="org-li" v-model="form.linkedinUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   </div>
                   <div>
                     <label for="org-xt" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
-                    <input id="org-xt" v-model="form.twitterUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                    <input id="org-xt" v-model="form.twitterUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   </div>
                   <div class="sm:col-span-2">
                     <label for="org-yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
-                    <input id="org-yt" v-model="form.youtubeUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                    <input id="org-yt" v-model="form.youtubeUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   </div>
                 </div>
               </div>
@@ -1209,7 +1209,7 @@
                   id="org-description"
                   v-model="form.description"
                   rows="3"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -1225,7 +1225,7 @@
                 {{ $t('admin.orgFormCreateDocumentUploadHint') }}
               </div>
               <div
-                class="flex flex-wrap gap-1.5 rounded-xl bg-black/40 p-1.5 ring-1 ring-white/10"
+                class="flex flex-wrap gap-1.5 rounded-xl bg-violet-950/40 p-1.5 ring-1 ring-white/10"
                 role="tablist"
                 :aria-label="$t('admin.orgFormTabDocuments')"
               >
@@ -1235,10 +1235,10 @@
                   type="button"
                   role="tab"
                   :aria-selected="formDocTab === tab.id"
-                  class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 sm:text-sm"
+                  class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black sm:text-sm"
                   :class="
                     formDocTab === tab.id
-                      ? 'bg-yellow-500/25 text-yellow-100 ring-1 ring-yellow-400/40'
+                      ? 'bg-violet-950/25 text-black ring-1 ring-black/40'
                       : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   "
                   @click="formDocTab = tab.id"
@@ -1249,15 +1249,15 @@
               <div v-show="formDocTab === 'business'" class="space-y-4">
                 <div>
                   <label for="form-org-bus-reg-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docRegistrationNumber') }}</label>
-                  <input id="form-org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <label for="form-org-bus-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-bus-reg" v-model="form.businessRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-bus-reg" v-model="form.businessRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.businessRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'BUSINESS_REGISTRATION', 'businessRegistration')" />
-                    <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
+                    <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-black hover:text-black disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
                       {{ docUploading.businessRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-black hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1274,15 +1274,15 @@
               <div v-show="formDocTab === 'license'" class="space-y-4">
                 <div>
                   <label for="form-org-license-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docLicenseNumber') }}</label>
-                  <input id="form-org-license-number" v-model="form.licenseNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-license-number" v-model="form.licenseNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <label for="form-org-license" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-license" v-model="form.license" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-license" v-model="form.license" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.license = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'LICENSE', 'license')" />
-                    <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
+                    <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-black hover:text-black disabled:opacity-50" @click="docInputRefs.license?.click()">
                       {{ docUploading.license ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-black hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1299,15 +1299,15 @@
               <div v-show="formDocTab === 'vat'" class="space-y-4">
                 <div>
                   <label for="form-org-vat-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docVatNumber') }}</label>
-                  <input id="form-org-vat-number" v-model="form.vatNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-vat-number" v-model="form.vatNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <label for="form-org-vat-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-vat-reg" v-model="form.vatRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-vat-reg" v-model="form.vatRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.vatRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'VAT_REGISTRATION', 'vatRegistration')" />
-                    <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
+                    <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-black hover:text-black disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
                       {{ docUploading.vatRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-black hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1324,15 +1324,15 @@
               <div v-show="formDocTab === 'tin'" class="space-y-4">
                 <div>
                   <label for="form-org-tin-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docTinNumber') }}</label>
-                  <input id="form-org-tin-number" v-model="form.tinNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-tin-number" v-model="form.tinNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <label for="form-org-tin-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-tin-reg" v-model="form.tinRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" />
+                  <input id="form-org-tin-reg" v-model="form.tinRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.tinRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'TIN_REGISTRATION', 'tinRegistration')" />
-                    <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
+                    <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-black hover:text-black disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
                       {{ docUploading.tinRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-yellow-400 hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-black hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1357,14 +1357,14 @@
               <button
                 type="button"
                 @click="showFormDialog = false"
-                class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/15"
+                class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-black hover:bg-violet-950/15"
               >
                 {{ $t('admin.cancel') }}
               </button>
               <button
                 type="submit"
                 :disabled="formSaving"
-                class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-yellow-400 disabled:bg-white/50 disabled:opacity-50"
+                class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-violet-950 disabled:bg-white/50 disabled:opacity-50"
               >
                 {{ formSaving ? $t('admin.saving') : (formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.updateOrganization')) }}
               </button>
@@ -1377,7 +1377,7 @@
       <!-- Reject Modal -->
       <div
         v-if="showRejectDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showRejectDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
@@ -1388,14 +1388,14 @@
               <textarea
                 v-model="rejectReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 :placeholder="$t('admin.enterRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showRejectDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 Cancel
               </button>
@@ -1413,7 +1413,7 @@
       <!-- Suspend Organization Modal -->
       <div
         v-if="showSuspendDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showSuspendDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
@@ -1424,14 +1424,14 @@
               <textarea
                 v-model="suspendReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 :placeholder="$t('admin.enterRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showSuspendDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 Cancel
               </button>
@@ -1449,7 +1449,7 @@
       <!-- Reject Sponsorship Application Modal -->
       <div
         v-if="showRejectSponsorshipDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showRejectSponsorshipDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
@@ -1460,13 +1460,13 @@
               <textarea
                 v-model="rejectSponsorshipReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showRejectSponsorshipDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 Cancel
               </button>
@@ -1484,7 +1484,7 @@
     <!-- Supplier subcategory catalog (admin) -->
     <div
       v-if="showSubcategoryCatalogModal"
-      class="fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-black/80 px-4 pb-12 pt-10"
+      class="fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10"
       @click.self="showSubcategoryCatalogModal = false"
     >
       <div
@@ -1497,7 +1497,7 @@
           <h3 class="text-lg font-semibold">{{ $t('admin.subcategoryCatalogTitle') }}</h3>
           <button
             type="button"
-            class="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-yellow-400"
+            class="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-black"
             @click="showSubcategoryCatalogModal = false"
           >
             ×
@@ -1523,30 +1523,30 @@
                   <input
                     v-model="row.name"
                     type="text"
-                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-black focus:ring-1 focus:ring-black"
                   />
                 </td>
                 <td class="py-2 pr-2">
                   <input
                     v-model="row.slug"
                     type="text"
-                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-xs text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-xs text-white focus:border-black focus:ring-1 focus:ring-black"
                   />
                 </td>
                 <td class="py-2 pr-2">
                   <input
                     v-model.number="row.sortOrder"
                     type="number"
-                    class="w-20 rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                    class="w-20 rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-black focus:ring-1 focus:ring-black"
                   />
                 </td>
                 <td class="py-2 pr-2">
-                  <input v-model="row.active" type="checkbox" class="rounded border-white/20 bg-white/5 text-yellow-400" />
+                  <input v-model="row.active" type="checkbox" class="rounded border-white/20 bg-white/5 text-black" />
                 </td>
                 <td class="py-2 whitespace-nowrap">
                   <button
                     type="button"
-                    class="mr-2 text-xs text-yellow-300 hover:text-yellow-200"
+                    class="mr-2 text-xs text-black hover:text-black"
                     @click="saveCatalogRow(row)"
                   >
                     {{ $t('common.save') }}
@@ -1565,17 +1565,17 @@
                 v-model="newSubcategoryName"
                 type="text"
                 :placeholder="$t('admin.subcategoryName')"
-                class="min-w-[8rem] flex-1 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                class="min-w-[8rem] flex-1 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black"
               />
               <input
                 v-model="newSubcategorySlug"
                 type="text"
                 :placeholder="$t('admin.subcategorySlugOptional')"
-                class="w-36 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                class="w-36 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-black"
               />
               <button
                 type="button"
-                class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400"
+                class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-violet-950"
                 :disabled="catalogAddBusy"
                 @click="addCatalogSubcategory"
               >

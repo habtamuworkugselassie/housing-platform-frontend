@@ -8,7 +8,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
         </div>
 
         <div v-else>
@@ -23,7 +23,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-white/10">
-              <tr v-for="project in projects" :key="project.id" class="hover:bg-yellow-500/10 transition-colors">
+              <tr v-for="project in projects" :key="project.id" class="hover:bg-violet-950/10 transition-colors">
                 <td class="px-6 py-4">
                   <div class="text-sm font-medium text-white">{{ project.name }}</div>
                   <div class="text-sm text-gray-400">{{ project.description }}</div>
@@ -53,7 +53,7 @@
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
                     @click="viewProject(project)"
-                    class="text-white hover:text-yellow-400 transition-colors"
+                    class="text-white hover:text-black transition-colors"
                   >
                     View
                   </button>
@@ -67,7 +67,7 @@
       <!-- View Project Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -76,7 +76,7 @@
               <h3 class="text-lg font-medium text-white">Construction Project Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-yellow-400 transition-colors"
+                class="text-gray-400 hover:text-black transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -125,7 +125,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
               >
                 Close
               </button>
@@ -165,7 +165,7 @@ const getStatusClass = (status) => {
   const classes = {
     PLANNING: 'bg-gray-500/30 text-gray-300',
     IN_PROGRESS: 'bg-blue-500/30 text-blue-200',
-    ON_HOLD: 'bg-yellow-500/30 text-yellow-200',
+    ON_HOLD: 'bg-violet-950/30 text-black',
     COMPLETED: 'bg-green-500/30 text-green-200',
     CANCELLED: 'bg-red-500/30 text-red-200'
   }
@@ -174,7 +174,7 @@ const getStatusClass = (status) => {
 
 const getProgressColor = (progress) => {
   if (progress < 30) return 'bg-red-500'
-  if (progress < 70) return 'bg-yellow-500'
+  if (progress < 70) return 'bg-violet-950'
   return 'bg-green-500'
 }
 

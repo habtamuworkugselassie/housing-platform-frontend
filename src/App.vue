@@ -6,7 +6,7 @@
     :auto-dismiss-ms="8000"
     @dismiss="onSplashDismiss"
   />
-  <div v-show="!showSplash" class="min-h-screen bg-black text-white flex flex-col">
+  <div v-show="!showSplash" class="min-h-screen bg-violet-950 text-white flex flex-col">
     <NavBar />
     <div class="flex-1 min-h-0 flex flex-col">
       <PublicLayout v-if="isPublicRoute">

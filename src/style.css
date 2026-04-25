@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  background: #000;
+  background: #1A1336;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,40 +16,40 @@ body {
 #app,
 #app > div,
 #app main {
-  background: #000;
+  background: #1A1336;
   color: #fff;
 }
 
-/* Native select dropdowns: dark theme so options list is black in all browsers */
+/* Native select dropdowns: dark theme so options list stays readable */
 select {
   color-scheme: dark;
 }
 option {
-  background-color: #000;
+  background-color: #1A1336;
   color: #fff;
 }
 
-/* Legacy MDC components when inside a dark container */
-.bg-black .mdc-card,
-.bg-black [class*="mdc-card"] {
+/* Legacy MDC components when inside a purple container */
+.bg-violet-950 .mdc-card,
+.bg-violet-950 [class*="mdc-card"] {
   background-color: rgb(39 39 42);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
 }
-.bg-black .mdc-card:hover,
-.bg-black [class*="mdc-card"]:hover {
-  border-color: rgb(234 179 8);
-  background-color: rgba(234 179 8 / 0.1);
+.bg-violet-950 .mdc-card:hover,
+.bg-violet-950 [class*="mdc-card"]:hover {
+  border-color: rgb(0 0 0);
+  background-color: rgba(0 0 0 / 0.1);
 }
-.bg-black .mdc-typography--body1,
-.bg-black .mdc-typography--body2,
-.bg-black .mdc-typography--headline6 {
+.bg-violet-950 .mdc-typography--body1,
+.bg-violet-950 .mdc-typography--body2,
+.bg-violet-950 .mdc-typography--headline6 {
   color: rgba(255, 255, 255, 0.9);
 }
-.bg-black .mdc-typography--body2.text-gray-600,
-.bg-black dt.mdc-typography--body2 {
+.bg-violet-950 .mdc-typography--body2.text-gray-600,
+.bg-violet-950 dt.mdc-typography--body2 {
   color: rgba(255, 255, 255, 0.6);
 }
-.bg-black dd.mdc-typography--body1 {
+.bg-violet-950 dd.mdc-typography--body1 {
   color: #fff;
 }

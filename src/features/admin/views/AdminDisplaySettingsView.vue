@@ -27,7 +27,7 @@
             max="300"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black"
           />
           <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
@@ -45,7 +45,7 @@
             max="300"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black"
           />
           <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
@@ -63,7 +63,7 @@
             max="600"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black"
           />
           <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
@@ -74,7 +74,7 @@
               id="exhibition-sponsorship-packages"
               v-model="form.exhibitionSponsorshipPackagesVisible"
               type="checkbox"
-              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-yellow-400 focus:ring-yellow-400"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-black focus:ring-black"
             />
             <label for="exhibition-sponsorship-packages" class="min-w-0 cursor-pointer">
               <span class="block text-sm font-medium text-gray-200">
@@ -90,7 +90,7 @@
               id="exhibition-sponsorship-package-prices"
               v-model="form.exhibitionSponsorshipPackagePricesVisible"
               type="checkbox"
-              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-yellow-400 focus:ring-yellow-400"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-black focus:ring-black"
             />
             <label for="exhibition-sponsorship-package-prices" class="min-w-0 cursor-pointer">
               <span class="block text-sm font-medium text-gray-200">
@@ -107,7 +107,7 @@
           <button
             type="submit"
             :disabled="saving || loading"
-            class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+            class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
           >
             {{ saving ? $t('admin.displaySettings.saving') : $t('admin.displaySettings.save') }}
           </button>

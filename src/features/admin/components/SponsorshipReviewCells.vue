@@ -8,7 +8,7 @@
         {{ app.userVerifiedAt ? $t('admin.sponsorshipUserVerified') : $t('admin.sponsorshipUserNotVerified') }}
       </span>
     </div>
-    <p v-if="!canApprove" class="text-xs text-yellow-500/90 mt-1">
+    <p v-if="!canApprove" class="text-xs text-black/90 mt-1">
       {{ $t('admin.sponsorshipPendingApproval') }}
     </p>
   </div>

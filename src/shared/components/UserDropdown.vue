@@ -43,7 +43,7 @@
           </div>
           <router-link
             to="/profile"
-            class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/20 transition-colors duration-150 border-l-2 border-transparent hover:border-yellow-400"
+            class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
             @click="dropdownOpen = false"
           >
             <span class="material-icons text-[20px]" aria-hidden="true">person</span>

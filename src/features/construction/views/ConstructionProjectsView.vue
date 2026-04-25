@@ -414,7 +414,7 @@ const getStatusColor = (status) => {
   const colors = {
     PLANNING: 'bg-gray-100 text-gray-800',
     IN_PROGRESS: 'bg-blue-100 text-blue-800',
-    ON_HOLD: 'bg-yellow-100 text-yellow-800',
+    ON_HOLD: 'bg-violet-950 text-black',
     COMPLETED: 'bg-green-100 text-green-800',
     CANCELLED: 'bg-red-100 text-red-800'
   }

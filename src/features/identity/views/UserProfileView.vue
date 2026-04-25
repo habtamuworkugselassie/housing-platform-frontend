@@ -13,7 +13,7 @@
       <div class="bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl shadow-black/20">
         <!-- Avatar Section -->
         <div class="p-6 sm:p-8 flex items-center gap-6 border-b border-white/10">
-          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold text-3xl shrink-0 overflow-hidden group border border-white/10">
+          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-violet-950 text-black flex items-center justify-center font-bold text-3xl shrink-0 overflow-hidden group border border-white/10">
             <template v-if="authStore.user?.profileImageUrl">
               <img :src="mediaUrl(authStore.user.profileImageUrl)" alt="Profile" class="w-full h-full object-cover" />
             </template>
@@ -21,11 +21,11 @@
               {{ userInitials }}
             </template>
             
-            <label class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-opacity z-10">
+            <label class="absolute inset-0 bg-violet-950/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-opacity z-10">
               <span class="material-icons text-white text-2xl">photo_camera</span>
               <input type="file" accept="image/*" class="hidden" @change="handleImageUpload" :disabled="isUploadingImage" />
             </label>
-            <div v-if="isUploadingImage" class="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+            <div v-if="isUploadingImage" class="absolute inset-0 bg-violet-950/50 flex items-center justify-center z-20">
               <span class="material-icons text-white animate-spin">autorenew</span>
             </div>
           </div>
@@ -33,7 +33,7 @@
             <h2 class="text-xl font-semibold text-white">{{ formData.firstName }} {{ formData.lastName }}</h2>
             <p class="text-gray-400">{{ formData.email }}</p>
             <div class="mt-2 text-xs divide-x divide-white/20">
-              <span v-for="(role, idx) in userRoles" :key="idx" class="px-2 first:pl-0 font-medium text-yellow-400 uppercase tracking-wider">
+              <span v-for="(role, idx) in userRoles" :key="idx" class="px-2 first:pl-0 font-medium text-black uppercase tracking-wider">
                 {{ role }}
               </span>
             </div>
@@ -57,7 +57,7 @@
                 v-model="formData.firstName"
                 type="text"
                 required
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-400 sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
               />
             </div>
             <div>
@@ -66,7 +66,7 @@
                 v-model="formData.lastName"
                 type="text"
                 required
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-400 sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
               />
             </div>
             <div class="sm:col-span-2">
@@ -84,7 +84,7 @@
               <input
                 v-model="formData.phoneNumber"
                 type="tel"
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-400 sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
               />
             </div>
           </div>
@@ -93,7 +93,7 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="inline-flex justify-center items-center rounded-lg bg-yellow-400 px-6 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              class="inline-flex justify-center items-center rounded-lg bg-violet-950 px-6 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-violet-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <span v-if="isSubmitting" class="material-icons animate-spin mr-2 text-[18px]">autorenew</span>
               {{ $t('common.save') || 'Save Changes' }}

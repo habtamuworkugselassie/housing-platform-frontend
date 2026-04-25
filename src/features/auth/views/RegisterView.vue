@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8 text-white">
+  <div class="min-h-screen flex items-center justify-center bg-violet-950 py-12 px-4 sm:px-6 lg:px-8 text-white">
     <div class="max-w-lg w-full space-y-8 p-8 rounded-lg bg-zinc-900 border border-white/10">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
@@ -18,7 +18,7 @@
               v-model="form.firstName"
               type="text"
               required
-              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm"
+              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-black focus:border-black sm:text-sm"
               :placeholder="$t('auth.firstName')"
             />
           </div>
@@ -29,7 +29,7 @@
               v-model="form.lastName"
               type="text"
               required
-              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm"
+              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-black focus:border-black sm:text-sm"
               :placeholder="$t('auth.lastName')"
             />
           </div>
@@ -40,7 +40,7 @@
               v-model="form.email"
               type="email"
               required
-              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm"
+              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-black focus:border-black sm:text-sm"
               :placeholder="$t('auth.email')"
             />
           </div>
@@ -59,7 +59,7 @@
               v-model="form.password"
               type="password"
               required
-              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm"
+              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 placeholder-gray-400 text-white focus:outline-none focus:ring-black focus:border-black sm:text-sm"
               :placeholder="$t('register.passwordHint')"
             />
           </div>
@@ -69,7 +69,7 @@
               id="role"
               v-model="form.role"
               required
-              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 text-white rounded-b-md focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 sm:text-sm"
+              class="appearance-none relative block w-full px-3 py-2 border border-white/20 bg-white/5 text-white rounded-b-md focus:outline-none focus:ring-black focus:border-black sm:text-sm"
               @change="onRoleChange"
             >
               <option value="">{{ $t('register.selectRole') }}</option>
@@ -84,7 +84,7 @@
         <!-- Organization: join verified org or register new (pending approval) -->
         <div
           v-if="needsOrganizationChoice"
-          class="rounded-lg border border-white/10 bg-black/30 p-4 space-y-4"
+          class="rounded-lg border border-white/10 bg-violet-950/30 p-4 space-y-4"
         >
           <p class="text-sm font-medium text-white">Organization</p>
           <p class="text-xs text-gray-400">
@@ -93,11 +93,11 @@
           </p>
           <div class="flex flex-col gap-2">
             <label class="inline-flex items-center gap-2 cursor-pointer text-sm text-gray-300">
-              <input v-model="form.orgMode" type="radio" value="existing" class="text-yellow-400 focus:ring-yellow-400" />
+              <input v-model="form.orgMode" type="radio" value="existing" class="text-black focus:ring-black" />
               Join a verified organization
             </label>
             <label class="inline-flex items-center gap-2 cursor-pointer text-sm text-gray-300">
-              <input v-model="form.orgMode" type="radio" value="new" class="text-yellow-400 focus:ring-yellow-400" />
+              <input v-model="form.orgMode" type="radio" value="new" class="text-black focus:ring-black" />
               Register a new organization
             </label>
           </div>
@@ -109,7 +109,7 @@
               v-else
               v-model="form.organizationId"
               required
-              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             >
               <option disabled value="">Choose one…</option>
               <option v-for="o in marketplaceOrgs" :key="o.id" :value="o.id">
@@ -128,7 +128,7 @@
                 v-model="newOrg.name"
                 type="text"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div class="sm:col-span-2">
@@ -137,7 +137,7 @@
                 v-model="newOrg.email"
                 type="email"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -146,7 +146,7 @@
                 v-model="newOrg.city"
                 type="text"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -155,7 +155,7 @@
                 v-model="newOrg.country"
                 type="text"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div class="sm:col-span-2">
@@ -163,7 +163,7 @@
               <input
                 v-model="newOrg.address"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div class="sm:col-span-2">
@@ -171,7 +171,7 @@
               <input
                 v-model="newOrg.registrationNumber"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               />
             </div>
             <div class="sm:col-span-2">
@@ -202,7 +202,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-yellow-400 disabled:opacity-50"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white hover:bg-violet-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-black disabled:opacity-50"
           >
             <span v-if="loading">{{ $t('register.registering') }}</span>
             <span v-else>{{ $t('auth.register') }}</span>
@@ -210,7 +210,7 @@
         </div>
 
         <div class="text-center">
-          <router-link to="/login" class="text-sm text-white hover:text-yellow-400">
+          <router-link to="/login" class="text-sm text-white hover:text-black">
             {{ $t('register.alreadyHaveAccount') }}
           </router-link>
         </div>

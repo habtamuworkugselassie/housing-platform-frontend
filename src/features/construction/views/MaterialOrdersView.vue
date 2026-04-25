@@ -532,7 +532,7 @@ const formatDate = (dateString) => {
 const getOrderStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-100 text-gray-800',
-    PENDING: 'bg-yellow-100 text-yellow-800',
+    PENDING: 'bg-violet-950 text-black',
     CONFIRMED: 'bg-blue-100 text-blue-800',
     PROCESSING: 'bg-purple-100 text-purple-800',
     SHIPPED: 'bg-indigo-100 text-indigo-800',

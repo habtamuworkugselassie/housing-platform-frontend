@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white flex flex-col">
+  <div class="min-h-screen bg-violet-950 text-white flex flex-col">
     <!-- Optional full-width top (e.g. sponsor carousel) - side panels start below -->
     <div v-if="$slots.top" class="w-full flex-shrink-0">
       <slot name="top" />

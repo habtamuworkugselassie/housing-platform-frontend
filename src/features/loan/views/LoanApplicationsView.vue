@@ -7,7 +7,7 @@
       </div>
       <button
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
       >
         + {{ $t('loan.applyForLoan') }}
       </button>
@@ -15,7 +15,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -29,7 +29,7 @@
         v-for="application in applications"
         :key="application.id"
         @click="viewDetails(application.id)"
-        class="group bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors cursor-pointer"
+        class="group bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/20 transition-colors cursor-pointer"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
@@ -76,7 +76,7 @@
           </div>
           
           <div class="ml-4">
-            <svg class="w-5 h-5 text-gray-400 group-hover:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </div>
@@ -92,7 +92,7 @@
         <div class="mt-6">
           <button
             @click="showCreateModal = true"
-            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
           >
             {{ $t('loan.applyForLoan') }}
           </button>
@@ -103,7 +103,7 @@
     <!-- Create Loan Application Modal -->
     <div
       v-if="showCreateModal"
-      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+      class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
       @click.self="closeModal"
     >
       <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -117,7 +117,7 @@
                 v-model="applicationForm.bankId"
                 required
                 @change="loadCreditProducts"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('loan.selectBank') }}</option>
                 <option
@@ -136,7 +136,7 @@
                 v-model="applicationForm.creditProductId"
                 required
                 :disabled="!applicationForm.bankId || creditProductsLoading"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400 disabled:opacity-50"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black disabled:opacity-50"
               >
                 <option value="">{{ $t('loan.selectCreditProduct') }}</option>
                 <option
@@ -155,7 +155,7 @@
                 v-model="applicationForm.propertyId"
                 type="text"
                 :placeholder="$t('loan.leaveEmptyPropertySpecific')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -168,12 +168,12 @@
                   min="0"
                   step="0.01"
                   required
-                  class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="flex-1 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
                 <select
                   v-model="applicationForm.currency"
                   required
-                  class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="w-32 border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 >
                   <option value="">{{ $t('currency.selectCurrency') }}</option>
                   <option value="ETB">{{ $t('currency.etb') }}</option>
@@ -189,7 +189,7 @@
                 type="number"
                 min="1"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -199,7 +199,7 @@
                 v-model="applicationForm.purpose"
                 rows="3"
                 :placeholder="$t('loan.describePurpose')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-black focus:border-black"
               />
             </div>
 
@@ -207,14 +207,14 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 transition-colors"
               >
                 {{ submitting ? $t('common.loading') : $t('common.submit') }}
               </button>
@@ -325,7 +325,7 @@ const getStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-500/30 text-gray-300',
     SUBMITTED: 'bg-blue-500/30 text-blue-200',
-    UNDER_REVIEW: 'bg-yellow-500/30 text-yellow-200',
+    UNDER_REVIEW: 'bg-violet-950/30 text-black',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200',
     DISBURSED: 'bg-purple-500/30 text-purple-200',

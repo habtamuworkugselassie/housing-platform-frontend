@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">star</span>

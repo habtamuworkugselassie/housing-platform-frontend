@@ -7,7 +7,7 @@
       </div>
       <button
         @click="showCreateModal = true"
-        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+        class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
       >
         + {{ $t('banking.createFinancingOffer') }}
       </button>
@@ -15,7 +15,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -28,7 +28,7 @@
       <div
         v-for="offer in offers"
         :key="offer.id"
-        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/20 transition-colors"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
@@ -39,7 +39,7 @@
               <span :class="[
                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                 offer.status === 'ACTIVE' ? 'bg-green-500/30 text-green-200' :
-                offer.status === 'PENDING_APPROVAL' ? 'bg-yellow-500/30 text-yellow-200' :
+                offer.status === 'PENDING_APPROVAL' ? 'bg-violet-950/30 text-black' :
                 offer.status === 'EXPIRED' ? 'bg-red-500/30 text-red-200' :
                 'bg-gray-500/30 text-gray-300'
               ]">
@@ -101,7 +101,7 @@
     <!-- Create/Edit Modal -->
     <div
       v-if="showCreateModal || editingOffer"
-      class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
+      class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50"
       @click.self="closeModal"
     >
       <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
@@ -116,7 +116,7 @@
               <select
                 v-model="offerForm.creditProductId"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
               >
                 <option value="">{{ $t('loan.selectCreditProduct') }}</option>
                 <option
@@ -134,7 +134,7 @@
               <select
                 v-model="linkType"
                 @change="clearSelection"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
               >
                 <option value="none">{{ $t('banking.noneGeneralOffer') }}</option>
                 <option value="property">{{ $t('property.properties') }}</option>
@@ -155,28 +155,28 @@
                   v-model="propertySearch.companyName"
                   type="text"
                   :placeholder="$t('banking.companyName') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.city"
                   type="text"
                   :placeholder="$t('property.city') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.title"
                   type="text"
                   :placeholder="$t('banking.propertyTitle') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
                 <input
                   v-model="propertySearch.country"
                   type="text"
                   :placeholder="$t('property.country') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchProperties"
                 />
               </div>
@@ -189,14 +189,14 @@
                 <div v-else-if="propertySearchResults.length === 0 && propertySearchPerformed" class="text-center py-4 text-sm text-gray-500">
                   {{ $t('banking.noPropertiesFound') }}
                 </div>
-                <div v-else-if="propertySearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                <div v-else-if="propertySearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black">
                   <div
                     v-for="property in propertySearchResults"
                     :key="property.id"
                     @click="togglePropertySelection(property)"
                     :class="[
-                      'p-3 border-b border-white/10 hover:bg-yellow-500/20 cursor-pointer transition-colors',
-                      selectedProperties.includes(property.id) ? 'bg-yellow-500/20 border-yellow-400' : ''
+                      'p-3 border-b border-white/10 hover:bg-violet-950/20 cursor-pointer transition-colors',
+                      selectedProperties.includes(property.id) ? 'bg-violet-950/20 border-black' : ''
                     ]"
                   >
                     <div class="flex items-start justify-between">
@@ -206,7 +206,7 @@
                             type="checkbox"
                             :checked="selectedProperties.includes(property.id)"
                             @click.stop="togglePropertySelection(property)"
-                            class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
+                            class="h-4 w-4 text-black focus:ring-black border-white/30 rounded"
                           />
                           <h4 class="font-semibold text-white">{{ property.title }}</h4>
                         </div>
@@ -233,7 +233,7 @@
               </div>
               
               <!-- Selected Properties Summary -->
-              <div v-if="selectedProperties.length > 0" class="mt-3 p-3 bg-yellow-500/10 rounded-md border border-yellow-400/50">
+              <div v-if="selectedProperties.length > 0" class="mt-3 p-3 bg-violet-950/10 rounded-md border border-black/50">
                 <p class="text-sm font-medium text-gray-400 mb-2">
                   {{ $t('banking.selected') }}: {{ selectedProperties.length }} {{ selectedProperties.length === 1 ? $t('banking.property') : $t('banking.properties') }}
                 </p>
@@ -268,28 +268,28 @@
                   v-model="buildingSearch.companyName"
                   type="text"
                   :placeholder="$t('banking.companyName') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.city"
                   type="text"
                   :placeholder="$t('property.city') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.name"
                   type="text"
                   :placeholder="$t('banking.buildingName') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
                 <input
                   v-model="buildingSearch.country"
                   type="text"
                   :placeholder="$t('property.country') + '...'"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2 text-sm"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2 text-sm"
                   @input="debouncedSearchBuildings"
                 />
               </div>
@@ -302,14 +302,14 @@
                 <div v-else-if="buildingSearchResults.length === 0 && buildingSearchPerformed" class="text-center py-4 text-sm text-gray-500">
                   {{ $t('banking.noBuildingsFound') }}
                 </div>
-                <div v-else-if="buildingSearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                <div v-else-if="buildingSearchResults.length > 0" class="max-h-60 overflow-y-auto border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black">
                   <div
                     v-for="building in buildingSearchResults"
                     :key="building.id"
                     @click="toggleBuildingSelection(building)"
                     :class="[
-                      'p-3 border-b border-white/10 hover:bg-yellow-500/20 cursor-pointer transition-colors',
-                      selectedBuildings.includes(building.id) ? 'bg-yellow-500/20 border-yellow-400' : ''
+                      'p-3 border-b border-white/10 hover:bg-violet-950/20 cursor-pointer transition-colors',
+                      selectedBuildings.includes(building.id) ? 'bg-violet-950/20 border-black' : ''
                     ]"
                   >
                     <div class="flex items-start justify-between">
@@ -319,7 +319,7 @@
                             type="checkbox"
                             :checked="selectedBuildings.includes(building.id)"
                             @click.stop="toggleBuildingSelection(building)"
-                            class="h-4 w-4 text-yellow-400 focus:ring-yellow-400 border-white/30 rounded"
+                            class="h-4 w-4 text-black focus:ring-black border-white/30 rounded"
                           />
                           <h4 class="font-semibold text-white">{{ building.name }}</h4>
                         </div>
@@ -340,7 +340,7 @@
               </div>
               
               <!-- Selected Buildings Summary -->
-              <div v-if="selectedBuildings.length > 0" class="mt-3 p-3 bg-yellow-500/10 rounded-md border border-yellow-400/50">
+              <div v-if="selectedBuildings.length > 0" class="mt-3 p-3 bg-violet-950/10 rounded-md border border-black/50">
                 <p class="text-sm font-medium text-gray-400 mb-2">
                   {{ $t('banking.selected') }}: {{ selectedBuildings.length }} {{ selectedBuildings.length === 1 ? $t('banking.building') : $t('banking.buildings') }}
                 </p>
@@ -368,7 +368,7 @@
                 v-model="offerForm.projectId"
                 type="text"
                 :placeholder="$t('banking.leaveEmptyNotApplicable')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
               />
             </div>
 
@@ -381,7 +381,7 @@
                   step="0.01"
                   min="0"
                   :placeholder="$t('banking.overrideProductRate')"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
                 />
               </div>
 
@@ -394,7 +394,7 @@
                   min="0"
                   max="1"
                   :placeholder="$t('banking.overrideProductLtv')"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
                 />
               </div>
             </div>
@@ -405,7 +405,7 @@
                 v-model="offerForm.specialTerms"
                 rows="3"
                 :placeholder="$t('banking.additionalTermsSpecificOffer')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-3 py-2"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md focus:ring-2 focus:ring-black focus:border-black px-3 py-2"
               />
             </div>
 
@@ -413,7 +413,7 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
               >
                 {{ $t('common.cancel') }}
               </button>

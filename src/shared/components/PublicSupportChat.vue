@@ -10,13 +10,13 @@
     >
       <div
         v-show="open"
-        class="pointer-events-auto relative flex min-h-0 max-h-[92vh] max-w-[min(100vw-1rem,75rem)] flex-col overflow-hidden rounded-xl border-2 border-yellow-400/30 bg-zinc-900 shadow-2xl shadow-black/50 ring-2 ring-yellow-400/20"
+        class="pointer-events-auto relative flex min-h-0 max-h-[92vh] max-w-[min(100vw-1rem,75rem)] flex-col overflow-hidden rounded-xl border-2 border-black/30 bg-zinc-900 shadow-2xl shadow-black/50 ring-2 ring-black/20"
         role="dialog"
         :aria-label="$t('common.supportChat.title')"
         :style="{ width: `${panelWidth}px`, height: `${panelHeight}px` }"
       >
         <div
-          class="absolute left-0 top-0 z-20 flex h-10 w-10 cursor-nwse-resize select-none items-start justify-start rounded-br-lg border border-white/10 bg-zinc-800/90 text-gray-400 hover:border-yellow-400/40 hover:bg-yellow-500/10 hover:text-yellow-400"
+          class="absolute left-0 top-0 z-20 flex h-10 w-10 cursor-nwse-resize select-none items-start justify-start rounded-br-lg border border-white/10 bg-zinc-800/90 text-gray-400 hover:border-black/40 hover:bg-violet-950/10 hover:text-black"
           :aria-label="$t('common.supportChat.resizeHandle')"
           role="separator"
           aria-orientation="both"
@@ -26,12 +26,12 @@
         </div>
         <div class="flex items-center justify-between border-b border-white/10 px-5 py-4 pl-12">
           <div class="flex items-center gap-3 text-white">
-            <ChatBubbleLeftRightIcon class="h-6 w-6 shrink-0 text-yellow-400" aria-hidden="true" />
+            <ChatBubbleLeftRightIcon class="h-6 w-6 shrink-0 text-black" aria-hidden="true" />
             <span class="text-base font-semibold tracking-tight sm:text-lg">{{ $t('common.supportChat.title') }}</span>
           </div>
           <button
             type="button"
-            class="rounded-lg p-1.5 text-gray-400 hover:border hover:border-yellow-400/50 hover:bg-yellow-500/10 hover:text-white"
+            class="rounded-lg p-1.5 text-gray-400 hover:border hover:border-black/50 hover:bg-violet-950/10 hover:text-white"
             :aria-label="$t('common.close')"
             @click="open = false"
           >
@@ -43,35 +43,35 @@
           <div class="flex flex-wrap gap-2 text-sm">
             <RouterLink
               :to="{ name: 'MarketplaceRealEstate' }"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white"
+              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-black hover:bg-violet-950/10 hover:text-white"
               @click="open = false"
             >
               {{ $t('common.supportChat.browseMarketplaceRealEstate') }}
             </RouterLink>
             <RouterLink
               :to="{ name: 'Properties' }"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white"
+              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-black hover:bg-violet-950/10 hover:text-white"
               @click="open = false"
             >
               {{ $t('common.supportChat.browseProperties') }}
             </RouterLink>
             <RouterLink
               :to="{ name: 'Properties', query: { city: 'Addis Ababa' } }"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white"
+              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-black hover:bg-violet-950/10 hover:text-white"
               @click="open = false"
             >
               {{ $t('common.supportChat.exampleCity') }}
             </RouterLink>
             <RouterLink
               :to="{ name: 'Home', hash: '#show-features' }"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white"
+              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-black hover:bg-violet-950/10 hover:text-white"
               @click="open = false"
             >
               {{ $t('common.supportChat.faq') }}
             </RouterLink>
             <RouterLink
               :to="{ name: 'Home', hash: '#register' }"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white"
+              class="rounded-md border border-white/20 px-3 py-1.5 text-gray-300 hover:border-black hover:bg-violet-950/10 hover:text-white"
               @click="open = false"
             >
               {{ $t('common.supportChat.contact') }}
@@ -139,7 +139,7 @@
                 :key="key"
                 type="button"
                 :disabled="loading"
-                class="rounded-md border border-white/20 bg-white/5 px-3 py-2 text-left text-sm text-gray-200 hover:border-yellow-400 hover:bg-yellow-500/10 hover:text-white disabled:pointer-events-none disabled:opacity-50"
+                class="rounded-md border border-white/20 bg-white/5 px-3 py-2 text-left text-sm text-gray-200 hover:border-black hover:bg-violet-950/10 hover:text-white disabled:pointer-events-none disabled:opacity-50"
                 @click="sendQuickReply(key)"
               >
                 {{ $t('common.supportChat.quickReplies.' + key) }}
@@ -159,11 +159,11 @@
               maxlength="2000"
               :disabled="loading"
               :placeholder="$t('common.supportChat.placeholder')"
-              class="min-w-0 flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:opacity-50"
+              class="min-w-0 flex-1 rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
             />
             <button
               type="submit"
-              class="flex-shrink-0 rounded-lg bg-white px-4 py-3 text-black hover:bg-yellow-400 disabled:opacity-50"
+              class="flex-shrink-0 rounded-lg bg-white px-4 py-3 text-black hover:bg-violet-950 disabled:opacity-50"
               :disabled="loading || !draft.trim()"
               :aria-label="$t('common.supportChat.send')"
             >
@@ -176,7 +176,7 @@
 
     <button
       type="button"
-      class="pointer-events-auto flex h-[4.25rem] w-[4.25rem] sm:h-[4.75rem] sm:w-[4.75rem] items-center justify-center rounded-full border-2 border-yellow-400/50 bg-white text-black shadow-2xl shadow-black/40 ring-4 ring-yellow-400/25 hover:bg-yellow-400 hover:ring-yellow-400/40 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+      class="pointer-events-auto flex h-[4.25rem] w-[4.25rem] sm:h-[4.75rem] sm:w-[4.75rem] items-center justify-center rounded-full border-2 border-black/50 bg-white text-black shadow-2xl shadow-black/40 ring-4 ring-black/25 hover:bg-violet-950 hover:ring-black/40 focus:outline-none focus:ring-4 focus:ring-black"
       :aria-label="$t('common.supportChat.open')"
       @click="toggleOpen"
     >
@@ -338,7 +338,7 @@ function formatInline(s) {
   t = t.replace(/`([^`]+)`/g, (_, inner) => {
     const idx = codes.length
     codes.push(
-      '<code class="rounded bg-black/50 px-1.5 py-0.5 font-mono text-[0.9em] text-yellow-200">' +
+      '<code class="rounded bg-violet-950/50 px-1.5 py-0.5 font-mono text-[0.9em] text-black">' +
         inner +
         '</code>'
     )
@@ -413,7 +413,7 @@ function formatMarkdownBlocks(text) {
         i++
       }
       blocks.push(
-        '<ol class="my-2 list-decimal space-y-2 pl-5 marker:font-medium marker:text-yellow-400/90">' +
+        '<ol class="my-2 list-decimal space-y-2 pl-5 marker:font-medium marker:text-black/90">' +
           items.join('') +
           '</ol>'
       )
@@ -432,7 +432,7 @@ function formatMarkdownBlocks(text) {
         i++
       }
       blocks.push(
-        '<ul class="my-2 list-disc space-y-2 pl-5 marker:text-yellow-400">' + items.join('') + '</ul>'
+        '<ul class="my-2 list-disc space-y-2 pl-5 marker:text-black">' + items.join('') + '</ul>'
       )
       continue
     }
@@ -466,7 +466,7 @@ function formatAssistantHtml(raw) {
       }
       const trimmedCode = code.replace(/\n$/, '')
       parts.push(
-        '<pre class="my-3 max-h-64 overflow-x-auto overflow-y-auto rounded-lg border border-white/15 bg-black/50 p-3 text-[13px] text-gray-200 sm:text-sm"><code class="block font-mono whitespace-pre leading-relaxed">' +
+        '<pre class="my-3 max-h-64 overflow-x-auto overflow-y-auto rounded-lg border border-white/15 bg-violet-950/50 p-3 text-[13px] text-gray-200 sm:text-sm"><code class="block font-mono whitespace-pre leading-relaxed">' +
           escapeHtml(trimmedCode) +
           '</code></pre>'
       )

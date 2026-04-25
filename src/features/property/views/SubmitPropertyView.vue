@@ -3,11 +3,11 @@
     <div class="bg-zinc-900 border border-white/10 shadow rounded-lg p-4 sm:p-6 lg:p-8 text-white">
       <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">{{ $t('submitProperty.title') }}</h2>
       
-      <div v-if="!agent" class="mb-6 rounded-md bg-yellow-50 p-4">
-        <div class="text-sm text-yellow-800">
+      <div v-if="!agent" class="mb-6 rounded-md bg-violet-950 p-4">
+        <div class="text-sm text-black">
           {{ $t('submitProperty.needAgent') }}
         </div>
-        <router-link to="/register-agent" class="mt-2 inline-block text-sm font-medium text-yellow-900 hover:text-yellow-700">
+        <router-link to="/register-agent" class="mt-2 inline-block text-sm font-medium text-black hover:text-black">
           {{ $t('submitProperty.registerAsAgent') }} →
         </router-link>
       </div>
@@ -145,7 +145,7 @@
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+              <p v-if="!approvedBanks.length" class="text-xs text-black">
                 No approved banks are currently available. You can submit the property and add offers later.
               </p>
               <div
@@ -422,7 +422,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-yellow-400 disabled:opacity-50"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-black disabled:opacity-50"
           >
             <span v-if="loading">{{ $t('submitProperty.submitting') }}</span>
             <span v-else>{{ $t('submitProperty.submitProperty') }}</span>

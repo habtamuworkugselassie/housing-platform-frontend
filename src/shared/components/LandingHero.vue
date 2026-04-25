@@ -31,7 +31,7 @@
           <button
             type="button"
             @click="scrollToListings"
-            class="inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 text-sm font-semibold text-black bg-white rounded-lg hover:bg-yellow-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-black"
+            class="inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 text-sm font-semibold text-violet-950 bg-white rounded-lg hover:bg-violet-100 hover:text-violet-950 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950"
           >
             {{ $t('home.heroCta') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -55,7 +55,7 @@
       <button
         type="button"
         @click="scrollToListings"
-        class="inline-flex flex-col items-center gap-1 text-gray-500 hover:text-yellow-400 transition-colors"
+        class="inline-flex flex-col items-center gap-1 text-gray-500 hover:text-black transition-colors"
         aria-label="Scroll to listings"
       >
         <span class="text-xs uppercase tracking-wider">Scroll</span>

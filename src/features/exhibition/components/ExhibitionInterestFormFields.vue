@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-5">
     <div>
-      <label :for="`${fieldIdPrefix}-email`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-email`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.email')
       }}</label>
       <input
@@ -9,12 +9,12 @@
         v-model="form.email"
         type="email"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
         :placeholder="$t('exhibition.registerInterest.emailPlaceholder')"
       />
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-phone`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-phone`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.phone')
       }}</label>
       <CountryCodePhoneInput
@@ -24,14 +24,14 @@
       />
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-interest-type`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-interest-type`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.interestType')
       }}</label>
       <select
         :id="`${fieldIdPrefix}-interest-type`"
         v-model="form.interestType"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectType') }}</option>
         <option value="exhibitor">{{ $t('exhibition.registerInterest.asExhibitor') }}</option>
@@ -39,19 +39,19 @@
       </select>
     </div>
     <div v-if="form.interestType === 'exhibitor'">
-      <label :for="`${fieldIdPrefix}-package`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-package`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.sponsorshipPackage')
       }}</label>
       <select
         :id="`${fieldIdPrefix}-package`"
         v-model="form.sponsorshipId"
         :required="form.interestType === 'exhibitor'"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectSponsorshipPackage') }}</option>
         <option v-for="pkg in interestPackages" :key="pkg.id" :value="pkg.id">{{ pkg.name }}</option>
       </select>
-      <p v-if="interestPackagesLoading" class="mt-2 text-xs text-gray-500">
+      <p v-if="interestPackagesLoading" class="mt-2 text-xs text-white/70">
         {{ $t('exhibition.registerInterest.packagesLoading') }}
       </p>
       <p v-else-if="form.interestType === 'exhibitor' && interestPackages.length === 0" class="mt-2 text-sm text-amber-400/90">
@@ -59,17 +59,17 @@
       </p>
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-org-type`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-org-type`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.organizationType')
       }}</label>
-      <p v-if="form.interestType === 'exhibitor'" class="mb-2 text-xs text-gray-500 leading-relaxed">
+      <p v-if="form.interestType === 'exhibitor'" class="mb-2 text-xs text-white/70 leading-relaxed">
         {{ $t('exhibition.registerInterest.organizationCategorySponsorHint') }}
       </p>
       <select
         :id="`${fieldIdPrefix}-org-type`"
         v-model="form.organizationType"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectOrganizationType') }}</option>
         <option v-for="opt in organizationTypeOptions" :key="opt.value" :value="opt.value">
@@ -78,26 +78,26 @@
       </select>
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-company`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-company`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.companyOptional')
       }}</label>
       <input
         :id="`${fieldIdPrefix}-company`"
         v-model="form.company"
         type="text"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
         :placeholder="$t('exhibition.registerInterest.companyPlaceholder')"
       />
     </div>
     <div>
-      <label :for="`${fieldIdPrefix}-message`" class="block text-sm font-medium text-gray-400 mb-1">{{
+      <label :for="`${fieldIdPrefix}-message`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.messageOptional')
       }}</label>
       <textarea
         :id="`${fieldIdPrefix}-message`"
         v-model="form.message"
         rows="3"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 resize-none"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black resize-none"
         :placeholder="$t('exhibition.registerInterest.messagePlaceholder')"
       />
     </div>

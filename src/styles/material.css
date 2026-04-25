@@ -3,21 +3,21 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :root {
-  --mdc-theme-primary: #1976d2;
-  --mdc-theme-secondary: #dc004e;
+  --mdc-theme-primary: #8b5cf6;
+  --mdc-theme-secondary: #a78bfa;
   --mdc-theme-background: #fff;
   --mdc-theme-surface: #fff;
   --mdc-theme-error: #b00020;
   --mdc-theme-on-primary: #fff;
   --mdc-theme-on-secondary: #fff;
-  --mdc-theme-on-surface: #000;
+  --mdc-theme-on-surface: #1A1336;
   --mdc-theme-on-error: #fff;
-  --mdc-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  --mdc-elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  --mdc-elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  --mdc-elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  --mdc-elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  --mdc-elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  --mdc-elevation-1: 0px 2px 1px -1px rgba(26, 19, 54, 0.2), 0px 1px 1px 0px rgba(26, 19, 54, 0.14), 0px 1px 3px 0px rgba(26, 19, 54, 0.12);
+  --mdc-elevation-2: 0px 3px 1px -2px rgba(26, 19, 54, 0.2), 0px 2px 2px 0px rgba(26, 19, 54, 0.14), 0px 1px 5px 0px rgba(26, 19, 54, 0.12);
+  --mdc-elevation-3: 0px 3px 3px -2px rgba(26, 19, 54, 0.2), 0px 3px 4px 0px rgba(26, 19, 54, 0.14), 0px 1px 8px 0px rgba(26, 19, 54, 0.12);
+  --mdc-elevation-4: 0px 2px 4px -1px rgba(26, 19, 54, 0.2), 0px 4px 5px 0px rgba(26, 19, 54, 0.14), 0px 1px 10px 0px rgba(26, 19, 54, 0.12);
+  --mdc-elevation-6: 0px 3px 5px -1px rgba(26, 19, 54, 0.2), 0px 6px 10px 0px rgba(26, 19, 54, 0.14), 0px 1px 18px 0px rgba(26, 19, 54, 0.12);
+  --mdc-elevation-8: 0px 5px 5px -3px rgba(26, 19, 54, 0.2), 0px 8px 10px 1px rgba(26, 19, 54, 0.14), 0px 3px 14px 2px rgba(26, 19, 54, 0.12);
 }
 
 body {
@@ -73,17 +73,17 @@ body {
 
 .mdc-button--raised:hover {
   box-shadow: var(--mdc-elevation-4);
-  background-color: #1565c0;
+  background-color: #7c3aed;
 }
 
 .mdc-button--outlined {
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(26, 19, 54, 0.12);
   background-color: transparent;
   color: var(--mdc-theme-primary);
 }
 
 .mdc-button--outlined:hover {
-  background-color: rgba(25, 118, 210, 0.04);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
 .mdc-button--text {
@@ -92,7 +92,7 @@ body {
 }
 
 .mdc-button--text:hover {
-  background-color: rgba(25, 118, 210, 0.04);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Material Design Text Field */
@@ -106,7 +106,7 @@ body {
   min-height: 56px;
   padding: 12px 16px 14px;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  border-bottom: 1px solid rgba(26, 19, 54, 0.42);
   background-color: transparent;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
@@ -134,7 +134,7 @@ body {
   left: 16px;
   top: 16px;
   font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(26, 19, 54, 0.6);
   pointer-events: none;
   transition: all 0.2s ease;
   background-color: var(--mdc-theme-surface);
@@ -154,7 +154,7 @@ body {
 .mdc-text-field__input:disabled {
   background-color: #f5f5f5;
   cursor: not-allowed;
-  border-bottom-color: rgba(0, 0, 0, 0.12);
+  border-bottom-color: rgba(26, 19, 54, 0.12);
 }
 
 /* Material Design Chip */
@@ -164,14 +164,14 @@ body {
   height: 32px;
   padding: 0 12px;
   border-radius: 16px;
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: rgba(26, 19, 54, 0.08);
   font-size: 13px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(26, 19, 54, 0.87);
 }
 
 .mdc-chip--primary {
-  background-color: rgba(25, 118, 210, 0.12);
+  background-color: rgba(0, 0, 0, 0.15);
   color: var(--mdc-theme-primary);
 }
 
@@ -275,7 +275,7 @@ body {
 }
 
 .mdc-data-table__header-row {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(26, 19, 54, 0.12);
 }
 
 .mdc-data-table__header-cell {
@@ -283,24 +283,24 @@ body {
   text-align: left;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(26, 19, 54, 0.87);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .mdc-data-table__row {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(26, 19, 54, 0.06);
   transition: background-color 0.2s ease;
 }
 
 .mdc-data-table__row:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(26, 19, 54, 0.04);
 }
 
 .mdc-data-table__cell {
   padding: 12px 16px;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(26, 19, 54, 0.87);
 }
 
 /* Material Design FAB */
@@ -343,7 +343,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(26, 19, 54, 0.5);
 }
 
 .mdc-dialog__surface {
@@ -361,7 +361,7 @@ body {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 16px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(26, 19, 54, 0.87);
 }
 
 /* Material Design App Bar */

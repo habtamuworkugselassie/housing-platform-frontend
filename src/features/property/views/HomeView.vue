@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <!-- Ad Space under NavBar — GOLD-sponsored real estate companies (two side by side) -->
     <div class="bg-zinc-900 border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
@@ -22,7 +22,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.serviceType"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-black focus:border-black cursor-pointer"
               >
                 <option value="">{{ $t('home.serviceType') }}</option>
                 <option value="rental">{{ $t('home.rental') }}</option>
@@ -39,7 +39,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.location"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-black focus:border-black cursor-pointer"
               >
                 <option value="">{{ $t('home.location') }}</option>
                 <option value="Bole">{{ $t('home.bole') }}</option>
@@ -57,7 +57,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.priceRange"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 cursor-pointer"
+                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-black focus:border-black cursor-pointer"
               >
                 <option value="">{{ $t('home.priceRange') }}</option>
                 <option value="0-5000">ብ0 - ብ5,000</option>
@@ -77,7 +77,7 @@
               <input
                 type="checkbox"
                 v-model="filters.instantBooking"
-                class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
+                class="w-4 h-4 text-black border-white/30 rounded focus:ring-black"
               />
               <span class="text-xs sm:text-sm text-gray-300">{{ $t('home.instantBooking') }}</span>
             </label>
@@ -87,7 +87,7 @@
               <input
                 type="checkbox"
                 v-model="filters.freeCancellation"
-                class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
+                class="w-4 h-4 text-black border-white/30 rounded focus:ring-black"
               />
               <span class="text-xs sm:text-sm text-gray-300">{{ $t('home.freeCancellation') }}</span>
             </label>
@@ -96,7 +96,7 @@
             <button
               v-if="hasActiveFilters"
               @click="clearFilters"
-              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 transition-colors whitespace-nowrap"
+              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-violet-950 transition-colors whitespace-nowrap"
             >
               {{ $t('filters.clearFilters') }}
             </button>
@@ -106,7 +106,7 @@
     </div>
 
     <!-- Main Content: Property List in Two Columns (anchor for hero CTA) -->
-    <div id="main-listings" class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-black scroll-mt-4">
+    <div id="main-listings" class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-violet-950 scroll-mt-4">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         <!-- Loading State -->
         <div v-if="loadingOrgs" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -122,7 +122,7 @@
               v-model.trim="searchQuery"
               type="search"
               :placeholder="$t('home.searchCompanies')"
-              class="flex-1 min-w-0 rounded-lg border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 px-4 py-2.5 text-sm"
+              class="flex-1 min-w-0 rounded-lg border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:ring-2 focus:ring-black focus:border-black px-4 py-2.5 text-sm"
             />
             <div class="flex items-center gap-3 text-sm text-gray-400">
               <span>{{ filteredByOrganization.length }} {{ filteredByOrganization.length === 1 ? $t('home.company') : $t('home.companies') }}</span>
@@ -140,7 +140,7 @@
                 type="button"
                 :disabled="organizationListPage <= 1"
                 @click="setOrganizationListPage(organizationListPage - 1)"
-                class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+                class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ $t('common.previous') }}
               </button>
@@ -148,7 +148,7 @@
                 type="button"
                 :disabled="organizationListPage >= totalOrganizationPages"
                 @click="setOrganizationListPage(organizationListPage + 1)"
-                class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+                class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ $t('common.next') }}
               </button>
@@ -189,7 +189,7 @@
                 </div>
                 <div class="min-w-0 flex-1">
                   <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                    <span class="text-yellow-400">🏢</span>
+                    <span class="text-black">🏢</span>
                     {{ org.name }}
                   </h2>
                   <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-sm text-gray-400">
@@ -198,13 +198,13 @@
                     <template v-if="orgPhones(org).length">
                       <template v-for="(phone, i) in orgPhones(org)" :key="i">
                         <span v-if="i > 0">, </span>
-                        <a :href="`tel:${phone}`" class="text-yellow-400 hover:underline">{{ phone }}</a>
+                        <a :href="`tel:${phone}`" class="text-black hover:underline">{{ phone }}</a>
                       </template>
                     </template>
                     <template v-if="org.email">
-                      <a :href="`mailto:${org.email}`" class="text-yellow-400 hover:underline">{{ org.email }}</a>
+                      <a :href="`mailto:${org.email}`" class="text-black hover:underline">{{ org.email }}</a>
                     </template>
-                    <a v-if="org.website" :href="org.website" target="_blank" rel="noopener" class="text-yellow-400 hover:underline">{{ $t('admin.orgWebsite') }}</a>
+                    <a v-if="org.website" :href="org.website" target="_blank" rel="noopener" class="text-black hover:underline">{{ $t('admin.orgWebsite') }}</a>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -235,9 +235,9 @@
             :data-building-id="item.type === 'building' ? item.id : null"
             @click="item.type === 'property' ? selectProperty(item) : selectBuilding(item)"
             :class="[
-              'relative rounded-xl shadow-md transition-all duration-200 cursor-pointer overflow-hidden border-2 hover:border-yellow-400 hover:bg-yellow-500/10',
+              'relative rounded-xl shadow-md transition-all duration-200 cursor-pointer overflow-hidden border-2 hover:border-black hover:bg-violet-950/10',
               item.isSponsored && isPremierListingTier(item.sponsorshipType)
-                ? 'bg-zinc-900 border-yellow-400/60 shadow-lg'
+                ? 'bg-zinc-900 border-black/60 shadow-lg'
                 : item.isSponsored && isGoldListingTier(item.sponsorshipType)
                 ? 'bg-zinc-900 border-blue-400/50 shadow-md'
                 : 'bg-zinc-900 border-white/10'
@@ -247,14 +247,14 @@
             <div v-if="item.isSponsored" class="absolute top-3 right-3 z-20 flex items-center gap-2">
               <div
                 v-if="isPremierListingTier(item.sponsorshipType)"
-                class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1"
+                class="bg-violet-950 text-black px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1"
               >
                 <span>👑</span>
                 <span>{{ $t('property.featured') }}</span>
               </div>
               <div
                 :class="{
-                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': isPremierListingTier(item.sponsorshipType),
+                  'bg-gradient-to-r from-black via-amber-500 to-orange-500 text-black shadow-2xl': isPremierListingTier(item.sponsorshipType),
                   'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': isGoldListingTier(item.sponsorshipType)
                 }"
                 class="px-4 py-2 rounded-full text-xs font-extrabold flex items-center gap-1.5 animate-pulse border-2 border-white"
@@ -298,14 +298,14 @@
               <div 
                 v-if="item.isSponsored"
                 :class="{
-                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': isPremierListingTier(item.sponsorshipType),
+                  'absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent': isPremierListingTier(item.sponsorshipType),
                   'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': isGoldListingTier(item.sponsorshipType)
                 }"
               ></div>
               <!-- Premium Glow Effect -->
               <div 
                 v-if="item.isSponsored && isPremierListingTier(item.sponsorshipType)"
-                class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
+                class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-amber-200/20 animate-pulse"
               ></div>
             </div>
 
@@ -314,7 +314,7 @@
               v-if="item.type === 'property' && item.priceETB"
               :class="{
                 'bg-zinc-800/90 border border-white/20': !item.isSponsored,
-                'bg-yellow-500/30 border-2 border-yellow-400 shadow-xl': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                'bg-violet-950/30 border-2 border-black shadow-xl': item.isSponsored && isPremierListingTier(item.sponsorshipType),
                 'bg-blue-500/30 border-2 border-blue-400 shadow-lg': item.isSponsored && isGoldListingTier(item.sponsorshipType)
               }"
               class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-30"
@@ -323,7 +323,7 @@
                 <span 
                   :class="{
                     'text-white font-bold': !item.isSponsored,
-                    'text-yellow-200 font-extrabold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                    'text-black font-extrabold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
                     'text-blue-200 font-bold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
                   }"
                   class="text-lg"
@@ -332,7 +332,7 @@
                   v-if="item.priceUSD"
                   :class="{
                     'text-gray-300': !item.isSponsored,
-                    'text-yellow-200/90 font-bold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+                    'text-black/90 font-bold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
                     'text-blue-200/90 font-semibold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
                   }"
                   class="text-sm font-semibold"
@@ -359,7 +359,7 @@
                   <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
                 </h3>
                 <div v-if="item.type === 'property'" class="flex items-center gap-1">
-                  <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                  <svg class="w-4 h-4 text-black fill-current" viewBox="0 0 20 20">
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
                   </svg>
                   <span class="text-sm font-medium text-gray-300">4.8</span>
@@ -420,10 +420,10 @@
                   </div>
                 </div>
                 <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 flex-wrap">
-                  <svg class="w-3 h-3 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-3 h-3 text-black shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                   </svg>
-                  <span class="text-xs font-semibold text-yellow-400">{{ item.realEstateCompanyName }}</span>
+                  <span class="text-xs font-semibold text-black">{{ item.realEstateCompanyName }}</span>
                   <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
                 </div>
               </div>
@@ -439,7 +439,7 @@
                         type="button"
                         :disabled="(groupPage[org.id] || 1) <= 1"
                         @click="setGroupPage(org.id, (groupPage[org.id] || 1) - 1)"
-                        class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+                        class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
                       >
                         {{ $t('common.previous') }}
                       </button>
@@ -447,7 +447,7 @@
                         type="button"
                         :disabled="(groupPage[org.id] || 1) >= totalPagesForGroup(getFilteredItemsForOrg(org.id))"
                         @click="setGroupPage(org.id, (groupPage[org.id] || 1) + 1)"
-                        class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+                        class="px-3 py-1.5 text-sm font-medium text-black bg-white rounded-lg hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
                       >
                         {{ $t('common.next') }}
                       </button>

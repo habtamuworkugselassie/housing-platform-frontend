@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="mb-8">
         <h1 class="text-3xl font-bold text-white">{{ $t('construction.supplierDashboard') }}</h1>
@@ -7,25 +7,25 @@
       </div>
 
       <div v-if="loading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
 
       <div v-else class="space-y-6">
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
             <label class="text-xs font-medium text-gray-400">{{ $t('construction.totalOrders') }}</label>
             <p class="text-2xl font-bold text-white mt-2">{{ stats.totalOrders }}</p>
           </div>
-          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
             <label class="text-xs font-medium text-gray-400">{{ $t('construction.pendingOrders') }}</label>
-            <p class="text-2xl font-bold text-yellow-400 mt-2">{{ stats.pendingOrders }}</p>
+            <p class="text-2xl font-bold text-black mt-2">{{ stats.pendingOrders }}</p>
           </div>
-          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
             <label class="text-xs font-medium text-gray-400">{{ $t('construction.processingOrders') }}</label>
             <p class="text-2xl font-bold text-blue-300 mt-2">{{ stats.processingOrders }}</p>
           </div>
-          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+          <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
             <label class="text-xs font-medium text-gray-400">{{ $t('construction.totalRevenue') }}</label>
             <p class="text-2xl font-bold text-green-400 mt-2">{{ formatPrice(stats.totalRevenue, 'ETB') }}</p>
           </div>
@@ -37,21 +37,21 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <router-link
               to="/construction/orders"
-              class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+              class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
             >
               <div class="text-2xl mb-2">📦</div>
               <div class="font-medium text-white">{{ $t('construction.viewOrders') }}</div>
             </router-link>
             <router-link
               to="/construction/inventory"
-              class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+              class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
             >
               <div class="text-2xl mb-2">📋</div>
               <div class="font-medium text-white">{{ $t('construction.manageInventory') }}</div>
             </router-link>
             <router-link
               to="/construction/orders"
-              class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+              class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
             >
               <div class="text-2xl mb-2">➕</div>
               <div class="font-medium text-white">{{ $t('construction.createOrder') }}</div>
@@ -65,7 +65,7 @@
             <h3 class="text-lg font-semibold text-white">{{ $t('construction.recentOrders') }}</h3>
             <router-link
               to="/construction/orders"
-              class="text-sm text-yellow-400 hover:text-yellow-300"
+              class="text-sm text-black hover:text-black"
             >
               {{ $t('common.viewAll') }} →
             </router-link>
@@ -80,7 +80,7 @@
               v-for="order in recentOrders"
               :key="order.id"
               @click="$router.push(`/construction/orders/${order.id}`)"
-              class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors cursor-pointer"
+              class="border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/10 transition-colors cursor-pointer"
             >
               <div class="flex items-center justify-between">
                 <div>
@@ -111,7 +111,7 @@
             <h3 class="text-lg font-semibold text-white">{{ $t('construction.inventorySummary') }}</h3>
             <router-link
               to="/construction/inventory"
-              class="text-sm text-yellow-400 hover:text-yellow-300"
+              class="text-sm text-black hover:text-black"
             >
               {{ $t('common.viewAll') }} →
             </router-link>
@@ -125,7 +125,7 @@
             <div
               v-for="item in inventorySummary"
               :key="item.id"
-              class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors"
+              class="border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/10 transition-colors"
             >
               <div class="flex items-center justify-between mb-2">
                 <h4 class="font-medium text-white">{{ item.materialName }}</h4>
@@ -230,7 +230,7 @@ const formatDate = (dateString) => {
 const getOrderStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-500/30 text-gray-200',
-    PENDING: 'bg-yellow-500/30 text-yellow-200',
+    PENDING: 'bg-violet-950/30 text-black',
     CONFIRMED: 'bg-blue-500/30 text-blue-200',
     PROCESSING: 'bg-purple-500/30 text-purple-200',
     SHIPPED: 'bg-indigo-500/30 text-indigo-200',

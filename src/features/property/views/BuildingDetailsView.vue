@@ -3,7 +3,7 @@
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-white hover:text-yellow-400 font-medium mb-4"
+        class="text-white hover:text-black font-medium mb-4"
       >
         ← {{ $t('common.back') }}
       </button>
@@ -12,7 +12,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
     </div>
 
     <!-- Error State -->
@@ -23,7 +23,7 @@
     <!-- Building Details -->
     <div v-if="!loading && building" class="space-y-6">
       <!-- Building Info Card -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <div class="flex items-start justify-between mb-4">
           <div>
             <h2 class="text-2xl font-semibold text-white">{{ building.name }}</h2>
@@ -74,7 +74,7 @@
               <div class="flex items-center gap-2">
                 <div class="flex-1 bg-white/20 rounded-full h-2">
                   <div 
-                    class="bg-yellow-400 h-2 rounded-full transition-all"
+                    class="bg-violet-950 h-2 rounded-full transition-all"
                     :style="{ width: building.constructionPercentage + '%' }"
                   ></div>
                 </div>
@@ -112,7 +112,7 @@
       </div>
 
       <!-- Map Section: only show when building has coordinates -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <h3 class="text-xl font-semibold text-white mb-4">{{ $t('building.locationMap') }}</h3>
         <OsmMap
           v-if="building.latitude != null && building.longitude != null"
@@ -127,7 +127,7 @@
           :href="googleMapsDirectionsUrl(building.latitude, building.longitude)"
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors text-sm font-medium"
+          class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-black hover:bg-violet-950/20 transition-colors text-sm font-medium"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
@@ -142,7 +142,7 @@
       </div>
 
       <!-- Company Information Section -->
-      <div v-if="company" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div v-if="company" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.realEstateCompany') }}</h3>
         <div class="bg-white/5 rounded-lg p-6 border border-white/10">
           <h4 class="text-lg font-semibold text-white mb-3 flex items-center gap-2 flex-wrap">
@@ -153,7 +153,7 @@
             <div v-if="company.email">
               <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('auth.email') }}:</dt>
               <dd class="text-sm text-white">
-                <a :href="`mailto:${company.email}`" class="text-yellow-400 hover:underline">{{ company.email }}</a>
+                <a :href="`mailto:${company.email}`" class="text-black hover:underline">{{ company.email }}</a>
               </dd>
             </div>
             <div v-if="companyPhones.length">
@@ -161,7 +161,7 @@
               <dd class="text-sm text-white">
                 <template v-for="(phone, i) in companyPhones" :key="i">
                   <span v-if="i > 0">, </span>
-                  <a :href="`tel:${phone}`" class="text-yellow-400 hover:underline">{{ phone }}</a>
+                  <a :href="`tel:${phone}`" class="text-black hover:underline">{{ phone }}</a>
                 </template>
               </dd>
             </div>
@@ -172,7 +172,7 @@
             <div v-if="company.website" class="md:col-span-2">
               <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.websiteLabel') }}:</dt>
               <dd class="text-sm text-white">
-                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-yellow-400 hover:underline">{{ company.website }}</a>
+                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-black hover:underline">{{ company.website }}</a>
               </dd>
             </div>
             <div v-if="hasSocialOnOrg(company)" class="md:col-span-2">
@@ -193,13 +193,13 @@
       </div>
 
       <!-- Financing Offers Section -->
-      <div v-if="financingOffers.length" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div v-if="financingOffers.length" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.financingOptions') }}</h3>
         <div class="space-y-4">
           <div
             v-for="offer in financingOffers"
             :key="offer.id"
-            class="bg-white/5 rounded-lg p-6 border border-white/10 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors"
+            class="bg-white/5 rounded-lg p-6 border border-white/10 hover:border-black hover:bg-violet-950/10 transition-colors"
           >
             <div class="flex items-start justify-between">
               <div class="flex-1">
@@ -229,20 +229,20 @@
       </div>
 
       <!-- Units Section -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xl font-semibold text-white">{{ $t('building.unitsWithCount', { count: units.length }) }}</h3>
           <router-link
             v-if="authStore.hasRole('REALTOR')"
             :to="`/submit-property?buildingId=${building.id}`"
-            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 text-sm transition-colors"
+            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 text-sm transition-colors"
           >
             + {{ $t('building.addUnit') }}
           </router-link>
         </div>
 
         <div v-if="unitsLoading" class="text-center py-8">
-          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400"></div>
+          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-black"></div>
         </div>
 
         <div v-else-if="units.length === 0" class="text-center py-8 text-gray-400">
@@ -254,7 +254,7 @@
             v-for="unit in units"
             :key="unit.id"
             @click="$router.push(`/properties/${unit.id}`)"
-            class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors cursor-pointer"
+            class="border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/20 transition-colors cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2 flex-wrap gap-1">
               <h4 class="font-semibold text-white flex items-center gap-1.5 flex-wrap min-w-0">
@@ -271,7 +271,7 @@
             
             <p v-if="unit.unitNumber" class="text-xs text-gray-400 mb-2">Unit: {{ unit.unitNumber }}</p>
             <div class="flex flex-col gap-1">
-              <p v-if="unit.priceETB" class="text-lg font-bold text-yellow-400">
+              <p v-if="unit.priceETB" class="text-lg font-bold text-black">
                 {{ formatPrice(unit.priceETB, 'ETB') }}
                 <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-400 font-normal">/month</span>
               </p>
@@ -418,7 +418,7 @@ const loadFinancingOffers = async () => {
 const getStatusColor = (status) => {
   const colors = {
     PLANNED: 'bg-gray-500/30 text-gray-300',
-    UNDER_CONSTRUCTION: 'bg-yellow-500/30 text-yellow-200',
+    UNDER_CONSTRUCTION: 'bg-violet-950/30 text-black',
     COMPLETED: 'bg-green-500/30 text-green-200',
     RENOVATION: 'bg-blue-500/30 text-blue-200'
   }
@@ -429,7 +429,7 @@ const getPropertyStatusColor = (status) => {
   const colors = {
     AVAILABLE: 'bg-green-500/30 text-green-200',
     SOLD: 'bg-red-500/30 text-red-200',
-    RESERVED: 'bg-yellow-500/30 text-yellow-200',
+    RESERVED: 'bg-violet-950/30 text-black',
     WITHDRAWN: 'bg-gray-500/30 text-gray-300'
   }
   return colors[status] || 'bg-gray-500/30 text-gray-300'

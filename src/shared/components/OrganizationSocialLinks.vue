@@ -67,8 +67,8 @@ const YoutubeIcon = iconSvg([
 
 const linkClass = computed(() =>
   props.compact
-    ? 'inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 p-2 text-gray-300 transition-colors hover:border-yellow-400 hover:bg-yellow-500/20 hover:text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400/60'
-    : 'inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 p-2.5 text-gray-300 transition-colors hover:border-yellow-400 hover:bg-yellow-500/20 hover:text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400/60'
+    ? 'inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 p-2 text-gray-300 transition-colors hover:border-black hover:bg-violet-950/20 hover:text-black focus:outline-none focus:ring-2 focus:ring-black/60'
+    : 'inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 p-2.5 text-gray-300 transition-colors hover:border-black hover:bg-violet-950/20 hover:text-black focus:outline-none focus:ring-2 focus:ring-black/60'
 )
 
 const iconClass = computed(() =>

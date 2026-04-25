@@ -6,58 +6,58 @@
     </div>
 
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
     </div>
 
     <div v-else class="space-y-6">
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
           <label class="text-xs font-medium text-gray-400">{{ $t('construction.activeProjects') }}</label>
           <p class="text-2xl font-bold text-white mt-2">{{ stats.activeProjects }}</p>
         </div>
-        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
           <label class="text-xs font-medium text-gray-400">{{ $t('construction.totalBudget') }}</label>
           <p class="text-2xl font-bold text-blue-300 mt-2">{{ formatPrice(stats.totalBudget, 'ETB') }}</p>
         </div>
-        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
           <label class="text-xs font-medium text-gray-400">{{ $t('construction.totalCost') }}</label>
           <p class="text-2xl font-bold text-green-300 mt-2">{{ formatPrice(stats.totalCost, 'ETB') }}</p>
         </div>
-        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+        <div class="bg-zinc-900 border border-white/10 p-6 rounded-lg hover:border-black hover:bg-violet-950/10 transition-colors">
           <label class="text-xs font-medium text-gray-400">{{ $t('construction.averageCompletion') }}</label>
-          <p class="text-2xl font-bold text-yellow-400 mt-2">{{ stats.averageCompletion }}%</p>
+          <p class="text-2xl font-bold text-black mt-2">{{ stats.averageCompletion }}%</p>
         </div>
       </div>
 
       <!-- Quick Actions -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <h3 class="text-lg font-semibold text-white mb-4">{{ $t('construction.quickActions') }}</h3>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <router-link
             to="/construction/projects"
-            class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+            class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
           >
             <div class="text-2xl mb-2">🏗️</div>
             <div class="font-medium text-white">{{ $t('construction.viewProjects') }}</div>
           </router-link>
           <router-link
             to="/construction/projects"
-            class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+            class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
           >
             <div class="text-2xl mb-2">➕</div>
             <div class="font-medium text-white">{{ $t('construction.createProject') }}</div>
           </router-link>
           <router-link
             to="/construction/orders"
-            class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+            class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
           >
             <div class="text-2xl mb-2">📦</div>
             <div class="font-medium text-white">{{ $t('construction.viewOrders') }}</div>
           </router-link>
           <router-link
             to="/construction/usage"
-            class="p-4 border border-white/10 rounded-lg hover:border-yellow-400 hover:bg-yellow-500/20 text-center text-white transition-colors"
+            class="p-4 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 text-center text-white transition-colors"
           >
             <div class="text-2xl mb-2">📊</div>
             <div class="font-medium text-white">{{ $t('construction.viewUsage') }}</div>
@@ -66,12 +66,12 @@
       </div>
 
       <!-- Active Projects -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/10 transition-colors">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-white">{{ $t('construction.activeProjects') }}</h3>
           <router-link
             to="/construction/projects"
-            class="text-sm text-white hover:text-yellow-400 transition-colors"
+            class="text-sm text-white hover:text-black transition-colors"
           >
             {{ $t('common.viewAll') }} →
           </router-link>
@@ -86,7 +86,7 @@
             v-for="project in activeProjects"
             :key="project.id"
             @click="$router.push(`/construction/projects/${project.id}`)"
-            class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors cursor-pointer"
+            class="border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/20 transition-colors cursor-pointer"
           >
             <div class="flex items-start justify-between">
               <div class="flex-1">
@@ -104,7 +104,7 @@
                     <div class="mt-1">
                       <div class="bg-zinc-700 rounded-full h-2">
                         <div
-                          class="bg-yellow-400 h-2 rounded-full transition-all"
+                          class="bg-violet-950 h-2 rounded-full transition-all"
                           :style="{ width: (project.overallCompletionPercentage || 0) + '%' }"
                         ></div>
                       </div>
@@ -142,7 +142,7 @@
           <h3 class="text-lg font-semibold text-white">{{ $t('construction.recentMaterialUsage') }}</h3>
           <router-link
             to="/construction/usage"
-            class="text-sm text-yellow-400 hover:text-yellow-300"
+            class="text-sm text-black hover:text-black"
           >
             {{ $t('common.viewAll') }} →
           </router-link>
@@ -156,7 +156,7 @@
           <div
             v-for="usage in recentUsage"
             :key="usage.id"
-            class="border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors"
+            class="border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/10 transition-colors"
           >
             <div class="flex items-center justify-between">
               <div>
@@ -255,7 +255,7 @@ const getStatusColor = (status) => {
   const colors = {
     PLANNING: 'bg-gray-500/30 text-gray-200',
     IN_PROGRESS: 'bg-blue-500/30 text-blue-200',
-    ON_HOLD: 'bg-yellow-500/30 text-yellow-200',
+    ON_HOLD: 'bg-violet-950/30 text-black',
     COMPLETED: 'bg-green-500/30 text-green-200',
     CANCELLED: 'bg-red-500/30 text-red-200'
   }

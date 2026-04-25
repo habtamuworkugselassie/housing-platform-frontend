@@ -11,7 +11,7 @@
           :key="ad.id"
           role="link"
           tabindex="0"
-          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-yellow-400/40 cursor-pointer"
+          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-black/40 cursor-pointer"
           :class="tierFor(ad).shadowGlow"
           @click="handleAdClick(ad)"
           @keydown.enter.prevent="handleAdClick(ad)"
@@ -26,7 +26,7 @@
           >
             <div
               v-if="bannerThumbUrl(ad)"
-              class="flex-shrink-0 w-14 sm:w-20 h-14 sm:h-20 rounded-md overflow-hidden ring-1 ring-white/15 bg-black/30"
+              class="flex-shrink-0 w-14 sm:w-20 h-14 sm:h-20 rounded-md overflow-hidden ring-1 ring-white/15 bg-violet-950/30"
             >
               <img
                 :src="mediaUrl(bannerThumbUrl(ad))"
@@ -78,7 +78,7 @@
         <div
           role="link"
           tabindex="0"
-          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-yellow-400/40 cursor-pointer"
+          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-black/40 cursor-pointer"
           :class="tierFor(adContent).shadowGlow"
           @click="handleClick"
           @keydown.enter.prevent="handleClick"
@@ -93,7 +93,7 @@
           >
             <div
               v-if="bannerThumbUrl(adContent)"
-              class="flex-shrink-0 w-16 sm:w-24 h-16 sm:h-24 rounded-md overflow-hidden ring-1 ring-white/15 bg-black/30"
+              class="flex-shrink-0 w-16 sm:w-24 h-16 sm:h-24 rounded-md overflow-hidden ring-1 ring-white/15 bg-violet-950/30"
             >
               <img
                 :src="mediaUrl(bannerThumbUrl(adContent))"
@@ -146,7 +146,7 @@
     <!-- Sidebar / rectangle: same exhibition tier system -->
     <div
       v-else
-      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-yellow-400/40 w-full"
+      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-black/40 w-full"
       :class="[
         sidebarTier.shadowGlow,
         size === 'sidebar' ? 'min-h-[300px]' : '',
@@ -187,7 +187,7 @@
         />
         <span
           v-if="sidebarMediaItems.length > 1"
-          class="absolute top-2 right-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-white"
+          class="absolute top-2 right-2 rounded-full bg-violet-950/60 px-2 py-0.5 text-[10px] font-semibold text-white"
         >
           {{ currentSidebarMediaIndex + 1 }} / {{ sidebarMediaItems.length }}
         </span>

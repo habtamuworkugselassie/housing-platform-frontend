@@ -13,7 +13,7 @@
           :href="mediaUrl(documentUrl)"
           target="_blank"
           rel="noopener"
-          class="text-yellow-400 hover:underline"
+          class="text-black hover:underline"
         >
           {{ $t('admin.viewDocument') }}
         </a>
@@ -25,7 +25,7 @@
       <label class="block text-xs font-medium text-gray-400">{{ $t('admin.documentReviewStatus') }}</label>
       <select
         :value="status ?? ''"
-        class="mt-1 block w-full max-w-md border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="mt-1 block w-full max-w-md border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
         @change="
           $emit(
             'update:status',
@@ -43,13 +43,13 @@
       <textarea
         :value="comment"
         rows="3"
-        class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+        class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
         :placeholder="$t('admin.documentReviewCommentPlaceholder')"
         @input="$emit('update:comment', ($event.target).value)"
       />
       <button
         type="button"
-        class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+        class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
         :disabled="saving"
         @click="$emit('save')"
       >

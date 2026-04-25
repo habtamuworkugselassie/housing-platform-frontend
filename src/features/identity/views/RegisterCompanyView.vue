@@ -12,7 +12,7 @@
               v-model="form.name"
               type="text"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -22,7 +22,7 @@
               id="registrationNumber"
               v-model="form.registrationNumber"
               type="text"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -33,7 +33,7 @@
               v-model="form.email"
               type="email"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -65,7 +65,7 @@
               </div>
               <button
                 type="button"
-                class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+                class="text-sm text-black hover:text-black transition-colors"
                 @click="form.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
               >
                 + {{ $t('admin.addPhone') }}
@@ -79,7 +79,7 @@
               id="address"
               v-model="form.address"
               type="text"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -90,7 +90,7 @@
               v-model="form.city"
               type="text"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -101,7 +101,7 @@
               v-model="form.country"
               type="text"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -111,7 +111,7 @@
               id="website"
               v-model="form.website"
               type="url"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
 
@@ -119,23 +119,23 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
-                <input id="fb" v-model="form.facebookUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input id="fb" v-model="form.facebookUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label for="ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
-                <input id="ig" v-model="form.instagramUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input id="ig" v-model="form.instagramUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label for="li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
-                <input id="li" v-model="form.linkedinUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input id="li" v-model="form.linkedinUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black" />
               </div>
               <div>
                 <label for="tw" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
-                <input id="tw" v-model="form.twitterUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input id="tw" v-model="form.twitterUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black" />
               </div>
               <div class="sm:col-span-2">
                 <label for="yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
-                <input id="yt" v-model="form.youtubeUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400" />
+                <input id="yt" v-model="form.youtubeUrl" type="url" class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black" />
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@
               id="description"
               v-model="form.description"
               rows="4"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
         </div>
@@ -163,7 +163,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-black bg-white hover:bg-yellow-400 focus:ring-2 focus:ring-yellow-400 disabled:opacity-50 transition-colors"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950 focus:ring-2 focus:ring-black disabled:opacity-50 transition-colors"
           >
             <span v-if="loading">Submitting...</span>
             <span v-else>Register Company</span>

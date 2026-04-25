@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="modelValue"
-    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
     @click.self="$emit('update:modelValue', false)"
   >
     <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
@@ -16,7 +16,7 @@
             v-model="form.firstName"
             type="text"
             autocomplete="given-name"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
           />
         </div>
         <div>
@@ -25,7 +25,7 @@
             v-model="form.lastName"
             type="text"
             autocomplete="family-name"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
           />
         </div>
         <div>
@@ -34,7 +34,7 @@
             v-model="form.password"
             type="password"
             autocomplete="new-password"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
           />
           <p class="text-xs text-gray-500 mt-1">{{ $t('admin.exhibitionInterests.verifyContactDialogPasswordHint') }}</p>
         </div>
@@ -49,7 +49,7 @@
         </button>
         <button
           type="button"
-          class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-yellow-400 disabled:opacity-50"
+          class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-violet-950 disabled:opacity-50"
           :disabled="!valid || busy"
           @click="submit"
         >

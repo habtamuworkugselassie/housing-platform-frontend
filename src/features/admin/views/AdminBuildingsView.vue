@@ -8,7 +8,7 @@
         </div>
         <button
           @click="showCreateModal = true"
-          class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 font-medium transition-colors"
+          class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 font-medium transition-colors"
         >
           + Add Building
         </button>
@@ -22,13 +22,13 @@
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchBuildings')"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-black focus:border-black"
             />
           </div>
           <div class="flex items-end">
             <button
               @click="loadBuildings"
-              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
+              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
             >
               Search
             </button>
@@ -38,7 +38,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
         </div>
 
         <div v-else>
@@ -53,7 +53,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-white/10">
-              <tr v-for="building in buildings" :key="building.id" class="hover:bg-yellow-500/10 transition-colors">
+              <tr v-for="building in buildings" :key="building.id" class="hover:bg-violet-950/10 transition-colors">
                 <td class="px-6 py-4">
                   <div class="text-sm font-medium text-white">{{ building.name }}</div>
                 </td>
@@ -72,7 +72,7 @@
                   <div class="flex items-center justify-end gap-3">
                     <button
                       @click="editBuilding(building)"
-                      class="text-white hover:text-yellow-400 transition-colors"
+                      class="text-white hover:text-black transition-colors"
                     >
                       Edit
                     </button>
@@ -93,7 +93,7 @@
       <!-- View Building Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -102,7 +102,7 @@
               <h3 class="text-lg font-medium text-white">Building Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-yellow-400 transition-colors"
+                class="text-gray-400 hover:text-black transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -144,7 +144,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
               >
                 Close
               </button>
@@ -155,7 +155,7 @@
       <!-- Create/Edit Building Modal -->
       <div
         v-if="showCreateModal || showEditModal"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="closeModal"
       >
         <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -172,7 +172,7 @@
                   v-model="buildingForm.organizationId"
                   required
                   :disabled="showEditModal"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400 disabled:opacity-50"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black disabled:opacity-50"
                 >
                   <option value="" disabled>Select a company</option>
                   <option v-for="org in organizations" :key="org.id" :value="org.id">
@@ -188,7 +188,7 @@
                   v-model="buildingForm.name"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
 
@@ -197,7 +197,7 @@
                 <textarea
                   v-model="buildingForm.description"
                   rows="3"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                 />
               </div>
 
@@ -208,7 +208,7 @@
                     v-model="buildingForm.address"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
                 <div>
@@ -217,7 +217,7 @@
                     v-model="buildingForm.city"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
               </div>
@@ -228,7 +228,7 @@
                   <input
                     v-model="buildingForm.state"
                     type="text"
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
                 <div>
@@ -237,7 +237,7 @@
                     v-model="buildingForm.country"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
               </div>
@@ -260,7 +260,7 @@
                     type="number"
                     min="1"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
                 <div>
@@ -270,7 +270,7 @@
                     type="number"
                     min="1"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   />
                 </div>
               </div>
@@ -281,7 +281,7 @@
                   <select
                     v-model="buildingForm.buildingType"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   >
                     <option value="">Select Type</option>
                     <option value="APARTMENT_COMPLEX">Apartment Complex</option>
@@ -295,7 +295,7 @@
                   <label class="block text-sm font-medium text-gray-300">Status</label>
                   <select
                     v-model="buildingForm.status"
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
                   >
                     <option value="PLANNED">Planned</option>
                     <option value="UNDER_CONSTRUCTION">Under Construction</option>
@@ -309,14 +309,14 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                  class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   :disabled="submitting"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-50 transition-colors"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 transition-colors"
                 >
                   {{ submitting ? 'Saving...' : (showEditModal ? 'Update' : 'Create') }}
                 </button>

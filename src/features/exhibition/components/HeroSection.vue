@@ -1,5 +1,5 @@
 <template>
-  <section class="relative min-h-screen flex flex-col overflow-hidden bg-black">
+  <section class="relative min-h-screen flex flex-col overflow-hidden bg-violet-950">
     <!-- Background: image with optional video placeholder -->
     <div class="absolute inset-0 z-0">
       <img
@@ -7,12 +7,12 @@
         alt="Ethio Build Connect property and construction exhibition — cityscape background"
         class="w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-black/70" />
+      <div class="absolute inset-0 bg-violet-950/70" />
     </div>
 
     <!-- Hero content: Cityscape pattern (main nav is in App.vue NavBar) -->
     <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 py-12">
-      <p class="mb-4 text-sm sm:text-base font-semibold uppercase tracking-[0.2em] text-yellow-400 max-w-5xl mx-auto">
+      <p class="mb-4 text-sm sm:text-base font-semibold uppercase tracking-[0.2em] text-white max-w-5xl mx-auto">
         {{ $t('exhibition.hero.eventName') }}
       </p>
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white uppercase tracking-tight leading-[1.1] max-w-5xl mx-auto">
@@ -34,7 +34,7 @@
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
           href="#register"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[240px]"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors min-w-[240px]"
         >
           {{ $t('exhibition.hero.registerInterest') }}
         </a>
@@ -42,7 +42,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[240px]"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:text-white transition-colors min-w-[240px]"
         >
           {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Foundation Partners strip: exclusive sponsors only -->
-    <div class="relative z-10 bg-black/50 py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),inset_0_25px_40px_-15px_rgba(255,255,255,0.08)]">
+    <div class="relative z-10 bg-violet-950/50 py-6 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),inset_0_25px_40px_-15px_rgba(255,255,255,0.08)]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-center text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] mb-5">
           {{ $t('exhibition.hero.foundationPartners') }}
@@ -61,8 +61,8 @@
               v-for="partner in partners"
               :key="partner.id"
               :href="`/organizations/${partner.id}`"
-              class="flex flex-col items-center gap-1 transition-all duration-200 hover:border-yellow-400 hover:bg-yellow-500/20 rounded-lg border border-transparent p-2"
-              :class="isExclusive(partner) ? 'border-yellow-400/60 bg-yellow-500/10' : 'border-white/10 bg-white/5'"
+              class="flex flex-col items-center gap-1 transition-all duration-200 hover:border-black hover:bg-violet-950/20 rounded-lg border border-transparent p-2"
+              :class="isExclusive(partner) ? 'border-black/60 bg-violet-950/10' : 'border-white/10 bg-white/5'"
             >
               <div class="h-10 w-16 sm:h-12 sm:w-24 flex items-center justify-center overflow-hidden rounded bg-white/10">
                 <img
@@ -76,7 +76,7 @@
               <span class="text-[10px] sm:text-xs text-white/80 max-w-[6rem] truncate" :title="partner.name">{{ partner.name }}</span>
               <span
                 v-if="isExclusive(partner)"
-                class="text-[9px] uppercase tracking-wider text-yellow-400 font-semibold"
+                class="text-[9px] uppercase tracking-wider text-white font-semibold"
               >
                 {{ $t('exhibition.hero.featured') }}
               </span>

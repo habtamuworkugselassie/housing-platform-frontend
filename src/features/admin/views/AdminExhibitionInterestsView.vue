@@ -17,7 +17,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400" />
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black" />
         </div>
 
         <div v-else-if="error" class="px-6 py-8 text-center text-red-300 text-sm">
@@ -66,7 +66,7 @@
               <tr
                 v-for="row in rows"
                 :key="`ex-${row.id}`"
-                class="hover:bg-yellow-500/5 transition-colors align-top"
+                class="hover:bg-violet-950/5 transition-colors align-top"
               >
                 <td class="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
                   {{ formatDate(row.createdAt) }}
@@ -137,7 +137,7 @@
                     <router-link
                       v-if="row.organizationId"
                       :to="`/organizations/${row.organizationId}`"
-                      class="text-yellow-400 hover:text-yellow-300 text-xs underline-offset-2 hover:underline"
+                      class="text-black hover:text-black text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -154,7 +154,7 @@
                       <button
                         type="button"
                         :disabled="exhibitionVerifyDisabled(row) || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="openVerifyExhibitionContact(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyRegistrantContact') }}
@@ -162,7 +162,7 @@
                       <button
                         type="button"
                         :disabled="!row.contactVerifiedAt || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="approveExhibitionOrg(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyApproveOrganization') }}
@@ -184,7 +184,7 @@
               <tr
                 v-for="app in orphanSponsorshipApps"
                 :key="`mkt-${app.id}`"
-                class="hover:bg-yellow-500/5 align-top bg-zinc-950/40"
+                class="hover:bg-violet-950/5 align-top bg-zinc-950/40"
               >
                 <td class="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
                   {{ formatDate(app.createdAt) }}
@@ -209,7 +209,7 @@
                     <router-link
                       v-if="app.organizationId"
                       :to="`/organizations/${app.organizationId}`"
-                      class="text-yellow-400 hover:text-yellow-300 text-xs underline-offset-2 hover:underline"
+                      class="text-black hover:text-black text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -239,7 +239,7 @@
             <button
               type="button"
               :disabled="page <= 0 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goPrev"
             >
               {{ $t('common.previous') }}
@@ -247,7 +247,7 @@
             <button
               type="button"
               :disabled="page >= totalPages - 1 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-yellow-500/20 hover:border-yellow-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goNext"
             >
               {{ $t('common.next') }}
@@ -270,7 +270,7 @@
     <!-- Reject organization (exhibition lead — PENDING_APPROVAL / SPONSORSHIP_PENDING without pending app row) -->
     <div
       v-if="showRejectExhibitionOrgDialog"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
       @click.self="showRejectExhibitionOrgDialog = false"
     >
       <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
@@ -279,7 +279,7 @@
         <textarea
           v-model="rejectExhibitionOrgReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
@@ -292,7 +292,7 @@
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-yellow-400"
+            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-violet-950"
             @click="confirmRejectExhibitionOrg"
           >
             {{ $t('admin.reject') }}
@@ -304,7 +304,7 @@
     <!-- Reject marketplace sponsorship -->
     <div
       v-if="showRejectSponsorshipDialog"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
       @click.self="showRejectSponsorshipDialog = false"
     >
       <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
@@ -312,7 +312,7 @@
         <textarea
           v-model="rejectSponsorshipReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
@@ -325,7 +325,7 @@
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-yellow-400"
+            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-violet-950"
             @click="confirmRejectSponsorship"
           >
             {{ $t('admin.reject') }}

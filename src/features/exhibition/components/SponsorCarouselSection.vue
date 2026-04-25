@@ -70,7 +70,7 @@
               <component
                 :is="slide.realEstateCompanyId ? 'router-link' : 'div'"
                 :to="slide.realEstateCompanyId ? `/organizations/${slide.realEstateCompanyId}?from=${$route.path}` : undefined"
-                class="group block h-auto min-h-0 w-full max-w-[min(100%,12.5rem)] sm:w-fit sm:max-w-md md:w-[min(100%,28rem)] text-left rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/10 md:border-white/15 md:border-l-4 md:border-l-yellow-400 bg-black/20 sm:bg-black/35 md:bg-gradient-to-br md:from-black/55 md:via-black/40 md:to-zinc-900/45 backdrop-blur-sm sm:backdrop-blur-md md:backdrop-blur-xl px-2 py-2 sm:px-6 sm:py-7 md:px-8 md:py-8 lg:px-9 lg:py-9 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(255,255,255,0.1),0_25px_50px_-12px_rgba(0,0,0,0.45)] md:shadow-[inset_0_1px_0_0_rgba(250,204,21,0.06),0_32px_64px_-16px_rgba(0,0,0,0.55),0_0_40px_-8px_rgba(250,204,21,0.12)] transition-all duration-300 hover:-translate-y-0.5 md:hover:-translate-y-1 hover:border-yellow-400/35 md:hover:border-l-yellow-400 hover:shadow-[0_36px_70px_-18px_rgba(0,0,0,0.6),0_0_48px_-6px_rgba(250,204,21,0.18)] cursor-pointer shrink-0"
+                class="group block h-auto min-h-0 w-full max-w-[min(100%,12.5rem)] sm:w-fit sm:max-w-md md:w-[min(100%,28rem)] text-left rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/10 md:border-white/15 md:border-l-4 md:border-l-black bg-violet-950/20 sm:bg-violet-950/35 md:bg-gradient-to-br md:from-black/55 md:via-black/40 md:to-zinc-900/45 backdrop-blur-sm sm:backdrop-blur-md md:backdrop-blur-xl px-2 py-2 sm:px-6 sm:py-7 md:px-8 md:py-8 lg:px-9 lg:py-9 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(255,255,255,0.1),0_25px_50px_-12px_rgba(0,0,0,0.45)] md:shadow-[inset_0_1px_0_0_rgba(250,204,21,0.06),0_32px_64px_-16px_rgba(0,0,0,0.55),0_0_40px_-8px_rgba(250,204,21,0.12)] transition-all duration-300 hover:-translate-y-0.5 md:hover:-translate-y-1 hover:border-black/35 md:hover:border-l-black hover:shadow-[0_36px_70px_-18px_rgba(0,0,0,0.6),0_0_48px_-6px_rgba(250,204,21,0.18)] cursor-pointer shrink-0"
               >
                 <!-- Mobile: single horizontal strip (short). sm+: stacked / desktop layout -->
                 <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-stretch sm:gap-0 md:flex-row md:items-center md:gap-5 lg:gap-6">
@@ -92,7 +92,7 @@
                     {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
                   </div>
                   <div class="min-w-0 flex-1 break-words md:pl-1 lg:pl-2">
-                    <p class="hidden md:block text-[11px] font-semibold uppercase tracking-[0.22em] text-yellow-400/95 mb-1.5 lg:mb-2">
+                    <p class="hidden md:block text-[11px] font-semibold uppercase tracking-[0.22em] text-white mb-1.5 lg:mb-2">
                       {{ $t('exhibition.sponsorCarousel.featuredPartner') }}
                     </p>
                     <h3 class="text-xs sm:text-2xl md:text-2xl lg:text-[1.65rem] font-bold text-white uppercase md:normal-case md:font-semibold md:tracking-tight flex items-start sm:items-center gap-1 sm:gap-2 md:gap-2.5 flex-wrap leading-snug sm:leading-tight md:leading-snug line-clamp-2 sm:line-clamp-none">
@@ -101,10 +101,10 @@
                         <VerifiedBadge :level="slide.realEstateCompanyVerificationLevel || (slide.realEstateCompanyVerified ? 'FULL' : null)" size="md" />
                       </span>
                     </h3>
-                    <p v-if="slide.address" class="hidden sm:block mt-1 sm:mt-2 md:mt-2.5 text-xs sm:text-base md:text-[15px] text-gray-300 md:text-gray-300/95 leading-relaxed line-clamp-2 sm:line-clamp-none md:line-clamp-2 lg:line-clamp-none">
+                    <p v-if="slide.address" class="hidden sm:block mt-1 sm:mt-2 md:mt-2.5 text-xs sm:text-base md:text-[15px] text-white/85 md:text-white/85 leading-relaxed line-clamp-2 sm:line-clamp-none md:line-clamp-2 lg:line-clamp-none">
                       {{ slide.address }}{{ slide.city ? `, ${slide.city}` : '' }}
                     </p>
-                    <p v-else-if="slide.city" class="hidden sm:block mt-1 sm:mt-2 md:mt-2.5 text-xs sm:text-base md:text-[15px] text-gray-300">
+                    <p v-else-if="slide.city" class="hidden sm:block mt-1 sm:mt-2 md:mt-2.5 text-xs sm:text-base md:text-[15px] text-white/85">
                       {{ slide.city }}
                     </p>
                     <span
@@ -124,7 +124,7 @@
         <template v-if="slides.length > 1">
           <button
             type="button"
-            class="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-black/55 hover:border-yellow-400/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 sm:left-6 md:left-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
+            class="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-violet-950/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-violet-950/55 hover:border-black/40 focus:outline-none focus:ring-2 focus:ring-black/50 sm:left-6 md:left-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
             aria-label="Previous"
             @click="prev"
           >
@@ -132,7 +132,7 @@
           </button>
           <button
             type="button"
-            class="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-black/55 hover:border-yellow-400/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 sm:right-6 md:right-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
+            class="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-violet-950/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-violet-950/55 hover:border-black/40 focus:outline-none focus:ring-2 focus:ring-black/50 sm:right-6 md:right-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
             aria-label="Next"
             @click="next"
           >
@@ -142,7 +142,7 @@
       </template>
     </div>
 
-    <!-- Sponsor list at bottom: blurred black transition (no solid), bordered -->
+    <!-- Sponsor list at bottom: blurred violet-950 transition (no solid), bordered -->
     <div
       v-if="slides.length > 0"
       class="sponsor-strip relative z-10 -mt-16 flex-shrink-0 border-t border-white/10 px-4 py-2 pt-4 md:px-8 lg:px-12 backdrop-blur-xl bg-gradient-to-b from-transparent via-black/40 to-black/80 shadow-[inset_0_25px_40px_-15px_rgba(255,255,255,0.06)]"
@@ -152,7 +152,7 @@
           v-for="(slide, index) in slides"
           :key="slide.id + (slide.realEstateCompanyId || '') + index"
           type="button"
-          class="flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 flex-shrink-0 items-center justify-center rounded-md overflow-hidden bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 hover:bg-yellow-500/30 hover:border-yellow-400 border border-transparent"
+          class="flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 flex-shrink-0 items-center justify-center rounded-md overflow-hidden bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-950/30 hover:border-black border border-transparent"
           :class="currentIndex === index ? 'ring-2 ring-white sm:scale-110 scale-105' : ''"
           :aria-label="(slide.realEstateCompanyName || slide.title) + (currentIndex === index ? ' (current)' : '')"
           :title="slide.realEstateCompanyName || slide.title"

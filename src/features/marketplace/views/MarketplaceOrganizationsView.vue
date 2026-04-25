@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <!-- Same top banner as real-estate home: GOLD sponsors for this organization type -->
     <div
       v-if="config?.type"
@@ -33,7 +33,7 @@
               <select
                 id="marketplace-supplier-subcat"
                 v-model="selectedSubcategoryId"
-                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/60"
                 @change="onSubcategoryFilterChange"
               >
                 <option value="">{{ $t('marketplace.allSubcategories') }}</option>
@@ -49,7 +49,7 @@
                 v-model.trim="searchQuery"
                 type="search"
                 :placeholder="$t('home.searchCompanies')"
-                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/60"
               />
             </div>
           </div>
@@ -60,7 +60,7 @@
       </div>
 
       <div v-if="loading" class="flex justify-center py-16">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-400" />
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-black" />
       </div>
 
       <div v-else-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-200">
@@ -82,13 +82,13 @@
           :class="[
             'group relative overflow-hidden rounded-2xl bg-zinc-900/90 transition-colors',
             orgCardBorderClass(org),
-            'hover:border-yellow-400 hover:bg-yellow-500/20'
+            'hover:border-black hover:bg-violet-950/20'
           ]"
         >
           <div :class="orgCardTopBarClass(org)" />
           <div
             v-if="org.isSponsored && isPremierListingTier(org.sponsorshipType)"
-            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide border-2 border-white bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-950 shadow-lg"
+            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide border-2 border-white bg-gradient-to-r from-black via-amber-500 to-orange-500 text-white shadow-lg"
           >
             {{ $t('property.premier') }}
           </div>
@@ -131,7 +131,7 @@
                   <span
                     v-for="sc in org.supplierSubcategories"
                     :key="sc.id"
-                    class="inline-flex rounded-full border border-yellow-400/40 bg-yellow-500/15 px-2 py-0.5 text-[10px] font-medium text-yellow-200/95"
+                    class="inline-flex rounded-full border border-black/40 bg-violet-950/15 px-2 py-0.5 text-[10px] font-medium text-white"
                   >
                     {{ sc.name }}
                   </span>
@@ -149,24 +149,24 @@
               {{ org.address || '-' }}
             </p>
 
-            <div class="mt-4 space-y-2 text-xs text-gray-300">
+            <div class="mt-4 space-y-2 text-xs text-white/90">
               <div v-if="primaryPhone(org)" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px]">TEL</span>
+                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] text-white">TEL</span>
                 <span class="truncate">{{ primaryPhone(org) }}</span>
               </div>
               <div v-if="org.email" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px]">@</span>
+                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] text-white">@</span>
                 <span class="truncate">{{ org.email }}</span>
               </div>
               <div v-if="org.website" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px]">WEB</span>
+                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] text-white">WEB</span>
                 <span class="truncate">{{ normalizedWebsite(org.website) }}</span>
               </div>
             </div>
 
             <div class="mt-4 flex items-center justify-between">
-              <span class="text-xs font-medium text-yellow-300/90">{{ $t('common.viewDetails') }}</span>
-              <span class="text-yellow-300 transition-transform duration-200 group-hover:translate-x-1">-&gt;</span>
+              <span class="text-xs font-medium text-white">{{ $t('common.viewDetails') }}</span>
+              <span class="text-white transition-transform duration-200 group-hover:translate-x-1">-&gt;</span>
             </div>
           </div>
           <div
@@ -194,7 +194,7 @@
           type="button"
           @click="goToPreviousPage"
           :disabled="currentPage <= 1"
-          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-yellow-400 hover:text-yellow-300 disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-black hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -203,7 +203,7 @@
           type="button"
           @click="goToNextPage"
           :disabled="currentPage >= totalPages"
-          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-yellow-400 hover:text-yellow-300 disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-black hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -391,7 +391,7 @@ function hasOrgSocial(org) {
 
 function orgCardBorderClass(org) {
   if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
-    return 'border-2 border-yellow-400'
+    return 'border-2 border-black'
   }
   if (org?.isSponsored) {
     return 'border border-white/10 ring-1 ring-white/15'
@@ -401,12 +401,12 @@ function orgCardBorderClass(org) {
 
 function orgCardTopBarClass(org) {
   if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
-    return 'h-1 w-full bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500'
+    return 'h-1 w-full bg-gradient-to-r from-black via-amber-500 to-orange-500'
   }
   if (org?.isSponsored && isGoldListingTier(org.sponsorshipType)) {
     return 'h-1 w-full bg-gradient-to-r from-blue-400/90 via-indigo-400/70 to-purple-500/50'
   }
-  return 'h-1 w-full bg-gradient-to-r from-yellow-400/80 via-orange-300/70 to-transparent'
+  return 'h-1 w-full bg-gradient-to-r from-black/80 via-orange-300/70 to-transparent'
 }
 
 function goToOrganization(id) {

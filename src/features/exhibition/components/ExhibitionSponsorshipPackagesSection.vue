@@ -1,24 +1,24 @@
 <template>
   <section
     id="sponsorship-packages"
-    class="relative scroll-mt-20 border-t-2 border-yellow-400/50 bg-gradient-to-b from-zinc-900 to-black py-16 lg:py-24 text-white"
+    class="relative scroll-mt-20 border-t-2 border-black/50 bg-gradient-to-b from-violet-900 to-violet-950 py-16 lg:py-24 text-white"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl mb-10 lg:mb-14">
-        <p class="text-yellow-400 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+        <p class="text-white text-xs font-semibold uppercase tracking-[0.2em] mb-3">
           {{ $t('exhibition.sponsorshipPackages.eyebrow') }}
         </p>
         <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white mb-4">
           {{ $t('exhibition.sponsorshipPackages.title') }}
         </h2>
-        <p class="text-gray-400 text-base leading-relaxed">
+        <p class="text-white/80 text-base leading-relaxed">
           {{ $t('exhibition.sponsorshipPackages.subtitle') }}
         </p>
       </div>
 
       <div v-if="loading" class="flex justify-center py-16">
         <div
-          class="h-10 w-10 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent"
+          class="h-10 w-10 animate-spin rounded-full border-2 border-black border-t-transparent"
           aria-hidden="true"
         />
       </div>
@@ -30,7 +30,7 @@
         </button>
       </p>
 
-      <p v-else-if="!sortedPackages.length" class="text-center text-sm text-gray-500 py-12">
+      <p v-else-if="!sortedPackages.length" class="text-center text-sm text-white/70 py-12">
         {{ $t('exhibition.sponsorshipPackages.empty') }}
       </p>
 
@@ -95,17 +95,17 @@
                 </h3>
                 <p
                   v-if="pkg.description"
-                  class="shrink-0 text-sm text-gray-400 leading-relaxed mb-4 line-clamp-3"
+                  class="shrink-0 text-sm text-white/80 leading-relaxed mb-4 line-clamp-3"
                 >
                   {{ pkg.description }}
                 </p>
                 <!-- Scroll features only so payment notes + CTA stay fully visible in equal-height grid rows -->
                 <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-white/70 mb-2">
                     {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                   </p>
                   <ul
-                    class="space-y-2 text-sm text-gray-300 leading-relaxed list-disc pl-4 pb-1"
+                    class="space-y-2 text-sm text-white/85 leading-relaxed list-disc pl-4 pb-1"
                     :class="cardTheme(pkg).bulletMarker"
                   >
                     <li v-for="(line, idx) in featurePreviewBullets(pkg)" :key="idx">
@@ -115,7 +115,7 @@
                   <button
                     v-if="hasTruncatedFeatures(pkg)"
                     type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
+                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
                     :class="cardTheme(pkg).linkMuted"
                     @click="openDetailsModal(pkg)"
                   >
@@ -124,7 +124,7 @@
                   <button
                     v-else-if="featureBullets(pkg.features).length === 0 && (pkg.description || pkg.notes)"
                     type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
+                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
                     :class="cardTheme(pkg).linkMuted"
                     @click="openDetailsModal(pkg)"
                   >
@@ -133,14 +133,14 @@
                 </div>
                 <div
                   v-if="pkg.notes"
-                  class="mt-4 shrink-0 rounded-lg border px-3 py-3 text-xs leading-relaxed text-gray-300 break-words [overflow-wrap:anywhere]"
+                  class="mt-4 shrink-0 rounded-lg border px-3 py-3 text-xs leading-relaxed text-white/85 break-words [overflow-wrap:anywhere]"
                   :class="cardTheme(pkg).notesBox"
                 >
                   {{ pkg.notes }}
                 </div>
                 <button
                   type="button"
-                  class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md group-hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-950"
+                  class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md group-hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950"
                   :class="cardTheme(pkg).primaryCta"
                   @click="openRegisterModal(pkg)"
                 >
@@ -157,7 +157,7 @@
       >
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
           @click="openRegisterModal(null)"
         >
           {{ $t('exhibition.cta.standEnquiry') }}
@@ -166,7 +166,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:text-white transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-zinc-900"
         >
           {{ $t('exhibition.cta.viewBrochure') }}
         </a>
@@ -177,7 +177,7 @@
     <Teleport to="body">
       <div
         v-if="detailsModalPackage"
-        class="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4 bg-black/75 backdrop-blur-md"
+        class="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4 bg-violet-950/75 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         :aria-labelledby="detailsTitleId"
@@ -245,7 +245,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                   :class="detailsModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeDetailsModal"
@@ -254,15 +254,15 @@
                 </button>
               </div>
               <div class="flex-1 overflow-y-auto space-y-6 px-5 pt-5 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
-                <p v-if="detailsModalPackage.description" class="text-sm text-gray-300 leading-relaxed">
+                <p v-if="detailsModalPackage.description" class="text-sm text-white/85 leading-relaxed">
                   {{ detailsModalPackage.description }}
                 </p>
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-white/70 mb-3">
                     {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                   </p>
                   <ul
-                    class="space-y-2.5 text-sm text-gray-300 leading-relaxed list-disc pl-4"
+                    class="space-y-2.5 text-sm text-white/85 leading-relaxed list-disc pl-4"
                     :class="detailsModalTheme.bulletMarker"
                   >
                     <li v-for="(line, idx) in featureBullets(detailsModalPackage.features)" :key="idx">
@@ -271,7 +271,7 @@
                   </ul>
                   <p
                     v-if="!featureBullets(detailsModalPackage.features).length"
-                    class="text-sm text-gray-500 italic"
+                    class="text-sm text-white/70 italic"
                   >
                     {{ $t('exhibition.sponsorshipPackages.noFeaturesListed') }}
                   </p>
@@ -284,7 +284,7 @@
                   <p class="text-xs font-semibold uppercase tracking-wider mb-2" :class="detailsModalTheme.notesLabel">
                     {{ $t('exhibition.sponsorshipPackages.notesHeading') }}
                   </p>
-                  <p class="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">
+                  <p class="text-sm text-white/85 leading-relaxed whitespace-pre-wrap">
                     {{ detailsModalPackage.notes }}
                   </p>
                 </div>
@@ -319,7 +319,7 @@
     <Teleport to="body">
       <div
         v-if="registerModalOpen"
-        class="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4 bg-black/75 backdrop-blur-md"
+        class="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4 bg-violet-950/75 backdrop-blur-md"
         role="dialog"
         aria-modal="true"
         :aria-labelledby="registerTitleId"
@@ -364,7 +364,7 @@
                   <h3 :id="registerTitleId" class="text-xl font-bold text-white tracking-tight">
                     {{ $t('exhibition.sponsorshipPackages.registerModalTitle') }}
                   </h3>
-                  <p class="mt-1.5 text-sm text-gray-400 leading-relaxed">
+                  <p class="mt-1.5 text-sm text-white/80 leading-relaxed">
                     {{ $t('exhibition.sponsorshipPackages.registerModalSubtitle') }}
                   </p>
                   <p
@@ -378,7 +378,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                   :class="registerModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeRegisterModal"
@@ -398,7 +398,7 @@
                     <CheckIcon class="h-8 w-8 text-green-300" />
                   </div>
                   <p class="text-green-200 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
-                  <p class="text-sm text-gray-400">{{ $t('exhibition.registerInterest.successMessage') }}</p>
+                  <p class="text-sm text-white/80">{{ $t('exhibition.registerInterest.successMessage') }}</p>
                   <button
                     type="button"
                     class="mt-6 px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-colors"

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
       <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ t('property.propertiesAndBuildings') }}</h1>
@@ -16,7 +16,7 @@
             v-model="filters.city"
             type="text"
             :placeholder="$t('property.filterByCity')"
-            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
             @input="loadProperties"
           />
         </div>
@@ -25,7 +25,7 @@
           <select
             id="status"
             v-model="filters.status"
-            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
             @change="loadProperties"
           >
             <option value="">{{ $t('filters.all') }}</option>
@@ -37,7 +37,7 @@
         <div class="flex items-end sm:col-span-2 lg:col-span-1">
           <button
             @click="clearFilters"
-            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400"
+            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950"
           >
             {{ $t('filters.clearFilters') }}
           </button>
@@ -47,7 +47,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       <p class="mt-4 text-gray-400">{{ $t('filters.loadingProperties') }}</p>
     </div>
 
@@ -57,9 +57,9 @@
         v-for="item in combinedList"
         :key="`${item.type}-${item.id}`"
         :class="{
-          'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': !item.isSponsored,
-          'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-          'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && isGoldListingTier(item.sponsorshipType)
+          'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-black hover:bg-violet-950/20': !item.isSponsored,
+          'bg-zinc-900 border-2 border-black rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-violet-950/20': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+          'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-black hover:bg-violet-950/20': item.isSponsored && isGoldListingTier(item.sponsorshipType)
         }"
         @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
       >
@@ -75,7 +75,7 @@
         <div v-if="item.isSponsored" class="relative">
           <div
             :class="{
-              'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': isPremierListingTier(item.sponsorshipType),
+              'bg-gradient-to-r from-black via-amber-500 to-orange-500 text-black shadow-2xl': isPremierListingTier(item.sponsorshipType),
               'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': isGoldListingTier(item.sponsorshipType)
             }"
             class="absolute top-2 right-2 sm:top-3 sm:right-3 px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1 sm:gap-1.5 animate-pulse border-2 border-white"
@@ -87,7 +87,7 @@
           </div>
           <!-- Additional crown for premier tier on properties -->
           <div v-if="isPremierListingTier(item.sponsorshipType) && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
-            <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+            <div class="bg-violet-950 text-black px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
               <span class="text-xs sm:text-sm">👑</span>
               <span class="hidden sm:inline">{{ $t('property.featured') }}</span>
             </div>
@@ -110,14 +110,14 @@
           <div 
             v-if="item.isSponsored"
             :class="{
-              'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': isPremierListingTier(item.sponsorshipType),
+              'absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent': isPremierListingTier(item.sponsorshipType),
               'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': isGoldListingTier(item.sponsorshipType)
             }"
           ></div>
           <!-- Premium Glow Effect -->
           <div 
             v-if="item.isSponsored && isPremierListingTier(item.sponsorshipType)"
-            class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
+            class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-amber-200/20 animate-pulse"
           ></div>
         </div>
         <div class="p-4 sm:p-6">
@@ -130,7 +130,7 @@
           <div class="flex flex-wrap items-center gap-2 mb-2">
             <!-- Property Price -->
             <div v-if="item.type === 'property'" class="flex flex-col gap-1">
-              <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-yellow-400">{{ formatPrice(item.priceETB, 'ETB') }}</p>
+              <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-black">{{ formatPrice(item.priceETB, 'ETB') }}</p>
               <p v-if="item.priceUSD" class="text-base sm:text-lg font-semibold text-gray-400">{{ formatPrice(item.priceUSD, 'USD') }}</p>
               <p v-if="!item.priceETB && !item.priceUSD" class="text-base sm:text-lg text-gray-500">
                 {{ $t('property.priceNotSet') }}
@@ -138,7 +138,7 @@
             </div>
             <!-- Building Units Info -->
             <div v-else class="flex flex-col gap-1">
-              <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
+              <p class="text-xl sm:text-2xl font-bold text-black">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
               <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} {{ $t('property.availableCount') }}</p>
             </div>
             <span v-if="item.category" :class="{
@@ -159,7 +159,7 @@
               <span class="text-xs text-gray-500">{{ $t('property.constructionLabel') }}:</span>
               <div class="flex-1 bg-zinc-700 rounded-full h-2">
                 <div 
-                  class="bg-yellow-400 h-2 rounded-full transition-all"
+                  class="bg-violet-950 h-2 rounded-full transition-all"
                   :style="{ width: item.constructionPercentage + '%' }"
                 ></div>
               </div>
@@ -167,10 +167,10 @@
             </div>
           </div>
           <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 mb-2 flex-wrap">
-            <svg class="w-3 h-3 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3 text-black shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
-            <span class="text-xs font-semibold text-yellow-400">{{ item.realEstateCompanyName }}</span>
+            <span class="text-xs font-semibold text-black">{{ item.realEstateCompanyName }}</span>
             <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
           </div>
           <!-- Property Features -->
@@ -189,7 +189,7 @@
             <span
               :class="{
                 'bg-green-500/30 text-green-200': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
-                'bg-yellow-500/30 text-yellow-200': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
+                'bg-violet-950/30 text-black': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
                 'bg-gray-500/30 text-gray-300': item.status === 'SOLD' || item.status === 'PLANNED'
               }"
               class="inline-block px-2 py-1 text-xs font-semibold rounded"
@@ -212,7 +212,7 @@
         <button
           @click="changePage(currentPage - 1)"
           :disabled="currentPage === 0"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
         >
           {{ $t('common.previous') }}
         </button>
@@ -222,7 +222,7 @@
         <button
           @click="changePage(currentPage + 1)"
           :disabled="currentPage >= totalPages - 1"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
         >
           {{ $t('common.next') }}
         </button>

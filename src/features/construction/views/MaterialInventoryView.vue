@@ -49,12 +49,12 @@
     </div>
 
     <!-- Low Stock Alert -->
-    <div v-if="lowStockItems.length > 0" class="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+    <div v-if="lowStockItems.length > 0" class="mb-6 bg-violet-950 border border-black rounded-lg p-4">
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-yellow-600">⚠️</span>
-        <h3 class="text-sm font-semibold text-yellow-800">{{ $t('construction.lowStockAlert') }}</h3>
+        <span class="text-black">⚠️</span>
+        <h3 class="text-sm font-semibold text-black">{{ $t('construction.lowStockAlert') }}</h3>
       </div>
-      <p class="text-sm text-yellow-700">{{ $t('construction.lowStockItems', { count: lowStockItems.length }) }}</p>
+      <p class="text-sm text-black">{{ $t('construction.lowStockItems', { count: lowStockItems.length }) }}</p>
     </div>
 
     <!-- Loading State -->

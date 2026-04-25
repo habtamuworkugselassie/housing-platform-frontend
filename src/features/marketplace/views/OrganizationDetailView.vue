@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <div v-if="loading" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <div class="text-center">
-        <div class="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-yellow-400" />
+        <div class="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-black" />
         <p class="mt-4 text-gray-400">Loading organization details...</p>
       </div>
     </div>
@@ -17,7 +17,7 @@
       <button
         @click="goBack"
         type="button"
-        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-yellow-400 focus:outline-none"
+        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-black focus:outline-none"
       >
         <span aria-hidden="true">&larr;</span>
         <span>{{ $t('common.back') }}</span>
@@ -54,7 +54,7 @@
           <button
             v-if="galleryMedia.length > 1"
             type="button"
-            class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-yellow-400 hover:text-black"
+            class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/50 p-2 text-white hover:bg-violet-950 hover:text-black"
             @click="previousMedia"
           >
             <span aria-hidden="true">&lt;</span>
@@ -62,14 +62,14 @@
           <button
             v-if="galleryMedia.length > 1"
             type="button"
-            class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-yellow-400 hover:text-black"
+            class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/50 p-2 text-white hover:bg-violet-950 hover:text-black"
             @click="nextMedia"
           >
             <span aria-hidden="true">&gt;</span>
           </button>
 
           <div class="absolute right-4 top-4 flex items-center gap-2">
-            <span class="rounded-full border border-white/30 bg-black/40 px-3 py-1 text-[11px] uppercase tracking-wide text-gray-100">
+            <span class="rounded-full border border-white/30 bg-violet-950/40 px-3 py-1 text-[11px] uppercase tracking-wide text-gray-100">
               {{ orgTypeLabel }}
             </span>
             <span :class="statusBadgeClass" class="rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
@@ -98,7 +98,7 @@
                   <span
                     v-for="sc in organization.supplierSubcategories"
                     :key="sc.id"
-                    class="inline-flex rounded-full border border-yellow-400/40 bg-yellow-500/20 px-2.5 py-1 text-xs font-medium text-yellow-100"
+                    class="inline-flex rounded-full border border-black/40 bg-violet-950/20 px-2.5 py-1 text-xs font-medium text-black"
                   >
                     {{ sc.name }}
                   </span>
@@ -125,7 +125,7 @@
                 type="button"
                 :class="[
                   'h-12 w-16 overflow-hidden rounded-md border-2 object-cover transition-all',
-                  currentMediaIndex === index ? 'border-yellow-400 opacity-100 shadow-md transform scale-105 bg-white/10' : 'border-transparent opacity-60 hover:opacity-100 bg-white/5 hover:border-white/30'
+                  currentMediaIndex === index ? 'border-black opacity-100 shadow-md transform scale-105 bg-white/10' : 'border-transparent opacity-60 hover:opacity-100 bg-white/5 hover:border-white/30'
                 ]"
                 @click="currentMediaIndex = index"
               >
@@ -201,7 +201,7 @@
                       <span
                         v-for="sc in organization.supplierSubcategories"
                         :key="sc.id"
-                        class="rounded-full border border-yellow-400/35 bg-yellow-500/15 px-2 py-0.5 text-xs text-yellow-100"
+                        class="rounded-full border border-black/35 bg-violet-950/15 px-2 py-0.5 text-xs text-black"
                       >
                         {{ sc.name }}
                       </span>
@@ -238,7 +238,7 @@
                     :href="websiteHref"
                     target="_blank"
                     rel="noopener"
-                    class="text-yellow-300 hover:text-yellow-200 hover:underline"
+                    class="text-white hover:text-white hover:underline"
                   >
                     {{ websiteDisplay }}
                   </a>
@@ -264,7 +264,7 @@
               :href="googleMapsDirectionsUrl(organization.latitude, organization.longitude)"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-yellow-400 hover:bg-yellow-500/20 transition-colors text-sm font-medium"
+              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-black hover:bg-violet-950/20 transition-colors text-sm font-medium"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
@@ -308,7 +308,7 @@
                 />
                 <span
                   :class="[
-                    'absolute right-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold bg-black/60 text-white'
+                    'absolute right-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold bg-violet-950/60 text-white'
                   ]"
                 >
                   {{ item.mediaKind || 'MEDIA' }}
@@ -330,7 +330,7 @@
                     v-for="(phone, index) in organizationPhoneDisplay"
                     :key="`${phone}-${index}`"
                     :href="`tel:${phone}`"
-                    class="block text-yellow-300 hover:text-yellow-200 hover:underline"
+                    class="block text-white hover:text-white hover:underline"
                   >
                     {{ phone }}
                   </a>
@@ -342,7 +342,7 @@
                 <a
                   v-if="organization.email"
                   :href="`mailto:${organization.email}`"
-                  class="mt-2 block text-yellow-300 hover:text-yellow-200 hover:underline break-all"
+                  class="mt-2 block text-white hover:text-white hover:underline break-all"
                 >
                   {{ organization.email }}
                 </a>
@@ -356,7 +356,7 @@
                   :href="websiteHref"
                   target="_blank"
                   rel="noopener"
-                  class="mt-2 block text-yellow-300 hover:text-yellow-200 hover:underline break-all"
+                  class="mt-2 block text-white hover:text-white hover:underline break-all"
                 >
                   {{ websiteDisplay }}
                 </a>
@@ -384,13 +384,13 @@
               <router-link
                 v-if="authStore.hasRole('ADMIN')"
                 to="/admin/sponsorships"
-                class="shrink-0 text-xs font-medium text-yellow-300 hover:text-yellow-200 hover:underline"
+                class="shrink-0 text-xs font-medium text-white hover:text-white hover:underline"
               >
                 Manage in admin
               </router-link>
             </div>
             <div v-if="loadingSponsorshipApplications" class="mt-4 flex items-center gap-2 text-sm text-gray-400">
-              <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
+              <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
               Loading…
             </div>
             <template v-else>
@@ -398,13 +398,13 @@
                 <li
                   v-for="app in pendingSponsorshipApplications"
                   :key="app.id"
-                  class="rounded-lg border border-yellow-400/30 bg-yellow-500/10 p-3"
+                  class="rounded-lg border border-black/30 bg-violet-950/10 p-3"
                 >
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <p class="text-sm font-semibold text-white">
                       {{ app.sponsorshipName || app.sponsorship?.name || 'Sponsorship package' }}
                     </p>
-                    <span class="rounded-full border border-yellow-400/40 bg-yellow-500/30 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-yellow-200">
+                    <span class="rounded-full border border-black/40 bg-violet-950/30 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-black">
                       Pending
                     </span>
                   </div>
@@ -446,7 +446,7 @@
         </div>
         
         <div v-if="loadingLinkedItems" class="flex items-center justify-center py-12">
-          <div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-yellow-400"></div>
+          <div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-black"></div>
         </div>
         
         <div v-else-if="linkedItems.length">
@@ -455,9 +455,9 @@
               v-for="item in paginatedLinkedItems"
               :key="`${item.type}-${item.id}`"
             :class="{
-              'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': !item.isSponsored,
-              'bg-zinc-900 border-2 border-yellow-400 rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-yellow-500/20': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-              'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-yellow-400 hover:bg-yellow-500/20': item.isSponsored && isGoldListingTier(item.sponsorshipType)
+              'bg-zinc-900 border border-white/10 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-black hover:bg-violet-950/20': !item.isSponsored,
+              'bg-zinc-900 border-2 border-black rounded-lg overflow-hidden transition-all cursor-pointer hover:bg-violet-950/20': item.isSponsored && isPremierListingTier(item.sponsorshipType),
+              'bg-zinc-900 border-2 border-blue-400/60 rounded-lg overflow-hidden transition-all cursor-pointer hover:border-black hover:bg-violet-950/20': item.isSponsored && isGoldListingTier(item.sponsorshipType)
             }"
             @click="item.type === 'property' ? $router.push(`/properties/${item.id}`) : $router.push(`/buildings/${item.id}`)"
           >
@@ -473,7 +473,7 @@
             <div v-if="item.isSponsored" class="relative">
               <div
                 :class="{
-                  'bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 text-yellow-900 shadow-2xl': isPremierListingTier(item.sponsorshipType),
+                  'bg-gradient-to-r from-black via-amber-500 to-orange-500 text-black shadow-2xl': isPremierListingTier(item.sponsorshipType),
                   'bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 text-blue-900 shadow-xl': isGoldListingTier(item.sponsorshipType)
                 }"
                 class="absolute top-2 right-2 sm:top-3 sm:right-3 px-2 sm:px-4 py-1 sm:py-2 rounded-full text-xs font-extrabold z-20 flex items-center gap-1 sm:gap-1.5 animate-pulse border-2 border-white"
@@ -484,7 +484,7 @@
                 <span class="sm:hidden uppercase">{{ isPremierListingTier(item.sponsorshipType) ? 'P' : 'S' }}</span>
               </div>
               <div v-if="isPremierListingTier(item.sponsorshipType) && item.type === 'property'" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-20">
-                <div class="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
+                <div class="bg-violet-950 text-black px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold shadow-lg border-2 border-white flex items-center gap-1">
                   <span class="text-xs sm:text-sm">👑</span>
                   <span class="hidden sm:inline">{{ $t('property.featured') }}</span>
                 </div>
@@ -506,13 +506,13 @@
               <div 
                 v-if="item.isSponsored"
                 :class="{
-                  'absolute inset-0 bg-gradient-to-t from-yellow-400/30 via-yellow-300/10 to-transparent': isPremierListingTier(item.sponsorshipType),
+                  'absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent': isPremierListingTier(item.sponsorshipType),
                   'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': isGoldListingTier(item.sponsorshipType)
                 }"
               ></div>
               <div 
                 v-if="item.isSponsored && isPremierListingTier(item.sponsorshipType)"
-                class="absolute inset-0 bg-gradient-to-r from-yellow-200/20 via-transparent to-amber-200/20 animate-pulse"
+                class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-amber-200/20 animate-pulse"
               ></div>
             </div>
             <div class="p-4 sm:p-6">
@@ -522,7 +522,7 @@
               <div class="flex flex-wrap items-center gap-2 mb-2">
                 <template v-if="item.type === 'property'">
                   <div class="flex flex-col gap-1">
-                    <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-yellow-400">{{ formatPrice(item.priceETB, 'ETB') }}</p>
+                    <p v-if="item.priceETB" class="text-xl sm:text-2xl font-bold text-black">{{ formatPrice(item.priceETB, 'ETB') }}</p>
                     <p v-if="item.priceUSD" class="text-base sm:text-lg font-semibold text-gray-400">{{ formatPrice(item.priceUSD, 'USD') }}</p>
                     <p v-if="!item.priceETB && !item.priceUSD" class="text-base sm:text-lg text-gray-500">
                       {{ $t('property.priceNotSet') }}
@@ -531,7 +531,7 @@
                 </template>
                 <template v-else>
                   <div class="flex flex-col gap-1">
-                    <p class="text-xl sm:text-2xl font-bold text-yellow-400">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
+                    <p class="text-xl sm:text-2xl font-bold text-black">{{ item.totalUnits || 0 }} {{ $t('property.unitsCount') }}</p>
                     <p class="text-sm text-gray-400">{{ item.availableUnits || 0 }} {{ $t('property.availableCount') }}</p>
                   </div>
                 </template>
@@ -553,7 +553,7 @@
                   <span class="text-xs text-gray-500">{{ $t('property.constructionLabel') }}:</span>
                   <div class="flex-1 bg-zinc-700 rounded-full h-2">
                     <div 
-                      class="bg-yellow-400 h-2 rounded-full transition-all"
+                      class="bg-violet-950 h-2 rounded-full transition-all"
                       :style="{ width: item.constructionPercentage + '%' }"
                     ></div>
                   </div>
@@ -574,7 +574,7 @@
                 <span
                   :class="{
                     'bg-green-500/30 text-green-200': item.status === 'AVAILABLE' || item.status === 'COMPLETED',
-                    'bg-yellow-500/30 text-yellow-200': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
+                    'bg-violet-950/30 text-black': item.status === 'RESERVED' || item.status === 'UNDER_CONSTRUCTION',
                     'bg-gray-500/30 text-gray-300': item.status === 'SOLD' || item.status === 'PLANNED'
                   }"
                   class="inline-block px-2 py-1 text-xs font-semibold rounded"
@@ -592,7 +592,7 @@
               <button
                 @click="changeLinkedItemsPage(linkedItemsPage - 1)"
                 :disabled="linkedItemsPage === 0"
-                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50 transition-colors"
               >
                 {{ $t('common.previous') || 'Previous' }}
               </button>
@@ -602,7 +602,7 @@
               <button
                 @click="changeLinkedItemsPage(linkedItemsPage + 1)"
                 :disabled="linkedItemsPage >= linkedItemsTotalPages - 1"
-                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-yellow-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50 transition-colors"
               >
                 {{ $t('common.next') || 'Next' }}
               </button>
@@ -630,12 +630,12 @@
     <!-- Gallery Modal -->
     <div
       v-if="showGalleryModal && galleryMedia.length > 0"
-      class="fixed inset-0 bg-black/95 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-violet-950/95 flex items-center justify-center z-50"
       @click.self="showGalleryModal = false"
     >
       <button
         @click="showGalleryModal = false"
-        class="absolute top-4 right-4 text-white hover:text-yellow-400 z-10"
+        class="absolute top-4 right-4 text-white hover:text-black z-10"
       >
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -664,7 +664,7 @@
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center justify-between p-4 bg-black/50">
+        <div class="flex items-center justify-between p-4 bg-violet-950/50">
           <button
             @click="previousGalleryImage"
             class="text-white hover:text-gray-300 p-2"
@@ -690,7 +690,7 @@
         </div>
 
         <!-- Thumbnail Strip -->
-        <div class="p-4 bg-black/50 overflow-x-auto">
+        <div class="p-4 bg-violet-950/50 overflow-x-auto">
           <div class="flex gap-2 justify-center">
             <button
               v-for="(item, index) in galleryMedia"
@@ -940,7 +940,7 @@ const timelineEntries = computed(() => {
 const statusBadgeClass = computed(() => {
   const status = String(organization.value?.status || '').toUpperCase()
   if (status === 'APPROVED') return 'border-green-400/50 bg-green-500/30 text-green-200'
-  if (status === 'PENDING' || status === 'PENDING_APPROVAL') return 'border-yellow-400/50 bg-yellow-500/30 text-yellow-200'
+  if (status === 'PENDING' || status === 'PENDING_APPROVAL') return 'border-black/50 bg-violet-950/30 text-black'
   if (status === 'SUSPENDED') return 'border-orange-400/50 bg-orange-500/30 text-orange-200'
   if (!status) return 'border-white/20 bg-white/10 text-gray-200'
   return 'border-red-400/50 bg-red-500/30 text-red-200'

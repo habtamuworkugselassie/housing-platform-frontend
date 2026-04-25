@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="min-h-screen bg-violet-950 text-white">
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">dashboard</span>
@@ -9,7 +9,7 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
         <p class="mt-4 mdc-typography--body1 text-gray-400">{{ $t('dashboard.loadingDashboard') }}</p>
       </div>
 
@@ -231,7 +231,7 @@
             </button>
           </div>
           <div v-if="agentsLoading" class="text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
             <p class="mdc-typography--body2 text-gray-400 mt-2">{{ $t('dashboard.loadingAgents') }}</p>
           </div>
           <div v-else-if="agents.length === 0" class="text-center py-8">
@@ -242,7 +242,7 @@
           <template v-else>
             <!-- Mobile Card View -->
             <div class="block sm:hidden space-y-3">
-              <div v-for="agent in agents" :key="agent.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+              <div v-for="agent in agents" :key="agent.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/10 transition-colors">
                 <div class="flex items-start justify-between mb-2">
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
@@ -253,7 +253,7 @@
                   </div>
                   <button
                     @click="editAgent(agent)"
-                    class="p-2 text-gray-400 hover:text-yellow-400"
+                    class="p-2 text-gray-400 hover:text-black"
                   >
                     <span class="material-icons" style="font-size: 20px;">edit</span>
                   </button>
@@ -339,7 +339,7 @@
             </button>
           </div>
           <div v-if="propertiesLoading" class="text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
             <p class="mdc-typography--body2 text-gray-400 mt-2">{{ $t('dashboard.loadingProperties') }}</p>
           </div>
           <div v-else-if="properties.length === 0" class="text-center py-8">
@@ -350,7 +350,7 @@
           <template v-else>
             <!-- Mobile Card View -->
             <div class="block sm:hidden space-y-3">
-              <div v-for="property in properties" :key="property.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-yellow-400 hover:bg-yellow-500/10 transition-colors">
+              <div v-for="property in properties" :key="property.id" class="bg-zinc-900 border border-white/10 rounded-lg p-4 hover:border-black hover:bg-violet-950/10 transition-colors">
                 <div class="flex items-start justify-between mb-2">
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
@@ -362,13 +362,13 @@
                   <div class="flex gap-1">
                     <router-link
                       :to="`/properties/${property.id}`"
-                      class="p-2 text-gray-400 hover:text-yellow-400"
+                      class="p-2 text-gray-400 hover:text-black"
                     >
                       <span class="material-icons" style="font-size: 20px;">visibility</span>
                     </router-link>
                     <button
                       @click="editProperty(property)"
-                      class="p-2 text-gray-400 hover:text-yellow-400"
+                      class="p-2 text-gray-400 hover:text-black"
                     >
                       <span class="material-icons" style="font-size: 20px;">edit</span>
                     </button>
@@ -382,7 +382,7 @@
                   </div>
                   <span :class="{
                     'px-2 py-1 rounded text-xs font-medium bg-green-500/30 text-green-200': property.status === 'AVAILABLE',
-                    'px-2 py-1 rounded text-xs font-medium bg-yellow-500/30 text-yellow-200': property.status === 'RESERVED',
+                    'px-2 py-1 rounded text-xs font-medium bg-violet-950/30 text-black': property.status === 'RESERVED',
                     'px-2 py-1 rounded text-xs font-medium bg-gray-500/30 text-gray-200': property.status === 'SOLD'
                   }">
                     {{ property.status }}
@@ -460,7 +460,7 @@
       <!-- Edit Organization Modal -->
       <div
         v-if="showEditOrganizationModal"
-        class="fixed inset-0 z-[1100] flex items-start justify-center overflow-y-auto bg-black/70 pt-8 pb-12 px-4"
+        class="fixed inset-0 z-[1100] flex items-start justify-center overflow-y-auto bg-violet-950/70 pt-8 pb-12 px-4"
         @click.self="showEditOrganizationModal = false"
       >
         <div
@@ -472,12 +472,12 @@
         >
           <div class="flex items-start justify-between gap-4 mb-4">
             <div class="flex items-center gap-2 min-w-0">
-              <span class="material-icons text-yellow-400 shrink-0">business</span>
+              <span class="material-icons text-black shrink-0">business</span>
               <h3 id="dash-org-form-title" class="text-lg font-semibold text-white">{{ $t('dashboard.editOrganization') }}</h3>
             </div>
             <button
               type="button"
-              class="shrink-0 rounded-md p-1 text-gray-400 transition-colors hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              class="shrink-0 rounded-md p-1 text-gray-400 transition-colors hover:text-black focus:outline-none focus:ring-2 focus:ring-black"
               @click="showEditOrganizationModal = false"
             >
               <span class="material-icons">close</span>
@@ -489,10 +489,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="organizationFormTab === 'profile'"
-                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                 :class="
                   organizationFormTab === 'profile'
-                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    ? 'border border-black/50 bg-violet-950/20 text-black'
                     : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
                 "
                 @click="organizationFormTab = 'profile'"
@@ -503,10 +503,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="organizationFormTab === 'contact'"
-                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                 :class="
                   organizationFormTab === 'contact'
-                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    ? 'border border-black/50 bg-violet-950/20 text-black'
                     : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
                 "
                 @click="organizationFormTab = 'contact'"
@@ -517,10 +517,10 @@
                 type="button"
                 role="tab"
                 :aria-selected="organizationFormTab === 'online'"
-                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                class="rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-black"
                 :class="
                   organizationFormTab === 'online'
-                    ? 'border border-yellow-400/50 bg-yellow-500/20 text-yellow-300'
+                    ? 'border border-black/50 bg-violet-950/20 text-black'
                     : 'border border-transparent text-gray-400 hover:border-white/20 hover:text-white'
                 "
                 @click="organizationFormTab = 'online'"
@@ -539,7 +539,7 @@
                     v-model="organizationForm.name"
                     type="text"
                     required
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -548,7 +548,7 @@
                     id="dash-org-reg"
                     v-model="organizationForm.registrationNumber"
                     type="text"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -559,13 +559,13 @@
                     v-model="organizationForm.businessRegistrationNumber"
                     type="text"
                     placeholder="Registration number"
-                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <input
                     v-model="organizationForm.businessRegistration"
                     type="text"
                     placeholder="Document URL or upload below"
-                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <div class="mt-1 flex flex-wrap items-center gap-2">
                     <input
@@ -578,7 +578,7 @@
                     <button
                       type="button"
                       :disabled="orgDocUploading.businessRegistration"
-                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-black hover:text-black disabled:opacity-50"
                       @click="orgDocInputRefs.businessRegistration?.click()"
                     >
                       {{ orgDocUploading.businessRegistration ? 'Uploading…' : 'Upload document' }}
@@ -588,7 +588,7 @@
                       :href="mediaUrl(organizationForm.businessRegistration)"
                       target="_blank"
                       rel="noopener"
-                      class="text-sm text-yellow-400 hover:underline"
+                      class="text-sm text-black hover:underline"
                       >View document</a
                     >
                   </div>
@@ -599,13 +599,13 @@
                     v-model="organizationForm.licenseNumber"
                     type="text"
                     placeholder="License number"
-                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <input
                     v-model="organizationForm.license"
                     type="text"
                     placeholder="Document URL or upload below"
-                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <div class="mt-1 flex flex-wrap items-center gap-2">
                     <input
@@ -618,7 +618,7 @@
                     <button
                       type="button"
                       :disabled="orgDocUploading.license"
-                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-black hover:text-black disabled:opacity-50"
                       @click="orgDocInputRefs.license?.click()"
                     >
                       {{ orgDocUploading.license ? 'Uploading…' : 'Upload document' }}
@@ -628,7 +628,7 @@
                       :href="mediaUrl(organizationForm.license)"
                       target="_blank"
                       rel="noopener"
-                      class="text-sm text-yellow-400 hover:underline"
+                      class="text-sm text-black hover:underline"
                       >View document</a
                     >
                   </div>
@@ -639,13 +639,13 @@
                     v-model="organizationForm.vatNumber"
                     type="text"
                     placeholder="VAT number"
-                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <input
                     v-model="organizationForm.vatRegistration"
                     type="text"
                     placeholder="Document URL or upload below"
-                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <div class="mt-1 flex flex-wrap items-center gap-2">
                     <input
@@ -658,7 +658,7 @@
                     <button
                       type="button"
                       :disabled="orgDocUploading.vatRegistration"
-                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-black hover:text-black disabled:opacity-50"
                       @click="orgDocInputRefs.vatRegistration?.click()"
                     >
                       {{ orgDocUploading.vatRegistration ? 'Uploading…' : 'Upload document' }}
@@ -668,7 +668,7 @@
                       :href="mediaUrl(organizationForm.vatRegistration)"
                       target="_blank"
                       rel="noopener"
-                      class="text-sm text-yellow-400 hover:underline"
+                      class="text-sm text-black hover:underline"
                       >View document</a
                     >
                   </div>
@@ -679,13 +679,13 @@
                     v-model="organizationForm.tinNumber"
                     type="text"
                     placeholder="TIN number"
-                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mb-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <input
                     v-model="organizationForm.tinRegistration"
                     type="text"
                     placeholder="Document URL or upload below"
-                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-sm text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                   <div class="mt-1 flex flex-wrap items-center gap-2">
                     <input
@@ -698,7 +698,7 @@
                     <button
                       type="button"
                       :disabled="orgDocUploading.tinRegistration"
-                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-yellow-400 hover:text-yellow-400 disabled:opacity-50"
+                      class="rounded border border-white/20 px-2 py-1 text-sm text-gray-300 transition-colors hover:border-black hover:text-black disabled:opacity-50"
                       @click="orgDocInputRefs.tinRegistration?.click()"
                     >
                       {{ orgDocUploading.tinRegistration ? 'Uploading…' : 'Upload document' }}
@@ -708,7 +708,7 @@
                       :href="mediaUrl(organizationForm.tinRegistration)"
                       target="_blank"
                       rel="noopener"
-                      class="text-sm text-yellow-400 hover:underline"
+                      class="text-sm text-black hover:underline"
                       >View document</a
                     >
                   </div>
@@ -720,7 +720,7 @@
                   id="dash-org-address"
                   v-model="organizationForm.address"
                   type="text"
-                  class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                 />
               </div>
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -730,7 +730,7 @@
                     id="dash-org-city"
                     v-model="organizationForm.city"
                     type="text"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -739,7 +739,7 @@
                     id="dash-org-country"
                     v-model="organizationForm.country"
                     type="text"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -783,7 +783,7 @@
                 </div>
                 <button
                   type="button"
-                  class="text-sm text-yellow-400 transition-colors hover:text-yellow-300"
+                  class="text-sm text-black transition-colors hover:text-black"
                   @click="organizationForm.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
                 >
                   + {{ $t('admin.addPhone') }}
@@ -796,7 +796,7 @@
                     id="dash-org-email"
                     v-model="organizationForm.email"
                     type="email"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -805,7 +805,7 @@
                     id="dash-org-web"
                     v-model="organizationForm.website"
                     type="url"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -820,7 +820,7 @@
                     v-model="organizationForm.facebookUrl"
                     type="url"
                     placeholder="https://…"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -830,7 +830,7 @@
                     v-model="organizationForm.instagramUrl"
                     type="url"
                     placeholder="https://…"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -840,7 +840,7 @@
                     v-model="organizationForm.linkedinUrl"
                     type="url"
                     placeholder="https://…"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -850,7 +850,7 @@
                     v-model="organizationForm.twitterUrl"
                     type="url"
                     placeholder="https://…"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div class="sm:col-span-2">
@@ -860,7 +860,7 @@
                     v-model="organizationForm.youtubeUrl"
                     type="url"
                     placeholder="https://…"
-                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                    class="mt-1 block w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -870,7 +870,7 @@
                   id="dash-org-desc"
                   v-model="organizationForm.description"
                   rows="4"
-                  class="mt-1 min-h-[100px] w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  class="mt-1 min-h-[100px] w-full rounded-md border border-white/20 bg-white/5 py-2 px-3 text-white placeholder-gray-400 focus:border-black focus:ring-2 focus:ring-black"
                 />
               </div>
             </div>
@@ -881,7 +881,7 @@
             <div class="flex flex-col justify-end gap-3 border-t border-white/10 pt-4 sm:flex-row">
               <button
                 type="button"
-                class="w-full rounded-md border border-white/20 px-4 py-2.5 text-white transition-colors hover:border-yellow-400 hover:bg-yellow-500/20 sm:w-auto"
+                class="w-full rounded-md border border-white/20 px-4 py-2.5 text-white transition-colors hover:border-black hover:bg-violet-950/20 sm:w-auto"
                 @click="showEditOrganizationModal = false"
               >
                 {{ $t('common.cancel') }}
@@ -889,7 +889,7 @@
               <button
                 type="submit"
                 :disabled="organizationFormSaving"
-                class="inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2.5 font-medium text-black transition-colors hover:bg-yellow-400 disabled:bg-white/50 disabled:opacity-50 sm:w-auto"
+                class="inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2.5 font-medium text-black transition-colors hover:bg-violet-950 disabled:bg-white/50 disabled:opacity-50 sm:w-auto"
               >
                 <span class="material-icons mr-1" style="font-size: 18px">save</span>
                 {{ organizationFormSaving ? $t('admin.saving') : $t('common.update') }}
@@ -982,17 +982,17 @@
     </div>
 
     <!-- Edit Property Modal -->
-    <div v-if="showEditPropertyModal" class="fixed inset-0 z-[1100] overflow-y-auto bg-black/70" @click.self="showEditPropertyModal = false">
+    <div v-if="showEditPropertyModal" class="fixed inset-0 z-[1100] overflow-y-auto bg-violet-950/70" @click.self="showEditPropertyModal = false">
       <div class="bg-zinc-900 border border-white/10 rounded-lg m-4 sm:m-8 p-6" style="max-width: 700px; max-height: 90vh; overflow-y: auto; margin-left: auto; margin-right: auto;">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
-            <span class="material-icons text-yellow-400 mr-2">home</span>
+            <span class="material-icons text-black mr-2">home</span>
             <h3 class="text-xl font-semibold text-white">{{ $t('property.editProperty') }}</h3>
           </div>
           <button
             type="button"
             @click="showEditPropertyModal = false"
-            class="text-gray-400 hover:text-yellow-400"
+            class="text-gray-400 hover:text-black"
           >
             <span class="material-icons">close</span>
           </button>
@@ -1005,7 +1005,7 @@
               v-model="propertyForm.title"
               type="text"
               required
-              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             />
           </div>
           <div>
@@ -1014,7 +1014,7 @@
               id="edit-description"
               v-model="propertyForm.description"
               rows="3"
-              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               style="min-height: 80px;"
             ></textarea>
           </div>
@@ -1025,7 +1025,7 @@
                 id="edit-type"
                 v-model="propertyForm.type"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('propertyTypes.selectType') }}</option>
                 <option value="APARTMENT">{{ $t('propertyTypes.apartment') }}</option>
@@ -1052,7 +1052,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <div>
@@ -1063,7 +1063,7 @@
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
             </div>
@@ -1084,7 +1084,7 @@
                 Add Offer
               </button>
             </div>
-            <p v-if="!approvedBanks.length" class="text-xs text-yellow-300">
+            <p v-if="!approvedBanks.length" class="text-xs text-black">
               No approved banks are currently available.
             </p>
             <div v-if="editExistingCreditOffers.length" class="space-y-2">
@@ -1109,7 +1109,7 @@
                 <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
                 <select
                   v-model="offer.bankId"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 >
                   <option value="">Select bank</option>
                   <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
@@ -1125,7 +1125,7 @@
                   min="0.01"
                   max="100"
                   step="0.01"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                 />
               </div>
               <button
@@ -1144,7 +1144,7 @@
               v-model="propertyForm.address"
               type="text"
               required
-              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             />
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1155,7 +1155,7 @@
                 v-model="propertyForm.city"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -1165,7 +1165,7 @@
                 v-model="propertyForm.country"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
           </div>
@@ -1178,7 +1178,7 @@
                 type="number"
                 step="0.01"
                 min="0"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -1188,7 +1188,7 @@
                 v-model.number="propertyForm.bedrooms"
                 type="number"
                 min="0"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -1198,7 +1198,7 @@
                 v-model.number="propertyForm.bathrooms"
                 type="number"
                 min="0"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
           </div>
@@ -1211,7 +1211,7 @@
                 v-model.number="propertyForm.floorNumber"
                 type="number"
                 min="0"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
             <div>
@@ -1221,7 +1221,7 @@
                 v-model.number="propertyForm.totalFloors"
                 type="number"
                 min="0"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               />
             </div>
           </div>
@@ -1234,7 +1234,7 @@
               type="number"
               min="0"
               max="100"
-              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             />
           </div>
           
@@ -1243,7 +1243,7 @@
               v-model="propertyForm.isFullyFurnished"
               type="checkbox"
               id="isFullyFurnished"
-              class="w-4 h-4 text-yellow-400 border-white/30 rounded focus:ring-yellow-400"
+              class="w-4 h-4 text-black border-white/30 rounded focus:ring-black"
             />
             <label for="isFullyFurnished" class="ml-2 text-sm text-gray-700">{{ $t('property.isFullyFurnished') }}</label>
           </div>
@@ -1254,7 +1254,7 @@
                 id="edit-constructionStatus"
                 v-model="propertyForm.constructionStatus"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('submitProperty.selectStatus') }}</option>
                 <option value="COMPLETED">{{ $t('dashboard.completed') }}</option>
@@ -1268,7 +1268,7 @@
               <select
                 id="edit-category"
                 v-model="propertyForm.category"
-                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="">{{ $t('submitProperty.selectCategory') }}</option>
                 <option value="FOR_SALE">{{ $t('property.forSale') }}</option>
@@ -1379,7 +1379,7 @@
             <select
               v-model="sponsorshipForm.sponsorshipId"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             >
               <option value="">{{ $t('dashboard.selectPackage') }}</option>
               <option v-for="sponsorship in availableSponsorships" :key="sponsorship.id" :value="sponsorship.id">
@@ -1393,7 +1393,7 @@
               v-model="sponsorshipForm.startDate"
               type="datetime-local"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             />
           </div>
           <div>
@@ -1402,7 +1402,7 @@
               v-model="sponsorshipForm.endDate"
               type="datetime-local"
               required
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             />
           </div>
           <div>
@@ -1410,20 +1410,20 @@
             <textarea
               v-model="sponsorshipForm.notes"
               rows="3"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
             ></textarea>
           </div>
           <div class="flex justify-end space-x-3 pt-4">
             <button
               type="button"
               @click="showSponsorshipModal = false"
-              class="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-yellow-400"
+              class="px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-violet-950"
             >
               {{ $t('common.cancel') }}
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 text-sm font-medium"
+              class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 text-sm font-medium"
             >
               {{ $t('dashboard.apply') }}
             </button>

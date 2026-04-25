@@ -14,14 +14,14 @@
               'px-4 py-2 rounded-lg font-medium transition-colors',
               activeTab === 'applications'
                 ? 'bg-white text-black'
-                : 'border border-white/20 text-white hover:bg-yellow-500/20 hover:border-yellow-400'
+                : 'border border-white/20 text-white hover:bg-violet-950/20 hover:border-black'
             ]"
           >
             Applications ({{ pendingApplicationsCount }})
           </button>
           <button
             @click="showCreateModal = true"
-            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-yellow-400 font-medium transition-colors"
+            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
           >
             + Create Package
           </button>
@@ -36,8 +36,8 @@
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
               activeTab === 'packages'
-                ? 'border-yellow-400 text-yellow-400'
-                : 'border-transparent text-gray-400 hover:text-yellow-400 hover:border-white/30'
+                ? 'border-black text-black'
+                : 'border-transparent text-gray-400 hover:text-black hover:border-white/30'
             ]"
           >
             Sponsorship Packages
@@ -47,8 +47,8 @@
             :class="[
               'py-4 px-1 border-b-2 font-medium text-sm relative transition-colors',
               activeTab === 'applications'
-                ? 'border-yellow-400 text-yellow-400'
-                : 'border-transparent text-gray-400 hover:text-yellow-400 hover:border-white/30'
+                ? 'border-black text-black'
+                : 'border-transparent text-gray-400 hover:text-black hover:border-white/30'
             ]"
           >
             Applications
@@ -72,7 +72,7 @@
               <select
                 v-model="filters.status"
                 @change="loadPackages"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               >
                 <option value="">All</option>
                 <option value="ACTIVE">Active</option>
@@ -84,7 +84,7 @@
               <select
                 v-model="filters.type"
                 @change="loadPackages"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
               >
                 <option value="">All Types</option>
                 <option value="EXCLUSIVE">Exclusive</option>
@@ -97,7 +97,7 @@
             <div class="flex items-end">
               <button
                 @click="clearFilters"
-                class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+                class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
               >
                 Clear Filters
               </button>
@@ -108,7 +108,7 @@
         <!-- Packages Table -->
         <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
           <div v-if="loading" class="text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
           </div>
 
           <div v-else>
@@ -124,10 +124,10 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-white/10">
-                <tr v-for="pkg in packages" :key="pkg.id" class="hover:bg-yellow-500/10 transition-colors">
+                <tr v-for="pkg in packages" :key="pkg.id" class="hover:bg-violet-950/10 transition-colors">
                   <td class="px-6 py-4">
                     <div class="flex items-center">
-                      <svg class="w-5 h-5 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <svg class="w-5 h-5 text-black mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                       <div>
@@ -140,9 +140,9 @@
                     <span
                       :class="[
                         'px-2 py-1 text-xs font-medium rounded',
-                        pkg.type === 'EXCLUSIVE' ? 'bg-yellow-400/40 text-yellow-200' :
+                        pkg.type === 'EXCLUSIVE' ? 'bg-violet-950/40 text-black' :
                         pkg.type === 'PLATINUM' ? 'bg-purple-500/30 text-purple-200' :
-                        pkg.type === 'GOLD' ? 'bg-yellow-500/30 text-yellow-200' :
+                        pkg.type === 'GOLD' ? 'bg-violet-950/30 text-black' :
                         pkg.type === 'SILVER' ? 'bg-slate-500/30 text-slate-200' :
                         pkg.type === 'SPECIAL' ? 'bg-blue-500/30 text-blue-200' :
                         'bg-slate-500/30 text-slate-200'
@@ -171,25 +171,25 @@
                     <div class="flex items-center justify-end space-x-2">
                       <button
                         @click="viewPackage(pkg)"
-                        class="text-yellow-400 hover:text-yellow-300"
+                        class="text-black hover:text-black"
                       >
                         View
                       </button>
                       <button
                         @click="editPackage(pkg)"
-                        class="text-yellow-400 hover:text-yellow-300"
+                        class="text-black hover:text-black"
                       >
                         Edit
                       </button>
                       <button
                         @click="togglePackageStatus(pkg)"
-                        :class="pkg.status === 'ACTIVE' ? 'text-yellow-400 hover:text-yellow-300' : 'text-green-400 hover:text-green-300'"
+                        :class="pkg.status === 'ACTIVE' ? 'text-black hover:text-black' : 'text-green-400 hover:text-green-300'"
                       >
                         {{ pkg.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
                       </button>
                       <button
                         @click="deletePackage(pkg.id)"
-                        class="text-red-400 hover:text-yellow-400"
+                        class="text-red-400 hover:text-black"
                       >
                         Delete
                       </button>
@@ -217,7 +217,7 @@
               <select
                 v-model="applicationFilters.status"
                 @change="loadApplications"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
               >
                 <option value="">All</option>
                 <option value="PENDING">Pending</option>
@@ -229,7 +229,7 @@
             <div class="flex items-end">
               <button
                 @click="loadApplications"
-                class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
+                class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
               >
                 Apply Filters
               </button>
@@ -240,7 +240,7 @@
         <!-- Applications Table -->
         <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
           <div v-if="loadingApplications" class="text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400"></div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
           </div>
 
           <div v-else>
@@ -256,7 +256,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-white/10">
-                <tr v-for="app in applications" :key="app.id" class="hover:bg-yellow-500/10 transition-colors">
+                <tr v-for="app in applications" :key="app.id" class="hover:bg-violet-950/10 transition-colors">
                   <td class="px-6 py-4">
                     <div class="text-sm font-medium text-white">{{ app.organizationName }}</div>
                     <div class="text-xs text-gray-500">{{ app.organizationEmail || 'N/A' }}</div>
@@ -266,9 +266,9 @@
                     <span
                       :class="[
                         'inline-flex px-2 py-1 text-xs font-medium rounded mt-1',
-                      app.sponsorship?.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
+                      app.sponsorship?.type === 'EXCLUSIVE' ? 'bg-violet-950 text-black' :
                       app.sponsorship?.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
-                      app.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      app.sponsorship?.type === 'GOLD' ? 'bg-violet-950 text-black' :
                       app.sponsorship?.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
                       app.sponsorship?.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
                       'bg-slate-100 text-slate-800'
@@ -298,20 +298,20 @@
                     <div class="flex items-center justify-end space-x-2">
                       <button
                         @click="viewApplication(app)"
-                        class="text-yellow-400 hover:text-yellow-300"
+                        class="text-black hover:text-black"
                       >
                         View
                       </button>
                       <div v-if="app.status === 'PENDING'">
                         <button
                           @click="approveApplication(app)"
-                          class="text-green-400 hover:text-yellow-400"
+                          class="text-green-400 hover:text-black"
                         >
                           Approve
                         </button>
                         <button
                           @click="showRejectModal(app)"
-                          class="text-red-400 hover:text-yellow-400"
+                          class="text-red-400 hover:text-black"
                         >
                           Reject
                         </button>
@@ -333,13 +333,13 @@
       <!-- Create/Edit Package Modal -->
       <div
         v-if="showCreateModal || editingPackage"
-        class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50"
         @click.self="closeModal"
       >
         <div class="relative top-20 mx-auto p-5 w-full max-w-2xl">
           <div class="bg-zinc-900 border border-white/10 rounded-lg p-6">
             <div class="flex items-center mb-4">
-              <svg class="w-6 h-6 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-6 h-6 text-black mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
               <h3 class="text-lg font-medium text-white">
@@ -354,7 +354,7 @@
                   v-model="form.name"
                   type="text"
                   required
-                  class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   :placeholder="$t('admin.placeholderPackageName')"
                 />
               </div>
@@ -364,7 +364,7 @@
                 <textarea
                   v-model="form.description"
                   rows="3"
-                  class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   :placeholder="$t('admin.placeholderDescribeBenefits')"
                 />
               </div>
@@ -375,7 +375,7 @@
                   <select
                     v-model="form.type"
                     required
-                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   >
                     <option value="">{{ $t('propertyTypes.selectType') }}</option>
                     <option value="EXCLUSIVE">Exclusive</option>
@@ -393,7 +393,7 @@
                     type="number"
                     step="0.01"
                     required
-                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                     placeholder="0.00"
                   />
                 </div>
@@ -404,7 +404,7 @@
                 <textarea
                   v-model="form.features"
                   rows="4"
-                  class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   :placeholder="$t('admin.placeholderFeatures')"
                 />
               </div>
@@ -414,7 +414,7 @@
                 <textarea
                   v-model="form.notes"
                   rows="2"
-                  class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                  class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                   :placeholder="$t('admin.placeholderInternalNotes')"
                 />
               </div>
@@ -423,7 +423,7 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
                 >
                   Cancel
                 </button>
@@ -469,9 +469,9 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingPackage.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
+                      viewingPackage.type === 'EXCLUSIVE' ? 'bg-violet-950 text-black' :
                       viewingPackage.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
-                      viewingPackage.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      viewingPackage.type === 'GOLD' ? 'bg-violet-950 text-black' :
                       viewingPackage.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
                       viewingPackage.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
                       'bg-slate-100 text-slate-800'
@@ -559,9 +559,9 @@
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingApplication.sponsorship?.type === 'EXCLUSIVE' ? 'bg-yellow-200 text-yellow-900' :
+                      viewingApplication.sponsorship?.type === 'EXCLUSIVE' ? 'bg-violet-950 text-black' :
                       viewingApplication.sponsorship?.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
-                      viewingApplication.sponsorship?.type === 'GOLD' ? 'bg-yellow-100 text-yellow-800' :
+                      viewingApplication.sponsorship?.type === 'GOLD' ? 'bg-violet-950 text-black' :
                       viewingApplication.sponsorship?.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
                       viewingApplication.sponsorship?.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
                       'bg-slate-100 text-slate-800'
@@ -889,7 +889,7 @@ const formatDate = (dateString) => {
 
 const getApplicationStatusClass = (status) => {
   const classes = {
-    PENDING: 'bg-yellow-500/30 text-yellow-200',
+    PENDING: 'bg-violet-950/30 text-black',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200',
     CANCELLED: 'bg-gray-500/30 text-gray-200'

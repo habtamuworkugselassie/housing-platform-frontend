@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="show"
-    class="fixed inset-0 bg-black/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+    class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
     @click.self="$emit('close')"
   >
     <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
@@ -10,7 +10,7 @@
         <button
           type="button"
           @click="$emit('close')"
-          class="text-gray-400 hover:text-yellow-400 transition-colors"
+          class="text-gray-400 hover:text-black transition-colors"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -34,7 +34,7 @@
             v-model="form.bankId"
             required
             :disabled="loadingLookups"
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400 disabled:opacity-50"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black disabled:opacity-50"
             @change="onBankChanged"
           >
             <option value="">Select bank</option>
@@ -53,7 +53,7 @@
             max="100"
             step="0.01"
             required
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
           />
         </div>
 
@@ -64,14 +64,14 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-yellow-500/20 hover:border-yellow-400 transition-colors"
+            class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             :disabled="submitting || loadingLookups"
-            class="px-4 py-2 bg-white text-black rounded-md hover:bg-yellow-400 disabled:opacity-60 transition-colors"
+            class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-60 transition-colors"
           >
             {{ submitting ? 'Creating...' : 'Create Property Credit' }}
           </button>

@@ -89,7 +89,7 @@ function statusBadgeClass(status) {
       return 'bg-amber-500/30 text-amber-100'
     case 'PENDING':
     default:
-      return 'bg-yellow-500/30 text-yellow-200'
+      return 'bg-violet-950/30 text-black'
   }
 }
 </script>
