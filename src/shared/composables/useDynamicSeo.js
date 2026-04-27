@@ -8,12 +8,12 @@ export function useDynamicSeo(options) {
     description: computed(() => truncateMetaDescription(options.value.description)),
     ogTitle: computed(() => options.value.title || 'Ethio Build Connect - Addis Ababa Real Estate'),
     ogDescription: computed(() => truncateMetaDescription(options.value.description)),
-    ogImage: computed(() => resolveAbsoluteMediaUrl(options.value.imageUrl) || `${getPublicSiteUrl()}/ethio-build-connect-mark.png`),
+    ogImage: computed(() => resolveAbsoluteMediaUrl(options.value.imageUrl) || `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`),
     ogUrl: computed(() => options.value.pagePath ? `${getPublicSiteUrl()}${options.value.pagePath}` : getPublicSiteUrl()),
     twitterCard: 'summary_large_image',
     twitterTitle: computed(() => options.value.title || 'Ethio Build Connect - Addis Ababa Real Estate'),
     twitterDescription: computed(() => truncateMetaDescription(options.value.description)),
-    twitterImage: computed(() => resolveAbsoluteMediaUrl(options.value.imageUrl) || `${getPublicSiteUrl()}/ethio-build-connect-mark.png`),
+    twitterImage: computed(() => resolveAbsoluteMediaUrl(options.value.imageUrl) || `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`),
   })
 
   // Canonical Link

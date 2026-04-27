@@ -13,9 +13,9 @@
         <div class="flex items-center justify-between h-16 px-6 border-b border-white/10">
           <div class="flex items-center">
             <img
-              src="/ethio-build-connect-mark.png"
+              src="/images/branding/ethio-build-connect-banner.png"
               alt="Ethio Build Connect"
-              class="flex-shrink-0 w-8 h-8 rounded-md object-contain"
+              class="flex-shrink-0 h-8 w-auto object-contain"
             />
             <span class="ml-3 text-xl font-semibold text-white">{{ $t('admin.portalTitle') }}</span>
           </div>

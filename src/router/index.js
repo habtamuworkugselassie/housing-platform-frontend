@@ -455,7 +455,7 @@ router.afterEach((to) => {
   ensureMetaTag('twitter:title').setAttribute('content', seo.title)
   ensureMetaTag('twitter:description').setAttribute('content', seo.description)
 
-  const defaultOgImage = `${getPublicSiteUrl()}/ethio-build-connect-mark.png`
+  const defaultOgImage = `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`
   ensureMetaTag('og:image', 'property').setAttribute('content', defaultOgImage)
   ensureMetaTag('twitter:image').setAttribute('content', defaultOgImage)
 })

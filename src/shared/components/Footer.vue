@@ -24,15 +24,24 @@
             >
               {{ phone }}
             </a>
-            <a
-              :href="websiteUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hover:text-black transition-colors"
-            >
-              {{ website }}
-            </a>
           </div>
+          <a
+            :href="websiteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-black"
+            aria-label="Open Ethio Build Connect portal"
+          >
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fethiobuildconnect.et%2F"
+              alt="QR code to open Ethio Build Connect portal"
+              class="h-20 w-20 rounded bg-white p-1"
+            />
+            <span class="text-xs leading-relaxed text-gray-300">
+              Scan to visit
+              <span class="block font-medium text-white">{{ website }}</span>
+            </span>
+          </a>
           <div class="flex flex-wrap items-center gap-2 text-gray-400">
             <a
               v-for="item in socialLinks"

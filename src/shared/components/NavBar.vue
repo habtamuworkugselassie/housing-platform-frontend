@@ -17,13 +17,13 @@
             class="flex items-center gap-2 px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-black"
           >
             <img
-              src="/ethio-build-connect-mark.png"
+              src="/images/branding/ethio-build-connect-banner.png"
               alt=""
-              width="36"
+              width="140"
               height="36"
-              class="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0"
+              class="h-8 w-auto sm:h-9 object-contain shrink-0"
             />
-            <span class="hidden xs:inline">{{ $t('common.appName') }}</span>
+            <span class="sr-only">{{ $t('common.appName') }}</span>
           </router-link>
           
           <!-- Marketplace dropdown (fluid, hover + click) -->

@@ -78,7 +78,7 @@ export function applyPageSeo({ title, description, imageUrl, pagePath }) {
   ensureMetaTag('twitter:title').setAttribute('content', title)
   ensureMetaTag('twitter:description').setAttribute('content', description)
 
-  const defaultOg = `${getPublicSiteUrl()}/ethio-build-connect-mark.png`
+  const defaultOg = `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`
   const resolvedImage = imageUrl ? resolveAbsoluteMediaUrl(imageUrl) : defaultOg
   ensureMetaTag('og:image', 'property').setAttribute('content', resolvedImage || defaultOg)
   ensureMetaTag('twitter:image').setAttribute('content', resolvedImage || defaultOg)
