@@ -7,9 +7,9 @@
     @dismiss="onSplashDismiss"
   />
   <div v-show="!showSplash" class="min-h-screen bg-violet-950 text-white flex flex-col">
-    <NavBar />
+    <NavBar v-if="!route.meta?.hideLayout" />
     <div class="flex-1 min-h-0 flex flex-col">
-      <PublicLayout v-if="isPublicRoute">
+      <PublicLayout v-if="isPublicRoute && !route.meta?.hideLayout">
         <template v-if="isExhibitionLanding" #top>
           <LandingHero />
           <ExhibitionTopSection />
@@ -18,8 +18,8 @@
       </PublicLayout>
       <router-view v-else />
     </div>
-    <Footer />
-    <PublicSupportChat />
+    <Footer v-if="!route.meta?.hideLayout" />
+    <PublicSupportChat v-if="!route.meta?.hideLayout" />
   </div>
 </template>
 

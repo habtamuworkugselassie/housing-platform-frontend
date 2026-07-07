@@ -78,6 +78,12 @@ const routes = [
     meta: { noindex: true }
   },
   {
+    path: '/register-interest',
+    name: 'RegisterInterest',
+    component: () => import('@/features/exhibition/views/ExhibitionRegisterInterestView.vue'),
+    meta: { hideLayout: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/features/auth/views/LoginView.vue'),
@@ -302,6 +308,21 @@ const routes = [
     path: '/exhibition',
     name: 'ExhibitionLanding',
     component: () => import('@/features/exhibition/views/ExhibitionLandingView.vue')
+  },
+  {
+    path: '/privacy',
+    name: 'PrivacyPolicy',
+    component: () => import('@/shared/views/PrivacyPolicyView.vue')
+  },
+  {
+    path: '/terms',
+    name: 'TermsOfUse',
+    component: () => import('@/shared/views/TermsOfUseView.vue')
+  },
+  {
+    path: '/legal',
+    name: 'LegalHub',
+    component: () => import('@/shared/views/LegalHubView.vue')
   }
 ]
 
@@ -402,6 +423,10 @@ const seoByRouteName = {
     title: 'Create Account - Ethio Build Connect',
     description: 'Register for Ethio Build Connect to list properties and access the marketplace.'
   },
+  RegisterInterest: {
+    title: 'Register Interest - Ethio Build Connect',
+    description: 'Register your interest for the Ethiopia Property and Construction Expo.'
+  },
   Login: {
     title: 'Sign In - Ethio Build Connect',
     description: 'Sign in to your Ethio Build Connect account.'
@@ -413,6 +438,20 @@ const seoByRouteName = {
   ResetPassword: {
     title: 'Reset Password - Ethio Build Connect',
     description: 'Set a new password for your Ethio Build Connect account.'
+  },
+  PrivacyPolicy: {
+    title: 'Privacy Policy - Ethio Build Connect',
+    description:
+      'How Ethio Build Connect collects, uses, and protects your information on our website and mobile apps.'
+  },
+  TermsOfUse: {
+    title: 'Terms of Use - Ethio Build Connect',
+    description:
+      'Terms and conditions for using Ethio Build Connect marketplace, listings, and related services.'
+  },
+  LegalHub: {
+    title: 'Legal - Ethio Build Connect',
+    description: 'Privacy policy and terms of use for Ethio Build Connect.'
   }
 }
 

@@ -168,9 +168,15 @@
           class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400 order-1 lg:order-2"
           aria-label="Legal"
         >
-          <a href="#" class="hover:text-black transition-colors">{{ $t('exhibition.footer.privacy') }}</a>
-          <a href="#" class="hover:text-black transition-colors">{{ $t('exhibition.footer.terms') }}</a>
-          <a href="#" class="hover:text-black transition-colors">{{ $t('exhibition.footer.legal') }}</a>
+          <RouterLink to="/privacy" class="hover:text-black transition-colors">{{
+            $t('exhibition.footer.privacy')
+          }}</RouterLink>
+          <RouterLink to="/terms" class="hover:text-black transition-colors">{{
+            $t('exhibition.footer.terms')
+          }}</RouterLink>
+          <RouterLink to="/legal" class="hover:text-black transition-colors">{{
+            $t('exhibition.footer.legal')
+          }}</RouterLink>
         </nav>
         <div class="flex justify-center lg:justify-end order-2 lg:order-3 shrink-0">
           <LocaleSwitcher />

@@ -1210,5 +1210,109 @@
       "featuredPartner": "Featured partner",
       "playVideo": "Play sponsor video"
     }
+  },
+  "legal": {
+    "badge": "Legal",
+    "navPrivacy": "Privacy policy",
+    "navTerms": "Terms of use",
+    "lastUpdated": "Last updated: May 11, 2026",
+    "operator": "Ethio Build Connect is operated by Dream Teams Trading PLC, Addis Ababa, Ethiopia.",
+    "hub": {
+      "title": "Legal information",
+      "body": "Use the links below for policies that apply to our website and mobile applications. For store listings, use the privacy policy URL shown on this page.",
+      "privacyBlurb": "How we handle personal information.",
+      "termsBlurb": "Rules for using our services.",
+      "supportLabel": "Support:"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "This policy applies when you use Ethio Build Connect online services, including our website and mobile apps that connect to the same platform.",
+      "contactLabel": "Privacy questions:",
+      "sections": [
+        {
+          "heading": "Who we are",
+          "body": "The data controller for Ethio Build Connect is Dream Teams Trading PLC. Contact details appear at the end of this policy."
+        },
+        {
+          "heading": "Information we collect",
+          "body": "We may collect: account and profile details (such as name, email, phone number, and organization information you choose to provide); content you submit (property or project listings, descriptions, images, documents, and messages you send us); usage and device data (such as app version, device type, and diagnostic logs); approximate location when you use map features, subject to your device permissions; and communications with support. We may also collect technical data through cookies or similar technologies on the website."
+        },
+        {
+          "heading": "How we use information",
+          "body": "We use this information to provide and improve the marketplace and related features, authenticate users, show listings and maps, respond to enquiries, secure our services, comply with law, and communicate service-related notices. We do not sell your personal information."
+        },
+        {
+          "heading": "Sharing",
+          "body": "We may share information with service providers who help us host, operate, or secure the platform, strictly as needed to perform those services. We may disclose information if required by law or to protect the rights, safety, and security of users and the public. Business transfers (for example a merger) may involve transferring information under appropriate safeguards."
+        },
+        {
+          "heading": "Retention and security",
+          "body": "We retain information for as long as your account is active and as needed to provide the service, meet legal obligations, resolve disputes, and enforce our agreements. We use reasonable technical and organizational measures to protect personal data, but no method of transmission over the Internet is completely secure."
+        },
+        {
+          "heading": "Your choices",
+          "body": "You may update certain profile information in the app or website. You can control location and media permissions through your device settings. You may contact us to request access, correction, or deletion of your personal information where applicable law allows."
+        },
+        {
+          "heading": "Children",
+          "body": "Our services are not directed to children under 16. If you believe we have collected information from a child, please contact us and we will take appropriate steps."
+        },
+        {
+          "heading": "International transfers",
+          "body": "Your information may be processed in Ethiopia and, where we use service providers, in other countries that provide adequate safeguards or as permitted by applicable law."
+        },
+        {
+          "heading": "Changes",
+          "body": "We may update this policy from time to time. We will post the updated version on this page and revise the “Last updated” date."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "By accessing or using Ethio Build Connect (website or mobile apps), you agree to these terms. If you do not agree, do not use the service.",
+      "contactLabel": "Legal notices:",
+      "sections": [
+        {
+          "heading": "The service",
+          "body": "Ethio Build Connect provides an online marketplace and related tools to discover property, construction, financing, and partner organizations. Features may change over time. We do not guarantee uninterrupted or error-free operation."
+        },
+        {
+          "heading": "Accounts",
+          "body": "You are responsible for safeguarding your login credentials and for activity under your account. You must provide accurate registration information and notify us of unauthorized use."
+        },
+        {
+          "heading": "Listings and user content",
+          "body": "You are responsible for the accuracy and legality of content you post, including listings and media. You grant us a non-exclusive license to host, display, and distribute your content as needed to operate the service. We may remove content that violates law or these terms."
+        },
+        {
+          "heading": "Prohibited conduct",
+          "body": "You may not misuse the service, attempt unauthorized access, scrape or overload our systems, harass others, post fraudulent listings, or use the service in violation of applicable law."
+        },
+        {
+          "heading": "Third parties",
+          "body": "The platform may link to or integrate third-party services. Those services have their own terms and privacy practices. Transactions with banks, contractors, or other organizations are between you and them; Ethio Build Connect is not a party to those agreements unless expressly stated."
+        },
+        {
+          "heading": "Disclaimers",
+          "body": "Listings and profiles are provided by users and partners. We do not warrant the accuracy, completeness, or availability of any listing or offer. Use of map and location features is at your own risk."
+        },
+        {
+          "heading": "Limitation of liability",
+          "body": "To the fullest extent permitted by applicable law, Dream Teams Trading PLC and its affiliates are not liable for indirect, incidental, special, consequential, or punitive damages, or for loss of profits, data, or goodwill, arising from your use of the service. Our aggregate liability for any claim relating to the service is limited to the greater of amounts you paid us for the service in the twelve months before the claim or fifty United States dollars, except where law does not permit such limitations."
+        },
+        {
+          "heading": "Indemnity",
+          "body": "You agree to indemnify and hold harmless Dream Teams Trading PLC and its team from claims arising out of your content, your use of the service, or your violation of these terms, to the extent permitted by law."
+        },
+        {
+          "heading": "Termination",
+          "body": "We may suspend or terminate access to the service for conduct that violates these terms or creates risk. You may stop using the service at any time."
+        },
+        {
+          "heading": "Governing law",
+          "body": "These terms are governed by the laws of the Federal Democratic Republic of Ethiopia, without regard to conflict-of-law rules. Courts in Addis Ababa shall have exclusive jurisdiction, subject to mandatory consumer protections where applicable."
+        }
+      ]
+    }
   }
 }
