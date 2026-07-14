@@ -1,5 +1,5 @@
 <template>
-  <div class="exhibition-landing overflow-x-hidden bg-violet-950 text-white">
+  <div class="public-page exhibition-landing overflow-x-hidden">
     <!-- Planning the exhibition — professional intro for market -->
     <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

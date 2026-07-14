@@ -126,6 +126,12 @@ const routes = [
     meta: { requiresAuth: true, requiresRealtor: true, noindex: true }
   },
   {
+    path: '/agent/messages',
+    name: 'AgentMessages',
+    component: () => import('@/features/property/views/AgentMessagesView.vue'),
+    meta: { requiresAuth: true, requiresRealtor: true, noindex: true }
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('@/features/dashboard/views/DashboardView.vue'),

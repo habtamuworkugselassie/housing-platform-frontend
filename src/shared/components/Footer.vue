@@ -1,5 +1,5 @@
 <template>
-  <footer class="flex-shrink-0 border-t border-white/10 bg-zinc-900 text-white">
+  <footer class="site-footer flex-shrink-0 border-t border-white/10 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
         <!-- Brand / logo (Expo-style anchor column) -->

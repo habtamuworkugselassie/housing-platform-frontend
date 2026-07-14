@@ -29,7 +29,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: habtamuwgs/housing-platform-frontend:latest
+          tags: |
+            habtamuwgs/housing-platform-frontend:latest
+            habtamuwgs/housing-platform-frontend:${{ github.sha }}
           build-args: |
             VITE_API_BASE_URL=${{ secrets.BACKEND_URL }}
 
@@ -43,6 +45,9 @@ jobs:
           script: |
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             cd ~/housing-platform
-            docker pull habtamuwgs/housing-platform-frontend:latest
+            # Preserve the currently running image on this server before promotion.
+            docker tag habtamuwgs/housing-platform-frontend:latest "habtamuwgs/housing-platform-frontend:rollback-${{ github.sha }}" 2>/dev/null || true
+            docker pull habtamuwgs/housing-platform-frontend:${{ github.sha }}
+            docker tag habtamuwgs/housing-platform-frontend:${{ github.sha }} habtamuwgs/housing-platform-frontend:latest
             docker compose up -d
             docker image prune -f

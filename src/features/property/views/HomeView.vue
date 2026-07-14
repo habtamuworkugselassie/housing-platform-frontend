@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white">
+  <div class="public-page property-marketplace min-h-screen">
     <!-- Ad Space under NavBar — GOLD-sponsored real estate companies (two side by side) -->
     <div class="bg-zinc-900 border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

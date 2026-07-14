@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-violet-950 border-b border-white/10 sticky top-0 z-50 text-white">
+  <nav class="site-nav border-b border-white/10 sticky top-0 z-50 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
@@ -145,6 +145,13 @@
                 {{ $t('nav.submitProperty') }}
               </router-link>
               <router-link
+                v-if="authStore.hasRole('REALTOR')"
+                to="/agent/messages"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+              >
+                Messages
+              </router-link>
+              <router-link
                 v-if="authStore.hasRole('ADMIN')"
                 to="/admin"
                 class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-violet-950"
@@ -257,6 +264,14 @@
               class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-violet-950 rounded-md"
             >
               {{ $t('nav.submitProperty') }}
+            </router-link>
+            <router-link
+              v-if="authStore.hasRole('REALTOR')"
+              to="/agent/messages"
+              @click="mobileMenuOpen = false"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+            >
+              Messages
             </router-link>
             <router-link
               v-if="authStore.hasRole('ADMIN')"

@@ -1,0 +1,49 @@
+:root {
+  --public-canvas: #4c1d95;
+  --public-surface: #3b0764;
+  --public-surface-raised: #581c87;
+  --public-ink: #ffffff;
+  --public-muted: #eadcff;
+  --public-subtle: #c4b5fd;
+  --public-line: rgba(255, 255, 255, .18);
+  --public-accent: #f4c977;
+  --public-accent-dark: #d99f3f;
+}
+
+.site-shell { background: var(--public-canvas); color: var(--public-ink); }
+.site-nav { background: rgba(59, 7, 100, .96) !important; box-shadow: 0 1px 0 rgba(255,255,255,.11), 0 8px 30px rgba(34, 5, 63, .28); backdrop-filter: blur(14px); }
+.site-nav a:hover, .site-nav button:hover { color: var(--public-accent) !important; }
+.site-footer { background: #2e1065 !important; }
+
+.public-page { min-height: 100%; background: var(--public-canvas) !important; color: var(--public-ink) !important; }
+.public-page .bg-violet-950, .public-page .bg-zinc-900 { background: var(--public-surface) !important; }
+.public-page .bg-white\/5 { background: rgba(255, 255, 255, .09) !important; }
+.public-page .bg-white\/10 { background: rgba(255, 255, 255, .13) !important; }
+.public-page .bg-zinc-800 { background: rgba(17, 4, 39, .38) !important; }
+.public-page .border-white\/10, .public-page .border-white\/20, .public-page .border-white\/30 { border-color: var(--public-line) !important; }
+.public-page .text-white { color: #fff !important; }
+.public-page .text-white\/80, .public-page .text-white\/70, .public-page .text-gray-300, .public-page .text-gray-400 { color: var(--public-muted) !important; }
+.public-page .text-gray-500 { color: var(--public-subtle) !important; }
+.public-page .text-black { color: var(--public-accent) !important; }
+.public-page .bg-white.text-black { background: #fff !important; color: #4c1d95 !important; }
+.public-page .hover\:bg-violet-950:hover { background: #6d28d9 !important; color: #fff !important; }
+.public-page input, .public-page select { color-scheme: dark; border-color: rgba(255,255,255,.25) !important; background: rgba(255,255,255,.1) !important; color: #fff !important; box-shadow: 0 1px 2px rgba(20, 3, 45, .18); }
+.public-page input::placeholder { color: #ddd6fe !important; }
+.public-page .shadow-md, .public-page .shadow-lg { box-shadow: 0 14px 32px rgba(27, 4, 61, .22) !important; }
+.public-page [class*='rounded'] { border-radius: .85rem; }
+
+.exhibition-landing { background: var(--public-canvas) !important; }
+.exhibition-landing > section { border-color: var(--public-line) !important; }
+.exhibition-landing .group:hover { box-shadow: 0 16px 34px rgba(27, 4, 61, .28); transform: translateY(-3px); }
+.exhibition-landing a { transition: color .2s ease, border-color .2s ease, transform .2s ease; }
+.exhibition-landing .bg-white\/5 { border: 1px solid var(--public-line); }
+.exhibition-landing .border-l-2, .exhibition-landing .border-l-4 { border-color: var(--public-accent) !important; }
+
+.property-marketplace, .property-details-page, .listing-directory { padding-bottom: 3.5rem; }
+.property-marketplace > .bg-zinc-900:first-child, .property-marketplace > .bg-zinc-900:nth-child(2) { background: var(--public-surface) !important; border-color: var(--public-line) !important; }
+.property-details-page .bg-zinc-900, .listing-directory .bg-zinc-900 { background: var(--public-surface) !important; border-color: var(--public-line) !important; }
+.property-details-page .bg-white\/5 { background: rgba(255,255,255,.08) !important; }
+.property-details-page .text-green-200 { color: #bbf7d0 !important; }
+.property-details-page .bg-green-500\/30 { background: rgba(22, 163, 74, .25) !important; }
+
+@media (max-width: 640px) { .site-nav { position: sticky; } .public-page { overflow-x: clip; } }

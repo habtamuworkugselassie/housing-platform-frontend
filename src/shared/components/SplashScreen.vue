@@ -2,13 +2,15 @@
   <Transition name="splash-fade">
     <div
       v-if="visible"
-      class="fixed inset-0 z-[9999] flex flex-col bg-violet-950"
+      class="splash-screen fixed inset-0 z-[9999] flex min-h-[100dvh] flex-col overflow-y-auto px-4 py-5 sm:px-6 sm:py-8"
       aria-label="Splash screen"
+      aria-modal="true"
+      role="dialog"
     >
       <!-- Content: event logo (full lockup) + sr-only title + sponsor logo and name -->
-      <div class="flex-1 flex flex-col items-center justify-center px-4 text-center">
+      <div class="splash-screen__content flex min-h-0 flex-1 flex-col items-center justify-center text-center">
         <div
-          class="rounded-2xl max-w-[min(100%,520px)] w-full"
+          class="splash-screen__brand max-w-[min(100%,520px)] w-full"
         >
           <img
             src="/images/branding/ethio-build-connect-banner.png"
@@ -23,15 +25,15 @@
         <!-- Exclusive sponsors: all orgs displayed horizontally -->
         <div
           v-if="exclusiveOrgs.length > 0"
-          class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-8"
+          class="mt-6 grid w-full max-w-2xl grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4"
         >
           <div
             v-for="org in exclusiveOrgs"
             :key="org.id || org.name"
-            class="flex flex-row items-center gap-3 sm:gap-4"
+            class="splash-screen__sponsor flex min-w-0 items-center gap-3 text-left"
           >
             <div
-              class="flex h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 items-center justify-center rounded-xl overflow-hidden bg-white/10 border border-white/20"
+              class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/10 sm:h-14 sm:w-14"
             >
               <img
                 v-if="org.logoUrl"
@@ -41,12 +43,12 @@
               />
               <span
                 v-else
-                class="text-xl sm:text-2xl font-bold text-white"
+                class="text-lg font-bold text-white sm:text-xl"
               >
                 {{ (org.name || '').charAt(0).toUpperCase() }}
               </span>
             </div>
-            <p class="text-base sm:text-lg text-white/90 font-medium">
+            <p class="min-w-0 text-sm font-medium leading-snug text-white/90 sm:text-base">
               {{ org.name }}
             </p>
           </div>
@@ -54,10 +56,10 @@
       </div>
 
       <!-- Enter button at bottom -->
-      <div class="pb-8 sm:pb-10 flex justify-center">
+      <div class="flex justify-center pt-5 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pt-8">
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-violet-950 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:bg-white/50"
+          class="inline-flex min-h-12 w-full max-w-xs items-center justify-center rounded-lg bg-[#e8b95d] px-8 py-3 text-sm font-semibold uppercase tracking-wider text-[#102435] shadow-lg shadow-black/20 transition-colors hover:bg-[#f4c977] focus:outline-none focus:ring-2 focus:ring-[#f4c977] focus:ring-offset-2 focus:ring-offset-[#102435] disabled:opacity-50 disabled:bg-white/50"
           :disabled="dismissing"
           @click="dismiss"
         >
@@ -125,5 +127,36 @@ onUnmounted(() => {
 .splash-fade-enter-from,
 .splash-fade-leave-to {
   opacity: 0;
+}
+
+.splash-screen {
+  background: linear-gradient(135deg, rgba(76, 29, 149, .28), rgba(59, 7, 100, .12));
+  backdrop-filter: blur(3px);
+}
+
+.splash-screen__content {
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 1.5rem;
+  background: rgba(59, 7, 100, .8);
+  box-shadow: 0 1.5rem 5rem rgba(46, 16, 101, .3);
+  backdrop-filter: blur(18px);
+}
+
+.splash-screen__brand {
+  padding: .75rem;
+}
+
+.splash-screen__sponsor {
+  padding: .75rem;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: .85rem;
+  background: rgba(255, 255, 255, .07);
+}
+
+@media (max-width: 639px) {
+  .splash-screen { justify-content: center; }
+  .splash-screen__content { padding: 1.25rem; }
+  .splash-screen__brand { padding: .25rem; }
 }
 </style>

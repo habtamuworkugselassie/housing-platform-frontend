@@ -79,6 +79,13 @@
                 <dd class="mdc-chip mdc-chip--primary">{{ $t('dashboard.superAgent') }}</dd>
               </div>
             </dl>
+            <router-link
+              to="/agent/messages"
+              class="mdc-button mdc-button--raised mt-5 inline-flex items-center"
+            >
+              <span class="material-icons mr-2" style="font-size: 18px;">chat</span>
+              Buyer messages
+            </router-link>
           </div>
 
           <!-- Company Info Card -->

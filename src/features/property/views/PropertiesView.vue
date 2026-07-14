@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white">
+  <div class="public-page listing-directory min-h-screen">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
       <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ t('property.propertiesAndBuildings') }}</h1>
