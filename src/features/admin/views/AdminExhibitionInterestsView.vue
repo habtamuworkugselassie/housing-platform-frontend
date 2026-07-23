@@ -76,7 +76,13 @@
                   <div v-if="row.phoneNumber" class="text-gray-400 text-xs mt-0.5">{{ row.phoneNumber }}</div>
                   <div v-if="row.company" class="text-gray-500 text-xs mt-0.5">{{ row.company }}</div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-200 capitalize">{{ row.interestType }}</td>
+                <td class="px-4 py-3 text-sm text-gray-200">
+                  <div class="capitalize">{{ row.interestType }}</div>
+                  <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-gray-400">
+                    <div>{{ formatEnum(row.partnerRole) }}</div>
+                    <div>{{ formatEnum(row.visibilityScope) }} · {{ formatEnum(row.contributionMode) }}</div>
+                  </div>
+                </td>
                 <td class="px-4 py-3 text-sm text-gray-300">
                   {{ row.sponsorshipPackageName || '—' }}
                 </td>
@@ -431,6 +437,15 @@ function formatDate(iso) {
   } catch {
     return String(iso)
   }
+}
+
+function formatEnum(value) {
+  if (!value) return '—'
+  return String(value)
+    .toLowerCase()
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 }
 
 /** Load a large slice of exhibition interests to know which orgs have an exhibition row (for orphan detection). */

@@ -35,10 +35,57 @@
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectType') }}</option>
         <option value="exhibitor">{{ $t('exhibition.registerInterest.asExhibitor') }}</option>
+        <option value="partner">{{ $t('exhibition.registerInterest.asPartner') }}</option>
         <option value="visitor">{{ $t('exhibition.registerInterest.asVisitor') }}</option>
       </select>
     </div>
-    <div v-if="form.interestType === 'exhibitor'">
+    <div v-if="form.interestType === 'partner'" class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div>
+        <label :for="`${fieldIdPrefix}-partner-role`" class="block text-sm font-medium text-white/80 mb-1">
+          {{ $t('exhibition.registerInterest.partnerRole') }}
+        </label>
+        <select
+          :id="`${fieldIdPrefix}-partner-role`"
+          v-model="form.partnerRole"
+          required
+          class="w-full px-3 py-3 border border-white/20 bg-white/5 text-white rounded-lg"
+        >
+          <option value="SPONSOR">{{ $t('exhibition.registerInterest.roleSponsor') }}</option>
+          <option value="MEDIA_PARTNER">{{ $t('exhibition.registerInterest.roleMediaPartner') }}</option>
+        </select>
+      </div>
+      <div>
+        <label :for="`${fieldIdPrefix}-visibility`" class="block text-sm font-medium text-white/80 mb-1">
+          {{ $t('exhibition.registerInterest.visibility') }}
+        </label>
+        <select
+          :id="`${fieldIdPrefix}-visibility`"
+          v-model="form.visibilityScope"
+          required
+          class="w-full px-3 py-3 border border-white/20 bg-white/5 text-white rounded-lg"
+        >
+          <option value="EXHIBITION">{{ $t('exhibition.registerInterest.visibilityExhibition') }}</option>
+          <option value="PLATFORM">{{ $t('exhibition.registerInterest.visibilityPlatform') }}</option>
+          <option value="BOTH">{{ $t('exhibition.registerInterest.visibilityBoth') }}</option>
+        </select>
+      </div>
+      <div>
+        <label :for="`${fieldIdPrefix}-contribution`" class="block text-sm font-medium text-white/80 mb-1">
+          {{ $t('exhibition.registerInterest.contribution') }}
+        </label>
+        <select
+          :id="`${fieldIdPrefix}-contribution`"
+          v-model="form.contributionMode"
+          required
+          class="w-full px-3 py-3 border border-white/20 bg-white/5 text-white rounded-lg"
+        >
+          <option value="CASH">{{ $t('exhibition.registerInterest.contributionCash') }}</option>
+          <option value="IN_KIND">{{ $t('exhibition.registerInterest.contributionInKind') }}</option>
+          <option value="HYBRID">{{ $t('exhibition.registerInterest.contributionHybrid') }}</option>
+        </select>
+      </div>
+    </div>
+    <div v-if="form.interestType === 'exhibitor' || form.interestType === 'partner'">
       <label :for="`${fieldIdPrefix}-package`" class="block text-sm font-medium text-white/80 mb-1">{{
         $t('exhibition.registerInterest.sponsorshipPackage')
       }}</label>
@@ -48,7 +95,7 @@
         :required="form.interestType === 'exhibitor'"
         class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
       >
-        <option value="" disabled>{{ $t('exhibition.registerInterest.selectSponsorshipPackage') }}</option>
+        <option value="">{{ form.interestType === 'partner' ? $t('exhibition.registerInterest.customPartnership') : $t('exhibition.registerInterest.selectSponsorshipPackage') }}</option>
         <option v-for="pkg in interestPackages" :key="pkg.id" :value="pkg.id">{{ pkg.name }}</option>
       </select>
       <p v-if="interestPackagesLoading" class="mt-2 text-xs text-white/70">
@@ -122,7 +169,12 @@ defineProps({
 watch(
   () => form.value.interestType,
   (v) => {
-    if (v !== 'exhibitor') form.value.sponsorshipId = ''
+    if (v === 'visitor') form.value.sponsorshipId = ''
+    if (v !== 'partner') {
+      form.value.partnerRole = 'SPONSOR'
+      form.value.visibilityScope = 'BOTH'
+      form.value.contributionMode = 'CASH'
+    }
   }
 )
 </script>

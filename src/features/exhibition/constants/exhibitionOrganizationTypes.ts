@@ -10,5 +10,6 @@ export const EXHIBITION_REGISTER_INTEREST_ORGANIZATION_TYPES = [
   { value: 'CONTRACTOR', labelKey: 'nav.marketplaceContractors' },
   { value: 'SUPPLIER', labelKey: 'nav.marketplaceSuppliers' },
   { value: 'CONSULTANT_ARCHITECT', labelKey: 'nav.marketplaceConsultantsArchitects' },
-  { value: 'FINISHING_CONTRACTOR', labelKey: 'nav.marketplaceFinishingWork' }
+  { value: 'FINISHING_CONTRACTOR', labelKey: 'nav.marketplaceFinishingWork' },
+  { value: 'MEDIA_COMPANY', labelKey: 'admin.typeMediaCompany' }
 ] as const

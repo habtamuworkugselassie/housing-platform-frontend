@@ -1661,7 +1661,8 @@ const marketplaceOrganizationTypeOptions = [
   'CONTRACTOR',
   'CONSULTANT_ARCHITECT',
   'SUPPLIER',
-  'FINISHING_CONTRACTOR'
+  'FINISHING_CONTRACTOR',
+  'MEDIA_COMPANY'
 ]
 
 const organizationTypeFilterOptions = [
@@ -1819,7 +1820,8 @@ const TYPE_LABEL_KEYS = {
   CONTRACTOR: 'nav.marketplaceContractors',
   DEVELOPER: 'admin.typeDeveloper',
   INSURANCE: 'nav.marketplaceInsurance',
-  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
+  MEDIA_COMPANY: 'admin.typeMediaCompany'
 }
 
 const MARKETPLACE_TYPE_LABEL_KEYS = {
@@ -1829,7 +1831,8 @@ const MARKETPLACE_TYPE_LABEL_KEYS = {
   CONTRACTOR: 'nav.marketplaceContractors',
   CONSULTANT_ARCHITECT: 'nav.marketplaceConsultantsArchitects',
   SUPPLIER: 'nav.marketplaceSuppliers',
-  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
+  MEDIA_COMPANY: 'admin.typeMediaCompany'
 }
 
 const getOrganizationTypeLabel = (type) => {

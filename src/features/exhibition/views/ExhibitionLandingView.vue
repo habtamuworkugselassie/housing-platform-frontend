@@ -420,6 +420,9 @@ const interestForm = ref({
   phoneNumber: '',
   organizationType: '',
   interestType: '',
+  partnerRole: 'MEDIA_PARTNER',
+  visibilityScope: 'BOTH',
+  contributionMode: 'IN_KIND',
   sponsorshipId: '',
   company: '',
   message: ''
@@ -466,8 +469,13 @@ async function submitInterest() {
       company: interestForm.value.company || undefined,
       message: interestForm.value.message || undefined
     }
-    if (it === 'exhibitor' && interestForm.value.sponsorshipId) {
+    if ((it === 'exhibitor' || it === 'partner') && interestForm.value.sponsorshipId) {
       payload.sponsorshipId = interestForm.value.sponsorshipId
+    }
+    if (it === 'partner') {
+      payload.partnerRole = interestForm.value.partnerRole
+      payload.visibilityScope = interestForm.value.visibilityScope
+      payload.contributionMode = interestForm.value.contributionMode
     }
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true

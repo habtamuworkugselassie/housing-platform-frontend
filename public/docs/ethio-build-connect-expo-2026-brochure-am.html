@@ -707,6 +707,11 @@
         }
         fetchJson(API + '/sponsorships/sponsored-organizations')
           .then(function (orgs) {
+            if (Array.isArray(orgs)) {
+              orgs = orgs.filter(function (o) {
+                return !o.visibilityScope || o.visibilityScope === 'EXHIBITION' || o.visibilityScope === 'BOTH'
+              })
+            }
             if (!Array.isArray(orgs) || orgs.length === 0) {
               if (coverStrip) {
                 coverStrip.innerHTML =

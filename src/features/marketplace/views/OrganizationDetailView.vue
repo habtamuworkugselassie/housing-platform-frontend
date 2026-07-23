@@ -814,6 +814,7 @@ const typeToLabelKey = {
   CONSULTANT_ARCHITECT: 'nav.marketplaceConsultantsArchitects',
   SUPPLIER: 'nav.marketplaceSuppliers',
   FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
+  MEDIA_COMPANY: 'admin.typeMediaCompany',
   DEVELOPER: 'admin.typeDeveloper'
 }
 

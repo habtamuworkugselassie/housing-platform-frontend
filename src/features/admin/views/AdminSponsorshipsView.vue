@@ -117,6 +117,7 @@
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Package Name</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Partnership</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Base Price</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Status</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Features</th>
@@ -150,6 +151,12 @@
                     >
                       {{ pkg.type }}
                     </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm font-medium text-white">{{ formatEnum(pkg.partnerRole) }}</div>
+                    <div class="text-xs text-gray-400">
+                      {{ formatEnum(pkg.visibilityScope) }} · {{ formatEnum(pkg.contributionMode) }}
+                    </div>
                   </td>
                   <td class="px-6 py-4 text-sm text-white">
                     {{ formatPrice(pkg.basePrice) }}
@@ -197,7 +204,7 @@
                   </td>
                 </tr>
                 <tr v-if="packages.length === 0">
-                  <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-500">
+                  <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-500">
                     No sponsorship packages found
                   </td>
                 </tr>
@@ -392,10 +399,49 @@
                     v-model="form.basePrice"
                     type="number"
                     step="0.01"
+                    min="0"
                     required
                     class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
                     placeholder="0.00"
                   />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                  <label class="block text-sm font-medium text-gray-400 mb-1">Partner role *</label>
+                  <select
+                    v-model="form.partnerRole"
+                    required
+                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3"
+                  >
+                    <option value="SPONSOR">Sponsor</option>
+                    <option value="MEDIA_PARTNER">Media partner</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400 mb-1">Visibility *</label>
+                  <select
+                    v-model="form.visibilityScope"
+                    required
+                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3"
+                  >
+                    <option value="BOTH">Exhibition and platform</option>
+                    <option value="EXHIBITION">Exhibition only</option>
+                    <option value="PLATFORM">Platform only</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-400 mb-1">Contribution *</label>
+                  <select
+                    v-model="form.contributionMode"
+                    required
+                    class="w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3"
+                  >
+                    <option value="CASH">Cash</option>
+                    <option value="IN_KIND">In kind</option>
+                    <option value="HYBRID">Hybrid</option>
+                  </select>
                 </div>
               </div>
 
@@ -482,7 +528,7 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Base Price</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.basePrice ? formatPrice(viewingPackage.basePrice) : 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.basePrice != null ? formatPrice(viewingPackage.basePrice) : 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Status</label>
@@ -494,6 +540,18 @@
                   >
                     {{ viewingPackage.status || 'N/A' }}
                   </span>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Partner role</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.partnerRole) }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Visibility</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.visibilityScope) }}</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Contribution</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.contributionMode) }}</p>
                 </div>
                 <div class="col-span-2">
                   <label class="block text-sm font-medium text-gray-700">Description</label>
@@ -683,7 +741,10 @@ const form = ref({
   type: '',
   basePrice: '',
   features: '',
-  notes: ''
+  notes: '',
+  partnerRole: 'SPONSOR',
+  visibilityScope: 'BOTH',
+  contributionMode: 'CASH'
 })
 
 const showRejectDialog = ref(false)
@@ -752,7 +813,10 @@ const savePackage = async () => {
       type: form.value.type,
       basePrice: parseFloat(form.value.basePrice),
       features: form.value.features || null,
-      notes: form.value.notes || null
+      notes: form.value.notes || null,
+      partnerRole: form.value.partnerRole,
+      visibilityScope: form.value.visibilityScope,
+      contributionMode: form.value.contributionMode
     }
 
     if (editingPackage.value) {
@@ -782,7 +846,10 @@ const editPackage = (pkg) => {
     type: pkg.type || '',
     basePrice: pkg.basePrice?.toString() || '',
     features: pkg.features || '',
-    notes: pkg.notes || ''
+    notes: pkg.notes || '',
+    partnerRole: pkg.partnerRole || 'SPONSOR',
+    visibilityScope: pkg.visibilityScope || 'BOTH',
+    contributionMode: pkg.contributionMode || 'CASH'
   }
   showCreateModal.value = true
 }
@@ -868,18 +935,30 @@ const closeModal = () => {
     type: '',
     basePrice: '',
     features: '',
-    notes: ''
+    notes: '',
+    partnerRole: 'SPONSOR',
+    visibilityScope: 'BOTH',
+    contributionMode: 'CASH'
   }
 }
 
 const formatPrice = (price) => {
-  if (!price) return '$0.00'
-  return new Intl.NumberFormat('en-US', {
+  if (price == null || Number.isNaN(Number(price))) return 'ETB 0.00'
+  return new Intl.NumberFormat('en-ET', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'ETB',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(price)
+}
+
+const formatEnum = (value) => {
+  if (!value) return 'N/A'
+  return String(value)
+    .toLowerCase()
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 }
 
 const formatDate = (dateString) => {

@@ -662,7 +662,8 @@ const ORG_TYPE_LABEL_KEYS = {
   CONTRACTOR: 'nav.marketplaceContractors',
   DEVELOPER: 'admin.typeDeveloper',
   INSURANCE: 'nav.marketplaceInsurance',
-  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork'
+  FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
+  MEDIA_COMPANY: 'admin.typeMediaCompany'
 }
 
 function organizationTypeLabel(type) {

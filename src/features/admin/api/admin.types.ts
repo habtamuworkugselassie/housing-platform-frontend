@@ -75,6 +75,7 @@ export type OrganizationType =
   | 'INSURANCE'
   | 'CONSULTANT_ARCHITECT'
   | 'FINISHING_CONTRACTOR'
+  | 'MEDIA_COMPANY'
 
 /** Full organization create/update payload for admin */
 export interface OrganizationCreateRequest {
@@ -208,6 +209,9 @@ export interface AdminExhibitionInterest {
   email: string
   phoneNumber?: string | null
   interestType: string
+  partnerRole?: string | null
+  visibilityScope?: string | null
+  contributionMode?: string | null
   company?: string | null
   message?: string | null
   organizationId?: string | null

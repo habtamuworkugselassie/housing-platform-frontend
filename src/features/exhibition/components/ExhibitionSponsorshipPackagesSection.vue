@@ -493,6 +493,9 @@ function emptyRegisterForm() {
     phoneNumber: '',
     organizationType: '',
     interestType: 'exhibitor',
+    partnerRole: 'MEDIA_PARTNER',
+    visibilityScope: 'BOTH',
+    contributionMode: 'IN_KIND',
     sponsorshipId: '',
     company: '',
     message: ''
@@ -625,8 +628,13 @@ async function submitRegisterModal() {
       company: registerForm.value.company || undefined,
       message: registerForm.value.message || undefined
     }
-    if (it === 'exhibitor' && registerForm.value.sponsorshipId) {
+    if ((it === 'exhibitor' || it === 'partner') && registerForm.value.sponsorshipId) {
       payload.sponsorshipId = registerForm.value.sponsorshipId
+    }
+    if (it === 'partner') {
+      payload.partnerRole = registerForm.value.partnerRole
+      payload.visibilityScope = registerForm.value.visibilityScope
+      payload.contributionMode = registerForm.value.contributionMode
     }
     await exhibitionApi.registerInterest(payload)
     registerSubmitted.value = true

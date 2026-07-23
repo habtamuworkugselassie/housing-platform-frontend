@@ -71,6 +71,9 @@ export interface AdContent {
   basePrice: number
   /** Organization.OrganizationType name when type is organization (e.g. REAL_ESTATE_COMPANY). */
   organizationType?: string
+  partnerRole?: string
+  visibilityScope?: string
+  contributionMode?: string
   realEstateCompanyName?: string
   realEstateCompanyId?: string
   realEstateCompanyVerified?: boolean
@@ -90,6 +93,9 @@ export interface SponsoredOrganizationResponse {
   sponsorshipType: string
   basePrice: number
   organizationType?: string
+  partnerRole?: string
+  visibilityScope?: string
+  contributionMode?: string
 }
 
 interface FirstPropertyMediaResponse {
@@ -330,6 +336,9 @@ export function useAds() {
             organizationType: org.organizationType
               ? normalizeType(org.organizationType)
               : undefined,
+            partnerRole: normalizeType(org.partnerRole) || 'SPONSOR',
+            visibilityScope: normalizeType(org.visibilityScope) || 'BOTH',
+            contributionMode: normalizeType(org.contributionMode) || 'CASH',
             realEstateCompanyName: org.name,
             realEstateCompanyId: org.id
           }
@@ -437,7 +446,10 @@ export function useAds() {
    */
   const premiumSponsorSlides = computed<AdContent[]>(() => {
     const organizations = dedupeOrganizationAds(allAds.value)
-      .filter(ad => isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType))
+      .filter(ad =>
+        (ad.visibilityScope === 'EXHIBITION' || ad.visibilityScope === 'BOTH') &&
+        (isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType))
+      )
     return organizations.sort((a, b) => {
       const rankDiff = sponsorshipTierRank(a.sponsorshipType) - sponsorshipTierRank(b.sponsorshipType)
       if (rankDiff !== 0) return rankDiff
@@ -455,6 +467,7 @@ export function useAds() {
     const list = dedupeOrganizationAds(allAds.value).filter(
       (ad) =>
         ad.type === 'organization' &&
+        (ad.visibilityScope === 'PLATFORM' || ad.visibilityScope === 'BOTH') &&
         isGoldTier(ad.sponsorshipType) &&
         normalizeType(ad.organizationType) === want
     )
@@ -473,7 +486,10 @@ export function useAds() {
   const sideAds = computed<AdContent[]>(() => {
     const organizations = dedupeOrganizationAds(allAds.value)
     return organizations
-      .filter(ad => isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType) || isGoldTier(ad.sponsorshipType))
+      .filter(ad =>
+        (ad.visibilityScope === 'PLATFORM' || ad.visibilityScope === 'BOTH') &&
+        (isExclusiveTier(ad.sponsorshipType) || isPremiumTier(ad.sponsorshipType) || isGoldTier(ad.sponsorshipType))
+      )
       .sort((a, b) => {
         const rankDiff = sponsorshipTierRank(a.sponsorshipType) - sponsorshipTierRank(b.sponsorshipType)
         if (rankDiff !== 0) return rankDiff

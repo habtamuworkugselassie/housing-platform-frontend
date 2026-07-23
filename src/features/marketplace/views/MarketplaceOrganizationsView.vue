@@ -243,6 +243,7 @@ const typeLabelKeys = {
   CONTRACTOR: 'nav.marketplaceContractors',
   SUPPLIER: 'nav.marketplaceSuppliers',
   FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
+  MEDIA_COMPANY: 'admin.typeMediaCompany',
   CONSULTANT_ARCHITECT: 'nav.marketplaceConsultantsArchitects',
   DEVELOPER: 'admin.typeDeveloper',
   REAL_ESTATE_COMPANY: 'admin.typeRealEstate'
