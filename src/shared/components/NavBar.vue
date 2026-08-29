@@ -1,5 +1,5 @@
 <template>
-  <nav class="site-nav border-b border-white/10 sticky top-0 z-50 text-white">
+  <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
@@ -140,7 +140,7 @@
               <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/submit-property"
-                class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-primary-100"
+                class="px-3 py-2 text-sm font-medium text-primary-950 bg-gold-400 rounded-md hover:bg-gold-500"
               >
                 {{ $t('nav.submitProperty') }}
               </router-link>
@@ -154,7 +154,7 @@
               <router-link
                 v-if="authStore.isAdmin"
                 to="/admin"
-                class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-primary-100"
+                class="px-3 py-2 text-sm font-medium text-primary-950 bg-gold-400 rounded-md hover:bg-gold-500"
               >
                 {{ $t('nav.admin') }}
               </router-link>
@@ -194,7 +194,8 @@
                 {{ $t('nav.supplier') }}
               </router-link>
               <router-link
-                :to="authStore.isAdmin ? '/admin' : '/dashboard'"
+                v-if="!authStore.isAdmin"
+                to="/dashboard"
                 class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.dashboard') }}
@@ -224,7 +225,7 @@
       </div>
       
       <!-- Mobile menu -->
-      <div v-if="mobileMenuOpen" class="sm:hidden border-t border-white/10 bg-zinc-900/95">
+      <div v-if="mobileMenuOpen" class="sm:hidden border-t border-white/10 bg-primary-950/95 backdrop-blur-sm">
         <div class="px-2 pt-2 pb-3 space-y-1">
           <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $t('nav.marketplace') }}</div>
           <router-link to="/marketplace/real-estate" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceRealEstate') }}</router-link>
@@ -258,7 +259,7 @@
               v-if="authStore.hasRole('REALTOR')"
               to="/submit-property"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-primary-100 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-primary-950 bg-gold-400 hover:bg-gold-500 rounded-md"
             >
               {{ $t('nav.submitProperty') }}
             </router-link>
@@ -274,7 +275,7 @@
               v-if="authStore.isAdmin"
               to="/admin"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-primary-100 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-primary-950 bg-gold-400 hover:bg-gold-500 rounded-md"
             >
               {{ $t('nav.adminPortal') }}
             </router-link>
@@ -319,7 +320,8 @@
               {{ $t('nav.supplier') }}
             </router-link>
             <router-link
-              :to="authStore.isAdmin ? '/admin' : '/dashboard'"
+              v-if="!authStore.isAdmin"
+              to="/dashboard"
               @click="mobileMenuOpen = false"
               class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
