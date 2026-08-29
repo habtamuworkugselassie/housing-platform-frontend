@@ -1,31 +1,31 @@
 <template>
-  <div class="public-page listing-directory min-h-screen">
+  <div class="public-page listing-directory min-h-screen bg-violet-50">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-4 sm:mb-6 lg:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ t('property.propertiesAndBuildings') }}</h1>
-      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-400">{{ t('property.browsePropertiesBuildings') }}</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ t('property.propertiesAndBuildings') }}</h1>
+      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-500">{{ t('property.browsePropertiesBuildings') }}</p>
     </div>
 
     <!-- Filters -->
-    <div class="mb-4 sm:mb-6 bg-zinc-900 border border-white/10 p-3 sm:p-4 rounded-lg">
+    <div class="mb-4 sm:mb-6 bg-white border border-gray-200 p-3 sm:p-4 rounded-lg">
       <div class="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label for="city" class="block text-sm font-medium text-gray-300">{{ $t('property.city') }}</label>
+          <label for="city" class="block text-sm font-medium text-gray-600">{{ $t('property.city') }}</label>
           <input
             id="city"
             v-model="filters.city"
             type="text"
             :placeholder="$t('property.filterByCity')"
-            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="mt-1 block w-full border border-gray-300 bg-white rounded-md py-2 px-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             @input="loadProperties"
           />
         </div>
         <div>
-          <label for="status" class="block text-sm font-medium text-gray-300">{{ $t('property.status') }}</label>
+          <label for="status" class="block text-sm font-medium text-gray-600">{{ $t('property.status') }}</label>
           <select
             id="status"
             v-model="filters.status"
-            class="mt-1 block w-full border border-white/20 bg-white/5 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="mt-1 block w-full border border-gray-300 bg-primary-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             @change="loadProperties"
           >
             <option value="">{{ $t('filters.all') }}</option>
@@ -37,7 +37,7 @@
         <div class="flex items-end sm:col-span-2 lg:col-span-1">
           <button
             @click="clearFilters"
-            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100"
+            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100"
           >
             {{ $t('filters.clearFilters') }}
           </button>
@@ -47,8 +47,8 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white/15"></div>
-      <p class="mt-4 text-gray-400">{{ $t('filters.loadingProperties') }}</p>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-200"></div>
+      <p class="mt-4 text-gray-500">{{ $t('filters.loadingProperties') }}</p>
     </div>
 
     <!-- Properties and Buildings Grid -->
@@ -62,7 +62,7 @@
 
     <!-- Empty State -->
     <div v-else class="text-center py-12">
-      <p class="text-gray-400">{{ $t('property.noPropertiesOrBuildings') }}</p>
+      <p class="text-gray-500">{{ $t('property.noPropertiesOrBuildings') }}</p>
     </div>
 
     <!-- Pagination -->
@@ -71,17 +71,17 @@
         <button
           @click="changePage(currentPage - 1)"
           :disabled="currentPage === 0"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300"
         >
           {{ $t('common.previous') }}
         </button>
-        <span class="px-4 py-2 text-sm text-gray-300">
+        <span class="px-4 py-2 text-sm text-gray-600">
           {{ $t('common.page') }} {{ currentPage + 1 }} {{ $t('common.of') }} {{ totalPages }}
         </span>
         <button
           @click="changePage(currentPage + 1)"
           :disabled="currentPage >= totalPages - 1"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300"
         >
           {{ $t('common.next') }}
         </button>
