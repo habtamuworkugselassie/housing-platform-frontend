@@ -101,13 +101,6 @@
             ></span>
           </button>
 
-          <!-- Theme Toggle -->
-          <button class="p-2 text-gray-400 hover:text-primary-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          </button>
-
           <!-- User Profile Dropdown -->
           <div class="pl-4 border-l border-white/10">
             <UserDropdown :showName="false" avatarClass="w-8 h-8 sm:w-10 sm:h-10 text-black bg-white" />

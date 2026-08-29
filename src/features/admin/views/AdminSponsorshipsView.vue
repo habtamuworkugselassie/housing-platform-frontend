@@ -277,11 +277,11 @@
                       :class="[
                         'inline-flex px-2 py-1 text-xs font-medium rounded mt-1',
                       app.sponsorship?.type === 'EXCLUSIVE' ? 'bg-violet-950 text-white' :
-                      app.sponsorship?.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
+                      app.sponsorship?.type === 'PLATINUM' ? 'bg-purple-500/30 text-purple-200' :
                       app.sponsorship?.type === 'GOLD' ? 'bg-violet-950 text-white' :
-                      app.sponsorship?.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
-                      app.sponsorship?.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
-                      'bg-slate-100 text-slate-800'
+                      app.sponsorship?.type === 'SILVER' ? 'bg-slate-500/30 text-slate-200' :
+                      app.sponsorship?.type === 'SPECIAL' ? 'bg-blue-500/30 text-blue-200' :
+                      'bg-slate-500/30 text-slate-200'
                     ]"
                     >
                       {{ app.sponsorship?.type }}
@@ -495,13 +495,13 @@
         class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
         @click.self="showViewPackageDialog = false"
       >
-        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 border-white/10">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-gray-900">Sponsorship Package Details</h3>
+              <h3 class="text-lg font-medium text-white">Sponsorship Package Details</h3>
               <button
                 @click="showViewPackageDialog = false"
-                class="text-gray-400 hover:text-gray-500"
+                class="text-gray-400 hover:text-white"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -511,70 +511,70 @@
             <div v-if="viewingPackage" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Name</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.name || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Name</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingPackage.name || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Type</label>
+                  <label class="block text-sm font-medium text-gray-300">Type</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
                       viewingPackage.type === 'EXCLUSIVE' ? 'bg-violet-950 text-white' :
-                      viewingPackage.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
+                      viewingPackage.type === 'PLATINUM' ? 'bg-purple-500/30 text-purple-200' :
                       viewingPackage.type === 'GOLD' ? 'bg-violet-950 text-white' :
-                      viewingPackage.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
-                      viewingPackage.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
-                      'bg-slate-100 text-slate-800'
+                      viewingPackage.type === 'SILVER' ? 'bg-slate-500/30 text-slate-200' :
+                      viewingPackage.type === 'SPECIAL' ? 'bg-blue-500/30 text-blue-200' :
+                      'bg-slate-500/30 text-slate-200'
                     ]"
                   >
                     {{ viewingPackage.type || 'N/A' }}
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Base Price</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.basePrice != null ? formatPrice(viewingPackage.basePrice) : 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Base Price</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingPackage.basePrice != null ? formatPrice(viewingPackage.basePrice) : 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <label class="block text-sm font-medium text-gray-300">Status</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      viewingPackage.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                      viewingPackage.status === 'ACTIVE' ? 'bg-green-500/30 text-green-200' : 'bg-gray-500/30 text-gray-200'
                     ]"
                   >
                     {{ viewingPackage.status || 'N/A' }}
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Partner role</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.partnerRole) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Partner role</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatEnum(viewingPackage.partnerRole) }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Visibility</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.visibilityScope) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Visibility</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatEnum(viewingPackage.visibilityScope) }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Contribution</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatEnum(viewingPackage.contributionMode) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Contribution</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatEnum(viewingPackage.contributionMode) }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-700">Description</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.description || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Description</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingPackage.description || 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-700">Features</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.features || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Features</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingPackage.features || 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-700">Notes</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingPackage.notes || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Notes</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingPackage.notes || 'N/A' }}</p>
                 </div>
               </div>
             </div>
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewPackageDialog = false"
-                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                class="px-4 py-2 bg-white/10 text-gray-200 rounded-md hover:bg-white/20"
               >
                 Close
               </button>
@@ -589,13 +589,13 @@
         class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
         @click.self="showViewApplicationDialog = false"
       >
-        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 border-white/10">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-gray-900">Sponsorship Application Details</h3>
+              <h3 class="text-lg font-medium text-white">Sponsorship Application Details</h3>
               <button
                 @click="showViewApplicationDialog = false"
-                class="text-gray-400 hover:text-gray-500"
+                class="text-gray-400 hover:text-white"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -605,43 +605,43 @@
             <div v-if="viewingApplication" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Organization</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.organizationName || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Organization</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingApplication.organizationName || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Organization Email</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.organizationEmail || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Organization Email</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingApplication.organizationEmail || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Sponsorship Package</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.sponsorshipName || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Sponsorship Package</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingApplication.sponsorshipName || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Type</label>
+                  <label class="block text-sm font-medium text-gray-300">Type</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
                       viewingApplication.sponsorship?.type === 'EXCLUSIVE' ? 'bg-violet-950 text-white' :
-                      viewingApplication.sponsorship?.type === 'PLATINUM' ? 'bg-purple-100 text-purple-800' :
+                      viewingApplication.sponsorship?.type === 'PLATINUM' ? 'bg-purple-500/30 text-purple-200' :
                       viewingApplication.sponsorship?.type === 'GOLD' ? 'bg-violet-950 text-white' :
-                      viewingApplication.sponsorship?.type === 'SILVER' ? 'bg-slate-200 text-slate-800' :
-                      viewingApplication.sponsorship?.type === 'SPECIAL' ? 'bg-blue-100 text-blue-800' :
-                      'bg-slate-100 text-slate-800'
+                      viewingApplication.sponsorship?.type === 'SILVER' ? 'bg-slate-500/30 text-slate-200' :
+                      viewingApplication.sponsorship?.type === 'SPECIAL' ? 'bg-blue-500/30 text-blue-200' :
+                      'bg-slate-500/30 text-slate-200'
                     ]"
                   >
                     {{ viewingApplication.sponsorship?.type || 'N/A' }}
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.startDate) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Start Date</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatDate(viewingApplication.startDate) }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">End Date</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.endDate) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">End Date</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatDate(viewingApplication.endDate) }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <label class="block text-sm font-medium text-gray-300">Status</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
@@ -652,23 +652,23 @@
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Applied Date</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ formatDate(viewingApplication.createdAt) }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Applied Date</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ formatDate(viewingApplication.createdAt) }}</p>
                 </div>
                 <div class="col-span-2" v-if="viewingApplication.notes">
-                  <label class="block text-sm font-medium text-gray-700">Notes</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ viewingApplication.notes }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Notes</label>
+                  <p class="mt-1 text-sm text-gray-100">{{ viewingApplication.notes }}</p>
                 </div>
                 <div class="col-span-2" v-if="viewingApplication.rejectionReason">
-                  <label class="block text-sm font-medium text-gray-700">Rejection Reason</label>
-                  <p class="mt-1 text-sm text-red-600">{{ viewingApplication.rejectionReason }}</p>
+                  <label class="block text-sm font-medium text-gray-300">Rejection Reason</label>
+                  <p class="mt-1 text-sm text-red-300">{{ viewingApplication.rejectionReason }}</p>
                 </div>
               </div>
             </div>
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewApplicationDialog = false"
-                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                class="px-4 py-2 bg-white/10 text-gray-200 rounded-md hover:bg-white/20"
               >
                 Close
               </button>
@@ -683,23 +683,23 @@
         class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
         @click.self="showRejectDialog = false"
       >
-        <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-zinc-900 border-white/10">
           <div class="mt-3">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Reject Sponsorship Application</h3>
+            <h3 class="text-lg font-medium text-white mb-4">Reject Sponsorship Application</h3>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Reason *</label>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Reason *</label>
               <textarea
                 v-model="rejectReason"
                 rows="3"
                 required
-                class="w-full border border-gray-300 rounded-md px-3 py-2"
+                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2"
                 :placeholder="$t('admin.placeholderRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showRejectDialog = false"
-                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                class="px-4 py-2 border border-white/20 rounded-md text-gray-200 hover:bg-white/10"
               >
                 Cancel
               </button>
