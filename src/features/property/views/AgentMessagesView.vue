@@ -8,7 +8,7 @@
         </div>
         <button
           type="button"
-          class="rounded-lg border border-white/20 px-3 py-2 text-sm text-gray-200 hover:border-black hover:text-black"
+          class="rounded-lg border border-white/20 px-3 py-2 text-sm text-gray-200 hover:border-primary-400 hover:text-primary-400"
           :disabled="loadingConversations"
           @click="loadConversations"
         >
@@ -77,7 +77,7 @@
                   rows="2"
                   maxlength="4000"
                   placeholder="Write a reply…"
-                  class="min-h-[48px] flex-1 resize-none rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:border-black focus:outline-none"
+                  class="min-h-[48px] flex-1 resize-none rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:border-primary-400 focus:outline-none"
                 />
                 <button
                   type="submit"

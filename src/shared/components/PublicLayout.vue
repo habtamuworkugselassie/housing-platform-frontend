@@ -1,42 +1,32 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white flex flex-col">
-    <!-- Optional full-width top (e.g. sponsor carousel) - side panels start below -->
+  <div class="min-h-screen bg-surface-canvas text-white flex flex-col">
+    <!-- Optional full-width top (e.g. sponsor carousel) - the side panel starts below -->
     <div v-if="$slots.top" class="w-full flex-shrink-0">
       <slot name="top" />
     </div>
 
-    <!-- Main row: Left Ad | Content | Right Ad -->
+    <!-- Main row: Content | Right sponsor rail. One rail, not two — the same
+         sponsors used to render in a left rail, a right rail and the content
+         itself, three copies per page, squeezing content to half the screen. -->
     <div class="flex flex-1 min-h-0">
-    <!-- Left Side Ad (Desktop Only) -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-r border-white/10 text-white">
-      <div class="p-4 space-y-4">
-        <AdSpace
-          v-for="(ad, index) in leftSideSlots"
-          :key="`left-ad-${index}`"
-          size="sidebar"
-          dark
-          :ad-content="ad || undefined"
-        />
-      </div>
-    </aside>
+      <main class="flex-1 min-w-0 text-white">
+        <slot />
+      </main>
 
-    <!-- Main Content -->
-    <main class="flex-1 min-w-0 text-white">
-      <slot />
-    </main>
-
-    <!-- Right Side Ad (Desktop Only) -->
-    <aside class="hidden xl:block w-80 flex-shrink-0 bg-zinc-900 border-l border-white/10 text-white">
-      <div class="p-4 space-y-4">
-        <AdSpace
-          v-for="(ad, index) in rightSideSlots"
-          :key="`right-ad-${index}`"
-          size="sidebar"
-          dark
-          :ad-content="ad || undefined"
-        />
-      </div>
-    </aside>
+      <aside
+        v-if="sideSlots.some(Boolean)"
+        class="hidden xl:block w-80 flex-shrink-0 bg-black/20 border-l border-white/10 text-white"
+      >
+        <div class="p-4 space-y-4">
+          <AdSpace
+            v-for="(ad, index) in sideSlots"
+            :key="`side-ad-${index}`"
+            size="sidebar"
+            dark
+            :ad-content="ad || undefined"
+          />
+        </div>
+      </aside>
     </div>
   </div>
 </template>
@@ -50,121 +40,40 @@ import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 const { loadAllAds, sideAds } = useAds()
 const { settings, loadDisplaySettings } = useDisplaySettings()
 const SIDE_AD_SLOTS = 4
-const leftStartIndex = ref(0)
-const rightStartIndex = ref(0)
+const startIndex = ref(0)
 
 // Start sponsor/carousel load immediately so it finishes before feature section loads
 loadAllAds(50)
 
 const adKey = (ad) => ad.realEstateCompanyId || ad.id
 
-/** Exclusive + premium — preferred for the first two sidebar rows per column. */
+/** Exclusive + premium — preferred for the first two rows. */
 const isTopSidebarTier = (ad) => {
   const t = String(ad.sponsorshipType || '').trim().toUpperCase()
   return t === 'EXCLUSIVE' || t === 'PLATINUM' || t === 'PREMIUM'
 }
 
-const emptySideColumn = () => Array.from({ length: SIDE_AD_SLOTS }, () => null)
-
-const buildDistinctColumns = (leftSeed, rightSeed) => {
+/** One column of up to four unique sponsors: top tiers first, then the rest. */
+const sideSlots = computed(() => {
   const ads = sideAds.value
-  if (!ads.length) return { left: emptySideColumn(), right: emptySideColumn() }
+  if (!ads.length) return Array.from({ length: SIDE_AD_SLOTS }, () => null)
 
-  const topTierAds = ads.filter(isTopSidebarTier)
-  const left = emptySideColumn()
-  const right = emptySideColumn()
-  const usedKeys = new Set()
-
-  const normalizeCursor = (seed, length) => ((seed % length) + length) % length
-
-  const takeUnique = (ad) => {
-    if (!ad) return false
+  const seen = new Set()
+  const unique = []
+  const offset = ((startIndex.value % ads.length) + ads.length) % ads.length
+  const rotated = [...ads.slice(offset), ...ads.slice(0, offset)]
+  for (const ad of [...rotated.filter(isTopSidebarTier), ...rotated]) {
     const key = adKey(ad)
-    if (usedKeys.has(key)) return false
-    usedKeys.add(key)
-    return true
+    if (seen.has(key)) continue
+    seen.add(key)
+    unique.push(ad)
+    if (unique.length === SIDE_AD_SLOTS) break
   }
+  while (unique.length < SIDE_AD_SLOTS) unique.push(null)
+  return unique
+})
 
-  const nextUniqueFromList = (list, cursorState) => {
-    if (!list.length) return null
-    let attempts = 0
-    while (attempts < list.length) {
-      const candidate = list[cursorState.value]
-      cursorState.value = (cursorState.value + 1) % list.length
-      attempts += 1
-      if (!candidate) continue
-      const key = adKey(candidate)
-      if (usedKeys.has(key)) continue
-      return candidate
-    }
-    return null
-  }
-
-  const topLen = Math.max(1, topTierAds.length)
-  const topLeftCursor = { value: normalizeCursor(leftSeed, topLen) }
-  const topRightCursor = { value: normalizeCursor(rightSeed + 1, topLen) }
-
-  for (let i = 0; i < 2; i++) {
-    const ad = nextUniqueFromList(topTierAds, topLeftCursor)
-    if (ad && takeUnique(ad)) left[i] = ad
-  }
-  for (let i = 0; i < 2; i++) {
-    const ad = nextUniqueFromList(topTierAds, topRightCursor)
-    if (ad && takeUnique(ad)) right[i] = ad
-  }
-
-  const allLeftCursor = { value: normalizeCursor(leftSeed, ads.length) }
-  const allRightCursor = {
-    value: normalizeCursor(rightSeed + Math.floor(Math.max(1, ads.length) / 2), ads.length)
-  }
-
-  // When there are fewer than 4 unique exclusive/premium sponsors, top rows still have gaps —
-  // fill them from all tiers (including gold) so the panel stays populated.
-  const topRowsNeedBackfill = () =>
-    left[0] == null || left[1] == null || right[0] == null || right[1] == null
-
-  while (topRowsNeedBackfill() && usedKeys.size < ads.length) {
-    const before = usedKeys.size
-    if (left[0] == null || left[1] == null) {
-      const idx = left[0] == null ? 0 : 1
-      const ad = nextUniqueFromList(ads, allLeftCursor)
-      if (ad && takeUnique(ad)) left[idx] = ad
-    }
-    if (right[0] == null || right[1] == null) {
-      const idx = right[0] == null ? 0 : 1
-      const ad = nextUniqueFromList(ads, allRightCursor)
-      if (ad && takeUnique(ad)) right[idx] = ad
-    }
-    if (usedKeys.size === before) break
-  }
-
-  const bottomNeedsWork = () =>
-    left[2] == null || left[3] == null || right[2] == null || right[3] == null
-
-  while (bottomNeedsWork() && usedKeys.size < ads.length) {
-    const before = usedKeys.size
-    if (left[2] == null || left[3] == null) {
-      const idx = left[2] == null ? 2 : 3
-      const ad = nextUniqueFromList(ads, allLeftCursor)
-      if (ad && takeUnique(ad)) left[idx] = ad
-    }
-    if (right[2] == null || right[3] == null) {
-      const idx = right[2] == null ? 2 : 3
-      const ad = nextUniqueFromList(ads, allRightCursor)
-      if (ad && takeUnique(ad)) right[idx] = ad
-    }
-    if (usedKeys.size === before) break
-  }
-
-  return { left, right }
-}
-
-const sideColumns = computed(() => buildDistinctColumns(leftStartIndex.value, rightStartIndex.value))
-
-const leftSideSlots = computed(() => sideColumns.value.left)
-const rightSideSlots = computed(() => sideColumns.value.right)
-
-// Rotate sidebar ads periodically (interval from admin display settings)
+// Rotate the rail periodically (interval from admin display settings)
 let adRotationInterval = null
 
 function clearAdRotation() {
@@ -181,8 +90,7 @@ function startAdRotation() {
   if (ms <= 0) return
   adRotationInterval = setInterval(() => {
     if (sideAds.value.length > 0) {
-      leftStartIndex.value = (leftStartIndex.value + 1) % sideAds.value.length
-      rightStartIndex.value = (rightStartIndex.value + 1) % sideAds.value.length
+      startIndex.value = (startIndex.value + 1) % sideAds.value.length
     }
   }, ms)
 }
@@ -216,22 +124,3 @@ onUnmounted(() => {
   clearAdRotation()
 })
 </script>
-
-<style scoped>
-.overflow-y-auto::-webkit-scrollbar {
-  width: 6px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: #27272a;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #52525b;
-  border-radius: 3px;
-}
-
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #71717a;
-}
-</style>

@@ -3,7 +3,7 @@
     <!-- Loading State -->
     <div v-if="loading" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
       <div class="text-center">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white/15"></div>
         <p class="mt-4 text-gray-400">{{ $t('property.loadingDetails') }}</p>
       </div>
     </div>
@@ -12,7 +12,7 @@
     <div v-else-if="!property" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
       <div class="text-center py-12">
         <p class="text-gray-400 mb-4">{{ $t('property.notFound') }}</p>
-        <router-link to="/properties" class="inline-block text-white hover:text-black font-medium">
+        <router-link to="/properties" class="inline-block text-white hover:text-primary-400 font-medium">
           ← Back to Properties
         </router-link>
       </div>
@@ -23,7 +23,7 @@
       <!-- Back Button -->
       <button
         @click="$router.back()"
-        class="mb-6 flex items-center gap-2 text-white hover:text-black font-medium transition-colors"
+        class="mb-6 flex items-center gap-2 text-white hover:text-primary-400 font-medium transition-colors"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -47,7 +47,7 @@
             <button
               v-if="property.images.length > 1"
               @click="previousImage"
-              class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-violet-950 text-black rounded-full p-2 shadow-lg transition-all z-10"
+              class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-primary-100 text-black rounded-full p-2 shadow-lg transition-all z-10"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -56,7 +56,7 @@
             <button
               v-if="property.images.length > 1"
               @click="nextImage"
-              class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-violet-950 text-black rounded-full p-2 shadow-lg transition-all z-10"
+              class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-primary-100 text-black rounded-full p-2 shadow-lg transition-all z-10"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -102,7 +102,7 @@
               <span
                 :class="{
                   'bg-green-500/30 text-green-200 border-green-400/50': property.status === 'AVAILABLE',
-                  'bg-violet-950/30 text-black border-black/50': property.status === 'RESERVED',
+                  'bg-violet-950/30 text-white border-white/15': property.status === 'RESERVED',
                   'bg-gray-500/30 text-gray-200 border-white/20': property.status === 'SOLD'
                 }"
                 class="px-3 py-1.5 text-xs font-semibold rounded-lg border-2 whitespace-nowrap"
@@ -123,7 +123,7 @@
 
                 <!-- Price -->
                 <div class="flex flex-col gap-0.5">
-                  <div v-if="property.priceETB" class="text-2xl sm:text-3xl font-bold text-black">
+                  <div v-if="property.priceETB" class="text-2xl sm:text-3xl font-bold text-white">
                     {{ formatPrice(property.priceETB, 'ETB') }}
                     <span v-if="property.category === 'FOR_RENTAL'" class="text-base text-gray-400 font-normal">/month</span>
                   </div>
@@ -151,7 +151,7 @@
                 </button>
                 <button 
                   @click="showContactModal = true"
-                  class="px-4 py-2 bg-white text-black rounded-lg font-medium hover:bg-violet-950 transition-colors flex items-center justify-center gap-2 text-sm"
+                  class="px-4 py-2 bg-white text-black rounded-lg font-medium hover:bg-primary-100 transition-colors flex items-center justify-center gap-2 text-sm"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
@@ -162,7 +162,7 @@
                   @click="toggleFavorite"
                   :class="[
                     'px-3 py-2 border-2 rounded-lg transition-colors',
-                    isFavorite ? 'border-red-400 bg-red-500/30' : 'border-white/20 hover:border-black hover:bg-violet-950/20'
+                    isFavorite ? 'border-red-400 bg-red-500/30' : 'border-white/20 hover:border-primary-400 hover:bg-violet-950/20'
                   ]"
                 >
                   <svg 
@@ -176,7 +176,7 @@
                 </button>
                 <button 
                   @click="showGalleryModal = true"
-                  class="px-3 py-2 border-2 border-white/20 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors"
+                  class="px-3 py-2 border-2 border-white/20 rounded-lg hover:border-primary-400 hover:bg-violet-950/20 transition-colors"
                 >
                   <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -192,7 +192,7 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <div v-if="property.bedrooms" class="text-center">
               <div class="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full mx-auto mb-1">
-                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
               </div>
@@ -201,7 +201,7 @@
             </div>
             <div v-if="property.bathrooms" class="text-center">
               <div class="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full mx-auto mb-1">
-                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
                 </svg>
               </div>
@@ -210,7 +210,7 @@
             </div>
             <div v-if="property.area" class="text-center">
               <div class="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full mx-auto mb-1">
-                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                 </svg>
               </div>
@@ -219,7 +219,7 @@
             </div>
             <div v-if="property.floorNumber" class="text-center">
               <div class="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full mx-auto mb-1">
-                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
               </div>
@@ -324,7 +324,7 @@
               :href="googleMapsDirectionsUrl(property.latitude, property.longitude)"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-black hover:bg-violet-950/20 transition-colors text-sm font-medium"
+              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-primary-400 hover:bg-primary-100/20 transition-colors text-sm font-medium"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
@@ -367,9 +367,9 @@
               </div>
 
               <div class="space-y-3">
-                <a v-if="company.email" :href="`mailto:${company.email}`" class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors group">
+                <a v-if="company.email" :href="`mailto:${company.email}`" class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-primary-400 hover:bg-primary-100/20 transition-colors group">
                   <div class="w-10 h-10 bg-violet-950/20 rounded-lg flex items-center justify-center group-hover:bg-violet-950/30 transition-colors">
-                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                   </div>
@@ -380,10 +380,10 @@
                   v-for="(phone, idx) in companyPhones"
                   :key="idx"
                   :href="`tel:${phone}`"
-                  class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors group"
+                  class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-primary-400 hover:bg-primary-100/20 transition-colors group"
                 >
                   <div class="w-10 h-10 bg-violet-950/20 rounded-lg flex items-center justify-center group-hover:bg-violet-950/30 transition-colors">
-                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                     </svg>
                   </div>
@@ -393,7 +393,7 @@
                 <div v-if="company.address" class="p-3 bg-white/5 border border-white/10 rounded-lg">
                   <div class="flex items-start gap-3">
                     <div class="w-10 h-10 bg-violet-950/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                       </svg>
@@ -402,13 +402,13 @@
                   </div>
                 </div>
 
-                <a v-if="company.website" :href="company.website" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors group">
+                <a v-if="company.website" :href="company.website" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:border-primary-400 hover:bg-primary-100/20 transition-colors group">
                   <div class="w-10 h-10 bg-violet-950/20 rounded-lg flex items-center justify-center group-hover:bg-violet-950/30 transition-colors">
-                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                     </svg>
                   </div>
-                  <span class="text-sm font-medium text-black flex-1 truncate">{{ company.website }}</span>
+                  <span class="text-sm font-medium text-white flex-1 truncate">{{ company.website }}</span>
                 </a>
               </div>
             </div>
@@ -430,7 +430,7 @@
               <h2 class="text-2xl font-bold text-white">{{ $t('property.photoGallery') }}</h2>
               <button 
                 @click="showGalleryModal = true"
-                class="text-black hover:text-black font-medium text-sm flex items-center gap-2"
+                class="text-white hover:text-primary-400 font-medium text-sm flex items-center gap-2"
               >
                 {{ $t('common.viewAll') }}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -443,7 +443,7 @@
                 v-for="(image, index) in property.images.slice(0, 6)"
                 :key="index"
                 @click="openGallery(index)"
-                class="relative aspect-square bg-white/10 rounded-lg overflow-hidden cursor-pointer group hover:border-black hover:bg-violet-950/10 border border-white/10 transition-colors"
+                class="relative aspect-square bg-white/10 rounded-lg overflow-hidden cursor-pointer group hover:border-primary-400 hover:bg-primary-100/10 border border-white/10 transition-colors"
               >
                 <img
                   :src="mediaUrl(image.imageUrl)"
@@ -465,7 +465,7 @@
             <div
               v-for="offer in financingOffers"
               :key="offer.id"
-              class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-black hover:bg-violet-950/10 transition-colors"
+              class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-primary-400 hover:bg-primary-100/10 transition-colors"
             >
               <div class="flex items-start justify-between mb-4">
                 <div class="flex-1">
@@ -517,7 +517,7 @@
           <h3 class="text-2xl font-bold text-white">{{ $t('property.contactInformation') }}</h3>
           <button
             @click="showContactModal = false"
-            class="text-gray-400 hover:text-black transition-colors"
+            class="text-gray-400 hover:text-primary-400 transition-colors"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -548,10 +548,10 @@
             <a
               v-if="company.email"
               :href="`mailto:${company.email}`"
-              class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors group"
+              class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-primary-400 hover:bg-primary-100/20 transition-colors group"
             >
               <div class="w-12 h-12 bg-violet-950/20 rounded-lg flex items-center justify-center group-hover:bg-violet-950/30 transition-colors">
-                <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
               </div>
@@ -565,10 +565,10 @@
               v-for="(phone, idx) in companyPhones"
               :key="idx"
               :href="`tel:${phone}`"
-              class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-black hover:bg-violet-950/20 transition-colors group"
+              class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-primary-400 hover:bg-primary-100/20 transition-colors group"
             >
               <div class="w-12 h-12 bg-violet-950/20 rounded-lg flex items-center justify-center group-hover:bg-violet-950/30 transition-colors">
-                <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
               </div>
@@ -635,7 +635,7 @@
     >
       <button
         @click="showGalleryModal = false"
-        class="absolute top-4 right-4 text-white hover:text-black z-10"
+        class="absolute top-4 right-4 text-white hover:text-primary-400 z-10"
       >
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

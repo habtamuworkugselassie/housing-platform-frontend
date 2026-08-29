@@ -3,7 +3,7 @@
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-white hover:text-black font-medium mb-4 transition-colors"
+        class="text-white hover:text-primary-400 font-medium mb-4 transition-colors"
       >
         ← Back
       </button>
@@ -12,7 +12,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
     </div>
 
     <!-- Error State -->
@@ -151,7 +151,7 @@ const getStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-500/30 text-gray-300',
     SUBMITTED: 'bg-blue-500/30 text-blue-200',
-    UNDER_REVIEW: 'bg-violet-950/30 text-black',
+    UNDER_REVIEW: 'bg-violet-950/30 text-white',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200',
     DISBURSED: 'bg-purple-500/30 text-purple-200',

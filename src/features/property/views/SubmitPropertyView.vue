@@ -4,10 +4,10 @@
       <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">{{ $t('submitProperty.title') }}</h2>
       
       <div v-if="!agent" class="mb-6 rounded-md bg-violet-950 p-4">
-        <div class="text-sm text-black">
+        <div class="text-sm text-white">
           {{ $t('submitProperty.needAgent') }}
         </div>
-        <router-link to="/register-agent" class="mt-2 inline-block text-sm font-medium text-black hover:text-black">
+        <router-link to="/register-agent" class="mt-2 inline-block text-sm font-medium text-white hover:text-primary-400">
           {{ $t('submitProperty.registerAsAgent') }} →
         </router-link>
       </div>
@@ -145,7 +145,7 @@
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-black">
+              <p v-if="!approvedBanks.length" class="text-xs text-white">
                 No approved banks are currently available. You can submit the property and add offers later.
               </p>
               <div
@@ -422,7 +422,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-violet-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-black disabled:opacity-50"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-primary-400 disabled:opacity-50"
           >
             <span v-if="loading">{{ $t('submitProperty.submitting') }}</span>
             <span v-else>{{ $t('submitProperty.submitProperty') }}</span>

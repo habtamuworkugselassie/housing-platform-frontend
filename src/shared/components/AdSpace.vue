@@ -11,7 +11,7 @@
           :key="ad.id"
           role="link"
           tabindex="0"
-          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-black/40 cursor-pointer"
+          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
           :class="tierFor(ad).shadowGlow"
           @click="handleAdClick(ad)"
           @keydown.enter.prevent="handleAdClick(ad)"
@@ -78,7 +78,7 @@
         <div
           role="link"
           tabindex="0"
-          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-black/40 cursor-pointer"
+          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
           :class="tierFor(adContent).shadowGlow"
           @click="handleClick"
           @keydown.enter.prevent="handleClick"
@@ -146,7 +146,7 @@
     <!-- Sidebar / rectangle: same exhibition tier system -->
     <div
       v-else
-      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-black/40 w-full"
+      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-primary-400/40 w-full"
       :class="[
         sidebarTier.shadowGlow,
         size === 'sidebar' ? 'min-h-[300px]' : '',
@@ -242,31 +242,6 @@
     </div>
   </div>
 
-  <!-- Placeholder when no ad content -->
-  <div
-    v-else
-    :class="[
-      'rounded-lg flex items-center justify-center',
-      dark ? 'bg-zinc-800 border border-white/10' : 'bg-gray-100 border border-gray-200',
-      size === 'banner' ? 'h-24 sm:h-28' : '',
-      size === 'sidebar' ? 'w-full min-h-[300px]' : '',
-      size === 'rectangle' ? 'h-32 sm:h-40' : ''
-    ]"
-  >
-    <div class="text-center p-4">
-      <div class="text-gray-400 text-sm mb-2">Advertisement</div>
-      <div
-        :class="[
-          'text-gray-500 text-xs',
-          size === 'banner' ? 'text-sm' : '',
-          size === 'sidebar' ? 'text-xs' : ''
-        ]"
-      >
-        {{ size === 'banner' ? '728 x 90' : size === 'sidebar' ? '300 x 600' : '300 x 250' }}
-      </div>
-      <div class="text-gray-400 text-xs mt-1">Ad Space</div>
-    </div>
-  </div>
 </template>
 
 <script setup>

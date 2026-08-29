@@ -144,6 +144,7 @@
     "somethingWentWrong": "የሆነ ችግር ተፈጥሯል። እባክዎ ይሞክሩ።"
   },
   "property": {
+    "noListingsYet": "እስካሁን የታተመ ዝርዝር የለም።",
     "title": "ንብረት",
     "properties": "ንብረቶች",
     "propertyDetails": "የንብረት ዝርዝሮች",

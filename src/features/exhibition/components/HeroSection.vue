@@ -61,7 +61,7 @@
               v-for="partner in partners"
               :key="partner.id"
               :href="`/organizations/${partner.id}`"
-              class="flex flex-col items-center gap-1 transition-all duration-200 hover:border-black hover:bg-violet-950/20 rounded-lg border border-transparent p-2"
+              class="flex flex-col items-center gap-1 transition-all duration-200 hover:border-primary-400 hover:bg-violet-950/20 rounded-lg border border-transparent p-2"
               :class="isExclusive(partner) ? 'border-black/60 bg-violet-950/10' : 'border-white/10 bg-white/5'"
             >
               <div class="h-10 w-16 sm:h-12 sm:w-24 flex items-center justify-center overflow-hidden rounded bg-white/10">

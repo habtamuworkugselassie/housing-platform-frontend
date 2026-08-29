@@ -9,7 +9,7 @@
         </div>
         <button
           @click="openCreateUser"
-          class="px-4 py-2 bg-white text-black rounded-lg hover:bg-violet-950 font-medium transition-colors"
+          class="px-4 py-2 bg-white text-black rounded-lg hover:bg-primary-100 font-medium transition-colors"
         >
           + Add User
         </button>
@@ -25,7 +25,7 @@
               type="text"
               :placeholder="$t('admin.searchUsers')"
               @input="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-black focus:border-black"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             />
           </div>
           <div>
@@ -33,7 +33,7 @@
             <select
               v-model="filters.role"
               @change="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Roles</option>
               <option value="BUYER">Buyer</option>
@@ -48,7 +48,7 @@
             <select
               v-model="filters.status"
               @change="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All</option>
               <option value="enabled">Enabled</option>
@@ -58,7 +58,7 @@
           <div class="flex items-end">
             <button
               @click="clearFilters"
-              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
+              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
             >
               Clear Filters
             </button>
@@ -85,7 +85,7 @@
               <tr>
                 <td colspan="7" class="px-6 py-12 text-center bg-zinc-900">
                   <div class="flex flex-col items-center">
-                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black mb-2"></div>
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
                     <span class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</span>
                   </div>
                 </td>
@@ -101,7 +101,7 @@
                       Please check your browser console for more details.
                     </div>
                   </div>
-                  <button @click="loadUsersData" class="mt-4 px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors">
+                  <button @click="loadUsersData" class="mt-4 px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors">
                     Retry
                   </button>
                 </td>
@@ -156,7 +156,7 @@
                     <template v-if="cell.kind === 'linked'">
                       <RouterLink
                         :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
-                        class="font-medium text-white hover:text-black hover:underline"
+                        class="font-medium text-white hover:text-primary-400 hover:underline"
                       >
                         {{ cell.org.name || 'Organization' }}
                       </RouterLink>
@@ -184,19 +184,19 @@
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
                     @click="viewUser(user)"
-                    class="text-white hover:text-black mr-4 transition-colors"
+                    class="text-white hover:text-primary-400 mr-4 transition-colors"
                   >
                     View
                   </button>
                   <button
                     @click="editUser(user)"
-                    class="text-blue-300 hover:text-black mr-4 transition-colors"
+                    class="text-blue-300 hover:text-primary-400 mr-4 transition-colors"
                   >
                     Edit
                   </button>
                   <button
                     @click="toggleUserStatus(user)"
-                    :class="isUserActive(user) ? 'text-red-300 hover:text-black' : 'text-green-300 hover:text-black'"
+                    :class="isUserActive(user) ? 'text-red-300 hover:text-primary-400' : 'text-green-300 hover:text-primary-400'"
                   >
                     {{ isUserActive(user) ? 'Disable' : 'Enable' }}
                   </button>
@@ -216,14 +216,14 @@
               <button
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 0"
-                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black disabled:opacity-50 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
               >
                 Previous
               </button>
               <button
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage >= totalPages - 1"
-                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black disabled:opacity-50 transition-colors"
+                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
               >
                 Next
               </button>
@@ -244,7 +244,7 @@
               <h3 class="text-lg font-medium text-white">Create User</h3>
               <button
                 @click="closeCreateUser"
-                class="text-gray-400 hover:text-black transition-colors"
+                class="text-gray-400 hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -259,7 +259,7 @@
                     v-model="createForm.firstName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                     placeholder="First name"
                   />
                 </div>
@@ -269,7 +269,7 @@
                     v-model="createForm.lastName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                     placeholder="Last name"
                   />
                 </div>
@@ -280,7 +280,7 @@
                   v-model="createForm.email"
                   type="email"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="user@example.com"
                 />
               </div>
@@ -291,7 +291,7 @@
                   type="password"
                   required
                   minlength="8"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Min 8 chars, upper, lower, number"
                 />
                 <p class="mt-1 text-xs text-gray-400">At least 8 characters, one uppercase, one lowercase, one number</p>
@@ -301,7 +301,7 @@
                 <input
                   v-model="createForm.phoneNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Optional"
                 />
               </div>
@@ -317,7 +317,7 @@
                       v-model="createForm.roles"
                       type="checkbox"
                       :value="opt.value"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-black"
+                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
                     />
                     <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
                   </label>
@@ -333,19 +333,19 @@
                   Register a new one in
                   <RouterLink
                     to="/admin/organizations"
-                    class="text-black hover:underline"
+                    class="text-white hover:underline"
                     @click="closeCreateUser"
                   >
                     Organization management
                   </RouterLink>
                   , then reopen Add User to refresh.
                 </p>
-                <p v-if="organizationFilterSummary" class="text-xs text-black/90 font-medium">
+                <p v-if="organizationFilterSummary" class="text-xs text-white/90 font-medium">
                   {{ organizationFilterSummary }}
                 </p>
                 <select
                   v-model="createForm.organizationId"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="">None (optional)</option>
                   <template v-for="group in organizationsGroupedForCreate" :key="group.type">
@@ -364,14 +364,14 @@
                 <button
                   type="button"
                   @click="closeCreateUser"
-                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
+                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   :disabled="createSubmitting"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
                 >
                   {{ createSubmitting ? 'Creating…' : 'Create User' }}
                 </button>
@@ -394,7 +394,7 @@
               <button
                 type="button"
                 @click="closeEditUser"
-                class="text-gray-400 hover:text-black transition-colors"
+                class="text-gray-400 hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -409,7 +409,7 @@
                     v-model="editForm.firstName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
                 <div>
@@ -418,7 +418,7 @@
                     v-model="editForm.lastName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
               </div>
@@ -428,7 +428,7 @@
                   v-model="editForm.email"
                   type="email"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
@@ -436,7 +436,7 @@
                 <input
                   v-model="editForm.phoneNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Optional"
                 />
               </div>
@@ -445,7 +445,7 @@
                 <select
                   v-model="editForm.status"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option v-for="s in userStatusOptions" :key="s" :value="s">{{ s.replace(/_/g, ' ') }}</option>
                 </select>
@@ -462,7 +462,7 @@
                       v-model="editForm.roles"
                       type="checkbox"
                       :value="opt.value"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-black"
+                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
                     />
                     <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
                   </label>
@@ -479,19 +479,19 @@
                   All organizations for the selected role(s) (any status). Manage orgs in
                   <RouterLink
                     to="/admin/organizations"
-                    class="text-black hover:underline"
+                    class="text-white hover:underline"
                     @click="closeEditUser"
                   >
                     Organization management
                   </RouterLink>
                   .
                 </p>
-                <p v-if="organizationFilterSummaryEdit" class="text-xs text-black/90 font-medium">
+                <p v-if="organizationFilterSummaryEdit" class="text-xs text-white/90 font-medium">
                   {{ organizationFilterSummaryEdit }}
                 </p>
                 <select
                   v-model="editForm.organizationId"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="">None (optional)</option>
                   <template v-for="group in organizationsGroupedForEdit" :key="`edit-${group.type}`">
@@ -510,14 +510,14 @@
                 <button
                   type="button"
                   @click="closeEditUser"
-                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-violet-950/20 hover:border-black transition-colors"
+                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   :disabled="editSubmitting"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
                 >
                   {{ editSubmitting ? 'Saving…' : 'Save changes' }}
                 </button>
@@ -539,7 +539,7 @@
               <h3 class="text-lg font-medium text-white">User Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-black transition-colors"
+                class="text-gray-400 hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -596,7 +596,7 @@
                     <div v-if="cell.kind === 'linked'" class="mt-1">
                       <RouterLink
                         :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
-                        class="text-sm font-medium text-white hover:text-black hover:underline"
+                        class="text-sm font-medium text-white hover:text-primary-400 hover:underline"
                       >
                         {{ cell.org.name || 'Organization' }}
                       </RouterLink>
@@ -629,7 +629,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
               >
                 Close
               </button>

@@ -3,8 +3,8 @@
     <div class="relative flex-shrink-0 min-w-[7rem]" ref="dropdownRef">
       <button
         type="button"
-        class="w-full flex items-center gap-2 border border-white/20 bg-white/5 text-white rounded-md py-2 pl-2 pr-8 focus:ring-2 focus:ring-black focus:border-black focus:outline-none text-left cursor-pointer hover:border-white/30 transition-colors"
-        :class="{ 'ring-2 ring-black border-black': isOpen }"
+        class="w-full flex items-center gap-2 border border-white/20 bg-white/5 text-white rounded-md py-2 pl-2 pr-8 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:outline-none text-left cursor-pointer hover:border-white/30 transition-colors"
+        :class="{ 'ring-2 ring-white/15 border-white/15': isOpen }"
         @click="isOpen = !isOpen"
       >
         <span class="flex-shrink-0">{{ flag(selectedOption?.iso2) }}</span>
@@ -43,7 +43,7 @@
               v-model="searchQuery"
               type="text"
               placeholder="Search country or code..."
-              class="w-full px-3 py-2 border border-white/20 text-white placeholder-gray-400 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-black focus:outline-none country-code-search-input"
+              class="w-full px-3 py-2 border border-white/20 text-white placeholder-gray-400 rounded-md text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:outline-none country-code-search-input"
               @keydown.escape="isOpen = false"
               @keydown.stop
             />
@@ -55,7 +55,7 @@
               role="option"
               :aria-selected="opt.code === countryCode"
               class="flex items-center gap-2 px-3 py-2 cursor-pointer text-white text-sm border-l-2 border-transparent transition-colors country-code-option"
-              :class="{ 'bg-violet-950/10 border-black': opt.code === countryCode }"
+              :class="{ 'bg-violet-950/10 border-white/15': opt.code === countryCode }"
               @click="choose(opt)"
             >
               <span class="flex-shrink-0 text-lg leading-none">{{ flag(opt.iso2) }}</span>
@@ -72,7 +72,7 @@
       :value="number"
       type="tel"
       :placeholder="placeholder"
-      class="flex-1 min-w-0 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+      class="flex-1 min-w-0 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
       @input="$emit('update:number', $event.target.value)"
     />
   </div>

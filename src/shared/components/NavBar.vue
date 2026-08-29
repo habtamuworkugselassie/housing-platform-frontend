@@ -1,12 +1,12 @@
 <template>
-  <nav class="site-nav border-b border-white/10 sticky top-0 z-50 text-white">
+  <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center">
           <!-- Mobile menu button -->
           <button
             @click="mobileMenuOpen = !mobileMenuOpen"
-            class="sm:hidden p-2 rounded-md text-gray-400 hover:text-black hover:bg-violet-950/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black"
+            class="sm:hidden p-2 rounded-md text-gray-400 hover:text-primary-400 hover:bg-violet-950/20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-400"
             :aria-label="$t('nav.toggleMenu')"
           >
             <span class="material-icons">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
@@ -14,14 +14,14 @@
           
           <router-link
             to="/"
-            class="flex items-center gap-2 px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-black"
+            class="flex items-center gap-2 px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-primary-400"
           >
             <img
-              src="/images/branding/ethio-build-connect-banner.png"
+              src="/images/branding/ethio-build-connect-wordmark.png"
               alt=""
-              width="140"
-              height="36"
-              class="h-8 w-auto sm:h-9 object-contain shrink-0"
+              width="65"
+              height="40"
+              class="h-9 w-auto sm:h-10 object-contain shrink-0"
             />
             <span class="sr-only">{{ $t('common.appName') }}</span>
           </router-link>
@@ -35,7 +35,7 @@
             <button
               type="button"
               class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-              :class="marketplaceDropdownOpen ? 'text-black bg-violet-950/10' : 'text-gray-300 hover:text-black hover:bg-white/5'"
+              :class="marketplaceDropdownOpen ? 'text-black bg-violet-950/10' : 'text-gray-300 hover:text-primary-400 hover:bg-white/5'"
               :aria-expanded="marketplaceDropdownOpen"
               aria-haspopup="true"
               @click="marketplaceDropdownOpen = !marketplaceDropdownOpen"
@@ -62,7 +62,7 @@
                 <div class="rounded-xl border border-white/10 bg-zinc-900/95 backdrop-blur-md shadow-xl shadow-black/30 py-1.5 overflow-hidden">
                   <router-link
                     to="/marketplace/real-estate"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
                     <span class="text-lg" aria-hidden="true">🏠</span>
@@ -70,7 +70,7 @@
                   </router-link>
                   <router-link
                     to="/marketplace/banks"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
                     <span class="text-lg" aria-hidden="true">🏦</span>
@@ -78,7 +78,7 @@
                   </router-link>
                   <router-link
                     to="/marketplace/insurance"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
                     <span class="text-lg" aria-hidden="true">🛡️</span>
@@ -86,7 +86,7 @@
                   </router-link>
                   <router-link
                     to="/marketplace/contractors"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
                     <span class="text-lg" aria-hidden="true">👷</span>
@@ -94,15 +94,15 @@
                   </router-link>
                   <router-link
                     to="/marketplace/consultants-and-architects"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
-                    <span class="text-lg" aria-hidden="true">📐</span>
+                    <span class="material-icons !text-[18px] leading-none" aria-hidden="true">square_foot</span>
                     {{ $t('nav.marketplaceConsultantsArchitects') }}
                   </router-link>
                   <router-link
                     to="/marketplace/suppliers"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
                     <span class="text-lg" aria-hidden="true">📦</span>
@@ -110,10 +110,10 @@
                   </router-link>
                   <router-link
                     to="/marketplace/finishing-work"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-black"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
-                    <span class="text-lg" aria-hidden="true">✨</span>
+                    <span class="material-icons !text-[18px] leading-none" aria-hidden="true">star</span>
                     {{ $t('nav.marketplaceFinishingWork') }}
                   </router-link>
                 </div>
@@ -122,8 +122,8 @@
           </div>
 
           <div v-if="isExhibitionPage" class="hidden md:ml-6 md:flex md:space-x-6">
-            <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-black">{{ $t('nav.showFeatures') }}</router-link>
-            <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-black">{{ $t('nav.whoAttends') }}</router-link>
+            <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.showFeatures') }}</router-link>
+            <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.whoAttends') }}</router-link>
           </div>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">
@@ -133,69 +133,70 @@
               <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/buildings"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.buildings') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/submit-property"
-                class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-violet-950"
+                class="px-3 py-2 text-sm font-medium text-primary-950 bg-gold-400 rounded-md hover:bg-gold-500"
               >
                 {{ $t('nav.submitProperty') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/agent/messages"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 Messages
               </router-link>
               <router-link
                 v-if="authStore.isAdmin"
                 to="/admin"
-                class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-violet-950"
+                class="px-3 py-2 text-sm font-medium text-primary-950 bg-gold-400 rounded-md hover:bg-gold-500"
               >
                 {{ $t('nav.admin') }}
               </router-link>
               <router-link
                 v-if="authStore.isAdmin"
                 to="/sponsorships"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.sponsorships') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('BANKER')"
                 to="/banking/dashboard"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.banking') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('BUYER')"
                 to="/loan-applications"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.myLoans') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/construction/dashboard"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.construction') }}
               </router-link>
               <router-link
                 v-if="authStore.hasRole('SUPPLIER')"
                 to="/supplier/dashboard"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.supplier') }}
               </router-link>
               <router-link
-                :to="authStore.isAdmin ? '/admin' : '/dashboard'"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                v-if="!authStore.isAdmin"
+                to="/dashboard"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 {{ $t('nav.dashboard') }}
               </router-link>
@@ -207,18 +208,15 @@
             <template v-else>
               <router-link
                 to="/login"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
               >
                 <span class="hidden sm:inline">{{ $t('nav.login') }}</span>
                 <span class="sm:hidden">{{ $t('nav.login') }}</span>
               </router-link>
-              <router-link
-                to="/register"
-                class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-violet-950"
-              >
+              <AppButton to="/register" variant="primary" size="sm">
                 <span class="hidden sm:inline">{{ $t('nav.register') }}</span>
                 <span class="sm:hidden">{{ $t('nav.signUp') }}</span>
-              </router-link>
+              </AppButton>
             </template>
           </div>
           
@@ -227,33 +225,33 @@
       </div>
       
       <!-- Mobile menu -->
-      <div v-if="mobileMenuOpen" class="sm:hidden border-t border-white/10 bg-zinc-900/95">
+      <div v-if="mobileMenuOpen" class="sm:hidden border-t border-white/10 bg-primary-950/95 backdrop-blur-sm">
         <div class="px-2 pt-2 pb-3 space-y-1">
           <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $t('nav.marketplace') }}</div>
-          <router-link to="/marketplace/real-estate" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceRealEstate') }}</router-link>
-          <router-link to="/marketplace/banks" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceBanks') }}</router-link>
-          <router-link to="/marketplace/insurance" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceInsurance') }}</router-link>
-          <router-link to="/marketplace/contractors" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceContractors') }}</router-link>
-          <router-link to="/marketplace/consultants-and-architects" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceConsultantsArchitects') }}</router-link>
-          <router-link to="/marketplace/suppliers" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceSuppliers') }}</router-link>
-          <router-link to="/marketplace/finishing-work" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceFinishingWork') }}</router-link>
+          <router-link to="/marketplace/real-estate" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceRealEstate') }}</router-link>
+          <router-link to="/marketplace/banks" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceBanks') }}</router-link>
+          <router-link to="/marketplace/insurance" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceInsurance') }}</router-link>
+          <router-link to="/marketplace/contractors" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceContractors') }}</router-link>
+          <router-link to="/marketplace/consultants-and-architects" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceConsultantsArchitects') }}</router-link>
+          <router-link to="/marketplace/suppliers" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceSuppliers') }}</router-link>
+          <router-link to="/marketplace/finishing-work" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceFinishingWork') }}</router-link>
           <router-link
             to="/properties"
             @click="mobileMenuOpen = false"
-            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
           >
             {{ $t('nav.properties') }}
           </router-link>
           <template v-if="isExhibitionPage">
-            <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.showFeatures') }}</router-link>
-            <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md">{{ $t('nav.whoAttends') }}</router-link>
+            <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.showFeatures') }}</router-link>
+            <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.whoAttends') }}</router-link>
           </template>
           <template v-if="authStore.isAuthenticated">
             <router-link
               v-if="authStore.hasRole('REALTOR')"
               to="/buildings"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.buildings') }}
             </router-link>
@@ -261,7 +259,7 @@
               v-if="authStore.hasRole('REALTOR')"
               to="/submit-property"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-violet-950 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-primary-950 bg-gold-400 hover:bg-gold-500 rounded-md"
             >
               {{ $t('nav.submitProperty') }}
             </router-link>
@@ -269,7 +267,7 @@
               v-if="authStore.hasRole('REALTOR')"
               to="/agent/messages"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               Messages
             </router-link>
@@ -277,7 +275,7 @@
               v-if="authStore.isAdmin"
               to="/admin"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-violet-950 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-primary-950 bg-gold-400 hover:bg-gold-500 rounded-md"
             >
               {{ $t('nav.adminPortal') }}
             </router-link>
@@ -285,7 +283,7 @@
               v-if="authStore.isAdmin"
               to="/sponsorships"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.sponsorships') }}
             </router-link>
@@ -293,7 +291,7 @@
               v-if="authStore.hasRole('BANKER')"
               to="/banking/dashboard"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.banking') }}
             </router-link>
@@ -301,7 +299,7 @@
               v-if="authStore.hasRole('BUYER')"
               to="/loan-applications"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.myLoans') }}
             </router-link>
@@ -309,7 +307,7 @@
               v-if="authStore.hasRole('REALTOR')"
               to="/construction/dashboard"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.construction') }}
             </router-link>
@@ -317,14 +315,15 @@
               v-if="authStore.hasRole('SUPPLIER')"
               to="/supplier/dashboard"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.supplier') }}
             </router-link>
             <router-link
-              :to="authStore.isAdmin ? '/admin' : '/dashboard'"
+              v-if="!authStore.isAdmin"
+              to="/dashboard"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.dashboard') }}
             </router-link>
@@ -346,7 +345,7 @@
             <router-link
               to="/profile"
               @click="mobileMenuOpen = false"
-              class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               <div class="flex items-center gap-2">
                 <span class="material-icons text-xl" aria-hidden="true">person</span>
@@ -368,17 +367,13 @@
             <router-link
               to="/login"
               @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
+              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               {{ $t('nav.login') }}
             </router-link>
-            <router-link
-              to="/register"
-              @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-violet-950 rounded-md"
-            >
+            <AppButton to="/register" variant="primary" class="w-full" @click="mobileMenuOpen = false">
               {{ $t('nav.register') }}
-            </router-link>
+            </AppButton>
           </template>
         </div>
       </div>
@@ -387,6 +382,7 @@
 </template>
 
 <script setup>
+import { AppButton } from '@/shared/components/ui'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/features/auth'
 import { mediaUrl } from '@/shared/api/client'

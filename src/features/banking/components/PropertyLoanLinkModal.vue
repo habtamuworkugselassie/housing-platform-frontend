@@ -10,7 +10,7 @@
         <button
           type="button"
           @click="$emit('close')"
-          class="text-gray-400 hover:text-black transition-colors"
+          class="text-gray-400 hover:text-primary-400 transition-colors"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -34,7 +34,7 @@
             v-model="form.bankId"
             required
             :disabled="loadingLookups"
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black disabled:opacity-50"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400 disabled:opacity-50"
             @change="onBankChanged"
           >
             <option value="">Select bank</option>
@@ -53,7 +53,7 @@
             max="100"
             step="0.01"
             required
-            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-black focus:border-black"
+            class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
           />
         </div>
 
@@ -64,14 +64,14 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-black transition-colors"
+            class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-primary-400 transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             :disabled="submitting || loadingLookups"
-            class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-60 transition-colors"
+            class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-60 transition-colors"
           >
             {{ submitting ? 'Creating...' : 'Create Property Credit' }}
           </button>

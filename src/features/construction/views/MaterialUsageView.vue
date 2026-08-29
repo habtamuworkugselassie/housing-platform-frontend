@@ -114,7 +114,7 @@
             </div>
 
             <div v-if="usage.location" class="mt-2 text-xs text-gray-500">
-              📍 {{ usage.location }}
+              <span class="material-icons !text-[15px] leading-none align-[-2px]" aria-hidden="true">location_on</span> {{ usage.location }}
             </div>
           </div>
           <div v-if="authStore.hasRole('REALTOR')" class="ml-4">

@@ -8,7 +8,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
         </div>
 
         <div v-else>
@@ -53,7 +53,7 @@
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
                     @click="viewProject(project)"
-                    class="text-white hover:text-black transition-colors"
+                    class="text-white hover:text-primary-400 transition-colors"
                   >
                     View
                   </button>
@@ -76,7 +76,7 @@
               <h3 class="text-lg font-medium text-white">Construction Project Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-black transition-colors"
+                class="text-gray-400 hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -125,7 +125,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
               >
                 Close
               </button>
@@ -165,7 +165,7 @@ const getStatusClass = (status) => {
   const classes = {
     PLANNING: 'bg-gray-500/30 text-gray-300',
     IN_PROGRESS: 'bg-blue-500/30 text-blue-200',
-    ON_HOLD: 'bg-violet-950/30 text-black',
+    ON_HOLD: 'bg-violet-950/30 text-white',
     COMPLETED: 'bg-green-500/30 text-green-200',
     CANCELLED: 'bg-red-500/30 text-red-200'
   }

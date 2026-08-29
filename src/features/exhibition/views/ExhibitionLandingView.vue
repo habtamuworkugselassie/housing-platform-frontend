@@ -3,7 +3,7 @@
     <!-- Planning the exhibition — professional intro for market -->
     <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl border-l-2 border-black pl-6 sm:pl-8">
+        <div class="max-w-3xl border-l-2 border-white/15 pl-6 sm:pl-8">
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4">
             {{ $t('exhibition.planning.badge') }}
           </p>
@@ -25,7 +25,7 @@
             </a>
             <a
               href="#show-features"
-              class="inline-flex items-center justify-center px-6 py-3 border border-white/30 text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:border-black transition-colors"
+              class="inline-flex items-center justify-center px-6 py-3 border border-white/30 text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:border-primary-400 transition-colors"
             >
               {{ $t('exhibition.keyShowFeatures.exploreMore') }}
             </a>
@@ -51,19 +51,19 @@
             v-model="propertiesSearchQuery"
             type="search"
             :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
-            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-white placeholder-gray-400 focus:ring-2 focus:ring-black focus:border-black"
+            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             aria-label="Search properties"
           />
         </div>
         <div v-if="propertiesLoading" class="flex justify-center py-12">
-          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-black border-t-transparent" />
+          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-transparent" />
         </div>
         <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <a
             v-for="(item, index) in (propertiesList || [])"
             :key="item?.id ?? index"
             :href="item?.id ? `/properties/${item.id}` : '#'"
-            class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-black hover:bg-violet-950/10 hover:shadow-lg hover:shadow-black/5"
+            class="group flex flex-col overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-primary-400 hover:bg-primary-100/10 hover:shadow-lg hover:shadow-black/5"
           >
             <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-zinc-800">
               <img
@@ -108,7 +108,7 @@
           <button
             type="button"
             :disabled="propertiesPage === 0"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-black hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-primary-400 hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.max(0, propertiesPage - 1)"
           >
             <ChevronLeftIcon class="h-4 w-4" aria-hidden="true" />
@@ -120,7 +120,7 @@
           <button
             type="button"
             :disabled="propertiesPage >= propertiesTotalPages - 1"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-black hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:border-primary-400 hover:bg-violet-950/20 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
             @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
           >
             <span>{{ $t('common.next') }}</span>
@@ -146,7 +146,7 @@
           <div
             v-for="(card, index) in whatToExpectCards"
             :key="card.titleKey"
-            class="group relative flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 sm:p-7 transition-all duration-300 hover:border-black hover:bg-violet-950/10"
+            class="group relative flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 sm:p-7 transition-all duration-300 hover:border-primary-400 hover:bg-primary-100/10"
           >
             <div class="mb-4 flex items-center justify-between">
               <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-violet-950/20 text-white transition-colors group-hover:bg-violet-950/30">
@@ -163,7 +163,7 @@
           </div>
         </div>
         <div class="mt-10 text-center">
-          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950 rounded px-2 py-1">
+          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-violet-950 rounded px-2 py-1">
             {{ $t('exhibition.planning.cta') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -195,7 +195,7 @@
           </p>
           <a
             href="#who-attends"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white font-semibold text-sm uppercase tracking-wider text-violet-950 rounded-lg hover:bg-violet-100 hover:text-violet-950 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white font-semibold text-sm uppercase tracking-wider text-violet-950 rounded-lg hover:bg-violet-100 hover:text-violet-950 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-violet-950"
           >
             {{ $t('exhibition.keyShowFeatures.exploreMoreLabel') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -220,7 +220,7 @@
           <div
             v-for="audience in whoAttends"
             :key="audience.key"
-            class="block p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-violet-950/10 hover:border-black transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-black"
+            class="block p-6 rounded-lg bg-white/5 border border-white/10 hover:bg-primary-100/10 hover:border-primary-400 transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-black"
           >
             <h3 class="text-sm font-bold uppercase tracking-tight text-white mb-1">{{ $t(audience.titleKey) }}</h3>
             <p class="text-xs text-white/70 group-hover:text-white/80">{{ $t(audience.descKey) }}</p>
@@ -241,7 +241,7 @@
         <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white mb-10 text-center">
           {{ $t('exhibition.testimonial.title') }}
         </h2>
-        <blockquote class="pl-6 sm:pl-8 border-l-4 border-black text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
+        <blockquote class="pl-6 sm:pl-8 border-l-4 border-white/15 text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
           {{ $t('exhibition.testimonial.quote') }}
         </blockquote>
         <p class="text-sm text-white/70 uppercase tracking-wider">{{ $t('exhibition.testimonial.author') }}</p>
@@ -255,7 +255,7 @@
         <p class="text-lg text-white/80 mb-10">
           {{ $t('exhibition.planVisit.body') }}
         </p>
-        <a href="#register" class="inline-flex px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950">
+        <a href="#register" class="inline-flex px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-violet-950">
           {{ $t('exhibition.planVisit.planYourVisit') }}
         </a>
       </div>
@@ -277,7 +277,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-violet-950"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-violet-950"
         >
           {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
@@ -336,8 +336,8 @@
               v-for="partner in partnersList"
               :key="partner.id"
               :href="`/organizations/${partner.id}`"
-              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-white/80 hover:border-black hover:bg-violet-950/20 transition-all duration-300"
-              :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-black/50 bg-violet-950/10' : ''"
+              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-white/80 hover:border-primary-400 hover:bg-primary-100/20 transition-all duration-300"
+              :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-white/15 bg-violet-950/10' : ''"
             >
               <img
                 v-if="partner.logoUrl"

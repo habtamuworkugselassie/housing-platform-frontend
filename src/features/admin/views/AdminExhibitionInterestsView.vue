@@ -17,7 +17,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black" />
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15" />
         </div>
 
         <div v-else-if="error" class="px-6 py-8 text-center text-red-300 text-sm">
@@ -143,7 +143,7 @@
                     <router-link
                       v-if="row.organizationId"
                       :to="`/organizations/${row.organizationId}`"
-                      class="text-black hover:text-black text-xs underline-offset-2 hover:underline"
+                      class="text-white hover:text-primary-400 text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -160,7 +160,7 @@
                       <button
                         type="button"
                         :disabled="exhibitionVerifyDisabled(row) || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white text-black hover:bg-violet-950 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="openVerifyExhibitionContact(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyRegistrantContact') }}
@@ -168,7 +168,7 @@
                       <button
                         type="button"
                         :disabled="!row.contactVerifiedAt || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="approveExhibitionOrg(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyApproveOrganization') }}
@@ -215,7 +215,7 @@
                     <router-link
                       v-if="app.organizationId"
                       :to="`/organizations/${app.organizationId}`"
-                      class="text-black hover:text-black text-xs underline-offset-2 hover:underline"
+                      class="text-white hover:text-primary-400 text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -245,7 +245,7 @@
             <button
               type="button"
               :disabled="page <= 0 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goPrev"
             >
               {{ $t('common.previous') }}
@@ -253,7 +253,7 @@
             <button
               type="button"
               :disabled="page >= totalPages - 1 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-violet-950/20 hover:border-black disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goNext"
             >
               {{ $t('common.next') }}
@@ -285,7 +285,7 @@
         <textarea
           v-model="rejectExhibitionOrgReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
+          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
@@ -298,7 +298,7 @@
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-violet-950"
+            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-primary-100"
             @click="confirmRejectExhibitionOrg"
           >
             {{ $t('admin.reject') }}
@@ -318,7 +318,7 @@
         <textarea
           v-model="rejectSponsorshipReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-black focus:border-black"
+          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
@@ -331,7 +331,7 @@
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-violet-950"
+            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-primary-100"
             @click="confirmRejectSponsorship"
           >
             {{ $t('admin.reject') }}

@@ -20,7 +20,7 @@
           <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-400">
             <a
               :href="`tel:${phoneRaw}`"
-              class="hover:text-black transition-colors"
+              class="hover:text-primary-400 transition-colors"
             >
               {{ phone }}
             </a>
@@ -29,7 +29,7 @@
             :href="websiteUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-black"
+            class="inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-primary-400"
             aria-label="Open Ethio Build Connect portal"
           >
             <img
@@ -51,7 +51,7 @@
               rel="noopener noreferrer"
               :title="item.label"
               :aria-label="item.label"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors hover:border-black hover:text-black"
+              class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors hover:border-primary-400 hover:text-primary-400"
             >
               <svg
                 class="h-4 w-4"
@@ -74,7 +74,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#planning' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.aboutExhibition') }}
               </RouterLink>
@@ -82,7 +82,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#register' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.registerInterest') }}
               </RouterLink>
@@ -90,7 +90,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#partners' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.partners') }}
               </RouterLink>
@@ -98,7 +98,7 @@
             <li v-if="showSponsorshipPackagesNavLink">
               <RouterLink
                 :to="{ name: 'Home', hash: '#sponsorship-packages' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.sponsorshipPackages') }}
               </RouterLink>
@@ -115,7 +115,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#brochure' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.brochure') }}
               </RouterLink>
@@ -123,7 +123,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#main-listings' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.featuredListings') }}
               </RouterLink>
@@ -140,7 +140,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#show-features' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.faq') }}
               </RouterLink>
@@ -148,7 +148,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#register' }"
-                class="text-gray-300 hover:text-black transition-colors"
+                class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.contactUs') }}
               </RouterLink>
@@ -168,13 +168,13 @@
           class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400 order-1 lg:order-2"
           aria-label="Legal"
         >
-          <RouterLink to="/privacy" class="hover:text-black transition-colors">{{
+          <RouterLink to="/privacy" class="hover:text-primary-400 transition-colors">{{
             $t('exhibition.footer.privacy')
           }}</RouterLink>
-          <RouterLink to="/terms" class="hover:text-black transition-colors">{{
+          <RouterLink to="/terms" class="hover:text-primary-400 transition-colors">{{
             $t('exhibition.footer.terms')
           }}</RouterLink>
-          <RouterLink to="/legal" class="hover:text-black transition-colors">{{
+          <RouterLink to="/legal" class="hover:text-primary-400 transition-colors">{{
             $t('exhibition.footer.legal')
           }}</RouterLink>
         </nav>
