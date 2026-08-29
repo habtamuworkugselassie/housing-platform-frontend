@@ -382,7 +382,7 @@
             <div class="flex items-start justify-between gap-3">
               <h2 class="text-xl font-bold text-white">Sponsorship applications</h2>
               <router-link
-                v-if="authStore.hasRole('ADMIN')"
+                v-if="authStore.isAdmin"
                 to="/admin/sponsorships"
                 class="shrink-0 text-xs font-medium text-white hover:text-white hover:underline"
               >
@@ -1015,7 +1015,7 @@ async function loadSponsorshipApplications(orgId) {
 
   loadingSponsorshipApplications.value = true
   try {
-    if (authStore.hasRole('ADMIN')) {
+    if (authStore.isAdmin) {
       const res = await api.get('/sponsorships/applications', {
         params: { organizationId: orgId }
       })

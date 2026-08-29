@@ -810,7 +810,7 @@ const isFavorite = ref(false)
 const canCreatePropertyLoan = computed(
   () =>
     authStore.isAuthenticated &&
-    (authStore.hasRole('REALTOR') || authStore.hasRole('ADMIN'))
+    (authStore.hasRole('REALTOR') || authStore.isAdmin)
 )
 
 const propertyPageMediaUrlsForWarmup = computed(() => {

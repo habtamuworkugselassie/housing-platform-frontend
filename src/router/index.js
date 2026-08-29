@@ -468,7 +468,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'Login', query: { redirect: to.fullPath } })
   } else if (to.meta.requiresRealtor && !authStore.hasRole('REALTOR')) {
     next({ name: 'Dashboard' })
-  } else if (to.meta.requiresAdmin && !authStore.hasRole('ADMIN')) {
+  } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
     next({ name: 'Dashboard' })
   } else if (to.meta.requiresBanker && !authStore.hasRole('BANKER')) {
     next({ name: 'Dashboard' })
