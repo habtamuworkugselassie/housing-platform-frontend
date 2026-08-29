@@ -3,7 +3,7 @@
     <div class="space-y-6">
       <!-- Page Header -->
       <div>
-        <h1 class="text-3xl font-bold text-white">Dashboard</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">Dashboard</h1>
         <p class="mt-2 text-sm text-gray-400">{{ $t('admin.overviewSubtitle') }}</p>
       </div>
 

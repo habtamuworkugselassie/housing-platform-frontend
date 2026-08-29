@@ -2,9 +2,9 @@
   <AdminLayout>
     <div class="space-y-6">
       <!-- Page Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-white">Sponsorship Management</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold text-white">Sponsorship Management</h1>
           <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
         </div>
         <div class="flex space-x-3">
@@ -112,7 +112,8 @@
           </div>
 
           <div v-else>
-            <table class="min-w-full divide-y divide-white/10">
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[56rem] divide-y divide-white/10">
               <thead class="bg-zinc-800">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Package Name</th>
@@ -210,6 +211,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>
@@ -251,7 +253,8 @@
           </div>
 
           <div v-else>
-            <table class="min-w-full divide-y divide-white/10">
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[56rem] divide-y divide-white/10">
               <thead class="bg-zinc-800">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Organization</th>
@@ -333,6 +336,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   <AdminLayout>
     <div class="space-y-6">
       <div>
-        <h1 class="text-3xl font-bold text-white">{{ $t('admin.exhibitionInterests.title') }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.exhibitionInterests.title') }}</h1>
         <p class="mt-2 text-sm text-gray-400">{{ $t('admin.exhibitionInterests.subtitleUnified') }}</p>
         <div
           v-if="!loading && !error"
@@ -29,7 +29,7 @@
         </div>
 
         <div v-else class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-white/10">
+            <table class="w-full min-w-[72rem] divide-y divide-white/10">
             <thead class="bg-zinc-800">
               <tr>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
