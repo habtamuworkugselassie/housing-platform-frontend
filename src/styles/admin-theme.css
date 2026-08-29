@@ -112,3 +112,48 @@
 .admin-shell[data-theme='light'] .text-purple-300 { color: #7e22ce; } /* purple-700 */
 .admin-shell[data-theme='light'] .text-cyan-300 { color: #0e7490; }   /* cyan-700   */
 .admin-shell[data-theme='light'] .text-emerald-300 { color: #047857; }/* emerald-700 */
+
+/*
+ * Material Design (mdc-*) light theme for the /sponsorships page.
+ *
+ * The mdc component rules in material.css bake in near-white text
+ * (rgba(245,243,255,…)), white borders/fills and white-glow elevation — great
+ * on the dark shell, invisible on white. The only mdc consumers are this
+ * page (now inside .admin-shell) and the always-dark user dashboard (not in a
+ * shell), so these overrides are scoped to the admin light theme and leave
+ * both dark surfaces untouched. Selectors are one class deeper than the base
+ * rules, so they win without !important.
+ */
+.admin-shell[data-theme='light'] {
+  --mdc-theme-surface: #ffffff;
+  --mdc-theme-on-surface: #2e1065;
+  --mdc-theme-background: #f5f3ff;
+  /* Black-based elevation instead of the dark theme's white glow. */
+  --mdc-elevation-1: 0 1px 2px rgba(46, 16, 101, 0.08), 0 1px 3px rgba(46, 16, 101, 0.06);
+  --mdc-elevation-2: 0 2px 4px rgba(46, 16, 101, 0.10), 0 1px 6px rgba(46, 16, 101, 0.06);
+  --mdc-elevation-4: 0 6px 12px rgba(46, 16, 101, 0.12), 0 2px 6px rgba(46, 16, 101, 0.08);
+}
+.admin-shell[data-theme='light'] .mdc-card {
+  border: 1px solid rgba(76, 29, 149, 0.12);
+}
+.admin-shell[data-theme='light'] .mdc-text-field__input {
+  border-bottom-color: rgba(76, 29, 149, 0.42);
+  color: #2e1065;
+}
+.admin-shell[data-theme='light'] .mdc-text-field__label { color: rgba(46, 16, 101, 0.6); }
+.admin-shell[data-theme='light'] .mdc-chip {
+  background-color: rgba(76, 29, 149, 0.08);
+  color: #2e1065;
+}
+.admin-shell[data-theme='light'] .mdc-chip--primary { color: #6d28d9; }
+.admin-shell[data-theme='light'] .mdc-chip--success { color: #15803d; }
+.admin-shell[data-theme='light'] .mdc-chip--warning { color: #b45309; }
+.admin-shell[data-theme='light'] .mdc-chip--error { color: #b91c1c; }
+.admin-shell[data-theme='light'] .mdc-data-table__header-row { border-bottom-color: rgba(76, 29, 149, 0.15); }
+.admin-shell[data-theme='light'] .mdc-data-table__header-cell { color: #2e1065; }
+.admin-shell[data-theme='light'] .mdc-data-table__row { border-bottom-color: rgba(76, 29, 149, 0.08); }
+.admin-shell[data-theme='light'] .mdc-data-table__row:hover { background-color: rgba(76, 29, 149, 0.04); }
+.admin-shell[data-theme='light'] .mdc-data-table__cell { color: rgba(46, 16, 101, 0.9); }
+.admin-shell[data-theme='light'] .mdc-dialog { background-color: rgba(46, 16, 101, 0.4); }
+.admin-shell[data-theme='light'] .mdc-dialog__surface { border: 1px solid rgba(76, 29, 149, 0.12); }
+.admin-shell[data-theme='light'] .mdc-dialog__title { color: #2e1065; }
