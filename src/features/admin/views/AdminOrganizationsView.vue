@@ -4,7 +4,7 @@
       <!-- Page Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-3xl font-bold text-white">{{ $t('admin.organizationManagement') }}</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.organizationManagement') }}</h1>
           <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageOrganizations') }}</p>
         </div>
         <button
@@ -146,7 +146,8 @@
 
       <!-- Organizations Table -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-white/10">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[56rem] divide-y divide-white/10">
           <thead class="bg-zinc-800">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Organization</th>
@@ -260,6 +261,7 @@
             </template>
           </tbody>
         </table>
+        </div>
         <div
           v-if="!loading && !error && filteredOrganizations.length > 0"
           class="border-t border-white/10 px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-zinc-900"
@@ -1527,7 +1529,8 @@
           <p class="mb-4 text-xs text-gray-500">{{ $t('admin.subcategoryCatalogHelp') }}</p>
           <div v-if="subcategoryCatalogError" class="mb-3 text-sm text-red-300">{{ subcategoryCatalogError }}</div>
           <div v-if="subcategoryCatalogLoading" class="py-8 text-center text-gray-400">{{ $t('admin.loadingOrganizations') }}</div>
-          <table v-else class="w-full text-left text-sm">
+          <div v-else class="overflow-x-auto">
+            <table class="min-w-[40rem] w-full text-left text-sm">
             <thead>
               <tr class="border-b border-white/10 text-xs text-gray-400">
                 <th class="py-2 pr-2">{{ $t('admin.subcategoryName') }}</th>
@@ -1578,6 +1581,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
           <div class="mt-4 rounded-lg border border-white/10 bg-zinc-950/50 p-4">
             <p class="mb-2 text-xs font-medium text-gray-400">{{ $t('admin.addSubcategory') }}</p>
             <div class="flex flex-wrap gap-2">

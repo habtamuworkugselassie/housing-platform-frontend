@@ -2,7 +2,7 @@
   <AdminLayout>
     <div class="space-y-6">
       <div>
-        <h1 class="text-3xl font-bold text-white">Construction Management</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">Construction Management</h1>
         <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageConstruction') }}</p>
       </div>
 
@@ -12,7 +12,8 @@
         </div>
 
         <div v-else>
-          <table class="min-w-full divide-y divide-white/10">
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[56rem] divide-y divide-white/10">
             <thead class="bg-zinc-800">
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Project</th>
@@ -61,6 +62,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 

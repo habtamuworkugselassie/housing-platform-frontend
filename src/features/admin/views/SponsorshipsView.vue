@@ -73,7 +73,8 @@
 
       <!-- Sponsorships Table -->
       <div v-else-if="sponsorships.length" class="mdc-card">
-        <table class="mdc-data-table">
+        <div class="overflow-x-auto">
+          <table class="min-w-[52rem] mdc-data-table">
           <thead class="mdc-data-table__header-row">
             <tr>
               <th class="mdc-data-table__header-cell">Name</th>
@@ -130,6 +131,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
       <!-- Empty State -->

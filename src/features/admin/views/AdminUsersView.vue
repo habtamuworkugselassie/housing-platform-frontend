@@ -2,9 +2,9 @@
   <AdminLayout>
     <div class="space-y-6">
       <!-- Page Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-white">User Management</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold text-white">User Management</h1>
           <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageUsers') }}</p>
         </div>
         <button
@@ -68,7 +68,8 @@
 
       <!-- Users Table -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-white/10">
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full min-w-[56rem] divide-y divide-white/10">
           <thead class="bg-zinc-800">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
@@ -205,6 +206,81 @@
             </template>
           </tbody>
         </table>
+        </div>
+
+        <!-- Mobile card list (below md): the 8-column table is unreadable on a phone -->
+        <div class="md:hidden">
+          <div v-if="loading" class="px-4 py-12 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
+            <div class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</div>
+          </div>
+          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-red-200 space-y-3">
+            <div class="font-semibold">{{ $t('admin.errorLoadingUsers') }}</div>
+            <div>{{ error }}</div>
+            <button @click="loadUsersData" class="px-4 py-2 bg-gold-400 text-primary-950 rounded-md text-sm font-medium">Retry</button>
+          </div>
+          <div v-else-if="!users || users.length === 0" class="px-4 py-12 text-center text-sm text-gray-400">
+            No users found
+          </div>
+          <ul v-else class="divide-y divide-white/10">
+            <li v-for="user in users" :key="`m-${user.id}`" class="p-4 space-y-3">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="h-10 w-10 shrink-0 rounded-full bg-white/20 flex items-center justify-center">
+                    <span class="text-white font-medium text-sm">{{ getUserInitials(user) }}</span>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium text-white truncate">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="text-xs text-gray-400 truncate">{{ user.email }}</div>
+                    <div v-if="user.phoneNumber" class="text-xs text-gray-500">{{ user.phoneNumber }}</div>
+                  </div>
+                </div>
+                <span
+                  :class="[
+                    'shrink-0 px-2 py-1 text-xs font-medium rounded',
+                    isUserActive(user) ? 'bg-green-500/30 text-green-200' : 'bg-red-500/30 text-red-200'
+                  ]"
+                >
+                  {{ getUserStatusText(user) }}
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span
+                  v-for="role in user.roles"
+                  :key="`m-${user.id}-${role}`"
+                  class="px-2 py-0.5 text-xs font-medium bg-blue-500/30 text-blue-200 rounded"
+                >
+                  {{ role }}
+                </span>
+              </div>
+
+              <div class="text-xs text-gray-400">
+                <template v-for="cell in [linkedOrganizationCell(user)]" :key="`m-org-${user.id}`">
+                  <template v-if="cell.kind === 'linked'">
+                    <RouterLink
+                      :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
+                      class="font-medium text-white hover:text-primary-400 hover:underline"
+                    >{{ cell.org.name || 'Organization' }}</RouterLink>
+                    <span v-if="cell.typeLabel"> · {{ cell.typeLabel }}</span>
+                  </template>
+                  <span v-else-if="cell.kind === 'missing'" class="text-amber-200/90">Not linked</span>
+                  <span v-else class="text-gray-500">—</span>
+                </template>
+                <span class="text-gray-500"> · {{ formatDate(user.createdAt) }}</span>
+              </div>
+
+              <div class="flex flex-wrap gap-2 pt-1 text-sm font-medium">
+                <button @click="viewUser(user)" class="text-white hover:text-primary-400">View</button>
+                <button @click="editUser(user)" class="text-blue-300 hover:text-primary-400">Edit</button>
+                <button
+                  @click="toggleUserStatus(user)"
+                  :class="isUserActive(user) ? 'text-red-300 hover:text-primary-400' : 'text-green-300 hover:text-primary-400'"
+                >{{ isUserActive(user) ? 'Disable' : 'Enable' }}</button>
+              </div>
+            </li>
+          </ul>
+        </div>
 
         <!-- Pagination -->
         <div v-if="totalPages > 1" class="bg-zinc-800 px-6 py-4 border-t border-white/10">

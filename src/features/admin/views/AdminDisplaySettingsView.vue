@@ -2,7 +2,7 @@
   <AdminLayout>
     <div class="max-w-2xl space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-white">{{ $t('admin.displaySettings.title') }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.displaySettings.title') }}</h1>
         <p class="mt-2 text-sm text-gray-400">{{ $t('admin.displaySettings.subtitle') }}</p>
       </div>
 
