@@ -1,36 +1,36 @@
 <template>
   <section
     id="sponsorship-packages"
-    class="relative scroll-mt-20 border-t-2 border-black/50 bg-gradient-to-b from-violet-900 to-violet-950 py-16 lg:py-24 text-white"
+    class="relative scroll-mt-20 bg-white py-16 lg:py-24 text-gray-900"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl mb-10 lg:mb-14">
-        <p class="text-white text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+        <p class="text-primary-600 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
           {{ $t('exhibition.sponsorshipPackages.eyebrow') }}
         </p>
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-white mb-4">
+        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-gray-900 mb-4">
           {{ $t('exhibition.sponsorshipPackages.title') }}
         </h2>
-        <p class="text-white/80 text-base leading-relaxed">
+        <p class="text-gray-600 text-base leading-relaxed">
           {{ $t('exhibition.sponsorshipPackages.subtitle') }}
         </p>
       </div>
 
       <div v-if="loading" class="flex justify-center py-16">
         <div
-          class="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-transparent"
+          class="h-10 w-10 animate-spin rounded-full border-2 border-gray-300 border-t-transparent"
           aria-hidden="true"
         />
       </div>
 
-      <p v-else-if="errorMessage" class="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+      <p v-else-if="errorMessage" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
         {{ errorMessage }}
-        <button type="button" class="ml-2 underline hover:text-white" @click="loadPackages">
+        <button type="button" class="ml-2 underline hover:text-red-900" @click="loadPackages">
           {{ $t('exhibition.sponsorshipPackages.retry') }}
         </button>
       </p>
 
-      <p v-else-if="!sortedPackages.length" class="text-center text-sm text-white/70 py-12">
+      <p v-else-if="!sortedPackages.length" class="text-center text-sm text-gray-500 py-12">
         {{ $t('exhibition.sponsorshipPackages.empty') }}
       </p>
 
@@ -41,123 +41,99 @@
           class="group flex h-full flex-col motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:-translate-y-1"
         >
           <div
-            class="relative flex min-h-0 flex-1 flex-col rounded-2xl p-px bg-gradient-to-br transition-shadow duration-300 group-hover:shadow-2xl"
-            :class="[cardTheme(pkg).borderGradient, cardTheme(pkg).shadowGlow]"
+            class="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl"
+            :class="tierAccent(pkg).ring"
           >
-            <div
-              class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
-              aria-hidden="true"
-            >
-              <div
-                class="absolute -top-10 -right-8 h-28 w-28 rounded-full blur-2xl opacity-[0.55] motion-safe:group-hover:opacity-80 motion-safe:transition-opacity"
-                :class="cardTheme(pkg).orb1"
-              />
-              <div
-                class="absolute -bottom-14 -left-10 h-36 w-36 rounded-full blur-2xl opacity-40"
-                :class="cardTheme(pkg).orb2"
-              />
-            </div>
-            <div
-              class="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[15px] border border-white/10 bg-zinc-950/92 backdrop-blur-sm"
-            >
-              <div
-                class="h-1 w-full shrink-0"
-                :class="[cardTheme(pkg).stripe, cardTheme(pkg).stripeAnimate ? 'tier-modal-stripe-shimmer' : '']"
-              />
-              <div
-                class="shrink-0 border-b border-white/5 px-5 pb-3 pt-4 sm:px-6 sm:pt-5"
-                :class="cardTheme(pkg).headerBg"
-              >
-                <div class="flex flex-wrap items-start justify-between gap-3">
-                  <span
-                    class="inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
-                    :class="cardTheme(pkg).hintChip"
-                  >
-                    <SparklesIcon
-                      v-if="cardTheme(pkg).showSparkles"
-                      class="h-3.5 w-3.5 shrink-0 opacity-90"
-                      aria-hidden="true"
-                    />
-                    {{ formatTierLabel(pkg.type) }}
-                  </span>
-                  <p
-                    v-if="showSponsorshipPackagePrices"
-                    class="text-right text-lg font-bold tabular-nums leading-tight tracking-tight"
-                    :class="cardTheme(pkg).price"
-                  >
-                    {{ formatPriceEt(pkg.basePrice) }}
-                  </p>
-                </div>
-              </div>
-              <div class="flex min-h-0 flex-1 flex-col px-5 pb-6 pt-4 sm:px-6">
-                <h3 class="shrink-0 text-lg font-semibold text-white leading-snug mb-2">
-                  {{ pkg.name }}
-                </h3>
+            <!-- Tier accent bar -->
+            <div class="h-1.5 w-full shrink-0 bg-gradient-to-r" :class="tierAccent(pkg).bar" />
+            <!-- Header: tier chip + price -->
+            <div class="shrink-0 border-b border-gray-100 px-5 pb-3 pt-4 sm:px-6 sm:pt-5">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <span
+                  class="inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
+                  :class="tierAccent(pkg).chip"
+                >
+                  <SparklesIcon
+                    v-if="tierAccent(pkg).featured"
+                    class="h-3.5 w-3.5 shrink-0 opacity-90"
+                    aria-hidden="true"
+                  />
+                  {{ formatTierLabel(pkg.type) }}
+                </span>
                 <p
-                  v-if="pkg.description"
-                  class="shrink-0 text-sm text-white/80 leading-relaxed mb-4 line-clamp-3"
+                  v-if="showSponsorshipPackagePrices"
+                  class="text-right text-lg font-bold tabular-nums leading-tight tracking-tight"
+                  :class="tierAccent(pkg).price"
                 >
-                  {{ pkg.description }}
+                  {{ formatPriceEt(pkg.basePrice) }}
                 </p>
-                <!-- Scroll features only so payment notes + CTA stay fully visible in equal-height grid rows -->
-                <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-white/70 mb-2">
-                    {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
-                  </p>
-                  <ul
-                    class="space-y-2 text-sm text-white/85 leading-relaxed list-disc pl-4 pb-1"
-                    :class="cardTheme(pkg).bulletMarker"
-                  >
-                    <li v-for="(line, idx) in featurePreviewBullets(pkg)" :key="idx">
-                      {{ line }}
-                    </li>
-                  </ul>
-                  <button
-                    v-if="hasTruncatedFeatures(pkg)"
-                    type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
-                    :class="cardTheme(pkg).linkMuted"
-                    @click="openDetailsModal(pkg)"
-                  >
-                    {{ $t('exhibition.sponsorshipPackages.seeMore') }}
-                  </button>
-                  <button
-                    v-else-if="featureBullets(pkg.features).length === 0 && (pkg.description || pkg.notes)"
-                    type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
-                    :class="cardTheme(pkg).linkMuted"
-                    @click="openDetailsModal(pkg)"
-                  >
-                    {{ $t('exhibition.sponsorshipPackages.viewDetails') }}
-                  </button>
-                </div>
-                <div
-                  v-if="pkg.notes"
-                  class="mt-4 shrink-0 rounded-lg border px-3 py-3 text-xs leading-relaxed text-white/85 break-words [overflow-wrap:anywhere]"
-                  :class="cardTheme(pkg).notesBox"
+              </div>
+            </div>
+            <div class="flex min-h-0 flex-1 flex-col px-5 pb-6 pt-4 sm:px-6">
+              <h3 class="shrink-0 text-lg font-semibold text-gray-900 leading-snug mb-2">
+                {{ pkg.name }}
+              </h3>
+              <p
+                v-if="pkg.description"
+                class="shrink-0 text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3"
+              >
+                {{ pkg.description }}
+              </p>
+              <!-- Scroll features only so payment notes + CTA stay fully visible in equal-height grid rows -->
+              <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
+                  {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
+                </p>
+                <ul
+                  class="space-y-2 text-sm text-gray-700 leading-relaxed list-disc pl-4 pb-1"
+                  :class="tierAccent(pkg).marker"
                 >
-                  {{ pkg.notes }}
-                </div>
+                  <li v-for="(line, idx) in featurePreviewBullets(pkg)" :key="idx">
+                    {{ line }}
+                  </li>
+                </ul>
                 <button
+                  v-if="hasTruncatedFeatures(pkg)"
                   type="button"
-                  class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md group-hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950"
-                  :class="cardTheme(pkg).primaryCta"
-                  @click="openRegisterModal(pkg)"
+                  class="mt-3 text-sm font-semibold text-gray-500 hover:text-gray-800 underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded-sm hover:underline"
+                  @click="openDetailsModal(pkg)"
                 >
-                  {{ $t('exhibition.sponsorshipPackages.enquireCta') }}
+                  {{ $t('exhibition.sponsorshipPackages.seeMore') }}
+                </button>
+                <button
+                  v-else-if="featureBullets(pkg.features).length === 0 && (pkg.description || pkg.notes)"
+                  type="button"
+                  class="mt-3 text-sm font-semibold text-gray-500 hover:text-gray-800 underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded-sm hover:underline"
+                  @click="openDetailsModal(pkg)"
+                >
+                  {{ $t('exhibition.sponsorshipPackages.viewDetails') }}
                 </button>
               </div>
+              <div
+                v-if="pkg.notes"
+                class="mt-4 shrink-0 rounded-lg border border-gray-200 bg-gray-50 px-3 py-3 text-xs leading-relaxed text-gray-600 break-words [overflow-wrap:anywhere]"
+              >
+                {{ pkg.notes }}
+              </div>
+              <button
+                type="button"
+                class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl text-white transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+                :class="tierAccent(pkg).cta"
+                @click="openRegisterModal(pkg)"
+              >
+                {{ $t('exhibition.sponsorshipPackages.enquireCta') }}
+              </button>
             </div>
           </div>
         </article>
       </div>
 
       <div
-        class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 rounded-xl border border-white/10 bg-white/5 px-6 py-8"
+        class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 rounded-xl border border-gray-200 bg-violet-50 px-6 py-8"
       >
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm uppercase tracking-wider hover:bg-primary-700 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
           @click="openRegisterModal(null)"
         >
           {{ $t('exhibition.cta.standEnquiry') }}
@@ -166,7 +142,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:text-white transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-primary-700 font-semibold text-sm uppercase tracking-wider hover:bg-primary-50 hover:border-primary-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
         >
           {{ $t('exhibition.cta.viewBrochure') }}
         </a>
@@ -452,7 +428,75 @@ import { useI18n } from 'vue-i18n'
 import { XMarkIcon, SparklesIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { getActiveSponsorshipPackages, exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 import { listingSortTierRank } from '@/shared/utils/sponsorshipTier'
-import { getTierModalTheme } from '@/shared/utils/exhibitionSponsorshipTierTheme'
+import { getTierModalTheme, normalizeSponsorshipTierKey } from '@/shared/utils/exhibitionSponsorshipTierTheme'
+
+/**
+ * Light card accents for the packages grid. The shared getTierModalTheme is a
+ * dark palette (used by the sponsor carousel and ad badges on dark surfaces);
+ * the grid now sits on a white section, so it uses these clean per-tier
+ * accents instead — a top bar, a chip, the price colour, a bullet marker, and
+ * a solid CTA, with no dark gradients or glows.
+ */
+const LIGHT_TIER_ACCENTS = {
+  DEFAULT: {
+    bar: 'from-primary-400 to-primary-600',
+    chip: 'border-primary-200 bg-primary-50 text-primary-700',
+    price: 'text-primary-700',
+    marker: 'marker:text-primary-400',
+    cta: 'bg-primary-600 hover:bg-primary-700',
+    ring: '',
+    featured: false,
+  },
+  EXCLUSIVE: {
+    bar: 'from-amber-400 via-yellow-400 to-amber-500',
+    chip: 'border-amber-300 bg-amber-100 text-amber-800',
+    price: 'text-amber-700',
+    marker: 'marker:text-amber-500',
+    cta: 'bg-amber-500 hover:bg-amber-600',
+    ring: 'ring-2 ring-amber-300',
+    featured: true,
+  },
+  PLATINUM: {
+    bar: 'from-fuchsia-400 to-purple-500',
+    chip: 'border-fuchsia-300 bg-fuchsia-100 text-fuchsia-800',
+    price: 'text-fuchsia-700',
+    marker: 'marker:text-fuchsia-500',
+    cta: 'bg-fuchsia-600 hover:bg-fuchsia-700',
+    ring: '',
+    featured: false,
+  },
+  GOLD: {
+    bar: 'from-orange-400 to-amber-500',
+    chip: 'border-orange-300 bg-orange-100 text-orange-800',
+    price: 'text-orange-700',
+    marker: 'marker:text-orange-500',
+    cta: 'bg-orange-500 hover:bg-orange-600',
+    ring: '',
+    featured: false,
+  },
+  SILVER: {
+    bar: 'from-slate-300 to-slate-500',
+    chip: 'border-slate-300 bg-slate-100 text-slate-700',
+    price: 'text-slate-700',
+    marker: 'marker:text-slate-400',
+    cta: 'bg-slate-600 hover:bg-slate-700',
+    ring: '',
+    featured: false,
+  },
+  SPECIAL: {
+    bar: 'from-sky-400 to-blue-500',
+    chip: 'border-sky-300 bg-sky-100 text-sky-800',
+    price: 'text-sky-700',
+    marker: 'marker:text-sky-500',
+    cta: 'bg-sky-600 hover:bg-sky-700',
+    ring: '',
+    featured: false,
+  },
+}
+
+function tierAccent(pkg) {
+  return LIGHT_TIER_ACCENTS[normalizeSponsorshipTierKey(pkg?.type)] || LIGHT_TIER_ACCENTS.DEFAULT
+}
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
@@ -519,11 +563,6 @@ const registerPackageHint = computed(() => {
   const p = sortedPackages.value.find((x) => x.id === id)
   return p?.name || ''
 })
-
-/** Same palette as modals — keeps cards and dialogs visually aligned per tier. */
-function cardTheme(pkg) {
-  return getTierModalTheme(pkg?.type)
-}
 
 const detailsModalTheme = computed(() => getTierModalTheme(detailsModalPackage.value?.type))
 
