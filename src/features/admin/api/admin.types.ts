@@ -244,3 +244,45 @@ export interface DisplaySettings {
   exhibitionSponsorshipPackagesVisible: boolean
   exhibitionSponsorshipPackagePricesVisible: boolean
 }
+
+/**
+ * Company logins issued to a sponsor organization.
+ * Mirrors OrganizationAccountResponse / the request DTOs on
+ * identity/api/OrganizationAccountController.
+ */
+export type UserStatus = 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'PENDING_VERIFICATION'
+
+export interface OrganizationAccount {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  phoneNumber?: string
+  status: UserStatus
+  roles: string[]
+  emailVerified: boolean
+  primaryContact: boolean
+  organizationId: string
+  organizationName?: string
+  createdAt?: string
+  updatedAt?: string
+  createdBy?: string
+  updatedBy?: string
+}
+
+export interface CreateOrganizationAccountRequest {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phoneNumber?: string
+  makePrimaryContact?: boolean
+}
+
+export interface SetAccountPasswordRequest {
+  password: string
+}
+
+export interface UpdateAccountStatusRequest {
+  status: UserStatus
+}
