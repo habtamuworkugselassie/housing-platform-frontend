@@ -6,7 +6,7 @@
         <h2 :class="dark ? 'text-white' : 'text-gray-900'" class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
           {{ $t('exhibition.pillar.title') }}
         </h2>
-        <p :class="dark ? 'text-white/80' : 'text-white/70'" class="text-lg max-w-2xl mx-auto">
+        <p :class="dark ? 'text-white/80' : 'text-gray-600'" class="text-lg max-w-2xl mx-auto">
           {{ $t('exhibition.pillar.subtitle') }}
         </p>
       </div>
@@ -19,14 +19,14 @@
             'group p-8 rounded-lg transition-all duration-300',
             dark
               ? 'bg-white/5 border border-white/10 hover:border-primary-400 hover:bg-primary-100/20'
-              : 'bg-white border border-gray-200 hover:border-primary-400 hover:bg-primary-100/20 hover:shadow-lg'
+              : 'bg-white border border-gray-200 hover:border-primary-300 hover:bg-primary-50 hover:shadow-lg'
           ]"
         >
-          <div :class="['w-12 h-12 flex items-center justify-center mb-6 transition-colors', dark ? 'text-white/80 group-hover:text-white' : 'text-white/80 group-hover:text-white']">
+          <div :class="['w-12 h-12 flex items-center justify-center mb-6 transition-colors', dark ? 'text-white/80 group-hover:text-white' : 'text-primary-600 group-hover:text-primary-700']">
             <component :is="pillar.icon" class="w-8 h-8" />
           </div>
           <h3 :class="['text-xl font-bold mb-3 tracking-tight', dark ? 'text-white' : 'text-gray-900']">{{ pillar.title }}</h3>
-          <p :class="['leading-relaxed text-sm', dark ? 'text-white/80' : 'text-white/70']">{{ pillar.description }}</p>
+          <p :class="['leading-relaxed text-sm', dark ? 'text-white/80' : 'text-gray-600']">{{ pillar.description }}</p>
         </div>
       </div>
     </div>

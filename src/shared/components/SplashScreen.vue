@@ -122,13 +122,30 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.splash-fade-enter-active,
-.splash-fade-leave-active {
+.splash-fade-enter-active {
   transition: opacity 0.3s ease;
 }
-.splash-fade-enter-from,
+/* Leave: zoom in slightly while fading, so dismissing the splash reads as
+   diving into the site behind it and hands off to the page's entrance. */
+.splash-fade-leave-active {
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+.splash-fade-enter-from {
+  opacity: 0;
+}
 .splash-fade-leave-to {
   opacity: 0;
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .splash-fade-leave-to {
+    transform: none;
+  }
 }
 
 .splash-screen {

@@ -6,7 +6,7 @@
     :auto-dismiss-ms="8000"
     @dismiss="onSplashDismiss"
   />
-  <div class="site-shell min-h-screen flex flex-col">
+  <div class="site-shell min-h-screen flex flex-col" :class="{ 'is-revealing': isRevealing }">
     <NavBar v-if="!route.meta?.hideLayout" />
     <div class="flex-1 min-h-0 flex flex-col">
       <PublicLayout v-if="isPublicRoute && !route.meta?.hideLayout">
@@ -44,11 +44,22 @@ function shouldShowSplash() {
 
 const showSplash = ref(shouldShowSplash())
 
+// Plays the staggered "the page assembles" entrance once, right after the
+// splash is dismissed. Kept on only for the length of the animation so later
+// re-renders don't replay it.
+const isRevealing = ref(false)
+let revealTimer = null
+
 function onSplashDismiss() {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem(SPLASH_SHOWN_KEY, '1')
   }
   showSplash.value = false
+  isRevealing.value = true
+  if (revealTimer) clearTimeout(revealTimer)
+  revealTimer = setTimeout(() => {
+    isRevealing.value = false
+  }, 1800)
 }
 
 // When user navigates to "/", show splash only if not shown this session

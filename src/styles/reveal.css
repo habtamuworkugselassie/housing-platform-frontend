@@ -1,0 +1,78 @@
+/*
+ * Post-splash entrance animation.
+ *
+ * When the splash screen is dismissed, App.vue puts `is-revealing` on
+ * `.site-shell` for the length of the animation. The page then "assembles":
+ * the nav drops in from the top, the hero rises and settles, and the landing
+ * sections cascade up in a quick stagger. The class is removed once the run
+ * finishes, so the elements keep their normal (final) state afterwards.
+ *
+ * Everything is gated behind `prefers-reduced-motion: no-preference` so people
+ * who opt out of motion just see the page appear.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes evc-nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes evc-rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes evc-hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(22px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .site-shell.is-revealing nav.site-nav {
+    animation: evc-nav-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .site-shell.is-revealing .landing-hero {
+    animation: evc-hero-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    transform-origin: center top;
+  }
+
+  /* Landing sections cascade up. Direct children so component-rooted
+     sections (value chain, packages, carousel) are included too. */
+  .site-shell.is-revealing .exhibition-landing > * {
+    animation: evc-rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(1) { animation-delay: 0.18s; }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(2) { animation-delay: 0.26s; }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(3) { animation-delay: 0.34s; }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(4) { animation-delay: 0.42s; }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(5) { animation-delay: 0.50s; }
+  .site-shell.is-revealing .exhibition-landing > *:nth-child(n + 6) { animation-delay: 0.56s; }
+
+  /* Nudge the featured property cards in with their own tiny stagger so the
+     first light section feels alive rather than arriving as one block. */
+  .site-shell.is-revealing #main-listings .grid > * {
+    animation: evc-rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .site-shell.is-revealing #main-listings .grid > *:nth-child(1) { animation-delay: 0.42s; }
+  .site-shell.is-revealing #main-listings .grid > *:nth-child(2) { animation-delay: 0.50s; }
+  .site-shell.is-revealing #main-listings .grid > *:nth-child(3) { animation-delay: 0.58s; }
+  .site-shell.is-revealing #main-listings .grid > *:nth-child(n + 4) { animation-delay: 0.64s; }
+}
