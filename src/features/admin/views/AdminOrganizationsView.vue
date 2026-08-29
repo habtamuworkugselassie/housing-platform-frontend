@@ -407,6 +407,20 @@
                 >
                   {{ $t('admin.orgViewTabDocuments') }}
                 </button>
+                <button
+                  type="button"
+                  role="tab"
+                  :aria-selected="viewOrgPaneTab === 'accounts'"
+                  class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
+                  :class="
+                    viewOrgPaneTab === 'accounts'
+                      ? 'bg-violet-950/25 text-black shadow-sm ring-1 ring-black/40'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  "
+                  @click="viewOrgPaneTab = 'accounts'"
+                >
+                  {{ $t('admin.accountsTab') }}
+                </button>
               </div>
 
               <div v-show="viewOrgPaneTab === 'overview'" class="space-y-6">
@@ -768,6 +782,12 @@
               </div>
             </div>
 
+              <div
+                v-if="viewOrgPaneTab === 'accounts'"
+                class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+              >
+                <OrganizationAccountsPanel :organization-id="viewingOrg.id" />
+              </div>
               <div
                 v-show="viewOrgPaneTab === 'documents'"
                 class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
@@ -1605,6 +1625,7 @@ import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import OrganizationAccountsPanel from '@/features/admin/components/OrganizationAccountsPanel.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge, OsmMapPicker } from '@/shared/components'

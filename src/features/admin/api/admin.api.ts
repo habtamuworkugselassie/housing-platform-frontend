@@ -19,7 +19,12 @@ import type {
   AdminFilters,
   DisplaySettings,
   AdminExhibitionInterest,
-  ProvisionOrganizationPrimaryUserPayload
+  ProvisionOrganizationPrimaryUserPayload,
+  OrganizationAccount,
+  CreateOrganizationAccountRequest,
+  SetAccountPasswordRequest,
+  UpdateAccountStatusRequest,
+  UserStatus
 } from './admin.types'
 // Pagination types
 interface PageRequest {
@@ -481,5 +486,77 @@ export const adminApi = {
   updateDisplaySettings: async (body: DisplaySettings): Promise<DisplaySettings> => {
     const response = await api.put<DisplaySettings>('/admin/display-settings', body)
     return response.data
+  },
+
+  // --- Company logins (Admin -> Organizations -> Accounts) ------------------
+  // Listing is ADMIN_SECURED; every mutation below is SUPER_ADMIN_SECURED and
+  // returns 403 for a plain admin. Callers gate the controls on the role.
+
+  /** List the logins issued to an organization. Readable by any admin. */
+  getOrganizationAccounts: async (organizationId: string): Promise<OrganizationAccount[]> => {
+    const response = await api.get<OrganizationAccount[]>(
+      `/organizations/${organizationId}/users`
+    )
+    return response.data
+  },
+
+  /** Issue a new login for the organization. Super admin only. */
+  createOrganizationAccount: async (
+    organizationId: string,
+    body: CreateOrganizationAccountRequest
+  ): Promise<OrganizationAccount> => {
+    const response = await api.post<OrganizationAccount>(
+      `/organizations/${organizationId}/users`,
+      body
+    )
+    return response.data
+  },
+
+  /** Set an account's password. Super admin only. */
+  setOrganizationAccountPassword: async (
+    organizationId: string,
+    userId: string,
+    password: string
+  ): Promise<OrganizationAccount> => {
+    const body: SetAccountPasswordRequest = { password }
+    const response = await api.put<OrganizationAccount>(
+      `/organizations/${organizationId}/users/${userId}/password`,
+      body
+    )
+    return response.data
+  },
+
+  /** Activate or suspend an account. Super admin only. */
+  setOrganizationAccountStatus: async (
+    organizationId: string,
+    userId: string,
+    status: UserStatus
+  ): Promise<OrganizationAccount> => {
+    const body: UpdateAccountStatusRequest = { status }
+    const response = await api.put<OrganizationAccount>(
+      `/organizations/${organizationId}/users/${userId}/status`,
+      body
+    )
+    return response.data
+  },
+
+  /** Promote an account to the organization's primary contact. Super admin only. */
+  makeOrganizationAccountPrimaryContact: async (
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationAccount> => {
+    const response = await api.put<OrganizationAccount>(
+      `/organizations/${organizationId}/users/${userId}/primary-contact`,
+      {}
+    )
+    return response.data
+  },
+
+  /** Unlink an account from the organization. Super admin only. */
+  unlinkOrganizationAccount: async (
+    organizationId: string,
+    userId: string
+  ): Promise<void> => {
+    await api.delete(`/organizations/${organizationId}/users/${userId}`)
   }
 }
