@@ -68,7 +68,7 @@
 
       <!-- Users Table -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
-        <div class="hidden md:block overflow-x-auto">
+        <div class="hidden lg:block overflow-x-auto">
           <table class="w-full min-w-[56rem] divide-y divide-white/10">
           <thead class="bg-zinc-800">
             <tr>
@@ -208,8 +208,8 @@
         </table>
         </div>
 
-        <!-- Mobile card list (below md): the 8-column table is unreadable on a phone -->
-        <div class="md:hidden">
+        <!-- Mobile/tablet card list (below lg): the 8-column table is unreadable on a phone -->
+        <div class="lg:hidden">
           <div v-if="loading" class="px-4 py-12 text-center">
             <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
             <div class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</div>
