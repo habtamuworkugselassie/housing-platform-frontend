@@ -28,3 +28,29 @@ option {
   background-color: #2e1065;
   color: #fff;
 }
+
+/* Responsive tables: below lg, stack each row into a card instead of a wide
+ * scroll. Applied to admin tables that don't have a bespoke mobile card list.
+ * Add class "rtable" to the <table>. The high-traffic Users and Organizations
+ * views use hand-built card lists instead and are hidden below lg. */
+@media (max-width: 1023.98px) {
+  table.rtable { min-width: 0 !important; display: block; }
+  table.rtable thead { display: none; }
+  table.rtable tbody { display: block; }
+  table.rtable tr {
+    display: block;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  table.rtable td {
+    display: block;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0.15rem 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+  }
+  /* right-aligned action cells: lay actions out in a wrapping row on mobile */
+  table.rtable td:last-child { padding-top: 0.5rem !important; }
+  table.rtable td:last-child > div { justify-content: flex-start !important; }
+}

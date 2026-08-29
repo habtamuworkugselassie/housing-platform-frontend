@@ -29,7 +29,7 @@
         </div>
 
         <div v-else class="overflow-x-auto">
-            <table class="w-full min-w-[72rem] divide-y divide-white/10">
+            <table class="w-full min-w-[72rem] divide-y divide-white/10 rtable">
             <thead class="bg-zinc-800">
               <tr>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">

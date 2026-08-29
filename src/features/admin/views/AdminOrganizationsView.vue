@@ -146,7 +146,7 @@
 
       <!-- Organizations Table -->
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="hidden lg:block overflow-x-auto">
           <table class="w-full min-w-[56rem] divide-y divide-white/10">
           <thead class="bg-zinc-800">
             <tr>
@@ -262,6 +262,63 @@
           </tbody>
         </table>
         </div>
+
+        <!-- Card list below lg: the 6-column table is unreadable on phones and tablets -->
+        <div class="lg:hidden">
+          <div v-if="loading" class="px-4 py-12 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
+            <div class="text-sm text-gray-400">{{ $t('admin.loadingOrganizations') }}</div>
+          </div>
+          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-red-200 space-y-3">
+            <div>Error: {{ error }}</div>
+            <button @click="loadOrgs" class="px-4 py-2 bg-gold-400 text-primary-950 rounded-md text-sm font-medium">Retry</button>
+          </div>
+          <div v-else-if="!filteredOrganizations.length" class="px-4 py-12 text-center text-sm text-gray-400">
+            No organizations found
+          </div>
+          <ul v-else class="divide-y divide-white/10">
+            <li v-for="org in paginatedOrganizations" :key="`m-${org?.id || org?.name}`" class="p-4 space-y-3">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-sm font-medium text-white flex items-center gap-2 flex-wrap">
+                    <span class="truncate">{{ org.name }}</span>
+                    <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
+                  </div>
+                  <div class="text-xs text-gray-400">{{ org.city }}, {{ org.country }}</div>
+                </div>
+                <span
+                  :class="[
+                    'shrink-0 px-2 py-1 text-xs font-medium rounded',
+                    org.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
+                    (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-primary-500/30 text-primary-200' :
+                    org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
+                    org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
+                    'bg-red-500/30 text-red-200'
+                  ]"
+                >{{ org.status }}</span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="px-2 py-0.5 font-medium bg-gray-500/30 text-gray-300 rounded">{{ getTypeLabel(org.type) }}</span>
+                <span class="text-gray-500">{{ formatDate(org.createdAt) }}</span>
+              </div>
+
+              <div class="text-xs text-gray-400 space-y-0.5">
+                <div class="truncate">{{ org.email || 'N/A' }}</div>
+                <div>{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
+              </div>
+
+              <div class="flex flex-wrap gap-3 pt-1 text-sm font-medium">
+                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="approveOrg(org.id)" class="text-green-300 hover:text-primary-400">Approve</button>
+                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="showRejectModal(org)" class="text-red-300 hover:text-primary-400">Reject</button>
+                <button v-if="org.status === 'APPROVED'" @click="showSuspendModal(org)" class="text-orange-300 hover:text-primary-400">Suspend</button>
+                <button v-if="org.status === 'SUSPENDED'" @click="reactivateOrg(org)" class="text-green-300 hover:text-primary-400">{{ $t('admin.reactivate') }}</button>
+                <button @click="viewOrg(org)" class="text-white hover:text-primary-400">View</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+
         <div
           v-if="!loading && !error && filteredOrganizations.length > 0"
           class="border-t border-white/10 px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-zinc-900"
