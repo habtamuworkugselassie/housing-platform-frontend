@@ -1,14 +1,14 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white">
+  <div class="min-h-screen bg-violet-50 text-gray-900">
     <div v-if="loading" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <div class="text-center">
-        <div class="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-white/15" />
-        <p class="mt-4 text-gray-400">Loading organization details...</p>
+        <div class="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-gray-200" />
+        <p class="mt-4 text-gray-500">Loading organization details...</p>
       </div>
     </div>
 
     <div v-else-if="error" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <div class="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
+      <div class="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-700">
         {{ error }}
       </div>
     </div>
@@ -17,26 +17,26 @@
       <button
         @click="goBack"
         type="button"
-        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-primary-400 focus:outline-none"
+        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-400 focus:outline-none"
       >
         <span aria-hidden="true">&larr;</span>
         <span>{{ $t('common.back') }}</span>
       </button>
 
-      <section class="overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
-        <div class="relative h-56 sm:h-72 lg:h-80 bg-white/10">
+      <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+        <div class="relative h-56 sm:h-72 lg:h-80 bg-gray-100">
           <template v-if="currentMedia">
             <img
               v-if="!currentMediaIsVideo"
               :src="currentMediaUrl"
               :alt="organization.name"
-              class="h-full w-full object-contain bg-zinc-950/50"
+              class="h-full w-full object-contain bg-white/50"
             />
             <video
               v-else
               :key="currentMediaUrl"
               :src="currentMediaUrl"
-              class="h-full w-full object-contain bg-zinc-950/50"
+              class="h-full w-full object-contain bg-white/50"
               muted
               playsinline
               controls
@@ -44,7 +44,7 @@
             />
           </template>
           <div v-else class="flex h-full items-center justify-center">
-            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white/10 text-3xl font-bold text-white">
+            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 text-3xl font-bold text-gray-900">
               {{ organizationInitial }}
             </div>
           </div>
@@ -79,10 +79,10 @@
 
           <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
             <div class="flex items-end gap-4">
-              <div v-if="organization.logoUrl" class="h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border-2 border-white/20 bg-white shadow-lg">
+              <div v-if="organization.logoUrl" class="h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border-2 border-gray-300 bg-white shadow-lg">
                 <img :src="mediaUrl(organization.logoUrl)" :alt="organization.name" class="h-full w-full object-contain p-1" />
               </div>
-              <div v-else class="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border-2 border-white/20 bg-zinc-800 text-2xl font-bold text-white shadow-lg">
+              <div v-else class="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border-2 border-gray-300 bg-gray-100 text-2xl font-bold text-gray-900 shadow-lg">
                 {{ organizationInitial }}
               </div>
               <div>
@@ -90,7 +90,7 @@
                   {{ organization.name }}
                   <VerifiedBadge :level="getVerificationLevel(organization)" size="md" />
                 </h1>
-                <p class="mt-1 text-sm text-gray-200 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
+                <p class="mt-1 text-sm text-gray-100 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
                 <div
                   v-if="organization.type === 'SUPPLIER' && organization.supplierSubcategories?.length"
                   class="mt-2 flex flex-wrap gap-2"
@@ -105,7 +105,7 @@
                 </div>
                 <div
                   v-if="hasSocialLinks"
-                  class="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3"
+                  class="mt-3 flex flex-wrap items-center gap-2 border-t border-gray-200 pt-3"
                 >
                   <OrganizationSocialLinks
                     compact
@@ -125,7 +125,7 @@
                 type="button"
                 :class="[
                   'h-12 w-16 overflow-hidden rounded-md border-2 object-cover transition-all',
-                  currentMediaIndex === index ? 'border-black opacity-100 shadow-md transform scale-105 bg-white/10' : 'border-transparent opacity-60 hover:opacity-100 bg-white/5 hover:border-white/30'
+                  currentMediaIndex === index ? 'border-black opacity-100 shadow-md transform scale-105 bg-gray-100' : 'border-transparent opacity-60 hover:opacity-100 bg-white hover:border-gray-300'
                 ]"
                 @click="currentMediaIndex = index"
               >
@@ -151,31 +151,31 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 border-t border-white/10 bg-white/5 p-3 sm:grid-cols-4 sm:p-4">
-          <div class="rounded-lg border border-white/10 bg-zinc-900/60 p-3">
+        <div class="grid grid-cols-2 gap-3 border-t border-gray-200 bg-white p-3 sm:grid-cols-4 sm:p-4">
+          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
             <p class="text-xs uppercase tracking-wide text-gray-500">Contact Channels</p>
-            <p class="mt-1 text-lg font-semibold text-white">{{ contactChannelsCount }}</p>
+            <p class="mt-1 text-lg font-semibold text-gray-900">{{ contactChannelsCount }}</p>
           </div>
-          <div class="rounded-lg border border-white/10 bg-zinc-900/60 p-3">
+          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
             <p class="text-xs uppercase tracking-wide text-gray-500">Phone Lines</p>
-            <p class="mt-1 text-lg font-semibold text-white">{{ organizationPhoneDisplay.length }}</p>
+            <p class="mt-1 text-lg font-semibold text-gray-900">{{ organizationPhoneDisplay.length }}</p>
           </div>
-          <div class="rounded-lg border border-white/10 bg-zinc-900/60 p-3">
+          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
             <p class="text-xs uppercase tracking-wide text-gray-500">Media Items</p>
-            <p class="mt-1 text-lg font-semibold text-white">{{ galleryMedia.length }}</p>
+            <p class="mt-1 text-lg font-semibold text-gray-900">{{ galleryMedia.length }}</p>
           </div>
-          <div class="rounded-lg border border-white/10 bg-zinc-900/60 p-3">
+          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
             <p class="text-xs uppercase tracking-wide text-gray-500">Registered</p>
-            <p class="mt-1 text-sm font-semibold text-white">{{ createdAtDisplay || 'N/A' }}</p>
+            <p class="mt-1 text-sm font-semibold text-gray-900">{{ createdAtDisplay || 'N/A' }}</p>
           </div>
         </div>
       </section>
 
       <section class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div class="space-y-6 lg:col-span-2">
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-white">Organization Profile</h2>
-            <p v-if="organization.description" class="mt-4 whitespace-pre-line text-sm leading-relaxed text-gray-300">
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-gray-900">Organization Profile</h2>
+            <p v-if="organization.description" class="mt-4 whitespace-pre-line text-sm leading-relaxed text-gray-600">
               {{ organization.description }}
             </p>
             <p v-else class="mt-4 text-sm text-gray-500">
@@ -183,19 +183,19 @@
             </p>
           </div>
 
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-white">Business Information</h2>
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-gray-900">Business Information</h2>
             <dl class="mt-5 space-y-3">
-              <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgType') }}</dt>
-                <dd class="text-sm font-semibold text-white text-right">{{ orgTypeLabel }}</dd>
+              <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgType') }}</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right">{{ orgTypeLabel }}</dd>
               </div>
               <div
                 v-if="organization.type === 'SUPPLIER'"
-                class="flex flex-col gap-2 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between"
+                class="flex flex-col gap-2 border-b border-gray-200 pb-3 sm:flex-row sm:items-start sm:justify-between"
               >
-                <dt class="text-sm font-medium text-gray-400">{{ $t('marketplace.materialSpecialties') }}</dt>
-                <dd class="text-sm text-white sm:text-right">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('marketplace.materialSpecialties') }}</dt>
+                <dd class="text-sm text-gray-900 sm:text-right">
                   <template v-if="organization.supplierSubcategories?.length">
                     <span class="flex flex-wrap justify-end gap-1.5">
                       <span
@@ -210,47 +210,47 @@
                   <span v-else class="text-gray-500">—</span>
                 </dd>
               </div>
-              <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">Status</dt>
-                <dd class="text-sm font-semibold text-white text-right">{{ organization.status || 'N/A' }}</dd>
+              <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">Status</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right">{{ organization.status || 'N/A' }}</dd>
               </div>
-              <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.registrationNumber') }}</dt>
-                <dd class="text-sm font-semibold text-white text-right">{{ organization.registrationNumber || 'N/A' }}</dd>
+              <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.registrationNumber') }}</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right">{{ organization.registrationNumber || 'N/A' }}</dd>
               </div>
-              <div class="flex items-start justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgAddress') }}</dt>
-                <dd class="text-sm font-semibold text-white text-right max-w-[65%]">{{ organization.address || 'N/A' }}</dd>
+              <div class="flex items-start justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgAddress') }}</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right max-w-[65%]">{{ organization.address || 'N/A' }}</dd>
               </div>
-              <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgCity') }}</dt>
-                <dd class="text-sm font-semibold text-white text-right">{{ organization.city || 'N/A' }}</dd>
+              <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgCity') }}</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right">{{ organization.city || 'N/A' }}</dd>
               </div>
-              <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgCountry') }}</dt>
-                <dd class="text-sm font-semibold text-white text-right">{{ organization.country || 'N/A' }}</dd>
+              <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgCountry') }}</dt>
+                <dd class="text-sm font-semibold text-gray-900 text-right">{{ organization.country || 'N/A' }}</dd>
               </div>
               <div class="flex items-center justify-between gap-4">
-                <dt class="text-sm font-medium text-gray-400">{{ $t('admin.orgWebsite') }}</dt>
+                <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgWebsite') }}</dt>
                 <dd class="text-sm font-semibold text-right">
                   <a
                     v-if="organization.website"
                     :href="websiteHref"
                     target="_blank"
                     rel="noopener"
-                    class="text-white hover:text-white hover:underline"
+                    class="text-gray-900 hover:text-gray-900 hover:underline"
                   >
                     {{ websiteDisplay }}
                   </a>
-                  <span v-else class="text-white">N/A</span>
+                  <span v-else class="text-gray-900">N/A</span>
                 </dd>
               </div>
             </dl>
           </div>
 
           <!-- Location map: only when organization has coordinates -->
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-white mb-4">{{ $t('building.locationMap') }}</h2>
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ $t('building.locationMap') }}</h2>
             <OsmMap
               v-if="organization.latitude != null && organization.longitude != null"
               :latitude="organization.latitude"
@@ -264,31 +264,31 @@
               :href="googleMapsDirectionsUrl(organization.latitude, organization.longitude)"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-primary-400/60 hover:bg-primary-900/20 transition-colors text-sm font-medium"
+              class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 bg-primary-600 text-white hover:border-primary-300 hover:shadow-lg transition-colors text-sm font-medium"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
             </a>
             <div
               v-else
-              class="bg-white/10 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
+              class="bg-gray-100 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center"
               style="height: 280px;"
             >
-              <p class="text-gray-400 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
+              <p class="text-gray-500 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
             </div>
           </div>
 
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
             <div class="flex items-center justify-between gap-3">
-              <h2 class="text-xl font-bold text-white">Media Gallery</h2>
-              <p class="text-xs text-gray-400">{{ imageMedia.length }} images, {{ videoMedia.length }} videos</p>
+              <h2 class="text-xl font-bold text-gray-900">Media Gallery</h2>
+              <p class="text-xs text-gray-500">{{ imageMedia.length }} images, {{ videoMedia.length }} videos</p>
             </div>
             <div v-if="galleryMedia.length" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
               <button
                 v-for="(item, index) in galleryMedia"
                 :key="item.id || item.url || index"
                 type="button"
-                class="group relative overflow-hidden rounded-lg border border-white/10 bg-white/5"
+                class="group relative overflow-hidden rounded-lg border border-gray-200 bg-white"
                 @click="openGallery(index)"
               >
                 <img
@@ -320,50 +320,50 @@
         </div>
 
         <div class="space-y-6">
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-white">Contact Information</h2>
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-gray-900">Contact Information</h2>
             <div class="mt-4 space-y-3 text-sm">
-              <div v-if="organizationPhoneDisplay.length" class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <div v-if="organizationPhoneDisplay.length" class="rounded-lg border border-gray-200 bg-white p-3">
                 <p class="text-xs uppercase tracking-wide text-gray-500">{{ $t('admin.orgPhone') }}</p>
                 <div class="mt-2 space-y-1">
                   <a
                     v-for="(phone, index) in organizationPhoneDisplay"
                     :key="`${phone}-${index}`"
                     :href="`tel:${phone}`"
-                    class="block text-white hover:text-white hover:underline"
+                    class="block text-gray-900 hover:text-gray-900 hover:underline"
                   >
                     {{ phone }}
                   </a>
                 </div>
               </div>
 
-              <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <div class="rounded-lg border border-gray-200 bg-white p-3">
                 <p class="text-xs uppercase tracking-wide text-gray-500">{{ $t('admin.orgEmail') }}</p>
                 <a
                   v-if="organization.email"
                   :href="`mailto:${organization.email}`"
-                  class="mt-2 block text-white hover:text-white hover:underline break-all"
+                  class="mt-2 block text-gray-900 hover:text-gray-900 hover:underline break-all"
                 >
                   {{ organization.email }}
                 </a>
-                <p v-else class="mt-2 text-white">N/A</p>
+                <p v-else class="mt-2 text-gray-900">N/A</p>
               </div>
 
-              <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <div class="rounded-lg border border-gray-200 bg-white p-3">
                 <p class="text-xs uppercase tracking-wide text-gray-500">{{ $t('admin.orgWebsite') }}</p>
                 <a
                   v-if="organization.website"
                   :href="websiteHref"
                   target="_blank"
                   rel="noopener"
-                  class="mt-2 block text-white hover:text-white hover:underline break-all"
+                  class="mt-2 block text-gray-900 hover:text-gray-900 hover:underline break-all"
                 >
                   {{ websiteDisplay }}
                 </a>
-                <p v-else class="mt-2 text-white">N/A</p>
+                <p v-else class="mt-2 text-gray-900">N/A</p>
               </div>
 
-              <div v-if="hasSocialLinks" class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <div v-if="hasSocialLinks" class="rounded-lg border border-gray-200 bg-white p-3">
                 <OrganizationSocialLinks
                   :facebook-url="organization.facebookUrl"
                   :instagram-url="organization.instagramUrl"
@@ -377,20 +377,20 @@
 
           <div
             v-if="showSponsorshipApplicationsSection"
-            class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6"
+            class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6"
           >
             <div class="flex items-start justify-between gap-3">
-              <h2 class="text-xl font-bold text-white">Sponsorship applications</h2>
+              <h2 class="text-xl font-bold text-gray-900">Sponsorship applications</h2>
               <router-link
                 v-if="authStore.isAdmin"
                 to="/admin/sponsorships"
-                class="shrink-0 text-xs font-medium text-white hover:text-white hover:underline"
+                class="shrink-0 text-xs font-medium text-gray-900 hover:text-gray-900 hover:underline"
               >
                 Manage in admin
               </router-link>
             </div>
-            <div v-if="loadingSponsorshipApplications" class="mt-4 flex items-center gap-2 text-sm text-gray-400">
-              <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/15 border-t-transparent" />
+            <div v-if="loadingSponsorshipApplications" class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+              <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-transparent" />
               Loading…
             </div>
             <template v-else>
@@ -401,20 +401,20 @@
                   class="rounded-lg border border-white/15 bg-violet-950/10 p-3"
                 >
                   <div class="flex flex-wrap items-center justify-between gap-2">
-                    <p class="text-sm font-semibold text-white">
+                    <p class="text-sm font-semibold text-gray-900">
                       {{ app.sponsorshipName || app.sponsorship?.name || 'Sponsorship package' }}
                     </p>
                     <span class="rounded-full border border-white/15 bg-violet-950/30 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">
                       Pending
                     </span>
                   </div>
-                  <p v-if="app.amount != null" class="mt-2 text-sm text-gray-300">
+                  <p v-if="app.amount != null" class="mt-2 text-sm text-gray-600">
                     {{ formatSponsorshipAmount(app.amount) }}
                   </p>
                   <p v-if="app.createdAt" class="mt-1 text-xs text-gray-500">
                     Submitted {{ formatDate(app.createdAt) }}
                   </p>
-                  <p v-if="app.notes" class="mt-2 text-xs text-gray-400 line-clamp-3 whitespace-pre-line">
+                  <p v-if="app.notes" class="mt-2 text-xs text-gray-500 line-clamp-3 whitespace-pre-line">
                     {{ app.notes }}
                   </p>
                 </li>
@@ -423,16 +423,16 @@
             </template>
           </div>
 
-          <div class="rounded-2xl border border-white/10 bg-zinc-900 p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-white">Activity Log</h2>
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <h2 class="text-xl font-bold text-gray-900">Activity Log</h2>
             <div v-if="timelineEntries.length" class="mt-4 space-y-3">
               <div
                 v-for="entry in timelineEntries"
                 :key="entry.key"
-                class="rounded-lg border border-white/10 bg-white/5 p-3"
+                class="rounded-lg border border-gray-200 bg-white p-3"
               >
                 <p class="text-xs uppercase tracking-wide text-gray-500">{{ entry.label }}</p>
-                <p class="mt-1 text-sm font-semibold text-white">{{ entry.value }}</p>
+                <p class="mt-1 text-sm font-semibold text-gray-900">{{ entry.value }}</p>
               </div>
             </div>
             <p v-else class="mt-4 text-sm text-gray-500">No activity logs available.</p>
@@ -442,11 +442,11 @@
 
       <section id="properties-section" v-if="organization.type === 'REAL_ESTATE_COMPANY'" class="mt-8">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-white">{{ t('property.propertiesAndBuildings') || 'Properties & Buildings' }}</h2>
+          <h2 class="text-2xl font-bold text-gray-900">{{ t('property.propertiesAndBuildings') || 'Properties & Buildings' }}</h2>
         </div>
         
         <div v-if="loadingLinkedItems" class="flex items-center justify-center py-12">
-          <div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-white/15"></div>
+          <div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-gray-200"></div>
         </div>
         
         <div v-else-if="linkedItems.length">
@@ -464,17 +464,17 @@
               <button
                 @click="changeLinkedItemsPage(linkedItemsPage - 1)"
                 :disabled="linkedItemsPage === 0"
-                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300 transition-colors"
               >
                 {{ $t('common.previous') || 'Previous' }}
               </button>
-              <span class="px-4 py-2 text-sm text-gray-300">
+              <span class="px-4 py-2 text-sm text-gray-600">
                 {{ $t('common.page') || 'Page' }} {{ linkedItemsPage + 1 }} {{ $t('common.of') || 'of' }} {{ linkedItemsTotalPages }}
               </span>
               <button
                 @click="changeLinkedItemsPage(linkedItemsPage + 1)"
                 :disabled="linkedItemsPage >= linkedItemsTotalPages - 1"
-                class="px-4 py-2 rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300 transition-colors"
               >
                 {{ $t('common.next') || 'Next' }}
               </button>
@@ -482,8 +482,8 @@
           </div>
         </div>
         
-        <div v-else class="rounded-2xl border border-white/10 bg-zinc-900 p-8 text-center">
-          <p class="text-gray-400">{{ t('property.noPropertiesOrBuildings') || 'No properties or buildings found.' }}</p>
+        <div v-else class="rounded-2xl border border-gray-200 bg-white p-8 text-center">
+          <p class="text-gray-500">{{ t('property.noPropertiesOrBuildings') || 'No properties or buildings found.' }}</p>
         </div>
       </section>
 
@@ -507,7 +507,7 @@
     >
       <button
         @click="showGalleryModal = false"
-        class="absolute top-4 right-4 text-white hover:text-primary-400 z-10"
+        class="absolute top-4 right-4 text-gray-900 hover:text-primary-400 z-10"
       >
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -539,21 +539,21 @@
         <div class="flex items-center justify-between p-4 bg-violet-950/50">
           <button
             @click="previousGalleryImage"
-            class="text-white hover:text-gray-300 p-2"
+            class="text-gray-900 hover:text-gray-600 p-2"
           >
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
           </button>
 
-          <div class="flex-1 text-center text-white">
+          <div class="flex-1 text-center text-gray-900">
             <p class="text-sm font-medium">{{ galleryIndex + 1 }} / {{ galleryMedia.length }}</p>
-            <p class="text-xs text-gray-400 mt-1">{{ organization?.name }}</p>
+            <p class="text-xs text-gray-500 mt-1">{{ organization?.name }}</p>
           </div>
 
           <button
             @click="nextGalleryImage"
-            class="text-white hover:text-gray-300 p-2"
+            class="text-gray-900 hover:text-gray-600 p-2"
           >
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -595,8 +595,8 @@
     </div> <!-- Closes the organization block -->
 
     <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <div class="rounded-xl border border-white/10 bg-zinc-900 p-6 text-center">
-        <p class="text-gray-400">Organization not found.</p>
+      <div class="rounded-xl border border-gray-200 bg-white p-6 text-center">
+        <p class="text-gray-500">Organization not found.</p>
       </div>
     </div>
   </div>
@@ -812,11 +812,11 @@ const timelineEntries = computed(() => {
 
 const statusBadgeClass = computed(() => {
   const status = String(organization.value?.status || '').toUpperCase()
-  if (status === 'APPROVED') return 'border-green-400/50 bg-green-500/30 text-green-200'
+  if (status === 'APPROVED') return 'border-green-400/50 bg-green-500/30 text-green-700'
   if (status === 'PENDING' || status === 'PENDING_APPROVAL') return 'border-white/15 bg-violet-950/30 text-white'
   if (status === 'SUSPENDED') return 'border-orange-400/50 bg-orange-500/30 text-orange-200'
-  if (!status) return 'border-white/20 bg-white/10 text-gray-200'
-  return 'border-red-400/50 bg-red-500/30 text-red-200'
+  if (!status) return 'border-gray-300 bg-gray-100 text-gray-700'
+  return 'border-red-400/50 bg-red-500/30 text-red-700'
 })
 
 function goBack() {
