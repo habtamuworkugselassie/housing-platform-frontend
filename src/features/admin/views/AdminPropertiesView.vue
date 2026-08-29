@@ -3,35 +3,35 @@
     <div class="space-y-6">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">Property Management</h1>
-          <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageProperties') }}</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">Property Management</h1>
+          <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.manageProperties') }}</p>
         </div>
         <button
           type="button"
           @click="openCreateModal"
-          class="px-4 py-2 bg-white text-black font-medium rounded-md hover:bg-primary-100 transition-colors"
+          class="px-4 py-2 bg-admin-accent text-admin-accent-fg font-medium rounded-md hover:bg-admin-accent-hover transition-colors"
         >
           Create property
         </button>
       </div>
 
       <!-- Filters -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-4">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-4">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
           <div>
-            <label class="block text-sm font-medium text-gray-300">Search</label>
+            <label class="block text-sm font-medium text-admin-muted">Search</label>
             <input
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchProperties')"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Status</label>
+            <label class="block text-sm font-medium text-admin-muted">Status</label>
             <select
               v-model="filters.status"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Status</option>
               <option value="AVAILABLE">Available</option>
@@ -41,10 +41,10 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Category</label>
+            <label class="block text-sm font-medium text-admin-muted">Category</label>
             <select
               v-model="filters.category"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Categories</option>
               <option value="FOR_SALE">For Sale</option>
@@ -54,7 +54,7 @@
           <div class="flex items-end">
             <button
               @click="loadProperties"
-              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
+              class="w-full px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors"
             >
               Apply Filters
             </button>
@@ -63,37 +63,37 @@
       </div>
 
       <!-- Properties Table -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15"></div>
         </div>
 
         <div v-else>
           <div class="overflow-x-auto">
-            <table class="w-full min-w-[56rem] divide-y divide-white/10 rtable">
-            <thead class="bg-zinc-800">
+            <table class="w-full min-w-[56rem] divide-y divide-admin-line/10 rtable">
+            <thead class="bg-admin-raised">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Property</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Location</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Price</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">Featured</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase">Property</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase">Location</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase">Price</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase">Featured</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-admin-subtle uppercase">Actions</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/10">
-              <tr v-for="property in properties" :key="property.id" class="hover:bg-violet-950/10 transition-colors">
+            <tbody class="divide-y divide-admin-line/10">
+              <tr v-for="property in properties" :key="property.id" class="hover:bg-admin-nav/10 transition-colors">
                 <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-white">{{ property.title }}</div>
-                  <div class="text-sm text-gray-400">{{ property.category }}</div>
+                  <div class="text-sm font-medium text-admin-fg">{{ property.title }}</div>
+                  <div class="text-sm text-admin-subtle">{{ property.category }}</div>
                 </td>
-                <td class="px-6 py-4 text-sm text-white">
+                <td class="px-6 py-4 text-sm text-admin-fg">
                   {{ property.city }}, {{ property.country }}
                 </td>
-                <td class="px-6 py-4 text-sm text-white">
+                <td class="px-6 py-4 text-sm text-admin-fg">
                   <div class="flex flex-col gap-1">
                     <span v-if="property.priceETB" class="font-semibold">{{ formatPrice(property.priceETB, 'ETB') }}</span>
-                    <span v-if="property.priceUSD" class="text-xs text-gray-400">{{ formatPrice(property.priceUSD, 'USD') }}</span>
+                    <span v-if="property.priceUSD" class="text-xs text-admin-subtle">{{ formatPrice(property.priceUSD, 'USD') }}</span>
                   </div>
                 </td>
                 <td class="px-6 py-4">
@@ -110,7 +110,7 @@
                   <span
                     :class="[
                       'px-2 py-1 text-xs font-medium rounded',
-                      property.featured ? 'bg-violet-950/30 text-white' : 'bg-gray-500/30 text-gray-300'
+                      property.featured ? 'bg-admin-nav/30 text-admin-fg' : 'bg-gray-500/30 text-admin-muted'
                     ]"
                   >
                     {{ property.featured ? 'Yes' : 'No' }}
@@ -125,7 +125,7 @@
                   </button>
                   <button
                     @click="viewProperty(property)"
-                    class="text-white hover:text-primary-400 mr-4 transition-colors"
+                    class="text-admin-fg hover:text-primary-400 mr-4 transition-colors"
                   >
                     View
                   </button>
@@ -146,16 +146,16 @@
       <!-- View Property Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-3xl shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-white">Property Details</h3>
+              <h3 class="text-lg font-medium text-admin-fg">Property Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-primary-400 transition-colors"
+                class="text-admin-subtle hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -165,15 +165,15 @@
             <div v-if="viewingProperty" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Title</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.title || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Title</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.title || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Category</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.category || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Category</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.category || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Status</label>
+                  <label class="block text-sm font-medium text-admin-subtle">Status</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
@@ -184,55 +184,55 @@
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Featured</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.featured ? 'Yes' : 'No' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Featured</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.featured ? 'Yes' : 'No' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Price (ETB)</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.priceETB ? formatPrice(viewingProperty.priceETB, 'ETB') : 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Price (ETB)</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.priceETB ? formatPrice(viewingProperty.priceETB, 'ETB') : 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Price (USD)</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.priceUSD ? formatPrice(viewingProperty.priceUSD, 'USD') : 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Price (USD)</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.priceUSD ? formatPrice(viewingProperty.priceUSD, 'USD') : 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">City</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.city || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">City</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.city || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Country</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.country || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Country</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.country || 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-400">Address</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.address || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Address</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.address || 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-400">Description</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.description || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Description</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.description || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Bedrooms</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.bedrooms || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Bedrooms</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.bedrooms || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Bathrooms</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.bathrooms || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Bathrooms</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.bathrooms || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Area (sqft)</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.area || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Area (sqft)</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.area || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Property ID</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingProperty.id || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Property ID</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingProperty.id || 'N/A' }}</p>
                 </div>
               </div>
             </div>
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
+                class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors"
               >
                 Close
               </button>
@@ -244,15 +244,15 @@
       <!-- Edit Property Modal -->
       <div
         v-if="showEditDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
         @click.self="showEditDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-3xl shadow-lg rounded-md bg-admin-surface text-admin-fg max-h-[90vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-medium text-white">Edit Property</h3>
+            <h3 class="text-lg font-medium text-admin-fg">Edit Property</h3>
             <button
               @click="showEditDialog = false"
-              class="text-gray-400 hover:text-primary-400 transition-colors"
+              class="text-admin-subtle hover:text-primary-400 transition-colors"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -260,31 +260,31 @@
             </button>
           </div>
           <form v-if="editingProperty" @submit.prevent="submitEdit" class="space-y-4">
-            <p v-if="editError" class="text-sm text-red-400">{{ editError }}</p>
+            <p v-if="editError" class="text-sm text-admin-danger">{{ editError }}</p>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Title *</label>
               <input
                 v-model="editForm.title"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Description</label>
               <textarea
                 v-model="editForm.description"
                 rows="3"
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Type *</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Type *</label>
                 <select
                   v-model="editForm.type"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="APARTMENT">Apartment</option>
                   <option value="HOUSE">House</option>
@@ -296,10 +296,10 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Status</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Status</label>
                 <select
                   v-model="editForm.status"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="AVAILABLE">Available</option>
                   <option value="RESERVED">Reserved</option>
@@ -310,53 +310,53 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Price (ETB)</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Price (ETB)</label>
                 <input
                   v-model.number="editForm.priceETB"
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Price (USD)</label>
                 <input
                   v-model.number="editForm.priceUSD"
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
             </div>
-            <div class="border border-white/10 rounded-md p-4 space-y-3">
+            <div class="border border-admin-line/10 rounded-md p-4 space-y-3">
               <div class="flex items-center justify-between gap-2">
                 <div>
-                  <h4 class="text-sm font-semibold text-white">Property Credit Offers</h4>
-                  <p class="text-xs text-gray-400">Add new bank offers while editing this property.</p>
+                  <h4 class="text-sm font-semibold text-admin-fg">Property Credit Offers</h4>
+                  <p class="text-xs text-admin-subtle">Add new bank offers while editing this property.</p>
                 </div>
                 <button
                   type="button"
                   @click="addEditCreditOfferRow"
                   :disabled="!approvedBanks.length"
-                  class="px-3 py-1.5 border border-white/30 rounded-md text-xs text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-3 py-1.5 border border-admin-line/30 rounded-md text-xs text-admin-fg hover:bg-admin-field/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-white">
+              <p v-if="!approvedBanks.length" class="text-xs text-admin-fg">
                 No approved banks available.
               </p>
               <div v-if="editExistingCreditOffers.length" class="space-y-2">
-                <p class="text-xs font-medium text-gray-400">Existing offers</p>
+                <p class="text-xs font-medium text-admin-subtle">Existing offers</p>
                 <div
                   v-for="offer in editExistingCreditOffers"
                   :key="offer.id"
-                  class="grid grid-cols-1 sm:grid-cols-2 gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2"
+                  class="grid grid-cols-1 sm:grid-cols-2 gap-2 rounded-md border border-admin-line/10 bg-admin-field/5 px-3 py-2"
                 >
-                  <p class="text-sm text-white">{{ getBankName(offer.bankId) }}</p>
-                  <p class="text-sm text-gray-300 sm:text-right">
+                  <p class="text-sm text-admin-fg">{{ getBankName(offer.bankId) }}</p>
+                  <p class="text-sm text-admin-muted sm:text-right">
                     {{ formatOfferCoverage(offer) != null ? `${formatOfferCoverage(offer)}%` : 'Coverage N/A' }}
                   </p>
                 </div>
@@ -367,8 +367,8 @@
                 class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
               >
                 <div>
-                  <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
-                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
+                  <label class="block text-xs font-medium text-admin-subtle mb-1">Bank</label>
+                  <select v-model="offer.bankId" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
                     <option value="">Select bank</option>
                     <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
                       {{ bank.name }}
@@ -376,64 +376,64 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-gray-400 mb-1">Coverage (%)</label>
+                  <label class="block text-xs font-medium text-admin-subtle mb-1">Coverage (%)</label>
                   <input
                     v-model.number="offer.coveragePercentage"
                     type="number"
                     min="0.01"
                     max="100"
                     step="0.01"
-                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
                 <button
                   type="button"
                   @click="removeEditCreditOfferRow(index)"
-                  class="px-3 py-2 border border-red-400/60 text-red-300 rounded-md text-xs hover:bg-red-500/10"
+                  class="px-3 py-2 border border-red-400/60 text-admin-danger rounded-md text-xs hover:bg-red-500/10"
                 >
                   Remove
                 </button>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Address *</label>
               <input
                 v-model="editForm.address"
                 type="text"
                 required
-                class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">City *</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">City *</label>
                 <input
                   v-model="editForm.city"
                   type="text"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">State</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">State</label>
                 <input
                   v-model="editForm.state"
                   type="text"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Country *</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Country *</label>
                 <input
                   v-model="editForm.country"
                   type="text"
                   required
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-sm font-medium text-gray-400 mb-1">Location (map)</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Location (map)</label>
               <OsmMapPicker
                 :model-value="(editForm.latitude != null && editForm.longitude != null) ? { lat: editForm.latitude, lng: editForm.longitude } : null"
                 @update:latitude="(v) => (editForm.latitude = v)"
@@ -443,40 +443,40 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Bedrooms</label>
                 <input
                   v-model.number="editForm.bedrooms"
                   type="number"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Bathrooms</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Bathrooms</label>
                 <input
                   v-model.number="editForm.bathrooms"
                   type="number"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Area (sqm)</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Area (sqm)</label>
                 <input
                   v-model.number="editForm.area"
                   type="number"
                   step="0.01"
                   min="0"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Construction status</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Construction status</label>
                 <select
                   v-model="editForm.constructionStatus"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="READY_TO_MOVE">Ready to move</option>
                   <option value="UNDER_CONSTRUCTION">Under construction</option>
@@ -485,10 +485,10 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Category</label>
                 <select
                   v-model="editForm.category"
-                  class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="FOR_SALE">For Sale</option>
                   <option value="FOR_RENTAL">For Rental</option>
@@ -496,30 +496,30 @@
               </div>
             </div>
             <div class="flex items-center gap-4">
-              <label class="flex items-center gap-2 text-sm text-gray-400">
+              <label class="flex items-center gap-2 text-sm text-admin-subtle">
                 <input
                   v-model="editForm.isFullyFurnished"
                   type="checkbox"
-                  class="rounded border-white/30 text-white focus:ring-primary-400"
+                  class="rounded border-admin-line/30 text-admin-fg focus:ring-primary-400"
                 />
                 Fully furnished
               </label>
-              <label class="flex items-center gap-2 text-sm text-gray-400">
+              <label class="flex items-center gap-2 text-sm text-admin-subtle">
                 <input
                   v-model="editForm.featured"
                   type="checkbox"
-                  class="rounded border-white/30 text-white focus:ring-primary-400"
+                  class="rounded border-admin-line/30 text-admin-fg focus:ring-primary-400"
                 />
                 Featured
               </label>
             </div>
             <!-- Edit: Media section -->
-            <div class="border-t border-white/10 pt-4 mt-4">
-              <label class="block text-sm font-medium text-gray-400 mb-2">Photos / media</label>
+            <div class="border-t border-admin-line/10 pt-4 mt-4">
+              <label class="block text-sm font-medium text-admin-subtle mb-2">Photos / media</label>
               <div v-if="editingProperty?.images?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                 <div v-for="img in editingProperty.images" :key="img.id" class="relative group">
-                  <img v-if="!isVideoUrl(img.imageUrl)" :src="mediaUrl(img.imageUrl)" :alt="img.caption" class="w-full h-20 object-cover rounded border border-white/20" />
-                  <video v-else :src="mediaUrl(img.imageUrl)" class="w-full h-20 object-cover rounded border border-white/20" muted playsinline></video>
+                  <img v-if="!isVideoUrl(img.imageUrl)" :src="mediaUrl(img.imageUrl)" :alt="img.caption" class="w-full h-20 object-cover rounded border border-admin-line/20" />
+                  <video v-else :src="mediaUrl(img.imageUrl)" class="w-full h-20 object-cover rounded border border-admin-line/20" muted playsinline></video>
                   <button
                     type="button"
                     @click="deleteEditPropertyImage(img.id)"
@@ -541,25 +541,25 @@
                 <button
                   type="button"
                   @click="editMediaInput?.click()"
-                  class="px-3 py-1.5 text-sm border border-white/30 text-white rounded-md hover:bg-white/10"
+                  class="px-3 py-1.5 text-sm border border-admin-line/30 text-admin-fg rounded-md hover:bg-admin-field/10"
                 >
                   Add photos / videos
                 </button>
-                <span v-if="editMediaUploading" class="text-sm text-gray-400">Uploading…</span>
+                <span v-if="editMediaUploading" class="text-sm text-admin-subtle">Uploading…</span>
               </div>
             </div>
             <div class="flex justify-end gap-2 pt-4">
               <button
                 type="button"
                 @click="showEditDialog = false"
-                class="px-4 py-2 border border-white/30 text-white rounded-md hover:bg-white/10 transition-colors"
+                class="px-4 py-2 border border-admin-line/30 text-admin-fg rounded-md hover:bg-admin-field/10 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="editSaving"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors disabled:opacity-50 disabled:bg-white/50"
+                class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors disabled:opacity-50 disabled:bg-admin-field/50"
               >
                 {{ editSaving ? 'Saving…' : 'Save' }}
               </button>
@@ -571,20 +571,20 @@
       <!-- Create Property Modal -->
       <div
         v-if="showCreateDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10"
         @click.self="showCreateDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-3xl shadow-lg rounded-md bg-zinc-900 text-white max-h-[90vh] overflow-y-auto">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-3xl shadow-lg rounded-md bg-admin-surface text-admin-fg max-h-[90vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-medium text-white">Create property</h3>
-            <button type="button" @click="showCreateDialog = false" class="text-gray-400 hover:text-primary-400">
+            <h3 class="text-lg font-medium text-admin-fg">Create property</h3>
+            <button type="button" @click="showCreateDialog = false" class="text-admin-subtle hover:text-primary-400">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
           <form @submit.prevent="submitCreate" class="space-y-4">
-            <p v-if="createError" class="text-sm text-red-400">{{ createError }}</p>
+            <p v-if="createError" class="text-sm text-admin-danger">{{ createError }}</p>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Real estate company *</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Real estate company *</label>
               <Combobox
                 :model-value="selectedCreateCompany"
                 nullable
@@ -596,14 +596,14 @@
                     :display-value="(org) => org?.name ?? ''"
                     @change="createCompanyQuery = $event.target.value"
                     placeholder="Search company..."
-                    class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 pr-10 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 pr-10 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                     :class="{ 'border-red-500/50': submitCreateTouched && !createForm.realEstateCompanyId }"
                   />
-                  <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 pointer-events-none">
+                  <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-3 text-admin-subtle pointer-events-none">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" /></svg>
                   </ComboboxButton>
                   <ComboboxOptions
-                    class="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-white/10 bg-zinc-900 py-1 shadow-lg focus:outline-none"
+                    class="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-admin-line/10 bg-admin-surface py-1 shadow-lg focus:outline-none"
                   >
                   <ComboboxOption
                     v-for="org in filteredRealEstateOrgs"
@@ -615,32 +615,32 @@
                     <li
                       :class="[
                         'relative cursor-default select-none py-2 pl-3 pr-9',
-                        active ? 'bg-violet-950/20 text-white' : 'text-gray-300'
+                        active ? 'bg-admin-nav/20 text-admin-fg' : 'text-admin-muted'
                       ]"
                     >
                       <span :class="['block truncate', selected ? 'font-semibold' : 'font-normal']">{{ org.name }}</span>
                     </li>
                   </ComboboxOption>
-                  <li v-if="filteredRealEstateOrgs.length === 0" class="py-2 pl-3 pr-9 text-gray-400">
+                  <li v-if="filteredRealEstateOrgs.length === 0" class="py-2 pl-3 pr-9 text-admin-subtle">
                     No company found. Type to search.
                   </li>
                   </ComboboxOptions>
                 </div>
               </Combobox>
-              <p v-if="submitCreateTouched && !createForm.realEstateCompanyId" class="mt-1 text-sm text-red-400">Select a real estate company</p>
+              <p v-if="submitCreateTouched && !createForm.realEstateCompanyId" class="mt-1 text-sm text-admin-danger">Select a real estate company</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Title *</label>
-              <input v-model="createForm.title" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Title *</label>
+              <input v-model="createForm.title" type="text" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Description</label>
-              <textarea v-model="createForm.description" rows="3" class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Description</label>
+              <textarea v-model="createForm.description" rows="3" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Type *</label>
-                <select v-model="createForm.type" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Type *</label>
+                <select v-model="createForm.type" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
                   <option value="APARTMENT">Apartment</option>
                   <option value="HOUSE">House</option>
                   <option value="VILLA">Villa</option>
@@ -651,8 +651,8 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Category *</label>
-                <select v-model="createForm.category" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Category *</label>
+                <select v-model="createForm.category" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
                   <option value="FOR_SALE">For Sale</option>
                   <option value="FOR_RENTAL">For Rental</option>
                 </select>
@@ -660,30 +660,30 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Price (ETB)</label>
-                <input v-model.number="createForm.priceETB" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Price (ETB)</label>
+                <input v-model.number="createForm.priceETB" type="number" step="0.01" min="0" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Price (USD)</label>
-                <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Price (USD)</label>
+                <input v-model.number="createForm.priceUSD" type="number" step="0.01" min="0" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
             </div>
-            <div class="border border-white/10 rounded-md p-4 space-y-3">
+            <div class="border border-admin-line/10 rounded-md p-4 space-y-3">
               <div class="flex items-center justify-between gap-2">
                 <div>
-                  <h4 class="text-sm font-semibold text-white">Property Credit Offers (optional)</h4>
-                  <p class="text-xs text-gray-400">Add multiple banks and the loan coverage percentage for each offer.</p>
+                  <h4 class="text-sm font-semibold text-admin-fg">Property Credit Offers (optional)</h4>
+                  <p class="text-xs text-admin-subtle">Add multiple banks and the loan coverage percentage for each offer.</p>
                 </div>
                 <button
                   type="button"
                   @click="addCreateCreditOfferRow"
                   :disabled="!approvedBanks.length"
-                  class="px-3 py-1.5 border border-white/30 rounded-md text-xs text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-3 py-1.5 border border-admin-line/30 rounded-md text-xs text-admin-fg hover:bg-admin-field/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Add Offer
                 </button>
               </div>
-              <p v-if="!approvedBanks.length" class="text-xs text-white">
+              <p v-if="!approvedBanks.length" class="text-xs text-admin-fg">
                 No approved banks available. You can still create the property and add offers later.
               </p>
               <div
@@ -692,8 +692,8 @@
                 class="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-3 items-end"
               >
                 <div>
-                  <label class="block text-xs font-medium text-gray-400 mb-1">Bank</label>
-                  <select v-model="offer.bankId" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
+                  <label class="block text-xs font-medium text-admin-subtle mb-1">Bank</label>
+                  <select v-model="offer.bankId" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
                     <option value="">Select bank</option>
                     <option v-for="bank in approvedBanks" :key="bank.id" :value="bank.id">
                       {{ bank.name }}
@@ -701,45 +701,45 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-gray-400 mb-1">Coverage (%)</label>
+                  <label class="block text-xs font-medium text-admin-subtle mb-1">Coverage (%)</label>
                   <input
                     v-model.number="offer.coveragePercentage"
                     type="number"
                     min="0.01"
                     max="100"
                     step="0.01"
-                    class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
                 <button
                   type="button"
                   @click="removeCreateCreditOfferRow(index)"
-                  class="px-3 py-2 border border-red-400/60 text-red-300 rounded-md text-xs hover:bg-red-500/10"
+                  class="px-3 py-2 border border-red-400/60 text-admin-danger rounded-md text-xs hover:bg-red-500/10"
                 >
                   Remove
                 </button>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Address *</label>
-              <input v-model="createForm.address" type="text" required class="block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Address *</label>
+              <input v-model="createForm.address" type="text" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">City *</label>
-                <input v-model="createForm.city" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">City *</label>
+                <input v-model="createForm.city" type="text" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">State</label>
-                <input v-model="createForm.state" type="text" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">State</label>
+                <input v-model="createForm.state" type="text" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Country *</label>
-                <input v-model="createForm.country" type="text" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Country *</label>
+                <input v-model="createForm.country" type="text" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-sm font-medium text-gray-400 mb-1">Location (map)</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Location (map)</label>
               <OsmMapPicker
                 :model-value="(createForm.latitude != null && createForm.longitude != null) ? { lat: createForm.latitude, lng: createForm.longitude } : null"
                 @update:latitude="(v) => (createForm.latitude = v)"
@@ -749,35 +749,35 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Bedrooms</label>
-                <input v-model.number="createForm.bedrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Bedrooms</label>
+                <input v-model.number="createForm.bedrooms" type="number" min="0" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Bathrooms</label>
-                <input v-model.number="createForm.bathrooms" type="number" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Bathrooms</label>
+                <input v-model.number="createForm.bathrooms" type="number" min="0" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Area (sqm)</label>
-                <input v-model.number="createForm.area" type="number" step="0.01" min="0" class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                <label class="block text-sm font-medium text-admin-subtle mb-1">Area (sqm)</label>
+                <input v-model.number="createForm.area" type="number" step="0.01" min="0" class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">Construction status *</label>
-              <select v-model="createForm.constructionStatus" required class="block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
+              <label class="block text-sm font-medium text-admin-subtle mb-1">Construction status *</label>
+              <select v-model="createForm.constructionStatus" required class="block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400">
                 <option value="READY_TO_MOVE">Ready to move</option>
                 <option value="UNDER_CONSTRUCTION">Under construction</option>
                 <option value="PLANNED">Planned</option>
                 <option value="COMPLETED">Completed</option>
               </select>
             </div>
-            <div class="border-t border-white/10 pt-4">
-              <label class="block text-sm font-medium text-gray-400 mb-2">Photos / videos (optional)</label>
-              <input ref="createMediaInput" type="file" accept="image/*,video/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-white file:text-black file:font-medium file:hover:bg-primary-100" @change="onCreateMediaSelect" />
-              <p v-if="createFormMediaFiles.length" class="mt-1 text-xs text-gray-500">{{ createFormMediaFiles.length }} file(s) selected</p>
+            <div class="border-t border-admin-line/10 pt-4">
+              <label class="block text-sm font-medium text-admin-subtle mb-2">Photos / videos (optional)</label>
+              <input ref="createMediaInput" type="file" accept="image/*,video/*" multiple class="block w-full text-sm text-admin-subtle file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-admin-accent file:text-admin-accent-fg file:font-medium file:hover:bg-admin-accent-hover" @change="onCreateMediaSelect" />
+              <p v-if="createFormMediaFiles.length" class="mt-1 text-xs text-admin-faint">{{ createFormMediaFiles.length }} file(s) selected</p>
             </div>
             <div class="flex justify-end gap-2 pt-4">
-              <button type="button" @click="showCreateDialog = false" class="px-4 py-2 border border-white/30 text-white rounded-md hover:bg-white/10">Cancel</button>
-              <button type="submit" :disabled="createSaving" class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50">{{ createSaving ? 'Creating…' : 'Create' }}</button>
+              <button type="button" @click="showCreateDialog = false" class="px-4 py-2 border border-admin-line/30 text-admin-fg rounded-md hover:bg-admin-field/10">Cancel</button>
+              <button type="submit" :disabled="createSaving" class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover disabled:opacity-50 disabled:bg-admin-field/50">{{ createSaving ? 'Creating…' : 'Create' }}</button>
             </div>
           </form>
         </div>
@@ -920,12 +920,12 @@ const loadProperties = async () => {
 
 const getStatusClass = (status) => {
   const classes = {
-    AVAILABLE: 'bg-green-500/30 text-green-200',
-    RESERVED: 'bg-violet-950/30 text-white',
+    AVAILABLE: 'bg-green-500/30 text-admin-ok',
+    RESERVED: 'bg-admin-nav/30 text-admin-fg',
     SOLD: 'bg-blue-500/30 text-blue-200',
-    WITHDRAWN: 'bg-red-500/30 text-red-200'
+    WITHDRAWN: 'bg-red-500/30 text-admin-danger'
   }
-  return classes[status] || 'bg-gray-500/30 text-gray-300'
+  return classes[status] || 'bg-gray-500/30 text-admin-muted'
 }
 
 const viewProperty = (property) => {

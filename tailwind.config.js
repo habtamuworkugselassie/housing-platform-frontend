@@ -44,6 +44,28 @@ export default {
           canvas:  '#4c1d95',
           deep:    '#2e1065',
         },
+        // Admin portal theme tokens. Each resolves a CSS variable set on
+        // `.admin-shell` (dark by default, purple-branded under
+        // [data-theme="light"]), so the same utility class renders in either
+        // theme and opacity modifiers (e.g. border-admin-line/20) still work.
+        admin: {
+          bg:            'rgb(var(--admin-bg) / <alpha-value>)',
+          surface:       'rgb(var(--admin-surface) / <alpha-value>)',
+          raised:        'rgb(var(--admin-raised) / <alpha-value>)',
+          sunken:        'rgb(var(--admin-sunken) / <alpha-value>)',
+          fg:            'rgb(var(--admin-fg) / <alpha-value>)',
+          muted:         'rgb(var(--admin-muted) / <alpha-value>)',
+          subtle:        'rgb(var(--admin-subtle) / <alpha-value>)',
+          faint:         'rgb(var(--admin-faint) / <alpha-value>)',
+          line:          'rgb(var(--admin-line) / <alpha-value>)',
+          field:         'rgb(var(--admin-field) / <alpha-value>)',
+          nav:           'rgb(var(--admin-nav) / <alpha-value>)',
+          accent:        'rgb(var(--admin-accent) / <alpha-value>)',
+          'accent-fg':   'rgb(var(--admin-accent-fg) / <alpha-value>)',
+          'accent-hover':'rgb(var(--admin-accent-hover) / <alpha-value>)',
+          ok:            'rgb(var(--admin-ok) / <alpha-value>)',
+          danger:        'rgb(var(--admin-danger) / <alpha-value>)',
+        },
       },
       fontFamily: {
         sans: ['Roboto', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],

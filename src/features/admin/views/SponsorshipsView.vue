@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white">
+  <div class="admin-shell min-h-screen bg-admin-bg text-admin-fg" :data-theme="theme">
     <!-- Material Design App Bar -->
     <div class="mdc-top-app-bar">
       <span class="material-icons">star</span>
@@ -10,7 +10,7 @@
       <div class="mb-8 flex justify-between items-center">
         <div>
           <h1 class="mdc-typography--headline5 mb-2">{{ $t('admin.sponsorshipManagement') }}</h1>
-          <p class="mdc-typography--body2 text-gray-600">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
+          <p class="mdc-typography--body2 text-admin-subtle">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
         </div>
         <button
           @click="showCreateModal = true"
@@ -68,7 +68,7 @@
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-12">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p class="mt-4 mdc-typography--body1 text-gray-600">{{ $t('admin.loadingSponsorships') }}</p>
+        <p class="mt-4 mdc-typography--body1 text-admin-subtle">{{ $t('admin.loadingSponsorships') }}</p>
       </div>
 
       <!-- Sponsorships Table -->
@@ -136,8 +136,8 @@
 
       <!-- Empty State -->
       <div v-else class="mdc-card text-center py-12">
-        <span class="material-icons text-gray-400" style="font-size: 64px;">star_border</span>
-        <p class="mdc-typography--body1 text-gray-600 mt-4">{{ $t('admin.noSponsorshipsFound') }}</p>
+        <span class="material-icons text-admin-subtle" style="font-size: 64px;">star_border</span>
+        <p class="mdc-typography--body1 text-admin-subtle mt-4">{{ $t('admin.noSponsorshipsFound') }}</p>
       </div>
 
       <!-- Create/Edit Modal -->
@@ -248,6 +248,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/shared/api/client'
+import { useAdminTheme } from '../composables/useAdminTheme'
+
+// This page has its own full-screen shell (not AdminLayout), so it opts into
+// the shared admin theme directly: the `.admin-shell` class provides the
+// tokens and `data-theme` follows the same persisted light/dark choice.
+const { theme } = useAdminTheme()
 
 const sponsorships = ref([])
 const loading = ref(false)

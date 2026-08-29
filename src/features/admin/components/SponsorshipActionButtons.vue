@@ -3,7 +3,7 @@
     <button
       type="button"
       :disabled="!!app.organizationVerifiedAt"
-      class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+      class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
       @click="$emit('verify-org', app.id)"
     >
       {{ $t('admin.sponsorshipVerifyOrg') }}
@@ -11,7 +11,7 @@
     <button
       type="button"
       :disabled="!!app.userVerifiedAt"
-      class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+      class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
       @click="$emit('verify-user', app)"
     >
       {{ $t('admin.sponsorshipVerifyUser') }}
@@ -19,14 +19,14 @@
     <button
       type="button"
       :disabled="!canApprove"
-      class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-green-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+      class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-admin-ok hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
       @click="$emit('approve', app.id)"
     >
       {{ $t('admin.activate') }}
     </button>
     <button
       type="button"
-      class="text-xs text-red-300 hover:text-primary-400"
+      class="text-xs text-admin-danger hover:text-primary-400"
       @click="$emit('reject', app)"
     >
       {{ $t('admin.reject') }}

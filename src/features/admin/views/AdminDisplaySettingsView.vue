@@ -2,23 +2,23 @@
   <AdminLayout>
     <div class="max-w-2xl space-y-8">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.displaySettings.title') }}</h1>
-        <p class="mt-2 text-sm text-gray-400">{{ $t('admin.displaySettings.subtitle') }}</p>
+        <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.displaySettings.title') }}</h1>
+        <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.displaySettings.subtitle') }}</p>
       </div>
 
       <div
         v-if="error"
-        class="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+        class="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-admin-danger"
       >
         {{ error }}
       </div>
 
-      <form class="space-y-6 rounded-xl border border-white/10 bg-zinc-900 p-6" @submit.prevent="save">
+      <form class="space-y-6 rounded-xl border border-admin-line/10 bg-admin-surface p-6" @submit.prevent="save">
         <div>
-          <label class="block text-sm font-medium text-gray-300" for="sponsor-carousel">
+          <label class="block text-sm font-medium text-admin-muted" for="sponsor-carousel">
             {{ $t('admin.displaySettings.sponsorCarousel') }}
           </label>
-          <p class="mt-1 text-xs text-gray-500">{{ $t('admin.displaySettings.sponsorCarouselHint') }}</p>
+          <p class="mt-1 text-xs text-admin-faint">{{ $t('admin.displaySettings.sponsorCarouselHint') }}</p>
           <input
             id="sponsor-carousel"
             v-model.number="form.sponsorCarouselSec"
@@ -27,16 +27,16 @@
             max="300"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-admin-fg placeholder-admin-subtle focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
-          <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
+          <span class="ml-2 text-sm text-admin-subtle">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-300" for="sidebar-media">
+          <label class="block text-sm font-medium text-admin-muted" for="sidebar-media">
             {{ $t('admin.displaySettings.sidebarMedia') }}
           </label>
-          <p class="mt-1 text-xs text-gray-500">{{ $t('admin.displaySettings.sidebarMediaHint') }}</p>
+          <p class="mt-1 text-xs text-admin-faint">{{ $t('admin.displaySettings.sidebarMediaHint') }}</p>
           <input
             id="sidebar-media"
             v-model.number="form.sidebarMediaSec"
@@ -45,16 +45,16 @@
             max="300"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-admin-fg placeholder-admin-subtle focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
-          <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
+          <span class="ml-2 text-sm text-admin-subtle">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-300" for="sidebar-layout">
+          <label class="block text-sm font-medium text-admin-muted" for="sidebar-layout">
             {{ $t('admin.displaySettings.sidebarLayout') }}
           </label>
-          <p class="mt-1 text-xs text-gray-500">{{ $t('admin.displaySettings.sidebarLayoutHint') }}</p>
+          <p class="mt-1 text-xs text-admin-faint">{{ $t('admin.displaySettings.sidebarLayoutHint') }}</p>
           <input
             id="sidebar-layout"
             v-model.number="form.sidebarLayoutSec"
@@ -63,24 +63,24 @@
             max="600"
             step="1"
             required
-            class="mt-2 w-full max-w-xs rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-white placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+            class="mt-2 w-full max-w-xs rounded-lg border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-admin-fg placeholder-admin-subtle focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
-          <span class="ml-2 text-sm text-gray-400">{{ $t('admin.displaySettings.seconds') }}</span>
+          <span class="ml-2 text-sm text-admin-subtle">{{ $t('admin.displaySettings.seconds') }}</span>
         </div>
 
-        <div class="space-y-4 rounded-lg border border-white/10 bg-white/5 px-4 py-4">
+        <div class="space-y-4 rounded-lg border border-admin-line/10 bg-admin-field/5 px-4 py-4">
           <div class="flex cursor-pointer items-start gap-3">
             <input
               id="exhibition-sponsorship-packages"
               v-model="form.exhibitionSponsorshipPackagesVisible"
               type="checkbox"
-              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-white focus:ring-primary-400"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-admin-line/30 bg-admin-surface text-admin-fg focus:ring-primary-400"
             />
             <label for="exhibition-sponsorship-packages" class="min-w-0 cursor-pointer">
-              <span class="block text-sm font-medium text-gray-200">
+              <span class="block text-sm font-medium text-admin-muted">
                 {{ $t('admin.displaySettings.exhibitionSponsorshipPackages') }}
               </span>
-              <span class="mt-1 block text-xs text-gray-500">
+              <span class="mt-1 block text-xs text-admin-faint">
                 {{ $t('admin.displaySettings.exhibitionSponsorshipPackagesHint') }}
               </span>
             </label>
@@ -90,13 +90,13 @@
               id="exhibition-sponsorship-package-prices"
               v-model="form.exhibitionSponsorshipPackagePricesVisible"
               type="checkbox"
-              class="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-zinc-900 text-white focus:ring-primary-400"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-admin-line/30 bg-admin-surface text-admin-fg focus:ring-primary-400"
             />
             <label for="exhibition-sponsorship-package-prices" class="min-w-0 cursor-pointer">
-              <span class="block text-sm font-medium text-gray-200">
+              <span class="block text-sm font-medium text-admin-muted">
                 {{ $t('admin.displaySettings.exhibitionSponsorshipPackagePrices') }}
               </span>
-              <span class="mt-1 block text-xs text-gray-500">
+              <span class="mt-1 block text-xs text-admin-faint">
                 {{ $t('admin.displaySettings.exhibitionSponsorshipPackagePricesHint') }}
               </span>
             </label>
@@ -107,11 +107,11 @@
           <button
             type="submit"
             :disabled="saving || loading"
-            class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50"
+            class="rounded-lg bg-admin-accent px-5 py-2.5 text-sm font-semibold text-admin-accent-fg transition-colors hover:bg-admin-accent-hover disabled:opacity-50 disabled:bg-admin-field/50"
           >
             {{ saving ? $t('admin.displaySettings.saving') : $t('admin.displaySettings.save') }}
           </button>
-          <span v-if="saved" class="text-sm text-green-400">{{ $t('admin.displaySettings.saved') }}</span>
+          <span v-if="saved" class="text-sm text-admin-ok">{{ $t('admin.displaySettings.saved') }}</span>
         </div>
       </form>
     </div>

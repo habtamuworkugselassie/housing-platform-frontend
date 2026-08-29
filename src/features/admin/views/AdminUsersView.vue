@@ -4,36 +4,36 @@
       <!-- Page Header -->
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">User Management</h1>
-          <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageUsers') }}</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">User Management</h1>
+          <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.manageUsers') }}</p>
         </div>
         <button
           @click="openCreateUser"
-          class="px-4 py-2 bg-white text-black rounded-lg hover:bg-primary-100 font-medium transition-colors"
+          class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-lg hover:bg-admin-accent-hover font-medium transition-colors"
         >
           + Add User
         </button>
       </div>
 
       <!-- Filters -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-4">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-4">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
           <div>
-            <label class="block text-sm font-medium text-gray-300">Search</label>
+            <label class="block text-sm font-medium text-admin-muted">Search</label>
             <input
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchUsers')"
               @input="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Role</label>
+            <label class="block text-sm font-medium text-admin-muted">Role</label>
             <select
               v-model="filters.role"
               @change="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Roles</option>
               <option value="BUYER">Buyer</option>
@@ -44,11 +44,11 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Status</label>
+            <label class="block text-sm font-medium text-admin-muted">Status</label>
             <select
               v-model="filters.status"
               @change="loadUsersData"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All</option>
               <option value="enabled">Enabled</option>
@@ -58,7 +58,7 @@
           <div class="flex items-end">
             <button
               @click="clearFilters"
-              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
+              class="w-full px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
             >
               Clear Filters
             </button>
@@ -67,42 +67,42 @@
       </div>
 
       <!-- Users Table -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
         <div class="hidden lg:block overflow-x-auto">
-          <table class="w-full min-w-[56rem] divide-y divide-white/10">
-          <thead class="bg-zinc-800">
+          <table class="w-full min-w-[56rem] divide-y divide-admin-line/10">
+          <thead class="bg-admin-raised">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Roles</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Organization</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Joined</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">User</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Roles</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Organization</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Joined</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/10">
+          <tbody class="divide-y divide-admin-line/10">
             <template v-if="loading">
               <tr>
-                <td colspan="7" class="px-6 py-12 text-center bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center bg-admin-surface">
                   <div class="flex flex-col items-center">
-                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
-                    <span class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</span>
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
+                    <span class="text-sm text-admin-subtle">{{ $t('admin.loadingUsers') }}</span>
                   </div>
                 </td>
               </tr>
             </template>
             <template v-else-if="error">
               <tr>
-                <td colspan="7" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center text-sm text-admin-danger bg-admin-surface">
                   <div class="space-y-2">
                     <div class="font-semibold">{{ $t('admin.errorLoadingUsers') }}</div>
                     <div>{{ error }}</div>
-                    <div class="text-xs text-gray-400 mt-2">
+                    <div class="text-xs text-admin-subtle mt-2">
                       Please check your browser console for more details.
                     </div>
                   </div>
-                  <button @click="loadUsersData" class="mt-4 px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors">
+                  <button @click="loadUsersData" class="mt-4 px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors">
                     Retry
                   </button>
                 </td>
@@ -110,7 +110,7 @@
             </template>
             <template v-else-if="!users || users.length === 0">
               <tr>
-                <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400 bg-zinc-900">
+                <td colspan="7" class="px-6 py-12 text-center text-sm text-admin-subtle bg-admin-surface">
                   No users found
                 </td>
               </tr>
@@ -119,27 +119,27 @@
               <tr
                 v-for="user in users"
                 :key="user.id"
-                class="bg-zinc-900 hover:bg-violet-950/10 transition-colors"
+                class="bg-admin-surface hover:bg-admin-nav/10 transition-colors"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
-                      <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                        <span class="text-white font-medium text-sm">
+                      <div class="h-10 w-10 rounded-full bg-admin-field/20 flex items-center justify-center">
+                        <span class="text-admin-fg font-medium text-sm">
                           {{ getUserInitials(user) }}
                         </span>
                       </div>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-white">
+                      <div class="text-sm font-medium text-admin-fg">
                         {{ user.firstName }} {{ user.lastName }}
                       </div>
-                      <div class="text-sm text-gray-400">{{ user.phoneNumber || 'N/A' }}</div>
+                      <div class="text-sm text-admin-subtle">{{ user.phoneNumber || 'N/A' }}</div>
                     </div>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-white">{{ user.email }}</div>
+                  <div class="text-sm text-admin-fg">{{ user.email }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-wrap gap-1">
@@ -157,35 +157,35 @@
                     <template v-if="cell.kind === 'linked'">
                       <RouterLink
                         :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
-                        class="font-medium text-white hover:text-primary-400 hover:underline"
+                        class="font-medium text-admin-fg hover:text-primary-400 hover:underline"
                       >
                         {{ cell.org.name || 'Organization' }}
                       </RouterLink>
-                      <div v-if="cell.typeLabel" class="text-xs text-gray-400 mt-0.5">
+                      <div v-if="cell.typeLabel" class="text-xs text-admin-subtle mt-0.5">
                         {{ cell.typeLabel }}
                       </div>
                     </template>
                     <span v-else-if="cell.kind === 'missing'" class="text-amber-200/90">Not linked</span>
-                    <span v-else class="text-gray-500">—</span>
+                    <span v-else class="text-admin-faint">—</span>
                   </template>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
                     :class="[
                       'px-2 py-1 text-xs font-medium rounded',
-                      isUserActive(user) ? 'bg-green-500/30 text-green-200' : 'bg-red-500/30 text-red-200'
+                      isUserActive(user) ? 'bg-green-500/30 text-admin-ok' : 'bg-red-500/30 text-admin-danger'
                     ]"
                   >
                     {{ getUserStatusText(user) }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-subtle">
                   {{ formatDate(user.createdAt) }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
                     @click="viewUser(user)"
-                    class="text-white hover:text-primary-400 mr-4 transition-colors"
+                    class="text-admin-fg hover:text-primary-400 mr-4 transition-colors"
                   >
                     View
                   </button>
@@ -197,7 +197,7 @@
                   </button>
                   <button
                     @click="toggleUserStatus(user)"
-                    :class="isUserActive(user) ? 'text-red-300 hover:text-primary-400' : 'text-green-300 hover:text-primary-400'"
+                    :class="isUserActive(user) ? 'text-admin-danger hover:text-primary-400' : 'text-admin-ok hover:text-primary-400'"
                   >
                     {{ isUserActive(user) ? 'Disable' : 'Enable' }}
                   </button>
@@ -211,34 +211,34 @@
         <!-- Mobile/tablet card list (below lg): the 8-column table is unreadable on a phone -->
         <div class="lg:hidden">
           <div v-if="loading" class="px-4 py-12 text-center">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
-            <div class="text-sm text-gray-400">{{ $t('admin.loadingUsers') }}</div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
+            <div class="text-sm text-admin-subtle">{{ $t('admin.loadingUsers') }}</div>
           </div>
-          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-red-200 space-y-3">
+          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-admin-danger space-y-3">
             <div class="font-semibold">{{ $t('admin.errorLoadingUsers') }}</div>
             <div>{{ error }}</div>
             <button @click="loadUsersData" class="px-4 py-2 bg-gold-400 text-primary-950 rounded-md text-sm font-medium">Retry</button>
           </div>
-          <div v-else-if="!users || users.length === 0" class="px-4 py-12 text-center text-sm text-gray-400">
+          <div v-else-if="!users || users.length === 0" class="px-4 py-12 text-center text-sm text-admin-subtle">
             No users found
           </div>
-          <ul v-else class="divide-y divide-white/10">
+          <ul v-else class="divide-y divide-admin-line/10">
             <li v-for="user in users" :key="`m-${user.id}`" class="p-4 space-y-3">
               <div class="flex items-start justify-between gap-3">
                 <div class="flex items-center gap-3 min-w-0">
-                  <div class="h-10 w-10 shrink-0 rounded-full bg-white/20 flex items-center justify-center">
-                    <span class="text-white font-medium text-sm">{{ getUserInitials(user) }}</span>
+                  <div class="h-10 w-10 shrink-0 rounded-full bg-admin-field/20 flex items-center justify-center">
+                    <span class="text-admin-fg font-medium text-sm">{{ getUserInitials(user) }}</span>
                   </div>
                   <div class="min-w-0">
-                    <div class="text-sm font-medium text-white truncate">{{ user.firstName }} {{ user.lastName }}</div>
-                    <div class="text-xs text-gray-400 truncate">{{ user.email }}</div>
-                    <div v-if="user.phoneNumber" class="text-xs text-gray-500">{{ user.phoneNumber }}</div>
+                    <div class="text-sm font-medium text-admin-fg truncate">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="text-xs text-admin-subtle truncate">{{ user.email }}</div>
+                    <div v-if="user.phoneNumber" class="text-xs text-admin-faint">{{ user.phoneNumber }}</div>
                   </div>
                 </div>
                 <span
                   :class="[
                     'shrink-0 px-2 py-1 text-xs font-medium rounded',
-                    isUserActive(user) ? 'bg-green-500/30 text-green-200' : 'bg-red-500/30 text-red-200'
+                    isUserActive(user) ? 'bg-green-500/30 text-admin-ok' : 'bg-red-500/30 text-admin-danger'
                   ]"
                 >
                   {{ getUserStatusText(user) }}
@@ -255,27 +255,27 @@
                 </span>
               </div>
 
-              <div class="text-xs text-gray-400">
+              <div class="text-xs text-admin-subtle">
                 <template v-for="cell in [linkedOrganizationCell(user)]" :key="`m-org-${user.id}`">
                   <template v-if="cell.kind === 'linked'">
                     <RouterLink
                       :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
-                      class="font-medium text-white hover:text-primary-400 hover:underline"
+                      class="font-medium text-admin-fg hover:text-primary-400 hover:underline"
                     >{{ cell.org.name || 'Organization' }}</RouterLink>
                     <span v-if="cell.typeLabel"> · {{ cell.typeLabel }}</span>
                   </template>
                   <span v-else-if="cell.kind === 'missing'" class="text-amber-200/90">Not linked</span>
-                  <span v-else class="text-gray-500">—</span>
+                  <span v-else class="text-admin-faint">—</span>
                 </template>
-                <span class="text-gray-500"> · {{ formatDate(user.createdAt) }}</span>
+                <span class="text-admin-faint"> · {{ formatDate(user.createdAt) }}</span>
               </div>
 
               <div class="flex flex-wrap gap-2 pt-1 text-sm font-medium">
-                <button @click="viewUser(user)" class="text-white hover:text-primary-400">View</button>
+                <button @click="viewUser(user)" class="text-admin-fg hover:text-primary-400">View</button>
                 <button @click="editUser(user)" class="text-blue-300 hover:text-primary-400">Edit</button>
                 <button
                   @click="toggleUserStatus(user)"
-                  :class="isUserActive(user) ? 'text-red-300 hover:text-primary-400' : 'text-green-300 hover:text-primary-400'"
+                  :class="isUserActive(user) ? 'text-admin-danger hover:text-primary-400' : 'text-admin-ok hover:text-primary-400'"
                 >{{ isUserActive(user) ? 'Disable' : 'Enable' }}</button>
               </div>
             </li>
@@ -283,23 +283,23 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="bg-zinc-800 px-6 py-4 border-t border-white/10">
+        <div v-if="totalPages > 1" class="bg-admin-raised px-6 py-4 border-t border-admin-line/10">
           <div class="flex items-center justify-between">
-            <div class="text-sm text-gray-300">
+            <div class="text-sm text-admin-muted">
               Page {{ currentPage + 1 }} of {{ totalPages }}
             </div>
             <div class="flex space-x-2">
               <button
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 0"
-                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
+                class="px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
               >
                 Previous
               </button>
               <button
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage >= totalPages - 1"
-                class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
+                class="px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-50 transition-colors"
               >
                 Next
               </button>
@@ -311,16 +311,16 @@
       <!-- Create User Modal -->
       <div
         v-if="showCreateDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="closeCreateUser"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-lg shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-lg shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-white">Create User</h3>
+              <h3 class="text-lg font-medium text-admin-fg">Create User</h3>
               <button
                 @click="closeCreateUser"
-                class="text-gray-400 hover:text-primary-400 transition-colors"
+                class="text-admin-subtle hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -330,59 +330,59 @@
             <form @submit.prevent="submitCreateUser" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-300">First name *</label>
+                  <label class="block text-sm font-medium text-admin-muted">First name *</label>
                   <input
                     v-model="createForm.firstName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                     placeholder="First name"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-300">Last name *</label>
+                  <label class="block text-sm font-medium text-admin-muted">Last name *</label>
                   <input
                     v-model="createForm.lastName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                     placeholder="Last name"
                   />
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Email *</label>
+                <label class="block text-sm font-medium text-admin-muted">Email *</label>
                 <input
                   v-model="createForm.email"
                   type="email"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="user@example.com"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Password *</label>
+                <label class="block text-sm font-medium text-admin-muted">Password *</label>
                 <input
                   v-model="createForm.password"
                   type="password"
                   required
                   minlength="8"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Min 8 chars, upper, lower, number"
                 />
-                <p class="mt-1 text-xs text-gray-400">At least 8 characters, one uppercase, one lowercase, one number</p>
+                <p class="mt-1 text-xs text-admin-subtle">At least 8 characters, one uppercase, one lowercase, one number</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Phone</label>
+                <label class="block text-sm font-medium text-admin-muted">Phone</label>
                 <input
                   v-model="createForm.phoneNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Optional"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Roles *</label>
+                <label class="block text-sm font-medium text-admin-muted">Roles *</label>
                 <div class="mt-2 flex flex-wrap gap-3">
                   <label
                     v-for="opt in roleOptions"
@@ -393,35 +393,35 @@
                       v-model="createForm.roles"
                       type="checkbox"
                       :value="opt.value"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
+                      class="rounded border-admin-line/20 bg-admin-field/5 text-admin-accent-fg focus:ring-primary-400"
                     />
-                    <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
+                    <span class="ml-2 text-sm text-admin-muted">{{ opt.label }}</span>
                   </label>
                 </div>
-                <p v-if="createError" class="mt-2 text-sm text-red-400">{{ createError }}</p>
+                <p v-if="createError" class="mt-2 text-sm text-admin-danger">{{ createError }}</p>
               </div>
 
               <!-- Organization: list filtered by role — realtor → real estate, banker → bank, supplier → supplier -->
               <div v-if="showOrganizationSelect" class="space-y-2">
-                <label class="block text-sm font-medium text-gray-300">Organization</label>
-                <p class="text-xs text-gray-400">
+                <label class="block text-sm font-medium text-admin-muted">Organization</label>
+                <p class="text-xs text-admin-subtle">
                   All organizations matching the selected role(s) are listed (any approval status), grouped by type.
                   Register a new one in
                   <RouterLink
                     to="/admin/organizations"
-                    class="text-white hover:underline"
+                    class="text-admin-fg hover:underline"
                     @click="closeCreateUser"
                   >
                     Organization management
                   </RouterLink>
                   , then reopen Add User to refresh.
                 </p>
-                <p v-if="organizationFilterSummary" class="text-xs text-white/90 font-medium">
+                <p v-if="organizationFilterSummary" class="text-xs text-admin-fg/90 font-medium">
                   {{ organizationFilterSummary }}
                 </p>
                 <select
                   v-model="createForm.organizationId"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="">None (optional)</option>
                   <template v-for="group in organizationsGroupedForCreate" :key="group.type">
@@ -440,14 +440,14 @@
                 <button
                   type="button"
                   @click="closeCreateUser"
-                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
+                  class="px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   :disabled="createSubmitting"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                  class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover disabled:opacity-50 disabled:bg-admin-field/50 transition-colors"
                 >
                   {{ createSubmitting ? 'Creating…' : 'Create User' }}
                 </button>
@@ -460,17 +460,17 @@
       <!-- Edit User Modal -->
       <div
         v-if="showEditDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="closeEditUser"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-lg shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-lg shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-white">Edit User</h3>
+              <h3 class="text-lg font-medium text-admin-fg">Edit User</h3>
               <button
                 type="button"
                 @click="closeEditUser"
-                class="text-gray-400 hover:text-primary-400 transition-colors"
+                class="text-admin-subtle hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -480,54 +480,54 @@
             <form @submit.prevent="submitEditUser" class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-300">First name *</label>
+                  <label class="block text-sm font-medium text-admin-muted">First name *</label>
                   <input
                     v-model="editForm.firstName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-300">Last name *</label>
+                  <label class="block text-sm font-medium text-admin-muted">Last name *</label>
                   <input
                     v-model="editForm.lastName"
                     type="text"
                     required
-                    class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                    class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   />
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Email *</label>
+                <label class="block text-sm font-medium text-admin-muted">Email *</label>
                 <input
                   v-model="editForm.email"
                   type="email"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Phone</label>
+                <label class="block text-sm font-medium text-admin-muted">Phone</label>
                 <input
                   v-model="editForm.phoneNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                   placeholder="Optional"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Status *</label>
+                <label class="block text-sm font-medium text-admin-muted">Status *</label>
                 <select
                   v-model="editForm.status"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option v-for="s in userStatusOptions" :key="s" :value="s">{{ s.replace(/_/g, ' ') }}</option>
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-300">Roles *</label>
+                <label class="block text-sm font-medium text-admin-muted">Roles *</label>
                 <div class="mt-2 flex flex-wrap gap-3">
                   <label
                     v-for="opt in roleOptions"
@@ -538,36 +538,36 @@
                       v-model="editForm.roles"
                       type="checkbox"
                       :value="opt.value"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
+                      class="rounded border-admin-line/20 bg-admin-field/5 text-admin-accent-fg focus:ring-primary-400"
                     />
-                    <span class="ml-2 text-sm text-gray-300">{{ opt.label }}</span>
+                    <span class="ml-2 text-sm text-admin-muted">{{ opt.label }}</span>
                   </label>
                 </div>
-                <p class="mt-2 text-xs text-gray-400">
+                <p class="mt-2 text-xs text-admin-subtle">
                   Saved roles apply to the account right away. JWT scopes for that user update after they sign in again
                   or when the client refreshes the access token.
                 </p>
-                <p v-if="editError" class="mt-2 text-sm text-red-400">{{ editError }}</p>
+                <p v-if="editError" class="mt-2 text-sm text-admin-danger">{{ editError }}</p>
               </div>
               <div v-if="showOrganizationSelectEdit" class="space-y-2">
-                <label class="block text-sm font-medium text-gray-300">Organization</label>
-                <p class="text-xs text-gray-400">
+                <label class="block text-sm font-medium text-admin-muted">Organization</label>
+                <p class="text-xs text-admin-subtle">
                   All organizations for the selected role(s) (any status). Manage orgs in
                   <RouterLink
                     to="/admin/organizations"
-                    class="text-white hover:underline"
+                    class="text-admin-fg hover:underline"
                     @click="closeEditUser"
                   >
                     Organization management
                   </RouterLink>
                   .
                 </p>
-                <p v-if="organizationFilterSummaryEdit" class="text-xs text-white/90 font-medium">
+                <p v-if="organizationFilterSummaryEdit" class="text-xs text-admin-fg/90 font-medium">
                   {{ organizationFilterSummaryEdit }}
                 </p>
                 <select
                   v-model="editForm.organizationId"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="">None (optional)</option>
                   <template v-for="group in organizationsGroupedForEdit" :key="`edit-${group.type}`">
@@ -586,14 +586,14 @@
                 <button
                   type="button"
                   @click="closeEditUser"
-                  class="px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
+                  class="px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   :disabled="editSubmitting"
-                  class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                  class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover disabled:opacity-50 disabled:bg-admin-field/50 transition-colors"
                 >
                   {{ editSubmitting ? 'Saving…' : 'Save changes' }}
                 </button>
@@ -606,16 +606,16 @@
       <!-- View User Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showViewDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-2xl shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-2xl shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-medium text-white">User Details</h3>
+              <h3 class="text-lg font-medium text-admin-fg">User Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-primary-400 transition-colors"
+                class="text-admin-subtle hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -624,37 +624,37 @@
             </div>
             <div v-if="viewingUser" class="space-y-4">
               <div class="flex items-center space-x-4 mb-4">
-                <div class="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center">
-                  <span class="text-white font-medium text-xl">
+                <div class="h-16 w-16 rounded-full bg-admin-field/20 flex items-center justify-center">
+                  <span class="text-admin-fg font-medium text-xl">
                     {{ getUserInitials(viewingUser) }}
                   </span>
                 </div>
                 <div>
-                  <h4 class="text-lg font-semibold text-white">
+                  <h4 class="text-lg font-semibold text-admin-fg">
                     {{ viewingUser.firstName }} {{ viewingUser.lastName }}
                   </h4>
-                  <p class="text-sm text-gray-400">{{ viewingUser.email }}</p>
+                  <p class="text-sm text-admin-subtle">{{ viewingUser.email }}</p>
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">First Name</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingUser.firstName || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">First Name</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingUser.firstName || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Last Name</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingUser.lastName || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Last Name</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingUser.lastName || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Email</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingUser.email || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Email</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingUser.email || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Phone</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingUser.phoneNumber || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Phone</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingUser.phoneNumber || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Roles</label>
+                  <label class="block text-sm font-medium text-admin-subtle">Roles</label>
                   <div class="mt-1 flex flex-wrap gap-1">
                     <span
                       v-for="role in viewingUser.roles"
@@ -663,49 +663,49 @@
                     >
                       {{ role }}
                     </span>
-                    <span v-if="!viewingUser.roles || viewingUser.roles.length === 0" class="text-sm text-gray-400">N/A</span>
+                    <span v-if="!viewingUser.roles || viewingUser.roles.length === 0" class="text-sm text-admin-subtle">N/A</span>
                   </div>
                 </div>
                 <div v-if="userExpectsOrganizationLink(viewingUser.roles)" class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-400">Linked organization</label>
+                  <label class="block text-sm font-medium text-admin-subtle">Linked organization</label>
                   <template v-for="cell in [linkedOrganizationCell(viewingUser)]" :key="`view-org-${viewingUser.id}`">
                     <div v-if="cell.kind === 'linked'" class="mt-1">
                       <RouterLink
                         :to="{ name: 'OrganizationDetail', params: { id: cell.org.id } }"
-                        class="text-sm font-medium text-white hover:text-primary-400 hover:underline"
+                        class="text-sm font-medium text-admin-fg hover:text-primary-400 hover:underline"
                       >
                         {{ cell.org.name || 'Organization' }}
                       </RouterLink>
-                      <p v-if="cell.typeLabel" class="text-xs text-gray-400 mt-0.5">{{ cell.typeLabel }}</p>
+                      <p v-if="cell.typeLabel" class="text-xs text-admin-subtle mt-0.5">{{ cell.typeLabel }}</p>
                     </div>
                     <p v-else-if="cell.kind === 'missing'" class="mt-1 text-sm text-amber-200/90">Not linked</p>
                   </template>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Status</label>
+                  <label class="block text-sm font-medium text-admin-subtle">Status</label>
                   <span
                     :class="[
                       'mt-1 inline-block px-2 py-1 text-xs font-medium rounded',
-                      isUserActive(viewingUser) ? 'bg-green-500/30 text-green-200' : 'bg-red-500/30 text-red-200'
+                      isUserActive(viewingUser) ? 'bg-green-500/30 text-admin-ok' : 'bg-red-500/30 text-admin-danger'
                     ]"
                   >
                     {{ getUserStatusText(viewingUser) }}
                   </span>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Enabled</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingUser.enabled !== false ? 'Yes' : 'No' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Enabled</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingUser.enabled !== false ? 'Yes' : 'No' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Joined</label>
-                  <p class="mt-1 text-sm text-white">{{ formatDate(viewingUser.createdAt) }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Joined</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ formatDate(viewingUser.createdAt) }}</p>
                 </div>
               </div>
             </div>
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
+                class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors"
               >
                 Close
               </button>

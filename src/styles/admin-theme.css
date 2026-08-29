@@ -1,0 +1,114 @@
+/*
+ * Admin portal theme tokens.
+ *
+ * The admin portal is themeable independently of the (always-dark) public
+ * site. Every admin surface/text/border colour is driven by a CSS variable
+ * defined here on `.admin-shell`; the Tailwind `admin-*` colours resolve
+ * `rgb(var(--admin-*) / <alpha-value>)`, so one attribute flip on the shell
+ * root repaints the whole portal and opacity modifiers keep working.
+ *
+ * Values are space-separated RGB channels (for `rgb(... / a)`).
+ *
+ * Dark is the default and reproduces the portal's previous hard-coded look
+ * exactly (violet-950 canvas, zinc-900 surfaces, white text). Light is the
+ * brand purple theme: a soft violet canvas, white cards, violet-950 text and
+ * a violet-600 accent.
+ */
+
+.admin-shell {
+  /* ---- Dark (default) ---- */
+  --admin-bg: 46 16 101;          /* violet-950  #2e1065  page canvas       */
+  --admin-surface: 24 24 27;      /* zinc-900    #18181b  cards/sidebar/bar */
+  --admin-raised: 39 39 42;       /* zinc-800    #27272a  nested raised     */
+  --admin-sunken: 9 9 11;         /* zinc-950    #09090b  sunken panels     */
+  --admin-fg: 255 255 255;        /* white               primary text      */
+  --admin-muted: 209 213 219;     /* gray-300    #d1d5db  secondary text    */
+  --admin-subtle: 156 163 175;    /* gray-400    #9ca3af  labels / icons    */
+  --admin-faint: 107 114 128;     /* gray-500    #6b7280  faintest text     */
+  --admin-line: 255 255 255;      /* white               borders (low a)   */
+  --admin-field: 255 255 255;     /* white               input bg (low a)  */
+  --admin-nav: 46 16 101;         /* violet-950          nav tints/scrim    */
+  --admin-accent: 255 255 255;    /* white               primary button    */
+  --admin-accent-fg: 0 0 0;       /* black               button label      */
+  --admin-accent-hover: 237 233 254; /* primary-100      button hover       */
+  --admin-ok: 187 247 208;        /* green-200           positive text      */
+  --admin-danger: 254 202 202;    /* red-200             negative text      */
+
+  background-color: rgb(var(--admin-bg));
+  color: rgb(var(--admin-fg));
+}
+
+.admin-shell[data-theme='light'] {
+  /* ---- Light (brand purple) ---- */
+  --admin-bg: 245 243 255;        /* violet-50   #f5f3ff  soft purple canvas */
+  --admin-surface: 255 255 255;   /* white               cards/sidebar/bar   */
+  --admin-raised: 237 233 254;    /* violet-100  #ede9fe  nested raised       */
+  --admin-sunken: 243 240 255;    /* violet-50+  #f3f0ff  sunken panels       */
+  --admin-fg: 46 16 101;          /* violet-950  #2e1065  primary text        */
+  --admin-muted: 91 33 182;       /* violet-800  #5b21b6  secondary text      */
+  --admin-subtle: 124 58 237;     /* violet-600  #7c3aed  labels / icons      */
+  --admin-faint: 167 139 250;     /* violet-400  #a78bfa  faintest text       */
+  --admin-line: 76 29 149;        /* violet-900  #4c1d95  borders (low a)     */
+  --admin-field: 139 92 246;      /* violet-500  #8b5cf6  input tint (low a)  */
+  --admin-nav: 124 58 237;        /* violet-600  #7c3aed  nav tints/scrim     */
+  --admin-accent: 124 58 237;     /* violet-600  #7c3aed  primary button      */
+  --admin-accent-fg: 255 255 255; /* white               button label        */
+  --admin-accent-hover: 109 40 217; /* violet-700 #6d28d9 button hover        */
+  --admin-ok: 21 128 61;          /* green-700   #15803d  positive text       */
+  --admin-danger: 185 28 28;      /* red-700     #b91c1c  negative text       */
+}
+
+/*
+ * The global `#app main` / `#app > div` rules in style.css force the public
+ * dark canvas with id-level specificity, which would otherwise override the
+ * admin page-background utility in light mode. Re-assert the admin canvas at
+ * higher specificity so the token wins inside the portal.
+ */
+#app .admin-shell,
+#app .admin-shell main {
+  background-color: rgb(var(--admin-bg));
+  color: rgb(var(--admin-fg));
+}
+
+/* Native controls follow the active admin theme (dropdown option lists etc). */
+.admin-shell {
+  color-scheme: dark;
+}
+.admin-shell[data-theme='light'] {
+  color-scheme: light;
+}
+.admin-shell[data-theme='light'] select,
+.admin-shell[data-theme='light'] option {
+  background-color: #fff;
+  color: #2e1065;
+}
+
+/*
+ * The brand wordmark PNG is a light/transparent mark made to sit on the dark
+ * sidebar. On the white light-theme sidebar it would vanish, so recolour its
+ * opaque pixels to brand violet-950 while preserving transparency.
+ */
+.admin-shell[data-theme='light'] .admin-wordmark {
+  filter: brightness(0) saturate(100%) invert(9%) sepia(64%) saturate(4476%)
+    hue-rotate(264deg) brightness(80%) contrast(105%);
+}
+
+/*
+ * Accent status/role/type badges use a translucent -500/30 fill with light
+ * -100/-200/-300 text, which is legible on the dark shell but disappears on
+ * the white light-theme surfaces. The fills stay (they read on both themes);
+ * only the text is darkened to the readable -700 shade under light. Scoped
+ * high enough to win over the Tailwind text utilities, and only in light mode
+ * so the dark portal is untouched.
+ */
+.admin-shell[data-theme='light'] .text-blue-200,
+.admin-shell[data-theme='light'] .text-blue-300 { color: #1d4ed8; }   /* blue-700   */
+.admin-shell[data-theme='light'] .text-amber-100,
+.admin-shell[data-theme='light'] .text-amber-200 { color: #b45309; }  /* amber-700  */
+.admin-shell[data-theme='light'] .text-slate-200 { color: #334155; }  /* slate-700  */
+.admin-shell[data-theme='light'] .text-orange-200,
+.admin-shell[data-theme='light'] .text-orange-300 { color: #c2410c; } /* orange-700 */
+.admin-shell[data-theme='light'] .text-purple-200,
+.admin-shell[data-theme='light'] .text-purple-300 { color: #7e22ce; } /* purple-700 */
+.admin-shell[data-theme='light'] .text-cyan-300 { color: #0e7490; }   /* cyan-700   */
+.admin-shell[data-theme='light'] .text-emerald-300 { color: #047857; }/* emerald-700 */

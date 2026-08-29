@@ -2,99 +2,99 @@
   <AdminLayout>
     <div class="space-y-6">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.exhibitionInterests.title') }}</h1>
-        <p class="mt-2 text-sm text-gray-400">{{ $t('admin.exhibitionInterests.subtitleUnified') }}</p>
+        <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.exhibitionInterests.title') }}</h1>
+        <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.exhibitionInterests.subtitleUnified') }}</p>
         <div
           v-if="!loading && !error"
-          class="mt-4 rounded-lg border border-white/10 bg-zinc-950/60 px-4 py-3 text-sm"
+          class="mt-4 rounded-lg border border-admin-line/10 bg-admin-sunken/60 px-4 py-3 text-sm"
         >
-          <p class="text-white font-medium">
+          <p class="text-admin-fg font-medium">
             {{ $t('admin.exhibitionInterests.pendingSponsorshipCount', { count: sponsorshipApps.length }) }}
           </p>
-          <p class="mt-1 text-gray-400">{{ $t('admin.exhibitionInterests.howToSeeVerification') }}</p>
+          <p class="mt-1 text-admin-subtle">{{ $t('admin.exhibitionInterests.howToSeeVerification') }}</p>
         </div>
       </div>
 
-      <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15" />
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15" />
         </div>
 
-        <div v-else-if="error" class="px-6 py-8 text-center text-red-300 text-sm">
+        <div v-else-if="error" class="px-6 py-8 text-center text-admin-danger text-sm">
           {{ error }}
         </div>
 
-        <div v-else-if="!rows.length && !orphanSponsorshipApps.length" class="px-6 py-12 text-center text-gray-400 text-sm">
+        <div v-else-if="!rows.length && !orphanSponsorshipApps.length" class="px-6 py-12 text-center text-admin-subtle text-sm">
           {{ $t('admin.exhibitionInterests.empty') }}
         </div>
 
         <div v-else class="overflow-x-auto">
-            <table class="w-full min-w-[72rem] divide-y divide-white/10 rtable">
-            <thead class="bg-zinc-800">
+            <table class="w-full min-w-[72rem] divide-y divide-admin-line/10 rtable">
+            <thead class="bg-admin-raised">
               <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colDate') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colContact') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colInterest') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colPackage') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colOrganization') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colMessage') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colSponsorshipStatus') }}
                 </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colContactToVerify') }}
                 </th>
-                <th class="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <th class="px-4 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colActions') }}
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/10">
+            <tbody class="divide-y divide-admin-line/10">
               <!-- Exhibition registrations (same list as before), augmented with marketplace sponsorship review -->
               <tr
                 v-for="row in rows"
                 :key="`ex-${row.id}`"
-                class="hover:bg-violet-950/5 transition-colors align-top"
+                class="hover:bg-admin-nav/5 transition-colors align-top"
               >
-                <td class="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
+                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap">
                   {{ formatDate(row.createdAt) }}
                 </td>
                 <td class="px-4 py-3 text-sm">
-                  <div class="text-white font-medium">{{ row.email }}</div>
-                  <div v-if="row.phoneNumber" class="text-gray-400 text-xs mt-0.5">{{ row.phoneNumber }}</div>
-                  <div v-if="row.company" class="text-gray-500 text-xs mt-0.5">{{ row.company }}</div>
+                  <div class="text-admin-fg font-medium">{{ row.email }}</div>
+                  <div v-if="row.phoneNumber" class="text-admin-subtle text-xs mt-0.5">{{ row.phoneNumber }}</div>
+                  <div v-if="row.company" class="text-admin-faint text-xs mt-0.5">{{ row.company }}</div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-200">
+                <td class="px-4 py-3 text-sm text-admin-muted">
                   <div class="capitalize">{{ row.interestType }}</div>
-                  <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-gray-400">
+                  <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-admin-subtle">
                     <div>{{ formatEnum(row.partnerRole) }}</div>
                     <div>{{ formatEnum(row.visibilityScope) }} · {{ formatEnum(row.contributionMode) }}</div>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-300">
+                <td class="px-4 py-3 text-sm text-admin-muted">
                   {{ row.sponsorshipPackageName || '—' }}
                 </td>
                 <td class="px-4 py-3 text-sm">
-                  <div class="text-white">{{ row.organizationName || '—' }}</div>
-                  <div class="text-xs text-gray-500 mt-0.5">
+                  <div class="text-admin-fg">{{ row.organizationName || '—' }}</div>
+                  <div class="text-xs text-admin-faint mt-0.5">
                     <span v-if="row.organizationType">{{ row.organizationType }}</span>
                     <span v-if="row.organizationType && row.organizationStatus"> · </span>
-                    <span v-if="row.organizationStatus" class="text-gray-400">{{ row.organizationStatus }}</span>
+                    <span v-if="row.organizationStatus" class="text-admin-subtle">{{ row.organizationStatus }}</span>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-400 max-w-[12rem]">
+                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[12rem]">
                   <span class="line-clamp-2" :title="row.message || ''">{{ row.message || '—' }}</span>
                 </td>
                 <td class="px-4 py-3 text-sm">
@@ -108,7 +108,7 @@
                   >
                     <span
                       v-if="row.contactVerifiedAt"
-                      class="inline-flex px-2 py-0.5 rounded bg-green-500/30 text-green-200"
+                      class="inline-flex px-2 py-0.5 rounded bg-green-500/30 text-admin-ok"
                     >
                       {{ $t('admin.exhibitionInterests.badgeContactVerified') }}
                     </span>
@@ -119,31 +119,31 @@
                       {{ $t('admin.exhibitionInterests.badgeContactPending') }}
                     </span>
                     <span
-                      class="inline-flex px-2 py-0.5 rounded bg-zinc-700 text-gray-200 font-mono text-[10px] uppercase tracking-wide"
+                      class="inline-flex px-2 py-0.5 rounded bg-zinc-700 text-admin-muted font-mono text-[10px] uppercase tracking-wide"
                     >
                       {{ row.organizationStatus }}
                     </span>
                   </div>
-                  <span v-else class="text-gray-500 text-xs leading-snug">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
+                  <span v-else class="text-admin-faint text-xs leading-snug">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-400 max-w-[11rem]">
+                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]">
                   <SponsorshipContactCell
                     v-if="sponsorshipAppForOrg(row.organizationId)"
                     :app="sponsorshipAppForOrg(row.organizationId)"
                   />
-                  <div v-else-if="showExhibitionPendingOrgReview(row)" class="text-xs text-gray-300 space-y-1">
-                    <p class="text-white">{{ row.email }}</p>
-                    <p v-if="row.phoneNumber" class="text-gray-500">{{ row.phoneNumber }}</p>
-                    <p class="text-gray-500 leading-snug">{{ $t('admin.exhibitionInterests.exhibitionLeadVerifyContactHint') }}</p>
+                  <div v-else-if="showExhibitionPendingOrgReview(row)" class="text-xs text-admin-muted space-y-1">
+                    <p class="text-admin-fg">{{ row.email }}</p>
+                    <p v-if="row.phoneNumber" class="text-admin-faint">{{ row.phoneNumber }}</p>
+                    <p class="text-admin-faint leading-snug">{{ $t('admin.exhibitionInterests.exhibitionLeadVerifyContactHint') }}</p>
                   </div>
-                  <span v-else class="text-gray-500 text-xs">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
+                  <span v-else class="text-admin-faint text-xs">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
                 </td>
                 <td class="px-4 py-3 text-sm text-right">
                   <div class="flex flex-col items-end gap-2">
                     <router-link
                       v-if="row.organizationId"
                       :to="`/organizations/${row.organizationId}`"
-                      class="text-white hover:text-primary-400 text-xs underline-offset-2 hover:underline"
+                      class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -160,7 +160,7 @@
                       <button
                         type="button"
                         :disabled="exhibitionVerifyDisabled(row) || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="openVerifyExhibitionContact(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyRegistrantContact') }}
@@ -168,7 +168,7 @@
                       <button
                         type="button"
                         :disabled="!row.contactVerifiedAt || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="approveExhibitionOrg(row)"
                       >
                         {{ $t('admin.exhibitionInterests.verifyApproveOrganization') }}
@@ -176,7 +176,7 @@
                       <button
                         type="button"
                         :disabled="exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-400/40 text-red-200 hover:bg-red-500/10 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-400/40 text-admin-danger hover:bg-red-500/10 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                         @click="openRejectExhibitionOrg(row)"
                       >
                         {{ $t('admin.exhibitionInterests.rejectOrganization') }}
@@ -190,24 +190,24 @@
               <tr
                 v-for="app in orphanSponsorshipApps"
                 :key="`mkt-${app.id}`"
-                class="hover:bg-violet-950/5 align-top bg-zinc-950/40"
+                class="hover:bg-admin-nav/5 align-top bg-admin-sunken/40"
               >
-                <td class="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
+                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap">
                   {{ formatDate(app.createdAt) }}
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-500 text-xs" colspan="3">
+                <td class="px-4 py-3 text-sm text-admin-faint text-xs" colspan="3">
                   <span class="text-amber-200/90 font-medium">{{ $t('admin.exhibitionInterests.rowMarketplaceOnly') }}</span>
-                  <span class="block mt-1 text-gray-500">{{ $t('admin.exhibitionInterests.rowMarketplaceOnlyHint') }}</span>
+                  <span class="block mt-1 text-admin-faint">{{ $t('admin.exhibitionInterests.rowMarketplaceOnlyHint') }}</span>
                 </td>
                 <td class="px-4 py-3 text-sm">
-                  <div class="text-white font-medium">{{ app.organizationName }}</div>
+                  <div class="text-admin-fg font-medium">{{ app.organizationName }}</div>
                   <div v-if="app.organizationStatus" class="text-xs text-amber-200/90 mt-0.5">{{ app.organizationStatus }}</div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-500">—</td>
+                <td class="px-4 py-3 text-sm text-admin-faint">—</td>
                 <td class="px-4 py-3 text-sm">
                   <SponsorshipReviewCells :app="app" />
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-400 max-w-[11rem]">
+                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]">
                   <SponsorshipContactCell :app="app" />
                 </td>
                 <td class="px-4 py-3 text-sm text-right">
@@ -215,7 +215,7 @@
                     <router-link
                       v-if="app.organizationId"
                       :to="`/organizations/${app.organizationId}`"
-                      class="text-white hover:text-primary-400 text-xs underline-offset-2 hover:underline"
+                      class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
                     >
                       {{ $t('admin.exhibitionInterests.viewOrg') }}
                     </router-link>
@@ -236,16 +236,16 @@
 
         <div
           v-if="rows.length > 0"
-          class="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t border-white/10 bg-zinc-950/50"
+          class="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t border-admin-line/10 bg-admin-sunken/50"
         >
-          <p class="text-xs text-gray-500">
+          <p class="text-xs text-admin-faint">
             {{ $t('admin.exhibitionInterests.pageOf', { current: page + 1, total: Math.max(1, totalPages) }) }}
           </p>
           <div class="flex items-center gap-2">
             <button
               type="button"
               :disabled="page <= 0 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goPrev"
             >
               {{ $t('common.previous') }}
@@ -253,7 +253,7 @@
             <button
               type="button"
               :disabled="page >= totalPages - 1 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
               @click="goNext"
             >
               {{ $t('common.next') }}
@@ -276,29 +276,29 @@
     <!-- Reject organization (exhibition lead — PENDING_APPROVAL / SPONSORSHIP_PENDING without pending app row) -->
     <div
       v-if="showRejectExhibitionOrgDialog"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-admin-nav/70"
       @click.self="showRejectExhibitionOrgDialog = false"
     >
-      <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
-        <h3 class="text-lg font-medium text-white mb-1">{{ $t('admin.exhibitionInterests.rejectExhibitionOrganization') }}</h3>
-        <p class="text-sm text-gray-400 mb-4">{{ $t('admin.exhibitionInterests.rejectExhibitionOrganizationHint') }}</p>
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg max-w-md w-full p-6 shadow-xl">
+        <h3 class="text-lg font-medium text-admin-fg mb-1">{{ $t('admin.exhibitionInterests.rejectExhibitionOrganization') }}</h3>
+        <p class="text-sm text-admin-subtle mb-4">{{ $t('admin.exhibitionInterests.rejectExhibitionOrganizationHint') }}</p>
         <textarea
           v-model="rejectExhibitionOrgReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+          class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md border border-white/20 text-gray-300 hover:bg-white/5"
+            class="px-4 py-2 text-sm rounded-md border border-admin-line/20 text-admin-muted hover:bg-admin-field/5"
             @click="showRejectExhibitionOrgDialog = false"
           >
             {{ $t('admin.cancel') }}
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-primary-100"
+            class="px-4 py-2 text-sm rounded-md bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover"
             @click="confirmRejectExhibitionOrg"
           >
             {{ $t('admin.reject') }}
@@ -310,28 +310,28 @@
     <!-- Reject marketplace sponsorship -->
     <div
       v-if="showRejectSponsorshipDialog"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-admin-nav/70"
       @click.self="showRejectSponsorshipDialog = false"
     >
-      <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
-        <h3 class="text-lg font-medium text-white mb-4">{{ $t('admin.rejectSponsorshipApplication') }}</h3>
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg max-w-md w-full p-6 shadow-xl">
+        <h3 class="text-lg font-medium text-admin-fg mb-4">{{ $t('admin.rejectSponsorshipApplication') }}</h3>
         <textarea
           v-model="rejectSponsorshipReason"
           rows="3"
-          class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+          class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           :placeholder="$t('admin.placeholderRejectionReason')"
         />
         <div class="mt-4 flex justify-end gap-2">
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md border border-white/20 text-gray-300 hover:bg-white/5"
+            class="px-4 py-2 text-sm rounded-md border border-admin-line/20 text-admin-muted hover:bg-admin-field/5"
             @click="showRejectSponsorshipDialog = false"
           >
             {{ $t('admin.cancel') }}
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-primary-100"
+            class="px-4 py-2 text-sm rounded-md bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover"
             @click="confirmRejectSponsorship"
           >
             {{ $t('admin.reject') }}

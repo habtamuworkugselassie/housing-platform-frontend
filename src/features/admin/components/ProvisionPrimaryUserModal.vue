@@ -1,55 +1,55 @@
 <template>
   <div
     v-if="modelValue"
-    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-violet-950/70"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-admin-nav/70"
     @click.self="$emit('update:modelValue', false)"
   >
-    <div class="bg-zinc-900 border border-white/10 rounded-lg max-w-md w-full p-6 shadow-xl">
-      <h3 class="text-lg font-medium text-white mb-1">{{ title }}</h3>
-      <p class="text-sm text-gray-400 mb-4">
+    <div class="bg-admin-surface border border-admin-line/10 rounded-lg max-w-md w-full p-6 shadow-xl">
+      <h3 class="text-lg font-medium text-admin-fg mb-1">{{ title }}</h3>
+      <p class="text-sm text-admin-subtle mb-4">
         {{ $t('admin.exhibitionInterests.verifyContactDialogEmailHint', { email: email || '—' }) }}
       </p>
       <div class="space-y-3">
         <div>
-          <label class="block text-xs text-gray-400 mb-1">{{ $t('admin.exhibitionInterests.verifyContactFirstName') }}</label>
+          <label class="block text-xs text-admin-subtle mb-1">{{ $t('admin.exhibitionInterests.verifyContactFirstName') }}</label>
           <input
             v-model="form.firstName"
             type="text"
             autocomplete="given-name"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">{{ $t('admin.exhibitionInterests.verifyContactLastName') }}</label>
+          <label class="block text-xs text-admin-subtle mb-1">{{ $t('admin.exhibitionInterests.verifyContactLastName') }}</label>
           <input
             v-model="form.lastName"
             type="text"
             autocomplete="family-name"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">{{ $t('admin.exhibitionInterests.verifyContactDialogPassword') }}</label>
+          <label class="block text-xs text-admin-subtle mb-1">{{ $t('admin.exhibitionInterests.verifyContactDialogPassword') }}</label>
           <input
             v-model="form.password"
             type="password"
             autocomplete="new-password"
-            class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
           />
-          <p class="text-xs text-gray-500 mt-1">{{ $t('admin.exhibitionInterests.verifyContactDialogPasswordHint') }}</p>
+          <p class="text-xs text-admin-faint mt-1">{{ $t('admin.exhibitionInterests.verifyContactDialogPasswordHint') }}</p>
         </div>
       </div>
       <div class="mt-4 flex justify-end gap-2">
         <button
           type="button"
-          class="px-4 py-2 text-sm rounded-md border border-white/20 text-gray-300 hover:bg-white/5"
+          class="px-4 py-2 text-sm rounded-md border border-admin-line/20 text-admin-muted hover:bg-admin-field/5"
           @click="$emit('update:modelValue', false)"
         >
           {{ $t('admin.cancel') }}
         </button>
         <button
           type="button"
-          class="px-4 py-2 text-sm rounded-md bg-white text-black hover:bg-primary-100 disabled:opacity-50"
+          class="px-4 py-2 text-sm rounded-md bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50"
           :disabled="!valid || busy"
           @click="submit"
         >
