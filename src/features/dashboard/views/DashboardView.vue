@@ -1480,7 +1480,7 @@
       </div>
 
       <!-- Admin Quick Access Card -->
-      <div v-if="authStore.hasRole('ADMIN')" class="mdc-card mb-6">
+      <div v-if="authStore.isAdmin" class="mdc-card mb-6">
         <div class="flex items-center mb-4">
           <span class="material-icons text-red-600 mr-2">admin_panel_settings</span>
           <h2 class="mdc-typography--headline6 m-0">{{ $t('admin.portalTitle') }}</h2>

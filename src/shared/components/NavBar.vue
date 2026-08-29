@@ -152,14 +152,14 @@
                 Messages
               </router-link>
               <router-link
-                v-if="authStore.hasRole('ADMIN')"
+                v-if="authStore.isAdmin"
                 to="/admin"
                 class="px-3 py-2 text-sm font-medium text-black bg-white rounded-md hover:bg-violet-950"
               >
                 {{ $t('nav.admin') }}
               </router-link>
               <router-link
-                v-if="authStore.hasRole('ADMIN')"
+                v-if="authStore.isAdmin"
                 to="/sponsorships"
                 class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
               >
@@ -194,7 +194,7 @@
                 {{ $t('nav.supplier') }}
               </router-link>
               <router-link
-                :to="authStore.hasRole('ADMIN') ? '/admin' : '/dashboard'"
+                :to="authStore.isAdmin ? '/admin' : '/dashboard'"
                 class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-black"
               >
                 {{ $t('nav.dashboard') }}
@@ -274,7 +274,7 @@
               Messages
             </router-link>
             <router-link
-              v-if="authStore.hasRole('ADMIN')"
+              v-if="authStore.isAdmin"
               to="/admin"
               @click="mobileMenuOpen = false"
               class="block px-3 py-2 text-base font-medium text-black bg-white hover:bg-violet-950 rounded-md"
@@ -282,7 +282,7 @@
               {{ $t('nav.adminPortal') }}
             </router-link>
             <router-link
-              v-if="authStore.hasRole('ADMIN')"
+              v-if="authStore.isAdmin"
               to="/sponsorships"
               @click="mobileMenuOpen = false"
               class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
@@ -322,7 +322,7 @@
               {{ $t('nav.supplier') }}
             </router-link>
             <router-link
-              :to="authStore.hasRole('ADMIN') ? '/admin' : '/dashboard'"
+              :to="authStore.isAdmin ? '/admin' : '/dashboard'"
               @click="mobileMenuOpen = false"
               class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-black hover:bg-violet-950/20 rounded-md"
             >

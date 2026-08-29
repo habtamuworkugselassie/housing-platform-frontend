@@ -31,6 +31,13 @@ export const useAuthStore = defineStore('auth', () => {
     return user.value?.scopes?.includes(scope) || false
   }
 
+  /**
+   * SUPER_ADMIN is a superset of ADMIN: the backend mints the `admin` scope for it
+   * (AuthenticationServiceImpl.mapRoleToScopes) but the role array carries only
+   * SUPER_ADMIN, so checking hasRole('ADMIN') alone locks super admins out of the UI.
+   */
+  const isAdmin = computed(() => hasRole('ADMIN') || hasRole('SUPER_ADMIN'))
+
   const hydrateUser = async (): Promise<void> => {
     if (!token.value) return
     try {
@@ -157,6 +164,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     hasRole,
     hasScope,
+    isAdmin,
     login,
     register,
     logout,

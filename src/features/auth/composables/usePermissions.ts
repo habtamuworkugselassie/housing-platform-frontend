@@ -13,7 +13,7 @@ export function usePermissions() {
   const isBanker = computed(() => authStore.hasRole('BANKER'))
   const isBuyer = computed(() => authStore.hasRole('BUYER'))
   const isSupplier = computed(() => authStore.hasRole('SUPPLIER'))
-  const isAdmin = computed(() => authStore.hasRole('ADMIN'))
+  const isAdmin = computed(() => authStore.isAdmin)
 
   const canAccessPropertyManagement = computed(() => isRealtor.value)
   const canAccessBanking = computed(() => isBanker.value)
