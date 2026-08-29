@@ -9,7 +9,7 @@
         v-model="form.email"
         type="email"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
         :placeholder="$t('exhibition.registerInterest.emailPlaceholder')"
       />
     </div>
@@ -31,7 +31,7 @@
         :id="`${fieldIdPrefix}-interest-type`"
         v-model="form.interestType"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectType') }}</option>
         <option value="exhibitor">{{ $t('exhibition.registerInterest.asExhibitor') }}</option>
@@ -93,7 +93,7 @@
         :id="`${fieldIdPrefix}-package`"
         v-model="form.sponsorshipId"
         :required="form.interestType === 'exhibitor'"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
       >
         <option value="">{{ form.interestType === 'partner' ? $t('exhibition.registerInterest.customPartnership') : $t('exhibition.registerInterest.selectSponsorshipPackage') }}</option>
         <option v-for="pkg in interestPackages" :key="pkg.id" :value="pkg.id">{{ pkg.name }}</option>
@@ -116,7 +116,7 @@
         :id="`${fieldIdPrefix}-org-type`"
         v-model="form.organizationType"
         required
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-black"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
       >
         <option value="" disabled>{{ $t('exhibition.registerInterest.selectOrganizationType') }}</option>
         <option v-for="opt in organizationTypeOptions" :key="opt.value" :value="opt.value">
@@ -132,7 +132,7 @@
         :id="`${fieldIdPrefix}-company`"
         v-model="form.company"
         type="text"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
         :placeholder="$t('exhibition.registerInterest.companyPlaceholder')"
       />
     </div>
@@ -144,7 +144,7 @@
         :id="`${fieldIdPrefix}-message`"
         v-model="form.message"
         rows="3"
-        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-black focus:border-black resize-none"
+        class="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-primary-400 resize-none"
         :placeholder="$t('exhibition.registerInterest.messagePlaceholder')"
       />
     </div>

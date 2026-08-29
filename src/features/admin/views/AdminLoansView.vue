@@ -12,7 +12,7 @@
             <label class="block text-sm font-medium text-gray-300">Status</label>
             <select
               v-model="filters.status"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-black focus:border-black"
+              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -23,7 +23,7 @@
           <div class="flex items-end">
             <button
               @click="loadLoans"
-              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
+              class="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
             >
               Apply Filters
             </button>
@@ -33,7 +33,7 @@
 
       <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
         </div>
 
         <div v-else>
@@ -76,7 +76,7 @@
                 <td class="px-6 py-4 text-right text-sm font-medium">
                   <button
                     @click="viewLoan(loan)"
-                    class="text-white hover:text-black transition-colors"
+                    class="text-white hover:text-primary-400 transition-colors"
                   >
                     View
                   </button>
@@ -99,7 +99,7 @@
               <h3 class="text-lg font-medium text-white">Loan Application Details</h3>
               <button
                 @click="showViewDialog = false"
-                class="text-gray-400 hover:text-black transition-colors"
+                class="text-gray-400 hover:text-primary-400 transition-colors"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -152,7 +152,7 @@
             <div class="mt-6 flex justify-end">
               <button
                 @click="showViewDialog = false"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 transition-colors"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors"
               >
                 Close
               </button>
@@ -191,7 +191,7 @@ const loadLoans = async () => {
 
 const getStatusClass = (status) => {
   const classes = {
-    PENDING: 'bg-violet-950/30 text-black',
+    PENDING: 'bg-violet-950/30 text-white',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200'
   }

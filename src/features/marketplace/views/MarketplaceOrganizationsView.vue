@@ -33,7 +33,7 @@
               <select
                 id="marketplace-supplier-subcat"
                 v-model="selectedSubcategoryId"
-                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/60"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60"
                 @change="onSubcategoryFilterChange"
               >
                 <option value="">{{ $t('marketplace.allSubcategories') }}</option>
@@ -49,7 +49,7 @@
                 v-model.trim="searchQuery"
                 type="search"
                 :placeholder="$t('home.searchCompanies')"
-                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/60"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60"
               />
             </div>
           </div>
@@ -60,7 +60,7 @@
       </div>
 
       <div v-if="loading" class="flex justify-center py-16">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-black" />
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white/15" />
       </div>
 
       <div v-else-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-200">
@@ -82,7 +82,7 @@
           :class="[
             'group relative overflow-hidden rounded-2xl bg-zinc-900/90 transition-colors',
             orgCardBorderClass(org),
-            'hover:border-black hover:bg-violet-950/20'
+            'hover:border-primary-400 hover:bg-violet-950/20'
           ]"
         >
           <div :class="orgCardTopBarClass(org)" />
@@ -131,7 +131,7 @@
                   <span
                     v-for="sc in org.supplierSubcategories"
                     :key="sc.id"
-                    class="inline-flex rounded-full border border-black/40 bg-violet-950/15 px-2 py-0.5 text-[10px] font-medium text-white"
+                    class="inline-flex rounded-full border border-white/15 bg-violet-950/15 px-2 py-0.5 text-[10px] font-medium text-white"
                   >
                     {{ sc.name }}
                   </span>
@@ -194,7 +194,7 @@
           type="button"
           @click="goToPreviousPage"
           :disabled="currentPage <= 1"
-          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-black hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-primary-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -203,7 +203,7 @@
           type="button"
           @click="goToNextPage"
           :disabled="currentPage >= totalPages"
-          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-black hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-3 py-1.5 rounded-md border border-white/20 text-sm text-gray-200 hover:border-primary-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -392,7 +392,7 @@ function hasOrgSocial(org) {
 
 function orgCardBorderClass(org) {
   if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
-    return 'border-2 border-black'
+    return 'border-2 border-white/15'
   }
   if (org?.isSponsored) {
     return 'border border-white/10 ring-1 ring-white/15'

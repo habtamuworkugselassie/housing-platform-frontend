@@ -17,7 +17,7 @@
         <div
           v-for="(item, index) in sectorConfigs"
           :key="index"
-          class="group relative h-44 sm:h-48 overflow-hidden rounded-xl border border-white/10 hover:border-black transition-all duration-300"
+          class="group relative h-44 sm:h-48 overflow-hidden rounded-xl border border-white/10 hover:border-primary-400 transition-all duration-300"
         >
           <!-- Fallback gradient (shows when image fails or is loading) -->
           <div class="absolute inset-0 z-0 bg-gradient-to-br from-zinc-700 to-zinc-900" aria-hidden="true" />

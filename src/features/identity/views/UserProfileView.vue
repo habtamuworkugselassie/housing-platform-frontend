@@ -13,7 +13,7 @@
       <div class="bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl shadow-black/20">
         <!-- Avatar Section -->
         <div class="p-6 sm:p-8 flex items-center gap-6 border-b border-white/10">
-          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-violet-950 text-black flex items-center justify-center font-bold text-3xl shrink-0 overflow-hidden group border border-white/10">
+          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-violet-950 text-white flex items-center justify-center font-bold text-3xl shrink-0 overflow-hidden group border border-white/10">
             <template v-if="authStore.user?.profileImageUrl">
               <img :src="mediaUrl(authStore.user.profileImageUrl)" alt="Profile" class="w-full h-full object-cover" />
             </template>
@@ -33,7 +33,7 @@
             <h2 class="text-xl font-semibold text-white">{{ formData.firstName }} {{ formData.lastName }}</h2>
             <p class="text-gray-400">{{ formData.email }}</p>
             <div class="mt-2 text-xs divide-x divide-white/20">
-              <span v-for="(role, idx) in userRoles" :key="idx" class="px-2 first:pl-0 font-medium text-black uppercase tracking-wider">
+              <span v-for="(role, idx) in userRoles" :key="idx" class="px-2 first:pl-0 font-medium text-white uppercase tracking-wider">
                 {{ role }}
               </span>
             </div>
@@ -57,7 +57,7 @@
                 v-model="formData.firstName"
                 type="text"
                 required
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary-400 sm:text-sm shadow-sm transition-shadow"
               />
             </div>
             <div>
@@ -66,7 +66,7 @@
                 v-model="formData.lastName"
                 type="text"
                 required
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary-400 sm:text-sm shadow-sm transition-shadow"
               />
             </div>
             <div class="sm:col-span-2">
@@ -84,7 +84,7 @@
               <input
                 v-model="formData.phoneNumber"
                 type="tel"
-                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm shadow-sm transition-shadow"
+                class="block w-full rounded-lg border-0 py-2.5 px-4 bg-white/5 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary-400 sm:text-sm shadow-sm transition-shadow"
               />
             </div>
           </div>
@@ -93,7 +93,7 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="inline-flex justify-center items-center rounded-lg bg-violet-950 px-6 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-violet-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              class="inline-flex justify-center items-center rounded-lg bg-violet-950 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <span v-if="isSubmitting" class="material-icons animate-spin mr-2 text-[18px]">autorenew</span>
               {{ $t('common.save') || 'Save Changes' }}

@@ -60,7 +60,7 @@
               </ul>
               <a
                 :href="slide.ctaHref"
-                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-violet-950 transition-all duration-300 hover:bg-violet-100 hover:text-violet-950 focus:outline-none focus:ring-2 focus:ring-black sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
+                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-violet-950 transition-all duration-300 hover:bg-violet-100 hover:text-violet-950 focus:outline-none focus:ring-2 focus:ring-primary-400 sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
               >
                 {{ $t(slide.ctaKey) }}
               </a>

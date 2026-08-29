@@ -6,7 +6,9 @@ export const CURRENCIES = {
   ETB: {
     code: 'ETB',
     name: 'Birr',
-    symbol: 'ብ', // Amharic symbol for Birr
+    // The ብ glyph glued to the digits read like a minus sign at a glance
+    // ("ብ2,500,000.00" ~ "-2,500,000"). The ISO code with a space is unambiguous.
+    symbol: 'ETB',
     symbolPosition: 'before' // 'before' or 'after'
   },
   USD: {
@@ -32,7 +34,8 @@ export function formatPrice(price, currency = 'ETB', options = {}) {
   const currencyInfo = CURRENCIES[currency] || CURRENCIES.ETB
   const {
     showSymbol = true,
-    showDecimals = true,
+    // Listing prices are whole-birr amounts in the millions; trailing .00 is noise.
+    showDecimals = false,
     locale = 'en-US'
   } = options
 
@@ -47,8 +50,10 @@ export function formatPrice(price, currency = 'ETB', options = {}) {
   }
 
   // Add currency symbol
+  // Alphabetic symbols (ETB) get a separating space; glyphs ($) stay attached.
+  const sep = /[A-Za-z]$/.test(currencyInfo.symbol) ? ' ' : ''
   if (currencyInfo.symbolPosition === 'before') {
-    return `${currencyInfo.symbol}${formattedNumber}`
+    return `${currencyInfo.symbol}${sep}${formattedNumber}`
   } else {
     return `${formattedNumber} ${currencyInfo.symbol}`
   }

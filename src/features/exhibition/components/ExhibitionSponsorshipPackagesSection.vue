@@ -18,7 +18,7 @@
 
       <div v-if="loading" class="flex justify-center py-16">
         <div
-          class="h-10 w-10 animate-spin rounded-full border-2 border-black border-t-transparent"
+          class="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-transparent"
           aria-hidden="true"
         />
       </div>
@@ -115,7 +115,7 @@
                   <button
                     v-if="hasTruncatedFeatures(pkg)"
                     type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
+                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
                     :class="cardTheme(pkg).linkMuted"
                     @click="openDetailsModal(pkg)"
                   >
@@ -124,7 +124,7 @@
                   <button
                     v-else-if="featureBullets(pkg.features).length === 0 && (pkg.description || pkg.notes)"
                     type="button"
-                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
+                    class="mt-3 text-sm font-semibold underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm hover:underline"
                     :class="cardTheme(pkg).linkMuted"
                     @click="openDetailsModal(pkg)"
                   >
@@ -140,7 +140,7 @@
                 </div>
                 <button
                   type="button"
-                  class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md group-hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-950"
+                  class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md group-hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-950"
                   :class="cardTheme(pkg).primaryCta"
                   @click="openRegisterModal(pkg)"
                 >
@@ -157,7 +157,7 @@
       >
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-zinc-900"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
           @click="openRegisterModal(null)"
         >
           {{ $t('exhibition.cta.standEnquiry') }}
@@ -245,7 +245,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-black"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
                   :class="detailsModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeDetailsModal"
@@ -378,7 +378,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-black"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
                   :class="registerModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeRegisterModal"

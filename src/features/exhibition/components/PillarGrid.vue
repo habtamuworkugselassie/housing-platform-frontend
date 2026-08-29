@@ -18,8 +18,8 @@
           :class="[
             'group p-8 rounded-lg transition-all duration-300',
             dark
-              ? 'bg-white/5 border border-white/10 hover:border-black hover:bg-violet-950/20'
-              : 'bg-white border border-gray-200 hover:border-black hover:bg-violet-950/20 hover:shadow-lg'
+              ? 'bg-white/5 border border-white/10 hover:border-primary-400 hover:bg-primary-100/20'
+              : 'bg-white border border-gray-200 hover:border-primary-400 hover:bg-primary-100/20 hover:shadow-lg'
           ]"
         >
           <div :class="['w-12 h-12 flex items-center justify-center mb-6 transition-colors', dark ? 'text-white/80 group-hover:text-white' : 'text-white/80 group-hover:text-white']">

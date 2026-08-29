@@ -4,11 +4,11 @@
       <div class="bg-zinc-900 border border-white/10 rounded-lg p-8">
         <h2 class="text-2xl font-bold text-white mb-6">{{ $t('register.registerAsRealEstateAgent') }}</h2>
         
-        <div v-if="!companies.length && !loadingCompanies" class="mb-6 rounded-md bg-violet-950/20 border border-black/50 p-4">
-          <div class="text-sm text-black">
+        <div v-if="!companies.length && !loadingCompanies" class="mb-6 rounded-md bg-violet-950/20 border border-white/15 p-4">
+          <div class="text-sm text-white">
             No approved real estate companies found. Please register a company first and wait for approval.
           </div>
-          <router-link to="/register-company" class="mt-2 inline-block text-sm font-medium text-black hover:text-black">
+          <router-link to="/register-company" class="mt-2 inline-block text-sm font-medium text-white hover:text-primary-400">
             Register Company →
           </router-link>
         </div>
@@ -21,7 +21,7 @@
                 id="organizationId"
                 v-model="form.organizationId"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               >
                 <option value="">{{ $t('register.chooseCompany') }}</option>
                 <option v-for="company in companies" :key="company.id" :value="company.id">
@@ -37,7 +37,7 @@
                 id="licenseNumber"
                 v-model="form.licenseNumber"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('register.licenseOptionalPlaceholder')"
               />
             </div>
@@ -48,7 +48,7 @@
                 id="notes"
                 v-model="form.notes"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('register.additionalInfoPlaceholder')"
               />
             </div>
@@ -66,7 +66,7 @@
             <button
               type="submit"
               :disabled="loading"
-              class="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950 focus:ring-2 focus:ring-black disabled:opacity-50 disabled:bg-white/50"
+              class="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-primary-100 focus:ring-2 focus:ring-primary-400 disabled:opacity-50 disabled:bg-white/50"
             >
               <span v-if="loading">Registering...</span>
               <span v-else>{{ $t('dashboard.registerAsAgentShort') }}</span>

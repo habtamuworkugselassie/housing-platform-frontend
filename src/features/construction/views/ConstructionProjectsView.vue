@@ -118,7 +118,7 @@
             </div>
 
             <div v-if="project.locationCity || project.locationCountry" class="mt-3 text-sm text-gray-600">
-              📍 {{ project.locationCity }}{{ project.locationCountry ? ', ' + project.locationCountry : '' }}
+              <span class="material-icons !text-[15px] leading-none align-[-2px]" aria-hidden="true">location_on</span> {{ project.locationCity }}{{ project.locationCountry ? ', ' + project.locationCountry : '' }}
             </div>
 
             <div v-if="project.startDate" class="mt-2 text-xs text-gray-500">
@@ -414,7 +414,7 @@ const getStatusColor = (status) => {
   const colors = {
     PLANNING: 'bg-gray-100 text-gray-800',
     IN_PROGRESS: 'bg-blue-100 text-blue-800',
-    ON_HOLD: 'bg-violet-950 text-black',
+    ON_HOLD: 'bg-violet-950 text-white',
     COMPLETED: 'bg-green-100 text-green-800',
     CANCELLED: 'bg-red-100 text-red-800'
   }

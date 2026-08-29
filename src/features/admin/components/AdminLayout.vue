@@ -21,7 +21,7 @@
           </div>
           <button
             @click="sidebarOpen = false"
-            class="lg:hidden text-gray-400 hover:text-black"
+            class="lg:hidden text-gray-400 hover:text-primary-400"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -38,8 +38,8 @@
             :class="[
               'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
               isActive(item.path)
-                ? 'bg-violet-950/20 text-black border border-black/50'
-                : 'text-gray-300 hover:bg-violet-950/20 hover:text-black'
+                ? 'bg-violet-950/20 text-white border border-white/15'
+                : 'text-gray-300 hover:bg-violet-950/20 hover:text-primary-400'
             ]"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@
       <header class="bg-zinc-900 border-b border-white/10 h-16 flex items-center justify-between px-4 lg:px-6">
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="lg:hidden text-gray-400 hover:text-black"
+          class="lg:hidden text-gray-400 hover:text-primary-400"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -78,7 +78,7 @@
             <input
               type="text"
               :placeholder="$t('admin.searchPlaceholder')"
-              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             />
             <svg
               class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -91,7 +91,7 @@
           </div>
 
           <!-- Notifications -->
-          <button class="relative p-2 text-gray-400 hover:text-black">
+          <button class="relative p-2 text-gray-400 hover:text-primary-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -102,7 +102,7 @@
           </button>
 
           <!-- Theme Toggle -->
-          <button class="p-2 text-gray-400 hover:text-black">
+          <button class="p-2 text-gray-400 hover:text-primary-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>

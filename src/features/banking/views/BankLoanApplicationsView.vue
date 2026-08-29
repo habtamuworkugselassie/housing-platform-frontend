@@ -15,8 +15,8 @@
           :class="[
             'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors',
             selectedStatus === filter.value
-              ? 'border-black text-black'
-              : 'border-transparent text-gray-400 hover:text-black hover:border-white/30'
+              ? 'border-white/15 text-white'
+              : 'border-transparent text-gray-400 hover:text-primary-400 hover:border-white/30'
           ]"
         >
           {{ filter.label }}
@@ -29,7 +29,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
     </div>
 
     <!-- Error State -->
@@ -43,7 +43,7 @@
         v-for="application in filteredApplications"
         :key="application.id"
         @click="viewDetails(application.id)"
-        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-black hover:bg-violet-950/20 transition-colors cursor-pointer"
+        class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/20 transition-colors cursor-pointer"
       >
         <div class="flex items-start justify-between">
           <div class="flex-1">
@@ -137,7 +137,7 @@
                 min="0"
                 step="0.01"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -150,7 +150,7 @@
                 max="100"
                 step="0.01"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -161,7 +161,7 @@
                 type="number"
                 min="1"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -171,7 +171,7 @@
                 v-model="approvalForm.approvalNotes"
                 rows="3"
                 :placeholder="$t('banking.approvalNotesPlaceholder')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -179,14 +179,14 @@
               <button
                 type="button"
                 @click="closeApproveModal"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ submitting ? 'Approving...' : 'Approve' }}
               </button>
@@ -214,7 +214,7 @@
                 rows="4"
                 required
                 :placeholder="$t('banking.rejectionReasonPlaceholder')"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -222,14 +222,14 @@
               <button
                 type="button"
                 @click="closeRejectModal"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 :disabled="submitting"
-                class="px-4 py-2 bg-white text-black rounded-md hover:bg-violet-950 disabled:opacity-50 disabled:bg-white/50"
+                class="px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50"
               >
                 {{ submitting ? 'Rejecting...' : 'Reject' }}
               </button>
@@ -395,7 +395,7 @@ const getStatusColor = (status) => {
   const colors = {
     DRAFT: 'bg-gray-500/30 text-gray-300',
     SUBMITTED: 'bg-blue-500/30 text-blue-200',
-    UNDER_REVIEW: 'bg-violet-950/30 text-black',
+    UNDER_REVIEW: 'bg-violet-950/30 text-white',
     APPROVED: 'bg-green-500/30 text-green-200',
     REJECTED: 'bg-red-500/30 text-red-200',
     DISBURSED: 'bg-purple-500/30 text-purple-200',

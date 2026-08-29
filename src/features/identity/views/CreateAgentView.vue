@@ -17,7 +17,7 @@
                   v-model="form.firstName"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
 
@@ -28,7 +28,7 @@
                   v-model="form.lastName"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
             </div>
@@ -40,7 +40,7 @@
                 v-model="form.email"
                 type="email"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
 
@@ -60,7 +60,7 @@
                 v-model="form.password"
                 type="password"
                 required
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('register.passwordPlaceholder')"
               />
               <p class="mt-1 text-sm text-gray-500">
@@ -74,7 +74,7 @@
                 id="licenseNumber"
                 v-model="form.licenseNumber"
                 type="text"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('register.licensePlaceholder')"
               />
             </div>
@@ -85,7 +85,7 @@
                 id="notes"
                 v-model="form.notes"
                 rows="3"
-                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-black focus:border-black"
+                class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('register.notesPlaceholder')"
               />
             </div>
@@ -112,7 +112,7 @@
             <button
               type="submit"
               :disabled="loading"
-              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950 focus:ring-2 focus:ring-black disabled:opacity-50 disabled:bg-white/50"
+              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-primary-100 focus:ring-2 focus:ring-primary-400 disabled:opacity-50 disabled:bg-white/50"
             >
               <span v-if="loading">Creating Agent...</span>
               <span v-else>Create Agent</span>
@@ -120,7 +120,7 @@
             <button
               type="button"
               @click="$router.push('/dashboard')"
-              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-violet-950"
+              class="flex-1 flex justify-center py-2 px-4 rounded-md text-sm font-medium text-black bg-white hover:bg-primary-100"
             >
               Cancel
             </button>

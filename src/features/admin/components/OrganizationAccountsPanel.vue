@@ -8,7 +8,7 @@
       <button
         v-if="canManage"
         type="button"
-        class="rounded-md border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-black"
+        class="rounded-md border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary-400"
         @click="toggleCreate"
       >
         {{ showCreate ? $t('common.cancel') : $t('admin.accountsIssueLogin') }}
@@ -50,7 +50,7 @@
             v-model.trim="createForm.firstName"
             type="text"
             required
-            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:ring-2 focus:ring-black"
+            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
         </div>
         <div>
@@ -62,7 +62,7 @@
             v-model.trim="createForm.lastName"
             type="text"
             required
-            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:ring-2 focus:ring-black"
+            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
         </div>
       </div>
@@ -76,7 +76,7 @@
           v-model.trim="createForm.email"
           type="email"
           required
-          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:ring-2 focus:ring-black"
+          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
         />
       </div>
 
@@ -100,7 +100,7 @@
           type="password"
           required
           autocomplete="new-password"
-          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:ring-2 focus:ring-black"
+          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
         />
         <p class="mt-1 text-xs text-gray-500">{{ $t('admin.accountsPasswordRule') }}</p>
       </div>
@@ -222,7 +222,7 @@
             type="password"
             required
             autocomplete="new-password"
-            class="block w-full max-w-md rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-black focus:ring-2 focus:ring-black"
+            class="block w-full max-w-md rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
           <p class="text-xs text-gray-500">{{ $t('admin.accountsPasswordRule') }}</p>
           <div class="flex gap-2">

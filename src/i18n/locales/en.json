@@ -153,6 +153,7 @@
     "somethingWentWrong": "Something went wrong. Please try again."
   },
   "property": {
+    "noListingsYet": "No listings published yet.",
     "title": "Property",
     "properties": "Properties",
     "propertyDetails": "Property Details",
