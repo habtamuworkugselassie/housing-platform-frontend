@@ -6,6 +6,7 @@ import router from './router'
 import i18n from './i18n'
 import './style.css'
 import './styles/material.css'
+import './styles/material-icons.css'
 import './styles/public-design.css'
 
 const app = createApp(App)
