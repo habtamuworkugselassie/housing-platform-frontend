@@ -17,11 +17,11 @@
             class="flex items-center gap-2 px-2 py-2 text-lg sm:text-xl font-bold text-white hover:text-primary-400"
           >
             <img
-              src="/images/branding/ethio-build-connect-banner.png"
+              src="/images/branding/ethio-build-connect-wordmark.png"
               alt=""
-              width="140"
-              height="36"
-              class="h-8 w-auto sm:h-9 object-contain shrink-0"
+              width="65"
+              height="40"
+              class="h-9 w-auto sm:h-10 object-contain shrink-0"
             />
             <span class="sr-only">{{ $t('common.appName') }}</span>
           </router-link>
