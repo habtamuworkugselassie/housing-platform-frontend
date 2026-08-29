@@ -93,4 +93,22 @@ jobs:
             docker tag "$REGISTRY_IMAGE:$SHA" "$DEPLOY_IMAGE:latest"
 
             docker compose up -d
+
+            # Lightweight health gate. The frontend is a static nginx image with no migrations or
+            # DB, so the failure mode is a corrupt/mis-tagged image that crash-loops rather than a
+            # runtime health problem. Give it a moment, then confirm nothing is restarting or exited;
+            # roll back and fail the job if so.
+            sleep 8
+            if docker compose ps --format '{{.Service}} {{.State}}' | grep -Eiv ' (running|up)$' | grep -q .; then
+              echo "::error::A frontend container is not running after deploy — rolling back."
+              docker compose ps
+              docker compose logs --tail 40 || true
+              docker tag "$DEPLOY_IMAGE:rollback-$SHA" "$DEPLOY_IMAGE:latest" 2>/dev/null \
+                && docker compose up -d \
+                && echo "Rolled back to the previous image." \
+                || echo "::warning::No previous image to roll back to."
+              exit 1
+            fi
+            echo "Frontend containers are running."
+
             docker image prune -f
