@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="flex flex-wrap gap-2 text-xs">
-      <span :class="app.organizationVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+      <span :class="app.organizationVerifiedAt ? 'text-admin-ok' : 'text-admin-faint'">
         {{ app.organizationVerifiedAt ? $t('admin.sponsorshipOrgVerified') : $t('admin.sponsorshipOrgNotVerified') }}
       </span>
-      <span :class="app.userVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+      <span :class="app.userVerifiedAt ? 'text-admin-ok' : 'text-admin-faint'">
         {{ app.userVerifiedAt ? $t('admin.sponsorshipUserVerified') : $t('admin.sponsorshipUserNotVerified') }}
       </span>
     </div>
-    <p v-if="!canApprove" class="text-xs text-white/90 mt-1">
+    <p v-if="!canApprove" class="text-xs text-admin-fg/90 mt-1">
       {{ $t('admin.sponsorshipPendingApproval') }}
     </p>
   </div>

@@ -519,6 +519,10 @@
     "accountsPrimaryFailed": "ዋና ተጠሪን ማስቀመጥ አልተሳካም።",
     "accountsUnlinkFailed": "መለያውን ማላቀቅ አልተሳካም።",
     "portalTitle": "የአስተዳዳሪ መግቢያ",
+    "theme": {
+      "switchToLight": "ወደ ብሩህ ገጽታ ቀይር",
+      "switchToDark": "ወደ ጨለማ ገጽታ ቀይር"
+    },
     "administrator": "አስተዳዳሪ",
     "portalSubtitle": "ተጠቃሚዎችን፣ ድርጅቶችን፣ ንብረቶችን እና ሌሎችን ለማስተዳድር የአስተዳዳሪ መግቢያውን ይድረሱ።",
     "nav": {

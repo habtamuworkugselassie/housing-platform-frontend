@@ -1,34 +1,34 @@
 <template>
   <div class="space-y-4">
     <div class="flex flex-wrap items-center justify-between gap-3">
-      <p class="text-sm font-medium text-white">
+      <p class="text-sm font-medium text-admin-fg">
         {{ $t('admin.accountsHeading') }}
-        <span v-if="!loading" class="ml-1 text-gray-500">({{ accounts.length }})</span>
+        <span v-if="!loading" class="ml-1 text-admin-faint">({{ accounts.length }})</span>
       </p>
       <button
         v-if="canManage"
         type="button"
-        class="rounded-md border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary-400"
+        class="rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-1.5 text-xs font-medium text-admin-fg transition hover:bg-admin-field/10 focus:outline-none focus:ring-2 focus:ring-primary-400"
         @click="toggleCreate"
       >
         {{ showCreate ? $t('common.cancel') : $t('admin.accountsIssueLogin') }}
       </button>
     </div>
 
-    <p class="text-xs text-gray-500">{{ $t('admin.accountsHint') }}</p>
+    <p class="text-xs text-admin-faint">{{ $t('admin.accountsHint') }}</p>
 
     <!-- A plain admin can read this list but not change it; say so rather than
          showing controls that would come back 403. -->
     <p
       v-if="!canManage"
-      class="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-400"
+      class="rounded-md border border-admin-line/10 bg-admin-field/5 px-3 py-2 text-xs text-admin-subtle"
     >
       {{ $t('admin.accountsReadOnlyNotice') }}
     </p>
 
     <p
       v-if="error"
-      class="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300"
+      class="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-admin-danger"
       role="alert"
     >
       {{ error }}
@@ -37,12 +37,12 @@
     <!-- Issue a new login -->
     <form
       v-if="canManage && showCreate"
-      class="space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-4"
+      class="space-y-3 rounded-xl border border-admin-line/10 bg-admin-field/[0.03] p-4"
       @submit.prevent="submitCreate"
     >
       <div class="grid gap-3 sm:grid-cols-2">
         <div>
-          <label class="mb-1 block text-xs font-medium text-gray-400" for="acc-first">
+          <label class="mb-1 block text-xs font-medium text-admin-subtle" for="acc-first">
             {{ $t('admin.accountsFirstName') }}
           </label>
           <input
@@ -50,11 +50,11 @@
             v-model.trim="createForm.firstName"
             type="text"
             required
-            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+            class="block w-full rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
         </div>
         <div>
-          <label class="mb-1 block text-xs font-medium text-gray-400" for="acc-last">
+          <label class="mb-1 block text-xs font-medium text-admin-subtle" for="acc-last">
             {{ $t('admin.accountsLastName') }}
           </label>
           <input
@@ -62,13 +62,13 @@
             v-model.trim="createForm.lastName"
             type="text"
             required
-            class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+            class="block w-full rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
         </div>
       </div>
 
       <div>
-        <label class="mb-1 block text-xs font-medium text-gray-400" for="acc-email">
+        <label class="mb-1 block text-xs font-medium text-admin-subtle" for="acc-email">
           {{ $t('admin.accountsEmail') }}
         </label>
         <input
@@ -76,12 +76,12 @@
           v-model.trim="createForm.email"
           type="email"
           required
-          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+          class="block w-full rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
         />
       </div>
 
       <div>
-        <label class="mb-1 block text-xs font-medium text-gray-400">
+        <label class="mb-1 block text-xs font-medium text-admin-subtle">
           {{ $t('admin.accountsPhone') }}
         </label>
         <CountryCodePhoneInput
@@ -91,7 +91,7 @@
       </div>
 
       <div>
-        <label class="mb-1 block text-xs font-medium text-gray-400" for="acc-pass">
+        <label class="mb-1 block text-xs font-medium text-admin-subtle" for="acc-pass">
           {{ $t('admin.accountsPassword') }}
         </label>
         <input
@@ -100,16 +100,16 @@
           type="password"
           required
           autocomplete="new-password"
-          class="block w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+          class="block w-full rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
         />
-        <p class="mt-1 text-xs text-gray-500">{{ $t('admin.accountsPasswordRule') }}</p>
+        <p class="mt-1 text-xs text-admin-faint">{{ $t('admin.accountsPasswordRule') }}</p>
       </div>
 
-      <label class="flex items-center gap-2 text-xs text-gray-300">
+      <label class="flex items-center gap-2 text-xs text-admin-muted">
         <input
           v-model="createForm.makePrimaryContact"
           type="checkbox"
-          class="rounded border-white/20 bg-white/5"
+          class="rounded border-admin-line/20 bg-admin-field/5"
         />
         {{ $t('admin.accountsMakePrimaryOnCreate') }}
       </label>
@@ -118,13 +118,13 @@
         <button
           type="submit"
           :disabled="busy"
-          class="rounded-md bg-violet-950/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-white/20 transition hover:bg-violet-950 disabled:opacity-50"
+          class="rounded-md bg-admin-nav/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-admin-line/20 transition hover:bg-violet-950 disabled:opacity-50"
         >
           {{ busy ? $t('common.saving') : $t('admin.accountsCreateSubmit') }}
         </button>
         <button
           type="button"
-          class="rounded-md border border-white/20 px-3 py-1.5 text-xs text-gray-300 hover:bg-white/5"
+          class="rounded-md border border-admin-line/20 px-3 py-1.5 text-xs text-admin-muted hover:bg-admin-field/5"
           @click="toggleCreate"
         >
           {{ $t('common.cancel') }}
@@ -133,8 +133,8 @@
     </form>
 
     <!-- Accounts -->
-    <p v-if="loading" class="text-sm text-gray-500">{{ $t('common.loading') }}</p>
-    <p v-else-if="!accounts.length" class="text-sm text-gray-500">
+    <p v-if="loading" class="text-sm text-admin-faint">{{ $t('common.loading') }}</p>
+    <p v-else-if="!accounts.length" class="text-sm text-admin-faint">
       {{ $t('admin.accountsEmpty') }}
     </p>
 
@@ -142,11 +142,11 @@
       <li
         v-for="account in accounts"
         :key="account.id"
-        class="rounded-xl border border-white/10 bg-white/[0.03] p-3"
+        class="rounded-xl border border-admin-line/10 bg-admin-field/[0.03] p-3"
       >
         <div class="flex flex-wrap items-start justify-between gap-2">
           <div class="min-w-0">
-            <p class="flex flex-wrap items-center gap-2 text-sm font-medium text-white">
+            <p class="flex flex-wrap items-center gap-2 text-sm font-medium text-admin-fg">
               <span class="truncate">{{ account.firstName }} {{ account.lastName }}</span>
               <span
                 v-if="account.primaryContact"
@@ -161,8 +161,8 @@
                 {{ $t('admin.accountsStatus_' + account.status) }}
               </span>
             </p>
-            <p class="truncate text-xs text-gray-400">{{ account.email }}</p>
-            <p v-if="account.phoneNumber" class="text-xs text-gray-500">
+            <p class="truncate text-xs text-admin-subtle">{{ account.email }}</p>
+            <p v-if="account.phoneNumber" class="text-xs text-admin-faint">
               {{ account.phoneNumber }}
             </p>
           </div>
@@ -170,14 +170,14 @@
           <div v-if="canManage" class="flex flex-wrap gap-1.5">
             <button
               type="button"
-              class="rounded border border-white/20 px-2 py-1 text-[0.68rem] text-gray-200 hover:bg-white/10"
+              class="rounded border border-admin-line/20 px-2 py-1 text-[0.68rem] text-admin-muted hover:bg-admin-field/10"
               @click="openPassword(account)"
             >
               {{ $t('admin.accountsSetPassword') }}
             </button>
             <button
               type="button"
-              class="rounded border border-white/20 px-2 py-1 text-[0.68rem] text-gray-200 hover:bg-white/10"
+              class="rounded border border-admin-line/20 px-2 py-1 text-[0.68rem] text-admin-muted hover:bg-admin-field/10"
               :disabled="busy"
               @click="toggleStatus(account)"
             >
@@ -190,7 +190,7 @@
             <button
               v-if="!account.primaryContact"
               type="button"
-              class="rounded border border-white/20 px-2 py-1 text-[0.68rem] text-gray-200 hover:bg-white/10"
+              class="rounded border border-admin-line/20 px-2 py-1 text-[0.68rem] text-admin-muted hover:bg-admin-field/10"
               :disabled="busy"
               @click="makePrimary(account)"
             >
@@ -198,7 +198,7 @@
             </button>
             <button
               type="button"
-              class="rounded border border-red-400/40 px-2 py-1 text-[0.68rem] text-red-300 hover:bg-red-500/10"
+              class="rounded border border-red-400/40 px-2 py-1 text-[0.68rem] text-admin-danger hover:bg-red-500/10"
               :disabled="busy"
               @click="confirmingUnlink = account.id"
             >
@@ -210,10 +210,10 @@
         <!-- Set password -->
         <form
           v-if="canManage && passwordFor === account.id"
-          class="mt-3 space-y-2 border-t border-white/10 pt-3"
+          class="mt-3 space-y-2 border-t border-admin-line/10 pt-3"
           @submit.prevent="submitPassword(account)"
         >
-          <label class="block text-xs font-medium text-gray-400" :for="'pw-' + account.id">
+          <label class="block text-xs font-medium text-admin-subtle" :for="'pw-' + account.id">
             {{ $t('admin.accountsNewPassword') }}
           </label>
           <input
@@ -222,20 +222,20 @@
             type="password"
             required
             autocomplete="new-password"
-            class="block w-full max-w-md rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+            class="block w-full max-w-md rounded-md border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
           />
-          <p class="text-xs text-gray-500">{{ $t('admin.accountsPasswordRule') }}</p>
+          <p class="text-xs text-admin-faint">{{ $t('admin.accountsPasswordRule') }}</p>
           <div class="flex gap-2">
             <button
               type="submit"
               :disabled="busy"
-              class="rounded-md bg-violet-950/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-white/20 hover:bg-violet-950 disabled:opacity-50"
+              class="rounded-md bg-admin-nav/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-admin-line/20 hover:bg-violet-950 disabled:opacity-50"
             >
               {{ busy ? $t('common.saving') : $t('common.save') }}
             </button>
             <button
               type="button"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-xs text-gray-300 hover:bg-white/5"
+              class="rounded-md border border-admin-line/20 px-3 py-1.5 text-xs text-admin-muted hover:bg-admin-field/5"
               @click="closePassword"
             >
               {{ $t('common.cancel') }}
@@ -246,9 +246,9 @@
         <!-- Confirm unlink -->
         <div
           v-if="canManage && confirmingUnlink === account.id"
-          class="mt-3 space-y-2 border-t border-white/10 pt-3"
+          class="mt-3 space-y-2 border-t border-admin-line/10 pt-3"
         >
-          <p class="text-xs text-red-300">{{ $t('admin.accountsUnlinkConfirm') }}</p>
+          <p class="text-xs text-admin-danger">{{ $t('admin.accountsUnlinkConfirm') }}</p>
           <div class="flex gap-2">
             <button
               type="button"
@@ -260,7 +260,7 @@
             </button>
             <button
               type="button"
-              class="rounded-md border border-white/20 px-3 py-1.5 text-xs text-gray-300 hover:bg-white/5"
+              class="rounded-md border border-admin-line/20 px-3 py-1.5 text-xs text-admin-muted hover:bg-admin-field/5"
               @click="confirmingUnlink = null"
             >
               {{ $t('common.cancel') }}
@@ -363,8 +363,8 @@ function passwordIsValid(value) {
 
 function statusClass(status) {
   if (status === 'ACTIVE') return 'border-emerald-400/40 text-emerald-300'
-  if (status === 'SUSPENDED') return 'border-red-400/40 text-red-300'
-  return 'border-white/20 text-gray-400'
+  if (status === 'SUSPENDED') return 'border-red-400/40 text-admin-danger'
+  return 'border-admin-line/20 text-admin-subtle'
 }
 
 function toggleCreate() {

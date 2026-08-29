@@ -4,13 +4,13 @@
       <!-- Page Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ $t('admin.organizationManagement') }}</h1>
-          <p class="mt-2 text-sm text-gray-400">{{ $t('admin.manageOrganizations') }}</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.organizationManagement') }}</h1>
+          <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.manageOrganizations') }}</p>
         </div>
         <button
           type="button"
           @click="openCreateModal"
-          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium bg-white text-black hover:bg-primary-100 focus:ring-2 focus:ring-primary-400 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover focus:ring-2 focus:ring-primary-400 disabled:opacity-50 disabled:bg-admin-field/50 transition-colors"
         >
           <span class="mr-2">+</span>
           {{ $t('admin.registerOrganization') }}
@@ -19,35 +19,35 @@
 
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
           <div class="flex items-center">
-            <div class="flex-shrink-0 bg-violet-950/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex-shrink-0 bg-admin-nav/30 rounded-lg p-3">
+              <svg class="w-6 h-6 text-admin-fg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-400">Pending</p>
-              <p class="text-2xl font-semibold text-white">{{ pendingCount }}</p>
+              <p class="text-sm font-medium text-admin-subtle">Pending</p>
+              <p class="text-2xl font-semibold text-admin-fg">{{ pendingCount }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-green-500/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-admin-ok" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-400">Approved</p>
-              <p class="text-2xl font-semibold text-white">{{ approvedCount }}</p>
+              <p class="text-sm font-medium text-admin-subtle">Approved</p>
+              <p class="text-2xl font-semibold text-admin-fg">{{ approvedCount }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-blue-500/30 rounded-lg p-3">
               <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,13 +55,13 @@
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-400">Real Estate</p>
-              <p class="text-2xl font-semibold text-white">{{ realEstateCount }}</p>
+              <p class="text-sm font-medium text-admin-subtle">Real Estate</p>
+              <p class="text-2xl font-semibold text-admin-fg">{{ realEstateCount }}</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
           <div class="flex items-center">
             <div class="flex-shrink-0 bg-purple-500/30 rounded-lg p-3">
               <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,32 +69,32 @@
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-400">Banks</p>
-              <p class="text-2xl font-semibold text-white">{{ bankCount }}</p>
+              <p class="text-sm font-medium text-admin-subtle">Banks</p>
+              <p class="text-2xl font-semibold text-admin-fg">{{ bankCount }}</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Filters -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-4">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-4">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
           <div>
-            <label class="block text-sm font-medium text-gray-300">Search</label>
+            <label class="block text-sm font-medium text-admin-muted">Search</label>
             <input
               v-model="filters.search"
               type="text"
               :placeholder="$t('admin.searchOrganizations')"
               @input="onSearchInput"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Type</label>
+            <label class="block text-sm font-medium text-admin-muted">Type</label>
             <select
               v-model="filters.type"
               @change="onTypeOrStatusChange"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Types</option>
               <option
@@ -107,11 +107,11 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300">Status</label>
+            <label class="block text-sm font-medium text-admin-muted">Status</label>
             <select
               v-model="filters.status"
               @change="onTypeOrStatusChange"
-              class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
+              class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -124,7 +124,7 @@
           <div class="flex items-end">
             <button
               @click="clearFilters"
-              class="w-full px-4 py-2 border border-white/20 rounded-md text-sm font-medium text-white bg-white/5 hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
+              class="w-full px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
             >
               Clear Filters
             </button>
@@ -132,11 +132,11 @@
         </div>
         <div
           v-if="filters.type === 'SUPPLIER'"
-          class="mt-4 flex flex-wrap items-center gap-2 border-t border-white/10 pt-4"
+          class="mt-4 flex flex-wrap items-center gap-2 border-t border-admin-line/10 pt-4"
         >
           <button
             type="button"
-            class="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium border border-white/20 bg-white/5 text-white hover:bg-primary-100/20 hover:border-primary-400 transition-colors"
+            class="inline-flex items-center px-3 py-2 rounded-md text-sm font-medium border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
             @click="openSubcategoryCatalog"
           >
             {{ $t('admin.manageMaterialSubcategories') }}
@@ -145,38 +145,38 @@
       </div>
 
       <!-- Organizations Table -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg overflow-hidden">
+      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
         <div class="hidden lg:block overflow-x-auto">
-          <table class="w-full min-w-[56rem] divide-y divide-white/10">
-          <thead class="bg-zinc-800">
+          <table class="w-full min-w-[56rem] divide-y divide-admin-line/10">
+          <thead class="bg-admin-raised">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Organization</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Type</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Contact</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Created</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Organization</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Type</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Contact</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Created</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/10">
+          <tbody class="divide-y divide-admin-line/10">
             <tr v-if="loading">
-              <td colspan="6" class="px-6 py-12 text-center bg-zinc-900">
+              <td colspan="6" class="px-6 py-12 text-center bg-admin-surface">
                 <div class="flex flex-col items-center">
-                  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
-                  <span class="text-sm text-gray-400">{{ $t('admin.loadingOrganizations') }}</span>
+                  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
+                  <span class="text-sm text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</span>
                 </div>
               </td>
             </tr>
             <tr v-else-if="error">
-              <td colspan="6" class="px-6 py-12 text-center text-sm text-red-200 bg-zinc-900">
+              <td colspan="6" class="px-6 py-12 text-center text-sm text-admin-danger bg-admin-surface">
                 <div>Error: {{ error }}</div>
-                <button @click="loadOrgs" class="mt-2 px-4 py-2 bg-white text-black rounded-md hover:bg-primary-100 transition-colors">
+                <button @click="loadOrgs" class="mt-2 px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors">
                   Retry
                 </button>
               </td>
             </tr>
             <tr v-else-if="!filteredOrganizations.length">
-              <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400 bg-zinc-900">
+              <td colspan="6" class="px-6 py-12 text-center text-sm text-admin-subtle bg-admin-surface">
                 No organizations found
               </td>
             </tr>
@@ -184,39 +184,39 @@
               <tr
                 v-for="org in paginatedOrganizations"
                 :key="org?.id || org?.name || Math.random()"
-                class="hover:bg-violet-950/10 transition-colors"
+                class="hover:bg-admin-nav/10 transition-colors"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-white flex items-center gap-2 flex-wrap">
+                  <div class="text-sm font-medium text-admin-fg flex items-center gap-2 flex-wrap">
                     {{ org.name }}
                     <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
                   </div>
-                  <div class="text-sm text-gray-400">{{ org.city }}, {{ org.country }}</div>
+                  <div class="text-sm text-admin-subtle">{{ org.city }}, {{ org.country }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs font-medium bg-gray-500/30 text-gray-300 rounded">
+                  <span class="px-2 py-1 text-xs font-medium bg-gray-500/30 text-admin-muted rounded">
                     {{ getTypeLabel(org.type) }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-white">{{ org.email || 'N/A' }}</div>
-                  <div class="text-sm text-gray-400">{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
+                  <div class="text-sm text-admin-fg">{{ org.email || 'N/A' }}</div>
+                  <div class="text-sm text-admin-subtle">{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
                     :class="[
                       'px-2 py-1 text-xs font-medium rounded',
-                      org.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                      (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-violet-950/30 text-white' :
+                      org.status === 'APPROVED' ? 'bg-green-500/30 text-admin-ok' :
+                      (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-admin-nav/30 text-admin-fg' :
                       org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
                       org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
-                      'bg-red-500/30 text-red-200'
+                      'bg-red-500/30 text-admin-danger'
                     ]"
                   >
                     {{ org.status }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-subtle">
                   {{ formatDate(org.createdAt) }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -224,14 +224,14 @@
                     <button
                       v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
                       @click="approveOrg(org.id)"
-                      class="text-green-300 hover:text-primary-400 transition-colors"
+                      class="text-admin-ok hover:text-primary-400 transition-colors"
                     >
                       Approve
                     </button>
                     <button
                       v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
                       @click="showRejectModal(org)"
-                      class="text-red-300 hover:text-primary-400 transition-colors"
+                      class="text-admin-danger hover:text-primary-400 transition-colors"
                     >
                       Reject
                     </button>
@@ -245,13 +245,13 @@
                     <button
                       v-if="org.status === 'SUSPENDED'"
                       @click="reactivateOrg(org)"
-                      class="text-green-300 hover:text-primary-400 transition-colors"
+                      class="text-admin-ok hover:text-primary-400 transition-colors"
                     >
                       {{ $t('admin.reactivate') }}
                     </button>
                     <button
                       @click="viewOrg(org)"
-                      class="text-white hover:text-primary-400 transition-colors"
+                      class="text-admin-fg hover:text-primary-400 transition-colors"
                     >
                       View
                     </button>
@@ -266,54 +266,54 @@
         <!-- Card list below lg: the 6-column table is unreadable on phones and tablets -->
         <div class="lg:hidden">
           <div v-if="loading" class="px-4 py-12 text-center">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15 mb-2"></div>
-            <div class="text-sm text-gray-400">{{ $t('admin.loadingOrganizations') }}</div>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
+            <div class="text-sm text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</div>
           </div>
-          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-red-200 space-y-3">
+          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-admin-danger space-y-3">
             <div>Error: {{ error }}</div>
             <button @click="loadOrgs" class="px-4 py-2 bg-gold-400 text-primary-950 rounded-md text-sm font-medium">Retry</button>
           </div>
-          <div v-else-if="!filteredOrganizations.length" class="px-4 py-12 text-center text-sm text-gray-400">
+          <div v-else-if="!filteredOrganizations.length" class="px-4 py-12 text-center text-sm text-admin-subtle">
             No organizations found
           </div>
-          <ul v-else class="divide-y divide-white/10">
+          <ul v-else class="divide-y divide-admin-line/10">
             <li v-for="org in paginatedOrganizations" :key="`m-${org?.id || org?.name}`" class="p-4 space-y-3">
               <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
-                  <div class="text-sm font-medium text-white flex items-center gap-2 flex-wrap">
+                  <div class="text-sm font-medium text-admin-fg flex items-center gap-2 flex-wrap">
                     <span class="truncate">{{ org.name }}</span>
                     <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
                   </div>
-                  <div class="text-xs text-gray-400">{{ org.city }}, {{ org.country }}</div>
+                  <div class="text-xs text-admin-subtle">{{ org.city }}, {{ org.country }}</div>
                 </div>
                 <span
                   :class="[
                     'shrink-0 px-2 py-1 text-xs font-medium rounded',
-                    org.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
+                    org.status === 'APPROVED' ? 'bg-green-500/30 text-admin-ok' :
                     (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-primary-500/30 text-primary-200' :
                     org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
                     org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
-                    'bg-red-500/30 text-red-200'
+                    'bg-red-500/30 text-admin-danger'
                   ]"
                 >{{ org.status }}</span>
               </div>
 
               <div class="flex flex-wrap items-center gap-2 text-xs">
-                <span class="px-2 py-0.5 font-medium bg-gray-500/30 text-gray-300 rounded">{{ getTypeLabel(org.type) }}</span>
-                <span class="text-gray-500">{{ formatDate(org.createdAt) }}</span>
+                <span class="px-2 py-0.5 font-medium bg-gray-500/30 text-admin-muted rounded">{{ getTypeLabel(org.type) }}</span>
+                <span class="text-admin-faint">{{ formatDate(org.createdAt) }}</span>
               </div>
 
-              <div class="text-xs text-gray-400 space-y-0.5">
+              <div class="text-xs text-admin-subtle space-y-0.5">
                 <div class="truncate">{{ org.email || 'N/A' }}</div>
                 <div>{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
               </div>
 
               <div class="flex flex-wrap gap-3 pt-1 text-sm font-medium">
-                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="approveOrg(org.id)" class="text-green-300 hover:text-primary-400">Approve</button>
-                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="showRejectModal(org)" class="text-red-300 hover:text-primary-400">Reject</button>
+                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="approveOrg(org.id)" class="text-admin-ok hover:text-primary-400">Approve</button>
+                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="showRejectModal(org)" class="text-admin-danger hover:text-primary-400">Reject</button>
                 <button v-if="org.status === 'APPROVED'" @click="showSuspendModal(org)" class="text-orange-300 hover:text-primary-400">Suspend</button>
-                <button v-if="org.status === 'SUSPENDED'" @click="reactivateOrg(org)" class="text-green-300 hover:text-primary-400">{{ $t('admin.reactivate') }}</button>
-                <button @click="viewOrg(org)" class="text-white hover:text-primary-400">View</button>
+                <button v-if="org.status === 'SUSPENDED'" @click="reactivateOrg(org)" class="text-admin-ok hover:text-primary-400">{{ $t('admin.reactivate') }}</button>
+                <button @click="viewOrg(org)" class="text-admin-fg hover:text-primary-400">View</button>
               </div>
             </li>
           </ul>
@@ -321,17 +321,17 @@
 
         <div
           v-if="!loading && !error && filteredOrganizations.length > 0"
-          class="border-t border-white/10 px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-zinc-900"
+          class="border-t border-admin-line/10 px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-admin-surface"
         >
-          <p class="text-xs text-gray-400">
+          <p class="text-xs text-admin-subtle">
             Showing {{ paginationStart }}-{{ paginationEnd }} of {{ filteredOrganizations.length }} organizations
           </p>
           <div class="flex items-center gap-2">
-            <label class="text-xs text-gray-400">Rows</label>
+            <label class="text-xs text-admin-subtle">Rows</label>
             <select
               v-model.number="pageSize"
               @change="onPageSizeChange"
-              class="border border-white/20 bg-white/5 text-white rounded-md py-1.5 px-2 text-xs focus:ring-primary-400 focus:border-primary-400"
+              class="border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-1.5 px-2 text-xs focus:ring-primary-400 focus:border-primary-400"
             >
               <option
                 v-for="size in pageSizeOptions"
@@ -345,16 +345,16 @@
               type="button"
               @click="goToPreviousPage"
               :disabled="currentPage <= 1"
-              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-violet-950/20 hover:border-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-2.5 py-1.5 border border-admin-line/20 rounded-md text-xs text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
-            <span class="text-xs text-gray-300">Page {{ currentPage }} / {{ totalPages }}</span>
+            <span class="text-xs text-admin-muted">Page {{ currentPage }} / {{ totalPages }}</span>
             <button
               type="button"
               @click="goToNextPage"
               :disabled="currentPage >= totalPages"
-              class="px-2.5 py-1.5 border border-white/20 rounded-md text-xs text-white hover:bg-violet-950/20 hover:border-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-2.5 py-1.5 border border-admin-line/20 rounded-md text-xs text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
@@ -365,25 +365,25 @@
       <!-- View Organization Modal -->
       <div
         v-if="showViewDialog"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-admin-nav/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showViewDialog = false"
       >
         <div
-          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-2xl shadow-black/50 ring-1 ring-white/5"
+          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-admin-line/10 bg-admin-surface text-admin-fg shadow-2xl shadow-black/50 ring-1 ring-admin-line/5"
           role="dialog"
           aria-modal="true"
           aria-labelledby="admin-org-view-title"
           @click.stop
         >
           <div
-            class="border-b border-white/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-admin-line/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
                 <div
-                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-violet-950/15 shadow-inner shadow-black/20"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-admin-line/15 bg-admin-nav/15 shadow-inner shadow-black/20"
                 >
-                  <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="h-8 w-8 text-admin-fg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -393,27 +393,27 @@
                   </svg>
                 </div>
                 <div class="min-w-0 pt-0.5">
-                  <h3 id="admin-org-view-title" class="text-xl font-semibold tracking-tight text-white">
+                  <h3 id="admin-org-view-title" class="text-xl font-semibold tracking-tight text-admin-fg">
                     {{ $t('admin.organizationDetails') }}
                   </h3>
-                  <p v-if="viewingOrg" class="mt-1 truncate text-base text-gray-200">{{ viewingOrg.name }}</p>
+                  <p v-if="viewingOrg" class="mt-1 truncate text-base text-admin-muted">{{ viewingOrg.name }}</p>
                   <div v-if="viewingOrg" class="mt-3 flex flex-wrap items-center gap-2">
                     <span
                       :class="[
                         'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1',
                         viewingOrg.status === 'APPROVED'
-                          ? 'bg-green-500/25 text-green-200 ring-green-400/30'
+                          ? 'bg-green-500/25 text-admin-ok ring-green-400/30'
                           : viewingOrg.status === 'SUSPENDED'
                             ? 'bg-orange-500/25 text-orange-200 ring-orange-400/30'
                             : viewingOrg.status === 'PENDING_APPROVAL' || viewingOrg.status === 'PENDING'
-                              ? 'bg-violet-950/25 text-white ring-white/15'
-                              : 'bg-red-500/25 text-red-200 ring-red-400/30'
+                              ? 'bg-admin-nav/25 text-admin-fg ring-admin-line/15'
+                              : 'bg-red-500/25 text-admin-danger ring-red-400/30'
                       ]"
                     >
                       {{ viewingOrg.status }}
                     </span>
                     <span
-                      class="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-gray-200 ring-1 ring-white/15"
+                      class="inline-flex items-center rounded-full bg-admin-field/10 px-3 py-1 text-xs font-medium text-admin-muted ring-1 ring-admin-line/15"
                     >
                       {{ getTypeLabel(viewingOrg.type) }}
                     </span>
@@ -423,7 +423,7 @@
               <button
                 type="button"
                 @click="showViewDialog = false"
-                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                class="shrink-0 rounded-lg p-2 text-admin-subtle transition-colors hover:bg-admin-field/10 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
               >
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -434,7 +434,7 @@
           <div class="max-h-[min(72vh,calc(100vh-10rem))] overflow-y-auto px-6 py-6 sm:px-7">
             <div v-if="viewingOrg" class="space-y-6">
               <div
-                class="flex flex-wrap gap-1.5 rounded-xl bg-zinc-950/80 p-1.5 ring-1 ring-white/10"
+                class="flex flex-wrap gap-1.5 rounded-xl bg-admin-sunken/80 p-1.5 ring-1 ring-admin-line/10"
                 role="tablist"
                 :aria-label="$t('admin.organizationDetails')"
               >
@@ -445,8 +445,8 @@
                   class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                   :class="
                     viewOrgPaneTab === 'overview'
-                      ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                      : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                   "
                   @click="viewOrgPaneTab = 'overview'"
                 >
@@ -459,8 +459,8 @@
                   class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                   :class="
                     viewOrgPaneTab === 'documents'
-                      ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                      : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                   "
                   @click="viewOrgPaneTab = 'documents'"
                 >
@@ -473,8 +473,8 @@
                   class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                   :class="
                     viewOrgPaneTab === 'accounts'
-                      ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                      : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                   "
                   @click="viewOrgPaneTab = 'accounts'"
                 >
@@ -484,55 +484,55 @@
 
               <div v-show="viewOrgPaneTab === 'overview'" class="space-y-6">
               <!-- Logo & media -->
-              <section class="rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+              <section class="rounded-xl border border-admin-line/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionMedia') }}
                 </h4>
-                <label class="mb-2 block text-xs font-medium uppercase tracking-wide text-gray-500">{{ $t('admin.logoAndMedia') }}</label>
+                <label class="mb-2 block text-xs font-medium uppercase tracking-wide text-admin-faint">{{ $t('admin.logoAndMedia') }}</label>
                 <div v-if="viewingOrg.logoUrl" class="mb-3">
                   <img
                     :src="mediaUrl(viewingOrg.logoUrl)"
                     alt="Logo"
-                    class="h-20 w-20 object-contain rounded border border-white/20"
+                    class="h-20 w-20 object-contain rounded border border-admin-line/20"
                   />
                 </div>
-                <div v-else class="mb-3 text-sm text-gray-500">{{ $t('admin.noLogo') }}</div>
+                <div v-else class="mb-3 text-sm text-admin-faint">{{ $t('admin.noLogo') }}</div>
                 <div v-if="viewingOrg.media && viewingOrg.media.length" class="flex flex-wrap gap-2 mb-3">
                   <div
                     v-for="m in viewingOrg.media"
                     :key="m.id"
-                    class="flex items-center gap-2 rounded border border-white/20 bg-white/5 px-2 py-1"
+                    class="flex items-center gap-2 rounded border border-admin-line/20 bg-admin-field/5 px-2 py-1"
                   >
                     <template v-if="m.url && (m.mediaKind === 'IMAGE' || m.mediaKind === 'LOGO')">
                       <img
                         :src="mediaUrl(m.url)"
                         :alt="m.mediaKind"
-                        class="h-10 w-10 object-cover rounded border border-white/20"
+                        class="h-10 w-10 object-cover rounded border border-admin-line/20"
                         loading="lazy"
                       />
                     </template>
                     <template v-else-if="m.url && m.mediaKind === 'VIDEO'">
                       <video
                         :src="mediaUrl(m.url)"
-                        class="h-10 w-10 object-cover rounded border border-white/20"
+                        class="h-10 w-10 object-cover rounded border border-admin-line/20"
                         muted
                         playsinline
                         preload="none"
                       />
                     </template>
-                    <span class="text-xs text-gray-400">{{ m.mediaKind }}</span>
+                    <span class="text-xs text-admin-subtle">{{ m.mediaKind }}</span>
                     <button
                       type="button"
                       @click="deleteMedia(viewingOrg.id, m.id)"
-                      class="text-red-300 hover:text-red-200 text-xs"
+                      class="text-admin-danger hover:text-admin-danger text-xs"
                     >
                       {{ $t('admin.delete') }}
                     </button>
                   </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-primary-100/20 hover:border-primary-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-admin-line/20 bg-admin-field/5 text-sm text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 cursor-pointer">
                     {{ $t('admin.uploadLogo') }}
                     <input
                       type="file"
@@ -541,7 +541,7 @@
                       @change="onUploadLogo($event, viewingOrg.id)"
                     />
                   </label>
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-primary-100/20 hover:border-primary-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-admin-line/20 bg-admin-field/5 text-sm text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 cursor-pointer">
                     {{ $t('admin.uploadImages') }}
                     <input
                       type="file"
@@ -551,7 +551,7 @@
                       @change="onUploadImages($event, viewingOrg.id)"
                     />
                   </label>
-                  <label class="px-3 py-1.5 rounded border border-white/20 bg-white/5 text-sm text-white hover:bg-primary-100/20 hover:border-primary-400 cursor-pointer">
+                  <label class="px-3 py-1.5 rounded border border-admin-line/20 bg-admin-field/5 text-sm text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 cursor-pointer">
                     {{ $t('admin.uploadVideo') }}
                     <input
                       type="file"
@@ -563,66 +563,66 @@
                 </div>
               </section>
 
-              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+              <section class="rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionOverview') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Name</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.name }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Name</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.name }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Registration Number</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Registration Number</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
                 </div>
                 </div>
               </section>
 
-              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+              <section class="rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionContact') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Email</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.email || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Email</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.email || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Phone</label>
-                  <p class="mt-1 text-sm text-white">{{ formatOrganizationPhones(viewingOrg).join(', ') || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Phone</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ formatOrganizationPhones(viewingOrg).join(', ') || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">City</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.city || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">City</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.city || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Country</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.country || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Country</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.country || 'N/A' }}</p>
                 </div>
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-400">Address</label>
-                  <p class="mt-1 text-sm text-white">{{ viewingOrg.address || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Address</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.address || 'N/A' }}</p>
                 </div>
                 </div>
               </section>
 
-              <section class="rounded-xl border border-white/10 bg-zinc-950/40 p-5">
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+              <section class="rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-5">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionOnline') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div class="col-span-2">
-                  <label class="block text-sm font-medium text-gray-400">Description</label>
-                  <p class="mt-1 text-sm leading-relaxed text-white">{{ viewingOrg.description || 'N/A' }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Description</label>
+                  <p class="mt-1 text-sm leading-relaxed text-admin-fg">{{ viewingOrg.description || 'N/A' }}</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Website</label>
-                  <p class="mt-1 text-sm text-white">
-                    <a v-if="viewingOrg.website" :href="viewingOrg.website" target="_blank" class="text-white hover:underline">
+                  <label class="block text-sm font-medium text-admin-subtle">Website</label>
+                  <p class="mt-1 text-sm text-admin-fg">
+                    <a v-if="viewingOrg.website" :href="viewingOrg.website" target="_blank" class="text-admin-fg hover:underline">
                       {{ viewingOrg.website }}
                     </a>
                     <span v-else>N/A</span>
@@ -638,45 +638,45 @@
                       :youtube-url="viewingOrg.youtubeUrl"
                     />
                   </div>
-                  <p v-else class="mt-1 text-sm text-gray-500">N/A</p>
+                  <p v-else class="mt-1 text-sm text-admin-faint">N/A</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-400">Created</label>
-                  <p class="mt-1 text-sm text-white">{{ formatDate(viewingOrg.createdAt) }}</p>
+                  <label class="block text-sm font-medium text-admin-subtle">Created</label>
+                  <p class="mt-1 text-sm text-admin-fg">{{ formatDate(viewingOrg.createdAt) }}</p>
                 </div>
                 </div>
               </section>
 
               <section
                 v-if="viewingOrg?.type === 'SUPPLIER'"
-                class="rounded-xl border border-white/10 bg-zinc-950/40 p-5"
+                class="rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-5"
               >
-                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+                <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.viewMaterialSpecialties') }}
                 </h4>
-                <p class="mb-3 text-xs text-gray-500">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
-                <div v-if="!activeSupplierSubcategoryOptions.length && !subcategoryOptionsLoading" class="text-sm text-gray-500">
+                <p class="mb-3 text-xs text-admin-faint">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
+                <div v-if="!activeSupplierSubcategoryOptions.length && !subcategoryOptionsLoading" class="text-sm text-admin-faint">
                   {{ $t('admin.noSubcategoriesLoaded') }}
                 </div>
                 <div v-else class="flex max-h-44 flex-wrap gap-x-4 gap-y-2 overflow-y-auto">
                   <label
                     v-for="s in activeSupplierSubcategoryOptions"
                     :key="s.id"
-                    class="flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+                    class="flex cursor-pointer items-center gap-2 text-sm text-admin-muted"
                   >
                     <input
                       v-model="viewingSubcategoryIds"
                       type="checkbox"
                       :value="s.id"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
+                      class="rounded border-admin-line/20 bg-admin-field/5 text-admin-accent-fg focus:ring-primary-400"
                     />
                     {{ s.name }}
                   </label>
                 </div>
                 <button
                   type="button"
-                  class="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-primary-100 disabled:opacity-50"
+                  class="mt-4 rounded-lg bg-admin-accent px-4 py-2 text-sm font-semibold text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50"
                   :disabled="supplierSubcatSaveBusy"
                   @click="saveViewingSupplierSubcategories"
                 >
@@ -686,8 +686,8 @@
 
               <!-- Sponsorship management -->
               <div class="rounded-xl border border-black/20 bg-gradient-to-br from-black/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
-                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-violet-950/20 text-white">
+                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-admin-fg">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-admin-nav/20 text-admin-fg">
                     <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
@@ -698,23 +698,23 @@
                   <div
                     v-for="app in orgSponsorshipApplications"
                     :key="app.id"
-                    class="rounded border border-white/20 bg-white/5 px-3 py-2 space-y-2"
+                    class="rounded border border-admin-line/20 bg-admin-field/5 px-3 py-2 space-y-2"
                   >
                     <div class="flex flex-wrap items-center justify-between gap-2">
                       <div class="min-w-0">
-                        <span class="text-sm text-white">{{ app.sponsorshipName }}</span>
-                        <span class="ml-2 text-xs text-gray-400">({{ app.sponsorship?.type }})</span>
+                        <span class="text-sm text-admin-fg">{{ app.sponsorshipName }}</span>
+                        <span class="ml-2 text-xs text-admin-subtle">({{ app.sponsorship?.type }})</span>
                         <span
                           :class="[
                             'ml-2 px-2 py-0.5 text-xs rounded',
-                            app.status === 'APPROVED' ? 'bg-green-500/30 text-green-200' :
-                            app.status === 'PENDING' ? 'bg-violet-950/30 text-white' :
-                            'bg-red-500/30 text-red-200'
+                            app.status === 'APPROVED' ? 'bg-green-500/30 text-admin-ok' :
+                            app.status === 'PENDING' ? 'bg-admin-nav/30 text-admin-fg' :
+                            'bg-red-500/30 text-admin-danger'
                           ]"
                         >
                           {{ app.status }}
                         </span>
-                        <span v-if="app.isActive" class="ml-2 text-xs text-green-300">(active)</span>
+                        <span v-if="app.isActive" class="ml-2 text-xs text-admin-ok">(active)</span>
                       </div>
                       <div v-if="app.status !== 'PENDING'" class="flex gap-2 flex-shrink-0">
                         <button
@@ -726,25 +726,25 @@
                         </button>
                       </div>
                     </div>
-                    <div v-if="app.status === 'PENDING'" class="border-t border-white/10 pt-2 space-y-2">
-                      <p v-if="app.organizationStatus" class="text-xs text-gray-400">
+                    <div v-if="app.status === 'PENDING'" class="border-t border-admin-line/10 pt-2 space-y-2">
+                      <p v-if="app.organizationStatus" class="text-xs text-admin-subtle">
                         {{ $t('admin.orgStatus') }}:
                         <span class="text-amber-200/90">{{ app.organizationStatus }}</span>
                       </p>
-                      <p v-if="app.verificationUser" class="text-xs text-gray-400 break-words">
+                      <p v-if="app.verificationUser" class="text-xs text-admin-subtle break-words">
                         {{ $t('admin.sponsorshipContactToVerify') }}:
                         {{ app.verificationUser.firstName }} {{ app.verificationUser.lastName }}
                         · {{ app.verificationUser.email }}
                       </p>
                       <div class="flex flex-wrap gap-3 text-xs">
-                        <span :class="app.organizationVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+                        <span :class="app.organizationVerifiedAt ? 'text-admin-ok' : 'text-admin-faint'">
                           {{ app.organizationVerifiedAt ? $t('admin.sponsorshipOrgVerified') : $t('admin.sponsorshipOrgNotVerified') }}
                         </span>
-                        <span :class="app.userVerifiedAt ? 'text-green-300' : 'text-gray-500'">
+                        <span :class="app.userVerifiedAt ? 'text-admin-ok' : 'text-admin-faint'">
                           {{ app.userVerifiedAt ? $t('admin.sponsorshipUserVerified') : $t('admin.sponsorshipUserNotVerified') }}
                         </span>
                       </div>
-                      <p v-if="!canApproveSponsorshipApplication(app)" class="text-xs text-white/90">
+                      <p v-if="!canApproveSponsorshipApplication(app)" class="text-xs text-admin-fg/90">
                         {{ $t('admin.sponsorshipPendingApproval') }}
                       </p>
                       <div class="flex flex-wrap gap-2">
@@ -752,7 +752,7 @@
                           type="button"
                           :disabled="!!app.organizationVerifiedAt"
                           @click="verifyOrgSponsorshipApp(app.id)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.sponsorshipVerifyOrg') }}
                         </button>
@@ -760,7 +760,7 @@
                           type="button"
                           :disabled="!!app.userVerifiedAt"
                           @click="verifyUserSponsorshipApp(app)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-cyan-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.sponsorshipVerifyUser') }}
                         </button>
@@ -768,14 +768,14 @@
                           type="button"
                           :disabled="!canApproveSponsorshipApplication(app)"
                           @click="approveSponsorshipApp(app.id)"
-                          class="text-xs px-2 py-1 rounded border border-white/20 bg-white/5 text-green-300 hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          class="text-xs px-2 py-1 rounded border border-admin-line/20 bg-admin-field/5 text-admin-ok hover:border-primary-400 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           {{ $t('admin.activate') }}
                         </button>
                         <button
                           type="button"
                           @click="rejectSponsorshipApp(app)"
-                          class="text-xs text-red-300 hover:text-primary-400"
+                          class="text-xs text-admin-danger hover:text-primary-400"
                         >
                           {{ $t('admin.reject') }}
                         </button>
@@ -790,15 +790,15 @@
                     </div>
                   </div>
                 </div>
-                <div v-else class="text-sm text-gray-500 mb-4">{{ $t('admin.noSponsorshipApplications') }}</div>
-                <div class="rounded border border-white/10 bg-white/5 p-3 sm:p-4 space-y-4">
-                  <p class="text-xs font-medium text-gray-400">{{ $t('admin.assignNewSponsorship') }}</p>
+                <div v-else class="text-sm text-admin-faint mb-4">{{ $t('admin.noSponsorshipApplications') }}</div>
+                <div class="rounded border border-admin-line/10 bg-admin-field/5 p-3 sm:p-4 space-y-4">
+                  <p class="text-xs font-medium text-admin-subtle">{{ $t('admin.assignNewSponsorship') }}</p>
                   <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div>
-                      <label class="block text-xs font-medium text-gray-400">{{ $t('admin.packageName') }}</label>
+                      <label class="block text-xs font-medium text-admin-subtle">{{ $t('admin.packageName') }}</label>
                       <select
                         v-model="assignSponsorship.sponsorshipId"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                        class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                       >
                         <option value="">— {{ $t('admin.selectPackage') }} —</option>
                         <option v-for="pkg in activeSponsorshipsList" :key="pkg.id" :value="pkg.id">
@@ -807,32 +807,32 @@
                       </select>
                     </div>
                     <div>
-                      <label class="block text-xs font-medium text-gray-400">{{ $t('admin.startDate') }}</label>
+                      <label class="block text-xs font-medium text-admin-subtle">{{ $t('admin.startDate') }}</label>
                       <input
                         v-model="assignSponsorship.startDate"
                         type="date"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                        class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                       />
                     </div>
                     <div>
-                      <label class="block text-xs font-medium text-gray-400">{{ $t('admin.endDate') }}</label>
+                      <label class="block text-xs font-medium text-admin-subtle">{{ $t('admin.endDate') }}</label>
                       <input
                         v-model="assignSponsorship.endDate"
                         type="date"
-                        class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                        class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                       />
                     </div>
                   </div>
                   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-1">
-                    <label class="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
-                      <input v-model="assignSponsorship.autoApprove" type="checkbox" class="rounded border-white/20 text-white focus:ring-primary-400" />
+                    <label class="flex items-center gap-2 text-sm text-admin-subtle cursor-pointer">
+                      <input v-model="assignSponsorship.autoApprove" type="checkbox" class="rounded border-admin-line/20 text-admin-fg focus:ring-primary-400" />
                       {{ $t('admin.autoApprove') }}
                     </label>
                     <button
                       type="button"
                       :disabled="!assignSponsorship.sponsorshipId || !assignSponsorship.startDate || !assignSponsorship.endDate || assigningSponsorship"
                       @click="submitAssignSponsorship"
-                      class="w-full sm:w-auto px-4 py-2.5 rounded-md bg-white text-black text-sm font-medium hover:bg-primary-100 disabled:opacity-50 disabled:bg-white/50 transition-colors"
+                      class="w-full sm:w-auto px-4 py-2.5 rounded-md bg-admin-accent text-admin-accent-fg text-sm font-medium hover:bg-admin-accent-hover disabled:opacity-50 disabled:bg-admin-field/50 transition-colors"
                     >
                       {{ assigningSponsorship ? $t('admin.saving') : $t('admin.assignSponsorship') }}
                     </button>
@@ -843,20 +843,20 @@
 
               <div
                 v-if="viewOrgPaneTab === 'accounts'"
-                class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+                class="space-y-4 rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-4 sm:p-5"
               >
                 <OrganizationAccountsPanel :organization-id="viewingOrg.id" />
               </div>
               <div
                 v-show="viewOrgPaneTab === 'documents'"
-                class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+                class="space-y-4 rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-4 sm:p-5"
               >
-                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+                <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionCompliance') }}
                 </h4>
                 <div
-                  class="flex flex-wrap gap-1.5 rounded-xl bg-violet-950/40 p-1.5 ring-1 ring-white/10"
+                  class="flex flex-wrap gap-1.5 rounded-xl bg-admin-nav/40 p-1.5 ring-1 ring-admin-line/10"
                   role="tablist"
                   :aria-label="$t('admin.orgViewTabDocuments')"
                 >
@@ -869,8 +869,8 @@
                     class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 sm:text-sm"
                     :class="
                       viewDocTab === tab.id
-                        ? 'bg-violet-950/25 text-white ring-1 ring-white/15'
-                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                        ? 'bg-admin-nav/25 text-admin-fg ring-1 ring-admin-line/15'
+                        : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                     "
                     @click="viewDocTab = tab.id"
                   >
@@ -938,7 +938,7 @@
             </div>
           </div>
           <div
-            class="flex flex-wrap justify-end gap-2 border-t border-white/10 bg-zinc-950/70 px-6 py-4 sm:gap-3 sm:px-7"
+            class="flex flex-wrap justify-end gap-2 border-t border-admin-line/10 bg-admin-sunken/70 px-6 py-4 sm:gap-3 sm:px-7"
           >
             <button
               v-if="viewingOrg?.status === 'APPROVED'"
@@ -952,21 +952,21 @@
               v-if="viewingOrg?.status === 'SUSPENDED'"
               type="button"
               @click="reactivateOrg(viewingOrg)"
-              class="rounded-lg border border-green-500/40 px-4 py-2.5 text-sm font-medium text-green-200 transition-colors hover:bg-green-500/20"
+              class="rounded-lg border border-green-500/40 px-4 py-2.5 text-sm font-medium text-admin-ok transition-colors hover:bg-green-500/20"
             >
               {{ $t('admin.reactivate') }}
             </button>
             <button
               type="button"
               @click="openEditModal(viewingOrg)"
-              class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:bg-violet-950/15"
+              class="rounded-lg border border-admin-line/20 px-4 py-2.5 text-sm font-medium text-admin-fg transition-colors hover:border-primary-400 hover:bg-admin-nav/15"
             >
               {{ $t('admin.edit') }}
             </button>
             <button
               type="button"
               @click="showViewDialog = false"
-              class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-primary-100"
+              class="rounded-lg bg-admin-accent px-5 py-2.5 text-sm font-semibold text-admin-accent-fg shadow-sm transition-colors hover:bg-admin-accent-hover"
             >
               {{ $t('admin.close') }}
             </button>
@@ -977,25 +977,25 @@
       <!-- Create / Edit Organization Modal -->
       <div
         v-if="showFormDialog"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-admin-nav/80 px-4 pb-12 pt-10 backdrop-blur-[2px]"
         @click.self="showFormDialog = false"
       >
         <div
-          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-2xl shadow-black/50 ring-1 ring-white/5"
+          class="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-admin-line/10 bg-admin-surface text-admin-fg shadow-2xl shadow-black/50 ring-1 ring-admin-line/5"
           role="dialog"
           aria-modal="true"
           aria-labelledby="admin-org-form-title"
           @click.stop
         >
           <div
-            class="border-b border-white/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-admin-line/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
                 <div
-                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-violet-950/15 shadow-inner sm:h-14 sm:w-14"
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-admin-line/15 bg-admin-nav/15 shadow-inner sm:h-14 sm:w-14"
                 >
-                  <svg class="h-7 w-7 text-white sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="h-7 w-7 text-admin-fg sm:h-8 sm:w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -1005,10 +1005,10 @@
                   </svg>
                 </div>
                 <div class="min-w-0 pt-0.5">
-                  <h3 id="admin-org-form-title" class="text-xl font-semibold tracking-tight text-white">
+                  <h3 id="admin-org-form-title" class="text-xl font-semibold tracking-tight text-admin-fg">
                     {{ formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.editOrganization') }}
                   </h3>
-                  <p class="mt-1.5 max-w-lg text-sm leading-relaxed text-gray-400">
+                  <p class="mt-1.5 max-w-lg text-sm leading-relaxed text-admin-subtle">
                     {{
                       formMode === 'create' ? $t('admin.orgFormCreateSubtitle') : $t('admin.orgFormEditSubtitle')
                     }}
@@ -1018,7 +1018,7 @@
               <button
                 type="button"
                 @click="showFormDialog = false"
-                class="shrink-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-white/10 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                class="shrink-0 rounded-lg p-2 text-admin-subtle transition-colors hover:bg-admin-field/10 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
               >
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -1030,7 +1030,7 @@
             <div class="min-h-0 flex-1 overflow-y-auto px-6 py-5 sm:px-7">
               <div class="space-y-5">
             <div
-              class="flex flex-wrap gap-1.5 rounded-xl bg-zinc-950/80 p-1.5 ring-1 ring-white/10"
+              class="flex flex-wrap gap-1.5 rounded-xl bg-admin-sunken/80 p-1.5 ring-1 ring-admin-line/10"
               role="tablist"
               :aria-label="$t('admin.organizationManagement')"
             >
@@ -1041,8 +1041,8 @@
                 class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'profile'
-                    ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                    : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                 "
                 @click="orgFormTab = 'profile'"
               >
@@ -1055,8 +1055,8 @@
                 class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'contact'
-                    ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                    : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                 "
                 @click="orgFormTab = 'contact'"
               >
@@ -1069,8 +1069,8 @@
                 class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'online'
-                    ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                    : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                 "
                 @click="orgFormTab = 'online'"
               >
@@ -1083,8 +1083,8 @@
                 class="rounded-lg px-3.5 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-zinc-900"
                 :class="
                   orgFormTab === 'documents'
-                    ? 'bg-violet-950/25 text-white shadow-sm ring-1 ring-white/15'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    ? 'bg-admin-nav/25 text-admin-fg shadow-sm ring-1 ring-admin-line/15'
+                    : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                 "
                 @click="orgFormTab = 'documents'"
               >
@@ -1093,31 +1093,31 @@
             </div>
             <div v-show="orgFormTab === 'profile'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="sm:col-span-2">
-                <label for="org-name" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgName') }} *</label>
+                <label for="org-name" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgName') }} *</label>
                 <input
                   id="org-name"
                   v-model="form.name"
                   type="text"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label for="org-reg" class="block text-sm font-medium text-gray-300">{{ $t('admin.registrationNumber') }}</label>
+                <label for="org-reg" class="block text-sm font-medium text-admin-muted">{{ $t('admin.registrationNumber') }}</label>
                 <input
                   id="org-reg"
                   v-model="form.registrationNumber"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label for="org-type" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgType') }} *</label>
+                <label for="org-type" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgType') }} *</label>
                 <select
                   id="org-type"
                   v-model="form.type"
                   required
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option
                     v-for="type in organizationTypeFormOptions"
@@ -1128,34 +1128,34 @@
                   </option>
                 </select>
               </div>
-              <div v-if="form.type === 'SUPPLIER'" class="sm:col-span-2 rounded-lg border border-white/10 bg-zinc-950/40 p-4">
-                <label class="block text-sm font-medium text-gray-300">{{ $t('admin.materialSupplierSubcategories') }}</label>
-                <p class="mt-1 text-xs text-gray-500">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
-                <div v-if="!activeSupplierSubcategoryOptions.length" class="mt-2 text-sm text-gray-500">
+              <div v-if="form.type === 'SUPPLIER'" class="sm:col-span-2 rounded-lg border border-admin-line/10 bg-admin-sunken/40 p-4">
+                <label class="block text-sm font-medium text-admin-muted">{{ $t('admin.materialSupplierSubcategories') }}</label>
+                <p class="mt-1 text-xs text-admin-faint">{{ $t('admin.materialSupplierSubcategoriesHint') }}</p>
+                <div v-if="!activeSupplierSubcategoryOptions.length" class="mt-2 text-sm text-admin-faint">
                   {{ subcategoryOptionsLoading ? '…' : $t('admin.noSubcategoriesLoaded') }}
                 </div>
                 <div v-else class="mt-3 flex max-h-44 flex-wrap gap-x-4 gap-y-2 overflow-y-auto">
                   <label
                     v-for="s in activeSupplierSubcategoryOptions"
                     :key="s.id"
-                    class="flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+                    class="flex cursor-pointer items-center gap-2 text-sm text-admin-muted"
                   >
                     <input
                       v-model="form.supplierSubcategoryIds"
                       type="checkbox"
                       :value="s.id"
-                      class="rounded border-white/20 bg-white/5 text-black focus:ring-primary-400"
+                      class="rounded border-admin-line/20 bg-admin-field/5 text-admin-accent-fg focus:ring-primary-400"
                     />
                     {{ s.name }}
                   </label>
                 </div>
               </div>
               <div v-if="formMode === 'create'" class="sm:col-span-2">
-                <label for="org-initial-status" class="block text-sm font-medium text-gray-300">{{ $t('admin.initialStatus') }}</label>
+                <label for="org-initial-status" class="block text-sm font-medium text-admin-muted">{{ $t('admin.initialStatus') }}</label>
                 <select
                   id="org-initial-status"
                   v-model="form.initialStatus"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 >
                   <option value="PENDING_APPROVAL">{{ $t('admin.statusPendingApproval') }}</option>
                   <option value="APPROVED">{{ $t('admin.statusApproved') }}</option>
@@ -1164,16 +1164,16 @@
             </div>
             <div v-show="orgFormTab === 'contact'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label for="org-email" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgEmail') }}</label>
+                <label for="org-email" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgEmail') }}</label>
                 <input
                   id="org-email"
                   v-model="form.email"
                   type="email"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div class="sm:col-span-2">
-                <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('admin.orgPhone') }}</label>
+                <label class="block text-sm font-medium text-admin-muted mb-1">{{ $t('admin.orgPhone') }}</label>
                 <div class="space-y-2">
                   <div
                     v-for="(phone, idx) in form.phoneNumbers"
@@ -1191,7 +1191,7 @@
                     <button
                       v-if="form.phoneNumbers.length > 1"
                       type="button"
-                      class="flex-shrink-0 p-2 text-gray-400 hover:text-red-400 rounded border border-white/20 hover:border-red-400 transition-colors"
+                      class="flex-shrink-0 p-2 text-admin-subtle hover:text-admin-danger rounded border border-admin-line/20 hover:border-red-400 transition-colors"
                       :aria-label="$t('admin.removePhone')"
                       @click="form.phoneNumbers.splice(idx, 1)"
                     >
@@ -1200,7 +1200,7 @@
                   </div>
                   <button
                     type="button"
-                    class="text-sm text-white hover:text-primary-400 transition-colors"
+                    class="text-sm text-admin-fg hover:text-primary-400 transition-colors"
                     @click="form.phoneNumbers.push({ countryCode: DEFAULT_COUNTRY_CODE, number: '' })"
                   >
                     + {{ $t('admin.addPhone') }}
@@ -1208,34 +1208,34 @@
                 </div>
               </div>
               <div>
-                <label for="org-address" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgAddress') }}</label>
+                <label for="org-address" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgAddress') }}</label>
                 <input
                   id="org-address"
                   v-model="form.address"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label for="org-city" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgCity') }}</label>
+                <label for="org-city" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgCity') }}</label>
                 <input
                   id="org-city"
                   v-model="form.city"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div>
-                <label for="org-country" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgCountry') }}</label>
+                <label for="org-country" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgCountry') }}</label>
                 <input
                   id="org-country"
                   v-model="form.country"
                   type="text"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
               <div class="sm:col-span-2">
-                <label class="block text-sm font-medium text-gray-300 mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
+                <label class="block text-sm font-medium text-admin-muted mb-1">{{ $t('property.locationMap') }} / {{ $t('admin.pickLocation') }}</label>
                 <OsmMapPicker
                   :model-value="(form.latitude != null && form.longitude != null) ? { lat: form.latitude, lng: form.longitude } : null"
                   @update:latitude="(v) => (form.latitude = v)"
@@ -1243,68 +1243,68 @@
                   height="260px"
                   :hint-text="$t('admin.pickLocationHint')"
                 />
-                <p v-if="form.latitude != null && form.longitude != null" class="mt-1 text-xs text-gray-400">
+                <p v-if="form.latitude != null && form.longitude != null" class="mt-1 text-xs text-admin-subtle">
                   {{ form.latitude?.toFixed(5) }}, {{ form.longitude?.toFixed(5) }}
                 </p>
               </div>
             </div>
             <div v-show="orgFormTab === 'online'" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="sm:col-span-2">
-                <label for="org-website" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgWebsite') }}</label>
+                <label for="org-website" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgWebsite') }}</label>
                 <input
                   id="org-website"
                   v-model="form.website"
                   type="url"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
-              <div class="sm:col-span-2 border-t border-white/10 pt-4">
+              <div class="sm:col-span-2 border-t border-admin-line/10 pt-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label for="org-fb" class="block text-xs font-medium text-gray-400">{{ $t('organization.facebook') }}</label>
-                    <input id="org-fb" v-model="form.facebookUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                    <label for="org-fb" class="block text-xs font-medium text-admin-subtle">{{ $t('organization.facebook') }}</label>
+                    <input id="org-fb" v-model="form.facebookUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   </div>
                   <div>
-                    <label for="org-ig" class="block text-xs font-medium text-gray-400">{{ $t('organization.instagram') }}</label>
-                    <input id="org-ig" v-model="form.instagramUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                    <label for="org-ig" class="block text-xs font-medium text-admin-subtle">{{ $t('organization.instagram') }}</label>
+                    <input id="org-ig" v-model="form.instagramUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   </div>
                   <div>
-                    <label for="org-li" class="block text-xs font-medium text-gray-400">{{ $t('organization.linkedin') }}</label>
-                    <input id="org-li" v-model="form.linkedinUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                    <label for="org-li" class="block text-xs font-medium text-admin-subtle">{{ $t('organization.linkedin') }}</label>
+                    <input id="org-li" v-model="form.linkedinUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   </div>
                   <div>
-                    <label for="org-xt" class="block text-xs font-medium text-gray-400">{{ $t('organization.twitter') }}</label>
-                    <input id="org-xt" v-model="form.twitterUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                    <label for="org-xt" class="block text-xs font-medium text-admin-subtle">{{ $t('organization.twitter') }}</label>
+                    <input id="org-xt" v-model="form.twitterUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   </div>
                   <div class="sm:col-span-2">
-                    <label for="org-yt" class="block text-xs font-medium text-gray-400">{{ $t('organization.youtube') }}</label>
-                    <input id="org-yt" v-model="form.youtubeUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                    <label for="org-yt" class="block text-xs font-medium text-admin-subtle">{{ $t('organization.youtube') }}</label>
+                    <input id="org-yt" v-model="form.youtubeUrl" type="url" placeholder="https://…" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   </div>
                 </div>
               </div>
               <div class="sm:col-span-2">
-                <label for="org-description" class="block text-sm font-medium text-gray-300">{{ $t('admin.orgDescription') }}</label>
+                <label for="org-description" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgDescription') }}</label>
                 <textarea
                   id="org-description"
                   v-model="form.description"
                   rows="3"
-                  class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                  class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
               </div>
             </div>
             <div
               v-show="orgFormTab === 'documents'"
-              class="space-y-4 rounded-xl border border-white/10 bg-zinc-950/40 p-4 sm:p-5"
+              class="space-y-4 rounded-xl border border-admin-line/10 bg-admin-sunken/40 p-4 sm:p-5"
             >
               <div
                 v-if="formMode === 'create' && !editingOrgId"
-                class="rounded-lg border border-white/10 bg-zinc-950/40 p-3 text-sm text-gray-400"
+                class="rounded-lg border border-admin-line/10 bg-admin-sunken/40 p-3 text-sm text-admin-subtle"
                 role="note"
               >
                 {{ $t('admin.orgFormCreateDocumentUploadHint') }}
               </div>
               <div
-                class="flex flex-wrap gap-1.5 rounded-xl bg-violet-950/40 p-1.5 ring-1 ring-white/10"
+                class="flex flex-wrap gap-1.5 rounded-xl bg-admin-nav/40 p-1.5 ring-1 ring-admin-line/10"
                 role="tablist"
                 :aria-label="$t('admin.orgFormTabDocuments')"
               >
@@ -1317,8 +1317,8 @@
                   class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 sm:text-sm"
                   :class="
                     formDocTab === tab.id
-                      ? 'bg-violet-950/25 text-white ring-1 ring-white/15'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      ? 'bg-admin-nav/25 text-admin-fg ring-1 ring-admin-line/15'
+                      : 'text-admin-subtle hover:bg-admin-field/5 hover:text-admin-fg'
                   "
                   @click="formDocTab = tab.id"
                 >
@@ -1327,16 +1327,16 @@
               </div>
               <div v-show="formDocTab === 'business'" class="space-y-4">
                 <div>
-                  <label for="form-org-bus-reg-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docRegistrationNumber') }}</label>
-                  <input id="form-org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
-                  <label for="form-org-bus-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-bus-reg" v-model="form.businessRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-bus-reg-number" class="block text-sm font-medium text-admin-muted">{{ $t('admin.docRegistrationNumber') }}</label>
+                  <input id="form-org-bus-reg-number" v-model="form.businessRegistrationNumber" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-bus-reg" class="mt-3 block text-sm font-medium text-admin-muted">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-bus-reg" v-model="form.businessRegistration" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.businessRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'BUSINESS_REGISTRATION', 'businessRegistration')" />
-                    <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
+                    <button type="button" :disabled="docUploading.businessRegistration" class="text-sm px-2 py-1 border border-admin-line/20 rounded text-admin-muted hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.businessRegistration?.click()">
                       {{ docUploading.businessRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-white hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.businessRegistration)" :href="mediaUrl(form.businessRegistration)" target="_blank" rel="noopener" class="text-sm text-admin-fg hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1352,16 +1352,16 @@
               </div>
               <div v-show="formDocTab === 'license'" class="space-y-4">
                 <div>
-                  <label for="form-org-license-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docLicenseNumber') }}</label>
-                  <input id="form-org-license-number" v-model="form.licenseNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
-                  <label for="form-org-license" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-license" v-model="form.license" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-license-number" class="block text-sm font-medium text-admin-muted">{{ $t('admin.docLicenseNumber') }}</label>
+                  <input id="form-org-license-number" v-model="form.licenseNumber" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-license" class="mt-3 block text-sm font-medium text-admin-muted">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-license" v-model="form.license" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.license = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'LICENSE', 'license')" />
-                    <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
+                    <button type="button" :disabled="docUploading.license" class="text-sm px-2 py-1 border border-admin-line/20 rounded text-admin-muted hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.license?.click()">
                       {{ docUploading.license ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-white hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.license)" :href="mediaUrl(form.license)" target="_blank" rel="noopener" class="text-sm text-admin-fg hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1377,16 +1377,16 @@
               </div>
               <div v-show="formDocTab === 'vat'" class="space-y-4">
                 <div>
-                  <label for="form-org-vat-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docVatNumber') }}</label>
-                  <input id="form-org-vat-number" v-model="form.vatNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
-                  <label for="form-org-vat-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-vat-reg" v-model="form.vatRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-vat-number" class="block text-sm font-medium text-admin-muted">{{ $t('admin.docVatNumber') }}</label>
+                  <input id="form-org-vat-number" v-model="form.vatNumber" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-vat-reg" class="mt-3 block text-sm font-medium text-admin-muted">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-vat-reg" v-model="form.vatRegistration" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.vatRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'VAT_REGISTRATION', 'vatRegistration')" />
-                    <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
+                    <button type="button" :disabled="docUploading.vatRegistration" class="text-sm px-2 py-1 border border-admin-line/20 rounded text-admin-muted hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.vatRegistration?.click()">
                       {{ docUploading.vatRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-white hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.vatRegistration)" :href="mediaUrl(form.vatRegistration)" target="_blank" rel="noopener" class="text-sm text-admin-fg hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1402,16 +1402,16 @@
               </div>
               <div v-show="formDocTab === 'tin'" class="space-y-4">
                 <div>
-                  <label for="form-org-tin-number" class="block text-sm font-medium text-gray-300">{{ $t('admin.docTinNumber') }}</label>
-                  <input id="form-org-tin-number" v-model="form.tinNumber" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
-                  <label for="form-org-tin-reg" class="mt-3 block text-sm font-medium text-gray-300">{{ $t('admin.docUrlOrUpload') }}</label>
-                  <input id="form-org-tin-reg" v-model="form.tinRegistration" type="text" class="mt-1 block w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-tin-number" class="block text-sm font-medium text-admin-muted">{{ $t('admin.docTinNumber') }}</label>
+                  <input id="form-org-tin-number" v-model="form.tinNumber" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
+                  <label for="form-org-tin-reg" class="mt-3 block text-sm font-medium text-admin-muted">{{ $t('admin.docUrlOrUpload') }}</label>
+                  <input id="form-org-tin-reg" v-model="form.tinRegistration" type="text" class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400" />
                   <div v-if="editingOrgId" class="mt-1 flex items-center gap-2">
                     <input type="file" accept=".pdf,image/*,.doc,.docx" class="hidden" :ref="el => { docInputRefs.tinRegistration = el }" @change="ev => onUploadDocument(ev, editingOrgId, 'TIN_REGISTRATION', 'tinRegistration')" />
-                    <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-white/20 rounded text-gray-300 hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
+                    <button type="button" :disabled="docUploading.tinRegistration" class="text-sm px-2 py-1 border border-admin-line/20 rounded text-admin-muted hover:border-primary-400 hover:text-primary-400 disabled:opacity-50" @click="docInputRefs.tinRegistration?.click()">
                       {{ docUploading.tinRegistration ? 'Uploading…' : $t('admin.uploadDocument') }}
                     </button>
-                    <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-white hover:underline">{{ $t('admin.viewDocument') }}</a>
+                    <a v-if="isDocumentUrl(form.tinRegistration)" :href="mediaUrl(form.tinRegistration)" target="_blank" rel="noopener" class="text-sm text-admin-fg hover:underline">{{ $t('admin.viewDocument') }}</a>
                   </div>
                 </div>
                 <OrgDocumentReviewPanel
@@ -1428,22 +1428,22 @@
             </div>
               </div>
             </div>
-            <div class="shrink-0 space-y-3 border-t border-white/10 bg-zinc-950/70 px-6 py-4 sm:px-7">
-            <div v-if="formError" class="rounded-lg border border-red-500/40 bg-red-500/20 p-3 text-sm text-red-100">
+            <div class="shrink-0 space-y-3 border-t border-admin-line/10 bg-admin-sunken/70 px-6 py-4 sm:px-7">
+            <div v-if="formError" class="rounded-lg border border-red-500/40 bg-red-500/20 p-3 text-sm text-admin-danger">
               {{ formError }}
             </div>
             <div class="flex flex-wrap justify-end gap-2 sm:gap-3">
               <button
                 type="button"
                 @click="showFormDialog = false"
-                class="rounded-lg border border-white/20 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:bg-violet-950/15"
+                class="rounded-lg border border-admin-line/20 px-4 py-2.5 text-sm font-medium text-admin-fg transition-colors hover:border-primary-400 hover:bg-admin-nav/15"
               >
                 {{ $t('admin.cancel') }}
               </button>
               <button
                 type="submit"
                 :disabled="formSaving"
-                class="rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-primary-100 disabled:bg-white/50 disabled:opacity-50"
+                class="rounded-lg bg-admin-accent px-5 py-2.5 text-sm font-semibold text-admin-accent-fg shadow-sm transition-colors hover:bg-admin-accent-hover disabled:bg-admin-field/50 disabled:opacity-50"
               >
                 {{ formSaving ? $t('admin.saving') : (formMode === 'create' ? $t('admin.registerOrganization') : $t('admin.updateOrganization')) }}
               </button>
@@ -1456,25 +1456,25 @@
       <!-- Reject Modal -->
       <div
         v-if="showRejectDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showRejectDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-md shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
-            <h3 class="text-lg font-medium text-white mb-4">Reject Organization</h3>
+            <h3 class="text-lg font-medium text-admin-fg mb-4">Reject Organization</h3>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-400 mb-2">Reason</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-2">Reason</label>
               <textarea
                 v-model="rejectReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
+                class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('admin.enterRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showRejectDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-primary-400 transition-colors"
+                class="px-4 py-2 border border-admin-line/20 rounded-md text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400 transition-colors"
               >
                 Cancel
               </button>
@@ -1492,31 +1492,31 @@
       <!-- Suspend Organization Modal -->
       <div
         v-if="showSuspendDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showSuspendDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-md shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
-            <h3 class="text-lg font-medium text-white mb-4">{{ $t('admin.suspendOrganization') }}</h3>
+            <h3 class="text-lg font-medium text-admin-fg mb-4">{{ $t('admin.suspendOrganization') }}</h3>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-400 mb-2">{{ $t('admin.reasonOptional') }}</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-2">{{ $t('admin.reasonOptional') }}</label>
               <textarea
                 v-model="suspendReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
+                class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
                 :placeholder="$t('admin.enterRejectionReason')"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showSuspendDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-primary-400 transition-colors"
+                class="px-4 py-2 border border-admin-line/20 rounded-md text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400 transition-colors"
               >
                 Cancel
               </button>
               <button
                 @click="suspendOrg"
-                class="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-500 transition-colors"
+                class="px-4 py-2 bg-orange-600 text-admin-fg rounded-md hover:bg-orange-500 transition-colors"
               >
                 {{ $t('admin.suspend') }}
               </button>
@@ -1528,24 +1528,24 @@
       <!-- Reject Sponsorship Application Modal -->
       <div
         v-if="showRejectSponsorshipDialog"
-        class="fixed inset-0 bg-violet-950/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
+        class="fixed inset-0 bg-admin-nav/70 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-8"
         @click.self="showRejectSponsorshipDialog = false"
       >
-        <div class="relative mx-auto p-5 border border-white/10 w-full max-w-md shadow-lg rounded-md bg-zinc-900 text-white">
+        <div class="relative mx-auto p-5 border border-admin-line/10 w-full max-w-md shadow-lg rounded-md bg-admin-surface text-admin-fg">
           <div class="mt-3">
-            <h3 class="text-lg font-medium text-white mb-4">{{ $t('admin.rejectSponsorshipApplication') }}</h3>
+            <h3 class="text-lg font-medium text-admin-fg mb-4">{{ $t('admin.rejectSponsorshipApplication') }}</h3>
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-400 mb-2">{{ $t('admin.reasonOptional') }}</label>
+              <label class="block text-sm font-medium text-admin-subtle mb-2">{{ $t('admin.reasonOptional') }}</label>
               <textarea
                 v-model="rejectSponsorshipReason"
                 rows="3"
-                class="w-full border border-white/20 bg-white/5 text-white placeholder-gray-400 rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
+                class="w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg placeholder-admin-subtle rounded-md px-3 py-2 focus:ring-primary-400 focus:border-primary-400"
               />
             </div>
             <div class="flex justify-end space-x-3">
               <button
                 @click="showRejectSponsorshipDialog = false"
-                class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-violet-950/20 hover:border-primary-400 transition-colors"
+                class="px-4 py-2 border border-admin-line/20 rounded-md text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400 transition-colors"
               >
                 Cancel
               </button>
@@ -1563,33 +1563,33 @@
     <!-- Supplier subcategory catalog (admin) -->
     <div
       v-if="showSubcategoryCatalogModal"
-      class="fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-violet-950/80 px-4 pb-12 pt-10"
+      class="fixed inset-0 z-[110] flex items-start justify-center overflow-y-auto bg-admin-nav/80 px-4 pb-12 pt-10"
       @click.self="showSubcategoryCatalogModal = false"
     >
       <div
-        class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 text-white shadow-xl"
+        class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-admin-line/10 bg-admin-surface text-admin-fg shadow-xl"
         role="dialog"
         aria-modal="true"
         @click.stop
       >
-        <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <div class="flex items-center justify-between border-b border-admin-line/10 px-5 py-4">
           <h3 class="text-lg font-semibold">{{ $t('admin.subcategoryCatalogTitle') }}</h3>
           <button
             type="button"
-            class="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-primary-400"
+            class="rounded-lg p-2 text-admin-subtle hover:bg-admin-field/10 hover:text-primary-400"
             @click="showSubcategoryCatalogModal = false"
           >
             ×
           </button>
         </div>
         <div class="max-h-[min(70vh,32rem)] overflow-y-auto px-5 py-4">
-          <p class="mb-4 text-xs text-gray-500">{{ $t('admin.subcategoryCatalogHelp') }}</p>
-          <div v-if="subcategoryCatalogError" class="mb-3 text-sm text-red-300">{{ subcategoryCatalogError }}</div>
-          <div v-if="subcategoryCatalogLoading" class="py-8 text-center text-gray-400">{{ $t('admin.loadingOrganizations') }}</div>
+          <p class="mb-4 text-xs text-admin-faint">{{ $t('admin.subcategoryCatalogHelp') }}</p>
+          <div v-if="subcategoryCatalogError" class="mb-3 text-sm text-admin-danger">{{ subcategoryCatalogError }}</div>
+          <div v-if="subcategoryCatalogLoading" class="py-8 text-center text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</div>
           <div v-else class="overflow-x-auto">
             <table class="min-w-[40rem] w-full text-left text-sm">
             <thead>
-              <tr class="border-b border-white/10 text-xs text-gray-400">
+              <tr class="border-b border-admin-line/10 text-xs text-admin-subtle">
                 <th class="py-2 pr-2">{{ $t('admin.subcategoryName') }}</th>
                 <th class="py-2 pr-2">{{ $t('admin.subcategorySlug') }}</th>
                 <th class="py-2 pr-2">{{ $t('admin.subcategorySort') }}</th>
@@ -1598,40 +1598,40 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in subcategoryCatalogRows" :key="row.id" class="border-b border-white/5">
+              <tr v-for="row in subcategoryCatalogRows" :key="row.id" class="border-b border-admin-line/5">
                 <td class="py-2 pr-2">
                   <input
                     v-model="row.name"
                     type="text"
-                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                    class="w-full rounded border border-admin-line/20 bg-admin-field/5 px-2 py-1 text-admin-fg focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
                   />
                 </td>
                 <td class="py-2 pr-2">
                   <input
                     v-model="row.slug"
                     type="text"
-                    class="w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-xs text-white focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                    class="w-full rounded border border-admin-line/20 bg-admin-field/5 px-2 py-1 text-xs text-admin-fg focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
                   />
                 </td>
                 <td class="py-2 pr-2">
                   <input
                     v-model.number="row.sortOrder"
                     type="number"
-                    class="w-20 rounded border border-white/20 bg-white/5 px-2 py-1 text-white focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                    class="w-20 rounded border border-admin-line/20 bg-admin-field/5 px-2 py-1 text-admin-fg focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
                   />
                 </td>
                 <td class="py-2 pr-2">
-                  <input v-model="row.active" type="checkbox" class="rounded border-white/20 bg-white/5 text-black" />
+                  <input v-model="row.active" type="checkbox" class="rounded border-admin-line/20 bg-admin-field/5 text-admin-accent-fg" />
                 </td>
                 <td class="py-2 whitespace-nowrap">
                   <button
                     type="button"
-                    class="mr-2 text-xs text-white hover:text-primary-400"
+                    class="mr-2 text-xs text-admin-fg hover:text-primary-400"
                     @click="saveCatalogRow(row)"
                   >
                     {{ $t('common.save') }}
                   </button>
-                  <button type="button" class="text-xs text-red-300 hover:text-red-200" @click="deleteCatalogRow(row)">
+                  <button type="button" class="text-xs text-admin-danger hover:text-admin-danger" @click="deleteCatalogRow(row)">
                     {{ $t('common.delete') }}
                   </button>
                 </td>
@@ -1639,24 +1639,24 @@
             </tbody>
           </table>
           </div>
-          <div class="mt-4 rounded-lg border border-white/10 bg-zinc-950/50 p-4">
-            <p class="mb-2 text-xs font-medium text-gray-400">{{ $t('admin.addSubcategory') }}</p>
+          <div class="mt-4 rounded-lg border border-admin-line/10 bg-admin-sunken/50 p-4">
+            <p class="mb-2 text-xs font-medium text-admin-subtle">{{ $t('admin.addSubcategory') }}</p>
             <div class="flex flex-wrap gap-2">
               <input
                 v-model="newSubcategoryName"
                 type="text"
                 :placeholder="$t('admin.subcategoryName')"
-                class="min-w-[8rem] flex-1 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                class="min-w-[8rem] flex-1 rounded border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg placeholder-admin-faint focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
               />
               <input
                 v-model="newSubcategorySlug"
                 type="text"
                 :placeholder="$t('admin.subcategorySlugOptional')"
-                class="w-36 rounded border border-white/20 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                class="w-36 rounded border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg placeholder-admin-faint focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
               />
               <button
                 type="button"
-                class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-primary-100"
+                class="rounded-lg bg-admin-accent px-4 py-2 text-sm font-semibold text-admin-accent-fg hover:bg-admin-accent-hover"
                 :disabled="catalogAddBusy"
                 @click="addCatalogSubcategory"
               >

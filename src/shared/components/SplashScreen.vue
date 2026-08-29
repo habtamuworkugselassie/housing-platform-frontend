@@ -10,13 +10,15 @@
       <!-- Content: event logo (full lockup) + sr-only title + sponsor logo and name -->
       <div class="splash-screen__content flex min-h-0 flex-1 flex-col items-center justify-center text-center">
         <div
-          class="splash-screen__brand max-w-[min(100%,520px)] w-full"
+          class="splash-screen__brand max-w-[min(100%,360px)] w-full"
         >
+          <!-- Transparent wordmark (not the boxed banner PNG) so the logo sits
+               on the splash panel instead of showing a clashing gradient box. -->
           <img
-            src="/images/branding/ethio-build-connect-banner.png"
-            alt="Ethio Build Connect banner"
-            width="520"
-            class="mx-auto w-full h-auto object-contain select-none"
+            src="/images/branding/ethio-build-connect-wordmark.png"
+            alt="Ethio Build Connect"
+            width="360"
+            class="mx-auto w-full max-w-[280px] h-auto object-contain select-none sm:max-w-[340px]"
             draggable="false"
           />
         </div>

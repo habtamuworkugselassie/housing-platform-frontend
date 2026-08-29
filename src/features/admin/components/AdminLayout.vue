@@ -1,27 +1,27 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-white flex">
+  <div class="admin-shell min-h-screen bg-admin-bg text-admin-fg flex" :data-theme="theme">
     <!-- Sidebar -->
     <aside
       :class="[
-        'fixed inset-y-0 left-0 z-50 w-64 bg-zinc-900 border-r border-white/10 transform transition-transform duration-300 ease-in-out',
+        'fixed inset-y-0 left-0 z-50 w-64 bg-admin-surface border-r border-admin-line/10 transform transition-transform duration-300 ease-in-out',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         'lg:translate-x-0 lg:static lg:inset-0'
       ]"
     >
       <div class="flex flex-col h-full">
         <!-- Logo/Brand -->
-        <div class="flex items-center justify-between h-16 px-6 border-b border-white/10">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-admin-line/10">
           <div class="flex items-center">
             <img
               src="/images/branding/ethio-build-connect-wordmark.png"
               alt="Ethio Build Connect"
-              class="flex-shrink-0 h-9 w-auto object-contain"
+              class="flex-shrink-0 h-9 w-auto object-contain admin-wordmark"
             />
-            <span class="ml-3 text-xl font-semibold text-white">{{ $t('admin.portalTitle') }}</span>
+            <span class="ml-3 text-xl font-semibold text-admin-fg">{{ $t('admin.portalTitle') }}</span>
           </div>
           <button
             @click="sidebarOpen = false"
-            class="lg:hidden text-gray-400 hover:text-primary-400"
+            class="lg:hidden text-admin-subtle hover:text-primary-400"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -38,8 +38,8 @@
             :class="[
               'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
               isActive(item.path)
-                ? 'bg-violet-950/20 text-white border border-white/15'
-                : 'text-gray-300 hover:bg-violet-950/20 hover:text-primary-400'
+                ? 'bg-admin-nav/20 text-admin-fg border border-admin-line/15'
+                : 'text-admin-muted hover:bg-admin-nav/20 hover:text-primary-400'
             ]"
           >
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@
             {{ item.name }}
             <span
               v-if="item.badge"
-              class="ml-auto px-2 py-0.5 text-xs font-medium bg-red-500/30 text-red-200 rounded-full"
+              class="ml-auto px-2 py-0.5 text-xs font-medium bg-red-500/30 text-admin-danger rounded-full"
             >
               {{ item.badge }}
             </span>
@@ -62,10 +62,10 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col lg:ml-0">
       <!-- Top Bar -->
-      <header class="bg-zinc-900 border-b border-white/10 h-16 flex items-center justify-between px-4 lg:px-6">
+      <header class="bg-admin-surface border-b border-admin-line/10 h-16 flex items-center justify-between px-4 lg:px-6">
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="lg:hidden text-gray-400 hover:text-primary-400"
+          class="lg:hidden text-admin-subtle hover:text-primary-400"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -78,10 +78,10 @@
             <input
               type="text"
               :placeholder="$t('admin.searchPlaceholder')"
-              class="w-64 pl-10 pr-4 py-2 border border-white/20 bg-white/5 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+              class="w-64 pl-10 pr-4 py-2 border border-admin-line/20 bg-admin-field/5 rounded-lg text-sm text-admin-fg placeholder-admin-subtle focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             />
             <svg
-              class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-admin-subtle"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -91,7 +91,7 @@
           </div>
 
           <!-- Notifications -->
-          <button class="relative p-2 text-gray-400 hover:text-primary-400">
+          <button class="relative p-2 text-admin-subtle hover:text-primary-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -102,21 +102,31 @@
           </button>
 
           <!-- Theme Toggle -->
-          <button class="p-2 text-gray-400 hover:text-primary-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button
+            @click="toggleTheme"
+            class="p-2 text-admin-subtle hover:text-primary-400"
+            :title="isDark() ? $t('admin.theme.switchToLight') : $t('admin.theme.switchToDark')"
+            :aria-label="isDark() ? $t('admin.theme.switchToLight') : $t('admin.theme.switchToDark')"
+          >
+            <!-- Moon: shown in dark, click switches to light -->
+            <svg v-if="isDark()" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <!-- Sun: shown in light, click switches to dark -->
+            <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </button>
 
           <!-- User Profile Dropdown -->
-          <div class="pl-4 border-l border-white/10">
-            <UserDropdown :showName="false" avatarClass="w-8 h-8 sm:w-10 sm:h-10 text-black bg-white" />
+          <div class="pl-4 border-l border-admin-line/10">
+            <UserDropdown :showName="false" avatarClass="w-8 h-8 sm:w-10 sm:h-10 text-admin-accent-fg bg-admin-accent" />
           </div>
         </div>
       </header>
 
       <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto bg-violet-950 text-white p-4 lg:p-6">
+      <main class="flex-1 overflow-y-auto bg-admin-bg text-admin-fg p-4 lg:p-6">
         <slot />
       </main>
     </div>
@@ -125,7 +135,7 @@
     <div
       v-if="sidebarOpen"
       @click="sidebarOpen = false"
-      class="fixed inset-0 bg-violet-950/70 z-40 lg:hidden"
+      class="fixed inset-0 bg-admin-nav/70 z-40 lg:hidden"
     ></div>
   </div>
 </template>
@@ -136,12 +146,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useAdmin } from '../composables/useAdmin'
+import { useAdminTheme } from '../composables/useAdminTheme'
 import UserDropdown from '@/shared/components/UserDropdown.vue'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const { theme, isDark, toggleTheme } = useAdminTheme()
 
 const sidebarOpen = ref(false)
 const { stats, loadStats } = useAdmin()

@@ -513,6 +513,10 @@
     "accountsPrimaryFailed": "Could not set the primary contact.",
     "accountsUnlinkFailed": "Could not unlink the account.",
     "portalTitle": "Admin Portal",
+    "theme": {
+      "switchToLight": "Switch to light theme",
+      "switchToDark": "Switch to dark theme"
+    },
     "administrator": "Administrator",
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
     "nav": {
