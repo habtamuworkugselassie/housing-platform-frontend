@@ -1,14 +1,14 @@
 <template>
-  <section class="py-24 lg:py-32 bg-violet-950 border-t border-white/10 text-white">
+  <section class="py-24 lg:py-32 bg-white text-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-2">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
         {{ $t('exhibition.valueChain.eyebrow') }}
       </p>
       <div class="mb-16">
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-white">
+        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-gray-900">
           {{ $t('exhibition.valueChain.title') }}
         </h2>
-        <p class="text-lg text-white/80 max-w-2xl">
+        <p class="text-lg text-gray-600 max-w-2xl">
           {{ $t('exhibition.valueChain.subtitle') }}
         </p>
       </div>
@@ -17,7 +17,7 @@
         <div
           v-for="(item, index) in sectorConfigs"
           :key="index"
-          class="group relative h-44 sm:h-48 overflow-hidden rounded-xl border border-white/10 hover:border-primary-400 transition-all duration-300"
+          class="group relative h-44 sm:h-48 overflow-hidden rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition-all duration-300"
         >
           <!-- Fallback gradient (shows when image fails or is loading) -->
           <div class="absolute inset-0 z-0 bg-gradient-to-br from-zinc-700 to-zinc-900" aria-hidden="true" />
@@ -36,7 +36,7 @@
             <h3 class="text-sm sm:text-base font-semibold text-white drop-shadow-sm group-hover:text-white transition-colors">
               {{ $t(item.labelKey) }}
             </h3>
-            <div class="w-0 group-hover:w-10 h-0.5 bg-violet-950 mt-2 transition-all duration-300"></div>
+            <div class="w-0 group-hover:w-10 h-0.5 bg-primary-500 mt-2 transition-all duration-300"></div>
           </div>
         </div>
       </div>
