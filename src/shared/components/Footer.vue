@@ -9,7 +9,7 @@
             class="inline-flex w-fit rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5 transition-opacity hover:opacity-90"
           >
             <img
-              src="/images/exhibition/ethio-build-connect-expo-logo-full.png"
+              src="/images/branding/ethio-build-connect-logo-stacked.png"
               :alt="$t('exhibition.hero.eventName')"
               class="h-24 sm:h-28 w-auto object-contain"
             />
