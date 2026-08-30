@@ -1124,6 +1124,7 @@
       "camera": "Camera",
       "microphone": "Microphone",
       "preview": "Preview",
+      "previewCta": "Preview camera",
       "cameraError": "Could not access that camera. Check it's connected and permitted."
     },
     "hero": {

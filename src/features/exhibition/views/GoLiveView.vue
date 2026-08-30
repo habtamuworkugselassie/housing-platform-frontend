@@ -4,6 +4,35 @@
       <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ $t('exhibition.goLive.title') }}</h1>
       <p class="mt-2 text-gray-600">{{ $t('exhibition.goLive.subtitle') }}</p>
 
+      <!-- Camera preview + device selection (available before and during go-live) -->
+      <div v-if="cameraVisible" class="mt-6 space-y-3">
+        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-black shadow-sm">
+          <div class="relative aspect-video w-full">
+            <video ref="videoEl" class="absolute inset-0 h-full w-full object-cover" autoplay muted playsinline />
+            <span v-if="phase === 'live'" class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+              <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" /> {{ $t('exhibition.liveStream.badge') }}
+            </span>
+            <span v-else class="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">{{ $t('exhibition.goLive.preview') }}</span>
+          </div>
+        </div>
+
+        <!-- Pick any connected camera / mic (webcam, USB, capture card) -->
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-camera">{{ $t('exhibition.goLive.camera') }}</label>
+            <select id="gl-camera" v-model="selectedCamera" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
+              <option v-for="(c, i) in cameras" :key="c.deviceId || i" :value="c.deviceId">{{ c.label || `${$t('exhibition.goLive.camera')} ${i + 1}` }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-mic">{{ $t('exhibition.goLive.microphone') }}</label>
+            <select id="gl-mic" v-model="selectedMic" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
+              <option v-for="(m, i) in mics" :key="m.deviceId || i" :value="m.deviceId">{{ m.label || `${$t('exhibition.goLive.microphone')} ${i + 1}` }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <!-- Step 1: request -->
       <form v-if="phase === 'form'" class="mt-6 space-y-4 rounded-2xl border border-gray-200 bg-white p-6" @submit.prevent="request">
         <div class="grid gap-4 sm:grid-cols-2">
@@ -33,59 +62,37 @@
           <input id="gl-title" v-model.trim="form.title" type="text" required :placeholder="$t('exhibition.goLive.streamTitlePlaceholder')" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400" />
         </div>
         <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-        <button type="submit" :disabled="busy" class="w-full rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:bg-primary-300">
-          {{ busy ? $t('exhibition.goLive.requesting') : $t('exhibition.goLive.requestCta') }}
-        </button>
+        <div class="flex flex-col gap-3 sm:flex-row-reverse">
+          <button type="submit" :disabled="busy" class="rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:bg-primary-300 sm:flex-1">
+            {{ busy ? $t('exhibition.goLive.requesting') : $t('exhibition.goLive.requestCta') }}
+          </button>
+          <button v-if="!previewOn" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:border-primary-400 hover:bg-primary-50" @click="startPreview">
+            <span class="material-icons !text-[18px]" aria-hidden="true">videocam</span>
+            {{ $t('exhibition.goLive.previewCta') }}
+          </button>
+        </div>
       </form>
 
-      <!-- Camera setup + preview (shared by waiting / connecting / live) -->
-      <div v-else class="mt-6 space-y-3">
-        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-black shadow-sm">
-          <div class="relative aspect-video w-full">
-            <video ref="videoEl" class="absolute inset-0 h-full w-full object-cover" autoplay muted playsinline />
-            <span v-if="phase === 'live'" class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-              <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" /> {{ $t('exhibition.liveStream.badge') }}
-            </span>
-            <span v-else class="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">{{ $t('exhibition.goLive.preview') }}</span>
-          </div>
-        </div>
+      <!-- Waiting for approval -->
+      <div v-else-if="phase === 'waiting'" class="mt-3 flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
+        <div class="h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-primary-500" />
+        <span class="text-sm text-gray-600">{{ $t('exhibition.goLive.waitingBody') }}</span>
+        <button type="button" class="ml-auto text-sm font-medium text-gray-500 hover:text-primary-600" @click="cancel">{{ $t('common.cancel') }}</button>
+      </div>
 
-        <!-- Device selection: pick any connected camera / mic (webcam, USB, capture card) -->
-        <div class="grid gap-3 sm:grid-cols-2">
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-camera">{{ $t('exhibition.goLive.camera') }}</label>
-            <select id="gl-camera" v-model="selectedCamera" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
-              <option v-for="(c, i) in cameras" :key="c.deviceId || i" :value="c.deviceId">{{ c.label || `${$t('exhibition.goLive.camera')} ${i + 1}` }}</option>
-            </select>
-          </div>
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-mic">{{ $t('exhibition.goLive.microphone') }}</label>
-            <select id="gl-mic" v-model="selectedMic" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
-              <option v-for="(m, i) in mics" :key="m.deviceId || i" :value="m.deviceId">{{ m.label || `${$t('exhibition.goLive.microphone')} ${i + 1}` }}</option>
-            </select>
-          </div>
-        </div>
-
-        <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-
-        <div v-if="phase === 'waiting'" class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
-          <div class="h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-primary-500" />
-          <span class="text-sm text-gray-600">{{ $t('exhibition.goLive.waitingBody') }}</span>
-          <button type="button" class="ml-auto text-sm font-medium text-gray-500 hover:text-primary-600" @click="cancel">{{ $t('common.cancel') }}</button>
-        </div>
-        <div v-else class="flex items-center gap-3">
-          <button type="button" class="rounded-lg border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50" @click="stop">
-            {{ $t('exhibition.goLive.stop') }}
-          </button>
-          <span class="text-sm text-gray-500">{{ phase === 'connecting' ? $t('exhibition.goLive.connecting') : $t('exhibition.goLive.youAreLive') }}</span>
-        </div>
+      <!-- Live / connecting controls -->
+      <div v-else class="mt-3 flex items-center gap-3">
+        <button type="button" class="rounded-lg border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50" @click="stop">
+          {{ $t('exhibition.goLive.stop') }}
+        </button>
+        <span class="text-sm text-gray-500">{{ phase === 'connecting' ? $t('exhibition.goLive.connecting') : $t('exhibition.goLive.youAreLive') }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, watch, onBeforeUnmount } from 'vue'
+import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Room, createLocalTracks, createLocalVideoTrack } from 'livekit-client'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
@@ -103,6 +110,9 @@ const cameras = ref([])
 const mics = ref([])
 const selectedCamera = ref('')
 const selectedMic = ref('')
+const previewOn = ref(false)
+
+const cameraVisible = computed(() => previewOn.value || phase.value !== 'form')
 
 let broadcastId = ''
 let pollTimer = null
@@ -110,6 +120,11 @@ let room = null
 let previewTrack = null // LocalVideoTrack shown before going live
 let localVideo = null
 let localAudio = null
+
+async function startPreview() {
+  previewOn.value = true
+  await setupPreview()
+}
 
 async function request() {
   error.value = ''
@@ -124,7 +139,7 @@ async function request() {
     })
     broadcastId = b.id
     phase.value = 'waiting'
-    setupPreview() // let the provider pick & preview their camera while awaiting approval
+    if (!previewTrack) setupPreview() // ensure a preview if they didn't start one
     poll()
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.requestError')
@@ -135,12 +150,12 @@ async function request() {
 
 // Start a camera preview and enumerate all connected input devices.
 async function setupPreview() {
+  if (previewTrack || localVideo) return
   try {
     previewTrack = await createLocalVideoTrack(
       selectedCamera.value ? { deviceId: selectedCamera.value } : {}
     )
     if (videoEl.value) previewTrack.attach(videoEl.value)
-    // Match the dropdown to the actual device now that we have permission + labels.
     const settings = previewTrack.mediaStreamTrack.getSettings?.() || {}
     if (settings.deviceId) selectedCamera.value = settings.deviceId
     await refreshDevices()
@@ -211,7 +226,6 @@ async function goLive() {
   error.value = ''
   try {
     const { url, token } = await exhibitionApi.getPublishToken(broadcastId)
-    // Stop the preview track and publish with the chosen devices.
     if (previewTrack) {
       previewTrack.detach()
       previewTrack.stop()
@@ -268,6 +282,7 @@ async function teardown() {
 
 async function stop() {
   await teardown()
+  previewOn.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
@@ -275,6 +290,7 @@ async function stop() {
 
 async function cancel() {
   await teardown()
+  previewOn.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
