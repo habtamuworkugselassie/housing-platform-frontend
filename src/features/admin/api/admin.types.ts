@@ -251,6 +251,8 @@ export interface DisplaySettings {
   liveYoutubeUrl?: string
   liveTiktokUrl?: string
   liveFacebookUrl?: string
+  exhibitionFeedbackVisible?: boolean
+  exhibitionFeedbackAutoPublish?: boolean
 }
 
 /**

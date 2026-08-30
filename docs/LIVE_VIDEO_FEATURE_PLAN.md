@@ -60,9 +60,18 @@ Frontend work:
 
 ## Phase 2 — Visitor video feedback feed
 
-- Backend: `ExhibitionVideoFeedback` entity + endpoints — public `POST` (upload, reusing existing media‑upload infra), public `GET` (approved only), admin list/approve/reject/delete. A moderation state (`PENDING`/`APPROVED`/`REJECTED`); public never sees unmoderated video. Guardrails: size/duration caps, content‑type allowlist, per‑IP/email rate limit, optional captcha.
-- Frontend: a submit widget (file upload first; in‑browser `MediaRecorder` as an enhancement) plus a responsive grid of approved clips using the native `<video>` pattern from `SponsorCarouselSection.vue`. Admin moderation view following existing admin list/card patterns.
-- Open decisions: pre‑moderated (recommended) vs auto‑publish; anonymous vs signed‑in submitters.
+Decisions (confirmed):
+
+- **Submitters: anonymous.** Any visitor submits with name + email + a short video. Needs guardrails: size/duration caps, `video/*` content‑type allowlist, and a per‑IP rate limit (implemented without Redis).
+- **Moderation: flag‑driven.** A display‑setting `exhibitionFeedbackAutoPublish` decides the flow:
+  - flag **on** → new submissions are published immediately (`APPROVED`);
+  - flag **off** → new submissions are held (`PENDING`) until an admin approves them.
+  Admins can always reject/delete regardless. A second flag `exhibitionFeedbackVisible` shows/hides the whole feedback section.
+
+Work:
+
+- Backend: `ExhibitionVideoFeedback` entity (UUID id, submitter name/email, video URL, optional caption, `status` PENDING/APPROVED/REJECTED, timestamps, submitter IP) + Flyway migration + repository. Public `POST` (multipart upload, reusing existing media‑upload infra; status set from the auto‑publish flag) and public `GET` (approved only). Admin list/approve/reject/delete. The two flags are added to display‑settings (same mechanism as the live fields).
+- Frontend: a feedback section beneath the live zone — a submit widget (file upload first; in‑browser `MediaRecorder` a later enhancement) + a responsive grid of approved clips using the native `<video>` pattern from `SponsorCarouselSection.vue`. An admin moderation view following existing admin list/card patterns. Admin toggles for the two flags in Display Settings.
 
 ## Phase 3 — Self‑hosted streaming (its own project)
 

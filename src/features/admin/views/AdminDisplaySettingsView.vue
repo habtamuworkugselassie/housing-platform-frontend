@@ -191,6 +191,42 @@
           </div>
         </div>
 
+        <!-- Visitor video feedback -->
+        <div class="space-y-4 rounded-lg border border-admin-line/10 bg-admin-field/5 px-4 py-4">
+          <div class="flex cursor-pointer items-start gap-3">
+            <input
+              id="exhibition-feedback-visible"
+              v-model="form.exhibitionFeedbackVisible"
+              type="checkbox"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-admin-line/30 bg-admin-surface text-admin-fg focus:ring-primary-400"
+            />
+            <label for="exhibition-feedback-visible" class="min-w-0 cursor-pointer">
+              <span class="block text-sm font-medium text-admin-muted">
+                {{ $t('admin.displaySettings.exhibitionFeedback') }}
+              </span>
+              <span class="mt-1 block text-xs text-admin-faint">
+                {{ $t('admin.displaySettings.exhibitionFeedbackHint') }}
+              </span>
+            </label>
+          </div>
+          <div v-if="form.exhibitionFeedbackVisible" class="flex cursor-pointer items-start gap-3 sm:pl-7">
+            <input
+              id="exhibition-feedback-autopublish"
+              v-model="form.exhibitionFeedbackAutoPublish"
+              type="checkbox"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-admin-line/30 bg-admin-surface text-admin-fg focus:ring-primary-400"
+            />
+            <label for="exhibition-feedback-autopublish" class="min-w-0 cursor-pointer">
+              <span class="block text-sm font-medium text-admin-muted">
+                {{ $t('admin.displaySettings.exhibitionFeedbackAutoPublish') }}
+              </span>
+              <span class="mt-1 block text-xs text-admin-faint">
+                {{ $t('admin.displaySettings.exhibitionFeedbackAutoPublishHint') }}
+              </span>
+            </label>
+          </div>
+        </div>
+
         <div class="flex flex-wrap items-center gap-3 pt-2">
           <button
             type="submit"
@@ -233,7 +269,9 @@ const form = reactive({
   liveTitle: '',
   liveYoutubeUrl: '',
   liveTiktokUrl: '',
-  liveFacebookUrl: ''
+  liveFacebookUrl: '',
+  exhibitionFeedbackVisible: false,
+  exhibitionFeedbackAutoPublish: false
 })
 
 function clamp(n, min, max) {
@@ -265,6 +303,8 @@ onMounted(async () => {
     form.liveYoutubeUrl = d.liveYoutubeUrl || ''
     form.liveTiktokUrl = d.liveTiktokUrl || ''
     form.liveFacebookUrl = d.liveFacebookUrl || ''
+    form.exhibitionFeedbackVisible = coerceDisplayBool(d.exhibitionFeedbackVisible, false)
+    form.exhibitionFeedbackAutoPublish = coerceDisplayBool(d.exhibitionFeedbackAutoPublish, false)
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('admin.displaySettings.loadError')
   } finally {
@@ -293,7 +333,9 @@ async function save() {
     liveTitle: (form.liveTitle || '').trim(),
     liveYoutubeUrl: (form.liveYoutubeUrl || '').trim(),
     liveTiktokUrl: (form.liveTiktokUrl || '').trim(),
-    liveFacebookUrl: (form.liveFacebookUrl || '').trim()
+    liveFacebookUrl: (form.liveFacebookUrl || '').trim(),
+    exhibitionFeedbackVisible: Boolean(form.exhibitionFeedbackVisible),
+    exhibitionFeedbackAutoPublish: Boolean(form.exhibitionFeedbackAutoPublish)
   }
   try {
     const updated = await adminApi.updateDisplaySettings(body)
