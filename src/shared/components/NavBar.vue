@@ -61,60 +61,16 @@
               >
                 <div class="rounded-xl border border-white/10 bg-zinc-900/95 backdrop-blur-md shadow-xl shadow-black/30 py-1.5 overflow-hidden">
                   <router-link
-                    to="/marketplace/real-estate"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
+                    v-for="cat in marketplaceCategories"
+                    :key="cat.to"
+                    :to="cat.to"
+                    class="group/item flex items-center gap-3 px-3 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
                     @click="marketplaceDropdownOpen = false"
                   >
-                    <span class="text-lg" aria-hidden="true">🏠</span>
-                    {{ $t('nav.marketplaceRealEstate') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/banks"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="text-lg" aria-hidden="true">🏦</span>
-                    {{ $t('nav.marketplaceBanks') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/insurance"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="text-lg" aria-hidden="true">🛡️</span>
-                    {{ $t('nav.marketplaceInsurance') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/contractors"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="text-lg" aria-hidden="true">👷</span>
-                    {{ $t('nav.marketplaceContractors') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/consultants-and-architects"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="material-icons !text-[18px] leading-none" aria-hidden="true">square_foot</span>
-                    {{ $t('nav.marketplaceConsultantsArchitects') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/suppliers"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="text-lg" aria-hidden="true">📦</span>
-                    {{ $t('nav.marketplaceSuppliers') }}
-                  </router-link>
-                  <router-link
-                    to="/marketplace/finishing-work"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 transition-colors duration-150 border-l-2 border-transparent hover:border-primary-400"
-                    @click="marketplaceDropdownOpen = false"
-                  >
-                    <span class="material-icons !text-[18px] leading-none" aria-hidden="true">star</span>
-                    {{ $t('nav.marketplaceFinishingWork') }}
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 text-primary-400 ring-1 ring-white/10 transition-colors group-hover/item:bg-primary-500 group-hover/item:text-white group-hover/item:ring-primary-500">
+                      <span class="material-icons !text-[18px] leading-none" aria-hidden="true">{{ cat.icon }}</span>
+                    </span>
+                    {{ $t(cat.labelKey) }}
                   </router-link>
                 </div>
               </div>
@@ -228,13 +184,18 @@
       <div v-if="mobileMenuOpen" class="sm:hidden border-t border-white/10 bg-primary-950/95 backdrop-blur-sm">
         <div class="px-2 pt-2 pb-3 space-y-1">
           <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $t('nav.marketplace') }}</div>
-          <router-link to="/marketplace/real-estate" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceRealEstate') }}</router-link>
-          <router-link to="/marketplace/banks" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceBanks') }}</router-link>
-          <router-link to="/marketplace/insurance" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceInsurance') }}</router-link>
-          <router-link to="/marketplace/contractors" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceContractors') }}</router-link>
-          <router-link to="/marketplace/consultants-and-architects" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceConsultantsArchitects') }}</router-link>
-          <router-link to="/marketplace/suppliers" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceSuppliers') }}</router-link>
-          <router-link to="/marketplace/finishing-work" @click="mobileMenuOpen = false" class="block px-3 py-2 pl-5 text-sm text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.marketplaceFinishingWork') }}</router-link>
+          <router-link
+            v-for="cat in marketplaceCategories"
+            :key="cat.to"
+            :to="cat.to"
+            @click="mobileMenuOpen = false"
+            class="flex items-center gap-3 px-3 py-2 pl-5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-md"
+          >
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-primary-400 ring-1 ring-white/10">
+              <span class="material-icons !text-[16px] leading-none" aria-hidden="true">{{ cat.icon }}</span>
+            </span>
+            {{ $t(cat.labelKey) }}
+          </router-link>
           <router-link
             to="/properties"
             @click="mobileMenuOpen = false"
@@ -395,6 +356,19 @@ const router = useRouter()
 const route = useRoute()
 const mobileMenuOpen = ref(false)
 const marketplaceDropdownOpen = ref(false)
+
+// Single source of truth for the marketplace categories so the desktop
+// dropdown and the mobile menu share one consistent icon set (Material Icons,
+// no mismatched emoji).
+const marketplaceCategories = [
+  { to: '/marketplace/real-estate', labelKey: 'nav.marketplaceRealEstate', icon: 'home_work' },
+  { to: '/marketplace/banks', labelKey: 'nav.marketplaceBanks', icon: 'account_balance' },
+  { to: '/marketplace/insurance', labelKey: 'nav.marketplaceInsurance', icon: 'shield' },
+  { to: '/marketplace/contractors', labelKey: 'nav.marketplaceContractors', icon: 'engineering' },
+  { to: '/marketplace/consultants-and-architects', labelKey: 'nav.marketplaceConsultantsArchitects', icon: 'architecture' },
+  { to: '/marketplace/suppliers', labelKey: 'nav.marketplaceSuppliers', icon: 'inventory_2' },
+  { to: '/marketplace/finishing-work', labelKey: 'nav.marketplaceFinishingWork', icon: 'format_paint' }
+]
 
 const onMarketplaceBlur = () => {
   setTimeout(() => { marketplaceDropdownOpen.value = false }, 150)

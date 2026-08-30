@@ -25,7 +25,12 @@ const props = defineProps({
   linkedinUrl: { type: String, default: '' },
   twitterUrl: { type: String, default: '' },
   youtubeUrl: { type: String, default: '' },
-  compact: { type: Boolean, default: false }
+  compact: { type: Boolean, default: false },
+  // Surface the icons sit on: 'light' (default, white cards), 'dark' (dark
+  // panels), or 'admin' (admin theme tokens, adapts to the admin light/dark
+  // toggle). The old default rendered light-grey icons that were invisible on
+  // white cards.
+  tone: { type: String, default: 'light' }
 })
 
 /** Brand icons (24×24 viewBox), currentColor fill */
@@ -65,10 +70,23 @@ const YoutubeIcon = iconSvg([
   'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'
 ])
 
+const toneClass = computed(() => {
+  switch (props.tone) {
+    case 'dark':
+      return 'border-white/15 bg-white/5 text-gray-300 hover:border-primary-400 hover:bg-primary-100/20 hover:text-primary-400'
+    case 'admin':
+      return 'border-admin-line bg-admin-muted text-admin-fg hover:border-primary-400 hover:bg-admin-raised hover:text-primary-500'
+    default: // light
+      return 'border-gray-200 bg-white text-gray-500 shadow-sm hover:border-primary-400 hover:bg-primary-50 hover:text-primary-600'
+  }
+})
+
 const linkClass = computed(() =>
-  props.compact
-    ? 'inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 p-2 text-gray-300 transition-colors hover:border-primary-400 hover:bg-primary-100/20 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60'
-    : 'inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 p-2.5 text-gray-300 transition-colors hover:border-primary-400 hover:bg-primary-100/20 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60'
+  [
+    'inline-flex items-center justify-center border transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400/60',
+    props.compact ? 'rounded-lg p-2' : 'rounded-xl p-2.5',
+    toneClass.value
+  ].join(' ')
 )
 
 const iconClass = computed(() =>

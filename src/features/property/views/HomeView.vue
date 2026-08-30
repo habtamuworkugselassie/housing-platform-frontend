@@ -1,7 +1,7 @@
 <template>
-  <div class="public-page property-marketplace min-h-screen">
+  <div class="public-page property-marketplace min-h-screen bg-violet-50">
     <!-- Ad Space under NavBar — GOLD-sponsored real estate companies (two side by side) -->
-    <div class="bg-zinc-900 border-b border-white/10">
+    <div class="bg-white border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <AdSpace 
           v-if="currentTopBannerAds && currentTopBannerAds.length > 0"
@@ -13,7 +13,7 @@
     </div>
 
     <!-- Top Search Bar with Filters -->
-    <div class="bg-zinc-900 shadow-sm border-b border-white/10 sticky top-0 z-40">
+    <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <!-- Search Filters -->
@@ -22,13 +22,13 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.serviceType"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.serviceType') }}</option>
                 <option value="rental">{{ $t('home.rental') }}</option>
                 <option value="sale">{{ $t('home.sale') }}</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -39,14 +39,14 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.location"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.location') }}</option>
                 <option value="Bole">{{ $t('home.bole') }}</option>
                 <option value="Megenagna">{{ $t('home.megenagna') }}</option>
                 <option value="Addis Ababa">{{ $t('home.addisAbaba') }}</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -57,7 +57,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.priceRange"
-                class="w-full appearance-none bg-white/5 border border-white/20 text-white rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.priceRange') }}</option>
                 <option value="0-5000">ብ0 - ብ5,000</option>
@@ -65,7 +65,7 @@
                 <option value="10000-20000">ብ10,000 - ብ20,000</option>
                 <option value="20000+">ብ20,000+</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -77,7 +77,7 @@
             <button
               v-if="hasActiveFilters"
               @click="clearFilters"
-              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-white rounded-lg hover:bg-primary-100 transition-colors whitespace-nowrap"
+              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-primary-600 rounded-lg hover:bg-primary-100 transition-colors whitespace-nowrap"
             >
               {{ $t('filters.clearFilters') }}
             </button>
@@ -87,11 +87,11 @@
     </div>
 
     <!-- Main Content: Property List in Two Columns (anchor for hero CTA) -->
-    <div id="main-listings" class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-violet-950 scroll-mt-4">
+    <div id="main-listings" class="min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-120px)] bg-violet-50 scroll-mt-4">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         <!-- Loading State -->
         <div v-if="loadingOrgs" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div v-for="i in 4" :key="i" class="bg-white/10 animate-pulse rounded-xl h-96"></div>
+          <div v-for="i in 4" :key="i" class="bg-gray-100 animate-pulse rounded-xl h-96"></div>
         </div>
 
         <!-- Search and pagination for organization list -->
@@ -103,9 +103,9 @@
               v-model.trim="searchQuery"
               type="search"
               :placeholder="$t('home.searchCompanies')"
-              class="flex-1 min-w-0 rounded-lg border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 px-4 py-2.5 text-sm"
+              class="flex-1 min-w-0 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 px-4 py-2.5 text-sm"
             />
-            <div class="flex items-center gap-3 text-sm text-gray-400">
+            <div class="flex items-center gap-3 text-sm text-gray-500">
               <span>{{ filteredByOrganization.length }} {{ filteredByOrganization.length === 1 ? $t('home.company') : $t('home.companies') }}</span>
             </div>
           </div>
@@ -113,7 +113,7 @@
             v-if="totalOrganizationPages > 1"
             class="flex flex-wrap items-center justify-between gap-2"
           >
-            <span class="text-sm text-gray-400">
+            <span class="text-sm text-gray-500">
               {{ $t('common.page') }} {{ organizationListPage }} / {{ totalOrganizationPages }}
             </span>
             <div class="flex items-center gap-2">
@@ -135,7 +135,7 @@
               </AppButton>
             </div>
           </div>
-          <p v-if="searchQuery && filteredByOrganization.length === 0" class="text-gray-400 text-sm">
+          <p v-if="searchQuery && filteredByOrganization.length === 0" class="text-gray-500 text-sm">
             {{ $t('home.noCompaniesMatch') }}
           </p>
         </div>
@@ -145,16 +145,16 @@
           <template v-for="org in paginatedOrganizations" :key="org.id">
             <!-- Collapsible organization header: logo, name, address, contact (from org API) -->
             <div
-              class="col-span-full mt-8 first:mt-0 rounded-xl border border-white/10 bg-zinc-900 overflow-hidden"
+              class="col-span-full mt-8 first:mt-0 rounded-xl border border-gray-200 bg-white overflow-hidden"
             >
               <button
                 type="button"
-                class="w-full text-left px-4 py-4 sm:px-5 sm:py-5 flex flex-wrap items-center gap-3 sm:gap-4 hover:bg-white/5 transition-colors"
+                class="w-full text-left px-4 py-4 sm:px-5 sm:py-5 flex flex-wrap items-center gap-3 sm:gap-4 hover:bg-gray-50 transition-colors"
                 @click="toggleExpanded(org.id)"
               >
                 <div
                   v-if="org.logoUrl"
-                  class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden bg-white/10"
+                  class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden bg-gray-100"
                 >
                   <img
                     :src="mediaUrl(org.logoUrl)"
@@ -164,28 +164,28 @@
                 </div>
                 <div
                   v-else
-                  class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-white/10 flex items-center justify-center text-xl font-bold text-white"
+                  class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-gray-100 flex items-center justify-center text-xl font-bold text-gray-900"
                 >
                   {{ (org.name || 'O').charAt(0).toUpperCase() }}
                 </div>
                 <div class="min-w-0 flex-1">
-                  <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                    <span class="material-icons !text-[18px] leading-none text-gold-400" aria-hidden="true">apartment</span>
+                  <h2 class="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <span class="material-icons !text-[18px] leading-none text-primary-600" aria-hidden="true">apartment</span>
                     {{ org.name }}
                   </h2>
-                  <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-sm text-gray-400">
+                  <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-sm text-gray-500">
                     <span v-if="org.address">{{ org.address }}</span>
                     <span v-if="org.city && !(org.address || '').toLowerCase().includes(org.city.toLowerCase())">{{ org.city }}</span>
                     <template v-if="orgPhones(org).length">
                       <template v-for="(phone, i) in orgPhones(org)" :key="i">
                         <span v-if="i > 0">, </span>
-                        <a :href="`tel:${phone}`" class="text-gold-300 hover:underline">{{ phone }}</a>
+                        <a :href="`tel:${phone}`" class="text-primary-700 hover:underline">{{ phone }}</a>
                       </template>
                     </template>
                     <template v-if="org.email">
-                      <a :href="`mailto:${org.email}`" class="text-gold-300 hover:underline">{{ org.email }}</a>
+                      <a :href="`mailto:${org.email}`" class="text-primary-700 hover:underline">{{ org.email }}</a>
                     </template>
-                    <a v-if="org.website" :href="org.website" target="_blank" rel="noopener" class="text-gold-300 hover:underline">{{ $t('admin.orgWebsite') }}</a>
+                    <a v-if="org.website" :href="org.website" target="_blank" rel="noopener" class="text-primary-700 hover:underline">{{ $t('admin.orgWebsite') }}</a>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -214,200 +214,11 @@
                   {{ $t('property.noListingsYet') }}
                 </p>
                 <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                  <div
+                  <ListingCard
                     v-for="item in getPaginatedItems(getFilteredItemsForOrg(org.id), org.id)"
                     :key="`${item.type}-${item.id}`"
-            class="col-span-full md:col-span-1"
-            :data-property-id="item.type === 'property' ? item.id : null"
-            :data-building-id="item.type === 'building' ? item.id : null"
-            @click="item.type === 'property' ? selectProperty(item) : selectBuilding(item)"
-            :class="[
-              'relative rounded-xl shadow-md transition-all duration-200 cursor-pointer overflow-hidden border-2 hover:border-primary-400/60 hover:bg-primary-900/10',
-              item.isSponsored && isPremierListingTier(item.sponsorshipType)
-                ? 'bg-zinc-900 border-gold-400/60 shadow-lg'
-                : item.isSponsored && isGoldListingTier(item.sponsorshipType)
-                ? 'bg-zinc-900 border-gold-400/40 shadow-md'
-                : 'bg-zinc-900 border-white/10'
-            ]"
-          >
-            <!-- Sponsored badges — premier tier (exclusive/platinum) vs gold vs other -->
-            <div v-if="item.isSponsored" class="absolute top-3 right-3 z-20 flex items-center gap-2">
-              <div
-                :class="{
-                  'bg-primary-950 text-gold-300 shadow-lg': isPremierListingTier(item.sponsorshipType),
-                  'bg-gold-400 text-primary-950 shadow-lg': isGoldListingTier(item.sponsorshipType)
-                }"
-                class="px-4 py-2 rounded-full text-xs font-extrabold flex items-center gap-1.5 ring-1 ring-white/40"
-              >
-                <span class="material-icons !text-[14px] leading-none" aria-hidden="true">star</span>
-                <span class="uppercase tracking-wide">{{ isPremierListingTier(item.sponsorshipType) ? $t('property.premier') : (isGoldListingTier(item.sponsorshipType) ? 'GOLD' : $t('property.sponsored')) }}</span>
-              </div>
-            </div>
-            
-            <!-- Building Type Badge (for non-sponsored buildings) -->
-            <div v-if="item.type === 'building' && !item.isSponsored" class="absolute top-3 left-3 z-20">
-              <div class="bg-primary-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg ring-1 ring-white/40 flex items-center gap-1">
-                <span class="material-icons !text-[14px] leading-none" aria-hidden="true">apartment</span>
-                <span>{{ $t('common.buildingBadge') }}</span>
-              </div>
-            </div>
-            
-            <!-- Property/Building Image -->
-            <div class="relative h-48 sm:h-56 md:h-64 bg-white/10 overflow-hidden">
-              <img
-                v-if="(item.images && item.images.length > 0) || (item.imageUrls && item.imageUrls.length > 0)"
-                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
-                :alt="item.title || item.name"
-                :class="{
-                  'w-full h-full object-cover transition-transform duration-300': true,
-                  'brightness-110 contrast-110 scale-105 hover:scale-110': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-                  'brightness-105 scale-102 hover:scale-105': item.isSponsored && isGoldListingTier(item.sponsorshipType)
-                }"
-              />
-              <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-                <svg v-if="item.type === 'property'" class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <svg v-else class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m4 0h1m-1 4h1m4 0h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                </svg>
-              </div>
-              <!-- Sponsored Overlay Gradient - More Prominent -->
-              <div 
-                v-if="item.isSponsored"
-                :class="{
-                  'absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent': isPremierListingTier(item.sponsorshipType),
-                  'absolute inset-0 bg-gradient-to-t from-blue-400/25 via-blue-300/10 to-transparent': isGoldListingTier(item.sponsorshipType)
-                }"
-              ></div>
-              <!-- Premium Glow Effect -->
-              <div 
-                v-if="item.isSponsored && isPremierListingTier(item.sponsorshipType)"
-                class="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-amber-200/20 animate-pulse"
-              ></div>
-            </div>
-
-            <!-- Price/Units overlay above badges so price is never hidden -->
-            <div
-              v-if="item.type === 'property' && item.priceETB"
-              :class="{
-                'bg-zinc-800/90 border border-white/20': !item.isSponsored,
-                'bg-violet-950/30 border-2 border-white/15 shadow-xl': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-                'bg-blue-500/30 border-2 border-blue-400 shadow-lg': item.isSponsored && isGoldListingTier(item.sponsorshipType)
-              }"
-              class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-30"
-            >
-              <div class="flex flex-col">
-                <span 
-                  :class="{
-                    'text-white font-bold': !item.isSponsored,
-                    'text-white font-extrabold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-                    'text-blue-200 font-bold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
-                  }"
-                  class="text-lg"
-                >{{ formatPrice(item.priceETB, 'ETB') }}</span>
-                <span 
-                  v-if="item.priceUSD"
-                  :class="{
-                    'text-gray-300': !item.isSponsored,
-                    'text-white/90 font-bold': item.isSponsored && isPremierListingTier(item.sponsorshipType),
-                    'text-blue-200/90 font-semibold': item.isSponsored && isGoldListingTier(item.sponsorshipType)
-                  }"
-                  class="text-sm font-semibold"
-                >{{ formatPrice(item.priceUSD, 'USD') }}</span>
-                <span v-if="item.category === 'FOR_RENTAL'" class="text-xs text-gray-400">/month</span>
-              </div>
-            </div>
-            <div
-              v-else-if="item.type === 'building'"
-              class="absolute top-4 left-4 px-3 py-1.5 rounded-lg shadow-md z-30 bg-zinc-800/90 border border-white/20"
-            >
-              <div class="flex flex-col">
-                <span class="text-lg font-bold text-white">{{ item.totalUnits || 0 }} Units</span>
-                <span class="text-xs text-gray-400">{{ item.availableUnits || 0 }} Available</span>
-              </div>
-            </div>
-
-            <!-- Property/Building Details -->
-            <div class="p-5">
-              <!-- Title and Rating -->
-              <div class="flex items-start justify-between mb-2 gap-2 flex-wrap">
-                <h3 class="flex-1 min-w-0 text-lg font-semibold text-white flex items-center gap-2 flex-wrap">
-                  {{ item.title || item.name }}
-                  <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
-                </h3>
-                <div v-if="item.type === 'property'" class="flex items-center gap-1">
-                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 20 20">
-                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                  </svg>
-                  <span class="text-sm font-medium text-gray-300">4.8</span>
-                </div>
-              </div>
-
-              <!-- Location -->
-              <p class="text-sm text-gray-400 mb-3">{{ item.city }}, {{ item.country || 'Ethiopia' }}</p>
-
-              <!-- Property Features (for properties) or Building Info (for buildings) -->
-              <div v-if="item.type === 'property'" class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 mb-3">
-                <div class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                  </svg>
-                  <span>{{ item.bedrooms || 'N/A' }} beds</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-                  </svg>
-                  <span>{{ item.bathrooms || 'N/A' }} baths</span>
-                </div>
-                <div v-if="item.area" class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l9 9m0-9V4m0 4h-4"/>
-                  </svg>
-                  <span>{{ item.area }} m²</span>
-                </div>
-              </div>
-              
-              <!-- Building Features -->
-              <div v-else class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 mb-3">
-                <div class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                  </svg>
-                  <span>{{ item.totalUnits || 0 }} Units</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                  </svg>
-                  <span>{{ item.totalFloors || 'N/A' }} Floors</span>
-                </div>
-                <div v-if="item.availableUnits" class="flex items-center gap-1">
-                  <span class="text-green-400 font-semibold">{{ item.availableUnits }} Available</span>
-                </div>
-              </div>
-
-              <!-- Property Type/Building Type and Real Estate Company -->
-              <div class="flex flex-col gap-2 pt-3 border-t border-white/10">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-medium text-gray-500 uppercase">{{ item.type === 'property' ? (item.propertyType || item.type || 'Apartment') : (item.buildingType || 'Building') }}</span>
-                  <div class="flex items-center gap-2" v-if="item.type === 'property' && item.agentName">
-                    <span class="text-xs text-gray-400">{{ $t('property.agentLabel') }}:</span>
-                    <span class="text-xs font-medium text-white">{{ item.agentName }}</span>
-                  </div>
-                </div>
-                <div v-if="item.realEstateCompanyName" class="flex items-center gap-2 flex-wrap">
-                  <svg class="w-3 h-3 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                  </svg>
-                  <span class="text-xs font-semibold text-white">{{ item.realEstateCompanyName }}</span>
-                  <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
-                </div>
-              </div>
-            </div>
-                  </div>
+                    :item="item"
+                  />
                   <!-- Paging for this organization -->
                   <div v-if="totalPagesForGroup(getFilteredItemsForOrg(org.id)) > 1" class="col-span-full flex flex-wrap items-center justify-between gap-2 pt-4">
                     <span class="text-sm text-gray-400">
@@ -444,7 +255,7 @@
             <svg class="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-white">{{ $t('home.noPropertiesFound') }}</h3>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">{{ $t('home.noPropertiesFound') }}</h3>
             <p class="mt-1 text-sm text-gray-400">{{ $t('home.tryAdjustingFilters') }}</p>
         </div>
       </div>
@@ -459,7 +270,7 @@ import { useRouter } from 'vue-router'
 import api, { mediaUrl } from '@/shared/api/client'
 import { useAuthStore } from '@/features/auth'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
-import { AdSpace, VerifiedBadge } from '@/shared/components'
+import { AdSpace, VerifiedBadge, ListingCard } from '@/shared/components'
 import { useAds } from '@/shared/composables/useAds'
 import {
   isPremierListingTier,
