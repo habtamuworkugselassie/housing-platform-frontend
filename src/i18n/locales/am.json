@@ -527,7 +527,22 @@
     "portalSubtitle": "ተጠቃሚዎችን፣ ድርጅቶችን፣ ንብረቶችን እና ሌሎችን ለማስተዳድር የአስተዳዳሪ መግቢያውን ይድረሱ።",
     "nav": {
       "settings": "ቅንብሮች",
-      "exhibitionInterests": "የኤግዚቢሽን ፍላጎቶች"
+      "exhibitionInterests": "የኤግዚቢሽን ፍላጎቶች",
+      "videoFeedback": "የቪዲዮ አስተያየት"
+    },
+    "videoFeedback": {
+      "title": "የቪዲዮ አስተያየት ማጣራት",
+      "subtitle": "ከኤግዚቢሽን ገጹ የገቡ የጎብኚ ቪዲዮዎችን ይገምግሙ። በአደባባይ ግድግዳ ላይ ለማሳየት ያጽድቁ፣ ለመደበቅ ውድቅ ያድርጉ፣ ወይም ፋይሉን ለማስወገድ ይሰርዙ።",
+      "filterPending": "በመጠባበቅ ላይ",
+      "filterApproved": "የጸደቁ",
+      "filterRejected": "ውድቅ የተደረጉ",
+      "filterAll": "ሁሉም",
+      "approve": "አጽድቅ",
+      "reject": "ውድቅ አድርግ",
+      "delete": "ሰርዝ",
+      "confirmDelete": "ይህን ቪዲዮ በቋሚነት ይሰረዝ?",
+      "empty": "በዚህ ዝርዝር ውስጥ ምንም ቪዲዮ የለም።",
+      "loadError": "የቪዲዮ አስተያየት መጫን አልተቻለም።"
     },
     "exhibitionInterests": {
       "title": "የኤግዚቢሽን ፍላጎት",
@@ -1024,6 +1039,25 @@
       "defaultTitle": "ከኢትዮ ቢልድ ኮነክት ኤክስፖ በቀጥታ",
       "watchOn": "ይመልከቱ በ",
       "notConfigured": "ስርጭቱ ሲጀምር እዚህ ይታያል።"
+    },
+    "videoFeedback": {
+      "eyebrow": "በራሳቸው ቃል",
+      "title": "ተሞክሮዎን ያጋሩ",
+      "subtitle": "ከኤግዚቢሽኑ አዳራሽ አጭር ቪዲዮ ይቅረጹና ድምጽዎን በግድግዳው ላይ ያክሉ።",
+      "name": "ስምዎ",
+      "email": "ኢሜይል",
+      "caption": "መግለጫ (አማራጭ)",
+      "captionPlaceholder": "ስለ ተሞክሮዎ አንድ መስመር…",
+      "video": "ቪዲዮዎ",
+      "videoHint": "እስከ 60 ሜባ። አጭር ቪዲዮ ይመረጣል።",
+      "submit": "ቪዲዮ አስገባ",
+      "submitting": "በመስቀል ላይ…",
+      "submitError": "ቪዲዮዎን መስቀል አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "videoRequired": "እባክዎ የሚሰቀል ቪዲዮ ይምረጡ።",
+      "thanksTitle": "እናመሰግናለን!",
+      "thanksLive": "ቪዲዮዎ አሁን በአስተያየት ግድግዳው ላይ ነው።",
+      "thanksPending": "ቪዲዮዎ ተቀብሏል፤ ከጸደቀ በኋላ ይታያል።",
+      "empty": "እስካሁን ቪዲዮ የለም — የመጀመሪያው ይሁኑ።"
     },
     "hero": {
       "eventName": "ኢትዮ ቢልድ ኮነክት ኤክስፖ",

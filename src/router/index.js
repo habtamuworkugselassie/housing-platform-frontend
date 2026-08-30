@@ -211,6 +211,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {
+    path: '/admin/video-feedback',
+    name: 'AdminVideoFeedback',
+    component: () => import('@/features/admin/views/AdminVideoFeedbackView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
     path: '/admin/settings',
     name: 'AdminDisplaySettings',
     component: () => import('@/features/admin/views/AdminDisplaySettingsView.vue'),

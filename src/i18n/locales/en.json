@@ -521,7 +521,22 @@
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
     "nav": {
       "settings": "Settings",
-      "exhibitionInterests": "Exhibition leads"
+      "exhibitionInterests": "Exhibition leads",
+      "videoFeedback": "Video feedback"
+    },
+    "videoFeedback": {
+      "title": "Video feedback moderation",
+      "subtitle": "Review visitor video submissions from the exhibition page. Approve to show them on the public feedback wall, reject to hide, or delete to remove the file.",
+      "filterPending": "Pending",
+      "filterApproved": "Approved",
+      "filterRejected": "Rejected",
+      "filterAll": "All",
+      "approve": "Approve",
+      "reject": "Reject",
+      "delete": "Delete",
+      "confirmDelete": "Delete this video permanently?",
+      "empty": "No videos in this list.",
+      "loadError": "Could not load video feedback."
     },
     "exhibitionInterests": {
       "title": "Exhibition interest",
@@ -1032,6 +1047,25 @@
       "defaultTitle": "Live from Ethio Build Connect Expo",
       "watchOn": "Watch on",
       "notConfigured": "The live stream will appear here once it starts."
+    },
+    "videoFeedback": {
+      "eyebrow": "In their words",
+      "title": "Share your experience",
+      "subtitle": "Record a short video from the show floor and add your voice to the wall.",
+      "name": "Your name",
+      "email": "Email",
+      "caption": "Caption (optional)",
+      "captionPlaceholder": "A line about your experience…",
+      "video": "Your video",
+      "videoHint": "Up to 60 MB. A short clip works best.",
+      "submit": "Submit video",
+      "submitting": "Uploading…",
+      "submitError": "Could not upload your video. Please try again.",
+      "videoRequired": "Please choose a video to upload.",
+      "thanksTitle": "Thank you!",
+      "thanksLive": "Your video is now on the feedback wall.",
+      "thanksPending": "Your video was received and will appear once it's approved.",
+      "empty": "No videos yet — be the first to share yours."
     },
     "hero": {
       "eventName": "Ethio Build Connect Expo",

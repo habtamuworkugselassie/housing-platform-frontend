@@ -70,9 +70,30 @@ export async function getExclusiveOrganizations(): Promise<SponsoredOrganization
   return Array.isArray(data) ? data : []
 }
 
-/** Exhibition API: register interest, etc. */
+/** An approved visitor video-feedback clip (public feed). */
+export interface VideoFeedbackItem {
+  id: string
+  submitterName: string
+  caption?: string
+  videoUrl: string
+  createdAt: string
+}
+
+/** Exhibition API: register interest, video feedback, etc. */
 export const exhibitionApi = {
   registerInterest(body: RegisterInterestRequest) {
     return api.post('/exhibition/interest', body)
+  },
+  /** Anonymous visitor submits a short video (multipart: name, email, caption?, file). */
+  submitVideoFeedback(form: FormData) {
+    return api.post<VideoFeedbackItem>('/exhibition/video-feedback', form, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  },
+  /** Public feed of approved clips (Spring Page). */
+  async listApprovedVideoFeedback(size = 12): Promise<VideoFeedbackItem[]> {
+    const { data } = await api.get('/exhibition/video-feedback', { params: { size } })
+    const content = data?.content ?? (Array.isArray(data) ? data : [])
+    return Array.isArray(content) ? content : []
   }
 }

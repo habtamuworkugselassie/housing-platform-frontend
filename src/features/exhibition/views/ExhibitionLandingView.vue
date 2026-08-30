@@ -287,6 +287,9 @@
       </div>
     </section>
 
+    <!-- Visitor video feedback (shown only when enabled) -->
+    <ExhibitionVideoFeedbackSection />
+
     <!-- Register your interest (scroll target for #register) -->
     <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-20">
       <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -395,6 +398,9 @@ const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
 )
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'
+const ExhibitionVideoFeedbackSection = defineAsyncComponent(
+  () => import('../components/ExhibitionVideoFeedbackSection.vue')
+)
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
