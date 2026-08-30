@@ -74,6 +74,8 @@ export async function getExclusiveOrganizations(): Promise<SponsoredOrganization
 export interface VideoFeedbackItem {
   id: string
   submitterName: string
+  submitterRole?: 'VISITOR' | 'EXHIBITOR'
+  companyName?: string
   caption?: string
   videoUrl: string
   createdAt: string

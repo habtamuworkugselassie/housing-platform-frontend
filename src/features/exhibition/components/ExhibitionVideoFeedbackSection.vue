@@ -1,5 +1,5 @@
 <template>
-  <section v-if="visible" id="video-feedback" class="scroll-mt-20 bg-white py-16 lg:py-24">
+  <section v-if="visible" id="video-feedback" class="vf-light scroll-mt-20 bg-white py-16 lg:py-24">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">
         {{ $t('exhibition.videoFeedback.eyebrow') }}
@@ -24,6 +24,19 @@
             <div>
               <label class="mb-1 block text-sm font-medium text-gray-700" for="vf-email">{{ $t('exhibition.videoFeedback.email') }}</label>
               <input id="vf-email" v-model.trim="formEmail" type="email" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700" for="vf-role">{{ $t('exhibition.videoFeedback.role') }}</label>
+                <select id="vf-role" v-model="formRole" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
+                  <option value="VISITOR">{{ $t('exhibition.videoFeedback.roleVisitor') }}</option>
+                  <option value="EXHIBITOR">{{ $t('exhibition.videoFeedback.roleExhibitor') }}</option>
+                </select>
+              </div>
+              <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700" for="vf-company">{{ $t('exhibition.videoFeedback.company') }}</label>
+                <input id="vf-company" v-model.trim="formCompany" type="text" :placeholder="$t('exhibition.videoFeedback.companyPlaceholder')" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400" />
+              </div>
             </div>
             <div>
               <label class="mb-1 block text-sm font-medium text-gray-700" for="vf-caption">{{ $t('exhibition.videoFeedback.caption') }}</label>
@@ -57,7 +70,12 @@
               </div>
               <figcaption class="p-3">
                 <p v-if="clip.caption" class="line-clamp-2 text-sm text-gray-700">{{ clip.caption }}</p>
-                <p class="mt-1 text-xs font-medium text-gray-500">— {{ clip.submitterName }}</p>
+                <div class="mt-1 flex flex-wrap items-center gap-1.5">
+                  <span class="text-xs font-medium text-gray-500">— {{ clip.submitterName }}{{ clip.companyName ? `, ${clip.companyName}` : '' }}</span>
+                  <span v-if="clip.submitterRole === 'EXHIBITOR'" class="rounded-full bg-primary-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary-700">
+                    {{ $t('exhibition.videoFeedback.roleExhibitor') }}
+                  </span>
+                </div>
               </figcaption>
             </figure>
           </div>
@@ -87,6 +105,8 @@ const loading = ref(false)
 
 const formName = ref('')
 const formEmail = ref('')
+const formRole = ref('VISITOR')
+const formCompany = ref('')
 const formCaption = ref('')
 const file = ref(null)
 const fileInput = ref(null)
@@ -127,6 +147,8 @@ async function submit() {
     const form = new FormData()
     form.append('name', formName.value)
     form.append('email', formEmail.value)
+    form.append('role', formRole.value)
+    if (formCompany.value) form.append('company', formCompany.value)
     if (formCaption.value) form.append('caption', formCaption.value)
     form.append('file', file.value)
     await exhibitionApi.submitVideoFeedback(form)
@@ -144,3 +166,19 @@ onMounted(() => {
   if (visible.value) loadClips()
 })
 </script>
+
+<style scoped>
+/* Beat the legacy `.public-page input, select { color:#fff !important }` rule so
+   this light form stays readable inside the exhibition landing. */
+.vf-light input,
+.vf-light select,
+.vf-light textarea {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+.vf-light input::placeholder,
+.vf-light textarea::placeholder {
+  color: #9ca3af !important;
+}
+</style>

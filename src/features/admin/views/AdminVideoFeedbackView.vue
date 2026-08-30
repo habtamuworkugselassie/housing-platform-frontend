@@ -53,6 +53,15 @@
               </span>
             </div>
             <p class="text-xs text-admin-subtle truncate">{{ item.submitterEmail }}</p>
+            <p class="flex flex-wrap items-center gap-1.5 text-xs text-admin-faint">
+              <span
+                class="rounded px-1.5 py-0.5 font-semibold uppercase tracking-wide"
+                :class="item.submitterRole === 'EXHIBITOR' ? 'bg-primary-500/20 text-primary-300' : 'bg-admin-line/20 text-admin-subtle'"
+              >
+                {{ item.submitterRole === 'EXHIBITOR' ? $t('admin.videoFeedback.roleExhibitor') : $t('admin.videoFeedback.roleVisitor') }}
+              </span>
+              <span v-if="item.companyName" class="truncate">{{ item.companyName }}</span>
+            </p>
             <p v-if="item.caption" class="text-sm text-admin-muted line-clamp-3">{{ item.caption }}</p>
             <p class="text-xs text-admin-faint">{{ formatDate(item.createdAt) }}</p>
             <div class="mt-auto flex flex-wrap gap-2 pt-2">
