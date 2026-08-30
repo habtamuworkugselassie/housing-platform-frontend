@@ -1127,6 +1127,11 @@
       "previewCta": "Preview camera",
       "signInHint": "To broadcast as an exhibitor or organizer, please",
       "switchHint": "Switch camera or microphone — takes effect on the live stream immediately.",
+      "loopToggle": "Auto-rotate between cameras",
+      "loopHelp": "Choose which cameras to include; the live feed cycles through them on the timer below.",
+      "loopEvery": "Switch every",
+      "seconds": "seconds",
+      "looping": "Rotating…",
       "cameraError": "Could not access that camera. Check it's connected and permitted."
     },
     "hero": {

@@ -32,6 +32,29 @@
             </select>
           </div>
         </div>
+
+        <!-- Multi-camera loop: auto-rotate between selected cameras on a timer -->
+        <div v-if="cameras.length > 1" class="rounded-lg border border-gray-200 bg-white p-3">
+          <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <input v-model="loopEnabled" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-400" />
+            {{ $t('exhibition.goLive.loopToggle') }}
+          </label>
+          <div v-if="loopEnabled" class="mt-3 space-y-3">
+            <p class="text-xs text-gray-500">{{ $t('exhibition.goLive.loopHelp') }}</p>
+            <div class="flex flex-wrap gap-2">
+              <label v-for="(c, i) in cameras" :key="c.deviceId || i" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2 py-1 text-xs text-gray-700">
+                <input v-model="loopDeviceIds" type="checkbox" :value="c.deviceId" class="h-3.5 w-3.5 rounded border-gray-300 text-primary-600 focus:ring-primary-400" />
+                {{ c.label || `${$t('exhibition.goLive.camera')} ${i + 1}` }}
+              </label>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-medium text-gray-600" for="gl-loop-int">{{ $t('exhibition.goLive.loopEvery') }}</label>
+              <input id="gl-loop-int" v-model.number="loopIntervalSec" type="number" min="5" max="600" class="w-20 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400" />
+              <span class="text-xs text-gray-500">{{ $t('exhibition.goLive.seconds') }}</span>
+              <span v-if="looping" class="ml-auto text-xs font-medium text-primary-600">{{ $t('exhibition.goLive.looping') }}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Step 1: request -->
@@ -128,6 +151,13 @@ const selectedCamera = ref('')
 const selectedMic = ref('')
 const previewOn = ref(false)
 
+// Multi-camera auto-rotation ("loop": N seconds on camera 1, then camera 2, …)
+const loopEnabled = ref(false)
+const loopDeviceIds = ref([])
+const loopIntervalSec = ref(60)
+const looping = ref(false)
+let loopTimer = null
+
 const cameraVisible = computed(() => previewOn.value || phase.value !== 'form')
 
 let broadcastId = ''
@@ -186,10 +216,40 @@ async function refreshDevices() {
     cameras.value = devices.filter((d) => d.kind === 'videoinput')
     mics.value = devices.filter((d) => d.kind === 'audioinput')
     if (!selectedMic.value && mics.value[0]) selectedMic.value = mics.value[0].deviceId
+    // Default the loop set to every available camera.
+    if (!loopDeviceIds.value.length) {
+      loopDeviceIds.value = cameras.value.map((c) => c.deviceId).filter(Boolean)
+    }
   } catch {
     /* ignore */
   }
 }
+
+function startLoop() {
+  stopLoop()
+  const ids = loopDeviceIds.value
+  if (ids.length < 2) return // nothing to rotate through
+  looping.value = true
+  let index = Math.max(0, ids.indexOf(selectedCamera.value))
+  const seconds = Math.min(600, Math.max(5, Number(loopIntervalSec.value) || 60))
+  loopTimer = setInterval(() => {
+    index = (index + 1) % ids.length
+    selectedCamera.value = ids[index] // triggers the camera-switch watcher (preview or live)
+  }, seconds * 1000)
+}
+
+function stopLoop() {
+  if (loopTimer) {
+    clearInterval(loopTimer)
+    loopTimer = null
+  }
+  looping.value = false
+}
+
+watch(loopEnabled, (on) => (on ? startLoop() : stopLoop()))
+watch([loopIntervalSec, loopDeviceIds], () => {
+  if (loopEnabled.value) startLoop() // re-arm with the new interval / device set
+})
 
 // Switch camera live (or in preview) when the provider picks another device.
 watch(selectedCamera, async (id, prev) => {
@@ -271,6 +331,7 @@ async function goLive() {
 }
 
 async function teardown() {
+  stopLoop()
   if (pollTimer) {
     clearInterval(pollTimer)
     pollTimer = null
@@ -299,6 +360,7 @@ async function teardown() {
 async function stop() {
   await teardown()
   previewOn.value = false
+  loopEnabled.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
@@ -307,6 +369,7 @@ async function stop() {
 async function cancel() {
   await teardown()
   previewOn.value = false
+  loopEnabled.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
