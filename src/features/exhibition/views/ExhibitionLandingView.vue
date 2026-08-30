@@ -3,6 +3,9 @@
     <!-- Live broadcast (shown only while an admin has the event live) -->
     <LiveStreamSection />
 
+    <!-- Live device broadcasts from visitors / exhibitors / organizers -->
+    <LiveBroadcastWall />
+
     <!-- Planning the exhibition — professional intro for market -->
     <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -400,6 +403,9 @@ import ExhibitionInterestFormFields from '@/features/exhibition/components/Exhib
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'
 const ExhibitionVideoFeedbackSection = defineAsyncComponent(
   () => import('../components/ExhibitionVideoFeedbackSection.vue')
+)
+const LiveBroadcastWall = defineAsyncComponent(
+  () => import('../components/LiveBroadcastWall.vue')
 )
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'

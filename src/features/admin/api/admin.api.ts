@@ -502,6 +502,20 @@ export const adminApi = {
   deleteVideoFeedback: async (id: string) =>
     (await api.delete(`/admin/exhibition/video-feedback/${id}`)).data,
 
+  // --- Live broadcast moderation --------------------------------------------
+  listLiveBroadcasts: async (status = '', page = 0, size = 30) => {
+    const params: Record<string, unknown> = { page, size }
+    if (status) params.status = status
+    const response = await api.get('/admin/exhibition/live', { params })
+    return response.data
+  },
+  approveLiveBroadcast: async (id: string) =>
+    (await api.put(`/admin/exhibition/live/${id}/approve`)).data,
+  rejectLiveBroadcast: async (id: string) =>
+    (await api.put(`/admin/exhibition/live/${id}/reject`)).data,
+  endLiveBroadcast: async (id: string) =>
+    (await api.put(`/admin/exhibition/live/${id}/end`)).data,
+
   // --- Company logins (Admin -> Organizations -> Accounts) ------------------
   // Listing is ADMIN_SECURED; every mutation below is SUPER_ADMIN_SECURED and
   // returns 403 for a plain admin. Callers gate the controls on the role.

@@ -19,6 +19,7 @@
     "filter": "Filter",
     "clear": "Clear",
     "close": "Close",
+    "refresh": "Refresh",
     "yes": "Yes",
     "no": "No",
     "confirm": "Confirm",
@@ -522,7 +523,26 @@
     "nav": {
       "settings": "Settings",
       "exhibitionInterests": "Exhibition leads",
-      "videoFeedback": "Video feedback"
+      "videoFeedback": "Video feedback",
+      "liveBroadcasts": "Live broadcasts"
+    },
+    "liveBroadcasts": {
+      "title": "Live broadcasts",
+      "subtitle": "Approve go-live requests, and cut any live stream instantly.",
+      "filterAll": "All",
+      "filterRequested": "Requested",
+      "filterLive": "Live",
+      "filterEnded": "Ended",
+      "stream": "Stream",
+      "broadcaster": "Broadcaster",
+      "status": "Status",
+      "actions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "cut": "Cut",
+      "confirmCut": "Cut this live broadcast now?",
+      "empty": "No broadcasts.",
+      "loadError": "Could not load broadcasts."
     },
     "videoFeedback": {
       "title": "Video feedback moderation",
@@ -1073,6 +1093,28 @@
       "thanksLive": "Your video is now on the feedback wall.",
       "thanksPending": "Your video was received and will appear once it's approved.",
       "empty": "No videos yet — be the first to share yours."
+    },
+    "liveWall": {
+      "eyebrow": "Live now",
+      "title": "Live from the floor",
+      "goLive": "Go live"
+    },
+    "goLive": {
+      "title": "Go live",
+      "subtitle": "Broadcast from your camera. An organizer approves your request before you go on air.",
+      "roleOrganizer": "Organizer",
+      "streamTitle": "Stream title",
+      "streamTitlePlaceholder": "e.g. Walkthrough of Hall B",
+      "requestCta": "Request to go live",
+      "requesting": "Requesting…",
+      "requestError": "Could not send your request. Please try again.",
+      "waitingTitle": "Waiting for approval",
+      "waitingBody": "An organizer will approve your stream shortly. Keep this page open.",
+      "rejected": "Your request wasn't approved.",
+      "connecting": "Connecting your camera…",
+      "connectError": "Could not start your camera. Check permissions and try again.",
+      "youAreLive": "You are live.",
+      "stop": "Stop broadcasting"
     },
     "hero": {
       "eventName": "Ethio Build Connect Expo",

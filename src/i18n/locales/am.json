@@ -19,6 +19,7 @@
     "filter": "አጣራ",
     "clear": "አጽዳ",
     "close": "ዝጋ",
+    "refresh": "አድስ",
     "yes": "አዎ",
     "no": "አይ",
     "confirm": "አረጋግጥ",
@@ -528,7 +529,26 @@
     "nav": {
       "settings": "ቅንብሮች",
       "exhibitionInterests": "የኤግዚቢሽን ፍላጎቶች",
-      "videoFeedback": "የቪዲዮ አስተያየት"
+      "videoFeedback": "የቪዲዮ አስተያየት",
+      "liveBroadcasts": "የቀጥታ ስርጭቶች"
+    },
+    "liveBroadcasts": {
+      "title": "የቀጥታ ስርጭቶች",
+      "subtitle": "የመተላለፍ ጥያቄዎችን ያጽድቁ፣ እና ማንኛውንም የቀጥታ ስርጭት ወዲያውኑ ያቋርጡ።",
+      "filterAll": "ሁሉም",
+      "filterRequested": "የተጠየቁ",
+      "filterLive": "በቀጥታ",
+      "filterEnded": "የተጠናቀቁ",
+      "stream": "ስርጭት",
+      "broadcaster": "አስተላላፊ",
+      "status": "ሁኔታ",
+      "actions": "እርምጃዎች",
+      "approve": "አጽድቅ",
+      "reject": "ውድቅ አድርግ",
+      "cut": "አቋርጥ",
+      "confirmCut": "ይህን የቀጥታ ስርጭት አሁን ይቋረጥ?",
+      "empty": "ምንም ስርጭት የለም።",
+      "loadError": "ስርጭቶችን መጫን አልተቻለም።"
     },
     "videoFeedback": {
       "title": "የቪዲዮ አስተያየት ማጣራት",
@@ -1065,6 +1085,28 @@
       "thanksLive": "ቪዲዮዎ አሁን በአስተያየት ግድግዳው ላይ ነው።",
       "thanksPending": "ቪዲዮዎ ተቀብሏል፤ ከጸደቀ በኋላ ይታያል።",
       "empty": "እስካሁን ቪዲዮ የለም — የመጀመሪያው ይሁኑ።"
+    },
+    "liveWall": {
+      "eyebrow": "አሁን በቀጥታ",
+      "title": "ከአዳራሹ በቀጥታ",
+      "goLive": "በቀጥታ ይተላለፉ"
+    },
+    "goLive": {
+      "title": "በቀጥታ ይተላለፉ",
+      "subtitle": "ከካሜራዎ ያስተላልፉ። ከመጀመርዎ በፊት አዘጋጅ ጥያቄዎን ያጸድቃል።",
+      "roleOrganizer": "አዘጋጅ",
+      "streamTitle": "የስርጭት ርዕስ",
+      "streamTitlePlaceholder": "ለምሳሌ፦ የአዳራሽ B ጉብኝት",
+      "requestCta": "በቀጥታ ለመተላለፍ ይጠይቁ",
+      "requesting": "በመጠየቅ ላይ…",
+      "requestError": "ጥያቄዎን መላክ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "waitingTitle": "ማጽደቅን በመጠበቅ ላይ",
+      "waitingBody": "አዘጋጅ ስርጭትዎን በቅርቡ ያጸድቃል። ይህን ገጽ ክፍት ያድርጉ።",
+      "rejected": "ጥያቄዎ አልጸደቀም።",
+      "connecting": "ካሜራዎን በማገናኘት ላይ…",
+      "connectError": "ካሜራዎን ማስጀመር አልተቻለም። ፈቃዶችን አረጋግጠው እንደገና ይሞክሩ።",
+      "youAreLive": "በቀጥታ እየተላለፉ ነው።",
+      "stop": "ስርጭትን አቁም"
     },
     "hero": {
       "eventName": "ኢትዮ ቢልድ ኮነክት ኤክስፖ",

@@ -81,10 +81,59 @@ export interface VideoFeedbackItem {
   createdAt: string
 }
 
-/** Exhibition API: register interest, video feedback, etc. */
+/** A live (or approved) broadcast. */
+export interface LiveBroadcastItem {
+  id: string
+  title: string
+  broadcasterName: string
+  broadcasterRole?: 'VISITOR' | 'EXHIBITOR' | 'ORGANIZER'
+  companyName?: string
+  status: 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'LIVE' | 'ENDED'
+  hlsUrl?: string
+}
+
+/** What a client needs to connect to LiveKit. */
+export interface LiveTokenResponse {
+  url: string
+  token: string
+  room: string
+  hlsUrl?: string
+}
+
+export interface GoLiveRequest {
+  name: string
+  email?: string
+  role?: 'VISITOR' | 'EXHIBITOR' | 'ORGANIZER'
+  company?: string
+  title: string
+}
+
+/** Exhibition API: register interest, video feedback, live broadcasting, etc. */
 export const exhibitionApi = {
   registerInterest(body: RegisterInterestRequest) {
     return api.post('/exhibition/interest', body)
+  },
+
+  // --- Live broadcasting (gated go-live) ------------------------------------
+  async requestGoLive(body: GoLiveRequest): Promise<LiveBroadcastItem> {
+    const { data } = await api.post<LiveBroadcastItem>('/exhibition/live/request', body)
+    return data
+  },
+  async getBroadcast(id: string): Promise<LiveBroadcastItem> {
+    const { data } = await api.get<LiveBroadcastItem>(`/exhibition/live/${id}`)
+    return data
+  },
+  async getPublishToken(id: string): Promise<LiveTokenResponse> {
+    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/publish-token`)
+    return data
+  },
+  async getViewerToken(id: string): Promise<LiveTokenResponse> {
+    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/viewer-token`)
+    return data
+  },
+  async listLiveBroadcasts(): Promise<LiveBroadcastItem[]> {
+    const { data } = await api.get('/exhibition/live')
+    return Array.isArray(data) ? data : []
   },
   /** Anonymous visitor submits a short video (multipart: name, email, caption?, file). */
   submitVideoFeedback(form: FormData) {
