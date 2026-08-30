@@ -547,6 +547,12 @@
       "reject": "ውድቅ አድርግ",
       "cut": "አቋርጥ",
       "confirmCut": "ይህን የቀጥታ ስርጭት አሁን ይቋረጥ?",
+      "proCamera": "ፕሮፌሽናል ካሜራ",
+      "cameraTitle": "ፕሮፌሽናል ካሜራ (OBS)",
+      "cameraHelp": "እነዚህን በOBS → Settings → Stream ውስጥ ይለጥፉ፣ ከዚያ Start Streaming ይጫኑ።",
+      "rtmpServer": "የRTMP ሰርቨር አድራሻ",
+      "whipUrl": "የWHIP አድራሻ",
+      "streamKey": "የስርጭት ቁልፍ",
       "empty": "ምንም ስርጭት የለም።",
       "loadError": "ስርጭቶችን መጫን አልተቻለም።"
     },

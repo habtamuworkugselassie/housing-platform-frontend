@@ -515,6 +515,8 @@ export const adminApi = {
     (await api.put(`/admin/exhibition/live/${id}/reject`)).data,
   endLiveBroadcast: async (id: string) =>
     (await api.put(`/admin/exhibition/live/${id}/end`)).data,
+  createLiveIngress: async (id: string, type = 'RTMP') =>
+    (await api.post(`/admin/exhibition/live/${id}/ingress`, null, { params: { type } })).data,
 
   // --- Company logins (Admin -> Organizations -> Accounts) ------------------
   // Listing is ADMIN_SECURED; every mutation below is SUPER_ADMIN_SECURED and

@@ -57,6 +57,9 @@
               </td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap justify-end gap-2">
+                  <button v-if="item.status !== 'ENDED' && item.status !== 'REJECTED'" type="button" :disabled="busyId === item.id" class="rounded-lg border border-admin-line/30 px-3 py-1.5 text-xs font-medium text-admin-muted hover:text-admin-fg disabled:opacity-50" @click="camera(item)">
+                    {{ $t('admin.liveBroadcasts.proCamera') }}
+                  </button>
                   <button v-if="item.status === 'REQUESTED' || item.status === 'REJECTED'" type="button" :disabled="busyId === item.id" class="rounded-lg bg-admin-accent px-3 py-1.5 text-xs font-semibold text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50" @click="act('approveLiveBroadcast', item)">
                     {{ $t('admin.liveBroadcasts.approve') }}
                   </button>
@@ -71,6 +74,27 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Pro-camera connection details (OBS / hardware encoder) -->
+    <div v-if="ingress" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4" @click.self="ingress = null">
+      <div class="w-full max-w-lg rounded-2xl border border-admin-line/10 bg-admin-surface p-6">
+        <h3 class="text-lg font-semibold text-admin-fg">{{ $t('admin.liveBroadcasts.cameraTitle') }}</h3>
+        <p class="mt-1 text-sm text-admin-subtle">{{ $t('admin.liveBroadcasts.cameraHelp') }}</p>
+        <div class="mt-4 space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-admin-faint">{{ ingress.inputType === 'WHIP' ? $t('admin.liveBroadcasts.whipUrl') : $t('admin.liveBroadcasts.rtmpServer') }}</label>
+            <input readonly :value="ingress.url" class="mt-1 w-full rounded-lg border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg" @focus="selectAll" />
+          </div>
+          <div v-if="ingress.streamKey">
+            <label class="block text-xs font-medium text-admin-faint">{{ $t('admin.liveBroadcasts.streamKey') }}</label>
+            <input readonly :value="ingress.streamKey" class="mt-1 w-full rounded-lg border border-admin-line/20 bg-admin-field/5 px-3 py-2 text-sm text-admin-fg" @focus="selectAll" />
+          </div>
+        </div>
+        <div class="mt-5 flex justify-end">
+          <button type="button" class="rounded-lg bg-admin-accent px-4 py-2 text-sm font-semibold text-admin-accent-fg hover:bg-admin-accent-hover" @click="ingress = null">{{ $t('common.close') }}</button>
+        </div>
       </div>
     </div>
   </AdminLayout>
@@ -88,6 +112,23 @@ const loading = ref(true)
 const error = ref('')
 const statusFilter = ref('')
 const busyId = ref('')
+const ingress = ref(null)
+
+function selectAll(e) {
+  e.target.select()
+}
+
+async function camera(item) {
+  busyId.value = item.id
+  try {
+    ingress.value = await adminApi.createLiveIngress(item.id, 'RTMP')
+    await load()
+  } catch (e) {
+    error.value = e?.response?.data?.message || e?.message || t('admin.liveBroadcasts.loadError')
+  } finally {
+    busyId.value = ''
+  }
+}
 
 const statusFilters = computed(() => [
   { value: '', label: t('admin.liveBroadcasts.filterAll') },

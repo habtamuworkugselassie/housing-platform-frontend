@@ -541,6 +541,12 @@
       "reject": "Reject",
       "cut": "Cut",
       "confirmCut": "Cut this live broadcast now?",
+      "proCamera": "Pro camera",
+      "cameraTitle": "Professional camera (OBS)",
+      "cameraHelp": "Paste these into OBS → Settings → Stream, then Start Streaming.",
+      "rtmpServer": "RTMP server URL",
+      "whipUrl": "WHIP URL",
+      "streamKey": "Stream key",
       "empty": "No broadcasts.",
       "loadError": "Could not load broadcasts."
     },
