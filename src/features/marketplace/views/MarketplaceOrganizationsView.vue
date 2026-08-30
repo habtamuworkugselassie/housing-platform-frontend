@@ -88,7 +88,7 @@
           <div :class="orgCardTopBarClass(org)" />
           <div
             v-if="org.isSponsored && isPremierListingTier(org.sponsorshipType)"
-            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide border-2 border-white bg-gradient-to-r from-black via-amber-500 to-orange-500 text-white shadow-lg"
+            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-gold-400 text-primary-950 shadow-md ring-1 ring-white/60"
           >
             {{ $t('property.premier') }}
           </div>
@@ -402,12 +402,12 @@ function orgCardBorderClass(org) {
 
 function orgCardTopBarClass(org) {
   if (org?.isSponsored && isPremierListingTier(org.sponsorshipType)) {
-    return 'h-1 w-full bg-gradient-to-r from-black via-amber-500 to-orange-500'
+    return 'h-1 w-full bg-gradient-to-r from-gold-500 via-gold-400 to-amber-300'
   }
   if (org?.isSponsored && isGoldListingTier(org.sponsorshipType)) {
-    return 'h-1 w-full bg-gradient-to-r from-blue-400/90 via-indigo-400/70 to-purple-500/50'
+    return 'h-1 w-full bg-gradient-to-r from-gold-400 via-gold-300 to-gold-200'
   }
-  return 'h-1 w-full bg-gradient-to-r from-black/80 via-orange-300/70 to-transparent'
+  return 'h-1 w-full bg-gradient-to-r from-primary-600 via-primary-400 to-primary-200'
 }
 
 function goToOrganization(id) {
