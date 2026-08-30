@@ -49,10 +49,8 @@
             <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-role">{{ $t('exhibition.videoFeedback.role') }}</label>
             <select id="gl-role" v-model="form.role" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
               <option value="VISITOR">{{ $t('exhibition.videoFeedback.roleVisitor') }}</option>
-              <template v-if="isAuthenticated">
-                <option value="EXHIBITOR">{{ $t('exhibition.videoFeedback.roleExhibitor') }}</option>
-                <option value="ORGANIZER">{{ $t('exhibition.goLive.roleOrganizer') }}</option>
-              </template>
+              <option v-if="isAuthenticated" value="EXHIBITOR">{{ $t('exhibition.videoFeedback.roleExhibitor') }}</option>
+              <option v-if="isAdmin" value="ORGANIZER">{{ $t('exhibition.goLive.roleOrganizer') }}</option>
             </select>
             <p v-if="!isAuthenticated" class="mt-1 text-xs text-gray-500">
               {{ $t('exhibition.goLive.signInHint') }}
@@ -108,6 +106,7 @@ import { useAuthStore } from '@/features/auth'
 const { t } = useI18n()
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
+const isAdmin = computed(() => authStore.isAdmin)
 
 const phase = ref('form') // form | waiting | connecting | live
 const busy = ref(false)
