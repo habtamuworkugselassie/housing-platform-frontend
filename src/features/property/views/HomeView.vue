@@ -1,5 +1,5 @@
 <template>
-  <div class="public-page property-marketplace min-h-screen bg-violet-50">
+  <div class="property-marketplace min-h-screen bg-violet-50 pb-14">
     <!-- Ad Space under NavBar — GOLD-sponsored real estate companies (two side by side) -->
     <div class="bg-white border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
@@ -77,7 +77,7 @@
             <button
               v-if="hasActiveFilters"
               @click="clearFilters"
-              class="px-3 sm:px-4 py-2 text-sm font-medium text-black bg-primary-600 rounded-lg hover:bg-primary-100 transition-colors whitespace-nowrap"
+              class="px-3 sm:px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors whitespace-nowrap"
             >
               {{ $t('filters.clearFilters') }}
             </button>
