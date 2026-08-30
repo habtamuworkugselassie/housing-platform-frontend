@@ -149,6 +149,12 @@ const routes = [
     component: () => import('@/features/admin/views/SponsorshipsView.vue'),
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
+  {
+    path: '/go-live',
+    name: 'GoLive',
+    component: () => import('@/features/exhibition/views/GoLiveView.vue'),
+    meta: { noindex: true }
+  },
   // Admin Portal Routes
   {
     path: '/admin',
@@ -208,6 +214,18 @@ const routes = [
     path: '/admin/exhibition-interests',
     name: 'AdminExhibitionInterests',
     component: () => import('@/features/admin/views/AdminExhibitionInterestsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
+    path: '/admin/video-feedback',
+    name: 'AdminVideoFeedback',
+    component: () => import('@/features/admin/views/AdminVideoFeedbackView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
+    path: '/admin/live-broadcasts',
+    name: 'AdminLiveBroadcasts',
+    component: () => import('@/features/admin/views/AdminLiveBroadcastsView.vue'),
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {

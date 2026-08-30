@@ -243,6 +243,16 @@ export interface DisplaySettings {
   sidebarLayoutRotationMs: number
   exhibitionSponsorshipPackagesVisible: boolean
   exhibitionSponsorshipPackagePricesVisible: boolean
+  exhibitionLiveVisible?: boolean
+  liveSourceType?: 'EXTERNAL_EMBED' | 'HLS'
+  liveEmbedUrl?: string
+  liveHlsUrl?: string
+  liveTitle?: string
+  liveYoutubeUrl?: string
+  liveTiktokUrl?: string
+  liveFacebookUrl?: string
+  exhibitionFeedbackVisible?: boolean
+  exhibitionFeedbackAutoPublish?: boolean
 }
 
 /**
