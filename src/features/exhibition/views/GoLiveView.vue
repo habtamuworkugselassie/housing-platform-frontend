@@ -17,6 +17,7 @@
         </div>
 
         <!-- Pick any connected camera / mic (webcam, USB, capture card) -->
+        <p v-if="phase === 'live'" class="text-xs font-medium text-gray-500">{{ $t('exhibition.goLive.switchHint') }}</p>
         <div class="grid gap-3 sm:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-camera">{{ $t('exhibition.goLive.camera') }}</label>
@@ -48,9 +49,15 @@
             <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-role">{{ $t('exhibition.videoFeedback.role') }}</label>
             <select id="gl-role" v-model="form.role" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
               <option value="VISITOR">{{ $t('exhibition.videoFeedback.roleVisitor') }}</option>
-              <option value="EXHIBITOR">{{ $t('exhibition.videoFeedback.roleExhibitor') }}</option>
-              <option value="ORGANIZER">{{ $t('exhibition.goLive.roleOrganizer') }}</option>
+              <template v-if="isAuthenticated">
+                <option value="EXHIBITOR">{{ $t('exhibition.videoFeedback.roleExhibitor') }}</option>
+                <option value="ORGANIZER">{{ $t('exhibition.goLive.roleOrganizer') }}</option>
+              </template>
             </select>
+            <p v-if="!isAuthenticated" class="mt-1 text-xs text-gray-500">
+              {{ $t('exhibition.goLive.signInHint') }}
+              <router-link to="/login" class="font-medium text-primary-600 hover:underline">{{ $t('nav.login') }}</router-link>
+            </p>
           </div>
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-company">{{ $t('exhibition.videoFeedback.company') }}</label>
@@ -96,8 +103,11 @@ import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Room, createLocalTracks, createLocalVideoTrack } from 'livekit-client'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
+import { useAuthStore } from '@/features/auth'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const phase = ref('form') // form | waiting | connecting | live
 const busy = ref(false)
@@ -105,6 +115,13 @@ const error = ref('')
 const videoEl = ref(null)
 
 const form = reactive({ name: '', email: '', role: 'VISITOR', company: '', title: '' })
+
+// Prefill from the signed-in account (exhibitors/organizers must be logged in).
+if (authStore.isAuthenticated && authStore.user) {
+  const u = authStore.user
+  form.name = [u.firstName, u.lastName].filter(Boolean).join(' ').trim() || u.email || ''
+  form.email = u.email || ''
+}
 
 const cameras = ref([])
 const mics = ref([])

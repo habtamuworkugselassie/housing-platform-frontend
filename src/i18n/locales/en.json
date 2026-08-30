@@ -1125,6 +1125,8 @@
       "microphone": "Microphone",
       "preview": "Preview",
       "previewCta": "Preview camera",
+      "signInHint": "To broadcast as an exhibitor or organizer, please",
+      "switchHint": "Switch camera or microphone — takes effect on the live stream immediately.",
       "cameraError": "Could not access that camera. Check it's connected and permitted."
     },
     "hero": {
