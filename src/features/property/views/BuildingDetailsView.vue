@@ -1,119 +1,121 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-white">
+  <div class="building-details-page min-h-screen bg-violet-50 pb-14">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-900">
     <div class="mb-6">
       <button
         @click="$router.back()"
-        class="text-white hover:text-primary-400 font-medium mb-4"
+        class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
       >
-        ← {{ $t('common.back') }}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+        {{ $t('common.back') }}
       </button>
-      <h1 class="text-3xl font-bold text-white">{{ building?.name || $t('building.buildingDetails') }}</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">{{ building?.name || $t('building.buildingDetails') }}</h1>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/15"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
     </div>
 
     <!-- Error State -->
-    <div v-if="error" class="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-6">
-      <p class="text-sm text-red-200">{{ error }}</p>
+    <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+      <p class="text-sm text-red-700">{{ error }}</p>
     </div>
 
     <!-- Building Details -->
     <div v-if="!loading && building" class="space-y-6">
       <!-- Building Info Card -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
         <div class="flex items-start justify-between mb-4">
           <div>
-            <h2 class="text-2xl font-semibold text-white">{{ building.name }}</h2>
-            <p class="text-sm text-gray-400 mt-1">{{ building.address }}, {{ building.city }}, {{ building.country }}</p>
+            <h2 class="text-2xl font-semibold text-gray-900">{{ building.name }}</h2>
+            <p class="text-sm text-gray-500 mt-1">{{ building.address }}, {{ building.city }}, {{ building.country }}</p>
           </div>
           <span :class="[
-            'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',
+            'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border',
             getStatusColor(building.status)
           ]">
             {{ building.status }}
           </span>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 rounded-xl border border-gray-100 bg-gray-50 p-4">
           <div>
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.totalUnits') }}</label>
-            <p class="text-lg font-semibold text-white">{{ building.totalUnits }}</p>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.totalUnits') }}</label>
+            <p class="text-lg font-semibold text-gray-900">{{ building.totalUnits }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.available') }}</label>
-            <p class="text-lg font-semibold text-green-400">{{ building.availableUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.available') }}</label>
+            <p class="text-lg font-semibold text-green-600">{{ building.availableUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.occupied') }}</label>
-            <p class="text-lg font-semibold text-gray-300">{{ building.occupiedUnits || 0 }}</p>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.occupied') }}</label>
+            <p class="text-lg font-semibold text-gray-700">{{ building.occupiedUnits || 0 }}</p>
           </div>
           <div>
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.totalFloors') }}</label>
-            <p class="text-lg font-semibold text-white">{{ building.totalFloors }}</p>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.totalFloors') }}</label>
+            <p class="text-lg font-semibold text-gray-900">{{ building.totalFloors }}</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
           <div>
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.category') }}</label>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.category') }}</label>
             <p class="text-sm mt-1">
               <span :class="{
-                'bg-blue-500/30 text-blue-200': building.category === 'FOR_SALE',
-                'bg-green-500/30 text-green-200': building.category === 'FOR_RENTAL'
+                'bg-blue-100 text-blue-700': building.category === 'FOR_SALE',
+                'bg-green-100 text-green-700': building.category === 'FOR_RENTAL'
               }" class="px-2 py-1 rounded text-xs font-medium">
                 {{ building.category === 'FOR_SALE' ? $t('common.forSale') : $t('common.forRental') }}
               </span>
             </p>
           </div>
           <div v-if="building.constructionPercentage !== null && building.constructionPercentage !== undefined">
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.constructionProgress') }}</label>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.constructionProgress') }}</label>
             <div class="mt-1">
               <div class="flex items-center gap-2">
-                <div class="flex-1 bg-white/20 rounded-full h-2">
-                  <div 
-                    class="bg-violet-950 h-2 rounded-full transition-all"
+                <div class="flex-1 bg-gray-200 rounded-full h-2">
+                  <div
+                    class="bg-primary-500 h-2 rounded-full transition-all"
                     :style="{ width: building.constructionPercentage + '%' }"
                   ></div>
                 </div>
-                <span class="text-xs text-gray-400">{{ building.constructionPercentage }}%</span>
+                <span class="text-xs text-gray-500">{{ building.constructionPercentage }}%</span>
               </div>
             </div>
           </div>
           <div v-if="building.isFullyFurnished">
-            <label class="text-xs font-medium text-gray-400">{{ $t('building.furnishing') }}</label>
+            <label class="text-xs font-medium text-gray-500">{{ $t('building.furnishing') }}</label>
             <p class="text-sm mt-1">
-              <span class="px-2 py-1 bg-purple-500/30 text-purple-200 rounded text-xs font-medium">{{ $t('common.fullyFurnished') }}</span>
+              <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">{{ $t('common.fullyFurnished') }}</span>
             </p>
           </div>
         </div>
 
         <div v-if="building.description" class="mt-4">
-          <label class="text-sm font-medium text-gray-400">{{ $t('property.description') }}</label>
-          <p class="text-sm text-white mt-1">{{ building.description }}</p>
+          <label class="text-sm font-medium text-gray-500">{{ $t('property.description') }}</label>
+          <p class="text-sm text-gray-700 mt-1">{{ building.description }}</p>
         </div>
 
         <div v-if="building.amenities" class="mt-4">
-          <label class="text-sm font-medium text-gray-400">{{ $t('building.amenities') }}</label>
-          <p class="text-sm text-white mt-1">{{ building.amenities }}</p>
+          <label class="text-sm font-medium text-gray-500">{{ $t('building.amenities') }}</label>
+          <p class="text-sm text-gray-700 mt-1">{{ building.amenities }}</p>
         </div>
 
         <div v-if="building.facilities" class="mt-4">
-          <label class="text-sm font-medium text-gray-400">{{ $t('building.facilities') }}</label>
-          <p class="text-sm text-white mt-1">{{ building.facilities }}</p>
+          <label class="text-sm font-medium text-gray-500">{{ $t('building.facilities') }}</label>
+          <p class="text-sm text-gray-700 mt-1">{{ building.facilities }}</p>
         </div>
 
         <div v-if="building.yearBuilt" class="mt-4">
-          <label class="text-sm font-medium text-gray-400">{{ $t('building.yearBuilt') }}</label>
-          <p class="text-sm text-white mt-1">{{ building.yearBuilt }}</p>
+          <label class="text-sm font-medium text-gray-500">{{ $t('building.yearBuilt') }}</label>
+          <p class="text-sm text-gray-700 mt-1">{{ building.yearBuilt }}</p>
         </div>
       </div>
 
       <!-- Map Section: only show when building has coordinates -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
-        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('building.locationMap') }}</h3>
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mb-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('building.locationMap') }}</h3>
         <OsmMap
           v-if="building.latitude != null && building.longitude != null"
           :latitude="building.latitude"
@@ -127,59 +129,58 @@
           :href="googleMapsDirectionsUrl(building.latitude, building.longitude)"
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white hover:border-primary-400 hover:bg-primary-100/20 transition-colors text-sm font-medium"
+          class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-primary-400 hover:bg-primary-50 hover:text-primary-700 transition-colors text-sm font-medium"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           {{ $t('common.openInGoogleMaps') || 'Open in Google Maps' }}
         </a>
         <div
           v-else
-          class="bg-white/10 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center"
+          class="bg-gray-100 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center"
           style="height: 400px;"
         >
-          <p class="text-gray-400 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
+          <p class="text-gray-500 px-4">{{ $t('property.locationNotAvailable') || 'Location not available' }}</p>
         </div>
       </div>
 
       <!-- Company Information Section -->
-      <div v-if="company" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
-        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.realEstateCompany') }}</h3>
-        <div class="bg-white/5 rounded-lg p-6 border border-white/10">
-          <h4 class="text-lg font-semibold text-white mb-3 flex items-center gap-2 flex-wrap">
+      <div v-if="company" class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mb-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('property.realEstateCompany') }}</h3>
+        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+          <h4 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2 flex-wrap">
             {{ company.name }}
             <VerifiedBadge :level="getVerificationLevel(company)" size="sm" />
           </h4>
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div v-if="company.email">
-              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('auth.email') }}:</dt>
-              <dd class="text-sm text-white">
-                <a :href="`mailto:${company.email}`" class="text-white hover:underline">{{ company.email }}</a>
+              <dt class="text-sm font-medium text-gray-500 mb-1">{{ $t('auth.email') }}:</dt>
+              <dd class="text-sm text-gray-700">
+                <a :href="`mailto:${company.email}`" class="text-primary-600 hover:underline">{{ company.email }}</a>
               </dd>
             </div>
             <div v-if="companyPhones.length">
-              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.phoneLabel') }}:</dt>
-              <dd class="text-sm text-white">
+              <dt class="text-sm font-medium text-gray-500 mb-1">{{ $t('building.phoneLabel') }}:</dt>
+              <dd class="text-sm text-gray-700">
                 <template v-for="(phone, i) in companyPhones" :key="i">
                   <span v-if="i > 0">, </span>
-                  <a :href="`tel:${phone}`" class="text-white hover:underline">{{ phone }}</a>
+                  <a :href="`tel:${phone}`" class="text-primary-600 hover:underline">{{ phone }}</a>
                 </template>
               </dd>
             </div>
             <div v-if="company.address" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('property.address') }}:</dt>
-              <dd class="text-sm text-white">{{ company.address }}{{ company.city ? `, ${company.city}` : '' }}{{ company.country ? `, ${company.country}` : '' }}</dd>
+              <dt class="text-sm font-medium text-gray-500 mb-1">{{ $t('property.address') }}:</dt>
+              <dd class="text-sm text-gray-700">{{ company.address }}{{ company.city ? `, ${company.city}` : '' }}{{ company.country ? `, ${company.country}` : '' }}</dd>
             </div>
             <div v-if="company.website" class="md:col-span-2">
-              <dt class="text-sm font-medium text-gray-400 mb-1">{{ $t('building.websiteLabel') }}:</dt>
-              <dd class="text-sm text-white">
-                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-white hover:underline">{{ company.website }}</a>
+              <dt class="text-sm font-medium text-gray-500 mb-1">{{ $t('building.websiteLabel') }}:</dt>
+              <dd class="text-sm text-gray-700">
+                <a :href="company.website" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">{{ company.website }}</a>
               </dd>
             </div>
             <div v-if="hasSocialOnOrg(company)" class="md:col-span-2">
               <dt class="sr-only">Social profiles</dt>
               <dd class="m-0 p-0">
                 <OrganizationSocialLinks
-                  tone="dark"
                   :facebook-url="company.facebookUrl"
                   :instagram-url="company.instagramUrl"
                   :linkedin-url="company.linkedinUrl"
@@ -189,39 +190,39 @@
               </dd>
             </div>
           </dl>
-          <p v-if="company.description" class="mt-4 text-sm text-gray-300">{{ company.description }}</p>
+          <p v-if="company.description" class="mt-4 text-sm text-gray-600">{{ company.description }}</p>
         </div>
       </div>
 
       <!-- Financing Offers Section -->
-      <div v-if="financingOffers.length" class="bg-zinc-900 border border-white/10 rounded-lg p-6 mb-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
-        <h3 class="text-xl font-semibold text-white mb-4">{{ $t('property.financingOptions') }}</h3>
+      <div v-if="financingOffers.length" class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 mb-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('property.financingOptions') }}</h3>
         <div class="space-y-4">
           <div
             v-for="offer in financingOffers"
             :key="offer.id"
-            class="bg-white/5 rounded-lg p-6 border border-white/10 hover:border-primary-400 hover:bg-primary-100/10 transition-colors"
+            class="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:border-primary-300 transition-colors"
           >
             <div class="flex items-start justify-between">
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-2">
-                  <h4 class="text-lg font-semibold text-white">{{ offer.creditProductName || 'Financing Offer' }}</h4>
-                  <span class="px-2 py-1 bg-green-500/30 text-green-200 rounded text-xs font-medium">
+                  <h4 class="text-lg font-semibold text-gray-900">{{ offer.creditProductName || 'Financing Offer' }}</h4>
+                  <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
                     {{ $t('banking.active') }}
                   </span>
                 </div>
-                <p v-if="offer.creditProductDescription" class="text-sm text-gray-300 mb-3">{{ offer.creditProductDescription }}</p>
-                
+                <p v-if="offer.creditProductDescription" class="text-sm text-gray-600 mb-3">{{ offer.creditProductDescription }}</p>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div v-if="offer.maxLoanToValueRatio">
-                    <label class="text-xs font-medium text-gray-400">{{ $t('loan.ltvRatio') }}</label>
-                    <p class="text-sm font-semibold text-white mt-1">{{ (offer.maxLoanToValueRatio * 100).toFixed(0) }}%</p>
+                    <label class="text-xs font-medium text-gray-500">{{ $t('loan.ltvRatio') }}</label>
+                    <p class="text-sm font-semibold text-gray-900 mt-1">{{ (offer.maxLoanToValueRatio * 100).toFixed(0) }}%</p>
                   </div>
                 </div>
-                
-                <div v-if="offer.specialTerms" class="mt-3 p-3 bg-white/5 rounded border border-white/10">
-                  <label class="text-xs font-medium text-gray-400">{{ $t('loan.specialTerms') }}</label>
-                  <p class="text-sm text-gray-300 mt-1">{{ offer.specialTerms }}</p>
+
+                <div v-if="offer.specialTerms" class="mt-3 p-3 bg-white rounded border border-gray-200">
+                  <label class="text-xs font-medium text-gray-500">{{ $t('loan.specialTerms') }}</label>
+                  <p class="text-sm text-gray-600 mt-1">{{ offer.specialTerms }}</p>
                 </div>
               </div>
             </div>
@@ -230,23 +231,23 @@
       </div>
 
       <!-- Units Section -->
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-6 hover:border-primary-400 hover:bg-violet-950/10 transition-colors">
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-semibold text-white">{{ $t('building.unitsWithCount', { count: units.length }) }}</h3>
+          <h3 class="text-xl font-semibold text-gray-900">{{ $t('building.unitsWithCount', { count: units.length }) }}</h3>
           <router-link
             v-if="authStore.hasRole('REALTOR')"
             :to="`/submit-property?buildingId=${building.id}`"
-            class="px-4 py-2 bg-white text-black rounded-lg hover:bg-primary-100 text-sm transition-colors"
+            class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm transition-colors"
           >
             + {{ $t('building.addUnit') }}
           </router-link>
         </div>
 
         <div v-if="unitsLoading" class="text-center py-8">
-          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-white/15"></div>
+          <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
         </div>
 
-        <div v-else-if="units.length === 0" class="text-center py-8 text-gray-400">
+        <div v-else-if="units.length === 0" class="text-center py-8 text-gray-500">
           <p>{{ $t('building.noUnits') }}</p>
         </div>
 
@@ -255,10 +256,10 @@
             v-for="unit in units"
             :key="unit.id"
             @click="$router.push(`/properties/${unit.id}`)"
-            class="border border-white/10 rounded-lg p-4 hover:border-primary-400 hover:bg-violet-950/20 transition-colors cursor-pointer"
+            class="border border-gray-200 rounded-xl p-4 hover:border-primary-400 hover:shadow-md transition-all cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2 flex-wrap gap-1">
-              <h4 class="font-semibold text-white flex items-center gap-1.5 flex-wrap min-w-0">
+              <h4 class="font-semibold text-gray-900 flex items-center gap-1.5 flex-wrap min-w-0">
                 {{ unit.title }}
                 <VerifiedBadge :level="getVerificationLevel(unit)" size="sm" />
               </h4>
@@ -269,20 +270,20 @@
                 {{ unit.status }}
               </span>
             </div>
-            
-            <p v-if="unit.unitNumber" class="text-xs text-gray-400 mb-2">Unit: {{ unit.unitNumber }}</p>
+
+            <p v-if="unit.unitNumber" class="text-xs text-gray-500 mb-2">Unit: {{ unit.unitNumber }}</p>
             <div class="flex flex-col gap-1">
-              <p v-if="unit.priceETB" class="text-lg font-bold text-white">
+              <p v-if="unit.priceETB" class="text-lg font-bold text-primary-700">
                 {{ formatPrice(unit.priceETB, 'ETB') }}
-                <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-400 font-normal">/month</span>
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-sm text-gray-500 font-normal">/month</span>
               </p>
-              <p v-if="unit.priceUSD" class="text-base font-semibold text-gray-300">
+              <p v-if="unit.priceUSD" class="text-base font-semibold text-gray-600">
                 {{ formatPrice(unit.priceUSD, 'USD') }}
-                <span v-if="unit.category === 'FOR_RENTAL'" class="text-xs text-gray-400 font-normal">/month</span>
+                <span v-if="unit.category === 'FOR_RENTAL'" class="text-xs text-gray-500 font-normal">/month</span>
               </p>
             </div>
-            
-            <div class="mt-2 flex gap-4 text-xs text-gray-400">
+
+            <div class="mt-2 flex gap-4 text-xs text-gray-500">
               <span v-if="unit.bedrooms">{{ unit.bedrooms }} bed</span>
               <span v-if="unit.bathrooms">{{ unit.bathrooms }} bath</span>
               <span v-if="unit.area">{{ unit.area }} m²</span>
@@ -290,6 +291,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -418,22 +420,22 @@ const loadFinancingOffers = async () => {
 
 const getStatusColor = (status) => {
   const colors = {
-    PLANNED: 'bg-gray-500/30 text-gray-300',
-    UNDER_CONSTRUCTION: 'bg-violet-950/30 text-white',
-    COMPLETED: 'bg-green-500/30 text-green-200',
-    RENOVATION: 'bg-blue-500/30 text-blue-200'
+    PLANNED: 'bg-gray-100 text-gray-700 border-gray-200',
+    UNDER_CONSTRUCTION: 'bg-primary-100 text-primary-700 border-primary-200',
+    COMPLETED: 'bg-green-100 text-green-700 border-green-200',
+    RENOVATION: 'bg-blue-100 text-blue-700 border-blue-200'
   }
-  return colors[status] || 'bg-gray-500/30 text-gray-300'
+  return colors[status] || 'bg-gray-100 text-gray-700 border-gray-200'
 }
 
 const getPropertyStatusColor = (status) => {
   const colors = {
-    AVAILABLE: 'bg-green-500/30 text-green-200',
-    SOLD: 'bg-red-500/30 text-red-200',
-    RESERVED: 'bg-violet-950/30 text-white',
-    WITHDRAWN: 'bg-gray-500/30 text-gray-300'
+    AVAILABLE: 'bg-green-100 text-green-700',
+    SOLD: 'bg-red-100 text-red-700',
+    RESERVED: 'bg-primary-100 text-primary-700',
+    WITHDRAWN: 'bg-gray-100 text-gray-700'
   }
-  return colors[status] || 'bg-gray-500/30 text-gray-300'
+  return colors[status] || 'bg-gray-100 text-gray-700'
 }
 
 const googleMapsDirectionsUrl = (lat, lng) =>

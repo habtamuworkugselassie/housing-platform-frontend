@@ -1,5 +1,5 @@
 <template>
-  <div class="public-page property-details-page min-h-screen bg-violet-50">
+  <div class="property-details-page min-h-screen bg-violet-50 pb-14">
     <!-- Loading State -->
     <div v-if="loading" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12">
       <div class="text-center">

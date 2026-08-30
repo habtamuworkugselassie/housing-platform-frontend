@@ -1,5 +1,5 @@
 <template>
-  <div class="public-page listing-directory min-h-screen bg-violet-50">
+  <div class="listing-directory min-h-screen bg-violet-50 pb-14">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
     <div class="mb-5 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
       <div>
