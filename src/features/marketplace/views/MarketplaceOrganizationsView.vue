@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-violet-950 text-gray-900">
+  <div class="min-h-screen bg-violet-50 text-gray-900">
     <!-- Same top banner as real-estate home: GOLD sponsors for this organization type -->
     <div
       v-if="config?.type"
@@ -33,7 +33,7 @@
               <select
                 id="marketplace-supplier-subcat"
                 v-model="selectedSubcategoryId"
-                class="w-full rounded-lg border border-gray-300 bg-primary-600 px-3 py-2 text-sm text-white focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60"
+                class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/60"
                 @change="onSubcategoryFilterChange"
               >
                 <option value="">{{ $t('marketplace.allSubcategories') }}</option>
@@ -80,9 +80,9 @@
           v-for="org in paginatedOrganizations"
           :key="org.id"
           :class="[
-            'group relative overflow-hidden rounded-2xl bg-white/90 transition-colors',
+            'group relative overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg',
             orgCardBorderClass(org),
-            'hover:border-primary-400 hover:bg-violet-950/20'
+            'hover:border-primary-400'
           ]"
         >
           <div :class="orgCardTopBarClass(org)" />
@@ -131,7 +131,7 @@
                   <span
                     v-for="sc in org.supplierSubcategories"
                     :key="sc.id"
-                    class="inline-flex rounded-full border border-white/15 bg-violet-950/15 px-2 py-0.5 text-[10px] font-medium text-white"
+                    class="inline-flex rounded-full border border-primary-200 bg-primary-50 px-2 py-0.5 text-[10px] font-medium text-primary-700"
                   >
                     {{ sc.name }}
                   </span>
@@ -149,24 +149,24 @@
               {{ org.address || '-' }}
             </p>
 
-            <div class="mt-4 space-y-2 text-xs text-gray-600">
-              <div v-if="primaryPhone(org)" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-[10px] text-gray-900">TEL</span>
+            <div class="mt-4 space-y-2 text-sm text-gray-600">
+              <div v-if="primaryPhone(org)" class="flex items-center gap-2.5">
+                <span class="material-icons !text-[18px] leading-none text-primary-500" aria-hidden="true">call</span>
                 <span class="truncate">{{ primaryPhone(org) }}</span>
               </div>
-              <div v-if="org.email" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-[10px] text-gray-900">@</span>
+              <div v-if="org.email" class="flex items-center gap-2.5">
+                <span class="material-icons !text-[18px] leading-none text-primary-500" aria-hidden="true">mail_outline</span>
                 <span class="truncate">{{ org.email }}</span>
               </div>
-              <div v-if="org.website" class="flex items-center gap-2">
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-[10px] text-gray-900">WEB</span>
+              <div v-if="org.website" class="flex items-center gap-2.5">
+                <span class="material-icons !text-[18px] leading-none text-primary-500" aria-hidden="true">language</span>
                 <span class="truncate">{{ normalizedWebsite(org.website) }}</span>
               </div>
             </div>
 
-            <div class="mt-4 flex items-center justify-between">
-              <span class="text-xs font-medium text-gray-900">{{ $t('common.viewDetails') }}</span>
-              <span class="text-gray-900 transition-transform duration-200 group-hover:translate-x-1">-&gt;</span>
+            <div class="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+              <span class="text-sm font-semibold text-primary-700">{{ $t('common.viewDetails') }}</span>
+              <span class="material-icons !text-[18px] text-primary-600 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">arrow_forward</span>
             </div>
           </div>
           <div
