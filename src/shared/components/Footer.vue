@@ -63,6 +63,22 @@
               </svg>
             </a>
           </div>
+
+          <!-- Account (moved out of the header) -->
+          <div v-if="!isAuthenticated" class="flex flex-wrap items-center gap-3 pt-1">
+            <RouterLink
+              to="/login"
+              class="inline-flex items-center justify-center rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
+            >
+              {{ $t('nav.login') }}
+            </RouterLink>
+            <RouterLink
+              to="/register"
+              class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
+            >
+              {{ $t('nav.register') }}
+            </RouterLink>
+          </div>
         </div>
 
         <!-- Business -->
@@ -191,6 +207,10 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
+import { useAuthStore } from '@/features/auth'
+
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 /** Used when display-settings has not loaded yet or no approved footer org is configured */
 const FALLBACK = {

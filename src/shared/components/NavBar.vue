@@ -161,19 +161,6 @@
                 <UserDropdown />
               </div>
             </template>
-            <template v-else>
-              <router-link
-                to="/login"
-                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
-              >
-                <span class="hidden sm:inline">{{ $t('nav.login') }}</span>
-                <span class="sm:hidden">{{ $t('nav.login') }}</span>
-              </router-link>
-              <AppButton to="/register" variant="primary" size="sm">
-                <span class="hidden sm:inline">{{ $t('nav.register') }}</span>
-                <span class="sm:hidden">{{ $t('nav.signUp') }}</span>
-              </AppButton>
-            </template>
           </div>
           
           <LocaleSwitcher />
@@ -324,18 +311,6 @@
               </div>
             </button>
           </template>
-          <template v-else>
-            <router-link
-              to="/login"
-              @click="mobileMenuOpen = false"
-              class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
-            >
-              {{ $t('nav.login') }}
-            </router-link>
-            <AppButton to="/register" variant="primary" class="w-full" @click="mobileMenuOpen = false">
-              {{ $t('nav.register') }}
-            </AppButton>
-          </template>
         </div>
       </div>
     </div>
@@ -343,7 +318,6 @@
 </template>
 
 <script setup>
-import { AppButton } from '@/shared/components/ui'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/features/auth'
 import { mediaUrl } from '@/shared/api/client'
