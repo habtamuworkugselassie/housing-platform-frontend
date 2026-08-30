@@ -160,55 +160,25 @@
         @click.self="closeDetailsModal"
       >
         <div class="relative w-full max-w-lg sm:max-w-2xl max-h-[min(92vh,900px)] flex flex-col sm:mx-4">
-          <div
-            class="relative w-full rounded-t-2xl sm:rounded-2xl p-px bg-gradient-to-br shadow-2xl"
-            :class="[detailsModalTheme.borderGradient, detailsModalTheme.shadowGlow]"
-          >
+          <div class="relative w-full rounded-t-2xl sm:rounded-2xl shadow-2xl">
             <div
-              class="pointer-events-none absolute inset-0 overflow-hidden rounded-t-2xl sm:rounded-2xl rounded-b-none sm:rounded-b-2xl"
-              aria-hidden="true"
-            >
-              <div
-                class="absolute -top-24 -right-20 h-64 w-64 rounded-full blur-3xl motion-safe:animate-pulse"
-                :class="detailsModalTheme.orb1"
-              />
-              <div
-                class="absolute -bottom-28 -left-16 h-72 w-72 rounded-full blur-3xl opacity-80"
-                :class="detailsModalTheme.orb2"
-              />
-              <div
-                v-if="detailsModalTheme.showSparkles"
-                class="absolute top-16 right-12 h-px w-24 rotate-45 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-              />
-              <div
-                v-if="detailsModalTheme.showSparkles"
-                class="absolute top-24 right-8 h-px w-16 -rotate-12 bg-gradient-to-r from-transparent via-amber-200/50 to-transparent"
-              />
-            </div>
-            <div
-              class="relative flex max-h-[min(92vh,900px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-white/10 bg-zinc-950/90 backdrop-blur-xl"
+              class="relative flex max-h-[min(92vh,900px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
-                :class="[detailsModalTheme.stripe, detailsModalTheme.stripeAnimate ? 'tier-modal-stripe-shimmer' : '']"
+                :class="detailsModalTheme.stripe"
               />
               <div
-                class="flex-shrink-0 flex items-start justify-between gap-4 border-b px-5 py-5 sm:px-6 border-white/10"
-                :class="detailsModalTheme.headerBg"
+                class="flex-shrink-0 flex items-start justify-between gap-4 border-b border-gray-200 px-5 py-5 sm:px-6"
               >
                 <div class="relative min-w-0">
-                  <SparklesIcon
-                    v-if="detailsModalTheme.showSparkles"
-                    class="absolute -left-1 -top-1 h-5 w-5 text-amber-300/80 motion-safe:animate-pulse"
-                    aria-hidden="true"
-                  />
                   <p
-                    class="text-xs font-bold uppercase tracking-[0.2em] mb-1.5 pl-0 sm:pl-6"
+                    class="text-xs font-bold uppercase tracking-[0.2em] mb-1.5"
                     :class="detailsModalTheme.eyebrow"
                   >
                     {{ formatTierLabel(detailsModalPackage.type) }}
                   </p>
-                  <h3 :id="detailsTitleId" class="text-xl font-bold text-white leading-tight tracking-tight">
+                  <h3 :id="detailsTitleId" class="text-xl font-bold text-gray-900 leading-tight tracking-tight">
                     {{ detailsModalPackage.name }}
                   </h3>
                   <p
@@ -221,7 +191,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-gray-400 transition-colors hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   :class="detailsModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeDetailsModal"
@@ -230,15 +200,15 @@
                 </button>
               </div>
               <div class="flex-1 overflow-y-auto space-y-6 px-5 pt-5 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
-                <p v-if="detailsModalPackage.description" class="text-sm text-white/85 leading-relaxed">
+                <p v-if="detailsModalPackage.description" class="text-sm text-gray-600 leading-relaxed">
                   {{ detailsModalPackage.description }}
                 </p>
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-white/70 mb-3">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
                     {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                   </p>
                   <ul
-                    class="space-y-2.5 text-sm text-white/85 leading-relaxed list-disc pl-4"
+                    class="space-y-2.5 text-sm text-gray-700 leading-relaxed list-disc pl-4"
                     :class="detailsModalTheme.bulletMarker"
                   >
                     <li v-for="(line, idx) in featureBullets(detailsModalPackage.features)" :key="idx">
@@ -247,7 +217,7 @@
                   </ul>
                   <p
                     v-if="!featureBullets(detailsModalPackage.features).length"
-                    class="text-sm text-white/70 italic"
+                    class="text-sm text-gray-500 italic"
                   >
                     {{ $t('exhibition.sponsorshipPackages.noFeaturesListed') }}
                   </p>
@@ -260,17 +230,17 @@
                   <p class="text-xs font-semibold uppercase tracking-wider mb-2" :class="detailsModalTheme.notesLabel">
                     {{ $t('exhibition.sponsorshipPackages.notesHeading') }}
                   </p>
-                  <p class="text-sm text-white/85 leading-relaxed whitespace-pre-wrap">
+                  <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {{ detailsModalPackage.notes }}
                   </p>
                 </div>
               </div>
               <div
-                class="flex-shrink-0 flex flex-col-reverse sm:flex-row gap-3 border-t border-white/10 px-5 py-4 sm:px-6 sm:justify-end bg-zinc-950/80"
+                class="flex-shrink-0 flex flex-col-reverse sm:flex-row gap-3 border-t border-gray-200 px-5 py-4 sm:px-6 sm:justify-end bg-gray-50"
               >
                 <button
                   type="button"
-                  class="w-full sm:w-auto px-5 py-3 border text-white text-sm font-semibold rounded-xl transition-colors"
+                  class="w-full sm:w-auto px-5 py-3 border text-sm font-semibold rounded-xl transition-colors"
                   :class="detailsModalTheme.secondaryCta"
                   @click="closeDetailsModal"
                 >
@@ -302,33 +272,16 @@
         @click.self="closeRegisterModal"
       >
         <div class="relative w-full max-w-lg max-h-[min(94vh,920px)] flex flex-col sm:mx-4">
-          <div
-            class="relative w-full rounded-t-2xl sm:rounded-2xl p-px bg-gradient-to-br shadow-2xl"
-            :class="[registerModalTheme.borderGradient, registerModalTheme.shadowGlow]"
-          >
+          <div class="relative w-full rounded-t-2xl sm:rounded-2xl shadow-2xl">
             <div
-              class="pointer-events-none absolute inset-0 overflow-hidden rounded-t-2xl sm:rounded-2xl rounded-b-none sm:rounded-b-2xl z-0"
-              aria-hidden="true"
-            >
-              <div
-                class="absolute -top-20 -right-16 h-56 w-56 rounded-full blur-3xl motion-safe:animate-pulse"
-                :class="registerModalTheme.orb1"
-              />
-              <div
-                class="absolute bottom-0 -left-12 h-48 w-48 rounded-full blur-3xl opacity-70"
-                :class="registerModalTheme.orb2"
-              />
-            </div>
-            <div
-              class="relative z-[1] flex max-h-[min(94vh,920px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-white/10 bg-zinc-950/90 backdrop-blur-xl"
+              class="relative z-[1] flex max-h-[min(94vh,920px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
-                :class="[registerModalTheme.stripe, registerModalTheme.stripeAnimate ? 'tier-modal-stripe-shimmer' : '']"
+                :class="registerModalTheme.stripe"
               />
               <div
-                class="flex-shrink-0 flex items-start justify-between gap-4 border-b px-5 py-5 sm:px-6 border-white/10"
-                :class="registerModalTheme.headerBg"
+                class="flex-shrink-0 flex items-start justify-between gap-4 border-b border-gray-200 px-5 py-5 sm:px-6"
               >
                 <div class="min-w-0">
                   <p
@@ -337,10 +290,10 @@
                   >
                     {{ $t('exhibition.registerInterest.eyebrow') }}
                   </p>
-                  <h3 :id="registerTitleId" class="text-xl font-bold text-white tracking-tight">
+                  <h3 :id="registerTitleId" class="text-xl font-bold text-gray-900 tracking-tight">
                     {{ $t('exhibition.sponsorshipPackages.registerModalTitle') }}
                   </h3>
-                  <p class="mt-1.5 text-sm text-white/80 leading-relaxed">
+                  <p class="mt-1.5 text-sm text-gray-600 leading-relaxed">
                     {{ $t('exhibition.sponsorshipPackages.registerModalSubtitle') }}
                   </p>
                   <p
@@ -354,7 +307,7 @@
                 </div>
                 <button
                   type="button"
-                  class="flex-shrink-0 rounded-xl p-2.5 text-white/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                  class="flex-shrink-0 rounded-xl p-2.5 text-gray-400 transition-colors hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   :class="registerModalTheme.closeHover"
                   :aria-label="$t('exhibition.sponsorshipPackages.close')"
                   @click="closeRegisterModal"
@@ -366,15 +319,15 @@
               <div class="flex-1 overflow-y-auto px-5 py-5 sm:px-6">
                 <div
                   v-if="registerSubmitted"
-                  class="rounded-xl border border-green-500/30 bg-gradient-to-b from-green-500/15 to-zinc-900/50 p-8 text-center"
+                  class="rounded-xl border border-green-200 bg-green-50 p-8 text-center"
                 >
                   <div
-                    class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-green-400/40 bg-green-500/20"
+                    class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-green-300 bg-green-100"
                   >
-                    <CheckIcon class="h-8 w-8 text-green-300" />
+                    <CheckIcon class="h-8 w-8 text-green-600" />
                   </div>
-                  <p class="text-green-200 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
-                  <p class="text-sm text-white/80">{{ $t('exhibition.registerInterest.successMessage') }}</p>
+                  <p class="text-green-700 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
+                  <p class="text-sm text-gray-600">{{ $t('exhibition.registerInterest.successMessage') }}</p>
                   <button
                     type="button"
                     class="mt-6 px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-colors"
@@ -391,9 +344,10 @@
                       :interest-packages="sortedPackages"
                       :interest-packages-loading="false"
                       field-id-prefix="sp-modal-register"
+                      light
                     />
                   </div>
-                  <p v-if="registerError" class="text-sm text-red-400">{{ registerError }}</p>
+                  <p v-if="registerError" class="text-sm text-red-600">{{ registerError }}</p>
                   <button
                     type="submit"
                     :disabled="registerSubmitting"
@@ -428,7 +382,7 @@ import { useI18n } from 'vue-i18n'
 import { XMarkIcon, SparklesIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { getActiveSponsorshipPackages, exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 import { listingSortTierRank } from '@/shared/utils/sponsorshipTier'
-import { getTierModalTheme, normalizeSponsorshipTierKey } from '@/shared/utils/exhibitionSponsorshipTierTheme'
+import { normalizeSponsorshipTierKey } from '@/shared/utils/exhibitionSponsorshipTierTheme'
 
 /**
  * Light card accents for the packages grid. The shared getTierModalTheme is a
@@ -497,6 +451,31 @@ const LIGHT_TIER_ACCENTS = {
 function tierAccent(pkg) {
   return LIGHT_TIER_ACCENTS[normalizeSponsorshipTierKey(pkg?.type)] || LIGHT_TIER_ACCENTS.DEFAULT
 }
+
+/**
+ * Light theme for the details / register modals, derived from the per-tier
+ * light accents above. The modals sit on a white card now, so we drop the dark
+ * gradient frame, glow orbs and sparkles and keep only a tier-coloured accent
+ * stripe, eyebrow, price, bullet marker and CTA.
+ */
+function lightModalTheme(type) {
+  const a = LIGHT_TIER_ACCENTS[normalizeSponsorshipTierKey(type)] || LIGHT_TIER_ACCENTS.DEFAULT
+  return {
+    stripe: `bg-gradient-to-r ${a.bar}`,
+    eyebrow: a.price,
+    price: a.price,
+    bulletMarker: a.marker,
+    primaryCta: `${a.cta} text-white`,
+    secondaryCta: 'border-gray-300 text-gray-700 hover:bg-gray-50',
+    closeHover: 'hover:bg-gray-100',
+    notesBox: 'border-gray-200 bg-gray-50',
+    notesLabel: 'text-gray-500',
+    hintChip: a.chip,
+    hintDot: a.price.replace('text-', 'bg-'),
+    formPanel: 'border-gray-200 bg-gray-50',
+    linkMuted: 'text-gray-500 hover:text-primary-600'
+  }
+}
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
@@ -564,12 +543,12 @@ const registerPackageHint = computed(() => {
   return p?.name || ''
 })
 
-const detailsModalTheme = computed(() => getTierModalTheme(detailsModalPackage.value?.type))
+const detailsModalTheme = computed(() => lightModalTheme(detailsModalPackage.value?.type))
 
 const registerModalTheme = computed(() => {
   const id = (registerForm.value.sponsorshipId || '').trim()
   const pkg = sortedPackages.value.find((x) => x.id === id)
-  return getTierModalTheme(pkg?.type)
+  return lightModalTheme(pkg?.type)
 })
 
 function featureBullets(features) {

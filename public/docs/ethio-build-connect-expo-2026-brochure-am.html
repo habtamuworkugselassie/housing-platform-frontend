@@ -17,8 +17,8 @@
     body {
       margin: 0;
       font-family: "Noto Sans Ethiopic", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
-      background: #0a0a0a;
-      color: #fafafa;
+      background: #faf5ff;
+      color: #1f2937;
       line-height: 1.55;
       font-size: 10.5pt;
     }
@@ -61,8 +61,8 @@
       .no-print { display: none !important; }
       a { color: inherit; text-decoration: none; }
     }
-    .accent { color: #facc15; }
-    .muted { color: rgba(250, 250, 250, 0.65); }
+    .accent { color: #b45309; }
+    .muted { color: #6b7280; }
     @media print { .muted { color: #444; } }
     h1 {
       font-size: 28pt;
@@ -78,14 +78,14 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       font-weight: 700;
-      color: #facc15;
+      color: #b45309;
     }
     @media print { h2 { color: #b45309; } }
     h3 {
       font-size: 11pt;
       margin: 14px 0 6px;
       font-weight: 700;
-      color: #fff;
+      color: #111827;
     }
     @media print { h3 { color: #111; } }
     p { margin: 0 0 8px; }
@@ -96,9 +96,9 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid #e5e7eb;
       padding: 18mm;
-      background: linear-gradient(165deg, #18181b 0%, #0a0a0a 55%, #09090b 100%);
+      background: linear-gradient(165deg, #ffffff 0%, #faf5ff 60%, #f5f3ff 100%);
     }
     @media print {
       .cover {
@@ -192,7 +192,7 @@
       font-weight: 800;
       letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: #facc15;
+      color: #b45309;
       margin: 8px 0 10px;
     }
     @media print { .cover-connect { color: #b45309; } }
@@ -201,7 +201,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       font-weight: 600;
-      color: rgba(250, 250, 250, 0.78);
+      color: #374151;
       margin: 0 0 14px;
     }
     @media print { .cover-en-subtitle { color: #444; } }
@@ -210,7 +210,7 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       font-weight: 700;
-      color: #facc15;
+      color: #b45309;
       margin-bottom: 12px;
     }
     .tagline {
@@ -219,7 +219,7 @@
       text-transform: uppercase;
       line-height: 1.2;
       margin-bottom: 6px;
-      color: #fff;
+      color: #111827;
     }
     .date-line {
       margin-top: 18px;
@@ -232,7 +232,7 @@
       margin-top: 14px;
       font-size: 11pt;
       max-width: 40em;
-      color: rgba(255,255,255,0.82);
+      color: #374151;
     }
     @media print { .sub { color: #333; } }
     .grid-2 {
@@ -242,10 +242,10 @@
     }
     @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
     .box {
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
       padding: 12px 14px;
-      background: rgba(255,255,255,0.04);
+      background: #f9fafb;
     }
     @media print {
       .box { border-color: #ddd; background: #f9fafb; }
@@ -256,7 +256,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       font-weight: 700;
-      color: #facc15;
+      color: #b45309;
       margin-bottom: 6px;
     }
     @media print { .pill { color: #b45309; } }
@@ -268,27 +268,28 @@
     }
     @media (max-width: 700px) { .cols-3 { grid-template-columns: 1fr; } }
     .sector-tag {
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid #d1d5db;
       padding: 6px 8px;
       border-radius: 4px;
       text-align: center;
       font-size: 8.5pt;
+      background: #ffffff;
     }
     @media print { .sector-tag { border-color: #ccc; background: #fff; } }
     blockquote {
       margin: 12px 0;
       padding-left: 14px;
-      border-left: 3px solid #facc15;
+      border-left: 3px solid #ca8a04;
       font-style: italic;
-      color: rgba(255,255,255,0.88);
+      color: #374151;
     }
     @media print { blockquote { color: #333; border-color: #ca8a04; } }
     .footer-note {
       margin-top: 16px;
       padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.12);
+      border-top: 1px solid #e5e7eb;
       font-size: 8.5pt;
-      color: rgba(255,255,255,0.5);
+      color: #6b7280;
     }
     @media print { .footer-note { border-color: #ddd; color: #666; } }
     .toolbar {
@@ -296,9 +297,9 @@
       top: 0;
       z-index: 10;
       padding: 10px 14px;
-      background: rgba(0,0,0,0.85);
+      background: rgba(255,255,255,0.92);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid #e5e7eb;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -313,20 +314,20 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       border: none;
-      background: #fff;
-      color: #1A1336;
+      background: #4c1d95;
+      color: #ffffff;
       border-radius: 4px;
     }
-    .toolbar button:hover { background: #facc15; }
-    .toolbar span { font-size: 11px; color: #9ca3af; }
+    .toolbar button:hover { background: #5b21b6; }
+    .toolbar span { font-size: 11px; color: #6b7280; }
     .toolbar a.lang {
-      color: #facc15;
+      color: #b45309;
       font-size: 11px;
       font-weight: 600;
       text-decoration: underline;
     }
     .toolbar a.lang:hover { color: #fde047; }
-    .sponsor-cover-strip { margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); }
+    .sponsor-cover-strip { margin-top: 20px; padding-top: 14px; border-top: 1px solid #e5e7eb; }
     @media print { .sponsor-cover-strip { border-color: #ddd; } }
     .logo-strip {
       display: flex;
@@ -343,8 +344,8 @@
       justify-content: center;
       padding: 4px 8px;
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
     }
     @media print {
       .logo-strip-item { border-color: #ddd; background: #fff; }
@@ -353,7 +354,7 @@
     .logo-strip-placeholder {
       font-size: 14px;
       font-weight: 800;
-      color: #facc15;
+      color: #b45309;
     }
     @media print { .logo-strip-placeholder { color: #b45309; } }
     .sponsor-spotlight-page h2 { margin-bottom: 14px; }
@@ -364,16 +365,16 @@
     }
     @media (max-width: 700px) { .sponsor-spotlight-root { grid-template-columns: 1fr; } }
     .sponsor-card {
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid #e5e7eb;
       border-radius: 10px;
       overflow: hidden;
-      background: rgba(255,255,255,0.04);
+      background: #f9fafb;
       break-inside: avoid;
     }
     @media print {
       .sponsor-card { border-color: #ddd; background: #f9fafb; }
     }
-    .sponsor-card-media { position: relative; height: 120px; background: #18181b; }
+    .sponsor-card-media { position: relative; height: 120px; background: #eef2ff; }
     @media print { .sponsor-card-media { background: #eee; } }
     .sponsor-card-hero {
       width: 100%;
@@ -392,7 +393,7 @@
     .sponsor-card-hero-fallback.text-only {
       font-size: 32px;
       font-weight: 800;
-      color: #facc15;
+      color: #b45309;
     }
     @media print { .sponsor-card-hero-fallback.text-only { color: #b45309; } }
     .sponsor-card-body { padding: 10px 12px 12px; position: relative; }
@@ -403,8 +404,8 @@
       width: 44px;
       height: 44px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: #0a0a0a;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
       padding: 4px;
       display: flex;
       align-items: center;
@@ -417,7 +418,7 @@
       font-size: 11pt;
       text-transform: none;
       letter-spacing: 0;
-      color: #fff;
+      color: #111827;
     }
     @media print { .sponsor-card-body h3 { color: #111; } }
     .sponsor-tier {
@@ -425,7 +426,7 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #facc15;
+      color: #b45309;
     }
     @media print { .sponsor-tier { color: #b45309; } }
     .sponsor-thumbs {
@@ -439,10 +440,10 @@
       height: 40px;
       object-fit: cover;
       border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid #d1d5db;
     }
     @media print { .sponsor-thumbs img { border-color: #ccc; } }
-    .sponsor-loading { font-size: 9pt; color: rgba(250,250,250,0.5); }
+    .sponsor-loading { font-size: 9pt; color: #6b7280; }
     @media print { .sponsor-loading { color: #666; } }
     #sponsor-load-error { color: #f87171; font-size: 10pt; text-align: center; padding: 8px; }
   </style>
