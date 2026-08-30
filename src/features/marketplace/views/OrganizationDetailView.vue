@@ -201,7 +201,7 @@
                       <span
                         v-for="sc in organization.supplierSubcategories"
                         :key="sc.id"
-                        class="rounded-full border border-white/15 bg-violet-950/15 px-2 py-0.5 text-xs text-white"
+                        class="rounded-full border border-primary-200 bg-primary-50 px-2 py-0.5 text-xs text-primary-700"
                       >
                         {{ sc.name }}
                       </span>
@@ -238,7 +238,7 @@
                     :href="websiteHref"
                     target="_blank"
                     rel="noopener"
-                    class="text-gray-900 hover:text-gray-900 hover:underline"
+                    class="text-gray-900 hover:text-primary-600 hover:underline"
                   >
                     {{ websiteDisplay }}
                   </a>
@@ -319,7 +319,7 @@
           </div>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
             <h2 class="text-xl font-bold text-gray-900">Contact Information</h2>
             <div class="mt-4 space-y-3 text-sm">
@@ -330,7 +330,7 @@
                     v-for="(phone, index) in organizationPhoneDisplay"
                     :key="`${phone}-${index}`"
                     :href="`tel:${phone}`"
-                    class="block text-gray-900 hover:text-gray-900 hover:underline"
+                    class="block text-gray-900 hover:text-primary-600 hover:underline"
                   >
                     {{ phone }}
                   </a>
@@ -342,7 +342,7 @@
                 <a
                   v-if="organization.email"
                   :href="`mailto:${organization.email}`"
-                  class="mt-2 block text-gray-900 hover:text-gray-900 hover:underline break-all"
+                  class="mt-2 block text-gray-900 hover:text-primary-600 hover:underline break-all"
                 >
                   {{ organization.email }}
                 </a>
@@ -356,7 +356,7 @@
                   :href="websiteHref"
                   target="_blank"
                   rel="noopener"
-                  class="mt-2 block text-gray-900 hover:text-gray-900 hover:underline break-all"
+                  class="mt-2 block text-gray-900 hover:text-primary-600 hover:underline break-all"
                 >
                   {{ websiteDisplay }}
                 </a>
@@ -384,7 +384,7 @@
               <router-link
                 v-if="authStore.isAdmin"
                 to="/admin/sponsorships"
-                class="shrink-0 text-xs font-medium text-gray-900 hover:text-gray-900 hover:underline"
+                class="shrink-0 text-xs font-medium text-gray-900 hover:text-primary-600 hover:underline"
               >
                 Manage in admin
               </router-link>
@@ -398,13 +398,13 @@
                 <li
                   v-for="app in pendingSponsorshipApplications"
                   :key="app.id"
-                  class="rounded-lg border border-white/15 bg-violet-950/10 p-3"
+                  class="rounded-lg border border-gray-200 bg-gray-50 p-3"
                 >
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <p class="text-sm font-semibold text-gray-900">
                       {{ app.sponsorshipName || app.sponsorship?.name || 'Sponsorship package' }}
                     </p>
-                    <span class="rounded-full border border-white/15 bg-violet-950/30 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">
+                    <span class="rounded-full border border-amber-200 bg-amber-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-700">
                       Pending
                     </span>
                   </div>

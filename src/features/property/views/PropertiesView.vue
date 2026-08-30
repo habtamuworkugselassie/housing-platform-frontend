@@ -1,31 +1,39 @@
 <template>
   <div class="public-page listing-directory min-h-screen bg-violet-50">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-    <div class="mb-4 sm:mb-6 lg:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ t('property.propertiesAndBuildings') }}</h1>
-      <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-500">{{ t('property.browsePropertiesBuildings') }}</p>
+    <div class="mb-5 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ t('property.propertiesAndBuildings') }}</h1>
+        <p class="mt-1 text-sm text-gray-500 sm:text-base">{{ t('property.browsePropertiesBuildings') }}</p>
+      </div>
+      <p v-if="!loading" class="text-sm font-medium text-gray-500">
+        {{ combinedList.length }} {{ combinedList.length === 1 ? 'result' : 'results' }}
+      </p>
     </div>
 
-    <!-- Filters -->
-    <div class="mb-4 sm:mb-6 bg-white border border-gray-200 p-3 sm:p-4 rounded-lg">
-      <div class="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <label for="city" class="block text-sm font-medium text-gray-600">{{ $t('property.city') }}</label>
-          <input
-            id="city"
-            v-model="filters.city"
-            type="text"
-            :placeholder="$t('property.filterByCity')"
-            class="mt-1 block w-full border border-gray-300 bg-white rounded-md py-2 px-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
-            @input="loadProperties"
-          />
+    <!-- Filters toolbar -->
+    <div class="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div class="flex-1">
+          <label for="city" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $t('property.city') }}</label>
+          <div class="relative">
+            <span class="material-icons pointer-events-none absolute left-3 top-1/2 !text-[18px] -translate-y-1/2 text-gray-400" aria-hidden="true">search</span>
+            <input
+              id="city"
+              v-model="filters.city"
+              type="text"
+              :placeholder="$t('property.filterByCity')"
+              class="block w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-9 pr-3 text-gray-900 placeholder-gray-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              @input="loadProperties"
+            />
+          </div>
         </div>
-        <div>
-          <label for="status" class="block text-sm font-medium text-gray-600">{{ $t('property.status') }}</label>
+        <div class="sm:w-52">
+          <label for="status" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $t('property.status') }}</label>
           <select
             id="status"
             v-model="filters.status"
-            class="mt-1 block w-full border border-gray-300 bg-primary-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
             @change="loadProperties"
           >
             <option value="">{{ $t('filters.all') }}</option>
@@ -34,14 +42,13 @@
             <option value="SOLD">{{ $t('property.sold') }}</option>
           </select>
         </div>
-        <div class="flex items-end sm:col-span-2 lg:col-span-1">
-          <button
-            @click="clearFilters"
-            class="w-full px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100"
-          >
-            {{ $t('filters.clearFilters') }}
-          </button>
-        </div>
+        <button
+          @click="clearFilters"
+          class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:border-primary-400 hover:bg-primary-50 sm:w-auto"
+        >
+          <span class="material-icons !text-[16px]" aria-hidden="true">restart_alt</span>
+          {{ $t('filters.clearFilters') }}
+        </button>
       </div>
     </div>
 
@@ -71,7 +78,7 @@
         <button
           @click="changePage(currentPage - 1)"
           :disabled="currentPage === 0"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:bg-primary-300"
         >
           {{ $t('common.previous') }}
         </button>
@@ -81,7 +88,7 @@
         <button
           @click="changePage(currentPage + 1)"
           :disabled="currentPage >= totalPages - 1"
-          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-100 disabled:opacity-50 disabled:bg-primary-300"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:bg-primary-300"
         >
           {{ $t('common.next') }}
         </button>

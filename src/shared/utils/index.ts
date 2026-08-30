@@ -14,15 +14,32 @@ export function isVideoUrl(url: string | null | undefined): boolean {
   return /\.((mp4)|(mov)|(avi)|(webm)|(mkv))($|\?)/i.test(String(url))
 }
 
+/**
+ * Combine a country code and a number without duplicating the country code.
+ * Some records store the number already carrying its country code (e.g.
+ * "+251 973…" or "251973…") while others store only the local part — naive
+ * concatenation produced "+251+251 973…". This normalizes both.
+ */
+function combinePhone(countryCode?: string, number?: string): string {
+  const cc = (countryCode || '').trim()
+  const num = (number || '').trim()
+  if (!num) return cc
+  // Number is already a full international number.
+  if (num.startsWith('+')) return num
+  const ccDigits = cc.replace(/\D/g, '')
+  const numDigits = num.replace(/\D/g, '')
+  // Number already begins with the country-code digits — don't prepend again.
+  if (ccDigits && numDigits.startsWith(ccDigits)) return `+${numDigits}`
+  return (cc + num).trim()
+}
+
 /** Organization/company with optional phoneNumbers array or legacy phoneNumber. */
 export function formatOrganizationPhones(org: {
   phoneNumbers?: { countryCode?: string; number?: string }[]
   phoneNumber?: string
 }): string[] {
   if (org?.phoneNumbers?.length) {
-    return org.phoneNumbers
-      .map((p) => ((p?.countryCode || '') + (p?.number || '').trim()).trim())
-      .filter(Boolean)
+    return org.phoneNumbers.map((p) => combinePhone(p?.countryCode, p?.number)).filter(Boolean)
   }
   return org?.phoneNumber ? [org.phoneNumber] : []
 }
