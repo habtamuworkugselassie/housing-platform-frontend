@@ -1,10 +1,10 @@
 <template>
   <div class="public-page exhibition-landing overflow-x-hidden">
     <!-- Live broadcast (shown only while an admin has the event live) -->
-    <LiveStreamSection />
+    <LiveStreamSection v-if="liveEnabled" />
 
     <!-- Live device broadcasts from visitors / exhibitors / organizers -->
-    <LiveBroadcastWall />
+    <LiveBroadcastWall v-if="liveEnabled" />
 
     <!-- Planning the exhibition — professional intro for market -->
     <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
@@ -291,7 +291,7 @@
     </section>
 
     <!-- Visitor video feedback (shown only when enabled) -->
-    <ExhibitionVideoFeedbackSection />
+    <ExhibitionVideoFeedbackSection v-if="feedbackEnabled" />
 
     <!-- Register your interest (scroll target for #register) -->
     <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-20">
@@ -401,12 +401,19 @@ const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
 )
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'
-const ExhibitionVideoFeedbackSection = defineAsyncComponent(
-  () => import('../components/ExhibitionVideoFeedbackSection.vue')
-)
-const LiveBroadcastWall = defineAsyncComponent(
-  () => import('../components/LiveBroadcastWall.vue')
-)
+// Fail-safe: if one of these lazy chunks can't be fetched (deploy/CDN/CSP),
+// render nothing instead of letting the error blank the whole landing page.
+const EmptyAsyncFallback = { render: () => null }
+const ExhibitionVideoFeedbackSection = defineAsyncComponent({
+  loader: () => import('../components/ExhibitionVideoFeedbackSection.vue'),
+  errorComponent: EmptyAsyncFallback,
+  onError: (_err, _retry, fail) => fail()
+})
+const LiveBroadcastWall = defineAsyncComponent({
+  loader: () => import('../components/LiveBroadcastWall.vue'),
+  errorComponent: EmptyAsyncFallback,
+  onError: (_err, _retry, fail) => fail()
+})
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useAds } from '@/shared/composables/useAds'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
@@ -417,6 +424,12 @@ const { settings } = useDisplaySettings()
 const showExhibitionSponsorshipPackages = computed(
   () => settings.exhibitionSponsorshipPackagesVisible !== false
 )
+
+// Only mount the live/feedback sections (and load their chunks) when the
+// admin has turned the feature on. Keeps the default landing lean and can't
+// break the page when the feature is off.
+const liveEnabled = computed(() => settings.exhibitionLiveVisible === true)
+const feedbackEnabled = computed(() => settings.exhibitionFeedbackVisible === true)
 
 const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card1Title', bodyKey: 'exhibition.whatHappened.card1Body', icon: BuildingOffice2Icon },
