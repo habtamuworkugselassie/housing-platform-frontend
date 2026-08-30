@@ -729,6 +729,17 @@
       "exhibitionSponsorshipPackagesHint": "ሲነቃ ጎብኚዎች የዋጋ እና ጥቅም ክፍል ያያሉ (ከመረጃ ቋት ንቁ ፓኬጆች)። ሲጠፋ ያ ክፍል እና የግርጌ ማስፈንጠሪያው ይደበቃሉ።",
       "exhibitionSponsorshipPackagePrices": "በኤግዚቢሽን ገጽ ላይ የፓኬጅ ዋጋዎችን አሳይ",
       "exhibitionSponsorshipPackagePricesHint": "ሲነቃ የመሠረት ዋጋ በእያንዳንዱ ካርድ እና በዝርዝር መስኮት ይታያል። ሲጠፋ ጥቅሞች እና መጠየቅ ይቀጥላሉ፤ ዋጋዎች ይደበቃሉ።",
+      "exhibitionLive": "በኤግዚቢሽን ገጹ ላይ ቀጥታ ስርጭት አሳይ",
+      "exhibitionLiveHint": "ሲነቃ በኤግዚቢሽን ገጹ ላይኛው ክፍል “ቀጥታ ስርጭት” የቪዲዮ ክፍል ይታያል። በዝግጅቶች መካከል ያጥፉት።",
+      "liveTitle": "የቀጥታ ክፍል ርዕስ",
+      "liveTitlePlaceholder": "ለምሳሌ፦ ከኤግዚቢሽኑ አዳራሽ በቀጥታ",
+      "liveSource": "የቪዲዮ ምንጭ",
+      "liveSourceExternal": "የውጭ ማስገቢያ (ዩቲዩብ / ፌስቡክ ላይቭ)",
+      "liveSourceHls": "በራስ የተስተናገደ ስርጭት (HLS)",
+      "liveEmbedUrl": "የቀጥታ ማስገቢያ አድራሻ (URL)",
+      "liveEmbedUrlHint": "የዩቲዩብ ወይም የፌስቡክ ላይቭ አገናኝ ይለጥፉ — መደበኛው የመመልከቻ አድራሻ ይሠራል።",
+      "liveHlsUrl": "የHLS ስርጭት አድራሻ (URL)",
+      "liveHlsUrlHint": "የበራስ የተስተናገደ ስርጭትዎ .m3u8 አድራሻ። በሳፋሪ በቀጥታ ይጫወታል፤ ሰፊ የአሳሽ ድጋፍ ከራስ-ማስተናገድ ደረጃ ጋር ይመጣል።",
       "seconds": "ሰከንዶች",
       "save": "አስቀምጥ",
       "saving": "በመቀመጥ ላይ…",
@@ -1004,6 +1015,12 @@
     }
   },
   "exhibition": {
+    "liveStream": {
+      "badge": "ቀጥታ",
+      "defaultTitle": "ከኢትዮ ቢልድ ኮነክት ኤክስፖ በቀጥታ",
+      "watchOn": "ይመልከቱ በ",
+      "notConfigured": "ስርጭቱ ሲጀምር እዚህ ይታያል።"
+    },
     "hero": {
       "eventName": "ኢትዮ ቢልድ ኮነክት ኤክስፖ",
       "tagline1": "ድጋሜ ፕሮጀክቶች።",

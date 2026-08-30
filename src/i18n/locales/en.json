@@ -737,6 +737,17 @@
       "exhibitionSponsorshipPackagesHint": "When enabled, visitors see the pricing and benefits section (active packages from the database). When disabled, that block and its footer link are hidden.",
       "exhibitionSponsorshipPackagePrices": "Show package prices on exhibition page",
       "exhibitionSponsorshipPackagePricesHint": "When enabled, listed base prices appear on each package card and in the details modal. When disabled, benefits and enquiry still show; prices are hidden.",
+      "exhibitionLive": "Show live broadcast on exhibition page",
+      "exhibitionLiveHint": "When enabled, a “Live now” video section appears at the top of the exhibition page. Turn it off between events.",
+      "liveTitle": "Live section title",
+      "liveTitlePlaceholder": "e.g. Live from the show floor",
+      "liveSource": "Video source",
+      "liveSourceExternal": "External embed (YouTube / Facebook Live)",
+      "liveSourceHls": "Self-hosted stream (HLS)",
+      "liveEmbedUrl": "Live embed URL",
+      "liveEmbedUrlHint": "Paste the YouTube or Facebook Live link — the normal watch URL works.",
+      "liveHlsUrl": "HLS stream URL",
+      "liveHlsUrlHint": "The .m3u8 URL of your self-hosted stream. Plays natively in Safari; broader browser support comes with the self-hosting phase.",
       "seconds": "seconds",
       "save": "Save",
       "saving": "Saving…",
@@ -1012,6 +1023,12 @@
     }
   },
   "exhibition": {
+    "liveStream": {
+      "badge": "Live",
+      "defaultTitle": "Live from Ethio Build Connect Expo",
+      "watchOn": "Watch on",
+      "notConfigured": "The live stream will appear here once it starts."
+    },
     "hero": {
       "eventName": "Ethio Build Connect Expo",
       "tagline1": "Bold Projects.",
