@@ -179,6 +179,7 @@
               <dt class="sr-only">Social profiles</dt>
               <dd class="m-0 p-0">
                 <OrganizationSocialLinks
+                  tone="dark"
                   :facebook-url="company.facebookUrl"
                   :instagram-url="company.instagramUrl"
                   :linkedin-url="company.linkedinUrl"

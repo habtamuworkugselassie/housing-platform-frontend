@@ -631,6 +631,7 @@
                 <div class="col-span-2">
                   <div v-if="hasSocialOnOrg(viewingOrg)" class="flex flex-wrap gap-2">
                     <OrganizationSocialLinks
+                      tone="admin"
                       :facebook-url="viewingOrg.facebookUrl"
                       :instagram-url="viewingOrg.instagramUrl"
                       :linkedin-url="viewingOrg.linkedinUrl"
