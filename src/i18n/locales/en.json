@@ -1120,7 +1120,11 @@
       "connecting": "Connecting your camera…",
       "connectError": "Could not start your camera. Check permissions and try again.",
       "youAreLive": "You are live.",
-      "stop": "Stop broadcasting"
+      "stop": "Stop broadcasting",
+      "camera": "Camera",
+      "microphone": "Microphone",
+      "preview": "Preview",
+      "cameraError": "Could not access that camera. Check it's connected and permitted."
     },
     "hero": {
       "eventName": "Ethio Build Connect Expo",

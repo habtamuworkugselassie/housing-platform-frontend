@@ -108,7 +108,7 @@ We never expose LiveKit keys to clients. The backend owns rooms, approvals and *
 
 ### Clients
 
-- **Web** — `livekit-client` SDK: a broadcaster view (request → once approved, `getUserMedia` + publish) and a viewer (HLS `<video>`/`hls.js`, or subscribe for low latency). Organizer "go live" screen. Admin moderation gets live‑now list + Cut button.
+- **Web** — `livekit-client` SDK: a broadcaster view (request → once approved, `getUserMedia` + publish) and a viewer (HLS `<video>`/`hls.js`, or subscribe for low latency). Organizer "go live" screen. Admin moderation gets live‑now list + Cut button. **In‑browser device selection** lets the provider pick any connected camera/mic (built‑in webcam, USB camera, or a professional camera via an HDMI→USB capture card, which appears as a normal video input) and preview it before going on air, and switch cameras while live — so a laptop‑interfaced camera streams straight through the portal, no OBS needed. OBS → RTMP/WHIP Ingress remains for SDI/broadcast encoders.
 - **Mobile (Flutter)** — `livekit_client` + `flutter_webrtc`: request‑to‑go‑live, publish camera, and watch. (Phase 4 mobile work.)
 
 ### Guardrails

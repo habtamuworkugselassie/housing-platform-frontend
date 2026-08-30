@@ -38,15 +38,7 @@
         </button>
       </form>
 
-      <!-- Step 2: waiting for organizer approval -->
-      <div v-else-if="phase === 'waiting'" class="mt-6 rounded-2xl border border-gray-200 bg-white p-8 text-center">
-        <div class="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-primary-500" />
-        <p class="font-semibold text-gray-900">{{ $t('exhibition.goLive.waitingTitle') }}</p>
-        <p class="mt-1 text-sm text-gray-600">{{ $t('exhibition.goLive.waitingBody') }}</p>
-        <button type="button" class="mt-5 text-sm font-medium text-gray-500 hover:text-primary-600" @click="cancel">{{ $t('common.cancel') }}</button>
-      </div>
-
-      <!-- Step 3: live -->
+      <!-- Camera setup + preview (shared by waiting / connecting / live) -->
       <div v-else class="mt-6 space-y-3">
         <div class="overflow-hidden rounded-2xl border border-gray-200 bg-black shadow-sm">
           <div class="relative aspect-video w-full">
@@ -54,10 +46,34 @@
             <span v-if="phase === 'live'" class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
               <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" /> {{ $t('exhibition.liveStream.badge') }}
             </span>
+            <span v-else class="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">{{ $t('exhibition.goLive.preview') }}</span>
           </div>
         </div>
+
+        <!-- Device selection: pick any connected camera / mic (webcam, USB, capture card) -->
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-camera">{{ $t('exhibition.goLive.camera') }}</label>
+            <select id="gl-camera" v-model="selectedCamera" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
+              <option v-for="(c, i) in cameras" :key="c.deviceId || i" :value="c.deviceId">{{ c.label || `${$t('exhibition.goLive.camera')} ${i + 1}` }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="gl-mic">{{ $t('exhibition.goLive.microphone') }}</label>
+            <select id="gl-mic" v-model="selectedMic" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400">
+              <option v-for="(m, i) in mics" :key="m.deviceId || i" :value="m.deviceId">{{ m.label || `${$t('exhibition.goLive.microphone')} ${i + 1}` }}</option>
+            </select>
+          </div>
+        </div>
+
         <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-        <div class="flex items-center gap-3">
+
+        <div v-if="phase === 'waiting'" class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
+          <div class="h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-primary-500" />
+          <span class="text-sm text-gray-600">{{ $t('exhibition.goLive.waitingBody') }}</span>
+          <button type="button" class="ml-auto text-sm font-medium text-gray-500 hover:text-primary-600" @click="cancel">{{ $t('common.cancel') }}</button>
+        </div>
+        <div v-else class="flex items-center gap-3">
           <button type="button" class="rounded-lg border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50" @click="stop">
             {{ $t('exhibition.goLive.stop') }}
           </button>
@@ -69,9 +85,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onBeforeUnmount } from 'vue'
+import { ref, reactive, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Room, createLocalTracks } from 'livekit-client'
+import { Room, createLocalTracks, createLocalVideoTrack } from 'livekit-client'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 
 const { t } = useI18n()
@@ -83,10 +99,17 @@ const videoEl = ref(null)
 
 const form = reactive({ name: '', email: '', role: 'VISITOR', company: '', title: '' })
 
+const cameras = ref([])
+const mics = ref([])
+const selectedCamera = ref('')
+const selectedMic = ref('')
+
 let broadcastId = ''
 let pollTimer = null
 let room = null
-let localTracks = []
+let previewTrack = null // LocalVideoTrack shown before going live
+let localVideo = null
+let localAudio = null
 
 async function request() {
   error.value = ''
@@ -101,6 +124,7 @@ async function request() {
     })
     broadcastId = b.id
     phase.value = 'waiting'
+    setupPreview() // let the provider pick & preview their camera while awaiting approval
     poll()
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.requestError')
@@ -109,7 +133,58 @@ async function request() {
   }
 }
 
-// Poll until an organizer approves, then connect and publish.
+// Start a camera preview and enumerate all connected input devices.
+async function setupPreview() {
+  try {
+    previewTrack = await createLocalVideoTrack(
+      selectedCamera.value ? { deviceId: selectedCamera.value } : {}
+    )
+    if (videoEl.value) previewTrack.attach(videoEl.value)
+    // Match the dropdown to the actual device now that we have permission + labels.
+    const settings = previewTrack.mediaStreamTrack.getSettings?.() || {}
+    if (settings.deviceId) selectedCamera.value = settings.deviceId
+    await refreshDevices()
+  } catch (e) {
+    error.value = e?.message || t('exhibition.goLive.cameraError')
+  }
+}
+
+async function refreshDevices() {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    cameras.value = devices.filter((d) => d.kind === 'videoinput')
+    mics.value = devices.filter((d) => d.kind === 'audioinput')
+    if (!selectedMic.value && mics.value[0]) selectedMic.value = mics.value[0].deviceId
+  } catch {
+    /* ignore */
+  }
+}
+
+// Switch camera live (or in preview) when the provider picks another device.
+watch(selectedCamera, async (id, prev) => {
+  if (!id || id === prev) return
+  try {
+    if (phase.value === 'live' && localVideo) {
+      await localVideo.restartTrack({ deviceId: id })
+    } else if (previewTrack) {
+      await previewTrack.restartTrack({ deviceId: id })
+    }
+  } catch (e) {
+    error.value = e?.message || t('exhibition.goLive.cameraError')
+  }
+})
+
+watch(selectedMic, async (id, prev) => {
+  if (!id || id === prev) return
+  if (phase.value === 'live' && localAudio) {
+    try {
+      await localAudio.restartTrack({ deviceId: id })
+    } catch {
+      /* ignore */
+    }
+  }
+})
+
 function poll() {
   pollTimer = setInterval(async () => {
     try {
@@ -122,6 +197,7 @@ function poll() {
         clearInterval(pollTimer)
         pollTimer = null
         error.value = t('exhibition.goLive.rejected')
+        await teardown()
         phase.value = 'form'
       }
     } catch {
@@ -135,12 +211,26 @@ async function goLive() {
   error.value = ''
   try {
     const { url, token } = await exhibitionApi.getPublishToken(broadcastId)
-    localTracks = await createLocalTracks({ audio: true, video: { facingMode: 'user' } })
+    // Stop the preview track and publish with the chosen devices.
+    if (previewTrack) {
+      previewTrack.detach()
+      previewTrack.stop()
+      previewTrack = null
+    }
+    const tracks = await createLocalTracks({
+      audio: selectedMic.value ? { deviceId: selectedMic.value } : true,
+      video: selectedCamera.value ? { deviceId: selectedCamera.value } : true
+    })
     room = new Room()
     await room.connect(url, token)
-    for (const track of localTracks) {
+    for (const track of tracks) {
       await room.localParticipant.publishTrack(track)
-      if (track.kind === 'video' && videoEl.value) track.attach(videoEl.value)
+      if (track.kind === 'video') {
+        localVideo = track
+        if (videoEl.value) track.attach(videoEl.value)
+      } else {
+        localAudio = track
+      }
     }
     phase.value = 'live'
   } catch (e) {
@@ -155,14 +245,17 @@ async function teardown() {
     clearInterval(pollTimer)
     pollTimer = null
   }
-  for (const t of localTracks) {
+  for (const track of [previewTrack, localVideo, localAudio]) {
     try {
-      t.stop()
+      track?.detach?.()
+      track?.stop?.()
     } catch {
       /* ignore */
     }
   }
-  localTracks = []
+  previewTrack = null
+  localVideo = null
+  localAudio = null
   if (room) {
     try {
       await room.disconnect()
@@ -175,11 +268,15 @@ async function teardown() {
 
 async function stop() {
   await teardown()
+  cameras.value = []
+  mics.value = []
   phase.value = 'form'
 }
 
 async function cancel() {
   await teardown()
+  cameras.value = []
+  mics.value = []
   phase.value = 'form'
 }
 
