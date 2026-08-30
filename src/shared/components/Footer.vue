@@ -9,9 +9,9 @@
             class="inline-block w-fit hover:opacity-90 transition-opacity"
           >
             <img
-              src="/images/exhibition/ethio-build-connect-expo-logo-full.png"
+              src="/images/branding/ethio-build-connect-wordmark.png"
               :alt="$t('exhibition.hero.eventName')"
-              class="h-11 sm:h-12 w-auto max-w-[220px] object-contain object-left"
+              class="h-12 sm:h-14 w-auto max-w-[220px] object-contain object-left"
             />
           </RouterLink>
           <p class="text-sm text-gray-400 leading-relaxed max-w-sm">
