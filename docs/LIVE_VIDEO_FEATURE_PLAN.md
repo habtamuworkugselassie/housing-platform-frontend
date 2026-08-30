@@ -73,10 +73,55 @@ Work:
 - Backend: `ExhibitionVideoFeedback` entity (UUID id, submitter name/email, video URL, optional caption, `status` PENDING/APPROVED/REJECTED, timestamps, submitter IP) + Flyway migration + repository. Public `POST` (multipart upload, reusing existing media‑upload infra; status set from the auto‑publish flag) and public `GET` (approved only). Admin list/approve/reject/delete. The two flags are added to display‑settings (same mechanism as the live fields).
 - Frontend: a feedback section beneath the live zone — a submit widget (file upload first; in‑browser `MediaRecorder` a later enhancement) + a responsive grid of approved clips using the native `<video>` pattern from `SponsorCarouselSection.vue`. An admin moderation view following existing admin list/card patterns. Admin toggles for the two flags in Display Settings.
 
-## Phase 3 — Self‑hosted streaming (its own project)
+## Phase 3 — Self‑hosted HLS playback for the single organizer embed
 
-- Infrastructure (not app code): a media server (MediaMTX / nginx‑rtmp / managed service) ingesting RTMP from the venue and publishing HLS; TLS, storage, bandwidth/cost planning, and a fallback when the stream drops.
-- App side is small: an `hls.js`‑backed `<video>` branch in `LiveStreamSection` for `liveSourceType === 'HLS'` (native HLS already plays in Safari; `hls.js` covers Chrome/Firefox).
+- Small: an `hls.js`‑backed `<video>` branch in `LiveStreamSection` for `liveSourceType === 'HLS'` (native HLS already plays in Safari; `hls.js` covers Chrome/Firefox), pointing at a `liveHlsUrl`. This covers the simplest case — one organizer stream published as HLS — and is superseded for multi‑broadcaster live by Phase 5.
+
+## Phase 5 — Live broadcasting from device cameras (self‑hosted, gated)
+
+Confirmed decisions: **self‑hosted** backbone; **gated go‑live** — broadcasters request to go live (or must be a signed‑in exhibitor/organizer), an organizer approves, and any stream can be cut instantly (kill‑switch).
+
+Three broadcaster types, one system:
+1. **Visitors / exhibitors** — phone (Flutter) or browser camera over **WebRTC**.
+2. **Organizers with a professional camera** — camera → laptop/OBS → **RTMP or WHIP ingest**.
+3. **Viewers** — watch at scale over **HLS** (10–30 s latency, cheap to fan out); optional low‑latency WebRTC for featured streams.
+
+### Core: self‑hosted LiveKit
+
+LiveKit (open source) is the SFU. Its **access‑token grants are the gating mechanism**, so no separate permission layer is needed:
+- **LiveKit server** — WebRTC SFU + built‑in TURN. Single node to start (Redis only needed for multi‑node clustering).
+- **LiveKit Ingress** — accepts RTMP/WHIP so an organizer's OBS/hardware encoder (pro camera) publishes into a room.
+- **LiveKit Egress** — transcodes a room to **HLS** for scalable viewing and records to disk/object storage.
+- **TURN** — LiveKit embeds TURN; needs a public UDP/TCP port + TLS for restrictive networks (venue Wi‑Fi, mobile).
+
+Deploy via `docker-compose.livekit.yml` (server + ingress + egress) with a `livekit.yaml`; keys/secret via env. TLS on a `live.` subdomain.
+
+### App control plane (our backend — the gate)
+
+We never expose LiveKit keys to clients. The backend owns rooms, approvals and **token minting** (a LiveKit token is a plain JWT signed HS256 with the LiveKit API secret + a `video` grant claim — minted with the existing JJWT dependency, no new library):
+
+- Entity `LiveBroadcast` (room, title, broadcaster identity/name/role visitor|exhibitor|organizer, optional company, status `REQUESTED`→`APPROVED`/`REJECTED`→`LIVE`→`ENDED`, hlsUrl, timestamps) + migration + repository.
+- Public: `POST /exhibition/live/request` (visitor/exhibitor/organizer requests to go live) → creates a `REQUESTED` row; `GET /exhibition/live` (approved/live streams for the public wall); `GET /exhibition/live/{id}/viewer-token` (a subscribe‑only LiveKit token, or the HLS URL) once live.
+- Broadcaster: `GET /exhibition/live/{id}/publish-token` — returns a **publish** LiveKit token **only if** the request is `APPROVED` (gate). Enforced server‑side by the grant.
+- Admin (`ADMIN_SECURED`): list requests, `approve` / `reject`, and **`end` (kill‑switch)** — calls the LiveKit server API to remove the participant/room and marks `ENDED`.
+- Config: `livekit.url`, `livekit.api-key`, `livekit.api-secret` (env). Reuse the display‑settings `exhibitionLiveVisible` flag to surface the live wall.
+
+### Clients
+
+- **Web** — `livekit-client` SDK: a broadcaster view (request → once approved, `getUserMedia` + publish) and a viewer (HLS `<video>`/`hls.js`, or subscribe for low latency). Organizer "go live" screen. Admin moderation gets live‑now list + Cut button.
+- **Mobile (Flutter)** — `livekit_client` + `flutter_webrtc`: request‑to‑go‑live, publish camera, and watch. (Phase 4 mobile work.)
+
+### Guardrails
+
+Gated approval + kill‑switch; signed‑in identity for exhibitor/organizer; recording retained for audit; per‑account concurrent‑stream limits; bandwidth/egress cost watched via HLS fan‑out rather than per‑viewer WebRTC. TURN/TLS required for venue and mobile networks.
+
+### Sequencing within Phase 5
+
+1. Infra compose (LiveKit server + ingress + egress + config) — deployable.
+2. Backend control plane (entity + token minting + request/approve/reject/end) — the gate.
+3. Web broadcaster + viewer + admin Cut UI.
+4. Flutter broadcaster + viewer.
+5. Organizer pro‑camera path (OBS → Ingress) documented + tested.
 
 ## Phase 4 — Mobile (`housing_platform_mobile`, Flutter)
 
