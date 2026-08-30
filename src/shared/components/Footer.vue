@@ -6,12 +6,12 @@
         <div class="sm:col-span-2 lg:col-span-1 flex flex-col gap-4">
           <RouterLink
             :to="{ name: 'Home' }"
-            class="inline-block w-fit hover:opacity-90 transition-opacity"
+            class="inline-flex w-fit rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5 transition-opacity hover:opacity-90"
           >
             <img
-              src="/images/branding/ethio-build-connect-wordmark.png"
+              src="/images/exhibition/ethio-build-connect-expo-logo-full.png"
               :alt="$t('exhibition.hero.eventName')"
-              class="h-12 sm:h-14 w-auto max-w-[220px] object-contain object-left"
+              class="h-24 sm:h-28 w-auto object-contain"
             />
           </RouterLink>
           <p class="text-sm text-gray-400 leading-relaxed max-w-sm">
