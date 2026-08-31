@@ -109,6 +109,14 @@
               </router-link>
               <router-link
                 v-if="authStore.isAdmin"
+                to="/go-live"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" aria-hidden="true" />
+                {{ $t('nav.goLive') }}
+              </router-link>
+              <router-link
+                v-if="authStore.isAdmin"
                 to="/admin"
                 class="px-3 py-2 text-sm font-medium text-primary-950 bg-gold-400 rounded-md hover:bg-gold-500"
               >
@@ -218,6 +226,15 @@
               class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
             >
               Messages
+            </router-link>
+            <router-link
+              v-if="authStore.isAdmin"
+              to="/go-live"
+              @click="mobileMenuOpen = false"
+              class="flex items-center gap-2 px-3 py-2 text-base font-semibold text-white bg-red-600 hover:bg-red-700 rounded-md"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" aria-hidden="true" />
+              {{ $t('nav.goLive') }}
             </router-link>
             <router-link
               v-if="authStore.isAdmin"

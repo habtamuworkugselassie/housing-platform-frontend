@@ -61,6 +61,7 @@
   },
   "nav": {
     "home": "Home",
+    "goLive": "Go live",
     "marketplace": "Marketplace",
     "marketplaceRealEstate": "Real estate",
     "marketplaceBanks": "Banks",
