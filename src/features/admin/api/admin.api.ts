@@ -518,6 +518,27 @@ export const adminApi = {
   createLiveIngress: async (id: string, type = 'RTMP') =>
     (await api.post(`/admin/exhibition/live/${id}/ingress`, null, { params: { type } })).data,
 
+  // --- Social simulcast (re-stream a live broadcast to YouTube/Facebook/TikTok) ---
+  startSimulcast: async (id: string, targetIds: string[] = []) =>
+    (await api.post(`/admin/exhibition/live/${id}/simulcast`, { targetIds })).data,
+  stopSimulcast: async (id: string) =>
+    (await api.delete(`/admin/exhibition/live/${id}/simulcast`)).data,
+  listSimulcastTargets: async () =>
+    (await api.get('/admin/exhibition/simulcast-targets')).data,
+  createSimulcastTarget: async (payload: {
+    platform: string
+    label: string
+    rtmpUrl: string
+    streamKey: string
+    enabled: boolean
+  }) => (await api.post('/admin/exhibition/simulcast-targets', payload)).data,
+  updateSimulcastTarget: async (
+    id: string,
+    payload: { platform: string; label: string; rtmpUrl: string; streamKey?: string; enabled: boolean }
+  ) => (await api.put(`/admin/exhibition/simulcast-targets/${id}`, payload)).data,
+  deleteSimulcastTarget: async (id: string) =>
+    (await api.delete(`/admin/exhibition/simulcast-targets/${id}`)).data,
+
   // --- Company logins (Admin -> Organizations -> Accounts) ------------------
   // Listing is ADMIN_SECURED; every mutation below is SUPER_ADMIN_SECURED and
   // returns 403 for a plain admin. Callers gate the controls on the role.
