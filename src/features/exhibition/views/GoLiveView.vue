@@ -186,7 +186,13 @@ async function request() {
     broadcastId = b.id
     phase.value = 'waiting'
     if (!previewTrack) setupPreview() // ensure a preview if they didn't start one
-    poll()
+    // Organizer (admin) streams come back already approved — go live immediately;
+    // everyone else waits for an organizer to approve.
+    if (b.status === 'APPROVED' || b.status === 'LIVE') {
+      goLive()
+    } else {
+      poll()
+    }
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.requestError')
   } finally {
