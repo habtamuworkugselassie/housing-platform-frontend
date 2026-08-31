@@ -2,10 +2,10 @@
   <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 relative">
-        <!-- Public "Get the app" — centered in the header (large screens) -->
+        <!-- Public "Get the app" — centered in the header (all screens) -->
         <a
           href="/download.html"
-          class="hidden lg:inline-flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
+          class="inline-flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
@@ -208,16 +208,6 @@
           >
             {{ $t('nav.properties') }}
           </router-link>
-          <a
-            href="/download.html"
-            @click="mobileMenuOpen = false"
-            class="flex items-center gap-2 px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md"
-          >
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
-            </svg>
-            {{ $t('nav.getAppShort') }}
-          </a>
           <template v-if="isExhibitionPage">
             <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.showFeatures') }}</router-link>
             <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.whoAttends') }}</router-link>
