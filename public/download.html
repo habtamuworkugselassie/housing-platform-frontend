@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <title>Get Ethio Build Connect</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +19,6 @@
     --brand-deep: #2e1065;
     --brand-soft: #f5f3ff;
     --gold: #d99f3f;
-    --live: #e23b52;
     --shadow: 0 20px 50px -24px rgba(46, 16, 101, .45);
     --tile: #ffffff;
   }
@@ -57,6 +60,7 @@
     justify-content: center;
     padding: 24px;
   }
+  img { max-width: 100%; }
   .wrap { width: 100%; max-width: 620px; }
 
   .card {
@@ -67,7 +71,6 @@
     overflow: hidden;
   }
 
-  /* Brand header */
   .head {
     padding: 30px 34px 26px;
     background: linear-gradient(135deg, var(--brand-deep), var(--brand) 160%);
@@ -129,7 +132,6 @@
     color: #fff;
   }
 
-  /* Body */
   .body { padding: 28px 34px 8px; }
   .get {
     display: grid;
@@ -188,7 +190,6 @@
     font-weight: 500;
   }
 
-  /* Steps */
   .steps { padding: 8px 34px 26px; }
   .steps h2 {
     font-family: "Sora", sans-serif;
@@ -238,7 +239,8 @@
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <main class="card">
     <header class="head">
@@ -250,14 +252,14 @@
             <circle cx="12" cy="12" r="2.2" fill="#fff" stroke="none"/>
           </svg>
         </span>
-        <span class="wordmark">Ethio Build Connect<small>Live · Marketplace</small></span>
+        <span class="wordmark">Ethio Build Connect<small>Live &middot; Marketplace</small></span>
       </div>
       <h1>Get the app on Android</h1>
-      <p class="tagline">Ethiopia's real-estate &amp; construction marketplace — browse listings, connect with builders and banks, and watch the expo live.</p>
+      <p class="tagline">Ethiopia's real-estate &amp; construction marketplace &mdash; browse listings, connect with builders and banks, and watch the expo live.</p>
       <div class="meta">
-        <span class="chip">Android 7.0+ · 64-bit</span>
+        <span class="chip">Android 7.0+ &middot; 64-bit</span>
         <span class="chip">v1.0.0</span>
-        <span class="chip">≈ 34 MB</span>
+        <span class="chip">~34 MB</span>
         <span class="chip">.apk</span>
       </div>
     </header>
@@ -271,7 +273,7 @@
             </svg>
             Download APK
           </a>
-          <p class="sub">Direct download · <span class="url" id="urlText">…</span></p>
+          <p class="sub">Direct download &middot; <span class="url" id="urlText">&hellip;</span></p>
         </div>
         <div class="qr-wrap">
           <div class="qr" id="qr" role="img" aria-label="QR code to download the app"></div>
@@ -289,7 +291,7 @@
         </li>
         <li>
           <span class="n">2</span>
-          <p><strong>Allow the install</strong><br><span>Android will ask to allow installing apps from this source — tap <em>Settings</em> → enable <em>Allow from this source</em>, then go back.</span></p>
+          <p><strong>Allow the install</strong><br><span>Android will ask to allow installing apps from this source &mdash; tap <em>Settings</em>, enable <em>Allow from this source</em>, then go back.</span></p>
         </li>
         <li>
           <span class="n">3</span>
@@ -299,19 +301,18 @@
     </section>
 
     <p class="note">
-      <b>Preview build.</b> This is a test/demo version for sideloading — not the Play Store release. iPhone users get the app through <b>TestFlight</b> instead (coming soon). Live video needs a network connection to the exhibition server.
+      <b>Preview build.</b> This is a test/demo version for sideloading &mdash; not the Play Store release. iPhone users get the app through <b>TestFlight</b> instead (coming soon). Live video needs a network connection to the exhibition server.
     </p>
   </main>
-  <p class="foot">Ethio Build Connect · ethiobuildconnect.et</p>
+  <p class="foot">Ethio Build Connect &middot; ethiobuildconnect.et</p>
 </div>
 
 <script>
-  // The page reads the APK location from ?apk=... so it works wherever you host
-  // the file. Edit this default to your real URL, or share the page with
-  //   app-download.html?apk=https://ethiobuildconnect.et/download/ethio-build-connect.apk
+  // The page reads the APK location from ?apk=... so it works wherever it's
+  // hosted. Default: the copy served from this site's /downloads folder.
   var DEFAULT_APK = "/downloads/ethio-build-connect.apk";
   var apk = new URLSearchParams(location.search).get("apk") || DEFAULT_APK;
-  // The QR must encode an absolute URL to scan from a phone; resolve relative paths.
+  // The QR must encode an absolute URL to scan from a phone; resolve relatives.
   var apkAbs = new URL(apk, location.href).href;
 
   document.getElementById("dl").setAttribute("href", apkAbs);
@@ -330,3 +331,5 @@
     document.getElementById("qr").textContent = "QR unavailable";
   }
 </script>
+</body>
+</html>
