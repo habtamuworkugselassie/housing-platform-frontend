@@ -91,9 +91,13 @@
             </Transition>
           </div>
 
-          <div v-if="isExhibitionPage" class="hidden md:ml-6 md:flex md:space-x-6">
+          <div v-if="isExhibitionPage" class="hidden md:ml-6 md:flex md:items-center md:space-x-6">
             <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.showFeatures') }}</router-link>
             <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.whoAttends') }}</router-link>
+            <router-link to="/live" class="inline-flex items-center gap-1.5 px-1 pt-1 text-sm font-semibold text-red-400 hover:text-red-300">
+              <span class="h-1.5 w-1.5 rounded-full bg-red-500 motion-safe:animate-pulse" aria-hidden="true" />
+              {{ $t('nav.live') }}
+            </router-link>
           </div>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-4">

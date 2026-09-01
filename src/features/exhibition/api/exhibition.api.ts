@@ -127,8 +127,10 @@ export const exhibitionApi = {
     const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/publish-token`)
     return data
   },
-  async getViewerToken(id: string): Promise<LiveTokenResponse> {
-    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/viewer-token`)
+  async getViewerToken(id: string, name?: string): Promise<LiveTokenResponse> {
+    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/viewer-token`, {
+      params: name ? { name } : undefined,
+    })
     return data
   },
   async listLiveBroadcasts(): Promise<LiveBroadcastItem[]> {

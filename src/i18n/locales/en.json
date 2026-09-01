@@ -1,4 +1,29 @@
 {
+  "live": {
+    "chat": {
+      "title": "Live chat",
+      "empty": "Say hello — be the first to chat.",
+      "placeholder": "Send a message",
+      "send": "Send"
+    },
+    "reactions": {
+      "send": "Send a reaction"
+    },
+    "share": {
+      "button": "Share",
+      "copied": "Link copied"
+    },
+    "page": {
+      "eyebrow": "Live now",
+      "title": "Live broadcasts",
+      "subtitle": "Watch exhibitors and organizers streaming right now.",
+      "back": "Back",
+      "goLive": "Go live",
+      "watchAll": "Watch live",
+      "emptyTitle": "No one is live right now",
+      "emptyBody": "Live broadcasts from exhibitors and organizers will show up here. Check back soon, or start your own."
+    }
+  },
   "common": {
     "saving": "Saving...",
     "appName": "Ethio Build Connect",
@@ -69,6 +94,7 @@
   "nav": {
     "home": "Home",
     "goLive": "Go live",
+    "live": "Live",
     "getApp": "Get the Android app",
     "getAppShort": "Get the app",
     "marketplace": "Marketplace",

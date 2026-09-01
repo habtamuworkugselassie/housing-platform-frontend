@@ -150,6 +150,11 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {
+    path: '/live',
+    name: 'Live',
+    component: () => import('@/features/exhibition/views/LiveView.vue')
+  },
+  {
     path: '/go-live',
     name: 'GoLive',
     component: () => import('@/features/exhibition/views/GoLiveView.vue'),
