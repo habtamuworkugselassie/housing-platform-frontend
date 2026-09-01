@@ -2,8 +2,12 @@
   <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 relative">
-        <!-- Public "Get the app" — centered in the header (all screens) -->
+        <!-- Public "Get the app" — centered in the header for guests only.
+             Authenticated users (admins/realtors) have a busy action bar that would
+             collide with an absolutely-centered pill, so it's hidden for them; they
+             still have the footer "Get the Android app" link and the mobile menu. -->
         <a
+          v-if="!authStore.isAuthenticated"
           href="/download.html"
           class="inline-flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
         >
