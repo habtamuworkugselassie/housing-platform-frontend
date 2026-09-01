@@ -9,11 +9,23 @@
         <div class="overflow-hidden rounded-2xl border border-gray-200 bg-black shadow-sm">
           <div class="relative aspect-video w-full">
             <video ref="videoEl" class="absolute inset-0 h-full w-full object-cover" autoplay muted playsinline />
-            <span v-if="phase === 'live'" class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-              <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" /> {{ $t('exhibition.liveStream.badge') }}
-            </span>
+            <div v-if="phase === 'live'" class="absolute left-3 top-3 flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                <span class="h-1.5 w-1.5 rounded-full bg-white motion-safe:animate-pulse" /> {{ $t('exhibition.liveStream.badge') }}
+              </span>
+              <span class="inline-flex items-center gap-1 rounded-full bg-black/55 px-2 py-1 text-xs font-medium text-white backdrop-blur">
+                <span class="material-icons !text-[14px]">visibility</span>
+                {{ viewerCount }}
+              </span>
+            </div>
             <span v-else class="absolute left-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">{{ $t('exhibition.goLive.preview') }}</span>
+            <LiveReactions v-if="phase === 'live'" :reactions="reactions" @react="sendReaction" />
           </div>
+        </div>
+
+        <!-- Live chat (broadcaster side) -->
+        <div v-if="phase === 'live'" class="h-72 overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
+          <LiveChatPanel :messages="messages" @send="sendChat" />
         </div>
 
         <!-- Pick any connected camera / mic (webcam, USB, capture card) -->
@@ -125,9 +137,23 @@ import { useI18n } from 'vue-i18n'
 import { Room, createLocalTracks, createLocalVideoTrack } from 'livekit-client'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 import { useAuthStore } from '@/features/auth'
+import { useLiveRoom } from '@/features/exhibition/composables/useLiveRoom'
+import LiveChatPanel from '@/features/exhibition/components/LiveChatPanel.vue'
+import LiveReactions from '@/features/exhibition/components/LiveReactions.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
+
+// Chat / reactions / viewer count over the broadcaster's own publishing room.
+const {
+  viewerCount,
+  messages,
+  reactions,
+  attach: attachChat,
+  disconnect: resetChat,
+  sendChat,
+  sendReaction,
+} = useLiveRoom()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const isAdmin = computed(() => authStore.isAdmin)
 
@@ -329,6 +355,7 @@ async function goLive() {
       }
     }
     phase.value = 'live'
+    attachChat(room) // wire chat / reactions / viewer count onto the live room
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.connectError')
     await teardown()
@@ -338,6 +365,7 @@ async function goLive() {
 
 async function teardown() {
   stopLoop()
+  resetChat() // clear chat/reactions/viewer-count state
   if (pollTimer) {
     clearInterval(pollTimer)
     pollTimer = null
