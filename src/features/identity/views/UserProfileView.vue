@@ -101,16 +101,55 @@
           </div>
         </form>
       </div>
+
+      <!-- Danger zone: delete account -->
+      <div class="mt-6 rounded-2xl border border-red-500/30 bg-red-500/5 p-6">
+        <h2 class="text-lg font-semibold text-white">{{ $t('profile.deleteTitle') }}</h2>
+        <p class="mt-1 text-sm text-gray-400">{{ $t('profile.deleteHelp') }}</p>
+        <p v-if="deleteError" class="mt-3 text-sm text-red-300">{{ deleteError }}</p>
+        <div class="mt-4">
+          <button
+            type="button"
+            :disabled="isDeleting"
+            class="inline-flex items-center rounded-lg border border-red-500/50 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/10 disabled:opacity-50"
+            @click="handleDeleteAccount"
+          >
+            <span v-if="isDeleting" class="material-icons animate-spin mr-2 text-[18px]">autorenew</span>
+            {{ $t('profile.deleteButton') }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl, sanitizeProfileImageUrl } from '@/shared/api/client'
 
 const authStore = useAuthStore()
+const router = useRouter()
+const { t } = useI18n()
+const isDeleting = ref(false)
+const deleteError = ref('')
+
+async function handleDeleteAccount() {
+  if (!window.confirm(t('profile.deleteConfirm'))) return
+  isDeleting.value = true
+  deleteError.value = ''
+  try {
+    await api.delete('/users/me')
+    await authStore.logout()
+    router.push('/')
+  } catch (e) {
+    deleteError.value =
+      e?.response?.data?.message || e?.message || t('profile.deleteError')
+    isDeleting.value = false
+  }
+}
 
 const formData = ref({
   firstName: '',

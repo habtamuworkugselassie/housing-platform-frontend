@@ -59,6 +59,13 @@
       "resizeHandle": "የውይይት ፓነል መጠን ለውጥ"
     }
   },
+  "profile": {
+    "deleteTitle": "መለያ ሰርዝ",
+    "deleteHelp": "መለያዎን እና የግል መረጃዎን በቋሚነት ይሰርዙ። ይህ መመለስ አይቻልም።",
+    "deleteButton": "መለያዬን ሰርዝ",
+    "deleteConfirm": "ይህ መለያዎን እና የግል መረጃዎን በቋሚነት ይሰርዛል፤ መመለስም አይቻልም። ይቀጥሉ?",
+    "deleteError": "መለያዎን መሰረዝ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+  },
   "nav": {
     "home": "መነሻ",
     "goLive": "ቀጥታ ስርጭት",
@@ -814,6 +821,8 @@
       "exhibitionFeedbackHint": "ሲነቃ ጎብኚዎች አጭር ቪዲዮ ማስገባት ይችላሉ፤ የጸደቁ ቪዲዮዎች በኤግዚቢሽን ገጹ ላይ በአስተያየት ግድግዳ ይታያሉ።",
       "exhibitionFeedbackAutoPublish": "የገቡ ቪዲዮዎችን በራስ-ሰር አትም",
       "exhibitionFeedbackAutoPublishHint": "ሲነቃ የገቡ ቪዲዮዎች ወዲያውኑ ይታተማሉ። ሲጠፋ እያንዳንዱ ቪዲዮ በቪዲዮ አስተያየት ማጣራት እስኪያጸድቁት ድረስ ተደብቆ ይቆያል።",
+      "autoSimulcast": "ቀጥታ ሲጀምር ወደ ማኅበራዊ ሚዲያ በራስ-ሰር አሰራጭ",
+      "autoSimulcastHint": "ሲነቃ ማንኛውም የአስተዳዳሪ/አዘጋጅ ስርጭት ቀጥታ በሚጀምርበት ጊዜ ወደ ሁሉም የነቁ ማኅበራዊ መድረሻዎች በራስ-ሰር ይሰራጫል። መድረሻዎችን በ‘ቀጥታ ስርጭቶች’ ስር ያክሉ።",
       "seconds": "ሰከንዶች",
       "save": "አስቀምጥ",
       "saving": "በመቀመጥ ላይ…",
@@ -1429,7 +1438,11 @@
         },
         {
           "heading": "Information we collect",
-          "body": "We may collect: account and profile details (such as name, email, phone number, and organization information you choose to provide); content you submit (property or project listings, descriptions, images, documents, and messages you send us); usage and device data (such as app version, device type, and diagnostic logs); approximate location when you use map features, subject to your device permissions; and communications with support. We may also collect technical data through cookies or similar technologies on the website."
+          "body": "We may collect: account and profile details (such as name, email, phone number, and organization information you choose to provide); content you submit (property or project listings, descriptions, images, documents, and messages you send us); video and audio you capture when you go live or send video feedback; usage and device data (such as app version, device type, and diagnostic logs); approximate location when you use map features, subject to your device permissions; and communications with support. We may also collect technical data through cookies or similar technologies on the website."
+        },
+        {
+          "heading": "Camera, microphone, and live video",
+          "body": "Some features let you capture and share video and audio. When you go live, submit video feedback, or add a listing photo, the app requests camera and/or microphone access and uses them only while you are actively using that feature. Live audio and video are sent to our streaming provider (LiveKit) so viewers can watch. We do not access your camera or microphone in the background."
         },
         {
           "heading": "How we use information",
@@ -1437,7 +1450,7 @@
         },
         {
           "heading": "Sharing",
-          "body": "We may share information with service providers who help us host, operate, or secure the platform, strictly as needed to perform those services. We may disclose information if required by law or to protect the rights, safety, and security of users and the public. Business transfers (for example a merger) may involve transferring information under appropriate safeguards."
+          "body": "Content you choose to publish — a listing, an approved live broadcast, or approved video feedback — is visible to other users. Live broadcasts that you or an organizer choose to simulcast may also be shown on external platforms such as YouTube or Facebook. We may share information with service providers who help us host, operate, or secure the platform, strictly as needed to perform those services. We may disclose information if required by law or to protect the rights, safety, and security of users and the public. Business transfers (for example a merger) may involve transferring information under appropriate safeguards. We do not sell your personal information."
         },
         {
           "heading": "Retention and security",
@@ -1445,7 +1458,7 @@
         },
         {
           "heading": "Your choices",
-          "body": "You may update certain profile information in the app or website. You can control location and media permissions through your device settings. You may contact us to request access, correction, or deletion of your personal information where applicable law allows."
+          "body": "You may update certain profile information in the app or website. You can control camera, microphone, location, and media permissions through your device settings. You can permanently delete your account and personal data at any time from Profile then Delete account, in the app or on the website; this is irreversible. You may also contact us to request access, correction, or deletion of your personal information where applicable law allows."
         },
         {
           "heading": "Children",

@@ -122,6 +122,23 @@
             </label>
           </div>
 
+          <label class="flex cursor-pointer items-start gap-3">
+            <input
+              id="exhibition-auto-simulcast"
+              v-model="form.exhibitionLiveAutoSimulcast"
+              type="checkbox"
+              class="mt-1 h-4 w-4 shrink-0 rounded border-admin-line/30 bg-admin-surface text-admin-fg focus:ring-primary-400"
+            />
+            <span class="min-w-0">
+              <span class="block text-sm font-medium text-admin-muted">
+                {{ $t('admin.displaySettings.autoSimulcast') }}
+              </span>
+              <span class="mt-1 block text-xs text-admin-faint">
+                {{ $t('admin.displaySettings.autoSimulcastHint') }}
+              </span>
+            </span>
+          </label>
+
           <div v-if="form.exhibitionLiveVisible" class="space-y-4 sm:pl-7">
             <div>
               <label class="block text-sm font-medium text-admin-muted" for="live-title">
@@ -271,7 +288,8 @@ const form = reactive({
   liveTiktokUrl: '',
   liveFacebookUrl: '',
   exhibitionFeedbackVisible: false,
-  exhibitionFeedbackAutoPublish: false
+  exhibitionFeedbackAutoPublish: false,
+  exhibitionLiveAutoSimulcast: false
 })
 
 function clamp(n, min, max) {
@@ -305,6 +323,7 @@ onMounted(async () => {
     form.liveFacebookUrl = d.liveFacebookUrl || ''
     form.exhibitionFeedbackVisible = coerceDisplayBool(d.exhibitionFeedbackVisible, false)
     form.exhibitionFeedbackAutoPublish = coerceDisplayBool(d.exhibitionFeedbackAutoPublish, false)
+    form.exhibitionLiveAutoSimulcast = coerceDisplayBool(d.exhibitionLiveAutoSimulcast, false)
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('admin.displaySettings.loadError')
   } finally {
@@ -335,7 +354,8 @@ async function save() {
     liveTiktokUrl: (form.liveTiktokUrl || '').trim(),
     liveFacebookUrl: (form.liveFacebookUrl || '').trim(),
     exhibitionFeedbackVisible: Boolean(form.exhibitionFeedbackVisible),
-    exhibitionFeedbackAutoPublish: Boolean(form.exhibitionFeedbackAutoPublish)
+    exhibitionFeedbackAutoPublish: Boolean(form.exhibitionFeedbackAutoPublish),
+    exhibitionLiveAutoSimulcast: Boolean(form.exhibitionLiveAutoSimulcast)
   }
   try {
     const updated = await adminApi.updateDisplaySettings(body)
