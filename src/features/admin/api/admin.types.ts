@@ -253,6 +253,7 @@ export interface DisplaySettings {
   liveFacebookUrl?: string
   exhibitionFeedbackVisible?: boolean
   exhibitionFeedbackAutoPublish?: boolean
+  exhibitionLiveAutoSimulcast?: boolean
 }
 
 /**

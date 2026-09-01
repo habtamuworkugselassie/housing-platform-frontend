@@ -41,6 +41,8 @@ export interface DisplaySettings {
   exhibitionFeedbackVisible?: boolean
   /** When true, submitted feedback videos are published immediately; when false they await admin approval (default off). */
   exhibitionFeedbackAutoPublish?: boolean
+  /** When true, a broadcast auto-simulcasts to all enabled RTMP destinations on go-live (default off). */
+  exhibitionLiveAutoSimulcast?: boolean
   footer?: FooterContact | null
 }
 
@@ -53,7 +55,8 @@ const defaults: DisplaySettings = {
   exhibitionLiveVisible: false,
   liveSourceType: 'EXTERNAL_EMBED',
   exhibitionFeedbackVisible: false,
-  exhibitionFeedbackAutoPublish: false
+  exhibitionFeedbackAutoPublish: false,
+  exhibitionLiveAutoSimulcast: false
 }
 
 export const displaySettings = reactive<DisplaySettings>({ ...defaults })
@@ -79,6 +82,9 @@ export function mergeDisplaySettings(data: DisplaySettings) {
   }
   if (Object.prototype.hasOwnProperty.call(data, 'exhibitionFeedbackVisible')) {
     next.exhibitionFeedbackVisible = coerceDisplayBool(data.exhibitionFeedbackVisible, false)
+  }
+  if (Object.prototype.hasOwnProperty.call(data, 'exhibitionLiveAutoSimulcast')) {
+    next.exhibitionLiveAutoSimulcast = coerceDisplayBool(data.exhibitionLiveAutoSimulcast, false)
   }
   if (Object.prototype.hasOwnProperty.call(data, 'exhibitionFeedbackAutoPublish')) {
     next.exhibitionFeedbackAutoPublish = coerceDisplayBool(data.exhibitionFeedbackAutoPublish, false)
