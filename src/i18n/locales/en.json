@@ -17,6 +17,14 @@
       "mute": "Mute",
       "unmute": "Unmute"
     },
+    "cohost": {
+      "ask": "Join with camera",
+      "waiting": "Waiting for the host to let you in…",
+      "leave": "Leave",
+      "requests": "Requests to join",
+      "approve": "Approve",
+      "deny": "Deny"
+    },
     "page": {
       "eyebrow": "Live now",
       "title": "Live broadcasts",

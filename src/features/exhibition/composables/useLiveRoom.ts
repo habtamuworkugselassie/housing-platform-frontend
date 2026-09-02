@@ -13,10 +13,19 @@ import {
   Room,
   RoomEvent,
   Track,
+  type LocalTrack,
   type RemoteTrack,
   type RemoteParticipant,
   type Participant,
 } from 'livekit-client'
+
+/** A remote publisher's video track, rendered as its own tile. */
+export interface LiveVideoTile {
+  id: string
+  identity: string
+  name: string
+  track: RemoteTrack
+}
 
 export interface LiveChatMessage {
   id: string
@@ -47,9 +56,39 @@ export function useLiveRoom() {
   const messages = ref<LiveChatMessage[]>([])
   const reactions = ref<LiveFloatReaction[]>([])
   const error = ref('')
+  // Every remote publisher's video (broadcaster + any co-hosts), rendered as tiles.
+  const remoteVideos = ref<LiveVideoTile[]>([])
 
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
+  // Remote audio elements LiveKit creates on attach; kept so we can mute them together.
+  const audioEls = new Map<RemoteTrack, HTMLMediaElement>()
+  const audioMuted = ref(false)
+
+  function attachAudio(track: RemoteTrack) {
+    if (track.kind !== Track.Kind.Audio || audioEls.has(track)) return
+    const el = track.attach() // creates a media element that autoplays the room audio
+    el.muted = audioMuted.value
+    audioEls.set(track, el)
+  }
+  function detachAudio(track: RemoteTrack) {
+    const el = audioEls.get(track)
+    if (el) {
+      try {
+        track.detach(el)
+      } catch {
+        /* ignore */
+      }
+      audioEls.delete(track)
+    }
+  }
+  function setAudioMuted(m: boolean) {
+    audioMuted.value = m
+    audioEls.forEach((el) => {
+      el.muted = m
+      if (!m) el.play?.().catch(() => {})
+    })
+  }
   // Whether we created the room (and must tear it down) or merely attached to a
   // room owned elsewhere (the broadcaster's publishing room).
   let owns = true
@@ -57,6 +96,30 @@ export function useLiveRoom() {
   function recount() {
     const r = room.value
     viewerCount.value = r ? r.numParticipants : 0
+  }
+
+  function addVideoTile(track: RemoteTrack, participant?: RemoteParticipant) {
+    if (track.kind !== Track.Kind.Video) return
+    const id = track.sid || `${participant?.identity}-${Date.now()}`
+    if (remoteVideos.value.some((t) => t.id === id)) return
+    remoteVideos.value = [
+      ...remoteVideos.value,
+      {
+        id,
+        identity: participant?.identity || '',
+        name: participant?.name || participant?.identity || 'Guest',
+        track,
+      },
+    ]
+  }
+
+  function removeVideoTile(track: RemoteTrack) {
+    const sid = track.sid
+    remoteVideos.value = remoteVideos.value.filter((t) => t.track !== track && t.id !== sid)
+  }
+
+  function removeParticipantTiles(participant: RemoteParticipant) {
+    remoteVideos.value = remoteVideos.value.filter((t) => t.identity !== participant.identity)
   }
 
   function pushReaction(emoji: string) {
@@ -107,16 +170,29 @@ export function useLiveRoom() {
     const r = new Room({ adaptiveStream: true, dynacast: true })
     room.value = r
 
-    r.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
-      if (track.kind === Track.Kind.Video) opts.onVideoTrack?.(track)
+    r.on(RoomEvent.TrackSubscribed, (track: RemoteTrack, _pub, participant: RemoteParticipant) => {
+      if (track.kind === Track.Kind.Video) {
+        opts.onVideoTrack?.(track)
+        addVideoTile(track, participant)
+      } else if (track.kind === Track.Kind.Audio) {
+        attachAudio(track)
+      }
+    })
+    r.on(RoomEvent.TrackUnsubscribed, (track: RemoteTrack) => {
+      removeVideoTile(track)
+      detachAudio(track)
     })
     r.on(RoomEvent.DataReceived, (payload: Uint8Array, participant?: RemoteParticipant) =>
       handleData(payload, participant),
     )
     r.on(RoomEvent.ParticipantConnected, recount)
-    r.on(RoomEvent.ParticipantDisconnected, recount)
+    r.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
+      removeParticipantTiles(participant)
+      recount()
+    })
     r.on(RoomEvent.Disconnected, () => {
       connected.value = false
+      remoteVideos.value = []
     })
 
     try {
@@ -141,12 +217,32 @@ export function useLiveRoom() {
     owns = false
     room.value = existing
     connected.value = true
+    existing.on(RoomEvent.TrackSubscribed, (track: RemoteTrack, _pub, participant: RemoteParticipant) => {
+      if (track.kind === Track.Kind.Video) addVideoTile(track, participant)
+    })
+    existing.on(RoomEvent.TrackUnsubscribed, (track: RemoteTrack) => removeVideoTile(track))
     existing.on(RoomEvent.DataReceived, (payload: Uint8Array, participant?: RemoteParticipant) =>
       handleData(payload, participant),
     )
     existing.on(RoomEvent.ParticipantConnected, recount)
-    existing.on(RoomEvent.ParticipantDisconnected, recount)
+    existing.on(RoomEvent.ParticipantDisconnected, (participant: RemoteParticipant) => {
+      removeParticipantTiles(participant)
+      recount()
+    })
     recount()
+  }
+
+  /** Publish local camera/mic tracks (co-host path) into the connected room. */
+  async function publishTracks(tracks: LocalTrack[]) {
+    const r = room.value
+    if (!r || !connected.value) return
+    for (const track of tracks) {
+      try {
+        await r.localParticipant.publishTrack(track)
+      } catch {
+        /* skip a track that fails to publish; keep the others */
+      }
+    }
   }
 
   async function publish(obj: DataPayload) {
@@ -182,6 +278,15 @@ export function useLiveRoom() {
     viewerCount.value = 0
     messages.value = []
     reactions.value = []
+    remoteVideos.value = []
+    audioEls.forEach((el, track) => {
+      try {
+        track.detach(el)
+      } catch {
+        /* ignore */
+      }
+    })
+    audioEls.clear()
     // Only tear down a room we created; an attached room is the caller's to close.
     if (r && ownedThis) {
       try {
@@ -201,10 +306,14 @@ export function useLiveRoom() {
     viewerCount,
     messages,
     reactions,
+    remoteVideos,
+    audioMuted,
     error,
     connect,
     attach,
     disconnect,
+    publishTracks,
+    setAudioMuted,
     sendChat,
     sendReaction,
   }

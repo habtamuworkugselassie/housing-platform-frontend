@@ -90,6 +90,15 @@ export interface LiveBroadcastItem {
   companyName?: string
   status: 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'LIVE' | 'ENDED'
   hlsUrl?: string
+  recordingUrl?: string
+}
+
+/** A viewer's request to co-host (publish into) a live broadcast. */
+export interface CohostRequestItem {
+  id: string
+  displayName: string
+  participantIdentity: string
+  status: 'PENDING' | 'APPROVED' | 'DENIED'
 }
 
 /** What a client needs to connect to LiveKit. */
@@ -170,6 +179,41 @@ export const exhibitionApi = {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
   },
+  // --- Co-hosting (approved viewers publish into the live room) --------------
+  /** Viewer asks to co-host a live broadcast; returns the pending request. */
+  async requestCohost(id: string, name?: string): Promise<CohostRequestItem> {
+    const { data } = await api.post<CohostRequestItem>(
+      `/exhibition/live/${id}/cohost/request`,
+      null,
+      { params: name ? { name } : undefined },
+    )
+    return data
+  },
+  /** Broadcaster: pending co-host requests to moderate. */
+  async listCohostRequests(id: string): Promise<CohostRequestItem[]> {
+    const { data } = await api.get(`/exhibition/live/${id}/cohost/requests`)
+    return Array.isArray(data) ? data : []
+  },
+  async approveCohost(id: string, requestId: string): Promise<CohostRequestItem> {
+    const { data } = await api.post<CohostRequestItem>(
+      `/exhibition/live/${id}/cohost/${requestId}/approve`,
+    )
+    return data
+  },
+  async denyCohost(id: string, requestId: string): Promise<CohostRequestItem> {
+    const { data } = await api.post<CohostRequestItem>(
+      `/exhibition/live/${id}/cohost/${requestId}/deny`,
+    )
+    return data
+  },
+  /** Viewer polls for the publish token once approved. */
+  async getCohostToken(id: string, requestId: string): Promise<LiveTokenResponse> {
+    const { data } = await api.get<LiveTokenResponse>(
+      `/exhibition/live/${id}/cohost/${requestId}/token`,
+    )
+    return data
+  },
+
   /** Public feed of approved clips (Spring Page). */
   async listApprovedVideoFeedback(size = 12): Promise<VideoFeedbackItem[]> {
     const { data } = await api.get('/exhibition/video-feedback', { params: { size } })

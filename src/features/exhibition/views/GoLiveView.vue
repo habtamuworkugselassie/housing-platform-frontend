@@ -23,6 +23,34 @@
           </div>
         </div>
 
+        <!-- Co-host video tiles (viewers who joined with their camera) -->
+        <div v-if="phase === 'live' && remoteVideos.length" class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div
+            v-for="tile in remoteVideos"
+            :key="tile.id"
+            class="h-24 overflow-hidden rounded-lg border border-gray-200 bg-black"
+          >
+            <LiveVideoTile :track="tile.track" :label="tile.name" />
+          </div>
+        </div>
+
+        <!-- Co-host requests: viewers asking to join with their camera/mic -->
+        <div v-if="phase === 'live' && pendingCohosts.length" class="rounded-2xl border border-primary-200 bg-primary-50 p-3">
+          <p class="mb-2 text-sm font-semibold text-primary-800">{{ $t('live.cohost.requests') }}</p>
+          <ul class="space-y-2">
+            <li v-for="req in pendingCohosts" :key="req.id" class="flex items-center gap-2">
+              <span class="material-icons !text-[18px] text-primary-600" aria-hidden="true">person</span>
+              <span class="flex-1 truncate text-sm text-gray-800">{{ req.displayName }}</span>
+              <button type="button" class="rounded-md bg-primary-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-primary-700" @click="approveCohost(req.id)">
+                {{ $t('live.cohost.approve') }}
+              </button>
+              <button type="button" class="rounded-md border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50" @click="denyCohost(req.id)">
+                {{ $t('live.cohost.deny') }}
+              </button>
+            </li>
+          </ul>
+        </div>
+
         <!-- Live chat (broadcaster side) -->
         <div v-if="phase === 'live'" class="h-72 overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
           <LiveChatPanel :messages="messages" @send="sendChat" />
@@ -152,6 +180,7 @@ import { useAuthStore } from '@/features/auth'
 import { useLiveRoom } from '@/features/exhibition/composables/useLiveRoom'
 import LiveChatPanel from '@/features/exhibition/components/LiveChatPanel.vue'
 import LiveReactions from '@/features/exhibition/components/LiveReactions.vue'
+import LiveVideoTile from '@/features/exhibition/components/LiveVideoTile.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -161,11 +190,16 @@ const {
   viewerCount,
   messages,
   reactions,
+  remoteVideos,
   attach: attachChat,
   disconnect: resetChat,
   sendChat,
   sendReaction,
 } = useLiveRoom()
+
+// Co-host moderation: viewers who asked to join, awaiting this broadcaster's approval.
+const pendingCohosts = ref([])
+let cohostPollTimer = null
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const isAdmin = computed(() => authStore.isAdmin)
 
@@ -386,6 +420,7 @@ async function goLive() {
     }
     phase.value = 'live'
     attachChat(room) // wire chat / reactions / viewer count onto the live room
+    startCohostPolling() // watch for viewers asking to co-host
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.connectError')
     await teardown()
@@ -393,8 +428,48 @@ async function goLive() {
   }
 }
 
+// Poll the broadcaster's moderation queue of co-host requests while live.
+function startCohostPolling() {
+  stopCohostPolling()
+  cohostPollTimer = setInterval(async () => {
+    if (!broadcastId) return
+    try {
+      pendingCohosts.value = await exhibitionApi.listCohostRequests(broadcastId)
+    } catch {
+      /* keep the last known list */
+    }
+  }, 4000)
+}
+
+function stopCohostPolling() {
+  if (cohostPollTimer) {
+    clearInterval(cohostPollTimer)
+    cohostPollTimer = null
+  }
+  pendingCohosts.value = []
+}
+
+async function approveCohost(reqId) {
+  try {
+    await exhibitionApi.approveCohost(broadcastId, reqId)
+    pendingCohosts.value = pendingCohosts.value.filter((r) => r.id !== reqId)
+  } catch {
+    /* ignore; the poll will refresh */
+  }
+}
+
+async function denyCohost(reqId) {
+  try {
+    await exhibitionApi.denyCohost(broadcastId, reqId)
+    pendingCohosts.value = pendingCohosts.value.filter((r) => r.id !== reqId)
+  } catch {
+    /* ignore */
+  }
+}
+
 async function teardown() {
   stopLoop()
+  stopCohostPolling()
   resetChat() // clear chat/reactions/viewer-count state
   if (pollTimer) {
     clearInterval(pollTimer)
