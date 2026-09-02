@@ -2,7 +2,7 @@
   <div class="flex h-full min-h-0 w-full flex-col overflow-hidden bg-black lg:flex-row">
     <!-- Video + overlays -->
     <div class="relative flex min-h-0 flex-1 items-center justify-center bg-black">
-      <video ref="videoEl" class="h-full max-h-full w-full bg-black object-contain" autoplay playsinline />
+      <video ref="videoEl" class="h-full max-h-full w-full bg-black object-contain" autoplay playsinline :muted="muted" />
 
       <!-- Top bar: live badge + viewer count, share -->
       <div class="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3">
@@ -16,14 +16,27 @@
             {{ viewerCount }}
           </span>
         </div>
-        <button
-          type="button"
-          class="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-black/55 px-2.5 py-1 text-xs font-medium text-white backdrop-blur transition hover:bg-black/75"
-          @click="share"
-        >
-          <span class="material-icons !text-[14px]">{{ shared ? 'check' : 'share' }}</span>
-          {{ shared ? $t('live.share.copied') : $t('live.share.button') }}
-        </button>
+        <div class="flex items-center gap-2">
+          <!-- Viewer audio mute: local-only (mutes the <video> element), does not affect the stream. -->
+          <button
+            type="button"
+            class="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-black/55 px-2.5 py-1 text-xs font-medium text-white backdrop-blur transition hover:bg-black/75"
+            :aria-pressed="muted"
+            :aria-label="muted ? $t('live.player.unmute') : $t('live.player.mute')"
+            @click="toggleMute"
+          >
+            <span class="material-icons !text-[14px]">{{ muted ? 'volume_off' : 'volume_up' }}</span>
+            {{ muted ? $t('live.player.unmute') : $t('live.player.mute') }}
+          </button>
+          <button
+            type="button"
+            class="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-black/55 px-2.5 py-1 text-xs font-medium text-white backdrop-blur transition hover:bg-black/75"
+            @click="share"
+          >
+            <span class="material-icons !text-[14px]">{{ shared ? 'check' : 'share' }}</span>
+            {{ shared ? $t('live.share.copied') : $t('live.share.button') }}
+          </button>
+        </div>
       </div>
 
       <!-- Title -->
@@ -67,6 +80,19 @@ const { connected, viewerCount, messages, reactions, error, connect, disconnect,
 
 const videoEl = ref(null)
 const shared = ref(false)
+// Local playback mute (does not touch the published stream). Some browsers block
+// autoplay with sound; if playback is blocked on connect we fall back to muted so
+// video still shows, and the viewer can unmute with this control.
+const muted = ref(false)
+
+function toggleMute() {
+  muted.value = !muted.value
+  const el = videoEl.value
+  if (el) {
+    el.muted = muted.value
+    if (!muted.value) el.play?.().catch(() => {})
+  }
+}
 
 function viewerName() {
   const u = authStore.user
@@ -106,7 +132,16 @@ onMounted(async () => {
     const { url, token } = await exhibitionApi.getViewerToken(props.broadcast.id, viewerName())
     await connect(url, token, {
       onVideoTrack: (track) => {
-        if (videoEl.value) track.attach(videoEl.value)
+        const el = videoEl.value
+        if (!el) return
+        track.attach(el)
+        // Respect autoplay policy: if the browser blocks sound, retry muted so the
+        // picture still plays and surface the unmute control.
+        el.play?.().catch(() => {
+          muted.value = true
+          el.muted = true
+          el.play?.().catch(() => {})
+        })
       },
     })
   } catch (e) {

@@ -125,6 +125,18 @@
         <button type="button" class="rounded-lg border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50" @click="stop">
           {{ $t('exhibition.goLive.stop') }}
         </button>
+        <!-- Broadcaster mic mute: silences the published audio track for all viewers. -->
+        <button
+          v-if="phase === 'live'"
+          type="button"
+          class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition"
+          :class="micMuted ? 'border-red-500/40 bg-red-50 text-red-600' : 'border-gray-300 text-gray-700 hover:border-primary-400 hover:bg-primary-50'"
+          :aria-pressed="micMuted"
+          @click="toggleMic"
+        >
+          <span class="material-icons !text-[18px]" aria-hidden="true">{{ micMuted ? 'mic_off' : 'mic' }}</span>
+          {{ micMuted ? $t('exhibition.goLive.unmute') : $t('exhibition.goLive.mute') }}
+        </button>
         <span class="text-sm text-gray-500">{{ phase === 'connecting' ? $t('exhibition.goLive.connecting') : $t('exhibition.goLive.youAreLive') }}</span>
       </div>
     </div>
@@ -176,6 +188,7 @@ const mics = ref([])
 const selectedCamera = ref('')
 const selectedMic = ref('')
 const previewOn = ref(false)
+const micMuted = ref(false)
 
 // Multi-camera auto-rotation ("loop": N seconds on camera 1, then camera 2, …)
 const loopEnabled = ref(false)
@@ -308,6 +321,23 @@ watch(selectedMic, async (id, prev) => {
   }
 })
 
+// Toggle the broadcaster's published microphone. LiveKit mute() stops sending
+// audio to the SFU (viewers hear silence) without dropping the track/renegotiating.
+async function toggleMic() {
+  if (!localAudio) return
+  try {
+    if (micMuted.value) {
+      await localAudio.unmute()
+      micMuted.value = false
+    } else {
+      await localAudio.mute()
+      micMuted.value = true
+    }
+  } catch {
+    /* ignore transient mute errors */
+  }
+}
+
 function poll() {
   pollTimer = setInterval(async () => {
     try {
@@ -392,22 +422,56 @@ async function teardown() {
 }
 
 async function stop() {
+  // Tell the backend to end the broadcast first (stops recording/simulcast egress and
+  // closes the room server-side), then tear down the local publisher.
+  await endBroadcastOnServer()
   await teardown()
   previewOn.value = false
   loopEnabled.value = false
+  micMuted.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
+}
+
+// End the broadcast on the server (idempotent; only when we actually started one).
+async function endBroadcastOnServer() {
+  if (!broadcastId || (phase.value !== 'live' && phase.value !== 'connecting')) return
+  try {
+    await exhibitionApi.endBroadcast(broadcastId)
+  } catch {
+    /* best-effort; the room also auto-closes when the last publisher leaves */
+  }
+}
+
+// Fired when the tab is closed/hidden while live — sendBeacon reliably reaches the
+// server during unload so the recording is finalized and the room doesn't linger.
+function handleUnload() {
+  if (broadcastId && (phase.value === 'live' || phase.value === 'connecting')) {
+    exhibitionApi.endBroadcastBeacon(broadcastId)
+  }
 }
 
 async function cancel() {
+  await endBroadcastOnServer()
   await teardown()
   previewOn.value = false
   loopEnabled.value = false
+  micMuted.value = false
   cameras.value = []
   mics.value = []
   phase.value = 'form'
 }
 
-onBeforeUnmount(teardown)
+// Reliable end-on-close: pagehide covers tab close, navigation and mobile background.
+window.addEventListener('pagehide', handleUnload)
+window.addEventListener('beforeunload', handleUnload)
+
+onBeforeUnmount(async () => {
+  window.removeEventListener('pagehide', handleUnload)
+  window.removeEventListener('beforeunload', handleUnload)
+  // Leaving the route (SPA navigation) also ends the broadcast + recording.
+  await endBroadcastOnServer()
+  await teardown()
+})
 </script>

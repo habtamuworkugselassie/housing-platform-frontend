@@ -137,6 +137,33 @@ export const exhibitionApi = {
     const { data } = await api.get('/exhibition/live')
     return Array.isArray(data) ? data : []
   },
+  /**
+   * Broadcaster ends their own stream: stops recording/simulcast egress, closes the
+   * room and marks it ENDED. Called when they hit "Stop broadcasting" or leave the page.
+   */
+  async endBroadcast(id: string): Promise<void> {
+    await api.post(`/exhibition/live/${id}/end`)
+  },
+  /**
+   * Reliable end-on-unload: a normal request is cancelled when the tab closes, so use
+   * sendBeacon (survives unload) with a POST the backend accepts unauthenticated for
+   * this broadcast id. Falls back to a keepalive fetch where Beacon is unavailable.
+   */
+  endBroadcastBeacon(id: string): void {
+    const url = `${api.defaults.baseURL || ''}/exhibition/live/${id}/end`
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([], { type: 'text/plain' }))) {
+        return
+      }
+    } catch {
+      /* fall through to fetch */
+    }
+    try {
+      fetch(url, { method: 'POST', keepalive: true, credentials: 'include' }).catch(() => {})
+    } catch {
+      /* best-effort */
+    }
+  },
   /** Anonymous visitor submits a short video (multipart: name, email, caption?, file). */
   submitVideoFeedback(form: FormData) {
     return api.post<VideoFeedbackItem>('/exhibition/video-feedback', form, {

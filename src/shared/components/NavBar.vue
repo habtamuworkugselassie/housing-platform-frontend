@@ -91,9 +91,13 @@
             </Transition>
           </div>
 
-          <div v-if="isExhibitionPage" class="hidden md:ml-6 md:flex md:items-center md:space-x-6">
-            <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.showFeatures') }}</router-link>
-            <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.whoAttends') }}</router-link>
+          <div class="hidden md:ml-6 md:flex md:items-center md:space-x-6">
+            <template v-if="isExhibitionPage">
+              <router-link to="/#show-features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.showFeatures') }}</router-link>
+              <router-link to="/#who-attends" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-300 hover:text-primary-400">{{ $t('nav.whoAttends') }}</router-link>
+            </template>
+            <!-- Live is a site-wide entry point, not exhibition-landing-only, so viewers can
+                 always find an in-progress stream from any page. -->
             <router-link to="/live" class="inline-flex items-center gap-1.5 px-1 pt-1 text-sm font-semibold text-red-400 hover:text-red-300">
               <span class="h-1.5 w-1.5 rounded-full bg-red-500 motion-safe:animate-pulse" aria-hidden="true" />
               {{ $t('nav.live') }}
@@ -220,6 +224,11 @@
             <router-link to="/#show-features" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.showFeatures') }}</router-link>
             <router-link to="/#who-attends" @click="mobileMenuOpen = false" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-primary-400 hover:bg-violet-950/20 rounded-md">{{ $t('nav.whoAttends') }}</router-link>
           </template>
+          <!-- Live: available in the mobile menu on every page (was previously desktop-only). -->
+          <router-link to="/live" @click="mobileMenuOpen = false" class="flex items-center gap-2 px-3 py-2 text-base font-semibold text-red-400 hover:text-red-300 hover:bg-violet-950/20 rounded-md">
+            <span class="h-1.5 w-1.5 rounded-full bg-red-500 motion-safe:animate-pulse" aria-hidden="true" />
+            {{ $t('nav.live') }}
+          </router-link>
           <template v-if="authStore.isAuthenticated">
             <router-link
               v-if="authStore.hasRole('REALTOR')"

@@ -13,6 +13,10 @@
       "button": "Share",
       "copied": "Link copied"
     },
+    "player": {
+      "mute": "Mute",
+      "unmute": "Unmute"
+    },
     "page": {
       "eyebrow": "Live now",
       "title": "Live broadcasts",
@@ -1183,6 +1187,8 @@
       "connectError": "Could not start your camera. Check permissions and try again.",
       "youAreLive": "You are live.",
       "stop": "Stop broadcasting",
+      "mute": "Mute mic",
+      "unmute": "Unmute mic",
       "camera": "Camera",
       "microphone": "Microphone",
       "preview": "Preview",
