@@ -366,6 +366,40 @@ const router = createRouter({
   }
 })
 
+// A route's code is a lazily-imported chunk whose filename carries a content hash.
+// After a redeploy those hashes change, so a browser holding a cached index.html (Safari
+// is especially aggressive here) requests a chunk that no longer exists (404) and the
+// dynamic import() rejects — the target route silently renders blank. Detect that and
+// reload once to fetch the fresh index.html + chunks. A sessionStorage guard keyed by the
+// path prevents a reload loop if the failure is not actually stale-chunk related.
+router.onError((error, to) => {
+  const msg = String(error && error.message)
+  const isChunkLoadError =
+    /Failed to fetch dynamically imported module/i.test(msg) ||
+    /error loading dynamically imported module/i.test(msg) ||
+    /Importing a module script failed/i.test(msg) || // Safari's wording
+    /'text\/html' is not a valid JavaScript MIME type/i.test(msg)
+  if (!isChunkLoadError) return
+  const key = `chunk-reload:${to && to.fullPath ? to.fullPath : location.pathname}`
+  try {
+    if (sessionStorage.getItem(key)) return // already tried a reload for this path
+    sessionStorage.setItem(key, '1')
+  } catch {
+    /* private mode / storage blocked — still attempt the reload below */
+  }
+  const target = to && to.fullPath ? to.fullPath : location.pathname
+  window.location.assign(target)
+})
+
+// Clear the one-shot reload guard once a navigation actually succeeds.
+router.afterEach((to) => {
+  try {
+    sessionStorage.removeItem(`chunk-reload:${to.fullPath}`)
+  } catch {
+    /* ignore */
+  }
+})
+
 const defaultSeo = {
   title: 'Ethio Build Connect - Ethiopia Real Estate and Construction Marketplace',
   description:
