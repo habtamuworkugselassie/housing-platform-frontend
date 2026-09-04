@@ -1,22 +1,8 @@
 <template>
   <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16 relative">
-        <!-- Public "Get the app" — centered in the header for guests only.
-             Authenticated users (admins/realtors) have a busy action bar that would
-             collide with an absolutely-centered pill, so it's hidden for them; they
-             still have the footer "Get the Android app" link and the mobile menu. -->
-        <a
-          v-if="!authStore.isAuthenticated"
-          href="/download.html"
-          class="inline-flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
-        >
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
-          </svg>
-          {{ $t('nav.getAppShort') }}
-        </a>
-        <div class="flex items-center">
+      <div class="flex justify-between items-center h-16 gap-2">
+        <div class="flex items-center min-w-0">
           <!-- Mobile menu button -->
           <button
             @click="mobileMenuOpen = !mobileMenuOpen"
@@ -104,6 +90,21 @@
             </router-link>
           </div>
         </div>
+
+        <!-- Public "Get the app" — a normal flex child (not absolutely positioned) so it sits
+             between the nav and the controls and can never overlap them. Guests only; signed-in
+             users reach the download via the footer link and the mobile menu. -->
+        <a
+          v-if="!authStore.isAuthenticated"
+          href="/download.html"
+          class="inline-flex shrink-0 items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
+          </svg>
+          {{ $t('nav.getAppShort') }}
+        </a>
+
         <div class="flex items-center space-x-2 sm:space-x-4">
           <!-- Desktop Navigation -->
           <div class="hidden sm:flex items-center space-x-4">
