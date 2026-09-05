@@ -11,8 +11,8 @@
     <div class="flex-1 min-h-0 flex flex-col">
       <PublicLayout v-if="isPublicRoute && !route.meta?.hideLayout">
         <template v-if="isExhibitionLanding" #top>
-          <LandingHero />
           <ExhibitionTopSection />
+          <LandingHero />
         </template>
         <router-view />
       </PublicLayout>
