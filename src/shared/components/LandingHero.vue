@@ -1,87 +1,234 @@
 <template>
   <section class="landing-hero" aria-label="Ethio Build Connect">
-    <div class="landing-hero__pattern" aria-hidden="true" />
-    <div class="landing-hero__glow landing-hero__glow--one" aria-hidden="true" />
-    <div class="landing-hero__glow landing-hero__glow--two" aria-hidden="true" />
-
     <div class="landing-hero__content">
       <div class="landing-hero__copy">
-        <p class="landing-hero__eyebrow">Ethio Build Connect</p>
+        <p class="landing-hero__eyebrow">{{ $t('home.heroEyebrow') }}</p>
         <h1>{{ $t('home.heroHeadline') }}</h1>
         <p class="landing-hero__lead">{{ $t('home.heroSubtext') }}</p>
-        <div class="landing-hero__actions">
-          <button type="button" class="landing-hero__primary" @click="scrollToListings">
-            {{ $t('home.heroCta') }}
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-          </button>
-          <router-link to="/properties" class="landing-hero__secondary">
-            {{ $t('nav.properties') }}
-          </router-link>
-        </div>
-        <p class="landing-hero__trust">
-          <span class="landing-hero__trust-dot" />
-          {{ listingCount != null && companyCount != null
-            ? `${listingCount} ${$t('home.trustListings')} · ${companyCount} ${$t('home.companies')}`
-            : $t('home.heroTrustLine') }}
+
+        <p class="landing-hero__trust" aria-live="polite">
+          <span class="landing-hero__trust-dot" aria-hidden="true" />
+          <template v-if="listingCount != null && companyCount != null">
+            <strong>{{ formatNumber(listingCount) }}</strong>&nbsp;{{ listingCount === 1 ? $t('home.trustListingsOne') : $t('home.trustListings') }}
+            <span class="landing-hero__trust-sep" aria-hidden="true">·</span>
+            <strong>{{ formatNumber(companyCount) }}</strong>&nbsp;{{ $t('home.partnerCompanies') }}
+          </template>
+          <template v-else>{{ $t('home.heroTrustLine') }}</template>
         </p>
       </div>
 
-      <aside class="landing-hero__panel" aria-label="Platform highlights">
-        <p class="landing-hero__panel-label">One connected marketplace</p>
-        <div class="landing-hero__panel-item">
-          <span>01</span>
-          <div><strong>Verified listings</strong><small>Make confident property decisions.</small></div>
-        </div>
-        <div class="landing-hero__panel-item">
-          <span>02</span>
-          <div><strong>Trusted partners</strong><small>Meet leading companies in one place.</small></div>
-        </div>
-        <div class="landing-hero__panel-item">
-          <span>03</span>
-          <div><strong>Built for Ethiopia</strong><small>Real estate, construction, and finance.</small></div>
-        </div>
-      </aside>
+      <form class="landing-hero__search" role="search" :aria-label="$t('home.searchTitle')" @submit.prevent="search">
+        <p class="landing-hero__search-title">{{ $t('home.searchTitle') }}</p>
+
+        <label class="landing-hero__field">
+          <span class="landing-hero__label">{{ $t('home.searchLocation') }}</span>
+          <span class="landing-hero__input-wrap">
+            <svg class="landing-hero__input-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-6-5.33-6-10a6 6 0 1 1 12 0c0 4.67-6 10-6 10z" /><circle cx="12" cy="11" r="2.2" />
+            </svg>
+            <input
+              v-model.trim="city"
+              type="text"
+              name="city"
+              list="landing-hero-cities"
+              autocomplete="off"
+              :placeholder="$t('home.searchLocationPlaceholder')"
+            />
+            <datalist id="landing-hero-cities">
+              <option v-for="c in cities" :key="c" :value="c" />
+            </datalist>
+          </span>
+        </label>
+
+        <button type="submit" class="landing-hero__submit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          {{ $t('home.searchButton') }}
+        </button>
+
+        <p class="landing-hero__quick">
+          <span>{{ $t('home.quickLinks') }}</span>
+          <router-link to="/properties">{{ $t('nav.properties') }}</router-link>
+          <router-link to="/buildings">{{ $t('nav.buildings') }}</router-link>
+          <router-link to="/real-estate">{{ $t('home.companiesLink') }}</router-link>
+        </p>
+      </form>
     </div>
   </section>
 </template>
 
 <script setup>
-defineProps({
-  listingCount: { type: Number, default: null },
-  companyCount: { type: Number, default: null }
-})
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { propertyApi } from '@/features/property/api/property.api'
+import { getSponsoredOrganizations } from '@/features/exhibition/api/exhibition.api'
 
-function scrollToListings() {
-  document.getElementById('main-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+const router = useRouter()
+
+const city = ref('')
+const listingCount = ref(null)
+const companyCount = ref(null)
+
+// Common search areas; the listings page filters by free-text city so anything typed works.
+const cities = [
+  'Addis Ababa', 'Bole', 'CMC', 'Kazanchis', 'Megenagna', 'Old Airport', 'Sarbet',
+  'Ayat', 'Summit', 'Gerji', 'Jemo', 'Lebu', 'Piassa', 'Bishoftu', 'Adama', 'Hawassa', 'Bahir Dar',
+]
+
+function search() {
+  router.push({ path: '/properties', query: city.value ? { city: city.value } : {} })
 }
+
+function formatNumber(n) {
+  try {
+    return Number(n).toLocaleString()
+  } catch {
+    return String(n)
+  }
+}
+
+// Real figures for the trust line, loaded quietly; the copy falls back to a factual line until then.
+onMounted(async () => {
+  const [props, orgs] = await Promise.allSettled([
+    propertyApi.getProperties(undefined, { page: 0, size: 1 }),
+    getSponsoredOrganizations(),
+  ])
+  if (props.status === 'fulfilled' && typeof props.value?.totalElements === 'number') {
+    listingCount.value = props.value.totalElements
+  }
+  if (orgs.status === 'fulfilled' && Array.isArray(orgs.value)) {
+    companyCount.value = orgs.value.length
+  }
+})
 </script>
 
 <style scoped>
-.landing-hero { position: relative; isolation: isolate; overflow: hidden; border-top: 1px solid rgba(244, 201, 119, .38); background: #4c1d95; color: #fff; }
-.landing-hero__content { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(17rem, .65fr); gap: 4rem; max-width: 80rem; margin: auto; padding: clamp(4rem, 8vw, 7.25rem) 1.5rem; }
-.landing-hero__pattern { position: absolute; inset: 0; opacity: .22; background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 3.5rem 3.5rem; mask-image: linear-gradient(90deg, #000, transparent 82%); }
-.landing-hero::after { position: absolute; right: 0; bottom: 0; left: 0; height: .25rem; content: ''; background: linear-gradient(90deg, transparent, rgba(244, 201, 119, .85), transparent); opacity: .75; }
-.landing-hero__glow { position: absolute; border-radius: 999px; filter: blur(20px); pointer-events: none; }
-.landing-hero__glow--one { width: 34rem; height: 34rem; right: -10rem; top: -16rem; background: rgba(201, 154, 65, .28); }
-.landing-hero__glow--two { width: 24rem; height: 24rem; left: 31%; bottom: -16rem; background: rgba(126, 34, 206, .42); }
-.landing-hero__copy { max-width: 46rem; }
-.landing-hero__eyebrow, .landing-hero__panel-label { margin: 0 0 1.35rem; color: #f4c977; font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
-h1 { max-width: 46rem; margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.7rem, 5.1vw, 5.25rem); font-weight: 500; letter-spacing: -.055em; line-height: .99; }
-.landing-hero__lead { max-width: 39rem; margin: 1.7rem 0 0; color: #eadcff; font-size: clamp(1rem, 1.6vw, 1.18rem); line-height: 1.75; }
-.landing-hero__actions { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: 2.3rem; }
-.landing-hero__primary, .landing-hero__secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 3.25rem; padding: 0 1.25rem; border-radius: .6rem; font-size: .86rem; font-weight: 750; text-decoration: none; transition: transform .2s ease, background-color .2s ease; }
-.landing-hero__primary { gap: .7rem; border: 0; background: #f4c977; color: #3b0764; cursor: pointer; }
-.landing-hero__primary:hover, .landing-hero__secondary:hover { transform: translateY(-2px); }
-.landing-hero__primary svg { width: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; }
-.landing-hero__secondary { border: 1px solid rgba(255,255,255,.26); color: #fff; }
-.landing-hero__trust { display: flex; align-items: center; gap: .55rem; margin: 1.6rem 0 0; color: #ddd6fe; font-size: .83rem; }
-.landing-hero__trust-dot { width: .5rem; height: .5rem; border-radius: 50%; background: #6ac3a1; box-shadow: 0 0 0 .24rem rgba(106,195,161,.12); }
-.landing-hero__panel { align-self: end; padding: 1.5rem; border: 1px solid rgba(255,255,255,.2); border-radius: 1rem; background: rgba(46,16,101,.58); box-shadow: 0 1.25rem 4rem rgba(29,4,62,.25); backdrop-filter: blur(16px); }
-.landing-hero__panel-label { margin-bottom: 1.1rem; color: #f0c36a; }
-.landing-hero__panel-item { display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; padding: 1rem 0; border-top: 1px solid rgba(255,255,255,.11); }
-.landing-hero__panel-item span { color: #f0c36a; font-size: .74rem; font-weight: 800; }
-.landing-hero__panel-item strong, .landing-hero__panel-item small { display: block; }
-.landing-hero__panel-item strong { font-size: .95rem; }
-.landing-hero__panel-item small { margin-top: .23rem; color: #ddd6fe; font-size: .78rem; line-height: 1.45; }
-@media (max-width: 760px) { .landing-hero__content { grid-template-columns: 1fr; gap: 2.5rem; padding-top: 4rem; padding-bottom: 3.5rem; } .landing-hero__panel { max-width: 33rem; } }
+.landing-hero {
+  position: relative;
+  color: #fff;
+  background: linear-gradient(180deg, #4c1d95 0%, #3b1578 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.landing-hero__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+  gap: 3.5rem;
+  align-items: center;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 7vw, 6.5rem) 1.5rem;
+}
+.landing-hero__copy { max-width: 40rem; }
+.landing-hero__eyebrow {
+  margin: 0 0 1rem;
+  color: #f4c977;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 4.6vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.landing-hero__lead {
+  max-width: 36rem;
+  margin: 1.25rem 0 0;
+  color: #e9e1ff;
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.65;
+}
+.landing-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.75rem 0 0;
+  color: #d8ccf5;
+  font-size: 0.9rem;
+}
+.landing-hero__trust strong { color: #fff; font-weight: 700; }
+.landing-hero__trust-sep { color: #a58fd6; }
+.landing-hero__trust-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #6ee7b7;
+}
+
+/* Search card */
+.landing-hero__search {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 1.5rem 3.5rem rgba(20, 5, 45, 0.28);
+}
+.landing-hero__search-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: #111827; }
+.landing-hero__field { display: grid; gap: 0.4rem; }
+.landing-hero__label { font-size: 0.8rem; font-weight: 600; color: #4b5563; }
+.landing-hero__input-wrap { position: relative; display: block; }
+.landing-hero__input-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: #6b7280;
+  stroke-width: 1.8;
+  pointer-events: none;
+}
+.landing-hero__input-wrap input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 0.9rem 0 2.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.6rem;
+  background: #fff;
+  color: #111827;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.landing-hero__input-wrap input::placeholder { color: #9ca3af; }
+.landing-hero__input-wrap input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18); }
+.landing-hero__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.6rem;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.landing-hero__submit:hover { background: #6d28d9; }
+.landing-hero__submit svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; }
+.landing-hero__quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+.landing-hero__quick a { color: #5b21b6; font-weight: 600; text-decoration: none; }
+.landing-hero__quick a:hover { text-decoration: underline; }
+
+@media (max-width: 860px) {
+  .landing-hero__content { grid-template-columns: 1fr; gap: 2.25rem; padding-top: 3rem; padding-bottom: 3rem; }
+  .landing-hero__search { max-width: 34rem; }
+}
 </style>
