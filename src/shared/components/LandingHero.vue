@@ -102,11 +102,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Light, editorial hero: white ground, brand violet used only as an accent. */
 .landing-hero {
   position: relative;
-  color: #fff;
-  background: linear-gradient(180deg, #4c1d95 0%, #3b1578 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #111827;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
 }
 .landing-hero__content {
   display: grid;
@@ -120,7 +121,7 @@ onMounted(async () => {
 .landing-hero__copy { max-width: 40rem; }
 .landing-hero__eyebrow {
   margin: 0 0 1rem;
-  color: #f4c977;
+  color: #6d28d9;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -128,6 +129,7 @@ onMounted(async () => {
 }
 h1 {
   margin: 0;
+  color: #111827;
   font-size: clamp(2.25rem, 4.6vw, 3.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -136,7 +138,7 @@ h1 {
 .landing-hero__lead {
   max-width: 36rem;
   margin: 1.25rem 0 0;
-  color: #e9e1ff;
+  color: #4b5563;
   font-size: clamp(1rem, 1.4vw, 1.125rem);
   line-height: 1.65;
 }
@@ -146,16 +148,16 @@ h1 {
   align-items: center;
   gap: 0.5rem;
   margin: 1.75rem 0 0;
-  color: #d8ccf5;
+  color: #6b7280;
   font-size: 0.9rem;
 }
-.landing-hero__trust strong { color: #fff; font-weight: 700; }
-.landing-hero__trust-sep { color: #a58fd6; }
+.landing-hero__trust strong { color: #111827; font-weight: 700; }
+.landing-hero__trust-sep { color: #9ca3af; }
 .landing-hero__trust-dot {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: #6ee7b7;
+  background: #10b981;
 }
 
 /* Search card */
@@ -163,10 +165,11 @@ h1 {
   display: grid;
   gap: 1rem;
   padding: 1.5rem;
+  border: 1px solid #e5e7eb;
   border-radius: 1rem;
-  background: #fff;
+  background: #ffffff;
   color: #111827;
-  box-shadow: 0 1.5rem 3.5rem rgba(20, 5, 45, 0.28);
+  box-shadow: 0 0.75rem 2rem rgba(17, 24, 39, 0.08);
 }
 .landing-hero__search-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: #111827; }
 .landing-hero__field { display: grid; gap: 0.4rem; }
@@ -206,14 +209,14 @@ h1 {
   min-height: 3rem;
   border: 0;
   border-radius: 0.6rem;
-  background: #7c3aed;
+  background: #6d28d9;
   color: #fff;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
-.landing-hero__submit:hover { background: #6d28d9; }
+.landing-hero__submit:hover { background: #5b21b6; }
 .landing-hero__submit svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; }
 .landing-hero__quick {
   display: flex;
