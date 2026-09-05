@@ -407,20 +407,27 @@ async function goLive() {
       audio: selectedMic.value ? { deviceId: selectedMic.value } : true,
       video: selectedCamera.value ? { deviceId: selectedCamera.value } : true
     })
-    room = new Room()
+    // Publish H.264 so the server-side recording is a cheap remux (no transcode) — this is what
+    // lets recording run on the modest 1-vCPU host without a headless-Chromium compositor.
+    room = new Room({ publishDefaults: { videoCodec: 'h264' } })
     await room.connect(url, token)
+    let audioTrackSid, videoTrackSid
     for (const track of tracks) {
-      await room.localParticipant.publishTrack(track)
+      const pub = await room.localParticipant.publishTrack(track)
       if (track.kind === 'video') {
         localVideo = track
+        videoTrackSid = pub?.trackSid
         if (videoEl.value) track.attach(videoEl.value)
       } else {
         localAudio = track
+        audioTrackSid = pub?.trackSid
       }
     }
     phase.value = 'live'
     attachChat(room) // wire chat / reactions / viewer count onto the live room
     startCohostPolling() // watch for viewers asking to co-host
+    // Ask the backend to record our own tracks (best-effort; no-ops when recording is disabled).
+    exhibitionApi.startRecording(broadcastId, audioTrackSid, videoTrackSid).catch(() => {})
   } catch (e) {
     error.value = e?.response?.data?.message || e?.message || t('exhibition.goLive.connectError')
     await teardown()

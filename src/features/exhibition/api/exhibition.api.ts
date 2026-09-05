@@ -152,6 +152,19 @@ export const exhibitionApi = {
     return Array.isArray(data) ? data : []
   },
   /**
+   * Start recording once the broadcaster has published: the client passes its published audio and
+   * video track ids so the backend can start a lightweight TrackComposite egress. Best-effort — the
+   * backend no-ops when recording is disabled or already running.
+   */
+  async startRecording(id: string, audioTrackId?: string, videoTrackId?: string): Promise<void> {
+    await api.post(`/exhibition/live/${id}/recording/start`, null, {
+      params: {
+        ...(audioTrackId ? { audioTrackId } : {}),
+        ...(videoTrackId ? { videoTrackId } : {}),
+      },
+    })
+  },
+  /**
    * Broadcaster ends their own stream: stops recording/simulcast egress, closes the
    * room and marks it ENDED. Called when they hit "Stop broadcasting" or leave the page.
    */
