@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
+  <section v-if="slides.length > 0 || loading" class="relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
     <!-- Carousel area: inset blur border (visible inside overflow) -->
     <!-- No z-index lift: sponsor strip (z-10) stays above carousel edge on all breakpoints -->
     <div class="relative w-full overflow-hidden flex-shrink-0 rounded-b-lg shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_40px_rgba(255,255,255,0.04)]" :class="heightClass">
@@ -189,7 +189,7 @@ import { VerifiedBadge } from '@/shared/components'
 
 const props = defineProps({
   /** Height class (e.g. h-[320px] or h-[50vh]) - fluid hero feel */
-  heightClass: { type: String, default: 'min-h-[280px] h-[45vh] sm:h-[50vh] max-h-[560px]' },
+  heightClass: { type: String, default: 'min-h-[220px] h-[34vh] sm:h-[38vh] max-h-[420px]' },
   /** Use organization logo in card; else use initial letter */
   useLogo: { type: Boolean, default: true },
   /** Auto-advance interval in ms (0 = off). Omit to use admin / public display settings. */

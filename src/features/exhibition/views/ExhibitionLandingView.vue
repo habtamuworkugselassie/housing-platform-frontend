@@ -6,40 +6,6 @@
     <!-- Live device broadcasts from visitors / exhibitors / organizers -->
     <LiveBroadcastWall v-if="liveEnabled" />
 
-    <!-- Planning the exhibition — professional intro for market -->
-    <section id="planning" class="relative border-b border-white/10 bg-gradient-to-b from-violet-900 to-violet-950 py-12 sm:py-16 lg:py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl border-l-2 border-white/15 pl-6 sm:pl-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4">
-            {{ $t('exhibition.planning.badge') }}
-          </p>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight">
-            {{ $t('exhibition.planning.title') }}
-          </h2>
-          <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed">
-            {{ $t('exhibition.planning.body') }}
-          </p>
-          <p class="mt-4 text-sm text-white/70">
-            {{ $t('exhibition.planning.whoShowcases') }}
-          </p>
-          <div class="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="#register"
-              class="inline-flex items-center justify-center px-6 py-3 bg-white text-violet-950 font-semibold text-sm uppercase tracking-wider hover:bg-violet-100 hover:text-violet-950 transition-colors"
-            >
-              {{ $t('exhibition.planning.cta') }}
-            </a>
-            <a
-              href="#show-features"
-              class="inline-flex items-center justify-center px-6 py-3 border border-white/30 text-white font-semibold text-sm uppercase tracking-wider hover:bg-white/10 hover:border-primary-400 transition-colors"
-            >
-              {{ $t('exhibition.keyShowFeatures.exploreMore') }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
     <section id="main-listings" class="bg-white py-12 lg:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +23,7 @@
             v-model="propertiesSearchQuery"
             type="search"
             :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
-            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-500 shadow-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             aria-label="Search properties"
           />
         </div>
@@ -136,13 +102,47 @@
       </div>
     </section>
 
+    <!-- Planning the exhibition — professional intro for market -->
+    <section id="planning" class="relative border-y border-violet-100 bg-violet-50 py-12 sm:py-16 lg:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl border-l-2 border-violet-300 pl-6 sm:pl-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-violet-700 mb-4">
+            {{ $t('exhibition.planning.badge') }}
+          </p>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+            {{ $t('exhibition.planning.title') }}
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+            {{ $t('exhibition.planning.body') }}
+          </p>
+          <p class="mt-4 text-sm text-gray-600">
+            {{ $t('exhibition.planning.whoShowcases') }}
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="#register"
+              class="inline-flex items-center justify-center rounded-lg px-6 py-3 bg-violet-700 text-white font-semibold text-sm hover:bg-violet-800 transition-colors"
+            >
+              {{ $t('exhibition.planning.cta') }}
+            </a>
+            <a
+              href="#show-features"
+              class="inline-flex items-center justify-center rounded-lg px-6 py-3 border border-violet-300 text-violet-800 font-semibold text-sm hover:bg-white hover:border-violet-400 transition-colors"
+            >
+              {{ $t('exhibition.keyShowFeatures.exploreMore') }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- What to expect (3 cards with icons + numbers) -->
     <section class="py-16 lg:py-24 bg-violet-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
           {{ $t('exhibition.whatToExpect.eyebrow') }}
         </p>
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-gray-900 mb-3">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-3">
           {{ $t('exhibition.whatHappened.title') }}
         </h2>
         <p class="text-gray-600 max-w-2xl mb-10">
@@ -158,9 +158,8 @@
               <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary-50 text-gray-900 transition-colors group-hover:bg-primary-100">
                 <component :is="card.icon" class="h-6 w-6" aria-hidden="true" />
               </div>
-              <span class="text-2xl font-bold tabular-nums text-gray-200" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             </div>
-            <h3 class="text-base font-bold uppercase tracking-tight text-gray-900 mb-2 group-hover:text-gray-900">
+            <h3 class="text-base font-bold text-gray-900 mb-2">
               {{ $t(card.titleKey) }}
             </h3>
             <p class="text-sm text-gray-600 leading-relaxed flex-1">
@@ -169,7 +168,7 @@
           </div>
         </div>
         <div class="mt-10 text-center">
-          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-900 hover:text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded px-2 py-1">
+          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold text-violet-700 hover:text-violet-900 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded px-2 py-1">
             {{ $t('exhibition.planning.cta') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -185,7 +184,7 @@
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
           {{ $t('exhibition.keyShowFeatures.eyebrow') }}
         </p>
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-3 text-gray-900">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-3 text-gray-900">
           {{ $t('exhibition.keyShowFeatures.title') }}
         </h2>
         <p class="text-gray-600 max-w-2xl mb-2">
@@ -218,7 +217,7 @@
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
           {{ $t('exhibition.whoAttends.eyebrow') }}
         </p>
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-gray-900">{{ $t('exhibition.whoAttends.title') }}</h2>
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-4 text-gray-900">{{ $t('exhibition.whoAttends.title') }}</h2>
         <p class="text-gray-600 max-w-2xl mb-12">
           {{ $t('exhibition.whoAttends.subtitle') }}
         </p>
@@ -228,7 +227,7 @@
             :key="audience.key"
             class="block p-6 rounded-lg bg-white border border-gray-200 hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-primary-600"
           >
-            <h3 class="text-sm font-bold uppercase tracking-tight text-gray-900 mb-1">{{ $t(audience.titleKey) }}</h3>
+            <h3 class="text-sm font-bold text-gray-900 mb-1">{{ $t(audience.titleKey) }}</h3>
             <p class="text-xs text-gray-500 group-hover:text-gray-600">{{ $t(audience.descKey) }}</p>
           </div>
         </div>
@@ -244,7 +243,7 @@
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4 text-center">
           {{ $t('exhibition.testimonial.eyebrow') }}
         </p>
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white mb-10 text-center">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white mb-10 text-center">
           {{ $t('exhibition.testimonial.title') }}
         </h2>
         <blockquote class="pl-6 sm:pl-8 border-l-4 border-white/15 text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
@@ -257,7 +256,7 @@
     <!-- Plan your visit -->
     <section class="py-20 lg:py-28 bg-white text-gray-900">
       <div class="max-w-3xl mx-auto px-4 text-center rounded-2xl border border-gray-200 bg-white py-16 sm:py-20">
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4 text-gray-900">{{ $t('exhibition.planVisit.title') }}</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900">{{ $t('exhibition.planVisit.title') }}</h2>
         <p class="text-lg text-gray-600 mb-10">
           {{ $t('exhibition.planVisit.body') }}
         </p>
@@ -299,7 +298,7 @@
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2 text-center">
           {{ $t('exhibition.registerInterest.eyebrow') }}
         </p>
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-4 text-gray-900 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900 text-center">
           {{ $t('exhibition.registerInterest.title') }}
         </h2>
         <p class="text-gray-600 text-center mb-10">
