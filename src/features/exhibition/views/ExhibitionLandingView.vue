@@ -6,138 +6,8 @@
     <!-- Live device broadcasts from visitors / exhibitors / organizers -->
     <LiveBroadcastWall v-if="liveEnabled" />
 
-    <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
-    <section id="main-listings" class="bg-white py-12 lg:py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
-          {{ $t('exhibition.featuredListings.eyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-          {{ $t('property.properties') }}
-        </h2>
-        <p class="text-sm text-gray-500 max-w-2xl mb-4">
-          {{ $t('exhibition.featuredListings.subtext') }}
-        </p>
-        <div class="mb-6 max-w-md">
-          <input
-            v-model="propertiesSearchQuery"
-            type="search"
-            :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
-            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-500 shadow-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
-            aria-label="Search properties"
-          />
-        </div>
-        <div v-if="propertiesLoading" class="flex justify-center py-12">
-          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-transparent" />
-        </div>
-        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          <a
-            v-for="(item, index) in (propertiesList || [])"
-            :key="item?.id ?? index"
-            :href="item?.id ? `/properties/${item.id}` : '#'"
-            class="group flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 transition-all duration-300 hover:border-primary-300 hover:bg-primary-50 hover:shadow-lg hover:shadow-black/5"
-          >
-            <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-gray-100">
-              <img
-                v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
-                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
-                :alt="item?.title ? `${item.title} — property listing` : 'Property listing on Ethio Build Connect and Expo'"
-                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-              />
-              <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
-              <span class="absolute bottom-2 left-2 rounded bg-violet-950/60 px-2 py-1 text-xs font-medium text-gray-900 backdrop-blur-sm">
-                {{ item?.city ?? '' }}{{ item?.country ? `, ${item.country}` : '' }}
-              </span>
-            </div>
-            <div class="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
-              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-gray-900 group-hover:text-gray-900 flex items-center gap-2 flex-wrap">
-                {{ item?.title ?? '' }}
-                <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
-              </h3>
-              <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-gray-600">
-                {{ item.realEstateCompanyName }}
-              </p>
-              <p v-if="item?.realEstateCompanyPhone" class="mt-0.5 text-sm text-gray-600">
-                Tel. {{ item.realEstateCompanyPhone }}
-              </p>
-              <p v-if="item?.priceETB || item?.priceUSD" class="mt-2 text-lg font-bold text-primary-700">
-                {{ item?.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
-                <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-gray-500">/</span>
-                {{ item?.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
-              </p>
-            </div>
-          </a>
-        </div>
-        <p v-else class="py-8 text-center text-sm text-gray-600">
-          {{ propertiesSearchQuery.trim() ? $t('property.noPropertiesFound') : $t('property.noProperties') }}
-        </p>
-        <!-- Pagination: shown when not searching (9 per page) -->
-        <div
-          v-if="!propertiesSearchQuery.trim() && (propertiesList || []).length > 0"
-          class="mt-8 flex flex-wrap items-center justify-center gap-0 rounded-xl border border-gray-200 bg-white p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
-        >
-          <button
-            type="button"
-            :disabled="propertiesPage === 0"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-gray-900 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
-            @click="propertiesPage = Math.max(0, propertiesPage - 1)"
-          >
-            <ChevronLeftIcon class="h-4 w-4" aria-hidden="true" />
-            <span>{{ $t('common.previous') }}</span>
-          </button>
-          <span class="min-w-[7rem] px-4 py-2.5 text-center text-sm font-medium text-gray-600">
-            {{ $t('common.page') }} <span class="font-semibold text-gray-900">{{ propertiesPage + 1 }}</span> {{ $t('common.of') }} {{ Math.max(1, propertiesTotalPages) }}
-          </span>
-          <button
-            type="button"
-            :disabled="propertiesPage >= propertiesTotalPages - 1"
-            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-gray-900 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
-            @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
-          >
-            <span>{{ $t('common.next') }}</span>
-            <ChevronRightIcon class="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Planning the exhibition — professional intro for market -->
-    <section id="planning" class="relative border-y border-violet-100 bg-violet-50 py-12 sm:py-16 lg:py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl border-l-2 border-violet-300 pl-6 sm:pl-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-violet-700 mb-4">
-            {{ $t('exhibition.planning.badge') }}
-          </p>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
-            {{ $t('exhibition.planning.title') }}
-          </h2>
-          <p class="mt-4 text-base sm:text-lg text-gray-700 leading-relaxed">
-            {{ $t('exhibition.planning.body') }}
-          </p>
-          <p class="mt-4 text-sm text-gray-600">
-            {{ $t('exhibition.planning.whoShowcases') }}
-          </p>
-          <div class="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="#register"
-              class="inline-flex items-center justify-center rounded-lg px-6 py-3 bg-violet-700 text-white font-semibold text-sm hover:bg-violet-800 transition-colors"
-            >
-              {{ $t('exhibition.planning.cta') }}
-            </a>
-            <a
-              href="#show-features"
-              class="inline-flex items-center justify-center rounded-lg px-6 py-3 border border-violet-300 text-violet-800 font-semibold text-sm hover:bg-white hover:border-violet-400 transition-colors"
-            >
-              {{ $t('exhibition.keyShowFeatures.exploreMore') }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- What to expect (3 cards with icons + numbers) -->
-    <section class="py-16 lg:py-24 bg-violet-50">
+    <!-- What to expect (3 cards with icons). id=planning keeps the footer anchor working. -->
+    <section id="planning" class="py-16 lg:py-24 bg-violet-50 scroll-mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
           {{ $t('exhibition.whatToExpect.eyebrow') }}
@@ -367,6 +237,102 @@
       </div>
     </section>
 
+    <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
+    <section id="main-listings" class="bg-white py-12 lg:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
+          {{ $t('exhibition.featuredListings.marketplaceEyebrow') }}
+        </p>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+          {{ $t('property.properties') }}
+        </h2>
+        <p class="text-sm text-gray-500 max-w-2xl mb-4">
+          {{ $t('exhibition.featuredListings.subtext') }}
+        </p>
+        <div class="mb-6 max-w-md">
+          <input
+            v-model="propertiesSearchQuery"
+            type="search"
+            :placeholder="$t('exhibition.featuredListings.searchPlaceholder')"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-500 shadow-sm focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+            aria-label="Search properties"
+          />
+        </div>
+        <div v-if="propertiesLoading" class="flex justify-center py-12">
+          <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-transparent" />
+        </div>
+        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <a
+            v-for="(item, index) in (propertiesList || [])"
+            :key="item?.id ?? index"
+            :href="item?.id ? `/properties/${item.id}` : '#'"
+            class="group flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 transition-all duration-300 hover:border-primary-300 hover:bg-primary-50 hover:shadow-lg hover:shadow-black/5"
+          >
+            <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-gray-100">
+              <img
+                v-if="item?.images?.[0]?.imageUrl || item?.imageUrls?.[0]"
+                :src="mediaUrl(item.images?.[0]?.imageUrl || item.imageUrls?.[0])"
+                :alt="item?.title ? `${item.title} — property listing` : 'Property listing on Ethio Build Connect and Expo'"
+                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              />
+              <div v-else class="flex h-full items-center justify-center text-4xl text-gray-500">🏠</div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+              <span class="absolute bottom-2 left-2 rounded bg-violet-950/60 px-2 py-1 text-xs font-medium text-gray-900 backdrop-blur-sm">
+                {{ item?.city ?? '' }}{{ item?.country ? `, ${item.country}` : '' }}
+              </span>
+            </div>
+            <div class="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
+              <h3 class="line-clamp-2 text-base sm:text-lg font-semibold leading-snug text-gray-900 group-hover:text-gray-900 flex items-center gap-2 flex-wrap">
+                {{ item?.title ?? '' }}
+                <VerifiedBadge :level="getVerificationLevel(item)" size="sm" />
+              </h3>
+              <p v-if="item?.realEstateCompanyName" class="mt-2 text-sm text-gray-600">
+                {{ item.realEstateCompanyName }}
+              </p>
+              <p v-if="item?.realEstateCompanyPhone" class="mt-0.5 text-sm text-gray-600">
+                Tel. {{ item.realEstateCompanyPhone }}
+              </p>
+              <p v-if="item?.priceETB || item?.priceUSD" class="mt-2 text-lg font-bold text-primary-700">
+                {{ item?.priceETB ? formatPrice(item.priceETB, 'ETB') : '' }}
+                <span v-if="item?.priceETB && item?.priceUSD" class="font-normal text-gray-500">/</span>
+                {{ item?.priceUSD ? formatPrice(item.priceUSD, 'USD') : '' }}
+              </p>
+            </div>
+          </a>
+        </div>
+        <p v-else class="py-8 text-center text-sm text-gray-600">
+          {{ propertiesSearchQuery.trim() ? $t('property.noPropertiesFound') : $t('property.noProperties') }}
+        </p>
+        <!-- Pagination: shown when not searching (9 per page) -->
+        <div
+          v-if="!propertiesSearchQuery.trim() && (propertiesList || []).length > 0"
+          class="mt-8 flex flex-wrap items-center justify-center gap-0 rounded-xl border border-gray-200 bg-white p-1.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+        >
+          <button
+            type="button"
+            :disabled="propertiesPage === 0"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-gray-900 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            @click="propertiesPage = Math.max(0, propertiesPage - 1)"
+          >
+            <ChevronLeftIcon class="h-4 w-4" aria-hidden="true" />
+            <span>{{ $t('common.previous') }}</span>
+          </button>
+          <span class="min-w-[7rem] px-4 py-2.5 text-center text-sm font-medium text-gray-600">
+            {{ $t('common.page') }} <span class="font-semibold text-gray-900">{{ propertiesPage + 1 }}</span> {{ $t('common.of') }} {{ Math.max(1, propertiesTotalPages) }}
+          </span>
+          <button
+            type="button"
+            :disabled="propertiesPage >= propertiesTotalPages - 1"
+            class="inline-flex items-center gap-2 rounded-lg border border-transparent px-5 py-2.5 text-sm font-semibold text-gray-900 transition-all duration-200 hover:border-primary-300 hover:bg-primary-50 disabled:pointer-events-none disabled:opacity-40 disabled:hover:bg-transparent"
+            @click="propertiesPage = Math.min(propertiesTotalPages - 1, propertiesPage + 1)"
+          >
+            <span>{{ $t('common.next') }}</span>
+            <ChevronRightIcon class="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- Sponsorship packages — gated by admin Display settings feature flag -->
     <ExhibitionSponsorshipPackagesSection v-if="showExhibitionSponsorshipPackages" />
 
@@ -458,6 +424,17 @@ const interestForm = ref({
 })
 const interestPackages = ref([])
 const interestPackagesLoading = ref(false)
+
+// Deep links from the hero ("Exhibit / Visit / Sponsor") preselect the interest type:
+// /?interest=exhibitor|visitor|partner#register
+watch(
+  () => route.query.interest,
+  (v) => {
+    const t = String(v || '').toLowerCase()
+    if (['exhibitor', 'visitor', 'partner'].includes(t)) interestForm.value.interestType = t
+  },
+  { immediate: true },
+)
 const interestSubmitting = ref(false)
 const interestSubmitted = ref(false)
 const interestError = ref('')
