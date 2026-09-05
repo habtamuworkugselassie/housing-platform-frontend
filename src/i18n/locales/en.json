@@ -1,5 +1,10 @@
 {
   "live": {
+    "replays": {
+      "title": "Past broadcasts",
+      "subtitle": "Watch recordings of broadcasts that have ended.",
+      "badge": "Replay"
+    },
     "chat": {
       "title": "Live chat",
       "empty": "Say hello — be the first to chat.",
