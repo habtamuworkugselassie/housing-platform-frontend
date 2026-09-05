@@ -380,23 +380,38 @@ router.onError((error, to) => {
     /Importing a module script failed/i.test(msg) || // Safari's wording
     /'text\/html' is not a valid JavaScript MIME type/i.test(msg)
   if (!isChunkLoadError) return
-  const key = `chunk-reload:${to && to.fullPath ? to.fullPath : location.pathname}`
+  const path = (to && to.path) || location.pathname
+  const key = `chunk-reload:${path}`
   try {
     if (sessionStorage.getItem(key)) return // already tried a reload for this path
     sessionStorage.setItem(key, '1')
   } catch {
     /* private mode / storage blocked — still attempt the reload below */
   }
-  const target = to && to.fullPath ? to.fullPath : location.pathname
-  window.location.assign(target)
+  // Reload with a one-off cache-busting query. A plain reload can re-hit the *same* stale
+  // index.html from the HTTP cache (iOS Safari heuristically caches the shell and won't
+  // revalidate), so the dead chunk 404s again. A never-before-seen URL forces a fresh fetch of
+  // index.html (nginx serves the SPA shell for any path), which references current chunk hashes.
+  const base = (to && to.fullPath ? to.fullPath : location.pathname + location.search).replace(
+    /([?&])_cb=\d+(&|$)/,
+    (_m, p1, p2) => (p2 === '&' ? p1 : ''),
+  )
+  const sep = base.includes('?') ? '&' : '?'
+  window.location.assign(`${base}${sep}_cb=${Date.now()}`)
 })
 
-// Clear the one-shot reload guard once a navigation actually succeeds.
+// Clear the one-shot reload guard once a navigation actually succeeds, and strip the cache-bust
+// param from the address bar so it isn't shared/bookmarked.
 router.afterEach((to) => {
   try {
-    sessionStorage.removeItem(`chunk-reload:${to.fullPath}`)
+    sessionStorage.removeItem(`chunk-reload:${to.path}`)
   } catch {
     /* ignore */
+  }
+  if (typeof window !== 'undefined' && /[?&]_cb=\d+/.test(window.location.search)) {
+    const url = new URL(window.location.href)
+    url.searchParams.delete('_cb')
+    window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash)
   }
 })
 
