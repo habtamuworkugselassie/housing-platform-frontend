@@ -46,7 +46,7 @@
             :class="slide.imagePosition === 'right' ? 'md:order-1' : ''"
           >
             <div class="max-w-xl">
-              <h2 class="text-base font-bold uppercase leading-snug tracking-wider text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+              <h2 class="text-base font-bold leading-snug text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
                 {{ $t(slide.titleKey) }}
               </h2>
               <p class="mt-2.5 text-sm leading-relaxed text-white/80 sm:mt-3 sm:text-base md:mt-4 md:leading-6">

@@ -8,7 +8,7 @@
         <p class="text-primary-600 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
           {{ $t('exhibition.sponsorshipPackages.eyebrow') }}
         </p>
-        <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-gray-900 mb-4">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-4">
           {{ $t('exhibition.sponsorshipPackages.title') }}
         </h2>
         <p class="text-gray-600 text-base leading-relaxed">
