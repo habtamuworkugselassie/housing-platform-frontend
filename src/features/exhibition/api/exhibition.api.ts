@@ -146,6 +146,11 @@ export const exhibitionApi = {
     const { data } = await api.get('/exhibition/live')
     return Array.isArray(data) ? data : []
   },
+  /** Recently-ended broadcasts that produced a recording (watch again). */
+  async listReplays(): Promise<LiveBroadcastItem[]> {
+    const { data } = await api.get('/exhibition/live/replays')
+    return Array.isArray(data) ? data : []
+  },
   /**
    * Broadcaster ends their own stream: stops recording/simulcast egress, closes the
    * room and marks it ENDED. Called when they hit "Stop broadcasting" or leave the page.

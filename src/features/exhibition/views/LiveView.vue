@@ -85,7 +85,71 @@
           </div>
         </button>
       </div>
+
+      <!-- Past broadcasts (replays) — recorded streams that have ended -->
+      <section v-if="replays.length" class="mt-12">
+        <h2 class="text-lg font-semibold sm:text-xl">{{ $t('live.replays.title') }}</h2>
+        <p class="mt-1 text-sm text-white/55">{{ $t('live.replays.subtitle') }}</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <button
+            v-for="r in replays"
+            :key="r.id"
+            type="button"
+            class="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-900 text-left transition hover:-translate-y-0.5 hover:border-primary-500/60 hover:shadow-lg hover:shadow-primary-900/30"
+            @click="openReplay(r)"
+          >
+            <div class="relative flex aspect-video w-full items-center justify-center bg-zinc-800">
+              <span class="material-icons !text-5xl text-white/40 transition group-hover:text-white">play_circle</span>
+              <span class="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide backdrop-blur">
+                {{ $t('live.replays.badge') }}
+              </span>
+            </div>
+            <div class="p-3">
+              <p class="line-clamp-1 text-sm font-semibold">{{ r.title }}</p>
+              <p class="mt-0.5 line-clamp-1 text-xs text-white/55">
+                {{ r.broadcasterName }}{{ r.companyName ? `, ${r.companyName}` : '' }}
+              </p>
+            </div>
+          </button>
+        </div>
+      </section>
     </main>
+
+    <!-- Replay player modal -->
+    <Teleport to="body">
+      <div
+        v-if="activeReplay"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4"
+        @click.self="closeReplay"
+      >
+        <div class="relative w-full max-w-4xl overflow-hidden rounded-2xl bg-black">
+          <button
+            type="button"
+            class="absolute right-2 top-2 z-10 rounded-lg bg-white/90 p-2 text-gray-900 hover:bg-white"
+            :aria-label="$t('common.close')"
+            @click="closeReplay"
+          >
+            <span class="material-icons !text-[20px]">close</span>
+          </button>
+          <div class="aspect-video w-full">
+            <video
+              :key="activeReplay.id"
+              :src="mediaUrl(activeReplay.recordingUrl)"
+              class="h-full w-full bg-black"
+              controls
+              autoplay
+              playsinline
+            />
+          </div>
+          <div class="flex items-center gap-2 p-3">
+            <span class="inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+              {{ $t('live.replays.badge') }}
+            </span>
+            <span class="line-clamp-1 text-sm font-medium text-white">{{ activeReplay.title }}</span>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -93,13 +157,16 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
+import { mediaUrl } from '@/shared/api/client'
 import LivePlayer from '@/features/exhibition/components/LivePlayer.vue'
 
 const route = useRoute()
 const router = useRouter()
 
 const broadcasts = ref([])
+const replays = ref([])
 const active = ref(null)
+const activeReplay = ref(null)
 const loading = ref(true)
 let timer = null
 
@@ -113,6 +180,21 @@ async function refresh() {
   }
 }
 
+async function refreshReplays() {
+  try {
+    replays.value = await exhibitionApi.listReplays()
+  } catch {
+    /* replays are optional — leave as-is */
+  }
+}
+
+function openReplay(r) {
+  activeReplay.value = r
+}
+function closeReplay() {
+  activeReplay.value = null
+}
+
 function open(b) {
   active.value = b
   router.replace({ query: { b: b.id } })
@@ -124,7 +206,7 @@ function closeActive() {
 }
 
 onMounted(async () => {
-  await refresh()
+  await Promise.all([refresh(), refreshReplays()])
   // Deep link: /live?b=<id> opens straight into a stream.
   const id = route.query.b
   if (id) {
