@@ -1,5 +1,5 @@
 <template>
-  <div class="osm-map-picker rounded-xl overflow-hidden border border-white/10 bg-zinc-900 flex flex-col" :style="{ height }">
+  <div class="osm-map-picker relative isolate z-0 rounded-xl overflow-hidden border border-white/10 bg-zinc-900 flex flex-col" :style="{ height }">
     <!-- Search bar -->
     <div v-if="searchable" class="flex gap-2 p-2 border-b border-white/10 shrink-0">
       <input

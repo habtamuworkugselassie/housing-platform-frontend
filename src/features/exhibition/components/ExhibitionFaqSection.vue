@@ -35,7 +35,7 @@
 
       <p class="mt-10 text-center text-sm text-gray-600">
         {{ t('exhibition.faq.moreQuestions') }}
-        <a :href="supportMailto" class="font-semibold text-primary-700 underline hover:no-underline">
+        <a :href="supportMailto" class="inline-block py-2 -my-1 font-semibold text-primary-700 underline hover:no-underline">
           {{ supportEmail }}
         </a>
       </p>

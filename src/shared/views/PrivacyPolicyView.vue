@@ -21,7 +21,7 @@
 
     <p class="mt-12 text-sm text-white/60">
       {{ $t('legal.privacy.contactLabel') }}
-      <a :href="supportMailto" class="text-white underline hover:no-underline">{{ supportEmail }}</a>
+      <a :href="supportMailto" class="inline-block py-2 -my-1 text-white underline hover:no-underline">{{ supportEmail }}</a>
     </p>
   </div>
 </template>

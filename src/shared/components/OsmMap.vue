@@ -1,5 +1,13 @@
 <template>
-  <div class="osm-map-wrapper rounded-xl overflow-hidden border border-white/10 bg-zinc-900" :style="{ height: height }">
+  <!-- `isolate` is load-bearing: Leaflet gives its panes z-index 400 and its zoom
+       controls 1000, which are absolute values in whatever stacking context they land
+       in. With no context of its own here, the map competed directly with the sticky
+       nav (z-70) in the root context and painted over it on scroll. Isolating pins all
+       of Leaflet's internals inside this wrapper. -->
+  <div
+    class="osm-map-wrapper relative isolate z-0 rounded-xl overflow-hidden border border-white/10 bg-zinc-900"
+    :style="{ height: height }"
+  >
     <div ref="mapRef" class="w-full h-full min-h-[200px]"></div>
   </div>
 </template>

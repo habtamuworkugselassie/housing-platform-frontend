@@ -156,7 +156,7 @@
             <div v-if="company.email">
               <dt class="text-sm font-medium text-gray-500 mb-1">{{ $t('auth.email') }}:</dt>
               <dd class="text-sm text-gray-700">
-                <a :href="`mailto:${company.email}`" class="text-primary-600 hover:underline">{{ company.email }}</a>
+                <a :href="`mailto:${company.email}`" class="inline-block py-2 -my-1 text-primary-600 hover:underline">{{ company.email }}</a>
               </dd>
             </div>
             <div v-if="companyPhones.length">
@@ -164,7 +164,7 @@
               <dd class="text-sm text-gray-700">
                 <template v-for="(phone, i) in companyPhones" :key="i">
                   <span v-if="i > 0">, </span>
-                  <a :href="`tel:${phone}`" class="text-primary-600 hover:underline">{{ phone }}</a>
+                  <a :href="`tel:${phone}`" class="inline-block py-2 -my-1 text-primary-600 hover:underline">{{ phone }}</a>
                 </template>
               </dd>
             </div>
