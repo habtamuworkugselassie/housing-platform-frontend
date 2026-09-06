@@ -101,7 +101,7 @@
       <p v-if="interestPackagesLoading" :class="['mt-2 text-xs', mutedCls]">
         {{ $t('exhibition.registerInterest.packagesLoading') }}
       </p>
-      <p v-else-if="form.interestType === 'exhibitor' && interestPackages.length === 0" :class="['mt-2 text-sm', light ? 'text-amber-600' : 'text-amber-400/90']">
+      <p v-else-if="form.interestType === 'exhibitor' && interestPackages.length === 0" :class="['mt-2 text-sm', light ? 'text-amber-700' : 'text-amber-400/90']">
         {{ $t('exhibition.registerInterest.packagesLoadEmpty') }}
       </p>
     </div>
