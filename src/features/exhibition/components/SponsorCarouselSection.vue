@@ -1,5 +1,8 @@
 <template>
-  <section v-if="slides.length > 0 || loading" class="relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
+  <!-- on-dark: this is a deliberately dark band, so its text-white must NOT be inverted to dark
+       ink by the light theme (see src/styles/light-app.css). Without it the featured-partner name
+       and eyebrow render dark-on-dark and are invisible. -->
+  <section v-if="slides.length > 0 || loading" class="on-dark relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
     <!-- Carousel area: inset blur border (visible inside overflow) -->
     <!-- No z-index lift: sponsor strip (z-10) stays above carousel edge on all breakpoints -->
     <div class="relative w-full overflow-hidden flex-shrink-0 rounded-b-lg shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_40px_rgba(255,255,255,0.04)]" :class="heightClass">
