@@ -1406,6 +1406,7 @@
       "planYourVisit": "Plan your visit"
     },
     "registerInterest": {
+      "responseTime": "We reply to every registration within 2 business days.",
       "eyebrow": "Get updates",
       "title": "Register your interest",
       "subtitle": "Leave your details and we'll keep you informed about the exhibition — dates, exhibitor info, and how to participate.",
@@ -1654,6 +1655,7 @@
     "label": "Breadcrumb"
   },
   "thankYou": {
+    "responseTime": "We reply to every registration within 2 business days.",
     "badge": "Registration received",
     "title": "Thank you — we have your details",
     "body": "Your interest in the Ethio Build Connect expo has been recorded. Our team will review it and contact you by email about the next steps.",

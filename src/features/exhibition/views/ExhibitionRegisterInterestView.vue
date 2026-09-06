@@ -27,6 +27,10 @@
         <p class="text-white/80 text-center text-sm mb-2 max-w-md">
           {{ $t('exhibition.registerInterest.subtitle') }}
         </p>
+        <p class="flex items-center justify-center gap-2 text-sm font-medium text-green-300">
+          <span class="material-icons !text-[18px] leading-none" aria-hidden="true">schedule</span>
+          {{ $t('exhibition.registerInterest.responseTime') }}
+        </p>
       </div>
 
       <!-- Form container -->

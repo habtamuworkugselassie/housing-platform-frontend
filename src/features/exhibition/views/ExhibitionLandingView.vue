@@ -173,8 +173,12 @@
         <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900 text-center">
           {{ $t('exhibition.registerInterest.title') }}
         </h2>
-        <p class="text-gray-600 text-center mb-10">
+        <p class="text-gray-600 text-center mb-3">
           {{ $t('exhibition.registerInterest.subtitle') }}
+        </p>
+        <p class="mb-10 flex items-center justify-center gap-2 text-sm font-medium text-primary-700">
+          <span class="material-icons !text-[18px] leading-none" aria-hidden="true">schedule</span>
+          {{ $t('exhibition.registerInterest.responseTime') }}
         </p>
         <form
           v-if="!interestSubmitted"
