@@ -179,11 +179,11 @@
                     <template v-if="orgPhones(org).length">
                       <template v-for="(phone, i) in orgPhones(org)" :key="i">
                         <span v-if="i > 0">, </span>
-                        <a :href="`tel:${phone}`" class="text-primary-700 hover:underline">{{ phone }}</a>
+                        <a :href="`tel:${phone}`" class="inline-block py-2 -my-1 text-primary-700 hover:underline">{{ phone }}</a>
                       </template>
                     </template>
                     <template v-if="org.email">
-                      <a :href="`mailto:${org.email}`" class="text-primary-700 hover:underline">{{ org.email }}</a>
+                      <a :href="`mailto:${org.email}`" class="inline-block py-2 -my-1 text-primary-700 hover:underline">{{ org.email }}</a>
                     </template>
                     <a v-if="org.website" :href="org.website" target="_blank" rel="noopener" class="text-primary-700 hover:underline">{{ $t('admin.orgWebsite') }}</a>
                   </div>

@@ -55,12 +55,17 @@
    needs, and they sit close enough together to mis-tap. Padding the hit area and
    pulling the same amount back out as negative margin grows the target without
    moving anything visually. Scoped to coarse pointers so mouse layouts are
-   untouched. */
+   untouched.
+
+   Deliberately scoped to the footer rather than matching tel:/mailto: site-wide:
+   most phone links elsewhere are already full-width flex buttons, and a global rule
+   overrode their `display` and pulled them 10px up into the button above. Bare text
+   links outside the footer opt in with `inline-block py-2 -my-1` at the call site. */
 @media (pointer: coarse) {
   .site-footer ul a,
   .site-footer nav a,
-  a[href^='tel:'],
-  a[href^='mailto:'] {
+  .site-footer a[href^='tel:'],
+  .site-footer a[href^='mailto:'] {
     display: inline-block;
     padding-block: 0.625rem;
     margin-block: -0.625rem;
