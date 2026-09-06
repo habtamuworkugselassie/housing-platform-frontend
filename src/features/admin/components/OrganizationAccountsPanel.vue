@@ -118,7 +118,7 @@
         <button
           type="submit"
           :disabled="busy"
-          class="rounded-md bg-admin-nav/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-admin-line/20 transition hover:bg-violet-950 disabled:opacity-50"
+          class="rounded-md bg-admin-accent px-3 py-1.5 text-xs font-medium text-admin-accent-fg ring-1 ring-admin-line/20 transition hover:bg-admin-accent-hover disabled:opacity-50"
         >
           {{ busy ? $t('common.saving') : $t('admin.accountsCreateSubmit') }}
         </button>
@@ -229,7 +229,7 @@
             <button
               type="submit"
               :disabled="busy"
-              class="rounded-md bg-admin-nav/60 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-admin-line/20 hover:bg-violet-950 disabled:opacity-50"
+              class="rounded-md bg-admin-accent px-3 py-1.5 text-xs font-medium text-admin-accent-fg ring-1 ring-admin-line/20 hover:bg-admin-accent-hover disabled:opacity-50"
             >
               {{ busy ? $t('common.saving') : $t('common.save') }}
             </button>
@@ -253,7 +253,7 @@
             <button
               type="button"
               :disabled="busy"
-              class="rounded-md bg-red-600/70 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 disabled:opacity-50"
+              class="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-50"
               @click="unlink(account)"
             >
               {{ busy ? $t('common.saving') : $t('admin.accountsUnlinkConfirmYes') }}

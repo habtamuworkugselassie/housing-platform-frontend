@@ -119,7 +119,7 @@
                       {{ $t('admin.exhibitionInterests.badgeContactPending') }}
                     </span>
                     <span
-                      class="inline-flex px-2 py-0.5 rounded bg-zinc-700 text-admin-muted font-mono text-[10px] uppercase tracking-wide"
+                      class="inline-flex px-2 py-0.5 rounded bg-admin-raised text-admin-muted font-mono text-[10px] uppercase tracking-wide"
                     >
                       {{ row.organizationStatus }}
                     </span>
