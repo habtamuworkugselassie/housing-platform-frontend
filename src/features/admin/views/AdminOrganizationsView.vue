@@ -571,11 +571,11 @@
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Name</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.name }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.name }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Registration Number</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.registrationNumber || 'N/A' }}</p>
                 </div>
                 </div>
               </section>
@@ -588,23 +588,23 @@
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Email</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.email || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.email || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Phone</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ formatOrganizationPhones(viewingOrg).join(', ') || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ formatOrganizationPhones(viewingOrg).join(', ') || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">City</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.city || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.city || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Country</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.country || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.country || 'N/A' }}</p>
                 </div>
-                <div class="col-span-2">
+                <div class="sm:col-span-2">
                   <label class="block text-sm font-medium text-admin-subtle">Address</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ viewingOrg.address || 'N/A' }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ viewingOrg.address || 'N/A' }}</p>
                 </div>
                 </div>
               </section>
@@ -615,20 +615,20 @@
                   {{ $t('admin.sectionOnline') }}
                 </h4>
                 <div class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                <div class="col-span-2">
+                <div class="sm:col-span-2">
                   <label class="block text-sm font-medium text-admin-subtle">Description</label>
-                  <p class="mt-1 text-sm leading-relaxed text-admin-fg">{{ viewingOrg.description || 'N/A' }}</p>
+                  <p class="mt-1 text-sm leading-relaxed text-admin-fg break-words">{{ viewingOrg.description || 'N/A' }}</p>
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Website</label>
-                  <p class="mt-1 text-sm text-admin-fg">
+                  <p class="mt-1 text-sm text-admin-fg break-words">
                     <a v-if="viewingOrg.website" :href="viewingOrg.website" target="_blank" class="text-admin-fg hover:underline">
                       {{ viewingOrg.website }}
                     </a>
                     <span v-else>N/A</span>
                   </p>
                 </div>
-                <div class="col-span-2">
+                <div class="sm:col-span-2">
                   <div v-if="hasSocialOnOrg(viewingOrg)" class="flex flex-wrap gap-2">
                     <OrganizationSocialLinks
                       tone="admin"
@@ -643,7 +643,7 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-admin-subtle">Created</label>
-                  <p class="mt-1 text-sm text-admin-fg">{{ formatDate(viewingOrg.createdAt) }}</p>
+                  <p class="mt-1 text-sm text-admin-fg break-words">{{ formatDate(viewingOrg.createdAt) }}</p>
                 </div>
                 </div>
               </section>
