@@ -5,10 +5,10 @@ import { ref, readonly } from 'vue'
  *
  * The portal is themed independently of the (always-dark) public site: the
  * active value is written as `data-theme` on the `.admin-shell` root, where the
- * CSS variables in admin-theme.css pick it up. Dark is the default so the
- * portal looks unchanged until a user opts into light. The choice is a module
- * singleton and persisted to localStorage, so it survives route changes and
- * reloads.
+ * CSS variables in admin-theme.css pick it up. Light is the default so the
+ * portal matches the rest of the app; the toggle still switches to dark and a
+ * stored choice wins over the default. The choice is a module singleton and
+ * persisted to localStorage, so it survives route changes and reloads.
  */
 
 export type AdminTheme = 'dark' | 'light'
@@ -22,7 +22,9 @@ function readStored(): AdminTheme {
   } catch {
     // localStorage may be unavailable (private mode, blocked storage) — fall back.
   }
-  return 'dark'
+  // Light by default, matching the rest of the app. The toggle still works and
+  // a stored choice still wins, so anyone who prefers the dark portal keeps it.
+  return 'light'
 }
 
 const theme = ref<AdminTheme>(readStored())

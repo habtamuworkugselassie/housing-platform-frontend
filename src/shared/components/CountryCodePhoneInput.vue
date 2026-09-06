@@ -3,7 +3,7 @@
     <div class="relative flex-shrink-0 min-w-[7rem]" ref="dropdownRef">
       <button
         type="button"
-        class="w-full flex items-center gap-2 border border-white/20 bg-white/5 text-white rounded-md py-2 pl-2 pr-8 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:outline-none text-left cursor-pointer hover:border-white/30 transition-colors"
+        class="w-full flex items-center gap-2 border border-white/20 bg-white/5 rounded-md py-2 pl-2 pr-8 focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:outline-none text-left cursor-pointer hover:border-white/30 transition-colors"
         :class="{ 'ring-2 ring-white/15 border-white/15': isOpen }"
         @click="isOpen = !isOpen"
       >

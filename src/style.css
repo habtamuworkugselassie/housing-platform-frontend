@@ -4,8 +4,8 @@
 
 body {
   margin: 0;
-  background: #2e1065;
-  color: #fff;
+  background: #f7f6fb;
+  color: #111827;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -13,20 +13,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* These three carried the dark canvas at id-level specificity, which beat every
+   class-based light rule and is why each page that had not claimed its own
+   treatment rendered dark. The app is light now; the nav and footer paint their
+   own dark backgrounds, so they are unaffected. */
 #app,
 #app > div,
 #app main {
-  background: #2e1065;
-  color: #fff;
+  background: #f7f6fb;
+  color: #111827;
 }
 
-/* Native select dropdowns: dark theme so options list stays readable */
+/* Native select dropdowns follow the light canvas. Dark bands opt back out via
+   `.on-dark` (see styles/light-app.css). */
 select {
-  color-scheme: dark;
+  color-scheme: light;
 }
 option {
-  background-color: #2e1065;
-  color: #fff;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 /* Responsive tables: below lg, stack each row into a card instead of a wide

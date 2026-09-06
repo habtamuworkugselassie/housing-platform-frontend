@@ -8,7 +8,9 @@
   />
   <div class="site-shell min-h-screen flex flex-col" :class="{ 'is-revealing': isRevealing }">
     <NavBar v-if="!route.meta?.hideLayout" />
-    <div class="flex-1 min-h-0 flex flex-col">
+    <!-- app-canvas scopes the light theme (styles/light-app.css). The nav,
+         footer and support chat sit outside it and keep the dark brand frame. -->
+    <div class="app-canvas flex-1 min-h-0 flex flex-col">
       <PublicLayout v-if="isPublicRoute && !route.meta?.hideLayout">
         <template v-if="isExhibitionLanding" #top>
           <ExhibitionTopSection />
