@@ -376,7 +376,7 @@
           @click.stop
         >
           <div
-            class="border-b border-admin-line/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-admin-line/10 bg-gradient-to-br from-admin-raised via-admin-surface to-admin-raised px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
@@ -484,7 +484,7 @@
 
               <div v-show="viewOrgPaneTab === 'overview'" class="space-y-6">
               <!-- Logo & media -->
-              <section class="rounded-xl border border-admin-line/10 bg-gradient-to-br from-white/[0.07] to-transparent p-5 shadow-inner">
+              <section class="rounded-xl border border-admin-line/10 bg-gradient-to-br from-admin-raised/70 to-transparent p-5 shadow-inner">
                 <h4 class="mb-4 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="h-1.5 w-1.5 rounded-full bg-violet-950 shadow shadow-black/50" />
                   {{ $t('admin.sectionMedia') }}
@@ -686,7 +686,7 @@
               </section>
 
               <!-- Sponsorship management -->
-              <div class="rounded-xl border border-black/20 bg-gradient-to-br from-black/[0.06] to-zinc-950/40 p-4 sm:p-5 shadow-inner">
+              <div class="rounded-xl border border-admin-line/15 bg-gradient-to-br from-admin-raised/70 to-admin-raised/30 p-4 sm:p-5 shadow-inner">
                 <h4 class="mb-3 flex items-center gap-2 text-sm font-semibold text-admin-fg">
                   <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-admin-nav/20 text-admin-fg">
                     <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
@@ -989,7 +989,7 @@
           @click.stop
         >
           <div
-            class="border-b border-admin-line/10 bg-gradient-to-br from-black/[0.12] via-zinc-900 to-zinc-950 px-6 py-5 sm:px-7 sm:py-6"
+            class="border-b border-admin-line/10 bg-gradient-to-br from-admin-raised via-admin-surface to-admin-raised px-6 py-5 sm:px-7 sm:py-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div class="flex min-w-0 flex-1 items-start gap-4">
