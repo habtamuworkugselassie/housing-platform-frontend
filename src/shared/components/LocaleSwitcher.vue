@@ -1,5 +1,5 @@
 <template>
-  <div ref="rootEl" class="relative">
+  <div ref="rootEl" class="locale-switcher relative">
     <button
       type="button"
       class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-lg border transition-all duration-200"
@@ -29,15 +29,19 @@
     >
       <div
         v-show="open"
-        class="absolute end-0 top-full pt-2 min-w-[min(100vw-2rem,280px)] z-[60] origin-top"
+        class="locale-switcher__menu absolute min-w-[min(100vw-2rem,280px)] z-[80]"
+        :class="[
+          placement === 'top' ? 'bottom-full pb-2 origin-bottom' : 'top-full pt-2 origin-top',
+          align === 'center' ? 'left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:end-0' : 'end-0'
+        ]"
       >
         <div
-          class="rounded-xl border border-white/10 bg-zinc-900/98 backdrop-blur-md shadow-xl shadow-black/40 py-2 overflow-hidden"
+          class="locale-switcher__panel rounded-xl border border-gray-200 bg-white text-gray-900 shadow-2xl shadow-black/25 py-2 overflow-hidden"
           role="listbox"
           :aria-label="$t('nav.selectLanguage')"
         >
-          <div class="px-3 pb-2 pt-1 border-b border-white/10">
-            <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-500">{{ $t('nav.selectLanguage') }}</p>
+          <div class="px-3 pb-2 pt-1 border-b border-gray-100">
+            <p class="text-xs font-semibold text-gray-500">{{ $t('nav.selectLanguage') }}</p>
           </div>
           <ul class="py-1 max-h-[min(70vh,320px)] overflow-y-auto">
             <li v-for="opt in LOCALE_OPTIONS" :key="opt.code">
@@ -47,8 +51,8 @@
                 :aria-selected="localeStore.currentLocale === opt.code"
                 class="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm transition-colors duration-150 border-l-2"
                 :class="localeStore.currentLocale === opt.code
-                  ? 'bg-violet-950/15 text-white border-white/15'
-                  : 'text-gray-300 border-transparent hover:bg-violet-950/15 hover:text-primary-400 hover:border-primary-400/60'"
+                  ? 'bg-violet-50 text-violet-900 border-violet-600'
+                  : 'text-gray-800 border-transparent hover:bg-gray-50 hover:text-violet-800'"
                 @click="select(opt.code)"
               >
                 <span class="text-lg leading-none shrink-0 w-7 text-center" aria-hidden="true">{{ opt.flag }}</span>
@@ -56,7 +60,7 @@
                   <span class="block font-medium leading-tight">{{ opt.labelNative }}</span>
                   <span class="block text-xs text-gray-500 mt-0.5">{{ opt.labelEn }}</span>
                 </span>
-                <span v-if="localeStore.currentLocale === opt.code" class="shrink-0 text-white" aria-hidden="true">
+                <span v-if="localeStore.currentLocale === opt.code" class="shrink-0 text-violet-700" aria-hidden="true">
                   <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -74,6 +78,13 @@
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { useLocaleStore } from '@/stores/locale'
 import { LOCALE_OPTIONS, getLocaleOption } from '@/i18n/localeConfig'
+
+defineProps({
+  /** Where the menu opens relative to the trigger. Use 'top' near the bottom of the page (footer). */
+  placement: { type: String, default: 'bottom' },
+  /** 'end' anchors the menu to the trigger's end edge; 'center' centers it under a centered trigger on small screens. */
+  align: { type: String, default: 'end' }
+})
 
 const localeStore = useLocaleStore()
 const open = ref(false)
@@ -114,3 +125,9 @@ onUnmounted(() => {
   document.removeEventListener('keydown', onEscape)
 })
 </script>
+
+<style scoped>
+/* The panel is always a solid white sheet with dark text, whatever surface the trigger sits on
+   (dark nav, dark footer, light pages) — opacity utilities are deliberately avoided here. */
+.locale-switcher__panel { background: #ffffff !important; color: #111827 !important; }
+</style>

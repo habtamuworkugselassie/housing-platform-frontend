@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">{{ $t('exhibition.liveWall.eyebrow') }}</p>
+          <p class="text-sm font-semibold text-primary-600">{{ $t('exhibition.liveWall.eyebrow') }}</p>
           <h2 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ $t('exhibition.liveWall.title') }}</h2>
         </div>
         <div class="flex items-center gap-2">

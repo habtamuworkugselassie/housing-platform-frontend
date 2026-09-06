@@ -7,9 +7,9 @@
     <LiveBroadcastWall v-if="liveEnabled" />
 
     <!-- What to expect (3 cards with icons). id=planning keeps the footer anchor working. -->
-    <section id="planning" class="py-16 lg:py-24 bg-violet-50 scroll-mt-20">
+    <section id="planning" class="py-16 lg:py-24 bg-violet-50 scroll-mt-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
+        <p class="text-sm font-semibold text-primary-600 mb-2">
           {{ $t('exhibition.whatToExpect.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-3">
@@ -51,7 +51,7 @@
     <!-- Why participate / Key show features -->
     <section id="show-features" class="py-16 lg:py-24 bg-white text-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
+        <p class="text-sm font-semibold text-primary-600 mb-2">
           {{ $t('exhibition.keyShowFeatures.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-3 text-gray-900">
@@ -70,7 +70,7 @@
           </p>
           <a
             href="#who-attends"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 font-semibold text-sm uppercase tracking-wider text-white rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 font-semibold text-sm text-white rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
           >
             {{ $t('exhibition.keyShowFeatures.exploreMoreLabel') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -84,7 +84,7 @@
     <!-- Who Attends -->
     <section id="who-attends" class="py-20 lg:py-28 bg-violet-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
+        <p class="text-sm font-semibold text-primary-600 mb-2">
           {{ $t('exhibition.whoAttends.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-4 text-gray-900">{{ $t('exhibition.whoAttends.title') }}</h2>
@@ -110,7 +110,7 @@
     <!-- Testimonial -->
     <section class="py-20 lg:py-24 bg-violet-950 border-t border-white/10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white mb-4 text-center">
+        <p class="text-sm font-semibold text-white mb-4 text-center">
           {{ $t('exhibition.testimonial.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white mb-10 text-center">
@@ -119,7 +119,7 @@
         <blockquote class="pl-6 sm:pl-8 border-l-4 border-white/15 text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
           {{ $t('exhibition.testimonial.quote') }}
         </blockquote>
-        <p class="text-sm text-white/70 uppercase tracking-wider">{{ $t('exhibition.testimonial.author') }}</p>
+        <p class="text-sm text-white/70">{{ $t('exhibition.testimonial.author') }}</p>
       </div>
     </section>
 
@@ -130,16 +130,16 @@
         <p class="text-lg text-gray-600 mb-10">
           {{ $t('exhibition.planVisit.body') }}
         </p>
-        <a href="#register" class="inline-flex px-8 py-4 bg-primary-600 text-white font-semibold text-sm uppercase tracking-wider hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white">
+        <a href="#register" class="inline-flex px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white">
           {{ $t('exhibition.planVisit.planYourVisit') }}
         </a>
       </div>
     </section>
 
     <!-- Event brochure (scroll target for #brochure) -->
-    <section id="brochure" class="py-14 lg:py-20 bg-violet-50 scroll-mt-20">
+    <section id="brochure" class="py-14 lg:py-20 bg-violet-50 scroll-mt-24">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-3">
+        <p class="text-sm font-semibold text-primary-600 mb-3">
           {{ $t('exhibition.brochureStrip.eyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
@@ -152,7 +152,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm uppercase tracking-wider hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
         >
           {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
@@ -163,9 +163,9 @@
     <ExhibitionVideoFeedbackSection v-if="feedbackEnabled" />
 
     <!-- Register your interest (scroll target for #register) -->
-    <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-20">
+    <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-24">
       <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2 text-center">
+        <p class="text-sm font-semibold text-primary-600 mb-2 text-center">
           {{ $t('exhibition.registerInterest.eyebrow') }}
         </p>
         <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900 text-center">
@@ -190,7 +190,7 @@
           <button
             type="submit"
             :disabled="interestSubmitting"
-            class="w-full py-3 px-6 bg-primary-600 text-white font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:bg-primary-300"
+            class="w-full py-3 px-6 bg-primary-600 text-white font-semibold text-sm rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:bg-primary-300"
           >
             {{ interestSubmitting ? $t('exhibition.registerInterest.submitting') : $t('exhibition.registerInterest.submit') }}
           </button>
@@ -206,9 +206,9 @@
     </section>
 
     <!-- Foundation Partners (exclusive sponsors only) -->
-    <section id="partners" class="py-16 bg-violet-50">
+    <section id="partners" class="py-16 bg-violet-50 scroll-mt-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-primary-600 text-xs font-semibold uppercase tracking-[0.25em] mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
+        <p class="text-sm font-semibold text-primary-600 mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
           <template v-if="partnersList.length">
             <a
@@ -225,7 +225,7 @@
                 class="max-h-10 max-w-24 object-contain"
               />
               <span v-else class="text-xs font-semibold text-gray-600 truncate max-w-full px-1">{{ (partner.name || '').charAt(0) }}</span>
-              <span v-if="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE'" class="text-[10px] uppercase text-gray-900 font-medium">{{ $t('exhibition.hero.featured') }}</span>
+              <span v-if="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE'" class="text-[11px] text-gray-700 font-medium">{{ $t('exhibition.hero.featured') }}</span>
             </a>
           </template>
           <template v-else>
@@ -240,7 +240,7 @@
     <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
     <section id="main-listings" class="bg-white py-12 lg:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
+        <p class="text-sm font-semibold text-primary-600 mb-2">
           {{ $t('exhibition.featuredListings.marketplaceEyebrow') }}
         </p>
         <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">

@@ -2,7 +2,7 @@
   <section :class="compact ? '' : (dark ? 'py-24 lg:py-32' : 'py-24 lg:py-32 bg-gray-50')">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div v-if="!compact" class="text-center mb-16">
-        <p :class="[dark ? 'text-amber-400' : 'text-amber-600', 'text-sm font-semibold tracking-[0.2em] uppercase mb-4']">{{ $t('exhibition.pillar.whyParticipate') }}</p>
+        <p :class="[dark ? 'text-amber-400' : 'text-amber-600', 'text-sm font-semibold mb-4']">{{ $t('exhibition.pillar.whyParticipate') }}</p>
         <h2 :class="dark ? 'text-white' : 'text-gray-900'" class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
           {{ $t('exhibition.pillar.title') }}
         </h2>
