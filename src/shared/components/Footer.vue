@@ -1,17 +1,17 @@
 <template>
   <footer class="site-footer flex-shrink-0 border-t border-white/10 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-14">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-12">
         <!-- Brand / logo (Expo-style anchor column) -->
-        <div class="sm:col-span-2 lg:col-span-1 flex flex-col gap-4">
+        <div class="col-span-2 lg:col-span-1 flex flex-col gap-3 lg:gap-4">
           <RouterLink
             :to="{ name: 'Home' }"
-            class="inline-flex w-fit rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5 transition-opacity hover:opacity-90"
+            class="inline-flex w-fit rounded-xl bg-white p-2 lg:rounded-2xl lg:p-3 shadow-sm ring-1 ring-black/5 transition-opacity hover:opacity-90"
           >
             <img
               src="/images/branding/ethio-build-connect-logo-stacked.png"
               :alt="$t('exhibition.hero.eventName')"
-              class="h-24 sm:h-28 w-auto object-contain"
+              class="h-14 sm:h-20 lg:h-28 w-auto object-contain"
             />
           </RouterLink>
           <p class="text-sm text-gray-400 leading-relaxed max-w-sm">
@@ -29,7 +29,7 @@
             :href="websiteUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-primary-400"
+            class="hidden lg:inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-primary-400"
             aria-label="Open Ethio Build Connect portal"
           >
             <img
@@ -94,10 +94,10 @@
 
         <!-- Business -->
         <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-4">
+          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
             {{ $t('exhibition.footer.columns.business') }}
           </h3>
-          <ul class="space-y-3 text-sm">
+          <ul class="space-y-2.5 lg:space-y-3 text-sm">
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#planning' }"
@@ -133,54 +133,58 @@
           </ul>
         </div>
 
-        <!-- Media -->
-        <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-4">
-            {{ $t('exhibition.footer.columns.media') }}
-          </h3>
-          <ul class="space-y-3 text-sm">
-            <li>
-              <RouterLink
-                :to="{ name: 'Home', hash: '#brochure' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
-              >
-                {{ $t('exhibition.footer.links.brochure') }}
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink
-                :to="{ name: 'Home', hash: '#main-listings' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
-              >
-                {{ $t('exhibition.footer.links.featuredListings') }}
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
+        <!-- Media + Support share a column on phones; lg:contents restores
+             them as two separate columns in the desktop grid. -->
+        <div class="flex flex-col gap-8 lg:contents">
+          <!-- Media -->
+          <div>
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+              {{ $t('exhibition.footer.columns.media') }}
+            </h3>
+            <ul class="space-y-2.5 lg:space-y-3 text-sm">
+              <li>
+                <RouterLink
+                  :to="{ name: 'Home', hash: '#brochure' }"
+                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {{ $t('exhibition.footer.links.brochure') }}
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink
+                  :to="{ name: 'Home', hash: '#main-listings' }"
+                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {{ $t('exhibition.footer.links.featuredListings') }}
+                </RouterLink>
+              </li>
+            </ul>
+          </div>
 
-        <!-- Support -->
-        <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-4">
-            {{ $t('exhibition.footer.columns.support') }}
-          </h3>
-          <ul class="space-y-3 text-sm">
-            <li>
-              <RouterLink
-                :to="{ name: 'Home', hash: '#faq' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
-              >
-                {{ $t('exhibition.footer.links.faq') }}
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink
-                :to="{ name: 'Home', hash: '#register' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
-              >
-                {{ $t('exhibition.footer.links.contactUs') }}
-              </RouterLink>
-            </li>
-          </ul>
+          <!-- Support -->
+          <div>
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+              {{ $t('exhibition.footer.columns.support') }}
+            </h3>
+            <ul class="space-y-2.5 lg:space-y-3 text-sm">
+              <li>
+                <RouterLink
+                  :to="{ name: 'Home', hash: '#faq' }"
+                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {{ $t('exhibition.footer.links.faq') }}
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink
+                  :to="{ name: 'Home', hash: '#register' }"
+                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {{ $t('exhibition.footer.links.contactUs') }}
+                </RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
