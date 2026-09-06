@@ -26,37 +26,37 @@
       </button>
 
       <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-        <div class="relative h-56 sm:h-72 lg:h-80 bg-gray-100">
-          <template v-if="currentMedia">
-            <img
-              v-if="!currentMediaIsVideo"
-              :src="currentMediaUrl"
-              :alt="organization.name"
-              class="h-full w-full object-contain bg-white/50"
-            />
-            <video
-              v-else
-              :key="currentMediaUrl"
-              :src="currentMediaUrl"
-              class="h-full w-full object-contain bg-white/50"
-              muted
-              playsinline
-              controls
-              preload="metadata"
-            />
-          </template>
-          <div v-else class="flex h-full items-center justify-center">
-            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 text-3xl font-bold text-gray-900">
-              {{ organizationInitial }}
-            </div>
-          </div>
+        <!-- Media frame. `on-dark` keeps the overlay chrome white: the light
+             theme layer would otherwise recolour it to ink over the photo. -->
+        <div v-if="currentMedia" class="on-dark relative h-56 sm:h-72 lg:h-80 bg-gray-900">
+          <img
+            v-if="!currentMediaIsVideo"
+            :src="currentMediaUrl"
+            :alt="organization.name"
+            class="h-full w-full object-contain"
+          />
+          <video
+            v-else
+            :key="currentMediaUrl"
+            :src="currentMediaUrl"
+            class="h-full w-full object-contain"
+            muted
+            playsinline
+            controls
+            preload="metadata"
+          />
 
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <!-- A short scrim so the thumbnails read over a light photo. -->
+          <div
+            v-if="galleryMedia.length > 1"
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent"
+          />
 
           <button
             v-if="galleryMedia.length > 1"
             type="button"
-            class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/50 p-2 text-white hover:bg-violet-950 hover:text-primary-400"
+            :aria-label="$t('common.previous')"
+            class="absolute left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/55 text-lg text-white hover:bg-black/75"
             @click="previousMedia"
           >
             <span aria-hidden="true">&lt;</span>
@@ -64,91 +64,97 @@
           <button
             v-if="galleryMedia.length > 1"
             type="button"
-            class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/50 p-2 text-white hover:bg-violet-950 hover:text-primary-400"
+            :aria-label="$t('common.next')"
+            class="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/55 text-lg text-white hover:bg-black/75"
             @click="nextMedia"
           >
             <span aria-hidden="true">&gt;</span>
           </button>
 
-          <div class="absolute right-4 top-4 flex items-center gap-2">
-            <span class="rounded-full border border-white/30 bg-violet-950/40 px-3 py-1 text-[11px] uppercase tracking-wide text-gray-100">
-              {{ orgTypeLabel }}
-            </span>
-            <span :class="statusBadgeClass" class="rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
-              {{ organization.status || 'N/A' }}
-            </span>
+          <div
+            v-if="galleryMedia.length > 1"
+            class="absolute inset-x-0 bottom-0 z-10 flex gap-2 overflow-x-auto px-3 pb-3"
+          >
+            <button
+              v-for="(item, index) in galleryMedia"
+              :key="item.id || item.url || index"
+              type="button"
+              :aria-label="`${organization.name} — ${index + 1}`"
+              :aria-current="currentMediaIndex === index"
+              :class="[
+                'h-11 w-14 shrink-0 overflow-hidden rounded-md border-2 bg-gray-900 transition-opacity',
+                currentMediaIndex === index ? 'border-white opacity-100' : 'border-white/30 opacity-70 hover:opacity-100'
+              ]"
+              @click="currentMediaIndex = index"
+            >
+              <img
+                v-if="!isVideoItem(item)"
+                :src="mediaUrl(item.url)"
+                :alt="`${organization.name} - Gallery image ${index + 1}`"
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <video
+                v-else
+                :src="mediaUrl(item.url)"
+                class="h-full w-full object-cover"
+                muted
+                playsinline
+                preload="none"
+              />
+            </button>
           </div>
+        </div>
 
-          <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-            <div class="flex items-end gap-4">
-              <div v-if="organization.logoUrl" class="h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border-2 border-gray-300 bg-white shadow-lg">
-                <img :src="mediaUrl(organization.logoUrl)" :alt="organization.name" class="h-full w-full object-contain p-1" />
-              </div>
-              <div v-else class="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border-2 border-gray-300 bg-gray-100 text-2xl font-bold text-gray-900 shadow-lg">
-                {{ organizationInitial }}
-              </div>
-              <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-white drop-shadow-md flex items-center flex-wrap gap-2">
-                  {{ organization.name }}
-                  <VerifiedBadge :level="getVerificationLevel(organization)" size="md" />
-                </h1>
-                <p class="mt-1 text-sm text-gray-100 drop-shadow-md">{{ locationText || 'Location not provided' }}</p>
-                <div
-                  v-if="organization.type === 'SUPPLIER' && organization.supplierSubcategories?.length"
-                  class="mt-2 flex flex-wrap gap-2"
-                >
-                  <span
-                    v-for="sc in organization.supplierSubcategories"
-                    :key="sc.id"
-                    class="inline-flex rounded-full border border-white/15 bg-violet-950/20 px-2.5 py-1 text-xs font-medium text-white"
-                  >
-                    {{ sc.name }}
-                  </span>
-                </div>
-                <div
-                  v-if="hasSocialLinks"
-                  class="mt-3 flex flex-wrap items-center gap-2 border-t border-gray-200 pt-3"
-                >
-                  <OrganizationSocialLinks
-                    compact
-                    :facebook-url="organization.facebookUrl"
-                    :instagram-url="organization.instagramUrl"
-                    :linkedin-url="organization.linkedinUrl"
-                    :twitter-url="organization.twitterUrl"
-                    :youtube-url="organization.youtubeUrl"
-                  />
-                </div>
-              </div>
+        <!-- Identity block. This used to be absolutely positioned over the photo;
+             with a long name, five category chips and a thumbnail strip it grew to
+             379px inside a 224px frame and everything piled up on the image. In
+             normal flow it simply gets the height it needs at any width. -->
+        <div class="flex flex-col gap-4 p-4 sm:flex-row sm:items-start sm:gap-5 sm:p-6">
+          <div v-if="organization.logoUrl" class="h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+            <img :src="mediaUrl(organization.logoUrl)" :alt="organization.name" class="h-full w-full object-contain p-1" />
+          </div>
+          <div v-else class="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-gray-100 text-2xl font-bold text-gray-900">
+            {{ organizationInitial }}
+          </div>
+          <div class="min-w-0 flex-1">
+            <h1 class="flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+              {{ organization.name }}
+              <VerifiedBadge :level="getVerificationLevel(organization)" size="md" />
+            </h1>
+            <p class="mt-1 text-sm text-gray-600">{{ locationText || 'Location not provided' }}</p>
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+              <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-[11px] uppercase tracking-wide text-gray-700">
+                {{ orgTypeLabel }}
+              </span>
+              <span :class="statusBadgeClass" class="rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
+                {{ organization.status || 'N/A' }}
+              </span>
             </div>
-            <div v-if="galleryMedia.length > 1" class="mt-4 flex flex-wrap items-center gap-2">
-              <button
-                v-for="(item, index) in galleryMedia"
-                :key="item.id || item.url || index"
-                type="button"
-                :class="[
-                  'h-12 w-16 overflow-hidden rounded-md border-2 object-cover transition-all',
-                  currentMediaIndex === index ? 'border-black opacity-100 shadow-md transform scale-105 bg-gray-100' : 'border-transparent opacity-60 hover:opacity-100 bg-white hover:border-gray-300'
-                ]"
-                @click="currentMediaIndex = index"
+            <div
+              v-if="organization.type === 'SUPPLIER' && organization.supplierSubcategories?.length"
+              class="mt-3 flex flex-wrap gap-2"
+            >
+              <span
+                v-for="sc in organization.supplierSubcategories"
+                :key="sc.id"
+                class="inline-flex rounded-full border border-primary-200 bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700"
               >
-                <template v-if="!isVideoItem(item)">
-                  <img
-                    :src="mediaUrl(item.url)"
-                    :alt="`${organization.name} - Gallery image ${index + 1}`"
-                    class="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </template>
-                <template v-else>
-                  <video
-                    :src="mediaUrl(item.url)"
-                    class="h-full w-full object-cover"
-                    muted
-                    playsinline
-                    preload="none"
-                  />
-                </template>
-              </button>
+                {{ sc.name }}
+              </span>
+            </div>
+            <div
+              v-if="hasSocialLinks"
+              class="mt-4 flex flex-wrap items-center gap-2 border-t border-gray-200 pt-4"
+            >
+              <OrganizationSocialLinks
+                compact
+                :facebook-url="organization.facebookUrl"
+                :instagram-url="organization.instagramUrl"
+                :linkedin-url="organization.linkedinUrl"
+                :twitter-url="organization.twitterUrl"
+                :youtube-url="organization.youtubeUrl"
+              />
             </div>
           </div>
         </div>
@@ -832,11 +838,13 @@ const timelineEntries = computed(() => {
 
 const statusBadgeClass = computed(() => {
   const status = String(organization.value?.status || '').toUpperCase()
-  if (status === 'APPROVED') return 'border-green-400/50 bg-green-500/30 text-green-700'
-  if (status === 'PENDING' || status === 'PENDING_APPROVAL') return 'border-white/15 bg-violet-950/30 text-white'
-  if (status === 'SUSPENDED') return 'border-orange-400/50 bg-orange-500/30 text-orange-200'
-  if (!status) return 'border-gray-300 bg-gray-100 text-gray-700'
-  return 'border-red-400/50 bg-red-500/30 text-red-700'
+  // Opaque fills: the 30% tints these replaced were designed for a dark canvas and
+  // washed out to under 3:1 once the page went light.
+  if (status === 'APPROVED') return 'border-green-400/60 bg-green-700 text-white'
+  if (status === 'PENDING' || status === 'PENDING_APPROVAL') return 'border-amber-300/60 bg-amber-700 text-white'
+  if (status === 'SUSPENDED') return 'border-orange-300/60 bg-orange-800 text-white'
+  if (!status) return 'border-white/40 bg-gray-800 text-white'
+  return 'border-red-300/60 bg-red-700 text-white'
 })
 
 function goBack() {

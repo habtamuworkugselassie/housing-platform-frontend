@@ -94,7 +94,7 @@
 
         <!-- Business -->
         <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
             {{ $t('exhibition.footer.columns.business') }}
           </h3>
           <ul class="space-y-2.5 lg:space-y-3 text-sm">
@@ -138,7 +138,7 @@
         <div class="flex flex-col gap-8 lg:contents">
           <!-- Media -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
               {{ $t('exhibition.footer.columns.media') }}
             </h3>
             <ul class="space-y-2.5 lg:space-y-3 text-sm">
@@ -163,7 +163,7 @@
 
           <!-- Support -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
               {{ $t('exhibition.footer.columns.support') }}
             </h3>
             <ul class="space-y-2.5 lg:space-y-3 text-sm">
