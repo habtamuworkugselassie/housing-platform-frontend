@@ -112,3 +112,64 @@ export function setJsonLdById(id, jsonLdObject) {
   script.textContent = JSON.stringify(jsonLdObject)
   document.head.appendChild(script)
 }
+
+/** Shared id for the BreadcrumbList block, so detail views don't each invent one. */
+export const BREADCRUMB_JSON_LD_ID = 'dynamic-breadcrumb-jsonld'
+
+/**
+ * Emits a BreadcrumbList for the current page.
+ *
+ * Entries are `{ name, path }`, ordered root-first, and the last one should be the
+ * current page — Google expects the trail to end at the page it is describing.
+ * `path` is site-relative and is normally omitted on that last entry, since a
+ * crumb for the page you are already on needs no link.
+ */
+export function setBreadcrumbJsonLd(trail) {
+  const items = (trail || []).filter((c) => c && c.name)
+  if (items.length < 2) {
+    // A single crumb is not a trail; emitting one produces an invalid rich result.
+    removeJsonLdById(BREADCRUMB_JSON_LD_ID)
+    return
+  }
+  const base = getPublicSiteUrl()
+  setJsonLdById(BREADCRUMB_JSON_LD_ID, {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((crumb, i) => {
+      const entry = {
+        '@type': 'ListItem',
+        position: i + 1,
+        name: crumb.name
+      }
+      if (crumb.path) {
+        entry.item = `${base}${crumb.path === '/' ? '' : crumb.path}`
+      }
+      return entry
+    })
+  })
+}
+
+export function removeBreadcrumbJsonLd() {
+  removeJsonLdById(BREADCRUMB_JSON_LD_ID)
+}
+
+/**
+ * AggregateRating for an entity that has reviews, or undefined when it has none.
+ *
+ * Google drops the whole rich result if aggregateRating is present but empty or
+ * zero-count, so the caller assigns this only when it comes back defined. Ratings
+ * on this site are the 1-5 stars collected by ReviewSection.
+ */
+export function buildAggregateRating(averageRating, reviewCount) {
+  const value = Number(averageRating)
+  const count = Number(reviewCount)
+  if (!Number.isFinite(value) || value <= 0) return undefined
+  if (!Number.isFinite(count) || count < 1) return undefined
+  return {
+    '@type': 'AggregateRating',
+    ratingValue: Number(value.toFixed(1)),
+    reviewCount: Math.trunc(count),
+    bestRating: 5,
+    worstRating: 1
+  }
+}

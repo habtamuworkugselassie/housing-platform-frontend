@@ -109,6 +109,8 @@
     "deleteError": "መለያዎን መሰረዝ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
   },
   "nav": {
+    "browse": "ያስሱ",
+    "account": "መለያ",
     "home": "መነሻ",
     "goLive": "ቀጥታ ስርጭት",
     "live": "ቀጥታ",
@@ -1585,6 +1587,23 @@
           "body": "These terms are governed by the laws of the Federal Democratic Republic of Ethiopia, without regard to conflict-of-law rules. Courts in Addis Ababa shall have exclusive jurisdiction, subject to mandatory consumer protections where applicable."
         }
       ]
+    }
+  },
+  "pageNotFound": {
+    "badge": "ገጽ አልተገኘም",
+    "title": "ያንን ገጽ ማግኘት አልቻልንም",
+    "body": "አገናኝኑ ጊዜው ያለፈበት ሊሆን ይችላል፣ ዝርዝሩ ተወግዶ ሊሆን ይችላል፣ ወይም አድራሻው የፊደል ስህተት ሊኖረው ይችላል። ከዚህ መቀጠል ይችላሉ።",
+    "requestedLabel": "የጠየቁት፡",
+    "supportLabel": "ስህተት ነው ብለዉ ካሰቡ በዚህ ኢሜይል ያድርሱልን",
+    "links": {
+      "home": "የኢትዮ ቢልድ ኮኔክት መነሻ ገጽ",
+      "homeBlurb": "ኤግዚቢሽኑ፣ አገሮች እና የቅርብ ጊዜ ዝርዝሮች።",
+      "properties": "የንብረት ዝርዝሮችን ይመልከቱ",
+      "propertiesBlurb": "በአዲስ አበባና በኢትዮጵያ ውስጥ ቤቶች፣ ቤቶች እና አፕርታማዎች።",
+      "marketplace": "ገበያውን ይመልከቱ",
+      "marketplaceBlurb": "አልሚዎች፣ ተቁራጮች፣ አማካሪዎች፣ አቅራቢዎች፣ ባንኮች እና ኢንሻሩንሶች።",
+      "register": "ለኤግዚቢሽኑ ይመዝገቡ",
+      "registerBlurb": "እንደ ጐብኚ፣ አሳታፊ ወይም አጋር ይቀላቀሉ።"
     }
   }
 }

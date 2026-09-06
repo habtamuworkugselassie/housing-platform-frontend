@@ -78,7 +78,12 @@
           <div class="flex items-start justify-between gap-3 mb-2">
             <div class="flex items-center gap-3 min-w-0">
               <div class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0 border border-gray-300">
-                <img v-if="review.userImageUrl" :src="mediaUrl(review.userImageUrl)" class="w-full h-full object-cover" />
+                <img
+                  v-if="review.userImageUrl"
+                  :src="mediaUrl(review.userImageUrl)"
+                  :alt="review.userName ? `${review.userName} profile photo` : 'Reviewer profile photo'"
+                  class="w-full h-full object-cover"
+                />
                 <div v-else class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-600 font-bold">
                   {{ review.userName ? review.userName.charAt(0).toUpperCase() : 'U' }}
                 </div>

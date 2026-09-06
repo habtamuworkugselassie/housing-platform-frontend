@@ -23,7 +23,7 @@
       <!-- Back -->
       <button
         @click="$router.back()"
-        class="mb-5 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
+        class="mb-4 -ms-2 inline-flex items-center gap-2 rounded-md px-2 py-2.5 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -580,7 +580,9 @@ import {
   getPublicSiteUrl,
   truncateMetaDescription,
   setJsonLdById,
-  removeJsonLdById
+  removeJsonLdById,
+  setBreadcrumbJsonLd,
+  buildAggregateRating
 } from '@/utils/seo'
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
@@ -643,7 +645,20 @@ function syncPropertySeo(p) {
       addressCountry: p.country || undefined
     }
   }
+  // Stars in search results come from this, using the same review totals the page
+  // already renders in ReviewSection. Undefined for a listing with no reviews —
+  // an empty aggregateRating invalidates the whole rich result.
+  const rating = buildAggregateRating(p.averageRating, p.reviewCount)
+  if (rating) {
+    listingLd.aggregateRating = rating
+  }
   setJsonLdById(PROPERTY_JSON_LD_ID, listingLd)
+
+  setBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Properties', path: '/properties' },
+    { name: p.title }
+  ])
 }
 const property = ref(null)
 const seoOptions = ref({})

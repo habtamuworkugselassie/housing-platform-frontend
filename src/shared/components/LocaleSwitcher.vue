@@ -2,7 +2,7 @@
   <div ref="rootEl" class="locale-switcher relative">
     <button
       type="button"
-      class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-lg border transition-all duration-200"
+      class="inline-flex items-center gap-2 px-2.5 sm:px-3 py-2.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg border transition-all duration-200"
       :class="open ? 'text-white bg-violet-950/10 border-white/15' : 'text-gray-300 border-white/20 hover:text-primary-400 hover:bg-violet-950/10 hover:border-primary-400/40'"
       :aria-expanded="open"
       aria-haspopup="listbox"

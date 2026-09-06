@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="mt-10 text-center">
-          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold text-violet-700 hover:text-violet-900 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded px-2 py-1">
+          <a href="#register" class="inline-flex items-center gap-2 text-sm font-semibold text-violet-700 hover:text-violet-900 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded px-3 py-2.5">
             {{ $t('exhibition.planning.cta') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -348,6 +348,7 @@ import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
+import { trackInterestRegistration } from '@/utils/analytics'
 import { formatPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge } from '@/shared/components'
 import {
@@ -485,6 +486,13 @@ async function submitInterest() {
     }
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
+    // The site's primary conversion. Fired after the request resolves so failed
+    // submissions never count.
+    trackInterestRegistration({
+      interestType: it,
+      organizationType: interestForm.value.organizationType,
+      source: 'landing_page'
+    })
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
     interestError.value = typeof msg === 'string' ? msg : t('exhibition.registerInterest.errorGeneric')

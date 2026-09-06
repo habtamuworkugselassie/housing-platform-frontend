@@ -109,6 +109,8 @@
     "deleteError": "Could not delete your account. Please try again."
   },
   "nav": {
+    "browse": "Browse",
+    "account": "Account",
     "home": "Home",
     "goLive": "Go live",
     "live": "Live",
@@ -1593,6 +1595,23 @@
           "body": "These terms are governed by the laws of the Federal Democratic Republic of Ethiopia, without regard to conflict-of-law rules. Courts in Addis Ababa shall have exclusive jurisdiction, subject to mandatory consumer protections where applicable."
         }
       ]
+    }
+  },
+  "pageNotFound": {
+    "badge": "Page not found",
+    "title": "We couldn't find that page",
+    "body": "The link may be out of date, the listing may have been removed, or the address may have a typo. Here's where to pick up again.",
+    "requestedLabel": "You asked for:",
+    "supportLabel": "Think this is a mistake? Email us at",
+    "links": {
+      "home": "Ethio Build Connect home",
+      "homeBlurb": "The expo, partners, and the latest listings.",
+      "properties": "Browse property listings",
+      "propertiesBlurb": "Houses, betoch, and apartments across Addis Ababa and Ethiopia.",
+      "marketplace": "Explore the marketplace",
+      "marketplaceBlurb": "Developers, contractors, consultants, suppliers, banks, and insurers.",
+      "register": "Register for the expo",
+      "registerBlurb": "Join as a visitor, exhibitor, or partner."
     }
   }
 }

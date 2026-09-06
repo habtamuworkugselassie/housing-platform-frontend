@@ -84,6 +84,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { exhibitionApi, getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
+import { trackInterestRegistration } from '@/utils/analytics'
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
@@ -156,6 +157,13 @@ async function submitInterest() {
     }
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
+    // The site's primary conversion. Fired after the request resolves so failed
+    // submissions never count.
+    trackInterestRegistration({
+      interestType: it,
+      organizationType: interestForm.value.organizationType,
+      source: 'standalone_page'
+    })
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
     interestError.value = typeof msg === 'string' ? msg : t('exhibition.registerInterest.errorGeneric')
