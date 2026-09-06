@@ -1,7 +1,7 @@
 <template>
-  <section v-if="visible" id="video-feedback" class="vf-light scroll-mt-20 bg-white py-16 lg:py-24">
+  <section v-if="visible" id="video-feedback" class="vf-light scroll-mt-24 bg-white py-16 lg:py-24">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">
+      <p class="mb-2 text-sm font-semibold text-primary-600">
         {{ $t('exhibition.videoFeedback.eyebrow') }}
       </p>
       <h2 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">

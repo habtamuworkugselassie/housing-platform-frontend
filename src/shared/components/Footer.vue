@@ -206,7 +206,7 @@
           }}</RouterLink>
         </nav>
         <div class="flex justify-center lg:justify-end order-2 lg:order-3 shrink-0">
-          <LocaleSwitcher />
+          <LocaleSwitcher placement="top" align="center" />
         </div>
       </div>
     </div>

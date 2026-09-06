@@ -5,7 +5,7 @@
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl mb-10 lg:mb-14">
-        <p class="text-primary-600 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+        <p class="text-sm font-semibold text-primary-600 mb-3">
           {{ $t('exhibition.sponsorshipPackages.eyebrow') }}
         </p>
         <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-4">
@@ -81,7 +81,7 @@
               </p>
               <!-- Scroll features only so payment notes + CTA stay fully visible in equal-height grid rows -->
               <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
+                <p class="text-xs font-semibold text-gray-500 mb-2">
                   {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                 </p>
                 <ul
@@ -117,7 +117,7 @@
               </div>
               <button
                 type="button"
-                class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl text-white transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+                class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-semibold rounded-xl text-white transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
                 :class="tierAccent(pkg).cta"
                 @click="openRegisterModal(pkg)"
               >
@@ -133,7 +133,7 @@
       >
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm uppercase tracking-wider hover:bg-primary-700 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
           @click="openRegisterModal(null)"
         >
           {{ $t('exhibition.cta.standEnquiry') }}
@@ -142,7 +142,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-primary-700 font-semibold text-sm uppercase tracking-wider hover:bg-primary-50 hover:border-primary-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-primary-700 font-semibold text-sm hover:bg-primary-50 hover:border-primary-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
         >
           {{ $t('exhibition.cta.viewBrochure') }}
         </a>
@@ -173,7 +173,7 @@
               >
                 <div class="relative min-w-0">
                   <p
-                    class="text-xs font-bold uppercase tracking-[0.2em] mb-1.5"
+                    class="text-xs font-semibold mb-1.5"
                     :class="detailsModalTheme.eyebrow"
                   >
                     {{ formatTierLabel(detailsModalPackage.type) }}
@@ -204,7 +204,7 @@
                   {{ detailsModalPackage.description }}
                 </p>
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                  <p class="text-xs font-semibold text-gray-500 mb-3">
                     {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                   </p>
                   <ul
@@ -227,7 +227,7 @@
                   class="rounded-xl border p-4"
                   :class="detailsModalTheme.notesBox"
                 >
-                  <p class="text-xs font-semibold uppercase tracking-wider mb-2" :class="detailsModalTheme.notesLabel">
+                  <p class="text-xs font-semibold mb-2" :class="detailsModalTheme.notesLabel">
                     {{ $t('exhibition.sponsorshipPackages.notesHeading') }}
                   </p>
                   <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
@@ -248,7 +248,7 @@
                 </button>
                 <button
                   type="button"
-                  class="w-full sm:w-auto px-5 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg"
+                  class="w-full sm:w-auto px-5 py-3 text-sm font-semibold rounded-xl transition-all shadow-lg"
                   :class="detailsModalTheme.primaryCta"
                   @click="openRegisterFromDetails"
                 >
@@ -285,7 +285,7 @@
               >
                 <div class="min-w-0">
                   <p
-                    class="text-xs font-bold uppercase tracking-[0.2em] mb-1.5"
+                    class="text-xs font-semibold mb-1.5"
                     :class="registerModalTheme.eyebrow"
                   >
                     {{ $t('exhibition.registerInterest.eyebrow') }}
@@ -330,7 +330,7 @@
                   <p class="text-sm text-gray-600">{{ $t('exhibition.registerInterest.successMessage') }}</p>
                   <button
                     type="button"
-                    class="mt-6 px-6 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-colors"
+                    class="mt-6 px-6 py-3 text-sm font-semibold rounded-xl transition-colors"
                     :class="registerModalTheme.primaryCta"
                     @click="closeRegisterModal"
                   >
@@ -351,7 +351,7 @@
                   <button
                     type="submit"
                     :disabled="registerSubmitting"
-                    class="w-full py-3.5 px-6 font-bold text-sm uppercase tracking-wider rounded-xl transition-all shadow-lg disabled:opacity-50 disabled:shadow-none"
+                    class="w-full py-3.5 px-6 font-semibold text-sm rounded-xl transition-all shadow-lg disabled:opacity-50 disabled:shadow-none"
                     :class="registerModalTheme.primaryCta"
                   >
                     {{
