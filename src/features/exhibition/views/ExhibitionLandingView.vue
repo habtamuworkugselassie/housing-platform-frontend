@@ -348,6 +348,7 @@ import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
+import { trackInterestRegistration } from '@/utils/analytics'
 import { formatPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge } from '@/shared/components'
 import {
@@ -485,6 +486,13 @@ async function submitInterest() {
     }
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
+    // The site's primary conversion. Fired after the request resolves so failed
+    // submissions never count.
+    trackInterestRegistration({
+      interestType: it,
+      organizationType: interestForm.value.organizationType,
+      source: 'landing_page'
+    })
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
     interestError.value = typeof msg === 'string' ? msg : t('exhibition.registerInterest.errorGeneric')

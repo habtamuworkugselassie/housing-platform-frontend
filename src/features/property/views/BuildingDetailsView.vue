@@ -304,7 +304,9 @@ import {
   truncateMetaDescription,
   getPublicSiteUrl,
   setJsonLdById,
-  removeJsonLdById
+  removeJsonLdById,
+  setBreadcrumbJsonLd,
+  buildAggregateRating
 } from '@/utils/seo'
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useAuthStore } from '@/features/auth'
@@ -364,7 +366,19 @@ function syncBuildingSeo(b) {
       addressCountry: b.country || undefined
     }
   }
+  // Buildings have no review UI today, so this is normally undefined; it is wired
+  // up so ratings appear the moment the API starts returning them.
+  const rating = buildAggregateRating(b.averageRating, b.reviewCount)
+  if (rating) {
+    ld.aggregateRating = rating
+  }
   setJsonLdById(BUILDING_JSON_LD_ID, ld)
+
+  setBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Buildings', path: '/buildings' },
+    { name: b.name }
+  ])
 }
 
 const loadBuilding = async () => {

@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/features/auth'
+import { trackPageView } from '@/utils/analytics'
 import {
   ensureMetaTag,
   ensureLinkTag,
   canonicalUrlForRoute,
   applyIndexableRobots,
   applyNoindexRobots,
-  getPublicSiteUrl
+  getPublicSiteUrl,
+  removeBreadcrumbJsonLd
 } from '@/utils/seo'
 
 const routes = [
@@ -352,6 +354,18 @@ const routes = [
     path: '/legal',
     name: 'LegalHub',
     component: () => import('@/shared/views/LegalHubView.vue')
+  },
+  // Must stay last: vue-router matches in declaration order, so this only runs
+  // once every real route has failed. Without it an unknown URL rendered an
+  // empty <router-view> — a blank page that crawlers index as a soft 404.
+  // nginx serves the SPA shell with HTTP 200 for any path and cannot know which
+  // client routes exist, so `noindex` is what actually keeps these out of the
+  // index; the visible page tells the person what happened.
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/shared/views/NotFoundView.vue'),
+    meta: { noindex: true }
   }
 ]
 
@@ -530,6 +544,11 @@ const seoByRouteName = {
   LegalHub: {
     title: 'Legal - Ethio Build Connect',
     description: 'Privacy policy and terms of use for Ethio Build Connect.'
+  },
+  NotFound: {
+    title: 'Page Not Found - Ethio Build Connect',
+    description:
+      'This page could not be found. Browse Ethiopia property listings, the construction marketplace, and the Ethio Build Connect expo.'
   }
 }
 
@@ -556,6 +575,13 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to) => {
   const seo = seoByRouteName[to.name] || defaultSeo
   const canonical = canonicalUrlForRoute(to)
+
+  // Breadcrumbs are owned by the detail views, which set them once their data
+  // arrives. Clearing here rather than in each view's onUnmounted avoids a stale
+  // trail surviving onto the next page: unmount and mount ordering between two
+  // router-view components is not guaranteed, but this always runs before the
+  // incoming view has fetched anything.
+  removeBreadcrumbJsonLd()
   ensureLinkTag('canonical', canonical)
   ensureMetaTag('og:url', 'property').setAttribute('content', canonical)
 
@@ -575,6 +601,14 @@ router.afterEach((to) => {
   const defaultOgImage = `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`
   ensureMetaTag('og:image', 'property').setAttribute('content', defaultOgImage)
   ensureMetaTag('twitter:image').setAttribute('content', defaultOgImage)
+
+  // GA4's automatic page_view only covers the initial document load; client-side
+  // navigations have to be sent here. Detail views (property, organization,
+  // building) overwrite document.title asynchronously once their data lands, so
+  // the title is read from the route's static SEO map rather than the DOM to keep
+  // the hit deterministic. Path only — query strings carry filter state that
+  // would fragment the report.
+  trackPageView(to.path, seo.title)
 })
 
 export default router

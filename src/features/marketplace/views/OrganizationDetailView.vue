@@ -612,7 +612,9 @@ import {
   truncateMetaDescription,
   getPublicSiteUrl,
   setJsonLdById,
-  removeJsonLdById
+  removeJsonLdById,
+  setBreadcrumbJsonLd,
+  buildAggregateRating
 } from '@/utils/seo'
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
@@ -688,6 +690,20 @@ const typeToLabelKey = {
   FINISHING_CONTRACTOR: 'nav.marketplaceFinishingWork',
   MEDIA_COMPANY: 'admin.typeMediaCompany',
   DEVELOPER: 'admin.typeDeveloper'
+}
+
+// The marketplace directory each org type belongs to. Media companies and
+// developers have no directory of their own — see the breadcrumb below, which
+// falls back to a generic crumb rather than pointing their type label at a
+// listing page that does not list them.
+const typeToMarketplacePath = {
+  REAL_ESTATE_COMPANY: '/marketplace/real-estate',
+  BANK: '/marketplace/banks',
+  INSURANCE: '/marketplace/insurance',
+  CONTRACTOR: '/marketplace/contractors',
+  CONSULTANT_ARCHITECT: '/marketplace/consultants-and-architects',
+  SUPPLIER: '/marketplace/suppliers',
+  FINISHING_CONTRACTOR: '/marketplace/finishing-work'
 }
 
 const orgTypeLabel = computed(() => {
@@ -1012,7 +1028,21 @@ function syncOrganizationSeo() {
       addressCountry: org.country || undefined
     }
   }
+  // Stars in search results, from the same totals ReviewSection renders below.
+  const rating = buildAggregateRating(org.averageRating, org.reviewCount)
+  if (rating) {
+    ld.aggregateRating = rating
+  }
   setJsonLdById(ORG_JSON_LD_ID, ld)
+
+  const directoryPath = typeToMarketplacePath[org.type]
+  setBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    directoryPath
+      ? { name: orgTypeLabel.value, path: directoryPath }
+      : { name: 'Marketplace', path: '/marketplace/real-estate' },
+    { name: org.name }
+  ])
 }
 
 async function loadOrganization() {

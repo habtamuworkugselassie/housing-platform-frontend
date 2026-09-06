@@ -580,7 +580,9 @@ import {
   getPublicSiteUrl,
   truncateMetaDescription,
   setJsonLdById,
-  removeJsonLdById
+  removeJsonLdById,
+  setBreadcrumbJsonLd,
+  buildAggregateRating
 } from '@/utils/seo'
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
@@ -643,7 +645,20 @@ function syncPropertySeo(p) {
       addressCountry: p.country || undefined
     }
   }
+  // Stars in search results come from this, using the same review totals the page
+  // already renders in ReviewSection. Undefined for a listing with no reviews —
+  // an empty aggregateRating invalidates the whole rich result.
+  const rating = buildAggregateRating(p.averageRating, p.reviewCount)
+  if (rating) {
+    listingLd.aggregateRating = rating
+  }
   setJsonLdById(PROPERTY_JSON_LD_ID, listingLd)
+
+  setBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Properties', path: '/properties' },
+    { name: p.title }
+  ])
 }
 const property = ref(null)
 const seoOptions = ref({})
