@@ -1,0 +1,153 @@
+/*
+ * Light theme for the application surfaces.
+ *
+ * The public marketing and listing pages were already light (see
+ * public-design.css), but everything else — profile, dashboards, banking,
+ * construction, loans, auth, legal — was written against a dark canvas and used
+ * around 1,900 dark-only utility classes across 73 files. Rewriting each call
+ * site would be a large, error-prone diff, so this remaps the dark vocabulary to
+ * light equivalents in one place: the same technique admin-theme.css and
+ * public-design.css already use for their own surfaces.
+ *
+ * Scope: `.app-canvas`, the content wrapper between the nav and the footer. The
+ * nav, footer and support-chat widget sit outside it and keep their dark brand
+ * styling — they are the dark frame around a light page.
+ *
+ * Two escape hatches:
+ *   - `on-dark` on any band that is meant to stay dark (a hero, a sponsor
+ *     carousel, a video wall). Its whole subtree is excluded. `.admin-shell` is
+ *     excluded the same way: the portal renders inside this wrapper but owns its
+ *     own light/dark tokens (admin-theme.css), and must keep them.
+ *   - Elements that paint their own solid colour (buttons, badges: `bg-primary-600
+ *     text-white`) keep their white text. Without this the label would be
+ *     recoloured to ink and left unreadable on a saturated fill.
+ *
+ * Load order matters: imported BEFORE public-design.css so the page-specific
+ * rules there (`.public-page`, `.property-details-page`, `.exhibition-landing`)
+ * still win on pages that already had a considered light treatment. Rules here
+ * only reach surfaces nothing else had claimed.
+ */
+
+.app-canvas {
+  --app-canvas: #f7f6fb;   /* page behind the cards                      */
+  --app-surface: #ffffff;  /* cards, panels, modals                      */
+  --app-raised: #f3f0fb;   /* nested/raised fills                        */
+  --app-ink: #111827;      /* primary text            15.9:1 on white    */
+  --app-muted: #4b5563;    /* secondary text           7.6:1 on white    */
+  --app-faint: #5b6472;    /* quietest text            5.9:1 on white    */
+  --app-line: #e3e0ee;     /* borders                                    */
+  --app-line-strong: #cdc7e0;
+
+  background: var(--app-canvas);
+  color: var(--app-ink);
+}
+
+/* ---- Text ----------------------------------------------------------------
+ * `:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *)` keeps deliberate dark bands intact.
+ * `:not([class*="bg-…"])` keeps a button's own label white on its own fill.
+ */
+.app-canvas .text-white:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *):not(
+  [class^="bg-primary-"], [class*=" bg-primary-"],
+  [class^="bg-violet-5"], [class*=" bg-violet-5"],
+  [class^="bg-violet-6"], [class*=" bg-violet-6"],
+  [class^="bg-violet-7"], [class*=" bg-violet-7"],
+  [class^="bg-violet-8"], [class*=" bg-violet-8"],
+  [class^="bg-red-"], [class*=" bg-red-"],
+  [class^="bg-green-"], [class*=" bg-green-"],
+  [class^="bg-emerald-"], [class*=" bg-emerald-"],
+  [class^="bg-blue-"], [class*=" bg-blue-"],
+  [class^="bg-amber-"], [class*=" bg-amber-"],
+  [class^="bg-gold-"], [class*=" bg-gold-"],
+  [class^="bg-orange-"], [class*=" bg-orange-"],
+  [class^="bg-purple-"], [class*=" bg-purple-"],
+  [class^="bg-sky-"], [class*=" bg-sky-"],
+  [class^="bg-indigo-"], [class*=" bg-indigo-"]
+) { color: var(--app-ink); }
+
+.app-canvas :is(.text-white\/95, .text-white\/90, .text-white\/85, .text-white\/80,
+  .text-gray-100, .text-gray-200,
+  .text-gray-300):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: var(--app-muted); }
+
+.app-canvas :is(.text-white\/75, .text-white\/70, .text-white\/60, .text-white\/55,
+  .text-white\/50, .text-white\/40, .text-gray-400,
+  .text-gray-500):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: var(--app-faint); }
+
+.app-canvas :is(.placeholder-gray-400, .placeholder-gray-500):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *)::placeholder {
+  color: #6b7280;
+}
+
+/* ---- Semantic tints -------------------------------------------------------
+ * The -100/-200/-300 shades are chosen to glow against a dark canvas; on a
+ * light one they wash out (green-300 on white is 1.5:1). Each drops to the
+ * shade that clears 4.5:1 on white, exactly as admin-theme.css does for the
+ * portal's badges. Fills stay as they are — only the text moves.
+ */
+.app-canvas :is(.text-red-100, .text-red-200, .text-red-300, .text-red-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #b91c1c; }
+.app-canvas :is(.text-green-100, .text-green-200, .text-green-300, .text-green-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #15803d; }
+.app-canvas :is(.text-emerald-200, .text-emerald-300, .text-emerald-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #047857; }
+.app-canvas :is(.text-blue-100, .text-blue-200, .text-blue-300, .text-blue-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #1d4ed8; }
+.app-canvas :is(.text-sky-200, .text-sky-300, .text-sky-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #0369a1; }
+.app-canvas :is(.text-purple-200, .text-purple-300, .text-purple-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #7e22ce; }
+.app-canvas :is(.text-amber-100, .text-amber-200, .text-amber-300, .text-amber-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #92400e; }
+.app-canvas :is(.text-orange-200, .text-orange-300, .text-orange-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #9a3412; }
+.app-canvas :is(.text-yellow-200, .text-yellow-300, .text-yellow-400):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #a16207; }
+
+/* ---- Surfaces ------------------------------------------------------------ */
+.app-canvas :is(.bg-zinc-900, .bg-zinc-950, .bg-violet-950):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) {
+  background-color: var(--app-surface);
+}
+.app-canvas :is(.bg-zinc-800, .bg-violet-900):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) {
+  background-color: var(--app-raised);
+}
+
+/* Translucent white fills read as "slightly raised" on dark; on light they have
+   to invert to a tint of the ink or they vanish into the card. */
+.app-canvas .bg-white\/5:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *)  { background-color: rgba(17, 24, 39, 0.035); }
+.app-canvas .bg-white\/10:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { background-color: rgba(17, 24, 39, 0.06); }
+.app-canvas .bg-white\/20:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { background-color: rgba(17, 24, 39, 0.09); }
+.app-canvas .hover\:bg-white\/5:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *):hover  { background-color: rgba(17, 24, 39, 0.05); }
+.app-canvas .hover\:bg-white\/10:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *):hover { background-color: rgba(17, 24, 39, 0.08); }
+
+/* ---- Lines --------------------------------------------------------------- */
+.app-canvas :is(.border-white\/5, .border-white\/10,
+  .border-white\/15):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { border-color: var(--app-line); }
+.app-canvas :is(.border-white\/20,
+  .border-white\/30):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { border-color: var(--app-line-strong); }
+.app-canvas .divide-white\/10:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) > * + * { border-color: var(--app-line); }
+.app-canvas .ring-white\/10:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { --tw-ring-color: var(--app-line); }
+.app-canvas .ring-white\/20:not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { --tw-ring-color: var(--app-line-strong); }
+
+/* ---- Form controls ------------------------------------------------------- */
+/* Inputs were `bg-white/5 + text-white`; the rules above already invert them,
+   this makes the native chrome agree. */
+.app-canvas :is(input, select, textarea):not(.on-dark *, .admin-shell *) { color-scheme: light; }
+.app-canvas option:not(.on-dark *, .admin-shell *) { background-color: #fff; color: var(--app-ink); }
+
+/* A dark band keeps its own scheme so its white text still has something to sit
+   on once the page around it has gone light. */
+.app-canvas .on-dark { color-scheme: dark; }
+
+/* ---- Mid-tone brand colour ------------------------------------------------
+ * primary-500 (#8b5cf6) is the one brand step that reaches neither threshold on
+ * a light canvas: 4.23:1 both as a fill under white text and as text on white.
+ * It sat on dark surfaces before, where it was fine. One step darker clears it
+ * in both directions without changing the brand read.
+ */
+.app-canvas :is(.bg-primary-500, .bg-violet-500):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { background-color: #7c3aed; }
+.app-canvas :is(.text-primary-500, .text-violet-500):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { color: #6d28d9; }
+.app-canvas :is(.border-primary-500, .border-violet-500):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) { border-color: #7c3aed; }
+
+/* ---- Material components --------------------------------------------------
+ * material.css sets --mdc-theme-primary to #8b5cf6, which the raised buttons
+ * use as a fill under white text and the chips and outlined buttons use as
+ * text on white — 4.23:1 either way on a light canvas. Retargeting the token
+ * fixes every mdc consumer at once, the same move admin-theme.css makes for
+ * the portal. `on-primary` stays white: it now sits on the darker fill.
+ */
+.app-canvas {
+  --mdc-theme-primary: #7c3aed;   /* fill under white text        5.70:1 */
+  --mdc-theme-secondary: #6d28d9;
+}
+.app-canvas :is(.mdc-chip--primary, .mdc-button--outlined, .mdc-button:not(.mdc-button--raised)):not(.on-dark, .on-dark *, .admin-shell, .admin-shell *) {
+  color: #6d28d9;                 /* text on white/tint           7.10:1 */
+}

@@ -80,7 +80,7 @@
               <p class="mt-1.5 text-xs text-gray-500">Email cannot be changed once registered.</p>
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-sm font-medium text-gray-300 mb-1.5">{{ $t('auth.phone') || 'Phone Number' }}</label>
+              <label class="block text-sm font-medium text-gray-300 mb-1.5">{{ $t('auth.phoneNumber') }}</label>
               <input
                 v-model="formData.phoneNumber"
                 type="tel"

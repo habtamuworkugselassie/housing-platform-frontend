@@ -24,7 +24,11 @@
   --admin-fg: 255 255 255;        /* white               primary text      */
   --admin-muted: 209 213 219;     /* gray-300    #d1d5db  secondary text    */
   --admin-subtle: 156 163 175;    /* gray-400    #9ca3af  labels / icons    */
-  --admin-faint: 107 114 128;     /* gray-500    #6b7280  faintest text     */
+  /* Lifted off gray-500, which sat at 3.7:1 on the zinc-900 cards and 3.2:1 on
+     the violet-950 canvas — the same tier that failed in light mode. This
+     clears AA on all three dark surfaces and is still visibly quieter than
+     --admin-subtle above it. */
+  --admin-faint: 135 144 159;     /* #87909f             faintest text     */
   --admin-line: 255 255 255;      /* white               borders (low a)   */
   --admin-field: 255 255 255;     /* white               input bg (low a)  */
   --admin-nav: 46 16 101;         /* violet-950          nav tints/scrim    */
@@ -47,7 +51,12 @@
   --admin-fg: 46 16 101;          /* violet-950  #2e1065  primary text        */
   --admin-muted: 91 33 182;       /* violet-800  #5b21b6  secondary text      */
   --admin-subtle: 124 58 237;     /* violet-600  #7c3aed  labels / icons      */
-  --admin-faint: 167 139 250;     /* violet-400  #a78bfa  faintest text       */
+  /* Not a lighter violet: at 4.5:1 minimum there is no lightness headroom left
+     below --admin-subtle (violet-600), so the quietest tier is expressed by
+     desaturating instead. This grey-violet reads as calmer than the vivid
+     violet-600 above it while clearing AA on the canvas, cards and raised
+     panels alike — violet-400 managed only 2.5:1 and was barely readable. */
+  --admin-faint: 107 98 137;      /* #6b6289             faintest text       */
   --admin-line: 76 29 149;        /* violet-900  #4c1d95  borders (low a)     */
   --admin-field: 139 92 246;      /* violet-500  #8b5cf6  input tint (low a)  */
   --admin-nav: 124 58 237;        /* violet-600  #7c3aed  nav tints/scrim     */
@@ -100,18 +109,23 @@
  * only the text is darkened to the readable -700 shade under light. Scoped
  * high enough to win over the Tailwind text utilities, and only in light mode
  * so the dark portal is untouched.
+ *
+ * The shade per hue is whichever one clears 4.5:1 against that badge's own
+ * -500/30 fill composited on white. Blue, slate and purple manage it at -700;
+ * amber, orange, cyan and emerald are light enough fills that -700 lands
+ * between 3.8 and 4.1, so those four go a step darker to -800.
  */
 .admin-shell[data-theme='light'] .text-blue-200,
-.admin-shell[data-theme='light'] .text-blue-300 { color: #1d4ed8; }   /* blue-700   */
+.admin-shell[data-theme='light'] .text-blue-300 { color: #1d4ed8; }   /* blue-700    4.72 */
 .admin-shell[data-theme='light'] .text-amber-100,
-.admin-shell[data-theme='light'] .text-amber-200 { color: #b45309; }  /* amber-700  */
-.admin-shell[data-theme='light'] .text-slate-200 { color: #334155; }  /* slate-700  */
+.admin-shell[data-theme='light'] .text-amber-200 { color: #92400e; }  /* amber-800   5.64 */
+.admin-shell[data-theme='light'] .text-slate-200 { color: #334155; }  /* slate-700   7.02 */
 .admin-shell[data-theme='light'] .text-orange-200,
-.admin-shell[data-theme='light'] .text-orange-300 { color: #c2410c; } /* orange-700 */
+.admin-shell[data-theme='light'] .text-orange-300 { color: #9a3412; } /* orange-800  5.36 */
 .admin-shell[data-theme='light'] .text-purple-200,
-.admin-shell[data-theme='light'] .text-purple-300 { color: #7e22ce; } /* purple-700 */
-.admin-shell[data-theme='light'] .text-cyan-300 { color: #0e7490; }   /* cyan-700   */
-.admin-shell[data-theme='light'] .text-emerald-300 { color: #047857; }/* emerald-700 */
+.admin-shell[data-theme='light'] .text-purple-300 { color: #7e22ce; } /* purple-700  4.78 */
+.admin-shell[data-theme='light'] .text-cyan-300 { color: #155e75; }   /* cyan-800    5.49 */
+.admin-shell[data-theme='light'] .text-emerald-300 { color: #065f46; }/* emerald-800 5.78 */
 
 /*
  * Material Design (mdc-*) light theme for the /sponsorships page.

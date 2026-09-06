@@ -79,6 +79,9 @@
     "profile": "Profile",
     "reviews": "Reviews",
     "supportChat": {
+      "subtitle": "Usually replies in a few minutes",
+      "hint": "Need help finding a property?",
+      "scrollLatest": "Jump to latest",
       "title": "Help",
       "open": "Open support chat",
       "welcome": "Hi — I’ll walk you through the site in simple steps. For listings, use Marketplace → Real estate in the top bar (or /properties). Exhibition info is on the homepage by scrolling—not a separate top-bar item. Tell me what you need, or tap a suggestion below. For account problems, use Contact on the homepage.",

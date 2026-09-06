@@ -10,6 +10,9 @@ import './styles/reveal.css'
 import './styles/admin-theme.css'
 import './styles/material.css'
 import './styles/material-icons.css'
+// Before public-design.css on purpose: the page-specific rules there must still
+// win on pages that already had a considered light treatment.
+import './styles/light-app.css'
 import './styles/public-design.css'
 
 // No-op unless VITE_GA_MEASUREMENT_ID is set. Runs before mount so the router's
