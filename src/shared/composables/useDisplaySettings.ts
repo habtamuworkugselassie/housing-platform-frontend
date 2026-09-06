@@ -6,11 +6,23 @@ import { reactive } from 'vue'
 import api from '@/shared/api/client'
 import { coerceDisplayBool } from '@/shared/utils/displaySettingsBooleans'
 
+/** One publishable contact line. */
+export interface FooterPhone {
+  /** Human-readable, e.g. +251 913 504 097. */
+  display: string
+  /** Digits-only for the tel: href, e.g. 251913504097. */
+  tel: string
+}
+
 /** Footer contact from base organization (GET /public/display-settings). */
 export interface FooterContact {
   address: string
+  /** Primary line only. Superseded by `phones`; kept so an older API still renders. */
   phoneDisplay: string
+  /** Primary line only. Superseded by `phones`, as above. */
   phoneTel: string
+  /** Every line the base organization publishes, in display order. */
+  phones?: FooterPhone[]
   websiteLabel: string
   websiteUrl: string
 }
