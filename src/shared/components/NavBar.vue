@@ -250,8 +250,7 @@
           :aria-label="$t('nav.toggleMenu')"
           class="lg:hidden fixed start-0 top-16 bottom-0 z-[68] w-[86%] max-w-[22rem] flex flex-col overflow-y-auto overscroll-contain border-e border-gray-200 bg-white text-gray-900 shadow-2xl"
         >
-          <!-- pb clears the iOS home indicator, which otherwise covers the last row. -->
-          <div class="flex-1 py-3 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          <div class="flex-1 py-3">
             <section
               v-for="(group, gi) in menuGroups"
               :key="group.key"
@@ -305,15 +304,18 @@
               </ul>
             </section>
 
-            <div class="mt-1 border-t border-gray-200 px-5 pt-4">
-              <div class="flex items-center gap-6 text-[13px] text-gray-500">
-                <router-link to="/privacy" class="hover:text-gray-800" @click="mobileMenuOpen = false">
-                  {{ $t('legal.navPrivacy') }}
-                </router-link>
-                <router-link to="/terms" class="hover:text-gray-800" @click="mobileMenuOpen = false">
-                  {{ $t('legal.navTerms') }}
-                </router-link>
-              </div>
+          </div>
+
+          <!-- Pinned to the bottom of the panel. The pb clears the iOS home
+               indicator, which otherwise sits on top of these links. -->
+          <div class="mt-auto border-t border-gray-200 px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
+            <div class="flex items-center gap-6 text-[13px] text-gray-500">
+              <router-link to="/privacy" class="hover:text-gray-800" @click="mobileMenuOpen = false">
+                {{ $t('legal.navPrivacy') }}
+              </router-link>
+              <router-link to="/terms" class="hover:text-gray-800" @click="mobileMenuOpen = false">
+                {{ $t('legal.navTerms') }}
+              </router-link>
             </div>
           </div>
         </div>
