@@ -355,6 +355,16 @@ const routes = [
     name: 'LegalHub',
     component: () => import('@/shared/views/LegalHubView.vue')
   },
+  // A dedicated confirmation URL for the interest forms: it gives the conversion a
+  // page of its own to track and something shareable, which an inline success
+  // message inside the form cannot. noindex because it is a post-submit
+  // confirmation, not a page anyone should reach from search.
+  {
+    path: '/thank-you',
+    name: 'ThankYou',
+    component: () => import('@/shared/views/ThankYouView.vue'),
+    meta: { noindex: true }
+  },
   // Must stay last: vue-router matches in declaration order, so this only runs
   // once every real route has failed. Without it an unknown URL rendered an
   // empty <router-view> — a blank page that crawlers index as a soft 404.
@@ -544,6 +554,10 @@ const seoByRouteName = {
   LegalHub: {
     title: 'Legal - Ethio Build Connect',
     description: 'Privacy policy and terms of use for Ethio Build Connect.'
+  },
+  ThankYou: {
+    title: 'Thank You - Ethio Build Connect',
+    description: 'Your expo registration has been received by Ethio Build Connect.'
   },
   NotFound: {
     title: 'Page Not Found - Ethio Build Connect',

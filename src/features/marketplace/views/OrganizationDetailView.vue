@@ -14,6 +14,8 @@
     </div>
 
     <div v-else-if="organization" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <Breadcrumbs :crumbs="breadcrumbs" />
+
       <button
         @click="goBack"
         type="button"
@@ -620,6 +622,7 @@ import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatOrganizationPhones, formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
 import ReviewSection from '@/shared/components/ReviewSection.vue'
+import Breadcrumbs from '@/shared/components/Breadcrumbs.vue'
 import { VerifiedBadge, OsmMap, ListingCard } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import {
@@ -634,6 +637,7 @@ const { t } = useI18n()
 const authStore = useAuthStore()
 
 const ORG_JSON_LD_ID = 'dynamic-organization-jsonld'
+const breadcrumbs = ref([])
 
 const organization = ref(null)
 const loading = ref(true)
@@ -1036,13 +1040,14 @@ function syncOrganizationSeo() {
   setJsonLdById(ORG_JSON_LD_ID, ld)
 
   const directoryPath = typeToMarketplacePath[org.type]
-  setBreadcrumbJsonLd([
-    { name: 'Home', path: '/' },
+  breadcrumbs.value = [
+    { name: t('nav.home'), path: '/' },
     directoryPath
       ? { name: orgTypeLabel.value, path: directoryPath }
-      : { name: 'Marketplace', path: '/marketplace/real-estate' },
+      : { name: t('nav.marketplace'), path: '/marketplace/real-estate' },
     { name: org.name }
-  ])
+  ]
+  setBreadcrumbJsonLd(breadcrumbs.value)
 }
 
 async function loadOrganization() {

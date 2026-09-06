@@ -1170,6 +1170,42 @@
     }
   },
   "exhibition": {
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "Frequently asked questions",
+      "subtitle": "The things people ask us most about the expo and the marketplace.",
+      "moreQuestions": "Still have a question? Email us at",
+      "items": {
+        "whenWhere": {
+          "q": "When and where is the Ethio Build Connect Expo?",
+          "a": "The expo runs 10–13 November 2026 at the Addis Convention Center in Addis Ababa, Ethiopia."
+        },
+        "whoExhibits": {
+          "q": "Who can exhibit at the expo?",
+          "a": "Real estate developers, contractors, architects and consultants, building material and finishing suppliers, and service providers such as banks and insurers. Register your interest as an exhibitor and our team will be in touch."
+        },
+        "howRegister": {
+          "q": "How do I register?",
+          "a": "Use the registration form on this page and choose whether you are coming as a visitor, an exhibitor, or a partner. We record your details and contact you by email about the next steps."
+        },
+        "browsingCost": {
+          "q": "Does it cost anything to browse listings?",
+          "a": "No. Property listings and company profiles are open to everyone, and you do not need an account to search or view them."
+        },
+        "listProperty": {
+          "q": "How do I list a property on the marketplace?",
+          "a": "Create an account, register your company or agent profile for verification, and you can then submit properties and buildings from your dashboard."
+        },
+        "contactCompany": {
+          "q": "How do I contact a company or agent?",
+          "a": "Every listing and company profile shows the contact details the company has published, along with a map and directions to their location where they have provided one."
+        },
+        "languages": {
+          "q": "What languages is the platform available in?",
+          "a": "English and Amharic. Use the language switcher in the top bar to change between them at any time."
+        }
+      }
+    },
     "liveStream": {
       "badge": "Live",
       "defaultTitle": "Live from Ethio Build Connect Expo",
@@ -1612,6 +1648,26 @@
       "marketplaceBlurb": "Developers, contractors, consultants, suppliers, banks, and insurers.",
       "register": "Register for the expo",
       "registerBlurb": "Join as a visitor, exhibitor, or partner."
+    }
+  },
+  "breadcrumbs": {
+    "label": "Breadcrumb"
+  },
+  "thankYou": {
+    "badge": "Registration received",
+    "title": "Thank you — we have your details",
+    "body": "Your interest in the Ethio Build Connect expo has been recorded. Our team will review it and contact you by email about the next steps.",
+    "nextTitle": "While you wait",
+    "supportLabel": "Need to change something? Email us at",
+    "links": {
+      "properties": "Browse property listings",
+      "propertiesBlurb": "Houses, betoch, and apartments across Addis Ababa and Ethiopia.",
+      "marketplace": "Explore the marketplace",
+      "marketplaceBlurb": "Developers, contractors, consultants, suppliers, banks, and insurers.",
+      "brochure": "Read the expo brochure",
+      "brochureBlurb": "What the show covers and who exhibits.",
+      "home": "Back to the home page",
+      "homeBlurb": "The expo, partners, and the latest listings."
     }
   }
 }

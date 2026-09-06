@@ -166,7 +166,7 @@
           <ul class="space-y-3 text-sm">
             <li>
               <RouterLink
-                :to="{ name: 'Home', hash: '#show-features' }"
+                :to="{ name: 'Home', hash: '#faq' }"
                 class="text-gray-300 hover:text-primary-400 transition-colors"
               >
                 {{ $t('exhibition.footer.links.faq') }}

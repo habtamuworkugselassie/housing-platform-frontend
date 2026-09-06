@@ -1,6 +1,7 @@
 <template>
   <div class="building-details-page min-h-screen bg-violet-50 pb-14">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-900">
+    <Breadcrumbs :crumbs="breadcrumbs" />
     <div class="mb-6">
       <button
         @click="$router.back()"
@@ -300,6 +301,7 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '@/shared/api/client'
+import Breadcrumbs from '@/shared/components/Breadcrumbs.vue'
 import {
   truncateMetaDescription,
   getPublicSiteUrl,
@@ -318,6 +320,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const BUILDING_JSON_LD_ID = 'dynamic-building-jsonld'
+const breadcrumbs = ref([])
 
 const loading = ref(false)
 const unitsLoading = ref(false)
@@ -374,11 +377,14 @@ function syncBuildingSeo(b) {
   }
   setJsonLdById(BUILDING_JSON_LD_ID, ld)
 
-  setBreadcrumbJsonLd([
+  // This view's chrome is untranslated English throughout ("Building Details",
+  // "Total Units"), so its crumbs match rather than mixing two languages.
+  breadcrumbs.value = [
     { name: 'Home', path: '/' },
     { name: 'Buildings', path: '/buildings' },
     { name: b.name }
-  ])
+  ]
+  setBreadcrumbJsonLd(breadcrumbs.value)
 }
 
 const loadBuilding = async () => {
