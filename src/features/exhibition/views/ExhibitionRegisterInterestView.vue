@@ -27,6 +27,10 @@
         <p class="text-white/80 text-center text-sm mb-2 max-w-md">
           {{ $t('exhibition.registerInterest.subtitle') }}
         </p>
+        <p class="flex items-center justify-center gap-2 text-sm font-medium text-green-300">
+          <span class="material-icons !text-[18px] leading-none" aria-hidden="true">schedule</span>
+          {{ $t('exhibition.registerInterest.responseTime') }}
+        </p>
       </div>
 
       <!-- Form container -->
@@ -83,6 +87,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { exhibitionApi, getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
 import { trackInterestRegistration } from '@/utils/analytics'
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
@@ -90,6 +95,7 @@ import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
 const { t } = useI18n()
+const router = useRouter()
 
 // Register interest form (exhibition)
 const interestForm = ref({
@@ -158,12 +164,14 @@ async function submitInterest() {
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
     // The site's primary conversion. Fired after the request resolves so failed
-    // submissions never count.
+    // submissions never count, and before the redirect so it is not racing the
+    // route change.
     trackInterestRegistration({
       interestType: it,
       organizationType: interestForm.value.organizationType,
       source: 'standalone_page'
     })
+    router.push({ name: 'ThankYou' })
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
     interestError.value = typeof msg === 'string' ? msg : t('exhibition.registerInterest.errorGeneric')

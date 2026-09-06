@@ -163,6 +163,8 @@
     <ExhibitionVideoFeedbackSection v-if="feedbackEnabled" />
 
     <!-- Register your interest (scroll target for #register) -->
+    <ExhibitionFaqSection />
+
     <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-24">
       <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-sm font-semibold text-primary-600 mb-2 text-center">
@@ -171,8 +173,12 @@
         <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900 text-center">
           {{ $t('exhibition.registerInterest.title') }}
         </h2>
-        <p class="text-gray-600 text-center mb-10">
+        <p class="text-gray-600 text-center mb-3">
           {{ $t('exhibition.registerInterest.subtitle') }}
+        </p>
+        <p class="mb-10 flex items-center justify-center gap-2 text-sm font-medium text-primary-700">
+          <span class="material-icons !text-[18px] leading-none" aria-hidden="true">schedule</span>
+          {{ $t('exhibition.registerInterest.responseTime') }}
         </p>
         <form
           v-if="!interestSubmitted"
@@ -345,6 +351,7 @@
 import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
@@ -366,6 +373,7 @@ const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
   () => import('../components/ExhibitionSponsorshipPackagesSection.vue')
 )
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
+import ExhibitionFaqSection from '@/features/exhibition/components/ExhibitionFaqSection.vue'
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'
 // Fail-safe: if one of these lazy chunks can't be fetched (deploy/CDN/CSP),
 // render nothing instead of letting the error blank the whole landing page.
@@ -403,6 +411,7 @@ const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card3Title', bodyKey: 'exhibition.whatHappened.card3Body', icon: LightBulbIcon }
 ]
 const { t, locale } = useI18n()
+const router = useRouter()
 const brochureHref = computed(() =>
   locale.value === 'am'
     ? '/docs/ethio-build-connect-expo-2026-brochure-am.html'
@@ -487,12 +496,14 @@ async function submitInterest() {
     await exhibitionApi.registerInterest(payload)
     interestSubmitted.value = true
     // The site's primary conversion. Fired after the request resolves so failed
-    // submissions never count.
+    // submissions never count, and before the redirect so it is not racing the
+    // route change.
     trackInterestRegistration({
       interestType: it,
       organizationType: interestForm.value.organizationType,
       source: 'landing_page'
     })
+    router.push({ name: 'ThankYou' })
   } catch (err) {
     const msg = err?.response?.data?.message || err?.message || true
     interestError.value = typeof msg === 'string' ? msg : t('exhibition.registerInterest.errorGeneric')

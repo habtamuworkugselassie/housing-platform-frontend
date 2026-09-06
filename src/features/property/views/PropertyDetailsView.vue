@@ -20,6 +20,8 @@
 
     <!-- Property Content -->
     <div v-else class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8">
+      <Breadcrumbs :crumbs="breadcrumbs" />
+
       <!-- Back -->
       <button
         @click="$router.back()"
@@ -275,7 +277,7 @@
         <aside class="order-1 lg:order-none lg:col-span-1">
           <div class="space-y-4 lg:sticky lg:top-24">
             <!-- Price + contact -->
-            <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div ref="contactCardEl" class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <div class="mb-1 flex items-center gap-2">
                 <span :class="{ 'bg-blue-100 text-blue-700': property.category === 'FOR_SALE', 'bg-green-100 text-green-700': property.category === 'FOR_RENTAL' }" class="rounded-full px-2.5 py-0.5 text-xs font-semibold">
                   {{ property.category === 'FOR_SALE' ? $t('common.forSale') : $t('common.forRental') }}
@@ -568,6 +570,45 @@
       @close="showLoanModal = false"
       @created="handlePropertyLoanCreated"
     />
+
+    <!-- Sticky mobile contact bar -->
+    <Transition
+      enter-active-class="transition ease-out duration-200"
+      enter-from-class="translate-y-full"
+      leave-active-class="transition ease-in duration-150"
+      leave-to-class="translate-y-full"
+    >
+      <div
+        v-if="property && showStickyCta"
+        class="lg:hidden fixed inset-x-0 bottom-0 z-[55] border-t border-gray-200 bg-white/95 backdrop-blur-sm shadow-[0_-4px_16px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom)]"
+      >
+        <div class="flex items-center gap-3 px-4 py-3 pe-[5.5rem]">
+          <div class="min-w-0 flex-1">
+            <p v-if="property.priceETB" class="truncate text-base font-bold leading-tight text-gray-900">
+              {{ formatPrice(property.priceETB, 'ETB') }}<span v-if="property.category === 'FOR_RENTAL'" class="text-xs font-medium text-gray-500">/{{ $t('property.month') || 'month' }}</span>
+            </p>
+            <p v-else-if="property.priceUSD" class="truncate text-base font-bold leading-tight text-gray-900">{{ formatPrice(property.priceUSD, 'USD') }}</p>
+            <p v-else class="truncate text-sm text-gray-500">{{ $t('property.priceNotSet') }}</p>
+            <p class="truncate text-xs text-gray-500">{{ property.title }}</p>
+          </div>
+          <a
+            v-if="companyPhones.length"
+            :href="`tel:${companyPhones[0]}`"
+            class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gray-300 text-gray-700"
+            :aria-label="companyPhones[0]"
+          >
+            <span class="material-icons !text-[20px] leading-none" aria-hidden="true">call</span>
+          </a>
+          <button
+            type="button"
+            class="inline-flex h-11 shrink-0 items-center justify-center rounded-xl bg-primary-600 px-4 text-sm font-semibold text-white hover:bg-primary-700"
+            @click="showContactModal = true"
+          >
+            {{ $t('property.contact') }}
+          </button>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -587,7 +628,7 @@ import {
 import { useDynamicSeo } from '@/shared/composables/useDynamicSeo'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import { formatPrice as formatCurrencyPrice, formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
-import { VerifiedBadge, OsmMap } from '@/shared/components'
+import { VerifiedBadge, OsmMap, Breadcrumbs } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import { useAuthStore } from '@/features/auth'
 import ReviewSection from '@/shared/components/ReviewSection.vue'
@@ -598,6 +639,7 @@ const { t } = useI18n()
 const authStore = useAuthStore()
 
 const PROPERTY_JSON_LD_ID = 'dynamic-property-jsonld'
+const breadcrumbs = ref([])
 
 function syncPropertySeo(p) {
   if (!p) return
@@ -654,11 +696,14 @@ function syncPropertySeo(p) {
   }
   setJsonLdById(PROPERTY_JSON_LD_ID, listingLd)
 
-  setBreadcrumbJsonLd([
-    { name: 'Home', path: '/' },
-    { name: 'Properties', path: '/properties' },
+  // One trail drives both the visible crumbs and the BreadcrumbList schema, so the
+  // two can never drift apart.
+  breadcrumbs.value = [
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.properties'), path: '/properties' },
     { name: p.title }
-  ])
+  ]
+  setBreadcrumbJsonLd(breadcrumbs.value)
 }
 const property = ref(null)
 const seoOptions = ref({})
@@ -677,6 +722,25 @@ const financingOffers = ref([])
 const loading = ref(true)
 const currentImageIndex = ref(0)
 const showContactModal = ref(false)
+
+// The sticky mobile bar duplicates the inline price-and-contact card, so it only
+// appears once that card has scrolled out of view. An IntersectionObserver is used
+// rather than a scroll handler so this costs nothing while the card is on screen.
+const contactCardEl = ref(null)
+const showStickyCta = ref(false)
+let contactCardObserver = null
+
+function watchContactCard() {
+  if (typeof IntersectionObserver === 'undefined') return
+  contactCardObserver?.disconnect()
+  const el = contactCardEl.value
+  if (!el) return
+  contactCardObserver = new IntersectionObserver(
+    ([entry]) => { showStickyCta.value = !entry.isIntersecting },
+    { rootMargin: '0px 0px -80px 0px' }
+  )
+  contactCardObserver.observe(el)
+}
 const showGalleryModal = ref(false)
 const showLoanModal = ref(false)
 const galleryIndex = ref(0)
@@ -845,10 +909,17 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeyPress)
 })
 
+// The card only exists once the property has loaded and v-if has rendered the
+// sidebar, so the observer is (re)attached whenever that element appears.
+watch(contactCardEl, () => {
+  watchContactCard()
+})
+
 watch(
   () => route.params.id,
   () => {
     loading.value = true
+    showStickyCta.value = false
     removeJsonLdById(PROPERTY_JSON_LD_ID)
     loadProperty()
   }
@@ -856,6 +927,7 @@ watch(
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyPress)
+  contactCardObserver?.disconnect()
   removeJsonLdById(PROPERTY_JSON_LD_ID)
 })
 </script>
