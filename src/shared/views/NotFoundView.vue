@@ -16,7 +16,7 @@
       <li v-for="link in links" :key="link.labelKey">
         <RouterLink
           :to="link.to"
-          class="font-medium text-white underline decoration-white/30 hover:decoration-white"
+          class="inline-block py-2 -my-1 font-medium text-white underline decoration-white/30 hover:decoration-white"
         >
           {{ $t(link.labelKey) }}
         </RouterLink>

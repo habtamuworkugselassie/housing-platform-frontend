@@ -17,7 +17,7 @@
       <button
         @click="goBack"
         type="button"
-        class="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-400 focus:outline-none"
+        class="mb-5 -ms-2 inline-flex items-center gap-2 rounded-md px-2 py-2.5 text-sm font-medium text-gray-600 hover:text-primary-400 focus:outline-none"
       >
         <span aria-hidden="true">&larr;</span>
         <span>{{ $t('common.back') }}</span>

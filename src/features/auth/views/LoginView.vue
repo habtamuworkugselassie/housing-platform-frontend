@@ -80,12 +80,12 @@
 
         <div class="text-center space-y-1">
           <div>
-            <router-link to="/forgot-password" class="text-sm text-white hover:text-primary-400">
+            <router-link to="/forgot-password" class="inline-block py-2 -my-1 text-sm text-white hover:text-primary-400">
               {{ $t('auth.forgotPassword') }}
             </router-link>
           </div>
           <div>
-            <router-link to="/register" class="text-sm text-white hover:text-primary-400">
+            <router-link to="/register" class="inline-block py-2 -my-1 text-sm text-white hover:text-primary-400">
               {{ $t('auth.dontHaveAccount') }} {{ $t('auth.register') }}
             </router-link>
           </div>

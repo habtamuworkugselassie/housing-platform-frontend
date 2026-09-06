@@ -1,9 +1,9 @@
 /**
  * Google Analytics 4.
  *
- * The tag only loads when VITE_GA_MEASUREMENT_ID is set, so dev servers, preview
- * builds and anyone running the app locally stay out of the production property.
- * Every helper below is a no-op until then, which keeps call sites guard-free.
+ * The tag is skipped entirely on the dev server, so local work never lands in the
+ * production property; every helper below is then a no-op, which keeps call sites
+ * guard-free.
  *
  * GA4's automatic page_view only fires on the initial document load. This is a
  * client-routed SPA, so navigations are sent manually from the router instead
@@ -11,7 +11,12 @@
  * first one).
  */
 
-const MEASUREMENT_ID = String(import.meta.env.VITE_GA_MEASUREMENT_ID || '').trim()
+// The site's own GA4 property. Kept as the default rather than an env-only value so
+// a deploy that sets no build variables still reports; VITE_GA_MEASUREMENT_ID
+// overrides it (a staging property, say), and an empty override disables the tag.
+const DEFAULT_MEASUREMENT_ID = 'G-0BDWXN060N'
+const envId = import.meta.env.VITE_GA_MEASUREMENT_ID
+const MEASUREMENT_ID = String(envId === undefined ? DEFAULT_MEASUREMENT_ID : envId).trim()
 
 let initialized = false
 
@@ -29,6 +34,8 @@ export function analyticsEnabled() {
 
 export function initAnalytics() {
   if (initialized || !MEASUREMENT_ID || typeof window === 'undefined') return
+  // `vite dev` only — a production build always reports.
+  if (import.meta.env.DEV) return
 
   window.dataLayer = window.dataLayer || []
   window.gtag = window.gtag || gtag

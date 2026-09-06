@@ -72,16 +72,22 @@
 
     <!-- Dots: responsive padding -->
     <div class="flex flex-shrink-0 justify-center py-3 sm:py-4">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1">
+        <!-- The dot is the inner span; the button around it is a 24px square so the
+             target is tappable. Previously the button *was* the 8px dot. -->
         <button
           v-for="(_, index) in slides.length"
           :key="index"
           type="button"
-          class="h-2 w-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
-          :class="currentIndex === index ? 'w-6 bg-white' : 'bg-white/40 hover:bg-white/60'"
+          class="flex h-6 w-6 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-white/50"
           :aria-label="`Slide ${index + 1}`"
           @click="currentIndex = index"
-        />
+        >
+          <span
+            class="h-2 rounded-full transition-all duration-300"
+            :class="currentIndex === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'"
+          />
+        </button>
       </div>
     </div>
 

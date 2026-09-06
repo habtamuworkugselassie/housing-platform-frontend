@@ -105,7 +105,7 @@ h1 { margin: 0; color: #111827; font-size: clamp(2.2rem, 4.4vw, 3.6rem); font-we
 .landing-hero__option-text small { color: #6b7280; font-size: 0.8rem; line-height: 1.4; }
 .landing-hero__option-arrow { width: 1.1rem; height: 1.1rem; fill: none; stroke: #9ca3af; stroke-width: 2; }
 .landing-hero__option:hover .landing-hero__option-arrow { stroke: #6d28d9; }
-.landing-hero__marketplace { margin-top: 0.35rem; text-align: center; color: #5b21b6; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
+.landing-hero__marketplace { display: block; margin-top: 0.35rem; padding: 0.625rem 0.5rem; text-align: center; color: #5b21b6; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
 .landing-hero__marketplace:hover { text-decoration: underline; }
 
 @media (max-width: 860px) {

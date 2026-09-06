@@ -109,6 +109,8 @@
     "deleteError": "Could not delete your account. Please try again."
   },
   "nav": {
+    "browse": "Browse",
+    "account": "Account",
     "home": "Home",
     "goLive": "Go live",
     "live": "Live",

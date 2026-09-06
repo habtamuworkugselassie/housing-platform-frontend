@@ -48,3 +48,21 @@
 .property-details-page .bg-green-500\/30 { background: rgba(22, 163, 74, .25) !important; }
 
 @media (max-width: 640px) { .site-nav { position: sticky; } .public-page { overflow-x: clip; } }
+
+/* Touch targets.
+   The footer's link columns render as bare inline links inside a `space-y-3` list,
+   so each one is only as tall as its 16px text line — well under the ~44px a finger
+   needs, and they sit close enough together to mis-tap. Padding the hit area and
+   pulling the same amount back out as negative margin grows the target without
+   moving anything visually. Scoped to coarse pointers so mouse layouts are
+   untouched. */
+@media (pointer: coarse) {
+  .site-footer ul a,
+  .site-footer nav a,
+  a[href^='tel:'],
+  a[href^='mailto:'] {
+    display: inline-block;
+    padding-block: 0.625rem;
+    margin-block: -0.625rem;
+  }
+}
