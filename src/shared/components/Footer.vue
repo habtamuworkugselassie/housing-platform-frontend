@@ -19,10 +19,12 @@
           </p>
           <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-400">
             <a
-              :href="`tel:${phoneRaw}`"
+              v-for="line in phones"
+              :key="line.tel"
+              :href="`tel:${line.tel}`"
               class="hover:text-primary-400 transition-colors"
             >
-              {{ phone }}
+              {{ line.display }}
             </a>
           </div>
           <a
@@ -94,7 +96,7 @@
 
         <!-- Business -->
         <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
             {{ $t('exhibition.footer.columns.business') }}
           </h3>
           <ul class="space-y-2.5 lg:space-y-3 text-sm">
@@ -138,7 +140,7 @@
         <div class="flex flex-col gap-8 lg:contents">
           <!-- Media -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
               {{ $t('exhibition.footer.columns.media') }}
             </h3>
             <ul class="space-y-2.5 lg:space-y-3 text-sm">
@@ -163,7 +165,7 @@
 
           <!-- Support -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500 mb-3 lg:mb-4">
+            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
               {{ $t('exhibition.footer.columns.support') }}
             </h3>
             <ul class="space-y-2.5 lg:space-y-3 text-sm">
@@ -230,8 +232,10 @@ const isAuthenticated = computed(() => authStore.isAuthenticated)
 /** Used when display-settings has not loaded yet or no approved footer org is configured */
 const FALLBACK = {
   address: 'Addis Ababa, Ethiopia',
-  phoneDisplay: '+251 913 504 097',
-  phoneTel: '251913504097',
+  phones: [
+    { display: '+251 913 504 097', tel: '251913504097' },
+    { display: '+251 920 783 807', tel: '251920783807' }
+  ],
   websiteLabel: 'ethiobuildconnect.et',
   websiteUrl: 'https://ethiobuildconnect.et/'
 }
@@ -243,8 +247,16 @@ const showSponsorshipPackagesNavLink = computed(
 )
 
 const address = computed(() => settings.footer?.address || FALLBACK.address)
-const phone = computed(() => settings.footer?.phoneDisplay || FALLBACK.phoneDisplay)
-const phoneRaw = computed(() => settings.footer?.phoneTel || FALLBACK.phoneTel)
+// The API gained `phones` so an organization can publish more than one line; the
+// singular pair is what an older deployment still returns.
+const phones = computed(() => {
+  const footer = settings.footer
+  if (footer?.phones?.length) return footer.phones
+  if (footer?.phoneDisplay) {
+    return [{ display: footer.phoneDisplay, tel: footer.phoneTel || '' }]
+  }
+  return FALLBACK.phones
+})
 const website = computed(() => settings.footer?.websiteLabel || FALLBACK.websiteLabel)
 const websiteUrl = computed(() => settings.footer?.websiteUrl || FALLBACK.websiteUrl)
 const socialLinks = [
