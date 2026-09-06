@@ -60,7 +60,7 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col lg:ml-0">
+    <div class="flex-1 min-w-0 flex flex-col lg:ml-0">
       <!-- Top Bar -->
       <header class="bg-admin-surface border-b border-admin-line/10 h-16 flex items-center justify-between px-4 lg:px-6">
         <button
@@ -126,7 +126,7 @@
       </header>
 
       <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto bg-admin-bg text-admin-fg p-4 lg:p-6">
+      <main class="flex-1 min-w-0 overflow-y-auto bg-admin-bg text-admin-fg p-4 lg:p-6">
         <slot />
       </main>
     </div>
