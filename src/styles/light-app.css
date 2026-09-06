@@ -19,7 +19,8 @@
  *     excluded the same way: the portal renders inside this wrapper but owns its
  *     own light/dark tokens (admin-theme.css), and must keep them.
  *   - Elements that paint their own solid colour (buttons, badges: `bg-primary-600
- *     text-white`) keep their white text. Without this the label would be
+ *     text-white`) keep their white text. That includes deliberately dark chips
+ *     such as `bg-gray-900/80 text-white`, which a light page still needs. Without this the label would be
  *     recoloured to ink and left unreadable on a saturated fill.
  *
  * Load order matters: imported BEFORE public-design.css so the page-specific
@@ -61,7 +62,15 @@
   [class^="bg-orange-"], [class*=" bg-orange-"],
   [class^="bg-purple-"], [class*=" bg-purple-"],
   [class^="bg-sky-"], [class*=" bg-sky-"],
-  [class^="bg-indigo-"], [class*=" bg-indigo-"]
+  [class^="bg-indigo-"], [class*=" bg-indigo-"],
+  [class^="bg-gray-7"], [class*=" bg-gray-7"],
+  [class^="bg-gray-8"], [class*=" bg-gray-8"],
+  [class^="bg-gray-9"], [class*=" bg-gray-9"],
+  [class^="bg-zinc-7"], [class*=" bg-zinc-7"],
+  [class^="bg-slate-7"], [class*=" bg-slate-7"],
+  [class^="bg-slate-8"], [class*=" bg-slate-8"],
+  [class^="bg-slate-9"], [class*=" bg-slate-9"],
+  [class^="bg-black"], [class*=" bg-black"]
 ) { color: var(--app-ink); }
 
 .app-canvas :is(.text-white\/95, .text-white\/90, .text-white\/85, .text-white\/80,
