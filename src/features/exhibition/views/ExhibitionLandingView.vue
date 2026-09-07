@@ -350,7 +350,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -358,6 +358,8 @@ import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
 import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
 import { trackInterestRegistration } from '@/utils/analytics'
+import { setExpoEventJsonLd, removeExpoEventJsonLd, getPublicSiteUrl } from '@/utils/seo'
+import { EXPO_EVENT } from '@/features/exhibition/eventDetails'
 import { formatPrice, getVerificationLevel } from '@/shared/utils'
 import { VerifiedBadge } from '@/shared/components'
 import {
@@ -572,10 +574,25 @@ watch(propertiesPage, () => {
   if (!propertiesSearchQuery.value.trim()) loadProperties()
 })
 
+// The expo is a real dated event at a real venue, so it can appear in Google's event
+// results — but only if it says so in markup. Nothing on the site did.
+function syncExpoEventJsonLd() {
+  setExpoEventJsonLd(EXPO_EVENT, {
+    description: t('exhibition.hero.subtitle'),
+    // The canonical origin, not window.location.origin: on the www host the latter
+    // would point the markup at a different hostname than every other URL we publish.
+    image: `${getPublicSiteUrl()}/images/branding/ethio-build-connect-banner.png`
+  })
+}
+
 onMounted(() => {
   loadProperties()
   loadInterestPackages()
+  syncExpoEventJsonLd()
 })
+// The description is translated, so the markup follows a language switch.
+watch(locale, syncExpoEventJsonLd)
+onUnmounted(removeExpoEventJsonLd)
 
 function scrollToHash() {
   const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')
