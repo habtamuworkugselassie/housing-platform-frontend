@@ -621,6 +621,7 @@ import {
   getPublicSiteUrl,
   setJsonLdById,
   removeJsonLdById,
+  applyNoindexRobots,
   setBreadcrumbJsonLd,
   buildAggregateRating
 } from '@/utils/seo'
@@ -1084,6 +1085,11 @@ async function loadOrganization() {
     error.value = e.response?.data?.message || e.message || 'Failed to load organization'
     organization.value = null
     removeJsonLdById(ORG_JSON_LD_ID)
+    // A record that no longer exists still renders at HTTP 200 (the SPA has no way to
+    // send a 404), so without this the error page is served to Google as indexable
+    // content — a soft 404. Two deleted organizations were sitting in Search
+    // Console's "Crawled - currently not indexed" for exactly this reason.
+    applyNoindexRobots()
   } finally {
     loading.value = false
   }
