@@ -307,6 +307,7 @@ import {
   getPublicSiteUrl,
   setJsonLdById,
   removeJsonLdById,
+  applyNoindexRobots,
   setBreadcrumbJsonLd,
   buildAggregateRating
 } from '@/utils/seo'
@@ -412,6 +413,11 @@ const loadBuilding = async () => {
     error.value = err.response?.data?.message || 'Failed to load building'
     building.value = null
     removeJsonLdById(BUILDING_JSON_LD_ID)
+    // A record that no longer exists still renders at HTTP 200 (the SPA has no way to
+    // send a 404), so without this the error page is served to Google as indexable
+    // content — a soft 404. Two deleted organizations were sitting in Search
+    // Console's "Crawled - currently not indexed" for exactly this reason.
+    applyNoindexRobots()
   } finally {
     loading.value = false
   }

@@ -622,6 +622,7 @@ import {
   truncateMetaDescription,
   setJsonLdById,
   removeJsonLdById,
+  applyNoindexRobots,
   setBreadcrumbJsonLd,
   buildAggregateRating
 } from '@/utils/seo'
@@ -840,6 +841,11 @@ const loadProperty = async () => {
     console.error('Failed to load property:', err)
     property.value = null
     removeJsonLdById(PROPERTY_JSON_LD_ID)
+    // A record that no longer exists still renders at HTTP 200 (the SPA has no way to
+    // send a 404), so without this the error page is served to Google as indexable
+    // content — a soft 404. Two deleted organizations were sitting in Search
+    // Console's "Crawled - currently not indexed" for exactly this reason.
+    applyNoindexRobots()
   } finally {
     loading.value = false
   }

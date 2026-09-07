@@ -1,5 +1,23 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ethiobuildconnect.et/sitemap.xml
+# Not content. Google had crawled /api/v1/public/download/info and
+# /downloads/ethio-build-connect.apk and filed both under "Crawled - currently not
+# indexed", which is wasted crawl budget on this site's behalf and noise in the
+# coverage report. Uploaded media stays crawlable: listing photos belong in Google
+# Images.
+Disallow: /api/v1/public/
+Disallow: /api/v1/auth/
+Disallow: /downloads/
+Disallow: /swagger-ui/
+Disallow: /v3/api-docs
 
+# Account and session pages carry a noindex tag too; excluding them here saves the
+# crawl entirely rather than fetching them to be told to go away.
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /go-live
+
+Sitemap: https://ethiobuildconnect.et/sitemap.xml
