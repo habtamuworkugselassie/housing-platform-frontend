@@ -517,9 +517,11 @@ const seoByRouteName = {
       'View company details, contact information, and listings on Ethio Build Connect.'
   },
   ExhibitionLanding: {
-    title: 'Ethiopia Property and Construction Expo - Ethio Build Connect',
+    // "Expo" and "exhibition" are searched separately and the word "exhibition"
+    // appeared in no title on the site, despite the route being /exhibition.
+    title: 'Ethiopia Real Estate Expo and Construction Exhibition - Ethio Build Connect',
     description:
-      'Learn about the Ethio Build Connect exhibition and expo, sponsors, and how to participate in Ethiopia’s property and construction expo.'
+      'Ethio Build Connect Expo — Ethiopia’s real estate and construction exhibition, 10–13 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors and sponsors, and register your interest.'
   },
   Register: {
     title: 'Create Account - Ethio Build Connect',

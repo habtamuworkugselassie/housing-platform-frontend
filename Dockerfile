@@ -6,6 +6,13 @@ WORKDIR /app
 ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
+# Public site URL baked in at build time. Canonical URLs and og:url have to name one
+# host: without this arg the env branch compiles away and the app falls back to
+# window.location.origin, so www and the apex each self-canonicalise and Google
+# indexes them as two separate copies of the whole site.
+ARG VITE_PUBLIC_SITE_URL=https://ethiobuildconnect.et
+ENV VITE_PUBLIC_SITE_URL=${VITE_PUBLIC_SITE_URL}
+
 COPY package*.json ./
 RUN npm ci
 # Work around npm optional deps bug: explicitly install Rollup native binary for Linux (https://github.com/npm/cli/issues/4828)

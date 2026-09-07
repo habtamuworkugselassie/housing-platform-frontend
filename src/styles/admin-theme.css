@@ -171,3 +171,16 @@
 .admin-shell[data-theme='light'] .mdc-dialog { background-color: rgba(46, 16, 101, 0.4); }
 .admin-shell[data-theme='light'] .mdc-dialog__surface { border: 1px solid rgba(76, 29, 149, 0.12); }
 .admin-shell[data-theme='light'] .mdc-dialog__title { color: #2e1065; }
+
+/* ---- Placeholders ---------------------------------------------------------
+ * The inputs ask for `placeholder-admin-subtle`, the same token their label
+ * uses. In the light theme that token is vivid violet-600, so a placeholder
+ * came out the identical colour as the label above it and an empty field read
+ * as a filled one. --admin-faint is the tier meant for the quietest text and is
+ * already tuned for both themes, which keeps a placeholder distinct from the
+ * label above and from a real value below.
+ */
+.admin-shell .placeholder-admin-subtle::placeholder,
+.admin-shell .placeholder-admin-muted::placeholder {
+  color: rgb(var(--admin-faint));
+}

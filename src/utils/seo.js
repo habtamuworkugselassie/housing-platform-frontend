@@ -9,23 +9,29 @@ export function getPublicSiteUrl() {
     return v.replace(/\/$/, '')
   }
   if (typeof window !== 'undefined' && window.location?.origin) {
-    return window.location.origin
+    // Drop a leading `www.`: this site declares the apex everywhere that matters
+    // (robots.txt, sitemap.xml, og:url, index.html), and both hosts answer without a
+    // redirect. Echoing back whichever host was requested made each one canonical to
+    // itself, splitting every page into two competing URLs.
+    return window.location.origin.replace('://www.', '://')
   }
   return 'https://ethiobuildconnect.et'
 }
 
 /** Canonical URL for a route (path only, no query string). */
 export function canonicalUrlForRoute(to) {
-  const base = getPublicSiteUrl()
-  const path = to?.path || '/'
-  return `${base}${path === '/' ? '' : path}`
+  return canonicalUrlForPath(to?.path)
 }
 
-/** Full page URL without query string, for the current window location. */
+/**
+ * Full page URL without query string, for a path or the current window location.
+ * The home page keeps its trailing slash so this agrees character-for-character with
+ * sitemap.xml, robots.txt, the static og:url and the nginx Link header.
+ */
 export function canonicalUrlForPath(pathname) {
   const base = getPublicSiteUrl()
   const path = pathname || '/'
-  return `${base}${path === '/' ? '' : path}`
+  return `${base}${path === '/' ? '/' : path}`
 }
 
 export function ensureMetaTag(name, attr = 'name') {
@@ -124,6 +130,53 @@ export const BREADCRUMB_JSON_LD_ID = 'dynamic-breadcrumb-jsonld'
  * `path` is site-relative and is normally omitted on that last entry, since a
  * crumb for the page you are already on needs no link.
  */
+const EXPO_EVENT_JSON_LD_ID = 'expo-event-jsonld'
+
+/**
+ * ExhibitionEvent markup for the expo landing page.
+ *
+ * schema.org has a dedicated subtype for trade shows, which describes this more
+ * precisely than a bare Event. Only what the page itself states is asserted: no
+ * offers block, because the page invites visitors to register interest rather than
+ * naming a ticket price, and claiming a price we do not publish would be wrong.
+ *
+ * Scoped to the expo route and torn down on leave, so no other URL claims to be
+ * the event page.
+ */
+export function setExpoEventJsonLd(event, { description, image } = {}) {
+  const url = canonicalUrlForPath('/exhibition')
+  setJsonLdById(EXPO_EVENT_JSON_LD_ID, {
+    '@context': 'https://schema.org',
+    '@type': 'ExhibitionEvent',
+    name: event.name,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: event.venueName,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: event.addressLocality,
+        addressCountry: event.addressCountry
+      }
+    },
+    ...(description ? { description } : {}),
+    ...(image ? { image } : {}),
+    organizer: {
+      '@type': 'Organization',
+      name: 'Ethio Build Connect',
+      url: canonicalUrlForPath('/')
+    },
+    url
+  })
+}
+
+export function removeExpoEventJsonLd() {
+  removeJsonLdById(EXPO_EVENT_JSON_LD_ID)
+}
+
 export function setBreadcrumbJsonLd(trail) {
   const items = (trail || []).filter((c) => c && c.name)
   if (items.length < 2) {
