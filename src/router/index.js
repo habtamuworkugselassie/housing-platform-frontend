@@ -10,6 +10,7 @@ import {
   getPublicSiteUrl,
   removeBreadcrumbJsonLd
 } from '@/utils/seo'
+import { defaultSeo, seoByRouteName } from './routeSeo'
 
 const routes = [
   {
@@ -24,9 +25,13 @@ const routes = [
   },
   // Marketplace: real estate = current home/property search; others = organization list by type
   {
+    // Same component as /real-estate, and HomeView reads nothing from the route, so
+    // the two URLs serve one identical page. `canonicalPath` hands the search-engine
+    // signals to /real-estate instead of letting the pair compete.
     path: '/marketplace/real-estate',
     name: 'MarketplaceRealEstate',
-    component: () => import('@/features/property/views/HomeView.vue')
+    component: () => import('@/features/property/views/HomeView.vue'),
+    meta: { canonicalPath: '/real-estate' }
   },
   {
     path: '/marketplace/banks',
@@ -336,9 +341,19 @@ const routes = [
     meta: { requiresAuth: true, requiresSupplier: true, noindex: true }
   },
   {
+    // The home page *is* the expo page — same component, and the route is read only
+    // for the `?interest=` query and the `#section` hash. `/` is the URL that carries
+    // the site's inbound links, so it owns the expo keywords and this path
+    // canonicalises to it; the URL stays live for printed material and QR codes.
     path: '/exhibition',
     name: 'ExhibitionLanding',
-    component: () => import('@/features/exhibition/views/ExhibitionLandingView.vue')
+    component: () => import('@/features/exhibition/views/ExhibitionLandingView.vue'),
+    meta: { canonicalPath: '/' }
+  },
+  {
+    path: '/ethiopia-real-estate-market',
+    name: 'EthiopiaRealEstateMarket',
+    component: () => import('@/features/marketplace/views/EthiopiaRealEstateMarketView.vue')
   },
   {
     path: '/privacy',
@@ -438,135 +453,6 @@ router.afterEach((to) => {
     window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash)
   }
 })
-
-const defaultSeo = {
-  title: 'Ethio Build Connect - Ethiopia Real Estate and Construction Marketplace',
-  description:
-    'Find Addis Ababa real estate, betoch, apartments, developers, contractors, and suppliers in one Ethiopia marketplace.'
-}
-
-const seoByRouteName = {
-  Home: {
-    title: 'Ethio Build Connect - Addis Ababa Real Estate, Betoch and Construction',
-    description:
-      'Search Addis Ababa real estate, betoch for sale or rent, and trusted construction companies in Ethiopia.'
-  },
-  RealEstateSearch: {
-    title: 'Addis Ababa Real Estate Listings - Ethio Build Connect',
-    description:
-      'Browse Ethiopia property listings including houses, apartments, and betoch in Addis Ababa.'
-  },
-  MarketplaceRealEstate: {
-    title: 'Ethiopia Real Estate Marketplace - Ethio Build Connect',
-    description:
-      'Discover verified real estate opportunities, developers, and agents across Ethiopia.'
-  },
-  MarketplaceBanks: {
-    title: 'Banks and Financing Partners in Ethiopia - Ethio Build Connect',
-    description:
-      'Find banks and financing partners for property and construction projects in Addis Ababa and Ethiopia.'
-  },
-  MarketplaceInsurance: {
-    title: 'Insurance Partners for Property and Construction - Ethio Build Connect',
-    description:
-      'Connect with insurance providers for real estate and construction coverage in Ethiopia.'
-  },
-  MarketplaceContractors: {
-    title: 'Construction Contractors in Ethiopia - Ethio Build Connect',
-    description:
-      'Find construction contractors and project partners for residential and commercial development.'
-  },
-  MarketplaceConsultantsArchitects: {
-    title: 'Consultants and Architects in Ethiopia - Ethio Build Connect',
-    description:
-      'Hire architects, engineers, and consultants for design and project delivery in Ethiopia.'
-  },
-  MarketplaceSuppliers: {
-    title: 'Construction Material Suppliers in Ethiopia - Ethio Build Connect',
-    description:
-      'Connect with trusted construction suppliers and material partners in Addis Ababa and beyond.'
-  },
-  MarketplaceFinishingWork: {
-    title: 'Finishing and Interior Work in Ethiopia - Ethio Build Connect',
-    description:
-      'Find finishing contractors and interior specialists for homes and commercial spaces in Ethiopia.'
-  },
-  Properties: {
-    title: 'Property Listings Ethiopia - Houses, Betoch and Apartments',
-    description:
-      'Explore verified property listings in Ethiopia, including Addis Ababa houses and apartments.'
-  },
-  PropertyDetails: {
-    title: 'Property Details - Ethio Build Connect',
-    description:
-      'View complete property information, media, and location insights on Ethio Build Connect.'
-  },
-  Buildings: {
-    title: 'Residential and Commercial Buildings in Ethiopia - Ethio Build Connect',
-    description:
-      'Browse buildings, developments, and multi-unit projects listed on Ethio Build Connect in Ethiopia.'
-  },
-  BuildingDetails: {
-    title: 'Building Details - Ethio Build Connect',
-    description:
-      'View building information, units, location, and financing options on Ethio Build Connect.'
-  },
-  OrganizationDetail: {
-    title: 'Organization Profile - Ethio Build Connect',
-    description:
-      'View company details, contact information, and listings on Ethio Build Connect.'
-  },
-  ExhibitionLanding: {
-    // "Expo" and "exhibition" are searched separately and the word "exhibition"
-    // appeared in no title on the site, despite the route being /exhibition.
-    title: 'Ethiopia Real Estate Expo and Construction Exhibition - Ethio Build Connect',
-    description:
-      'Ethio Build Connect Expo — Ethiopia’s real estate and construction exhibition, 10–13 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors and sponsors, and register your interest.'
-  },
-  Register: {
-    title: 'Create Account - Ethio Build Connect',
-    description: 'Register for Ethio Build Connect to list properties and access the marketplace.'
-  },
-  RegisterInterest: {
-    title: 'Register Interest - Ethio Build Connect',
-    description: 'Register your interest for the Ethiopia Property and Construction Expo.'
-  },
-  Login: {
-    title: 'Sign In - Ethio Build Connect',
-    description: 'Sign in to your Ethio Build Connect account.'
-  },
-  ForgotPassword: {
-    title: 'Forgot Password - Ethio Build Connect',
-    description: 'Reset your Ethio Build Connect account password.'
-  },
-  ResetPassword: {
-    title: 'Reset Password - Ethio Build Connect',
-    description: 'Set a new password for your Ethio Build Connect account.'
-  },
-  PrivacyPolicy: {
-    title: 'Privacy Policy - Ethio Build Connect',
-    description:
-      'How Ethio Build Connect collects, uses, and protects your information on our website and mobile apps.'
-  },
-  TermsOfUse: {
-    title: 'Terms of Use - Ethio Build Connect',
-    description:
-      'Terms and conditions for using Ethio Build Connect marketplace, listings, and related services.'
-  },
-  LegalHub: {
-    title: 'Legal - Ethio Build Connect',
-    description: 'Privacy policy and terms of use for Ethio Build Connect.'
-  },
-  ThankYou: {
-    title: 'Thank You - Ethio Build Connect',
-    description: 'Your expo registration has been received by Ethio Build Connect.'
-  },
-  NotFound: {
-    title: 'Page Not Found - Ethio Build Connect',
-    description:
-      'This page could not be found. Browse Ethiopia property listings, the construction marketplace, and the Ethio Build Connect expo.'
-  }
-}
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()

@@ -2,8 +2,13 @@
   <section class="landing-hero" aria-label="Ethio Build Connect Exhibition">
     <div class="landing-hero__content">
       <div class="landing-hero__copy">
-        <p class="landing-hero__eyebrow">{{ $t('home.expoEyebrow') }}</p>
+        <p class="landing-hero__eyebrow">{{ $t('exhibition.hero.eventName') }}</p>
         <h1>{{ $t('home.expoHeadline') }}</h1>
+        <!-- The dates and venue were stated nowhere a visitor could see them: the only
+             component that rendered `hero.dateVenue` is not mounted on any route, so the
+             page carried ExhibitionEvent markup claiming a date the page never showed.
+             Event rich results are held to agreeing with the visible page. -->
+        <p class="landing-hero__when">{{ $t('exhibition.hero.dateVenue') }}</p>
         <p class="landing-hero__lead">{{ $t('exhibition.planning.body') }}</p>
         <p class="landing-hero__who">{{ $t('exhibition.planning.whoShowcases') }}</p>
 
@@ -81,6 +86,7 @@ onMounted(async () => {
 .landing-hero__copy { max-width: 40rem; }
 .landing-hero__eyebrow { margin: 0 0 1rem; color: #6d28d9; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 h1 { margin: 0; color: #111827; font-size: clamp(2.2rem, 4.4vw, 3.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; }
+.landing-hero__when { display: inline-block; margin: 1.1rem 0 0; padding: 0.4rem 0.75rem; border-radius: 0.5rem; background: #f5f3ff; color: #5b21b6; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.01em; }
 .landing-hero__lead { max-width: 36rem; margin: 1.25rem 0 0; color: #374151; font-size: clamp(1rem, 1.4vw, 1.125rem); line-height: 1.65; }
 .landing-hero__who { max-width: 36rem; margin: 0.9rem 0 0; color: #6b7280; font-size: 0.95rem; line-height: 1.6; }
 .landing-hero__trust { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1.75rem 0 0; color: #6b7280; font-size: 0.9rem; }

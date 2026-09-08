@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import prerenderMarketingPages from './vite/prerender.js'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), prerenderMarketingPages()],
   optimizeDeps: {
     // Avoid pre-bundle stripping named re-exports (e.g. createHead) from @unhead/vue on Vite 6
     exclude: ['@unhead/vue', 'unhead'],

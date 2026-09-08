@@ -160,6 +160,17 @@
                   {{ $t('exhibition.footer.links.featuredListings') }}
                 </RouterLink>
               </li>
+              <!-- The market guide is reachable from nowhere else in the interface, and a
+                   page with no internal links is a page search engines treat as
+                   peripheral however good it is. The footer renders on every route. -->
+              <li>
+                <RouterLink
+                  to="/ethiopia-real-estate-market"
+                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                >
+                  {{ $t('nav.ethiopiaRealEstateMarket') }}
+                </RouterLink>
+              </li>
             </ul>
           </div>
 

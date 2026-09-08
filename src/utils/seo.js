@@ -18,9 +18,18 @@ export function getPublicSiteUrl() {
   return 'https://ethiobuildconnect.et'
 }
 
-/** Canonical URL for a route (path only, no query string). */
+/**
+ * Canonical URL for a route (path only, no query string).
+ *
+ * A route may name another path as its canonical owner via `meta.canonicalPath`. Some
+ * routes render the same component with no route-dependent content at all — `/` and
+ * `/exhibition` are the same expo page, `/real-estate` and `/marketplace/real-estate`
+ * the same search page — and two URLs that each declared themselves canonical split
+ * one page's ranking signals between them. Pointing the alias at the owner spends
+ * every link on one URL instead.
+ */
 export function canonicalUrlForRoute(to) {
-  return canonicalUrlForPath(to?.path)
+  return canonicalUrlForPath(to?.meta?.canonicalPath || to?.path)
 }
 
 /**
@@ -144,7 +153,10 @@ const EXPO_EVENT_JSON_LD_ID = 'expo-event-jsonld'
  * the event page.
  */
 export function setExpoEventJsonLd(event, { description, image } = {}) {
-  const url = canonicalUrlForPath('/exhibition')
+  // The home page is the expo page: `/exhibition` renders the same component and
+  // canonicalises to `/`, so the event's own URL has to name the canonical one. An
+  // Event pointing at a URL Google has folded away describes a page it will not show.
+  const url = canonicalUrlForPath('/')
   setJsonLdById(EXPO_EVENT_JSON_LD_ID, {
     '@context': 'https://schema.org',
     '@type': 'ExhibitionEvent',
