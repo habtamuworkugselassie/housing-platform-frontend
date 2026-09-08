@@ -90,11 +90,12 @@ Everything above makes the site *eligible*. Ranking for a competitive term also 
    URL Inspection → Request Indexing on `/` and `/ethiopia-real-estate-market` after
    deploying. Watch the Pages report for "Crawled - currently not indexed"; that is what
    caught the duplicate URLs in the first place.
-2. **Links from other sites.** The single biggest remaining gap. Worth pursuing: Ethiopian
-   news and business press covering the expo, construction and real estate association
-   member directories, trade-show aggregators (10times, Expo Database, EventsEye — these
-   rank for "Ethiopia real estate expo" today), chambers of commerce, exhibitor and sponsor
-   sites linking back from their own "events we attend" pages.
+2. **Links from other sites.** The single biggest remaining gap. `SEO-TARGETS.md` is the
+   researched list — who holds each keyword's result page today, which aggregators and
+   directories to list on, and which Ethiopian outlets have covered a real estate expo
+   before. Read it before doing any outreach; it also records two things that are not SEO
+   problems but were found while looking (a brand-name collision with an established
+   competitor, and a possible venue clash in the same week).
 3. **A Google Business Profile** for the Addis Ababa office, which is what puts the
    organisation in the map pack for local queries.
 4. **Amharic URLs.** The locale currently lives in `localStorage`, so English and Amharic
