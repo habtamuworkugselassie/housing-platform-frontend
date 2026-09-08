@@ -343,7 +343,9 @@ const marketplaceDropdownOpen = ref(false)
 // dropdown and the mobile menu share one consistent icon set (Material Icons,
 // no mismatched emoji).
 const marketplaceCategories = [
-  { to: '/marketplace/real-estate', labelKey: 'nav.marketplaceRealEstate', icon: 'home_work' },
+  // `/real-estate`, not `/marketplace/real-estate`: the two render the same view and
+  // the marketplace path canonicalises to this one, so internal links point here.
+  { to: '/real-estate', labelKey: 'nav.marketplaceRealEstate', icon: 'home_work' },
   { to: '/marketplace/banks', labelKey: 'nav.marketplaceBanks', icon: 'account_balance' },
   { to: '/marketplace/insurance', labelKey: 'nav.marketplaceInsurance', icon: 'shield' },
   { to: '/marketplace/contractors', labelKey: 'nav.marketplaceContractors', icon: 'engineering' },

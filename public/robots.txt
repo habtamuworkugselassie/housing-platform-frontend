@@ -12,6 +12,11 @@ Disallow: /downloads/
 Disallow: /swagger-ui/
 Disallow: /v3/api-docs
 
+# Build output, not URLs. /prerender/*.html are the prerendered copies nginx serves for
+# /, /exhibition and /ethiopia-real-estate-market; each one names its real URL as
+# canonical, but nothing links to these paths and crawling them directly is wasted.
+Disallow: /prerender/
+
 # Account and session pages carry a noindex tag too; excluding them here saves the
 # crawl entirely rather than fetching them to be told to go away.
 Disallow: /login

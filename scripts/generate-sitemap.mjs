@@ -7,6 +7,11 @@
  * 3. Point robots.txt Sitemap to the generated file or merge URLs into public/sitemap.xml.
  *
  * This stub does not call the network; it documents the intended workflow for Search Console discovery.
+ *
+ * The live sitemap is served by the backend (SitemapController), which already queries the
+ * database and is what robots.txt points at. Keep the path list below in step with that
+ * controller's: it omits /exhibition and /marketplace/real-estate, which canonicalise to /
+ * and /real-estate, and /ethio-real-estate-marketplace.html, which is a 301.
  */
 
 const BASE_URL = process.env.SITEMAP_BASE_URL || 'https://ethiobuildconnect.et'
@@ -16,15 +21,13 @@ const staticPaths = [
   '/real-estate',
   '/properties',
   '/buildings',
-  '/marketplace/real-estate',
   '/marketplace/banks',
   '/marketplace/insurance',
   '/marketplace/contractors',
   '/marketplace/consultants-and-architects',
   '/marketplace/suppliers',
   '/marketplace/finishing-work',
-  '/exhibition',
-  '/ethio-real-estate-marketplace.html'
+  '/ethiopia-real-estate-market'
 ]
 
 function urlEntry(loc, changefreq, priority) {

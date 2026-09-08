@@ -83,6 +83,9 @@ const isPublicRoute = computed(() => {
   return route.meta?.requiresAuth !== true
 })
 
-// Exhibition landing (home): show sponsor carousel above content; side panels sit below it
-const isExhibitionLanding = computed(() => route.path === '/')
+// Exhibition landing: show sponsor carousel above content; side panels sit below it.
+// `/exhibition` renders the same view and canonicalises to `/`, but it was excluded
+// here, so that URL served the expo page with no hero and no `<h1>` at all.
+const EXHIBITION_LANDING_PATHS = new Set(['/', '/exhibition'])
+const isExhibitionLanding = computed(() => EXHIBITION_LANDING_PATHS.has(route.path))
 </script>
