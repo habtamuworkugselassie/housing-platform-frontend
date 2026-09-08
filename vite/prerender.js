@@ -102,8 +102,91 @@ function expoBody(t) {
       </ul>`
 }
 
+/**
+ * Fetches the live statistics so the figures are in the HTML, not only in a later fetch.
+ *
+ * The numbers are the whole competitive point of this page — the site currently holding
+ * these results does so with figures — so leaving them to a client-side request would put
+ * them behind the same JavaScript wall the rest of this plugin exists to get around.
+ *
+ * The build runs in CI with `VITE_API_BASE_URL` pointing at the deployed backend, so this
+ * reaches it over the public internet. A local build usually has a relative base and no
+ * backend, which is not an error: the section is skipped, the page ships with its prose,
+ * and the browser fills the figures in. It is warned about loudly rather than silently,
+ * because the same thing happening in CI means production shipped without them.
+ */
+async function fetchMarketStatistics(log) {
+  const base = (process.env.PRERENDER_STATS_URL || process.env.VITE_API_BASE_URL || '').trim()
+  if (!base) {
+    log('prerender: VITE_API_BASE_URL is not set, so the market page ships without figures')
+    return null
+  }
+  if (!/^https?:\/\//.test(base)) {
+    log(`prerender: VITE_API_BASE_URL ("${base}") is relative and cannot be fetched at build time`)
+    return null
+  }
+  const url = process.env.PRERENDER_STATS_URL
+    ? base
+    : `${base.replace(/\/$/, '')}${MARKET_STATISTICS_PATH}`
+  try {
+    const response = await fetch(url, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(15000)
+    })
+    if (!response.ok) {
+      log(`prerender: ${url} answered ${response.status}; the market page ships without figures`)
+      return null
+    }
+    return await response.json()
+  } catch (error) {
+    log(`prerender: could not reach ${url} (${error.message}); market page ships without figures`)
+    return null
+  }
+}
+
+/** The statistics section, from the same view model the Vue component renders. */
+function statisticsBody(view) {
+  if (!view) return ''
+
+  const tiles = view.headline
+    .map(
+      (item) =>
+        `<dt>${esc(item.label)}</dt>\n        <dd><strong>${esc(item.value)}</strong> — ${esc(item.note)}</dd>`
+    )
+    .join('\n        ')
+
+  const tables = view.tables
+    .map((table) => {
+      const head = table.columns.map((column) => `<th scope="col">${esc(column)}</th>`).join('')
+      const rows = table.rows
+        .map(
+          (row) =>
+            `<tr><th scope="row">${esc(row[0])}</th>${row
+              .slice(1)
+              .map((cell) => `<td>${esc(cell)}</td>`)
+              .join('')}</tr>`
+        )
+        .join('\n          ')
+      return (
+        `<table>\n        <caption>${esc(table.caption)}</caption>\n` +
+        `        <thead><tr>${head}</tr></thead>\n        <tbody>\n          ${rows}\n        </tbody>\n      </table>`
+      )
+    })
+    .join('\n      ')
+
+  return `
+      <h2>${esc(view.heading)}</h2>
+      <p>${esc(view.standfirst)}</p>
+      <p>Figures as of <time datetime="${esc(view.generatedOn)}">${esc(view.generatedOn)}</time>.</p>
+      <dl>
+        ${tiles}
+      </dl>
+      ${tables}
+      <p>${esc(view.footnote)}</p>`
+}
+
 /** The market guide, rendered from the same module the Vue view renders. */
-function marketBody(content) {
+function marketBody(content, statisticsView) {
   const section = (s) => {
     const parts = [`<h2>${esc(s.heading)}</h2>`]
     for (const paragraph of s.paragraphs) parts.push(`<p>${esc(paragraph)}</p>`)
@@ -127,6 +210,7 @@ function marketBody(content) {
   return `
       <h1>${esc(content.h1)}</h1>
       <p class="pr-lead">${esc(content.standfirst)}</p>
+      ${statisticsBody(statisticsView)}
       ${content.sections.map(section).join('\n      ')}`
 }
 
@@ -194,6 +278,12 @@ export default function prerenderMarketingPages() {
       const { MARKET_OVERVIEW, MARKET_OVERVIEW_PATH } = await import(
         pathToFileURL(path.join(root, 'src/features/marketplace/marketOverviewContent.js'))
       )
+      const { buildMarketStatisticsView, MARKET_STATISTICS_SEED_KEY } = await import(
+        pathToFileURL(path.join(root, 'src/features/marketplace/marketStatisticsView.js'))
+      )
+
+      const statistics = await fetchMarketStatistics((message) => this.warn(message))
+      const statisticsView = statistics ? buildMarketStatisticsView(statistics) : null
 
       const shell = await fs.readFile(path.join(outDir, 'index.html'), 'utf8')
 
@@ -206,7 +296,10 @@ export default function prerenderMarketingPages() {
           file: 'ethiopia-real-estate-market.html',
           routeName: 'EthiopiaRealEstateMarket',
           canonical: MARKET_OVERVIEW_PATH,
-          body: marketBody(MARKET_OVERVIEW)
+          body: marketBody(MARKET_OVERVIEW, statisticsView),
+          // Handed to the page so Vue starts from these exact figures instead of blanking
+          // the section until its own request lands.
+          seed: statisticsView ? { [MARKET_STATISTICS_SEED_KEY]: statistics } : null
         }
       ]
 
@@ -258,6 +351,19 @@ export default function prerenderMarketingPages() {
           'title tag to anchor the canonical to',
           page.file
         )
+        if (page.seed) {
+          const [key, value] = Object.entries(page.seed)[0]
+          // `<` is escaped so a string inside the payload can never close this script tag.
+          const json = JSON.stringify(value).replace(/</g, '\\u003c')
+          html = replaceOnce(
+            html,
+            /<title>/,
+            `<script>window[${JSON.stringify(key)}]=${json};</script>\n    <title>`,
+            'title tag to anchor the statistics seed to',
+            page.file
+          )
+        }
+
         html = replaceOnce(
           html,
           /<div id="app"><\/div>/,

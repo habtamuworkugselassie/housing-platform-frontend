@@ -76,6 +76,25 @@ rendered in the hero from `exhibition.hero.dateVenue` — the same string
 Nothing asserts a rating, a price or a date the page does not show. `buildAggregateRating`
 returns `undefined` rather than a zero-count rating for exactly this reason.
 
+## Statistics on the market guide
+
+`/ethiopia-real-estate-market` publishes medians, quartiles, price per square metre and
+inventory mix computed from live listings, served by `/api/v1/public/market-statistics`.
+
+The presentation lives in `marketStatisticsView.js`, a plain module with no imports, because
+both the Vue view and the build-time prerenderer render from it — same payload, same function,
+so the baked figures and the live ones cannot disagree. The prerenderer fetches the endpoint
+during the build (`VITE_API_BASE_URL`, or `PRERENDER_STATS_URL` to override) and seeds the
+payload onto `window` so Vue starts from those exact numbers instead of blanking the section
+until its own request lands. No backend at build time is not an error — the section is skipped
+and the browser fills it in — but it is warned about loudly, because the same thing in CI means
+production shipped without figures.
+
+The rules on what may be published are in `MarketStatisticsService`; the short version is that
+sale and rental are never pooled, medians never means, and any bucket under five priced
+listings reports that it has too few rather than printing a number. Do not relax those to make
+the page look fuller — the page's entire argument is that these numbers are trustworthy.
+
 ## The market guide is English-only
 
 `marketOverviewContent.js` is prose, not interface strings, and it is not translated. The

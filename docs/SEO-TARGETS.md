@@ -41,6 +41,10 @@ because Google localises, and that is the whole of the realistic upside. Spend t
 
 ### 1. The market page is losing to numbers, and you have better numbers than the winner
 
+> **Built.** `/api/v1/public/market-statistics` and the statistics section on
+> `/ethiopia-real-estate-market` implement this. What remains is the sub-city field described
+> at the end of this section.
+
 `theafricanvestor.com` does not hold "Ethiopia real estate market" with one page. It holds it
 with a cluster of six: Ethiopia market analysis, Addis market analysis, Ethiopia housing
 prices, Addis housing prices, Ethiopia price forecasts, Addis price forecasts. Every one of
@@ -62,8 +66,25 @@ single content move available:
 - Count of active listings and how it has moved
 
 Every figure sourced to your own platform, dated, and correct the day it is read. That is
-something no competitor can copy, and it is exactly the kind of page other sites cite. It is
-also a backend endpoint plus a section on an existing page, not a new product.
+something no competitor can copy, and it is exactly the kind of page other sites cite.
+
+**What shipped, and the one gap.** Median and quartile asking prices, price per square metre,
+and the inventory mix are live, split for sale and rental, with any bucket under five priced
+listings reporting "too few listings" rather than a number. The figures are baked into the
+prerendered HTML at build time, so a crawler reads them without running JavaScript.
+
+Two things are deliberately *not* published, and both are fixable in the product rather than
+the page:
+
+- **No breakdown by sub-city.** Properties carry a free-text `city` and no sub-city column at
+  all, so the finest honest grouping is city level. Bole, CMC, Ayat and Lebu are exactly what a
+  searcher wants and exactly what the competitor publishes. Adding a normalised sub-city field
+  to listings would unlock that table — and would fix listing search at the same time, since
+  `PublicSupportChatService` already carries a workaround telling users to search inside listing
+  titles because no neighbourhood filter exists. This is the highest-value follow-up on the page.
+- **No rental prices.** Listings record a price but no rental period, so a rental median could
+  be pooling monthly and annual asking rents. Rental counts are shown; rental prices wait for a
+  period field.
 
 ### 2. Your brand name collides with an established competitor's
 
