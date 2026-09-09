@@ -218,6 +218,9 @@
           <RouterLink to="/terms" class="hover:text-primary-400 transition-colors">{{
             $t('exhibition.footer.terms')
           }}</RouterLink>
+          <RouterLink to="/cookies" class="hover:text-primary-400 transition-colors">{{
+            $t('legal.navCookies')
+          }}</RouterLink>
           <RouterLink to="/legal" class="hover:text-primary-400 transition-colors">{{
             $t('exhibition.footer.legal')
           }}</RouterLink>

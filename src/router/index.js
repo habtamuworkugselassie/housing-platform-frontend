@@ -366,6 +366,11 @@ const routes = [
     component: () => import('@/shared/views/TermsOfUseView.vue')
   },
   {
+    path: '/cookies',
+    name: 'CookiePolicy',
+    component: () => import('@/shared/views/CookiePolicyView.vue')
+  },
+  {
     path: '/legal',
     name: 'LegalHub',
     component: () => import('@/shared/views/LegalHubView.vue')

@@ -76,6 +76,25 @@ rendered in the hero from `exhibition.hero.dateVenue` — the same string
 Nothing asserts a rating, a price or a date the page does not show. `buildAggregateRating`
 returns `undefined` rather than a zero-count rating for exactly this reason.
 
+## Statistics on the market guide
+
+`/ethiopia-real-estate-market` publishes medians, quartiles, price per square metre and
+inventory mix computed from live listings, served by `/api/v1/public/market-statistics`.
+
+The presentation lives in `marketStatisticsView.js`, a plain module with no imports, because
+both the Vue view and the build-time prerenderer render from it — same payload, same function,
+so the baked figures and the live ones cannot disagree. The prerenderer fetches the endpoint
+during the build (`VITE_API_BASE_URL`, or `PRERENDER_STATS_URL` to override) and seeds the
+payload onto `window` so Vue starts from those exact numbers instead of blanking the section
+until its own request lands. No backend at build time is not an error — the section is skipped
+and the browser fills it in — but it is warned about loudly, because the same thing in CI means
+production shipped without figures.
+
+The rules on what may be published are in `MarketStatisticsService`; the short version is that
+sale and rental are never pooled, medians never means, and any bucket under five priced
+listings reports that it has too few rather than printing a number. Do not relax those to make
+the page look fuller — the page's entire argument is that these numbers are trustworthy.
+
 ## The market guide is English-only
 
 `marketOverviewContent.js` is prose, not interface strings, and it is not translated. The
@@ -90,11 +109,12 @@ Everything above makes the site *eligible*. Ranking for a competitive term also 
    URL Inspection → Request Indexing on `/` and `/ethiopia-real-estate-market` after
    deploying. Watch the Pages report for "Crawled - currently not indexed"; that is what
    caught the duplicate URLs in the first place.
-2. **Links from other sites.** The single biggest remaining gap. Worth pursuing: Ethiopian
-   news and business press covering the expo, construction and real estate association
-   member directories, trade-show aggregators (10times, Expo Database, EventsEye — these
-   rank for "Ethiopia real estate expo" today), chambers of commerce, exhibitor and sponsor
-   sites linking back from their own "events we attend" pages.
+2. **Links from other sites.** The single biggest remaining gap. `SEO-TARGETS.md` is the
+   researched list — who holds each keyword's result page today, which aggregators and
+   directories to list on, and which Ethiopian outlets have covered a real estate expo
+   before. Read it before doing any outreach; it also records two things that are not SEO
+   problems but were found while looking (a brand-name collision with an established
+   competitor, and a possible venue clash in the same week).
 3. **A Google Business Profile** for the Addis Ababa office, which is what puts the
    organisation in the map pack for local queries.
 4. **Amharic URLs.** The locale currently lives in `localStorage`, so English and Amharic

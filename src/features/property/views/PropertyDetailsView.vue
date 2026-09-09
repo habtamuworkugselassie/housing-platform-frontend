@@ -642,6 +642,61 @@ const authStore = useAuthStore()
 const PROPERTY_JSON_LD_ID = 'dynamic-property-jsonld'
 const breadcrumbs = ref([])
 
+/**
+ * schema.org type for the home itself, by listing type.
+ *
+ * Accommodation subtypes carry floor area and room counts; LAND is not accommodation, so
+ * it falls back to Place, which still takes an address. schema.org has no Condominium, and
+ * Apartment is the closest true statement about a unit in a shared building.
+ */
+const ACCOMMODATION_TYPE_BY_PROPERTY_TYPE = {
+  APARTMENT: 'Apartment',
+  CONDOMINIUM: 'Apartment',
+  HOUSE: 'House',
+  VILLA: 'House',
+  TOWNHOUSE: 'House',
+  LAND: 'Place'
+}
+
+/** The home as a schema.org node, or undefined when there is nothing to say about it. */
+function accommodationLd(p, locationLine) {
+  const type = ACCOMMODATION_TYPE_BY_PROPERTY_TYPE[String(p.type || '').toUpperCase()] || 'Place'
+  const node = { '@type': type }
+
+  if (locationLine) {
+    node.address = {
+      '@type': 'PostalAddress',
+      streetAddress: p.address || undefined,
+      addressLocality: p.city || undefined,
+      addressCountry: p.country || undefined
+    }
+  }
+  if (Number.isFinite(Number(p.latitude)) && Number.isFinite(Number(p.longitude))) {
+    node.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: Number(p.latitude),
+      longitude: Number(p.longitude)
+    }
+  }
+  // Land has no rooms or floor area to report, and Place would reject them anyway.
+  if (type !== 'Place') {
+    if (Number(p.area) > 0) {
+      // floorSize takes a QuantitativeValue, not a bare number. MTK is the UN/CEFACT
+      // code for square metre, which is the unit the platform stores.
+      node.floorSize = {
+        '@type': 'QuantitativeValue',
+        value: Number(p.area),
+        unitCode: 'MTK'
+      }
+    }
+    if (Number.isInteger(p.bedrooms) && p.bedrooms > 0) node.numberOfBedrooms = p.bedrooms
+    if (Number.isInteger(p.bathrooms) && p.bathrooms > 0) node.numberOfBathroomsTotal = p.bathrooms
+  }
+
+  // Nothing but a bare @type says less than saying nothing.
+  return Object.keys(node).length > 1 ? node : undefined
+}
+
 function syncPropertySeo(p) {
   if (!p) return
   const title = `${p.title} | Ethio Build Connect`
@@ -680,13 +735,20 @@ function syncPropertySeo(p) {
       price: String(offerPrice)
     }
   }
-  if (locationLine) {
-    listingLd.address = {
-      '@type': 'PostalAddress',
-      streetAddress: p.address || undefined,
-      addressLocality: p.city || undefined,
-      addressCountry: p.country || undefined
-    }
+  // The address belongs to the home, not to the listing.
+  //
+  // RealEstateListing is a subtype of WebPage, and schema.org allows `address` only on
+  // Place, Organization, Person and the geo types — so putting a PostalAddress directly
+  // on the listing is invalid, which is what Search Console reported as "Invalid object
+  // type for field <parent_node>". `offers` and `aggregateRating` are fine here: both are
+  // allowed on CreativeWork, which WebPage descends from.
+  //
+  // The physical property therefore hangs off `mainEntity` — the page's primary subject —
+  // as a concrete Accommodation type, which is where address, floor area and room counts
+  // are all legitimate.
+  const accommodation = accommodationLd(p, locationLine)
+  if (accommodation) {
+    listingLd.mainEntity = accommodation
   }
   // Stars in search results come from this, using the same review totals the page
   // already renders in ReviewSection. Undefined for a listing with no reviews —

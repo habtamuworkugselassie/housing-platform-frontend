@@ -134,6 +134,11 @@ export const seoByRouteName = {
     description:
       'Terms and conditions for using Ethio Build Connect marketplace, listings, and related services.'
   },
+  CookiePolicy: {
+    title: 'Cookie Policy - Ethio Build Connect',
+    description:
+      'What Ethio Build Connect stores in your browser, which third parties set cookies on the site, and how to turn any of it off.'
+  },
   LegalHub: {
     title: 'Legal - Ethio Build Connect',
     description: 'Privacy policy and terms of use for Ethio Build Connect.'
