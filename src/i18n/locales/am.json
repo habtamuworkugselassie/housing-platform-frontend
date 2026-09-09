@@ -1525,6 +1525,7 @@
     "badge": "ህጋዊ",
     "navPrivacy": "የግላዊነት ፖሊሲ",
     "navTerms": "የአጠቃቀም ውሎች",
+    "navCookies": "የኩኪ ፖሊሲ",
     "lastUpdated": "የመጨረሻ ዝመና፦ ሜይ 11፣ 2026",
     "operator": "Ethio Build Connect በ Dream Teams Trading PLC፣ አዲስ አበባ፣ ኢትዮጵያ ይተዳደራል።",
     "hub": {
@@ -1532,6 +1533,7 @@
       "body": "ድህረ ገጻችንን እና ሞባይል መተግበሪያዎቻችንን ለመጠቀም የሚሆኑ ፖሊሲዎች ከታች ያሉ አገናኞችን ይጠቀሙ። ለመደብር ዝርዝሮች የግላዊነት ፖሊሲ URL በዚህ ገጽ ይጠቀሙ።",
       "privacyBlurb": "የግላዊ መረጃ እንዴት እንደምንይዝ።",
       "termsBlurb": "አገልግሎቶቻችንን ለመጠቀም ደንቦች።",
+      "cookiesBlurb": "በአሳሽዎ ውስጥ የምናስቀምጠው መረጃ።",
       "supportLabel": "ድጋፍ፦"
     },
     "privacy": {
@@ -1627,7 +1629,131 @@
           "body": "These terms are governed by the laws of the Federal Democratic Republic of Ethiopia, without regard to conflict-of-law rules. Courts in Addis Ababa shall have exclusive jurisdiction, subject to mandatory consumer protections where applicable."
         }
       ]
-    }
+    },
+    "cookies": {
+        "title": "የኩኪ ፖሊሲ",
+        "lastUpdated": "የመጨረሻ ዝመና፦ ሴፕቴምበር 9፣ 2026",
+        "intro": "This policy explains the cookies and similar technologies used on the Ethio Build Connect website, what each one is for, and how to turn them off. It sits alongside our privacy policy, which covers personal information more broadly.",
+        "sections": [
+          {
+            "heading": "Cookies we set ourselves: none",
+            "body": "Ethio Build Connect's own code does not set any cookies. Signing in does not use a session cookie — our servers hold no session for you, and every request is authenticated with a token your browser sends. What the site does use is browser storage: small values saved by your own browser, on your own device, which are not attached to requests and are not transmitted to us. They are listed below. Cookies are set on this site, but by Google Analytics rather than by us; those are listed further down."
+          },
+          {
+            "heading": "Browser storage this site uses",
+            "body": "Local storage stays until you clear it or sign out. Session storage is discarded as soon as you close the tab. None of it is sent to our servers.",
+            "columns": [
+              "Name",
+              "What it is for",
+              "Type",
+              "Cleared"
+            ],
+            "rows": [
+              [
+                "accessToken, refreshToken",
+                "Keeps you signed in between page loads so you are not asked for your password on every visit.",
+                "Local storage",
+                "When you sign out, or when you clear site data"
+              ],
+              [
+                "user",
+                "Your own name, role and profile details, so the interface can show them without fetching them again.",
+                "Local storage",
+                "When you sign out, or when you clear site data"
+              ],
+              [
+                "locale",
+                "Remembers whether you chose English or Amharic.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "housing_platform_favorites",
+                "Properties you saved before signing in, so they are still there when you come back.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "live_guest_name",
+                "The display name you entered to join a live broadcast, so you do not retype it.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "housing.supportChat.hintSeen",
+                "Records that you have already seen the support-chat prompt, so it appears once rather than every visit.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "housing.supportChat.panelSize",
+                "The size you dragged the support-chat panel to.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "admin-theme",
+                "Light or dark appearance of the administration screens. Only set for staff accounts that use them.",
+                "Local storage",
+                "When you clear site data"
+              ],
+              [
+                "splashShown",
+                "Records that the opening screen has played, so it does not replay on every page you open.",
+                "Session storage",
+                "When you close the tab"
+              ],
+              [
+                "chunk-reload:<page>",
+                "A one-time marker used to refresh the page once after we publish a new version of the site, so you are not left on a broken half-updated page.",
+                "Session storage",
+                "When you close the tab"
+              ]
+            ]
+          },
+          {
+            "heading": "Cookies set by others",
+            "body": "These are set by third parties whose code runs on our pages. We do not control their contents, and their own policies apply to them.",
+            "columns": [
+              "Who",
+              "What it does",
+              "Cookies",
+              "Where it appears"
+            ],
+            "rows": [
+              [
+                "Google Analytics 4 (Google)",
+                "Counts visits and which pages are read, so we can see what is useful. It reports on visits in aggregate; we do not use it to identify you individually, and we do not use it for advertising.",
+                "_ga and _ga_<property id>, stored under ethiobuildconnect.et, typically for up to two years",
+                "Every page of the website"
+              ],
+              [
+                "YouTube (Google) and Facebook (Meta)",
+                "Plays an embedded live broadcast when one is running. Loading the player lets the provider set its own cookies, whether or not you press play.",
+                "Set by youtube.com and facebook.com under their own domains; see their policies",
+                "Only pages showing an embedded live stream"
+              ]
+            ]
+          },
+          {
+            "heading": "Services we call that do not set cookies",
+            "body": "Some parts of the site load files from other services. These do not store anything on your device, but the request itself tells that service your IP address and which page asked for it: Google Fonts (fonts.googleapis.com and fonts.gstatic.com) for typefaces; OpenStreetMap for map tiles and for turning an address into map coordinates; unpkg.com for map marker images; api.qrserver.com for the QR code shown in the footer; and images.unsplash.com for some illustrative photographs."
+          },
+          {
+            "heading": "How to refuse or remove any of this",
+            "body": "Every browser lets you block or delete cookies and site data, usually under Settings, then Privacy. Clearing site data for ethiobuildconnect.et removes everything in the table above: you will be signed out, your language choice will reset to English, and any properties you saved without an account will be lost. Signing out clears the sign-in values on its own. Browsing in a private or incognito window keeps nothing after you close it. To opt out of Google Analytics across all sites, Google publishes a browser add-on at tools.google.com/dlpage/gaoptout. Blocking third-party cookies in your browser stops the embedded video players from setting theirs. Note that if you block storage entirely you can still read the site, but you will not be able to stay signed in."
+          },
+          {
+            "heading": "Do Not Track and Global Privacy Control",
+            "body": "The website does not currently change its behaviour in response to Do Not Track or Global Privacy Control browser signals. There is also no cookie banner at present: analytics loads when you open the site. The controls described above remain available to you, and we will update this section if that changes."
+          },
+          {
+            "heading": "Changes to this policy",
+            "body": "We will post any updated version on this page and revise the date at the top. Where the change is significant, we will say what changed."
+          }
+        ],
+        "contactLabel": "ስለ ኩኪ ጥያቄዎች፦"
+      }
   },
   "pageNotFound": {
     "badge": "ገጽ አልተገኘም",

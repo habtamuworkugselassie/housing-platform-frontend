@@ -26,6 +26,15 @@
         </RouterLink>
         <p class="mt-1 text-white/60">{{ $t('legal.hub.termsBlurb') }}</p>
       </li>
+      <li>
+        <RouterLink
+          to="/cookies"
+          class="font-medium text-white underline decoration-white/30 hover:decoration-white"
+        >
+          {{ $t('legal.navCookies') }}
+        </RouterLink>
+        <p class="mt-1 text-white/60">{{ $t('legal.hub.cookiesBlurb') }}</p>
+      </li>
     </ul>
     <p class="mt-10 text-sm text-white/60">
       {{ $t('legal.hub.supportLabel') }}
