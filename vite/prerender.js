@@ -115,7 +115,7 @@ function expoBody(t) {
  * and the browser fills the figures in. It is warned about loudly rather than silently,
  * because the same thing happening in CI means production shipped without them.
  */
-async function fetchMarketStatistics(log) {
+async function fetchMarketStatistics(statisticsPath, log) {
   const base = (process.env.PRERENDER_STATS_URL || process.env.VITE_API_BASE_URL || '').trim()
   if (!base) {
     log('prerender: VITE_API_BASE_URL is not set, so the market page ships without figures')
@@ -127,7 +127,7 @@ async function fetchMarketStatistics(log) {
   }
   const url = process.env.PRERENDER_STATS_URL
     ? base
-    : `${base.replace(/\/$/, '')}${MARKET_STATISTICS_PATH}`
+    : `${base.replace(/\/$/, '')}${statisticsPath}`
   try {
     const response = await fetch(url, {
       headers: { accept: 'application/json' },
@@ -278,11 +278,14 @@ export default function prerenderMarketingPages() {
       const { MARKET_OVERVIEW, MARKET_OVERVIEW_PATH } = await import(
         pathToFileURL(path.join(root, 'src/features/marketplace/marketOverviewContent.js'))
       )
-      const { buildMarketStatisticsView, MARKET_STATISTICS_SEED_KEY } = await import(
-        pathToFileURL(path.join(root, 'src/features/marketplace/marketStatisticsView.js'))
-      )
+      const { buildMarketStatisticsView, MARKET_STATISTICS_SEED_KEY, MARKET_STATISTICS_PATH } =
+        await import(
+          pathToFileURL(path.join(root, 'src/features/marketplace/marketStatisticsView.js'))
+        )
 
-      const statistics = await fetchMarketStatistics((message) => this.warn(message))
+      const statistics = await fetchMarketStatistics(MARKET_STATISTICS_PATH, (message) =>
+        this.warn(message)
+      )
       const statisticsView = statistics ? buildMarketStatisticsView(statistics) : null
 
       const shell = await fs.readFile(path.join(outDir, 'index.html'), 'utf8')
