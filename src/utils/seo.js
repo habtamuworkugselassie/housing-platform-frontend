@@ -1,4 +1,5 @@
 import { mediaUrl } from '@/shared/api/client'
+import { DEFAULT_URL_LOCALE, pathForLocale } from '@/i18n/localeRoutes'
 
 const INDEX_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 const NOINDEX_ROBOTS = 'noindex, nofollow'
@@ -236,5 +237,41 @@ export function buildAggregateRating(averageRating, reviewCount) {
     reviewCount: Math.trunc(count),
     bestRating: 5,
     worstRating: 1
+  }
+}
+
+const HREFLANG_LINK_CLASS = 'hreflang-alternate'
+
+/**
+ * Declares the languages a page is published in.
+ *
+ * Called with the locales this particular URL genuinely exists and is indexable in. Pass
+ * fewer than two and every alternate is removed instead: hreflang is a claim that a
+ * translation exists at another address, and pointing it at a page that is not one is
+ * worse than saying nothing, because Google then treats the pair as duplicates.
+ *
+ * The set is rebuilt on each navigation rather than patched, so a page with alternates
+ * cannot leave them behind on the next page without any. `x-default` names the English
+ * URL, which is what an unprefixed path already serves.
+ */
+export function applyHreflangAlternates(pathname, locales) {
+  for (const stale of document.head.querySelectorAll(`link.${HREFLANG_LINK_CLASS}`)) {
+    stale.remove()
+  }
+  if (!Array.isArray(locales) || locales.length < 2) return
+
+  const base = getPublicSiteUrl()
+  const href = (locale) => {
+    const path = pathForLocale(pathname, locale)
+    return `${base}${path === '/' ? '/' : path}`
+  }
+
+  for (const locale of [...locales, 'x-default']) {
+    const link = document.createElement('link')
+    link.setAttribute('rel', 'alternate')
+    link.setAttribute('hreflang', locale)
+    link.setAttribute('href', href(locale === 'x-default' ? DEFAULT_URL_LOCALE : locale))
+    link.classList.add(HREFLANG_LINK_CLASS)
+    document.head.appendChild(link)
   }
 }

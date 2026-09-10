@@ -153,3 +153,79 @@ export const seoByRouteName = {
       'This page could not be found. Browse Ethiopia property listings, the construction marketplace, and the Ethio Build Connect expo.'
   }
 }
+
+/**
+ * Amharic titles and descriptions, for the `/am` tree.
+ *
+ * Only the routes listed here are indexable in Amharic. The router marks every other
+ * `/am` route `noindex`, which is the point: an English title under an Amharic URL is a
+ * page claiming to be a translation it is not, and it would be indexed as a duplicate of
+ * its English twin. Adding a route here is what makes it eligible, so add one only when
+ * the page is genuinely Amharic.
+ *
+ * Every string below is lifted from `am.json`, where a translator wrote it — the nav
+ * labels, the two home headlines, the expo description. Nothing here is newly composed
+ * prose. If a page needs wording that does not already exist in the catalogue, it wants a
+ * translator, not this file.
+ *
+ * Deliberately absent, because their bodies are English whatever the interface language:
+ * the market guide (English-only by design, see marketOverviewContent.js) and the three
+ * legal documents. Also absent: the property, building and organization detail pages,
+ * whose content is whatever the listing company typed — the same text under two URLs is a
+ * duplicate, not a translation, so Amharic serves them without being indexed.
+ */
+export const amSeoByRouteName = {
+  Home: {
+    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
+    description:
+      'የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን እና ምርቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት ልዩ መድረክ።'
+  },
+  ExhibitionLanding: {
+    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
+    description:
+      'የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን እና ምርቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት ልዩ መድረክ።'
+  },
+  RealEstateSearch: {
+    title: 'በኢትዮጵያ ቀጣዩን ቤትዎን ይፈልጉ',
+    description:
+      'በአዲስ አበባ እና በሌሎች ከተማዎች ፈቃድ ካላቸው የሪል እስቴት ኩባንያዎች፣ ባንኮች እና ግንበኞች የተረጋገጡ ዝርዝሮችን ይፈልጉ።'
+  },
+  MarketplaceRealEstate: {
+    title: 'በኢትዮጵያ ቀጣዩን ቤትዎን ይፈልጉ',
+    description:
+      'በአዲስ አበባ እና በሌሎች ከተማዎች ፈቃድ ካላቸው የሪል እስቴት ኩባንያዎች፣ ባንኮች እና ግንበኞች የተረጋገጡ ዝርዝሮችን ይፈልጉ።'
+  },
+  Properties: {
+    title: 'ንብረቶች እና ሕንፃዎች',
+    description:
+      'በአዲስ አበባ እና በሌሎች ከተማዎች ፈቃድ ካላቸው የሪል እስቴት ኩባንያዎች፣ ባንኮች እና ግንበኞች የተረጋገጡ ዝርዝሮችን ይፈልጉ።'
+  },
+  Buildings: {
+    title: 'ሕንፃዎች',
+    description: 'በኢትዮጵያ የሚገኙ ሕንፃዎችን እና ፕሮጀክቶችን ይመልከቱ።'
+  },
+  MarketplaceBanks: {
+    title: 'ባንኮች',
+    description: 'ለንብረት እና ለግንባታ ፕሮጀክቶች ባንኮችን እና የፋይናንስ አጋሮችን ያግኙ።'
+  },
+  MarketplaceInsurance: {
+    title: 'ኢንሹራንስ',
+    description: 'ለንብረት እና ለግንባታ የኢንሹራንስ አገልግሎት ሰጪዎችን ያግኙ።'
+  },
+  MarketplaceContractors: {
+    title: 'ኮንትራክተሮች',
+    description: 'በኢትዮጵያ የግንባታ ኮንትራክተሮችን እና ተቋራጮችን ያግኙ።'
+  },
+  MarketplaceConsultantsArchitects: {
+    title: 'ጠባቂዎች እና ሀንደበት ባለሙያዎች',
+    description: 'በኢትዮጵያ አርኪቴክቶችን፣ መሐንዲሶችን እና ኮንሳልታንቶችን ያግኙ።'
+  },
+  MarketplaceSuppliers: {
+    title: 'የግንባታ ቁሳቁስ አቅራቢዎች',
+    description: 'በአዲስ አበባ እና በኢትዮጵያ የግንባታ ቁሳቁስ አቅራቢዎችን ያግኙ።'
+  },
+  MarketplaceFinishingWork: {
+    title: 'የመጨረሻ ስራ',
+    description: 'በኢትዮጵያ የመጨረሻ ስራ ተቋራጮችን እና የውስጥ ማስዋቢያ ባለሙያዎችን ያግኙ።'
+  }
+}

@@ -77,6 +77,8 @@
 <script setup>
 import { ref, computed, watch, onUnmounted } from 'vue'
 import { useLocaleStore } from '@/stores/locale'
+import { useRoute, useRouter } from 'vue-router'
+import { isUrlLocale, pathForLocale } from '@/i18n/localeRoutes'
 import { LOCALE_OPTIONS, getLocaleOption } from '@/i18n/localeConfig'
 
 defineProps({
@@ -87,6 +89,8 @@ defineProps({
 })
 
 const localeStore = useLocaleStore()
+const route = useRoute()
+const router = useRouter()
 const open = ref(false)
 const rootEl = ref(null)
 
@@ -96,9 +100,25 @@ const toggleOpen = () => {
   open.value = !open.value
 }
 
+/**
+ * Switching language is a navigation, not a toggle.
+ *
+ * Amharic lives at `/am`, so choosing it has to change the address — otherwise the
+ * reader is on an English URL showing Amharic, which is the split this whole change
+ * exists to undo, and they cannot share or bookmark what they are looking at. The
+ * router's own guard then sets the locale from the path.
+ *
+ * Oromo and Arabic have no URL of their own (they are still served English copy), so
+ * they stay a preference and only move the reader out of `/am` if that is where they
+ * were.
+ */
 const select = (code) => {
-  localeStore.setLocale(code)
   open.value = false
+  const target = pathForLocale(route.path, code)
+  if (target !== route.path) {
+    router.push({ path: target, query: route.query, hash: route.hash })
+  }
+  if (!isUrlLocale(code)) localeStore.setLocale(code)
 }
 
 const onDocPointerDown = (e) => {
