@@ -169,7 +169,7 @@ export const MARKET_OVERVIEW = {
       id: 'expo',
       heading: 'Meeting the market in person',
       paragraphs: [
-        'The whole chain described above — developers, contractors, architects, suppliers, banks and insurers — gathers at Ethio Build Connect Expo, Ethiopia\'s real estate and construction exhibition, on 10–13 November 2026 at the Addis Convention Center in Addis Ababa. It is the most efficient way to compare developers and suppliers side by side, and to ask the questions above of several of them in one afternoon.'
+        'The whole chain described above — developers, contractors, architects, suppliers, banks and insurers — gathers at Ethio Build Connect Expo, Ethiopia\'s real estate and construction exhibition, on 16–18 November 2026 at the Addis Convention Center in Addis Ababa. It is the most efficient way to compare developers and suppliers side by side, and to ask the questions above of several of them in one afternoon.'
       ],
       links: [
         { label: 'Ethiopia Real Estate Expo and Construction Exhibition 2026', to: '/' }

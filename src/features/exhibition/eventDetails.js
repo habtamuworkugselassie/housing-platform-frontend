@@ -3,7 +3,7 @@
  *
  * These must stay in step with the display string the hero renders
  * (`exhibition.hero.dateVenue` in the locale files, currently
- * "10–13 November 2026 — Addis Convention Center — Addis Ababa, Ethiopia").
+ * "16–18 November 2026 — Addis Convention Center — Addis Ababa, Ethiopia").
  * Search engines penalise event markup that disagrees with the visible page, so if
  * the dates or venue move, change both.
  *
@@ -12,8 +12,8 @@
  */
 export const EXPO_EVENT = {
   name: 'Ethio Build Connect Expo',
-  startDate: '2026-11-10T00:00:00+03:00',
-  endDate: '2026-11-13T23:59:59+03:00',
+  startDate: '2026-11-16T00:00:00+03:00',
+  endDate: '2026-11-18T23:59:59+03:00',
   venueName: 'Addis Convention Center',
   addressLocality: 'Addis Ababa',
   addressCountry: 'ET'
