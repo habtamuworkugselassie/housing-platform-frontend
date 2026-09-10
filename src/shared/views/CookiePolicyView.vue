@@ -52,6 +52,29 @@
       </div>
     </section>
 
+    <!-- Withdrawing has to be as easy as giving, so the control lives on the page the
+         banner links to rather than behind a buried preferences screen. -->
+    <section id="your-choice" class="mt-10 border-t border-white/10 pt-8 scroll-mt-24">
+      <h2 class="text-lg font-semibold text-white">{{ $t('cookieConsent.manageTitle') }}</h2>
+      <p class="mt-3 text-sm text-white/75 leading-relaxed">{{ consentSummary }}</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <button
+          type="button"
+          class="rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+          @click="choose(CONSENT_DENIED)"
+        >
+          {{ $t('cookieConsent.reject') }}
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+          @click="choose(CONSENT_GRANTED)"
+        >
+          {{ $t('cookieConsent.accept') }}
+        </button>
+      </div>
+    </section>
+
     <p class="mt-12 text-sm text-white/60">
       {{ $t('legal.cookies.contactLabel') }}
       <a
@@ -69,11 +92,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import {
+  CONSENT_DENIED,
+  CONSENT_GRANTED,
+  CONSENT_STORAGE_KEY,
+  readConsent,
+  setConsent
+} from '@/utils/cookieConsent'
 
-const { tm, rt } = useI18n()
+const { t, tm, rt } = useI18n()
 
 /**
  * `tm` rather than `t` because these are structured blocks, not strings — each carries a
@@ -92,6 +122,33 @@ const sections = computed(() => {
     rows: Array.isArray(block.rows) ? block.rows.map((row) => row.map((cell) => rt(cell))) : null
   }))
 })
+
+const consent = ref(readConsent())
+
+/** The date the choice was recorded, so the page can show what it is relying on. */
+function consentDate() {
+  try {
+    const at = JSON.parse(window.localStorage.getItem(CONSENT_STORAGE_KEY) || '{}')?.at
+    return at ? new Date(at).toLocaleDateString() : ''
+  } catch {
+    return ''
+  }
+}
+
+const consentSummary = computed(() => {
+  if (consent.value === CONSENT_GRANTED) {
+    return t('cookieConsent.manageGranted', { date: consentDate() })
+  }
+  if (consent.value === CONSENT_DENIED) {
+    return t('cookieConsent.manageDenied', { date: consentDate() })
+  }
+  return t('cookieConsent.manageUnset')
+})
+
+function choose(choice) {
+  setConsent(choice)
+  consent.value = choice
+}
 
 const supportEmail = computed(
   () => import.meta.env.VITE_SUPPORT_EMAIL || 'info@ethiobuildconnect.et'

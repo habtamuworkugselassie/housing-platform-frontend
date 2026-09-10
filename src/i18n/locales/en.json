@@ -1529,6 +1529,16 @@
       "playVideo": "Play sponsor video"
     }
   },
+  "cookieConsent": {
+      "title": "Cookies on this site",
+      "message": "We use Google Analytics to count visits and see which pages get read. It sets cookies. Nothing else on this site does, and we never use it for advertising. You can change your mind at any time on our",
+      "accept": "Accept",
+      "reject": "Reject",
+      "manageTitle": "Your choice",
+      "manageGranted": "Analytics cookies are enabled. You accepted on {date}.",
+      "manageDenied": "Analytics cookies are disabled. You declined on {date}.",
+      "manageUnset": "You have not chosen yet, so analytics is off and no analytics cookies are set."
+    },
   "legal": {
     "badge": "Legal",
     "navPrivacy": "Privacy policy",
@@ -1640,12 +1650,12 @@
     },
     "cookies": {
         "title": "Cookie policy",
-        "lastUpdated": "Last updated: September 9, 2026",
+        "lastUpdated": "Last updated: September 10, 2026",
         "intro": "This policy explains the cookies and similar technologies used on the Ethio Build Connect website, what each one is for, and how to turn them off. It sits alongside our privacy policy, which covers personal information more broadly.",
         "sections": [
           {
             "heading": "Cookies we set ourselves: none",
-            "body": "Ethio Build Connect's own code does not set any cookies. Signing in does not use a session cookie — our servers hold no session for you, and every request is authenticated with a token your browser sends. What the site does use is browser storage: small values saved by your own browser, on your own device, which are not attached to requests and are not transmitted to us. They are listed below. Cookies are set on this site, but by Google Analytics rather than by us; those are listed further down."
+            "body": "Ethio Build Connect's own code does not set any cookies, and nothing is set before you choose. Signing in does not use a session cookie — our servers hold no session for you, and every request is authenticated with a token your browser sends. What the site does use is browser storage: small values saved by your own browser, on your own device, which are not attached to requests and are not transmitted to us. They are listed below. Cookies are set on this site, but by Google Analytics rather than by us, and only if you accept them when asked; those are listed further down."
           },
           {
             "heading": "Browser storage this site uses",
@@ -1657,6 +1667,12 @@
               "Cleared"
             ],
             "rows": [
+              [
+                "cookieConsent",
+                "Whether you accepted or declined analytics, and the date you chose. This is what stops the site asking again on every page, and it is kept whichever way you answered.",
+                "Local storage",
+                "When you clear site data"
+              ],
               [
                 "accessToken, refreshToken",
                 "Keeps you signed in between page loads so you are not asked for your password on every visit.",
@@ -1731,9 +1747,9 @@
             "rows": [
               [
                 "Google Analytics 4 (Google)",
-                "Counts visits and which pages are read, so we can see what is useful. It reports on visits in aggregate; we do not use it to identify you individually, and we do not use it for advertising.",
+                "Counts visits and which pages are read, so we can see what is useful. It loads only after you accept; decline and the script is never fetched at all. It reports on visits in aggregate; we do not use it to identify you individually, and we do not use it for advertising.",
                 "_ga and _ga_<property id>, stored under ethiobuildconnect.et, typically for up to two years",
-                "Every page of the website"
+                "Every page of the website, once accepted"
               ],
               [
                 "YouTube (Google) and Facebook (Meta)",
@@ -1749,11 +1765,11 @@
           },
           {
             "heading": "How to refuse or remove any of this",
-            "body": "Every browser lets you block or delete cookies and site data, usually under Settings, then Privacy. Clearing site data for ethiobuildconnect.et removes everything in the table above: you will be signed out, your language choice will reset to English, and any properties you saved without an account will be lost. Signing out clears the sign-in values on its own. Browsing in a private or incognito window keeps nothing after you close it. To opt out of Google Analytics across all sites, Google publishes a browser add-on at tools.google.com/dlpage/gaoptout. Blocking third-party cookies in your browser stops the embedded video players from setting theirs. Note that if you block storage entirely you can still read the site, but you will not be able to stay signed in."
+            "body": "The quickest route is this page: the Your choice section below records your answer and switches analytics on or off immediately, and declining also deletes any analytics cookies already on your device. The same choice is offered by the banner on your first visit. Beyond that, every browser lets you block or delete cookies and site data, usually under Settings, then Privacy. Clearing site data for ethiobuildconnect.et removes everything in the table above: you will be signed out, your language choice will reset to English, and any properties you saved without an account will be lost. Signing out clears the sign-in values on its own. Browsing in a private or incognito window keeps nothing after you close it. To opt out of Google Analytics across all sites, Google publishes a browser add-on at tools.google.com/dlpage/gaoptout. Blocking third-party cookies in your browser stops the embedded video players from setting theirs. Note that if you block storage entirely you can still read the site, but you will not be able to stay signed in."
           },
           {
             "heading": "Do Not Track and Global Privacy Control",
-            "body": "The website does not currently change its behaviour in response to Do Not Track or Global Privacy Control browser signals. There is also no cookie banner at present: analytics loads when you open the site. The controls described above remain available to you, and we will update this section if that changes."
+            "body": "Analytics is off until you accept, so nothing is measured before you answer. Beyond that, the website does not currently change its behaviour in response to Do Not Track or Global Privacy Control browser signals; the controls described above remain available to you, and we will update this section if that changes."
           },
           {
             "heading": "Changes to this policy",
