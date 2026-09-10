@@ -24,7 +24,7 @@ export const seoByRouteName = {
   Home: {
     title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
     description:
-      "Ethiopia's real estate and construction expo: 10-13 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
+      "Ethiopia's real estate and construction expo: 16-18 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
   EthiopiaRealEstateMarket: {
     title: 'Ethiopia Real Estate Market Overview - Prices, Demand and Outlook',
@@ -102,7 +102,7 @@ export const seoByRouteName = {
   ExhibitionLanding: {
     title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
     description:
-      "Ethiopia's real estate and construction expo: 10-13 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
+      "Ethiopia's real estate and construction expo: 16-18 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
   Register: {
     title: 'Create Account - Ethio Build Connect',

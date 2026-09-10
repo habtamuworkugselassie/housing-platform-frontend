@@ -98,18 +98,30 @@ practical mitigations are to always publish the full name with the organiser att
 consistent about it everywhere (site, directories, press, sponsor links), and to make the
 dates and venue part of how the event is identified in every listing.
 
-### 3. A likely clash in the same week, at possibly the same venue
+### 3. Dates are 16–18 November 2026, the same window the listings give Ethiopia Build Expo
 
-Multiple independent listings put **Ethiopia Build Expo 2026 on 16–18 November 2026 at the
-Addis International Convention Center** — three days after yours ends. Two more events, the
-Ethiopia Food Expo and the Ethiopia Medical & Health Expo, are listed at the same venue on
-14–16 November.
+This section previously flagged a clash: the listings put Ethiopia Build Expo 2026 on 16–18
+November while the site said 10–13 November, so the two looked like neighbouring events. The
+site owner has since confirmed 16–18 November 2026 as the schedule, and every date on the
+site now says so. The two are therefore in the same window, not adjacent.
 
-`eventDetails.js` gives your venue as "Addis Convention Center". Whether that is the same
-building as the Addis International Convention Center is not something the search results
-settle. **Worth confirming with your venue contract this week** — if it is the same building,
-you are looking at back-to-back load-in against a larger event with a near-identical name,
-which is an exhibitor-recruitment and logistics problem long before it is an SEO one.
+**What was not confirmed is whether Ethiopia Build Expo is the same event.** The distinction
+decides the whole approach, so establish it before any outreach:
+
+- **If it is ours**, the aggregator listings in Tier 1 are not competitors to outrank — they
+  are our own entries to claim and correct. That is a considerably better position than this
+  document assumed: the search presence already exists and needs taking over, not building.
+  Finding 2 stops being a collision and becomes a naming decision.
+- **If it is a separate event**, Finding 2 gets worse rather than better. Two building expos
+  with near-identical names now run on the same days, and the naming discipline described
+  there — full event name plus organiser, everywhere, every time — is the only thing keeping
+  the two apart in search results and in exhibitors' minds.
+
+Also still open, and cheap to settle: `eventDetails.js` says "Addis Convention Center" while
+the listings say "Addis International Convention Center". If they are the same building, use
+the exact string the venue and the directories use. Event rich results are held to matching
+the visible page, and a venue named two ways across the site and its listings is the kind of
+mismatch that gets the markup discounted.
 
 ## The target list, in the order I would work it
 
