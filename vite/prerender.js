@@ -29,6 +29,23 @@ const SITE_URL = 'https://ethiobuildconnect.et'
 
 const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }
 
+/**
+ * The alternates, as markup, for the head of a prerendered page.
+ *
+ * Worth baking in rather than leaving to the router: hreflang is how a crawler learns the
+ * Amharic edition exists at all, and a crawler that does not run JavaScript would
+ * otherwise never see it on the one page most likely to be crawled first.
+ */
+function hreflangTags(alternates) {
+  if (!alternates) return ''
+  const entries = Object.entries(alternates)
+  if (entries.length < 2) return ''
+  const all = [...entries, ['x-default', alternates.en]]
+  return all
+    .map(([lang, path]) => `<link rel="alternate" hreflang="${esc(lang)}" href="${esc(SITE_URL)}${esc(path)}">`)
+    .join('\n    ')
+}
+
 function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ESCAPES[c])
 }
@@ -270,11 +287,19 @@ export default function prerenderMarketingPages() {
     },
 
     async closeBundle() {
-      const localeFile = path.join(root, 'src/i18n/locales/en.json')
-      const messages = JSON.parse(await fs.readFile(localeFile, 'utf8'))
-      const t = makeTranslator(messages, 'en.json')
+      const catalogues = {}
+      for (const locale of ['en', 'am']) {
+        const file = path.join(root, `src/i18n/locales/${locale}.json`)
+        catalogues[locale] = makeTranslator(
+          JSON.parse(await fs.readFile(file, 'utf8')),
+          `${locale}.json`
+        )
+      }
+      const t = catalogues.en
 
-      const { seoByRouteName } = await import(pathToFileURL(path.join(root, 'src/router/routeSeo.js')))
+      const { seoByRouteName, amSeoByRouteName } = await import(
+        pathToFileURL(path.join(root, 'src/router/routeSeo.js'))
+      )
       const { MARKET_OVERVIEW, MARKET_OVERVIEW_PATH } = await import(
         pathToFileURL(path.join(root, 'src/features/marketplace/marketOverviewContent.js'))
       )
@@ -290,15 +315,29 @@ export default function prerenderMarketingPages() {
 
       const shell = await fs.readFile(path.join(outDir, 'index.html'), 'utf8')
 
+      // Home and the expo page in both languages. The alternates are reciprocal, which is
+      // what hreflang requires: each edition names the other and itself.
+      const expoAlternates = { en: '/', am: '/am' }
       const pages = [
         // `/` and `/exhibition` render the same view, and `/exhibition` canonicalises to
         // `/` — so both get the same body and both name `/` as canonical.
-        { file: 'home.html', routeName: 'Home', canonical: '/', body: expoBody(t) },
-        { file: 'exhibition.html', routeName: 'ExhibitionLanding', canonical: '/', body: expoBody(t) },
+        { file: 'home.html', routeName: 'Home', canonical: '/', body: expoBody(t),
+          alternates: expoAlternates },
+        { file: 'exhibition.html', routeName: 'ExhibitionLanding', canonical: '/', body: expoBody(t),
+          alternates: expoAlternates },
+        // The Amharic edition. Only the expo pages are prerendered in Amharic: they are
+        // the only marketing pages whose copy is genuinely translated. The market guide
+        // is English by design, so it has no `/am` edition to bake.
+        { file: 'am-home.html', routeName: 'Home', canonical: '/am', locale: 'am',
+          body: expoBody(catalogues.am), alternates: expoAlternates },
+        { file: 'am-exhibition.html', routeName: 'ExhibitionLanding', canonical: '/am', locale: 'am',
+          body: expoBody(catalogues.am), alternates: expoAlternates },
         {
           file: 'ethiopia-real-estate-market.html',
           routeName: 'EthiopiaRealEstateMarket',
           canonical: MARKET_OVERVIEW_PATH,
+          // No alternates: this page has no Amharic edition, and claiming one would point
+          // hreflang at a page that is not a translation.
           body: marketBody(MARKET_OVERVIEW, statisticsView),
           // Handed to the page so Vue starts from these exact figures instead of blanking
           // the section until its own request lands.
@@ -310,8 +349,15 @@ export default function prerenderMarketingPages() {
       await fs.mkdir(dir, { recursive: true })
 
       for (const page of pages) {
-        const seo = seoByRouteName[page.routeName]
-        if (!seo) throw new Error(`prerender: routeSeo.js has no entry for "${page.routeName}"`)
+        const locale = page.locale || 'en'
+        const seo =
+          locale === 'am' ? amSeoByRouteName[page.routeName] : seoByRouteName[page.routeName]
+        if (!seo) {
+          throw new Error(
+            `prerender: no ${locale} SEO entry for "${page.routeName}" — a prerendered page ` +
+              'must have a title in its own language, not its twin\'s'
+          )
+        }
 
         const canonicalUrl = `${SITE_URL}${page.canonical === '/' ? '/' : page.canonical}`
         let html = shell
@@ -344,6 +390,15 @@ export default function prerenderMarketingPages() {
             `${name} meta`,
             page.file
           )
+        }
+        if (locale !== 'en') {
+          html = replaceOnce(html, /<html lang="en">/, `<html lang="${esc(locale)}">`,
+            'html lang attribute', page.file)
+        }
+        const alternates = hreflangTags(page.alternates)
+        if (alternates) {
+          html = replaceOnce(html, /<title>/, `${alternates}\n    <title>`,
+            'title tag to anchor the hreflang links to', page.file)
         }
         // index.html deliberately carries no canonical (the router sets it per URL). A
         // prerendered file is for one URL only, so it can and must state its own.

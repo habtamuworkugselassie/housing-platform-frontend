@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/features/auth'
+import { useLocaleStore } from '@/stores/locale'
 import { trackPageView } from '@/utils/analytics'
 import {
   ensureMetaTag,
@@ -8,9 +9,17 @@ import {
   applyIndexableRobots,
   applyNoindexRobots,
   getPublicSiteUrl,
-  removeBreadcrumbJsonLd
+  removeBreadcrumbJsonLd,
+  applyHreflangAlternates
 } from '@/utils/seo'
-import { defaultSeo, seoByRouteName } from './routeSeo'
+import { defaultSeo, seoByRouteName, amSeoByRouteName } from './routeSeo'
+import {
+  DEFAULT_URL_LOCALE,
+  URL_LOCALES,
+  localeFromPath,
+  localePrefix,
+  pathForLocale
+} from '@/i18n/localeRoutes'
 
 const routes = [
   {
@@ -399,9 +408,47 @@ const routes = [
   }
 ]
 
+/**
+ * The same routes again under each locale prefix.
+ *
+ * One definition, mirrored, so a route added above exists in every language without
+ * anybody remembering to add it twice. Names are namespaced (`am:Home`) because Vue
+ * Router requires them unique, and `meta.locale` is what the guards below read.
+ *
+ * A mirrored route is `noindex` unless `amSeoByRouteName` has a real translated title for
+ * it. The page still works — an Amharic visitor can browse the whole site under `/am` —
+ * it simply is not offered to search engines as an Amharic page when it is not one.
+ */
+function localizedRoutes(baseRoutes) {
+  const mirrored = []
+  for (const locale of URL_LOCALES) {
+    const prefix = localePrefix(locale)
+    const seoForLocale = locale === 'am' ? amSeoByRouteName : {}
+    for (const route of baseRoutes) {
+      const translated = route.name ? seoForLocale[route.name] : undefined
+      mirrored.push({
+        ...route,
+        path: route.path === '/' ? prefix : `${prefix}${route.path}`,
+        name: route.name ? `${locale}:${route.name}` : undefined,
+        meta: {
+          ...route.meta,
+          locale,
+          baseName: route.name,
+          // An alias keeps pointing at its owner, in the same language.
+          ...(route.meta?.canonicalPath
+            ? { canonicalPath: pathForLocale(route.meta.canonicalPath, locale) }
+            : {}),
+          ...(translated ? {} : { noindex: true })
+        }
+      })
+    }
+  }
+  return [...baseRoutes, ...mirrored]
+}
+
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: localizedRoutes(routes),
   scrollBehavior(to, _from, _savedPosition) {
     if (to.hash) {
       return { el: to.hash, behavior: 'smooth' }
@@ -461,6 +508,47 @@ router.afterEach((to) => {
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
+  const localeStore = useLocaleStore()
+
+  // The address decides the language, not a stored preference. Auto-redirecting a visitor
+  // to their remembered language would send Googlebot (which crawls as an anonymous US
+  // visitor) somewhere other than the URL it asked for, and would make a shared link open
+  // in a different language for the recipient than the sender. So: `/am` is Amharic,
+  // anything else is the reader's own preference, except that a stored `am` falls back to
+  // English because Amharic now lives at its own address.
+  // Internal links are written unprefixed (`to="/properties"`), so following one from
+  // inside `/am` would drop the reader back into English mid-visit. Rather than rewrite
+  // every RouterLink in the app, the prefix is carried across here.
+  //
+  // The one navigation that is allowed to leave is the language switcher, and it is
+  // recognised by what it targets rather than by a flag: it always pushes precisely the
+  // English twin of the page you are on. Any other link goes somewhere else, so it keeps
+  // the prefix. A link that does happen to point at the current page's twin is a language
+  // switch by any reasonable reading.
+  const fromLocale = localeFromPath(from.path)
+  const toLocale = localeFromPath(to.path)
+  if (
+    fromLocale !== DEFAULT_URL_LOCALE &&
+    toLocale === DEFAULT_URL_LOCALE &&
+    to.path !== pathForLocale(from.path, DEFAULT_URL_LOCALE)
+  ) {
+    next({
+      path: pathForLocale(to.path, fromLocale),
+      query: to.query,
+      hash: to.hash,
+      replace: true
+    })
+    return
+  }
+
+  const urlLocale = localeFromPath(to.path)
+  const wanted =
+    urlLocale === DEFAULT_URL_LOCALE && URL_LOCALES.includes(localeStore.currentLocale)
+      ? DEFAULT_URL_LOCALE
+      : urlLocale === DEFAULT_URL_LOCALE
+        ? localeStore.currentLocale
+        : urlLocale
+  if (localeStore.currentLocale !== wanted) localeStore.setLocale(wanted)
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } })
@@ -480,8 +568,21 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
-  const seo = seoByRouteName[to.name] || defaultSeo
+  const locale = to.meta.locale || DEFAULT_URL_LOCALE
+  const baseName = to.meta.baseName || to.name
+  const translated = locale === 'am' ? amSeoByRouteName[baseName] : undefined
+  // Falls back to the English entry for a `/am` page with no translation: those are
+  // `noindex`, so this only ever decides what the browser tab says.
+  const seo = translated || seoByRouteName[baseName] || defaultSeo
   const canonical = canonicalUrlForRoute(to)
+
+  // Alternates only where the page is genuinely published and indexable in both
+  // languages — that is, an English route that is indexable and has an Amharic entry.
+  const indexableInBoth = !to.meta.noindex && Boolean(amSeoByRouteName[baseName])
+  applyHreflangAlternates(
+    to.meta.canonicalPath || to.path,
+    indexableInBoth ? ['en', 'am'] : []
+  )
 
   // Breadcrumbs are owned by the detail views, which set them once their data
   // arrives. Clearing here rather than in each view's onUnmounted avoids a stale
