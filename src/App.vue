@@ -22,13 +22,16 @@
     </div>
     <Footer v-if="!route.meta?.hideLayout" />
     <PublicSupportChat v-if="!route.meta?.hideLayout" />
+    <!-- Rendered on every route, including the ones that hide the rest of the layout:
+         analytics would otherwise load there without ever having asked. -->
+    <CookieConsentBanner />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat } from '@/shared/components'
+import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat, CookieConsentBanner } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 

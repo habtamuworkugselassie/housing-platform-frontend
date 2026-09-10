@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import i18n from './i18n'
 import { initAnalytics } from './utils/analytics'
+import { analyticsAllowed, onConsentChange, CONSENT_GRANTED } from './utils/cookieConsent'
 import './style.css'
 import './styles/reveal.css'
 import './styles/admin-theme.css'
@@ -15,9 +16,20 @@ import './styles/material-icons.css'
 import './styles/light-app.css'
 import './styles/public-design.css'
 
-// No-op unless VITE_GA_MEASUREMENT_ID is set. Runs before mount so the router's
-// first afterEach already has a configured tag to send its page_view to.
-initAnalytics()
+// Analytics runs only for a visitor who has said yes.
+//
+// This used to be an unconditional `initAnalytics()`, so Google Analytics loaded on
+// arrival for everyone. It is now gated on the stored choice, and `initAnalytics` is
+// idempotent, so the listener simply starts it the moment consent is given without
+// waiting for a reload. A visitor who declines never loads gtag.js at all — the tag is
+// not loaded-then-silenced, it is never fetched, which is also why declining costs them
+// a request they would otherwise make to googletagmanager.com.
+//
+// Runs before mount so a returning, consenting visitor's first page_view is not lost.
+if (analyticsAllowed()) initAnalytics()
+onConsentChange((choice) => {
+  if (choice === CONSENT_GRANTED) initAnalytics()
+})
 
 const app = createApp(App)
 const head = createHead()
