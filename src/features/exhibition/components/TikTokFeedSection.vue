@@ -51,18 +51,68 @@
            request does not arrive the section is left showing a bordered handle and no video,
            which is what happened on the live site. An iframe needs one request, to
            www.tiktok.com, and either renders or does not. -->
-      <div v-else class="grid justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <iframe
-          v-for="id in videos"
-          :key="id"
-          :src="embedUrl(id)"
-          :title="t('exhibition.tiktok.playerTitle', { handle: `@${TIKTOK_HANDLE}` })"
-          class="w-full rounded-xl bg-white shadow-sm"
-          style="max-width: 340px; height: 750px; border: 0"
-          loading="lazy"
-          allow="encrypted-media; fullscreen; picture-in-picture"
-          referrerpolicy="strict-origin-when-cross-origin"
-        />
+      <div v-else>
+        <div class="grid justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <iframe
+            v-for="id in visibleIds"
+            :key="id"
+            :src="embedUrl(id)"
+            :title="t('exhibition.tiktok.playerTitle', { handle: `@${TIKTOK_HANDLE}` })"
+            class="w-full rounded-xl bg-white shadow-sm"
+            style="max-width: 340px; height: 750px; border: 0"
+            loading="lazy"
+            allow="encrypted-media; fullscreen; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+          />
+        </div>
+
+        <!-- Only a page of players exists at a time: each is a third-party iframe pulling a
+             video, and eight of them at once would be a lot to ask of a phone on mobile data.
+             The controls are how the rest are reached. -->
+        <div v-if="pageCount > 1" class="mt-8 flex flex-col items-center gap-4">
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-violet-200 bg-white text-primary-700 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-40"
+              :disabled="page === 0"
+              :aria-label="t('exhibition.tiktok.previous')"
+              @click="go(page - 1)"
+            >
+              <span class="material-icons !text-[22px] leading-none" aria-hidden="true">chevron_left</span>
+            </button>
+
+            <p class="min-w-[7rem] text-center text-sm font-medium text-gray-700" aria-live="polite">
+              {{ t('exhibition.tiktok.position', { range: rangeLabel, total: allIds.length }) }}
+            </p>
+
+            <button
+              type="button"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-violet-200 bg-white text-primary-700 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-40"
+              :disabled="page >= pageCount - 1"
+              :aria-label="t('exhibition.tiktok.next')"
+              @click="go(page + 1)"
+            >
+              <span class="material-icons !text-[22px] leading-none" aria-hidden="true">chevron_right</span>
+            </button>
+          </div>
+
+          <!-- Jumping straight to a video, rather than only stepping one at a time. -->
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <button
+              v-for="(id, i) in allIds"
+              :key="id"
+              type="button"
+              class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+              :class="visibleIds.includes(id)
+                ? 'bg-primary-600 text-white'
+                : 'bg-white text-gray-600 ring-1 ring-violet-200 hover:bg-primary-50'"
+              :aria-current="visibleIds.includes(id) ? 'true' : undefined"
+              @click="go(Math.floor(i / pageSize))"
+            >
+              {{ postedOn(id) }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <p v-if="shown" class="mt-8 text-center text-sm">
@@ -80,26 +130,61 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { analyticsAllowed, onConsentChange } from '@/utils/cookieConsent'
 import {
   TIKTOK_HANDLE,
   TIKTOK_PROFILE_URL,
   embedUrl,
-  latestVideoIds
+  latestVideoIds,
+  formatPostedOn
 } from '@/features/exhibition/tiktokVideos'
 
 /** Three across on a wide screen; one on a phone, where each player is most of a screenful. */
 const WIDE = '(min-width: 640px)'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+/** Dates follow the chosen language, so they re-read when it changes. */
+const postedOn = (id) => formatPostedOn(id, locale.value)
 
 const shown = ref(false)
-const videos = ref([])
+const allIds = ref([])
+const pageSize = ref(1)
+const page = ref(0)
 const root = ref(null)
 let observer
 let stopListening
+let wide
+
+const pageCount = computed(() => Math.max(1, Math.ceil(allIds.value.length / pageSize.value)))
+
+const visibleIds = computed(() =>
+  allIds.value.slice(page.value * pageSize.value, page.value * pageSize.value + pageSize.value)
+)
+
+/** "1" on a phone, "1–3" where three are side by side. */
+const rangeLabel = computed(() => {
+  const first = page.value * pageSize.value + 1
+  const last = Math.min(first + pageSize.value - 1, allIds.value.length)
+  return first === last ? `${first}` : `${first}\u2013${last}`
+})
+
+function go(next) {
+  page.value = Math.min(Math.max(next, 0), pageCount.value - 1)
+}
+
+/**
+ * How many players fit is a property of the screen, not of the moment the section opened:
+ * turning a phone sideways should re-lay them out rather than leave one in a three-wide grid.
+ */
+function applyWidth() {
+  const firstVisible = page.value * pageSize.value
+  pageSize.value = wide?.matches ? 3 : 1
+  // Keep whatever was on screen on screen, rather than jumping back to the newest post.
+  go(Math.floor(firstVisible / pageSize.value))
+}
 
 /**
  * Hand the section over to TikTok.
@@ -110,8 +195,7 @@ let stopListening
  */
 function show() {
   if (shown.value) return
-  const wide = typeof window !== 'undefined' && window.matchMedia(WIDE).matches
-  videos.value = latestVideoIds(wide ? 3 : 1)
+  allIds.value = latestVideoIds(Infinity)
   shown.value = true
 }
 
@@ -133,6 +217,12 @@ onMounted(() => {
     observer.observe(root.value)
   }
 
+  // How many fit is a property of the screen, not of the moment the section opened: turning a
+  // phone sideways should re-lay the players out rather than leave one in a three-wide grid.
+  wide = window.matchMedia(WIDE)
+  applyWidth()
+  wide.addEventListener('change', applyWidth)
+
   root.value = document.getElementById('tiktok')
   if (analyticsAllowed()) showWhenVisible()
 
@@ -145,5 +235,6 @@ onMounted(() => {
 onUnmounted(() => {
   observer?.disconnect()
   stopListening?.()
+  wide?.removeEventListener('change', applyWidth)
 })
 </script>

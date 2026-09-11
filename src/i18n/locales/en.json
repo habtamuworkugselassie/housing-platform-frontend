@@ -1178,6 +1178,9 @@
       "title": "Ethio Build Connect on TikTok",
       "subtitle": "Short videos from the expo, our exhibitors and the Ethiopian real estate market.",
       "playerTitle": "TikTok video from {handle}",
+      "previous": "Previous videos",
+      "next": "More videos",
+      "position": "{range} of {total}",
       "loadButton": "Show videos",
       "openProfile": "Open the profile on TikTok",
       "privacyNote": "Videos are played by TikTok, not by us. Showing them loads TikTok's player, which may set its own cookies."

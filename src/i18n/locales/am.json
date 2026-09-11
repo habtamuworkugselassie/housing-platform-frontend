@@ -1170,6 +1170,9 @@
       "title": "ኢትዮ ቢልድ ኮነክት በTikTok",
       "subtitle": "ከኤግዚቢሽኑ፣ ከአሳታፊዎቻችንና ከኢትዮጵያ ሪል እስቴት ገበያ አጫጭር ቪዲዮዎች።",
       "playerTitle": "የ{handle} የTikTok ቪዲዮ",
+      "previous": "ቀደም ያሉ ቪዲዮዎች",
+      "next": "ተጨማሪ ቪዲዮዎች",
+      "position": "{range} ከ{total}",
       "loadButton": "ቪዲዮዎችን አሳይ",
       "openProfile": "መለያውን በTikTok ይክፈቱ",
       "privacyNote": "ቪዲዮዎቹ የሚጫወቱት በTikTok እንጂ በእኛ አይደለም። ማሳየታቸው የTikTok ማጫወቻን ይጭናል፤ ይህም የራሱን ኩኪዎች ሊያስቀምጥ ይችላል።"

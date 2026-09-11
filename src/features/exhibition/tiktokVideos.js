@@ -37,3 +37,18 @@ export function embedUrl(id) {
 export function latestVideoIds(count) {
   return [...TIKTOK_VIDEO_IDS].sort((a, b) => (a.length === b.length ? b.localeCompare(a) : b.length - a.length)).slice(0, count)
 }
+
+/**
+ * The day a post went up, read out of its own id.
+ *
+ * TikTok ids are snowflake-style: the top 32 bits are a unix timestamp. That is also why
+ * sorting them numerically puts the newest first. Deriving the date here means the picker can
+ * label each post without a second request and without a date to keep in step with the ids.
+ */
+export function formatPostedOn(id, locale = 'en') {
+  const seconds = Number(BigInt(id) >> 32n)
+  return new Date(seconds * 1000).toLocaleDateString(locale === 'am' ? 'am-ET' : 'en-GB', {
+    day: 'numeric',
+    month: 'short'
+  })
+}
