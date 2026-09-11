@@ -18,3 +18,53 @@ export const EXPO_EVENT = {
   addressLocality: 'Addis Ababa',
   addressCountry: 'ET'
 }
+
+/**
+ * The expo's ExhibitionEvent JSON-LD, as a plain object.
+ *
+ * Pure and DOM-free on purpose: the browser injects this at runtime via
+ * setExpoEventJsonLd, and the prerender step serialises the very same object into the
+ * static HTML so a crawler reads the event without executing any JavaScript. Building
+ * it in one place keeps those two copies from drifting apart.
+ *
+ * schema.org has a dedicated subtype for trade shows, which describes this more
+ * precisely than a bare Event. Only what the page itself states is asserted: no offers
+ * block, because the page invites visitors to register interest rather than naming a
+ * ticket price, and claiming a price we do not publish would be wrong.
+ *
+ * `url` is the canonical expo URL, not necessarily the one being rendered: the home
+ * page IS the expo page, since /exhibition renders the same component and
+ * canonicalises to /. An Event pointing at a URL Google has folded away would describe
+ * a page it will not show.
+ */
+export function buildExpoEventJsonLd({ event = EXPO_EVENT, url, description, image } = {}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ExhibitionEvent',
+    name: event.name,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: event.venueName,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: event.addressLocality,
+        addressCountry: event.addressCountry
+      }
+    },
+    ...(description ? { description } : {}),
+    ...(image ? { image } : {}),
+    organizer: {
+      '@type': 'Organization',
+      name: 'Ethio Build Connect',
+      url
+    },
+    url
+  }
+}
+
+/** Shared between the runtime injection and the prerender, so one replaces the other. */
+export const EXPO_EVENT_JSON_LD_ID = 'expo-event-jsonld'

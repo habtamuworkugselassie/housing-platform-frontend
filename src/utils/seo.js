@@ -1,4 +1,8 @@
 import { mediaUrl } from '@/shared/api/client'
+import {
+  buildExpoEventJsonLd,
+  EXPO_EVENT_JSON_LD_ID
+} from '@/features/exhibition/eventDetails'
 import { DEFAULT_URL_LOCALE, pathForLocale } from '@/i18n/localeRoutes'
 
 const INDEX_ROBOTS = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
@@ -140,50 +144,29 @@ export const BREADCRUMB_JSON_LD_ID = 'dynamic-breadcrumb-jsonld'
  * `path` is site-relative and is normally omitted on that last entry, since a
  * crumb for the page you are already on needs no link.
  */
-const EXPO_EVENT_JSON_LD_ID = 'expo-event-jsonld'
-
 /**
  * ExhibitionEvent markup for the expo landing page.
  *
- * schema.org has a dedicated subtype for trade shows, which describes this more
- * precisely than a bare Event. Only what the page itself states is asserted: no
- * offers block, because the page invites visitors to register interest rather than
- * naming a ticket price, and claiming a price we do not publish would be wrong.
+ * The object itself is built by buildExpoEventJsonLd, which the prerender step also
+ * uses — so the static HTML a crawler reads and the copy injected after hydration are
+ * the same markup, not two descriptions that can drift.
  *
- * Scoped to the expo route and torn down on leave, so no other URL claims to be
- * the event page.
+ * Reusing the prerender's id means this call replaces that script rather than adding a
+ * second ExhibitionEvent to the page (setJsonLdById removes the existing id first).
+ *
+ * Scoped to the expo route and torn down on leave, so no other URL claims to be the
+ * event page.
  */
 export function setExpoEventJsonLd(event, { description, image } = {}) {
-  // The home page is the expo page: `/exhibition` renders the same component and
-  // canonicalises to `/`, so the event's own URL has to name the canonical one. An
-  // Event pointing at a URL Google has folded away describes a page it will not show.
-  const url = canonicalUrlForPath('/')
-  setJsonLdById(EXPO_EVENT_JSON_LD_ID, {
-    '@context': 'https://schema.org',
-    '@type': 'ExhibitionEvent',
-    name: event.name,
-    startDate: event.startDate,
-    endDate: event.endDate,
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    location: {
-      '@type': 'Place',
-      name: event.venueName,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: event.addressLocality,
-        addressCountry: event.addressCountry
-      }
-    },
-    ...(description ? { description } : {}),
-    ...(image ? { image } : {}),
-    organizer: {
-      '@type': 'Organization',
-      name: 'Ethio Build Connect',
-      url: canonicalUrlForPath('/')
-    },
-    url
-  })
+  setJsonLdById(
+    EXPO_EVENT_JSON_LD_ID,
+    buildExpoEventJsonLd({
+      event,
+      url: canonicalUrlForPath('/'),
+      description,
+      image
+    })
+  )
 }
 
 export function removeExpoEventJsonLd() {
