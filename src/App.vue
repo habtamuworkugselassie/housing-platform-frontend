@@ -31,6 +31,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { stripLocale } from '@/i18n/localeRoutes'
 import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat, CookieConsentBanner } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
@@ -44,7 +45,7 @@ const route = useRoute()
 
 function shouldShowSplash() {
   if (typeof sessionStorage === 'undefined') return false
-  return route.path === '/' && !sessionStorage.getItem(SPLASH_SHOWN_KEY)
+  return stripLocale(route.path) === '/' && !sessionStorage.getItem(SPLASH_SHOWN_KEY)
 }
 
 const showSplash = ref(shouldShowSplash())
@@ -90,5 +91,7 @@ const isPublicRoute = computed(() => {
 // `/exhibition` renders the same view and canonicalises to `/`, but it was excluded
 // here, so that URL served the expo page with no hero and no `<h1>` at all.
 const EXHIBITION_LANDING_PATHS = new Set(['/', '/exhibition'])
-const isExhibitionLanding = computed(() => EXHIBITION_LANDING_PATHS.has(route.path))
+const isExhibitionLanding = computed(() =>
+  EXHIBITION_LANDING_PATHS.has(stripLocale(route.path))
+)
 </script>

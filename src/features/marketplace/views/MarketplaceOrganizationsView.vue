@@ -215,6 +215,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { stripLocale } from '@/i18n/localeRoutes'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
@@ -250,7 +251,11 @@ const typeLabelKeys = {
 }
 
 const config = computed(() => {
-  const category = route.params.category || route.path.replace(/^\/marketplace\/?/, '') || ''
+  // stripLocale first: under /am the raw path is /am/marketplace/banks, which this regex
+  // does not match, so the category came out as the whole path and no organisation type
+  // was ever queried. Every comparison against a literal route needs the prefix removed.
+  const category =
+    route.params.category || stripLocale(route.path).replace(/^\/marketplace\/?/, '') || ''
   return categoryToType[category] || null
 })
 
