@@ -135,7 +135,7 @@
 </template>
 
 <script setup>
-import { computed, h, onMounted, onUnmounted, ref } from 'vue'
+import { computed, h, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { activeGreeting } from '@/shared/seasonalGreetings'
 
 // Re-read the clock rather than deciding once at mount: a tab left open overnight would
@@ -281,13 +281,32 @@ function swayStyle(i, base) {
   }
 }
 
+/**
+ * A fixed overlay covers whatever is beneath it, and the foot of the page can never be
+ * scrolled out from under it: at the bottom of the home page the entire footer bottom row —
+ * the copyright, the legal links, the language switcher — sat behind the flowers with nowhere
+ * left to scroll. So while a greeting is up the page carries a gutter the height of the band.
+ *
+ * The class goes on the body rather than the padding on this component, because the thing that
+ * needs the room is the page, not the overlay.
+ */
+const GREETING_BODY_CLASS = 'has-seasonal-greeting'
+
+watchEffect(() => {
+  if (typeof document === 'undefined') return
+  document.body.classList.toggle(GREETING_BODY_CLASS, Boolean(greeting.value))
+})
+
 onMounted(() => {
   timer = setInterval(() => {
     now.value = new Date()
   }, 60_000)
 })
 
-onUnmounted(() => clearInterval(timer))
+onUnmounted(() => {
+  clearInterval(timer)
+  document.body.classList.remove(GREETING_BODY_CLASS)
+})
 </script>
 
 <style scoped>
@@ -469,5 +488,20 @@ onUnmounted(() => clearInterval(timer))
   .seasonal__chip { max-width: calc(100vw - 6.5rem); padding-inline: 0.9rem; }
   .seasonal__meadow,
   .seasonal__band { height: 9rem; }
+}
+</style>
+
+<style>
+/* Room to scroll clear of the flowers. Slightly taller than the band itself — 13rem against a
+   measured 207px — so the last line of the footer finishes above them rather than level with
+   the topmost petals. Paired with the band heights in the scoped block above: change one and
+   change the other. */
+body.has-seasonal-greeting footer {
+  padding-bottom: 13rem;
+}
+@media (max-width: 640px) {
+  body.has-seasonal-greeting footer {
+    padding-bottom: 12.5rem;
+  }
 }
 </style>
