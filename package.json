@@ -6,7 +6,8 @@
     "dev": "bash scripts/run-with-node20.sh npx vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite preview --host 0.0.0.0 --port $PORT"
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
+    "tiktok:refresh": "node scripts/refresh-tiktok.mjs"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.21",

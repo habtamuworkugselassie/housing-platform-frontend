@@ -1177,10 +1177,9 @@
       "eyebrow": "Watch",
       "title": "Ethio Build Connect on TikTok",
       "subtitle": "Short videos from the expo, our exhibitors and the Ethiopian real estate market.",
-      "unavailable": "TikTok could not be reached from this network. The videos are on the profile instead.",
+      "playerTitle": "TikTok video from {handle}",
       "loadButton": "Show videos",
       "openProfile": "Open the profile on TikTok",
-      "loading": "Loading videos from TikTok\u2026",
       "privacyNote": "Videos are played by TikTok, not by us. Showing them loads TikTok's player, which may set its own cookies."
     },
     "faq": {

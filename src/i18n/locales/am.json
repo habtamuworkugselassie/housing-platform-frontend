@@ -1169,10 +1169,9 @@
       "eyebrow": "ይመልከቱ",
       "title": "ኢትዮ ቢልድ ኮነክት በTikTok",
       "subtitle": "ከኤግዚቢሽኑ፣ ከአሳታፊዎቻችንና ከኢትዮጵያ ሪል እስቴት ገበያ አጫጭር ቪዲዮዎች።",
-      "unavailable": "ከዚህ አውታረ መረብ TikTok ማግኘት አልተቻለም። ቪዲዮዎቹ በመለያው ላይ ይገኛሉ።",
+      "playerTitle": "የ{handle} የTikTok ቪዲዮ",
       "loadButton": "ቪዲዮዎችን አሳይ",
       "openProfile": "መለያውን በTikTok ይክፈቱ",
-      "loading": "ቪዲዮዎች ከTikTok በመጫን ላይ\u2026",
       "privacyNote": "ቪዲዮዎቹ የሚጫወቱት በTikTok እንጂ በእኛ አይደለም። ማሳየታቸው የTikTok ማጫወቻን ይጭናል፤ ይህም የራሱን ኩኪዎች ሊያስቀምጥ ይችላል።"
     },
     "faq": {
