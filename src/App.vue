@@ -7,6 +7,9 @@
     @dismiss="onSplashDismiss"
   />
   <div class="site-shell min-h-screen flex flex-col" :class="{ 'is-revealing': isRevealing }">
+    <!-- Above the nav, and only on the days it is scheduled for. It removes itself; see
+         shared/seasonalGreetings.js. -->
+    <SeasonalGreetingBanner v-if="!route.meta?.hideLayout" />
     <NavBar v-if="!route.meta?.hideLayout" />
     <!-- app-canvas scopes the light theme (styles/light-app.css). The nav,
          footer and support chat sit outside it and keep the dark brand frame. -->
@@ -32,7 +35,7 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { stripLocale } from '@/i18n/localeRoutes'
-import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat, CookieConsentBanner } from '@/shared/components'
+import { NavBar, PublicLayout, Footer, LandingHero, SplashScreen, PublicSupportChat, CookieConsentBanner, SeasonalGreetingBanner } from '@/shared/components'
 import ExhibitionTopSection from '@/features/exhibition/components/ExhibitionTopSection.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 

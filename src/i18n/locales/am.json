@@ -1531,6 +1531,17 @@
       "manageDenied": "የአናሊቲክስ ኩኪዎች ተሰናክሏል። በ{date} አልተቀበሉም።",
       "manageUnset": "እስካሁን አልመረጡም፤ ስለዚህ አናሊቲክስ ተሰናክሏል።"
     },
+  "seasonal": {
+      "dismiss": "ዝጋ",
+      "enkutatash": {
+        "title": "ዕንቍጣጣሽ",
+        "subtitle": "መልካም አዲስ ዓመት — እንኳን አደረሳችሁ!"
+      },
+      "meskel": {
+        "title": "መልካም የመስቀል በዓል",
+        "subtitle": "እንኳን አደረሳችሁ! ከኢትዮ ቢልድ ኮነክት"
+      }
+    },
   "legal": {
     "badge": "ህጋዊ",
     "navPrivacy": "የግላዊነት ፖሊሲ",

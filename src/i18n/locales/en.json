@@ -1539,6 +1539,17 @@
       "manageDenied": "Analytics cookies are disabled. You declined on {date}.",
       "manageUnset": "You have not chosen yet, so analytics is off and no analytics cookies are set."
     },
+  "seasonal": {
+      "dismiss": "Dismiss",
+      "enkutatash": {
+        "title": "ዕንቍጣጣሽ",
+        "subtitle": "Melkam Addis Amet — Happy Ethiopian New Year 2019"
+      },
+      "meskel": {
+        "title": "መልካም የመስቀል በዓል",
+        "subtitle": "Wishing you a joyful Meskel from Ethio Build Connect"
+      }
+    },
   "legal": {
     "badge": "Legal",
     "navPrivacy": "Privacy policy",
