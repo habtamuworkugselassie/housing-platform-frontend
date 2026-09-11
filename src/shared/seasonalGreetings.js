@@ -24,24 +24,38 @@ const ADDIS_UTC_OFFSET_MINUTES = 3 * 60
  * Ethiopian dates in Gregorian terms: Enkutatash is 1 Meskerem, which falls on 11
  * September in most years and 12 September in the year before a Gregorian leap year.
  * Meskel is 17 Meskerem, sixteen days later, with Demera — the bonfire — on its eve.
- * Both are therefore written out per year rather than computed: a calendar conversion
+ * They are therefore written out per year rather than computed: a calendar conversion
  * that is subtly wrong once every four years is worse than a list somebody checks.
+ *
+ * The three run back to back, so the site carries a greeting continuously from the new
+ * year through to Meskel. Order matters only in that the first match wins, and the ranges
+ * do not overlap.
  */
 export const SEASONAL_GREETINGS = [
   {
+    // Meskerem is greeted all month, not just on the day, so this stands until Demera
+    // takes over on its eve.
     id: 'enkutatash-2019',
     from: '2026-09-11',
-    through: '2026-09-12',
+    through: '2026-09-25',
     symbol: 'adey',
     titleKey: 'seasonal.enkutatash.title',
     subtitleKey: 'seasonal.enkutatash.subtitle'
   },
   {
-    // Demera is the eve, so the greeting covers both evenings.
-    id: 'meskel-2026',
+    // The eve, when the bonfire is lit — its own occasion, not a warm-up for the next one.
+    id: 'demera-2026',
     from: '2026-09-26',
-    through: '2026-09-27',
+    through: '2026-09-26',
     symbol: 'demera',
+    titleKey: 'seasonal.demera.title',
+    subtitleKey: 'seasonal.demera.subtitle'
+  },
+  {
+    id: 'meskel-2026',
+    from: '2026-09-27',
+    through: '2026-09-27',
+    symbol: 'meskel',
     titleKey: 'seasonal.meskel.title',
     subtitleKey: 'seasonal.meskel.subtitle'
   }
