@@ -392,7 +392,7 @@ onUnmounted(() => {
 }
 
 /* The fireworks strip shares the meadow's geometry — see the note on its height below. */
-.seasonal__band { width: 100%; height: 10rem; }
+.seasonal__band { width: 100%; height: var(--seasonal-band-height); }
 .seasonal__band-svg { display: block; width: 100%; height: 100%; }
 /* Each rocket climbs, bursts, and fades on its own loop. The trail fades out as the burst
    opens, so the two read as one launch rather than as two unrelated things. */
@@ -426,7 +426,7 @@ onUnmounted(() => {
 /* Flowers grow straight out of the bottom edge over the page, with nothing behind them. The
    strip is tall enough to clear the tallest stalk: `slice` scales to cover the width, so on a
    narrow screen it shows the middle of the band at full size rather than shrinking it. */
-.seasonal__meadow { width: 100%; height: 10rem; }
+.seasonal__meadow { width: 100%; height: var(--seasonal-band-height); }
 .seasonal__meadow-svg {
   display: block;
   width: 100%;
@@ -486,22 +486,37 @@ onUnmounted(() => {
 @media (max-width: 640px) {
   /* Keep the chip clear of the corner chat button rather than letting it run under it. */
   .seasonal__chip { max-width: calc(100vw - 6.5rem); padding-inline: 0.9rem; }
-  .seasonal__meadow,
-  .seasonal__band { height: 9rem; }
 }
 </style>
 
 <style>
-/* Room to scroll clear of the flowers. Slightly taller than the band itself — 13rem against a
-   measured 207px — so the last line of the footer finishes above them rather than level with
-   the topmost petals. Paired with the band heights in the scoped block above: change one and
-   change the other. */
-body.has-seasonal-greeting footer {
-  padding-bottom: 13rem;
+/*
+ * How tall the flower strip has to be, and why it cannot simply be a number.
+ *
+ * The strip is drawn with preserveAspectRatio="…slice", which scales the drawing to *cover*
+ * the box: whichever of width or height demands more scaling wins, and the other axis is
+ * cropped. At a fixed 10rem the width won on a wide screen and the crop landed on the tops of
+ * the flowers — measured against the live site, 22px of the drawing gone at 1680, 48px at
+ * 1920, and 117px at 2560, where seventeen of the thirty-six stalks had their heads cut off.
+ *
+ * The drawing is 1200 x 130, so it is fully visible exactly when height >= width x 130/1200,
+ * or 10.834vw. 10.9vw leaves a little over, and vw counts the scrollbar the strip does not,
+ * so the margin only ever grows. Below that the floor takes over and the crop moves to the
+ * horizontal, which is deliberate: a phone shows the middle of the band at full size rather
+ * than the whole of it shrunk.
+ */
+:root {
+  --seasonal-band-height: max(10rem, 10.9vw);
 }
 @media (max-width: 640px) {
-  body.has-seasonal-greeting footer {
-    padding-bottom: 12.5rem;
+  :root {
+    --seasonal-band-height: max(9rem, 10.9vw);
   }
+}
+
+/* Room to scroll clear of the flowers: the strip, plus the chip standing above it. Derived
+   from the same variable, so a taller strip on a wide screen takes the gutter with it. */
+body.has-seasonal-greeting footer {
+  padding-bottom: calc(var(--seasonal-band-height) + 3.5rem);
 }
 </style>
