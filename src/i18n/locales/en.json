@@ -1540,7 +1540,6 @@
       "manageUnset": "You have not chosen yet, so analytics is off and no analytics cookies are set."
     },
   "seasonal": {
-      "dismiss": "Dismiss",
       "enkutatash": {
         "title": "ዕንቍጣጣሽ",
         "subtitle": "Melkam Addis Amet — Happy Ethiopian New Year 2019"
@@ -1552,6 +1551,10 @@
       "meskel": {
         "title": "መልካም የመስቀል በዓል",
         "subtitle": "Wishing you a joyful Meskel from Ethio Build Connect"
+      },
+      "gregorian": {
+        "title": "Happy New Year 2027",
+        "subtitle": "Wishing you a prosperous year of building, from Ethio Build Connect"
       }
     },
   "legal": {

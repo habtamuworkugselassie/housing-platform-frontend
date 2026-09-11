@@ -3,7 +3,8 @@
  *
  * The point is that nobody has to remember to take one down. Each entry names the days it
  * runs, inclusive, and the banner is simply absent outside them — no deploy on the day, no
- * admin toggle left switched on into October.
+ * admin toggle left switched on into October. Nor can a visitor close one early: a greeting
+ * is up for the occasion and comes down with it.
  *
  * Dates are evaluated in **Addis Ababa time, not the visitor's**. A greeting for the
  * Ethiopian New Year should end when the day ends in Ethiopia; keyed off the browser clock
@@ -58,6 +59,17 @@ export const SEASONAL_GREETINGS = [
     symbol: 'meskel',
     titleKey: 'seasonal.meskel.title',
     subtitleKey: 'seasonal.meskel.subtitle'
+  },
+  {
+    // The Gregorian new year, which Ethiopia marks as well as its own — hence a separate
+    // entry with its own wording rather than a second Enkutatash. Fixed date, no conversion
+    // needed, and it runs from the eve because that is the night people are out.
+    id: 'gregorian-2027',
+    from: '2026-12-31',
+    through: '2027-01-01',
+    symbol: 'newyear',
+    titleKey: 'seasonal.gregorian.title',
+    subtitleKey: 'seasonal.gregorian.subtitle'
   }
 ]
 
@@ -71,9 +83,4 @@ export function addisDate(now = new Date()) {
 export function activeGreeting(now = new Date()) {
   const today = addisDate(now)
   return SEASONAL_GREETINGS.find((g) => today >= g.from && today <= g.through) || null
-}
-
-/** Per-occasion, so dismissing one does not silence the next. */
-export function dismissalKey(id) {
-  return `seasonalGreetingDismissed:${id}`
 }

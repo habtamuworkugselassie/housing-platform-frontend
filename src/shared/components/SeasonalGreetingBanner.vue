@@ -1,10 +1,13 @@
 <template>
   <!-- A fixed overlay, not a bar in the layout: it floats over the page from the bottom edge
        the way Google's Enkutatash decoration does, so nothing is pushed down, it stays put
-       while the page scrolls, and no page has to make room for it. pointer-events are off for
-       the whole layer except the dismiss button, so content underneath stays clickable. -->
+       while the page scrolls, and no page has to make room for it.
+
+       It is decoration and nothing else: there is no control on it and pointer-events are off
+       for the whole layer, so every click lands on the page underneath as if it were not
+       there. It comes down when the occasion ends, not before. -->
   <div
-    v-if="greeting && !dismissed"
+    v-if="greeting"
     class="seasonal"
     :class="`seasonal--${greeting.symbol}`"
     role="region"
@@ -13,19 +16,52 @@
     <!-- The words sit on a translucent chip. The layer itself is transparent, but the greeting
          has to stay readable over whatever happens to be scrolled underneath it — a white
          listing page or the dark violet footer. -->
-    <div class="seasonal__chip">
-      <p class="seasonal__text">
-        <span class="seasonal__title">{{ $t(greeting.titleKey) }}</span>
-        <span class="seasonal__subtitle">{{ $t(greeting.subtitleKey) }}</span>
-      </p>
-      <button
-        type="button"
-        class="seasonal__dismiss"
-        :aria-label="$t('seasonal.dismiss')"
-        @click="dismiss"
-      >
-        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-      </button>
+    <p class="seasonal__chip">
+      <span class="seasonal__title">{{ $t(greeting.titleKey) }}</span>
+      <span class="seasonal__subtitle">{{ $t(greeting.subtitleKey) }}</span>
+    </p>
+
+    <!-- January is not Meskerem, so the Gregorian new year gets fireworks rather than a
+         meadow: rockets rising off the bottom edge and bursting over the page. Same strip,
+         same rules — bottom-anchored, sliced to cover, so the bursts are placed towards the
+         middle where a phone will still show them. -->
+    <div v-if="greeting.symbol === 'newyear'" class="seasonal__band" aria-hidden="true">
+      <svg viewBox="0 0 1200 130" preserveAspectRatio="xMidYMax slice" class="seasonal__band-svg">
+        <path
+          v-for="(b, i) in bursts"
+          :key="`t${i}`"
+          class="seasonal__trail"
+          :d="`M${b.x + b.drift} 130 Q ${b.x + b.drift} ${(130 + b.y) / 2} ${b.x} ${b.y}`"
+          :stroke="b.color"
+          fill="none"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          :style="{ animationDelay: `-${b.delay}s` }"
+        />
+        <g v-for="(b, i) in bursts" :key="`b${i}`" :transform="`translate(${b.x} ${b.y}) scale(${b.scale})`">
+          <g class="seasonal__burst" :style="{ animationDelay: `-${b.delay}s` }">
+            <g v-for="n in 12" :key="`l${n}`" :transform="`rotate(${(n - 1) * 30})`">
+              <line x1="0" y1="-8" x2="0" y2="-26" :stroke="b.color" stroke-width="2.8" stroke-linecap="round" />
+              <circle cx="0" cy="-31" r="2.8" :fill="b.color" />
+            </g>
+            <g v-for="n in 12" :key="`s${n}`" :transform="`rotate(${(n - 1) * 30 + 15})`" opacity="0.7">
+              <line x1="0" y1="-7" x2="0" y2="-17" :stroke="b.color" stroke-width="2.2" stroke-linecap="round" />
+            </g>
+            <circle r="4.4" :fill="b.color" />
+            <circle r="1.8" fill="#FFFFFF" opacity="0.85" />
+          </g>
+        </g>
+        <circle
+          v-for="(t, i) in twinkles"
+          :key="`s${i}`"
+          class="seasonal__twinkle"
+          :cx="t.cx"
+          :cy="t.cy"
+          :r="t.r"
+          :fill="t.color"
+          :style="{ animationDelay: `-${t.delay}s` }"
+        />
+      </svg>
     </div>
 
     <!-- A band of Adey Abeba growing up out of the bottom edge, the way the flower actually
@@ -36,7 +72,7 @@
          that puts it in place, the inner one carries the sway. A CSS `transform` on an SVG
          element replaces its `transform` attribute outright, so animating the outer group
          would throw every stalk back to the origin. -->
-    <div class="seasonal__meadow" aria-hidden="true">
+    <div v-else class="seasonal__meadow" aria-hidden="true">
       <svg viewBox="0 0 1200 130" preserveAspectRatio="xMidYMax slice" class="seasonal__meadow-svg">
         <g class="seasonal__row seasonal__row--back">
           <g v-for="(stalk, i) in backRow" :key="`b${i}`" :transform="`translate(${stalk.x} 130)`">
@@ -100,7 +136,7 @@
 
 <script setup>
 import { computed, h, onMounted, onUnmounted, ref } from 'vue'
-import { activeGreeting, dismissalKey } from '@/shared/seasonalGreetings'
+import { activeGreeting } from '@/shared/seasonalGreetings'
 
 // Re-read the clock rather than deciding once at mount: a tab left open overnight would
 // otherwise still be wishing people a happy new year two days later.
@@ -213,6 +249,30 @@ const sparks = Array.from({ length: 6 }, (_, i) => ({
   style: { animationDelay: `-${i * 0.9}s`, animationDuration: `${3.2 + (i % 4) * 0.6}s` }
 }))
 
+/**
+ * Where the fireworks go off. Spread across the strip but weighted towards the middle: a
+ * phone shows only about its central third, so a burst out at 1100 is one nobody sees.
+ * `drift` is how far the rocket's trail leans as it climbs, which keeps the launches from
+ * looking like a row of identical vertical lines.
+ */
+const bursts = [
+  { x: 170, y: 42, scale: 1.15, drift: 18, delay: 0, color: '#F59E0B' },
+  { x: 420, y: 28, scale: 1.4, drift: -22, delay: 1.7, color: '#7C3AED' },
+  { x: 565, y: 54, scale: 1.0, drift: 14, delay: 3.4, color: '#E11D48' },
+  { x: 700, y: 24, scale: 1.5, drift: -16, delay: 0.9, color: '#EA580C' },
+  { x: 845, y: 48, scale: 1.2, drift: 20, delay: 2.6, color: '#0D9488' },
+  { x: 1045, y: 36, scale: 1.3, drift: -18, delay: 4.2, color: '#4F46E5' }
+]
+
+/** Embers still hanging in the air between bursts, so the strip is never entirely empty. */
+const twinkles = Array.from({ length: 26 }, (_, i) => ({
+  cx: 30 + ((i * 379) % 1170),
+  cy: 14 + ((i * 53) % 96),
+  r: 1.5 + (i % 3) * 0.8,
+  color: ['#F59E0B', '#7C3AED', '#E11D48', '#0D9488'][i % 4],
+  delay: (i % 9) * 0.5
+}))
+
 /** Stagger the sway so the band breathes unevenly instead of rocking in unison. */
 function swayStyle(i, base) {
   return {
@@ -221,33 +281,7 @@ function swayStyle(i, base) {
   }
 }
 
-const dismissedIds = ref(new Set())
-const dismissed = computed(() => greeting.value && dismissedIds.value.has(greeting.value.id))
-
-function readDismissal(id) {
-  try {
-    return window.localStorage.getItem(dismissalKey(id)) === '1'
-  } catch {
-    return false
-  }
-}
-
-function dismiss() {
-  const id = greeting.value?.id
-  if (!id) return
-  // Per occasion, so closing the new year greeting does not also silence Meskel.
-  try {
-    window.localStorage.setItem(dismissalKey(id), '1')
-  } catch {
-    /* private mode — it simply reappears next visit, which is the harmless failure */
-  }
-  dismissedIds.value = new Set([...dismissedIds.value, id])
-}
-
 onMounted(() => {
-  if (greeting.value && readDismissal(greeting.value.id)) {
-    dismissedIds.value = new Set([greeting.value.id])
-  }
   timer = setInterval(() => {
     now.value = new Date()
   }, 60_000)
@@ -260,8 +294,8 @@ onUnmounted(() => clearInterval(timer))
 /* The layer itself paints nothing. It is a transparent sheet pinned to the bottom edge of the
    viewport — fixed, so it stays there while the page scrolls, like the support chat button —
    above the page but below the cookie bar and that chat button (both z-60), so those stay
-   reachable while the greeting is up. pointer-events are off for the whole sheet; only the
-   dismiss button takes clicks back. */
+   reachable while the greeting is up. pointer-events are off for the whole sheet and nothing
+   inside turns them back on: it cannot intercept a click anywhere. */
 .seasonal {
   position: fixed;
   inset-inline: 0;
@@ -295,12 +329,14 @@ onUnmounted(() => clearInterval(timer))
    or the dark violet footer — so they ride on a frosted chip rather than on the page itself.
    Translucent, not opaque: the content still shows through. */
 .seasonal__chip {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  line-height: 1.2;
+  text-align: center;
   max-width: min(92vw, 34rem);
-  margin-bottom: -1.1rem;
-  padding: 0.5rem 0.5rem 0.5rem 1.15rem;
+  margin: 0 0 -1.1rem;
+  padding: 0.55rem 1.25rem;
   border-radius: 999px;
   border: 1px solid rgba(180, 83, 9, 0.22);
   background: rgba(255, 253, 245, 0.82);
@@ -308,13 +344,19 @@ onUnmounted(() => clearInterval(timer))
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+.seasonal--newyear .seasonal__chip {
+  border-color: rgba(109, 40, 217, 0.22);
+  background: rgba(245, 243, 255, 0.85);
+}
+.seasonal--newyear .seasonal__title { color: #4c1d95; }
+.seasonal--newyear .seasonal__subtitle { color: #5b21b6; }
+
 .seasonal--demera .seasonal__chip,
 .seasonal--meskel .seasonal__chip {
   border-color: rgba(194, 65, 12, 0.24);
   background: rgba(255, 247, 237, 0.82);
 }
 
-.seasonal__text { margin: 0; display: flex; flex-direction: column; line-height: 1.2; text-align: center; }
 .seasonal__title {
   font-size: clamp(1.05rem, 3.2vw, 1.4rem);
   font-weight: 800;
@@ -330,21 +372,37 @@ onUnmounted(() => clearInterval(timer))
   color: #78350f;
 }
 
-.seasonal__dismiss {
-  flex: none;
-  display: inline-flex;
-  padding: 0.45rem;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: rgba(120, 53, 15, 0.65);
-  cursor: pointer;
-  /* The one part of the sheet that takes clicks. */
-  pointer-events: auto;
+/* The fireworks strip shares the meadow's geometry — see the note on its height below. */
+.seasonal__band { width: 100%; height: 10rem; }
+.seasonal__band-svg { display: block; width: 100%; height: 100%; }
+/* Each rocket climbs, bursts, and fades on its own loop. The trail fades out as the burst
+   opens, so the two read as one launch rather than as two unrelated things. */
+.seasonal__burst {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: seasonal-burst 6s ease-out infinite;
 }
-.seasonal__dismiss svg { width: 1rem; height: 1rem; }
-.seasonal__dismiss:hover { color: #7c2d12; background: rgba(180, 83, 9, 0.14); }
-.seasonal__dismiss:focus-visible { outline: 2px solid #b45309; outline-offset: 2px; }
+.seasonal__trail {
+  stroke-dasharray: 120;
+  animation: seasonal-launch 6s ease-out infinite;
+}
+.seasonal__twinkle { animation: seasonal-twinkle 3.6s ease-in-out infinite; }
+
+@keyframes seasonal-burst {
+  0%, 12% { transform: scale(0.12); opacity: 0; }
+  20% { transform: scale(1); opacity: 1; }
+  55% { transform: scale(1.25); opacity: 0.95; }
+  85%, 100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes seasonal-launch {
+  0% { stroke-dashoffset: 120; opacity: 0.6; }
+  12% { stroke-dashoffset: 0; opacity: 0.6; }
+  22%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes seasonal-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
 
 /* Flowers grow straight out of the bottom edge over the page, with nothing behind them. The
    strip is tall enough to clear the tallest stalk: `slice` scales to cover the width, so on a
@@ -396,14 +454,20 @@ onUnmounted(() => clearInterval(timer))
 @media (prefers-reduced-motion: reduce) {
   .seasonal__stalk,
   .seasonal__flame,
-  .seasonal__spark { animation: none !important; }
+  .seasonal__spark,
+  .seasonal__burst,
+  .seasonal__trail,
+  .seasonal__twinkle { animation: none !important; }
+  /* A still firework has to be a firework that has gone off, not one frozen mid-climb. */
+  .seasonal__trail { display: none; }
   /* A still fire should still look lit rather than leave stray embers hanging over it. */
   .seasonal__spark { display: none; }
 }
 
 @media (max-width: 640px) {
   /* Keep the chip clear of the corner chat button rather than letting it run under it. */
-  .seasonal__chip { max-width: calc(100vw - 6.5rem); padding-left: 0.9rem; }
-  .seasonal__meadow { height: 9rem; }
+  .seasonal__chip { max-width: calc(100vw - 6.5rem); padding-inline: 0.9rem; }
+  .seasonal__meadow,
+  .seasonal__band { height: 9rem; }
 }
 </style>
