@@ -329,6 +329,7 @@ import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter, useRoute } from 'vue-router'
+import { stripLocale } from '@/i18n/localeRoutes'
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import UserDropdown from '@/shared/components/UserDropdown.vue'
 
@@ -358,7 +359,10 @@ const onMarketplaceBlur = () => {
   setTimeout(() => { marketplaceDropdownOpen.value = false }, 150)
 }
 
-const isExhibitionPage = computed(() => route.path === '/' || route.path === '/exhibition')
+const isExhibitionPage = computed(() => {
+  const path = stripLocale(route.path)
+  return path === '/' || path === '/exhibition'
+})
 
 // The drawer is one grouped, collapsible list: a section header per group, its rows
 // underneath, a divider between groups. Every row carries an icon and a label, so
@@ -432,7 +436,8 @@ function toggleGroup(key) {
 // once — they are deliberately never marked current.
 function isCurrent(to) {
   if (typeof to !== 'string' || to.includes('#')) return false
-  return route.path === to
+  // Links are written unprefixed, so the active check compares against the stripped path.
+  return stripLocale(route.path) === to
 }
 
 // --- Drawer open/close side effects -------------------------------------------

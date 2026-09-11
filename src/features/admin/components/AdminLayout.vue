@@ -143,6 +143,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { stripLocale } from '@/i18n/localeRoutes'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useAdmin } from '../composables/useAdmin'
@@ -161,7 +162,8 @@ const { stats, loadStats } = useAdmin()
 const pendingApprovals = computed(() => stats.value?.pendingApprovals ?? 0)
 
 const isActive = (path) => {
-  return route.path === path || route.path.startsWith(path + '/')
+  const current = stripLocale(route.path)
+  return current === path || current.startsWith(path + '/')
 }
 
 // Navigation items
