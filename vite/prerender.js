@@ -307,6 +307,21 @@ export default function prerenderMarketingPages() {
         await import(
           pathToFileURL(path.join(root, 'src/features/marketplace/marketStatisticsView.js'))
         )
+      const { buildExpoEventJsonLd, EXPO_EVENT_JSON_LD_ID } = await import(
+        pathToFileURL(path.join(root, 'src/features/exhibition/eventDetails.js'))
+      )
+
+      // The expo's event markup, baked in rather than left to the client. Google can only
+      // show event results for an event it can read, and the runtime injection happens
+      // after hydration — on a page whose whole point is that a crawler reads it without
+      // running JavaScript. `url` is always the English canonical: /am is a translation of
+      // the same event, not a second one.
+      const expoEventJsonLd = (translate) =>
+        buildExpoEventJsonLd({
+          url: `${SITE_URL}/`,
+          description: translate('exhibition.hero.subtitle'),
+          image: `${SITE_URL}/images/branding/ethio-build-connect-banner.png`
+        })
 
       const statistics = await fetchMarketStatistics(MARKET_STATISTICS_PATH, (message) =>
         this.warn(message)
@@ -322,16 +337,18 @@ export default function prerenderMarketingPages() {
         // `/` and `/exhibition` render the same view, and `/exhibition` canonicalises to
         // `/` — so both get the same body and both name `/` as canonical.
         { file: 'home.html', routeName: 'Home', canonical: '/', body: expoBody(t),
-          alternates: expoAlternates },
+          alternates: expoAlternates, jsonLd: expoEventJsonLd(t) },
         { file: 'exhibition.html', routeName: 'ExhibitionLanding', canonical: '/', body: expoBody(t),
-          alternates: expoAlternates },
+          alternates: expoAlternates, jsonLd: expoEventJsonLd(t) },
         // The Amharic edition. Only the expo pages are prerendered in Amharic: they are
         // the only marketing pages whose copy is genuinely translated. The market guide
         // is English by design, so it has no `/am` edition to bake.
         { file: 'am-home.html', routeName: 'Home', canonical: '/am', locale: 'am',
-          body: expoBody(catalogues.am), alternates: expoAlternates },
+          body: expoBody(catalogues.am), alternates: expoAlternates,
+          jsonLd: expoEventJsonLd(catalogues.am) },
         { file: 'am-exhibition.html', routeName: 'ExhibitionLanding', canonical: '/am', locale: 'am',
-          body: expoBody(catalogues.am), alternates: expoAlternates },
+          body: expoBody(catalogues.am), alternates: expoAlternates,
+          jsonLd: expoEventJsonLd(catalogues.am) },
         {
           file: 'ethiopia-real-estate-market.html',
           routeName: 'EthiopiaRealEstateMarket',
@@ -409,6 +426,17 @@ export default function prerenderMarketingPages() {
           'title tag to anchor the canonical to',
           page.file
         )
+        if (page.jsonLd) {
+          // `<` escaped so nothing inside the payload can close the script tag early.
+          const json = JSON.stringify(page.jsonLd).replace(/</g, '\\u003c')
+          html = replaceOnce(
+            html,
+            /<title>/,
+            `<script type="application/ld+json" id="${esc(EXPO_EVENT_JSON_LD_ID)}">${json}</script>\n    <title>`,
+            'title tag to anchor the event JSON-LD to',
+            page.file
+          )
+        }
         if (page.seed) {
           const [key, value] = Object.entries(page.seed)[0]
           // `<` is escaped so a string inside the payload can never close this script tag.
