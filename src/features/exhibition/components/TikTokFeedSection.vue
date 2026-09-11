@@ -61,10 +61,15 @@
             class="w-full rounded-xl bg-white shadow-sm"
             style="max-width: 340px; height: 750px; border: 0"
             loading="lazy"
-            allow="encrypted-media; fullscreen; picture-in-picture"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
           />
         </div>
+
+        <!-- `autoplay` has to be delegated explicitly. A cross-origin iframe gets the autoplay
+             permission denied by default, and TikTok's player does not merely lose autoplay
+             without it: the video element stays at readyState 0, so it never loads and tapping
+             it does nothing. That is why the first cut rendered a frame that would not play. -->
 
         <!-- Only a page of players exists at a time: each is a third-party iframe pulling a
              video, and eight of them at once would be a lot to ask of a phone on mobile data.
