@@ -1165,6 +1165,16 @@
     }
   },
   "exhibition": {
+    "tiktok": {
+      "eyebrow": "ይመልከቱ",
+      "title": "ኢትዮ ቢልድ ኮነክት በTikTok",
+      "subtitle": "ከኤግዚቢሽኑ፣ ከአሳታፊዎቻችንና ከኢትዮጵያ ሪል እስቴት ገበያ አጫጭር ቪዲዮዎች።",
+      "unavailable": "ከዚህ አውታረ መረብ TikTok ማግኘት አልተቻለም። ቪዲዮዎቹ በመለያው ላይ ይገኛሉ።",
+      "loadButton": "ቪዲዮዎችን አሳይ",
+      "openProfile": "መለያውን በTikTok ይክፈቱ",
+      "loading": "ቪዲዮዎች ከTikTok በመጫን ላይ\u2026",
+      "privacyNote": "ቪዲዮዎቹ የሚጫወቱት በTikTok እንጂ በእኛ አይደለም። ማሳየታቸው የTikTok ማጫወቻን ይጭናል፤ ይህም የራሱን ኩኪዎች ሊያስቀምጥ ይችላል።"
+    },
     "faq": {
       "eyebrow": "ጥያቄዎች",
       "title": "በተደጋጋሚ የሚጠየቁ ጥያቄዎች",
@@ -1766,6 +1776,12 @@
                 "Plays an embedded live broadcast when one is running. Loading the player lets the provider set its own cookies, whether or not you press play.",
                 "Set by youtube.com and facebook.com under their own domains; see their policies",
                 "Only pages showing an embedded live stream"
+              ],
+              [
+                "TikTok (ባይትዳንስ)",
+                "የራሳችንን የTikTok ልጥፎች በገጹ ውስጥ ያጫውታል። የሚጫነው ኩኪዎችን ከተቀበሉ ወይም በዚያ ክፍል ውስጥ ያለውን ቁልፍ ከተጫኑ ብቻ ነው፤ እስከዚያ ድረስ ከTikTok ምንም አይጠየቅም፣ በምትኩ ወደ መለያው የሚወስድ አገናኝ ያለው ቦታ ያዥ ያያሉ።",
+                "በtiktok.com በራሱ ጎራዎች ስር ይቀመጣል፤ የTikTok ፖሊሲን ይመልከቱ",
+                "የTikTok ልጥፎቻችንን የሚያሳየው የመነሻ ገጽ ክፍል ብቻ"
               ]
             ]
           },

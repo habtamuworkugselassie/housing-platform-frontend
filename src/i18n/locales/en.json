@@ -1173,6 +1173,16 @@
     }
   },
   "exhibition": {
+    "tiktok": {
+      "eyebrow": "Watch",
+      "title": "Ethio Build Connect on TikTok",
+      "subtitle": "Short videos from the expo, our exhibitors and the Ethiopian real estate market.",
+      "unavailable": "TikTok could not be reached from this network. The videos are on the profile instead.",
+      "loadButton": "Show videos",
+      "openProfile": "Open the profile on TikTok",
+      "loading": "Loading videos from TikTok\u2026",
+      "privacyNote": "Videos are played by TikTok, not by us. Showing them loads TikTok's player, which may set its own cookies."
+    },
     "faq": {
       "eyebrow": "Questions",
       "title": "Frequently asked questions",
@@ -1774,6 +1784,12 @@
                 "Plays an embedded live broadcast when one is running. Loading the player lets the provider set its own cookies, whether or not you press play.",
                 "Set by youtube.com and facebook.com under their own domains; see their policies",
                 "Only pages showing an embedded live stream"
+              ],
+              [
+                "TikTok (ByteDance)",
+                "Plays our own TikTok posts in the page. It loads only if you accepted cookies or pressed the button in that section; until then nothing is requested from TikTok and you see a placeholder with a link to the profile instead.",
+                "Set by tiktok.com under its own domains; see TikTok's policy",
+                "Only the section of the home page showing our TikTok posts"
               ]
             ]
           },

@@ -165,6 +165,10 @@
     <ExhibitionVideoFeedbackSection v-if="feedbackEnabled" />
 
     <!-- Register your interest (scroll target for #register) -->
+    <!-- Latest posts from the TikTok account. Nothing is fetched from TikTok until the
+         visitor has accepted cookies or pressed the button in the section itself. -->
+    <TikTokFeedSection />
+
     <ExhibitionFaqSection />
 
     <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-24">
@@ -378,6 +382,7 @@ const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
 )
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
 import ExhibitionFaqSection from '@/features/exhibition/components/ExhibitionFaqSection.vue'
+import TikTokFeedSection from '@/features/exhibition/components/TikTokFeedSection.vue'
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'
 // Fail-safe: if one of these lazy chunks can't be fetched (deploy/CDN/CSP),
 // render nothing instead of letting the error blank the whole landing page.
