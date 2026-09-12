@@ -40,6 +40,18 @@
         />
         <g v-for="(b, i) in bursts" :key="`b${i}`" :transform="`translate(${b.x} ${b.y}) scale(${b.scale})`">
           <g class="seasonal__burst" :style="{ animationDelay: `-${b.delay}s` }">
+            <animateTransform
+              v-if="!reduceMotion"
+              attributeName="transform"
+              type="scale"
+              values="0.12; 0.12; 1; 1.25; 1.5; 1.5"
+              keyTimes="0; 0.12; 0.2; 0.55; 0.85; 1"
+              calcMode="spline"
+              keySplines="0 0 0.58 1; 0 0 0.58 1; 0 0 0.58 1; 0 0 0.58 1; 0 0 0.58 1"
+              dur="6s"
+              :begin="`-${b.delay}s`"
+              repeatCount="indefinite"
+            />
             <g v-for="n in 12" :key="`l${n}`" :transform="`rotate(${(n - 1) * 30})`">
               <line x1="0" y1="-8" x2="0" y2="-26" :stroke="b.color" stroke-width="2.8" stroke-linecap="round" />
               <circle cx="0" cy="-31" r="2.8" :fill="b.color" />
@@ -76,14 +88,34 @@
       <svg viewBox="0 0 1200 130" preserveAspectRatio="xMidYMax slice" class="seasonal__meadow-svg">
         <g class="seasonal__row seasonal__row--back">
           <g v-for="(stalk, i) in backRow" :key="`b${i}`" :transform="`translate(${stalk.x} 130)`">
-            <g class="seasonal__stalk" :style="swayStyle(i, 11)">
+            <g class="seasonal__stalk">
+              <animateTransform
+                v-if="!reduceMotion"
+                attributeName="transform"
+                type="rotate"
+                values="-1.8 0 0; 1.8 0 0; -1.8 0 0"
+                calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"
+                :dur="sway(i, 11).dur"
+                :begin="sway(i, 11).begin"
+                repeatCount="indefinite"
+              />
               <component :is="Stalk" v-bind="stalk" />
             </g>
           </g>
         </g>
         <g class="seasonal__row">
           <g v-for="(stalk, i) in frontRow" :key="`f${i}`" :transform="`translate(${stalk.x} 130)`">
-            <g class="seasonal__stalk" :style="swayStyle(i, 8)">
+            <g class="seasonal__stalk">
+              <animateTransform
+                v-if="!reduceMotion"
+                attributeName="transform"
+                type="rotate"
+                values="-1.8 0 0; 1.8 0 0; -1.8 0 0"
+                calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"
+                :dur="sway(i, 8).dur"
+                :begin="sway(i, 8).begin"
+                repeatCount="indefinite"
+              />
               <component :is="Stalk" v-bind="stalk" />
             </g>
           </g>
@@ -115,6 +147,30 @@
             </g>
             <path d="M-24 -16 L 24 -16" stroke="#92400E" stroke-width="4" stroke-linecap="round" />
             <g class="seasonal__flame">
+              <animateTransform
+                v-if="!reduceMotion"
+                attributeName="transform"
+                type="scale"
+                additive="sum"
+                values="1 1; 1.06 0.94; 0.95 1.08; 1 1"
+                keyTimes="0; 0.35; 0.7; 1"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
+              <animateTransform
+                v-if="!reduceMotion"
+                attributeName="transform"
+                type="rotate"
+                additive="sum"
+                values="-2 0 0; 2 0 0; -1 0 0; -2 0 0"
+                keyTimes="0; 0.35; 0.7; 1"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                dur="2.4s"
+                repeatCount="indefinite"
+              />
               <path
                 d="M0 -40 C -18 -50 -20 -70 -8 -84 C -9 -74 -4 -70 0 -74 C -3 -86 6 -96 4 -108 C 16 -95 21 -78 16 -64 C 12 -53 7 -47 0 -40 Z"
                 fill="#F97316"
@@ -126,7 +182,19 @@
               <path d="M0 -48 C -5 -54 -5 -62 0 -70 C 5 -62 5 -54 0 -48 Z" fill="#FEF3C7" />
             </g>
             <circle v-for="spark in sparks" :key="spark.i" class="seasonal__spark"
-              :cx="spark.cx" :cy="spark.cy" :r="spark.r" :style="spark.style" fill="#FDBA74" />
+              :cx="spark.cx" :cy="spark.cy" :r="spark.r" :style="spark.style" fill="#FDBA74">
+              <animateTransform
+                v-if="!reduceMotion"
+                attributeName="transform"
+                type="translate"
+                values="0 0; 0 -46"
+                calcMode="spline"
+                keySplines="0 0 0.58 1"
+                :dur="spark.dur"
+                :begin="spark.begin"
+                repeatCount="indefinite"
+              />
+            </circle>
           </g>
         </g>
       </svg>
@@ -241,13 +309,20 @@ const backRow = [
 ]
 
 /** Embers lifting off the fire. Positioned by attribute, animated by transform — see above. */
-const sparks = Array.from({ length: 6 }, (_, i) => ({
-  i,
-  cx: [-14, 9, -5, 16, -19, 4][i],
-  cy: -70 - (i % 3) * 12,
-  r: 1.6 + (i % 3) * 0.5,
-  style: { animationDelay: `-${i * 0.9}s`, animationDuration: `${3.2 + (i % 4) * 0.6}s` }
-}))
+const sparks = Array.from({ length: 6 }, (_, i) => {
+  const dur = `${3.2 + (i % 4) * 0.6}s`
+  const begin = `-${i * 0.9}s`
+  return {
+    i,
+    cx: [-14, 9, -5, 16, -19, 4][i],
+    cy: -70 - (i % 3) * 12,
+    r: 1.6 + (i % 3) * 0.5,
+    // The rise is SMIL, the fade is CSS; the two share one clock so they stay in step.
+    dur,
+    begin,
+    style: { animationDelay: begin, animationDuration: dur }
+  }
+})
 
 /**
  * Where the fireworks go off. Spread across the strip but weighted towards the middle: a
@@ -274,11 +349,30 @@ const twinkles = Array.from({ length: 26 }, (_, i) => ({
 }))
 
 /** Stagger the sway so the band breathes unevenly instead of rocking in unison. */
-function swayStyle(i, base) {
+function sway(i, base) {
   return {
-    animationDuration: `${base + (i % 5) * 0.7}s`,
-    animationDelay: `-${(i % 7) * 1.3}s`
+    dur: `${base + (i % 5) * 0.7}s`,
+    begin: `-${(i % 7) * 1.3}s`
   }
+}
+
+/**
+ * Every transform in this decoration is animated with SVG's own <animateTransform>, not CSS.
+ *
+ * The CSS version depended on `transform-box: fill-box` to rotate each stalk about its base,
+ * and on WebKit — every browser on an iPhone, Chrome included — the flowers stood perfectly
+ * still while Chromium on a desktop swayed them. SMIL rotates about a point given in the
+ * element's own coordinates, so it needs neither `transform-box` nor a CSS transform on an SVG
+ * element, and it has run in WebKit for as long as WebKit has drawn SVG.
+ *
+ * SMIL cannot be switched off from a stylesheet, so the operating system's reduced-motion
+ * setting is honoured by not rendering the animation elements at all. The CSS media query
+ * below still covers the animations that remain CSS — the ones that only change opacity.
+ */
+const reduceMotion = ref(false)
+let motionQuery
+const readMotion = () => {
+  reduceMotion.value = motionQuery?.matches ?? false
 }
 
 /**
@@ -298,6 +392,9 @@ watchEffect(() => {
 })
 
 onMounted(() => {
+  motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  readMotion()
+  motionQuery.addEventListener('change', readMotion)
   timer = setInterval(() => {
     now.value = new Date()
   }, 60_000)
@@ -305,6 +402,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   clearInterval(timer)
+  motionQuery?.removeEventListener('change', readMotion)
   document.body.classList.remove(GREETING_BODY_CLASS)
 })
 </script>
@@ -397,9 +495,8 @@ onUnmounted(() => {
 .seasonal__band-svg { display: block; width: 100%; height: 100%; }
 /* Each rocket climbs, bursts, and fades on its own loop. The trail fades out as the burst
    opens, so the two read as one launch rather than as two unrelated things. */
+/* The burst's growth is an <animateTransform> in the markup; only its fade lives here. */
 .seasonal__burst {
-  transform-box: fill-box;
-  transform-origin: center;
   animation: seasonal-burst 6s ease-out infinite;
 }
 .seasonal__trail {
@@ -409,10 +506,10 @@ onUnmounted(() => {
 .seasonal__twinkle { animation: seasonal-twinkle 3.6s ease-in-out infinite; }
 
 @keyframes seasonal-burst {
-  0%, 12% { transform: scale(0.12); opacity: 0; }
-  20% { transform: scale(1); opacity: 1; }
-  55% { transform: scale(1.25); opacity: 0.95; }
-  85%, 100% { transform: scale(1.5); opacity: 0; }
+  0%, 12% { opacity: 0; }
+  20% { opacity: 1; }
+  55% { opacity: 0.95; }
+  85%, 100% { opacity: 0; }
 }
 @keyframes seasonal-launch {
   0% { stroke-dashoffset: 120; opacity: 0.6; }
@@ -439,45 +536,22 @@ onUnmounted(() => {
   height: 100%;
 }
 .seasonal__row--back { opacity: 0.55; }
-.seasonal__stalk {
-  transform-box: fill-box;
-  transform-origin: bottom center;
-  animation-name: seasonal-sway;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
 
-/* The flame leans and breathes; the embers drift up off it and fade. Both animate a
-   `transform`, so neither element may also carry a `transform` attribute. */
-.seasonal__flame {
-  transform-box: fill-box;
-  transform-origin: bottom center;
-  animation: seasonal-flicker 2.4s ease-in-out infinite;
-}
+/* No transform animations here on purpose — the sway, the flame's breathing and the embers'
+   rise are all <animateTransform> elements in the markup (see the note beside `reduceMotion`
+   in the script). The ember's fade is the one part of it that is still CSS. */
 .seasonal__spark {
   animation-name: seasonal-spark;
   animation-timing-function: ease-out;
   animation-iteration-count: infinite;
 }
-
-@keyframes seasonal-flicker {
-  0%, 100% { transform: scale(1, 1) rotate(-2deg); }
-  35% { transform: scale(1.06, 0.94) rotate(2deg); }
-  70% { transform: scale(0.95, 1.08) rotate(-1deg); }
-}
 @keyframes seasonal-spark {
-  0% { transform: translateY(0); opacity: 0; }
+  0% { opacity: 0; }
   25% { opacity: 0.9; }
-  100% { transform: translateY(-46px); opacity: 0; }
+  100% { opacity: 0; }
 }
 
-@keyframes seasonal-sway {
-  0%, 100% { transform: rotate(-1.8deg); }
-  50% { transform: rotate(1.8deg); }
-}
 @media (prefers-reduced-motion: reduce) {
-  .seasonal__stalk,
-  .seasonal__flame,
   .seasonal__spark,
   .seasonal__burst,
   .seasonal__trail,
