@@ -316,6 +316,17 @@ export default function prerenderMarketingPages() {
       // after hydration — on a page whose whole point is that a crawler reads it without
       // running JavaScript. `url` is always the English canonical: /am is a translation of
       // the same event, not a second one.
+      // Two cards. The expo pages sell a dated event; the marketplace pages sell listings, and
+      // sharing a property search should not advertise a trade show in November.
+      const EXPO_CARD = {
+        url: `${SITE_URL}/images/branding/ethio-build-connect-share-card.png`,
+        alt: 'Ethiopia Real Estate Expo and Construction Exhibition, 16-18 November 2026, Addis Convention Center, Addis Ababa'
+      }
+      const MARKETPLACE_CARD = {
+        url: `${SITE_URL}/images/branding/ethio-build-connect-marketplace-card.png`,
+        alt: 'Ethio Build Connect - property listings, developers, contractors and suppliers across Ethiopia'
+      }
+
       const expoEventJsonLd = (translate) =>
         buildExpoEventJsonLd({
           url: `${SITE_URL}/`,
@@ -359,7 +370,18 @@ export default function prerenderMarketingPages() {
           // Handed to the page so Vue starts from these exact figures instead of blanking
           // the section until its own request lands.
           seed: statisticsView ? { [MARKET_STATISTICS_SEED_KEY]: statistics } : null
-        }
+        },
+        // The marketplace entry points. These carry no prerendered body on purpose: what they
+        // show is live listings, and a baked body would be a page of property copy that is
+        // wrong the moment it is served. They are here for their titles and their link
+        // previews — without them a shared property search is served the SPA shell, which
+        // describes the expo and shows the expo card.
+        { file: 'real-estate.html', routeName: 'RealEstateSearch', canonical: '/real-estate',
+          image: MARKETPLACE_CARD },
+        { file: 'properties.html', routeName: 'Properties', canonical: '/properties',
+          image: MARKETPLACE_CARD },
+        { file: 'buildings.html', routeName: 'Buildings', canonical: '/buildings',
+          image: MARKETPLACE_CARD }
       ]
 
       const dir = path.join(outDir, 'prerender')
@@ -394,11 +416,16 @@ export default function prerenderMarketingPages() {
           'og:url meta',
           page.file
         )
+        const card = page.image || EXPO_CARD
         for (const [attr, name, value] of [
           ['property', 'og:title', seo.title],
           ['property', 'og:description', seo.description],
+          ['property', 'og:image', card.url],
+          ['property', 'og:image:alt', card.alt],
           ['name', 'twitter:title', seo.title],
-          ['name', 'twitter:description', seo.description]
+          ['name', 'twitter:description', seo.description],
+          ['name', 'twitter:image', card.url],
+          ['name', 'twitter:image:alt', card.alt]
         ]) {
           html = replaceOnce(
             html,
@@ -466,13 +493,15 @@ export default function prerenderMarketingPages() {
           )
         }
 
-        html = replaceOnce(
-          html,
-          /<div id="app"><\/div>/,
-          `<div id="app">${PRERENDER_CSS}\n    <main class="pr">${page.body}\n    </main>\n    </div>`,
-          'empty #app container',
-          page.file
-        )
+        if (page.body) {
+          html = replaceOnce(
+            html,
+            /<div id="app"><\/div>/,
+            `<div id="app">${PRERENDER_CSS}\n    <main class="pr">${page.body}\n    </main>\n    </div>`,
+            'empty #app container',
+            page.file
+          )
+        }
 
         await fs.writeFile(path.join(dir, page.file), html, 'utf8')
       }
