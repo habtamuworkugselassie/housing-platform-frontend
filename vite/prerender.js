@@ -411,6 +411,22 @@ export default function prerenderMarketingPages() {
         if (locale !== 'en') {
           html = replaceOnce(html, /<html lang="en">/, `<html lang="${esc(locale)}">`,
             'html lang attribute', page.file)
+          // Link previews read og:locale, not <html lang>, so the two have to be kept in step
+          // or an Amharic page is shared as an English one.
+          html = replaceOnce(
+            html,
+            /<meta property="og:locale" content="[^"]*">/,
+            '<meta property="og:locale" content="am_ET">',
+            'og:locale meta',
+            page.file
+          )
+          html = replaceOnce(
+            html,
+            /<meta property="og:locale:alternate" content="[^"]*">/,
+            '<meta property="og:locale:alternate" content="en_US">',
+            'og:locale:alternate meta',
+            page.file
+          )
         }
         const alternates = hreflangTags(page.alternates)
         if (alternates) {
