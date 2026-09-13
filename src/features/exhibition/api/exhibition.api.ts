@@ -2,6 +2,7 @@
  * Exhibition & sponsorship public API (splash, hero, partners, register interest).
  */
 import api from '@/shared/api/client'
+import { getCampaignAttribution } from '@/utils/campaignAttribution'
 
 export interface SponsoredOrganizationResponse {
   id: string
@@ -54,6 +55,20 @@ export interface RegisterInterestRequest {
   sponsorshipId?: string
   company?: string
   message?: string
+}
+
+/**
+ * Where the visitor came from. Attached by `registerInterest` rather than by each form, so a
+ * form added later cannot quietly stop reporting its channel.
+ */
+export interface CampaignAttribution {
+  utmSource?: string
+  utmMedium?: string
+  utmCampaign?: string
+  utmTerm?: string
+  utmContent?: string
+  referrer?: string
+  landingPath?: string
 }
 
 /** All active sponsored organizations (for partners list and carousel). */
@@ -120,7 +135,8 @@ export interface GoLiveRequest {
 /** Exhibition API: register interest, video feedback, live broadcasting, etc. */
 export const exhibitionApi = {
   registerInterest(body: RegisterInterestRequest) {
-    return api.post('/exhibition/interest', body)
+    const attribution: CampaignAttribution = getCampaignAttribution()
+    return api.post('/exhibition/interest', { ...body, ...attribution })
   },
 
   // --- Live broadcasting (gated go-live) ------------------------------------

@@ -1681,7 +1681,7 @@
           },
           {
             "heading": "Browser storage this site uses",
-            "body": "Local storage stays until you clear it or sign out. Session storage is discarded as soon as you close the tab. None of it is sent to our servers.",
+            "body": "Local storage stays until you clear it or sign out. Session storage is discarded as soon as you close the tab. None of it is attached to requests automatically, and none of it is transmitted on its own. One value, housing.campaign, is included in the expo registration form if you choose to submit that form \u2014 its row below says exactly what it holds.",
             "columns": [
               "Name",
               "What it is for",
@@ -1752,6 +1752,12 @@
               [
                 "chunk-reload:<page>",
                 "A one-time marker used to refresh the page once after we publish a new version of the site, so you are not left on a broken half-updated page.",
+                "Session storage",
+                "When you close the tab"
+              ],
+              [
+                "housing.campaign",
+                "Which link brought you here \u2014 the campaign tags in the address you arrived on, the page you landed on, and the site that referred you. It is used for one thing: if you choose to register your interest in the expo, it is sent with that form so we can tell which advert, email or listing produced the registration. Nothing is sent unless you submit the form.",
                 "Session storage",
                 "When you close the tab"
               ]

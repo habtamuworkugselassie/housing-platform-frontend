@@ -26,6 +26,14 @@ cookieless pings so conversions can be modelled instead of lost. It is a real tr
 free win: something is then sent for visitors who declined, and the cookie policy would have to be
 corrected, because today it says the script is never fetched at all. Decide deliberately.
 
+**A second, independent count now exists.** The registration form posts its campaign tags with the
+lead, so every registration carries its `utm_source`, `utm_medium` and `utm_campaign` in the
+database whether or not the visitor accepted cookies — visible per lead in the admin
+exhibition-interests list. That does not help Google optimise, which still needs the imported
+conversion. What it does give you is a true count of registrations per campaign, split by
+`interest_type`, to check the Ads report against; if the two disagree badly, the gap is roughly
+your consent-decline rate. See `LIFECYCLE_EMAILS.md` in the backend repo.
+
 ## Campaign structure
 
 Three campaigns, because the intents have different values and should not share a budget.

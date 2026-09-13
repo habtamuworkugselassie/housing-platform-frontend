@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/features/auth'
 import { useLocaleStore } from '@/stores/locale'
 import { trackPageView } from '@/utils/analytics'
+import { captureCampaignAttribution } from '@/utils/campaignAttribution'
 import {
   ensureMetaTag,
   ensureLinkTag,
@@ -617,6 +618,11 @@ router.afterEach((to) => {
   // the hit deterministic. Path only — query strings carry filter state that
   // would fragment the report.
   trackPageView(to.path, seo.title)
+
+  // Read here rather than once at startup so a campaign link followed inside the app is caught
+  // too, and so this runs for the first navigation as well. Unlike the line above it does not
+  // depend on consent: nothing is transmitted until a visitor submits the registration form.
+  captureCampaignAttribution()
 })
 
 export default router
