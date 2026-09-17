@@ -277,7 +277,8 @@ const routes = [
     path: '/properties/:id/purchase',
     name: 'PurchaseOrderCreate',
     component: () => import('@/features/purchase/views/PurchaseOrderCreateView.vue'),
-    meta: { requiresAuth: true, requiresBuyer: true, noindex: true }
+    // Public on purpose: a visitor signs up (Google, phone, or WhatsApp code) inside the wizard.
+    meta: { noindex: true }
   },
   {
     path: '/purchase-orders',

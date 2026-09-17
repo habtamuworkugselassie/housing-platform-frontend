@@ -56,3 +56,15 @@ export interface User {
   roles: string[]
   scopes: string[]
 }
+
+/** Minimal buyer sign-up used from the purchase flow: name + phone, the rest optional. */
+export interface QuickRegisterRequest {
+  fullName: string
+  phoneNumber: string
+  email?: string
+  password?: string
+}
+
+export interface GoogleLoginRequest {
+  idToken: string
+}

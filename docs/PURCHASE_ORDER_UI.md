@@ -10,13 +10,13 @@ to Purchase Agreement has been read in full, accepted and signed with their full
 
 | Path | Name | Guard | View |
 | --- | --- | --- | --- |
-| `/properties/:id/purchase` | `PurchaseOrderCreate` | `requiresAuth`, `requiresBuyer` | `PurchaseOrderCreateView` — the wizard |
+| `/properties/:id/purchase` | `PurchaseOrderCreate` | public (`noindex`) | `PurchaseOrderCreateView` — the wizard; visitors get an **account step** first |
 | `/purchase-orders/:id` | `PurchaseOrderDetails` | `requiresAuth` | status, financing, agreements (view / sign), history, actions |
 | `/purchase-orders` | `PurchaseOrders` | `requiresAuth`, `requiresBuyer` | the buyer's orders |
 
 Entry point: a gold "Place purchase order" button in the price card of `PropertyDetailsView`,
-shown for `FOR_SALE` + `AVAILABLE` listings to visitors (the guard sends them to login and back)
-and to buyers. Its label says "financing available" when the property has active offers. Amharic
+shown for `FOR_SALE` + `AVAILABLE` listings to visitors and to buyers. Visitors are not sent
+away to a login page: the wizard opens with an account step (§ Account step). Its label says "financing available" when the property has active offers. Amharic
 URLs (`/am/...`) are generated automatically by the router's `localizedRoutes`.
 
 ## Component structure
@@ -29,7 +29,9 @@ src/features/purchase
 ├── utils/phone.ts                   E.164 normalisation identical to the backend's rules
 ├── utils/financing.ts               split / instalment maths for live previews
 ├── utils/markdown.ts                escaped Markdown subset for agreement texts
+├── composables/useGoogleIdentity.ts loads Google Identity Services, renders the official button
 ├── components/
+│   ├── PurchaseAccountStep.vue      visitors: Google / quick sign-up / WhatsApp-code sign-in
 │   ├── PurchaseWizardSteps.vue      progress chips; forward jumps only across valid steps
 │   ├── PurchaseContactStep.vue      phone (required), email (optional), message
 │   ├── PurchaseFinancingStep.vue    opt-in toggle, offer cards, amount slider, tenure, live summary
@@ -45,6 +47,28 @@ src/features/purchase
 
 The step components hold no state of their own beyond "touched" flags; everything lives in the
 store so steps can be revisited and the review step can show the real payload.
+
+## Account step (visitors)
+
+The route is public. `PurchaseOrderCreateView` calls `store.init(id, user, currency,
+requireAccount = !isAuthenticated)`; with `requireAccount` the step list becomes
+`['account', 'contact', …]`, `stepValid.account` is false and `canSubmit` is false until the visitor
+is signed in. The preview endpoint is public too, so the sidebar and the agreement text are
+visible before sign-up (the agreement names "the Buyer" until then).
+
+`PurchaseAccountStep` offers three doors, all ending in `authStore.setAuth(...)` and an
+`authenticated` event carrying what we learned:
+
+| Door | Request | Notes |
+| --- | --- | --- |
+| **Continue with Google** | `POST /auth/google { idToken }` | Google Identity Services button, rendered only when `VITE_GOOGLE_CLIENT_ID` is set. A new verified Google email opens a BUYER account server-side. |
+| **I'm new here** | `POST /auth/quick-register { fullName, phoneNumber, email?, password? }` | Minimal sign-up: name + phone; email and password optional (passwordless accounts sign in with a WhatsApp code). A 409 (phone already registered) flips to the sign-in tab with the number kept. |
+| **I have an account** | `POST /auth/login/otp/send`, then `/auth/login/otp/confirm` | WhatsApp code in two steps; a link to the classic email/password login keeps the `redirect` back to the wizard. |
+
+On `authenticated`, `store.accountReady(details)` drops the account step, pre-fills the contact
+phone/email and the agreement signatory name (a saved draft wins), and reloads the preview so the
+agreement is rendered for the signed-in buyer. A signed-in non-buyer (company or bank user) sees a
+notice instead of the wizard.
 
 ## State management
 
@@ -141,7 +165,8 @@ Vitest (jsdom + Vue Test Utils) is configured in `vitest.config.ts`; run `npm te
 | `utils/phone.test.ts` | the same cases as the backend `PhoneNumberNormalizerTest`, so client and server agree |
 | `utils/financing.test.ts` | instalment figures identical to the backend tests (87,039.85 / 58,033.79), split classification, clamping, range validation |
 | `utils/markdown.test.ts` | the supported Markdown subset and HTML escaping |
-| `stores/purchaseOrderForm.test.ts` | prefill, dynamic steps, every validation gate, payload normalisation, cash opt-out, 409 and "template changed" handling, server field errors, draft persistence |
+| `stores/purchaseOrderForm.test.ts` | prefill, dynamic steps, account step for visitors and `accountReady`, every validation gate, payload normalisation, cash opt-out, 409 and "template changed" handling, server field errors, draft persistence |
+| `components/PurchaseAccountStep.test.ts` | Google button hidden without a client id, quick sign-up validation and request shape, 409 → sign-in tab with the number kept, two-step WhatsApp-code sign-in |
 | `components/AgreementReviewPanel.test.ts` | controls disabled until scrolled to the end, scroll detection, emitted signature input, attempted-only errors, escaped rendering, reset on new text |
 
 `vite build` and `vue-tsc` (on the feature) were also run; the remaining type errors in the repo

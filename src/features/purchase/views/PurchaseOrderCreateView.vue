@@ -17,6 +17,13 @@
         </router-link>
       </div>
 
+      <!-- Signed in, but not as a buyer -->
+      <div v-else-if="authStore.isAuthenticated && !authStore.hasRole('BUYER')" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center">
+        <p class="font-semibold text-amber-900">{{ $t('purchase.account.notABuyer') }}</p>
+        <p class="mt-1 text-sm text-amber-800">{{ $t('purchase.account.notABuyerHelp') }}</p>
+        <router-link :to="`/properties/${propertyId}`" class="mt-4 inline-block font-medium text-primary-700 hover:underline">{{ $t('purchase.backToProperty') }}</router-link>
+      </div>
+
       <!-- Wizard -->
       <div v-else-if="property && form.preview" class="grid gap-6 lg:grid-cols-3">
         <div class="lg:col-span-2">
@@ -26,7 +33,9 @@
               <PurchaseWizardSteps :steps="form.steps" :current="form.step" :completed="form.stepValid" @select="form.goTo" />
             </div>
 
-            <form novalidate @submit.prevent="onPrimary">
+            <PurchaseAccountStep v-if="form.step === 'account'" @authenticated="onAuthenticated" />
+
+            <form v-else novalidate @submit.prevent="onPrimary">
               <PurchaseContactStep v-if="form.step === 'contact'" :attempted="attempted.contact" />
               <PurchaseFinancingStep v-else-if="form.step === 'financing'" :attempted="attempted.financing" />
               <PurchaseAgreementStep v-else-if="form.step === 'agreement'" :attempted="attempted.agreement" />
@@ -45,7 +54,7 @@
                 <button
                   type="button"
                   class="rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-40"
-                  :disabled="form.stepIndex === 0 || form.submitting"
+                  :disabled="form.stepIndex === 0 || form.steps[form.stepIndex - 1] === 'account' || form.submitting"
                   @click="form.back()"
                 >
                   {{ $t('common.back') }}
@@ -112,6 +121,8 @@ import { Breadcrumbs } from '@/shared/components'
 import { useAuthStore } from '@/features/auth'
 import { usePurchaseOrderFormStore } from '../stores/purchaseOrderForm'
 import PurchaseWizardSteps from '../components/PurchaseWizardSteps.vue'
+import PurchaseAccountStep from '../components/PurchaseAccountStep.vue'
+import type { AccountDetails } from '../components/PurchaseAccountStep.vue'
 import PurchaseContactStep from '../components/PurchaseContactStep.vue'
 import PurchaseFinancingStep from '../components/PurchaseFinancingStep.vue'
 import PurchaseAgreementStep from '../components/PurchaseAgreementStep.vue'
@@ -159,12 +170,17 @@ async function load() {
       propertyError.value = 'purchase.errors.notPurchasable'
       return
     }
-    await form.init(propertyId.value, authStore.user as any, undefined)
+    // Visitors get an account step first; the preview itself is public.
+    await form.init(propertyId.value, authStore.user as any, undefined, !authStore.isAuthenticated)
   } catch (err: any) {
     propertyError.value = err?.response?.status === 404 ? 'property.notFound' : 'purchase.errors.previewFailed'
   } finally {
     loadingProperty.value = false
   }
+}
+
+async function onAuthenticated(details: AccountDetails) {
+  await form.accountReady(details)
 }
 
 async function onPrimary() {

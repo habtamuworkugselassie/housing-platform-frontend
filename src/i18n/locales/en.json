@@ -1854,6 +1854,35 @@
     }
   },
   "purchase": {
+    "account": {
+      "title": "First, who is ordering?",
+      "subtitle": "Create an account in seconds or sign in. Your order and the agreements you sign are kept under it.",
+      "newHere": "I'm new here",
+      "haveAccount": "I have an account",
+      "fullName": "Full name",
+      "phoneHelp": "We will send a WhatsApp code to confirm this number. It is also how the seller reaches you.",
+      "passwordOptional": "Add a password (optional)",
+      "passwordHelp": "Without a password you sign in with a WhatsApp code sent to your phone. At least 8 characters with upper, lower case and a number.",
+      "consent": "By continuing you create an Ethio Build Connect buyer account and accept the platform terms.",
+      "createAndContinue": "Create account & continue",
+      "code": "6-digit code",
+      "codeHelp": "Sent to your WhatsApp. It expires after a few minutes.",
+      "changePhone": "Use a different number",
+      "sendCode": "Send me a code",
+      "verifyAndContinue": "Verify & continue",
+      "preferPassword": "Prefer email and password?",
+      "passwordLogin": "Sign in the classic way",
+      "notABuyer": "This account cannot place purchase orders",
+      "notABuyerHelp": "You are signed in as a company or bank user. Sign in with a buyer account to order a property.",
+      "errors": {
+        "nameRequired": "Enter your full name.",
+        "passwordWeak": "Password needs 8+ characters with upper, lower case and a number.",
+        "codeInvalid": "Enter the 6-digit code from WhatsApp.",
+        "registerFailed": "Could not create the account. Please try again.",
+        "codeSendFailed": "Could not send the code. Check the number and try again.",
+        "googleFailed": "Google sign-in did not complete. Please try again."
+      }
+    },
     "title": "Place a purchase order",
     "loading": "Preparing your purchase order…",
     "optional": "optional",
@@ -1873,6 +1902,7 @@
       "cash": "Place purchase order"
     },
     "steps": {
+      "account": "Account",
       "contact": "Contact",
       "financing": "Financing",
       "agreement": "Agreement",

@@ -20,7 +20,7 @@ import type {
 import { isValidEmail, isValidPhone, normalizePhone } from '../utils/phone'
 import { computeSplit, validateFinancedAmount, validateTenure } from '../utils/financing'
 
-export type WizardStep = 'contact' | 'financing' | 'agreement' | 'review'
+export type WizardStep = 'account' | 'contact' | 'financing' | 'agreement' | 'review'
 
 export interface FieldErrors {
   [field: string]: string
@@ -47,6 +47,9 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
 
   const step = ref<WizardStep>('contact')
 
+  /** True for visitors: an account step (Google / quick sign-up / WhatsApp code) comes first. */
+  const needsAccount = ref(false)
+
   const contact = reactive({ phone: '', email: '', message: '' })
   const financing = reactive({
     /** The opt-in toggle shown only when the property carries an active financing product. */
@@ -71,11 +74,12 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   const financingAvailable = computed(() => preview.value?.financingAvailable === true)
 
   /** The wizard skips the financing step entirely when nothing is linked to the property. */
-  const steps = computed<WizardStep[]>(() =>
-    financingAvailable.value
+  const steps = computed<WizardStep[]>(() => {
+    const rest: WizardStep[] = financingAvailable.value
       ? ['contact', 'financing', 'agreement', 'review']
       : ['contact', 'agreement', 'review']
-  )
+    return needsAccount.value ? ['account', ...rest] : rest
+  })
   const stepIndex = computed(() => steps.value.indexOf(step.value))
 
   const selectedOffer = computed<FinancingOption | null>(() => {
@@ -145,6 +149,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   })
 
   const stepValid = computed<Record<WizardStep, boolean>>(() => ({
+    account: !needsAccount.value,
     contact: Object.keys(contactErrors.value).length === 0,
     financing: Object.keys(financingErrors.value).length === 0,
     agreement: Object.keys(agreementErrors.value).length === 0,
@@ -154,6 +159,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   const canSubmit = computed(
     () =>
       !submitting.value &&
+      !needsAccount.value &&
       stepValid.value.contact &&
       stepValid.value.financing &&
       stepValid.value.agreement
@@ -196,6 +202,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     loadingPreview.value = false
     previewError.value = null
     step.value = 'contact'
+    needsAccount.value = false
     Object.assign(contact, { phone: '', email: '', message: '' })
     Object.assign(financing, {
       useFinancing: true,
@@ -226,14 +233,30 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   async function init(
     id: string,
     currentUser?: { phoneNumber?: string | null; email?: string | null } | null,
-    currency?: Currency
+    currency?: Currency,
+    requireAccount = false
   ) {
     reset()
     propertyId.value = id
+    needsAccount.value = requireAccount
+    if (requireAccount) step.value = 'account'
     contact.phone = currentUser?.phoneNumber ?? ''
     contact.email = currentUser?.email ?? ''
     restoreDraft()
     await loadPreview(currency)
+  }
+
+  /**
+   * The visitor now has an account. Drop the account step, pre-fill what they told us (a draft
+   * that already holds a phone wins) and re-render the agreement for the signed-in buyer.
+   */
+  async function accountReady(details: { fullName?: string; phone?: string; email?: string }) {
+    needsAccount.value = false
+    if (details.phone && !contact.phone) contact.phone = details.phone
+    if (details.email && !contact.email) contact.email = details.email
+    if (details.fullName && !agreement.signatoryFullName) agreement.signatoryFullName = details.fullName
+    step.value = 'contact'
+    await loadPreview()
   }
 
   async function loadPreview(currency?: Currency) {
@@ -396,6 +419,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     loadingPreview,
     previewError,
     step,
+    needsAccount,
     contact,
     financing,
     agreement,
@@ -419,6 +443,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     payload,
     // actions
     init,
+    accountReady,
     loadPreview,
     selectOffer,
     setDownPayment,

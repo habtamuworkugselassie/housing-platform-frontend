@@ -269,4 +269,41 @@ describe('usePurchaseOrderFormStore', () => {
       expect(sessionStorage.getItem('purchase-order-draft:prop-1')).toBeNull()
     })
   })
+
+  describe('account step for visitors', () => {
+    it('puts an account step first and blocks submission until the visitor signs in', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1', null, undefined, true)
+      expect(store.steps).toEqual(['account', 'contact', 'financing', 'agreement', 'review'])
+      expect(store.step).toBe('account')
+      expect(store.stepValid.account).toBe(false)
+      fillValid(store)
+      expect(store.canSubmit).toBe(false)
+      // the preview is public, so financing offers and the agreement are already there
+      expect(store.preview?.agreementsToSign).toHaveLength(1)
+    })
+
+    it('drops the account step and pre-fills contact and signatory once authenticated', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1', null, undefined, true)
+      await store.accountReady({ fullName: 'Abebe Kebede', phone: '+251911223344', email: 'abebe@example.com' })
+      expect(store.steps).toEqual(['contact', 'financing', 'agreement', 'review'])
+      expect(store.step).toBe('contact')
+      expect(store.contact.phone).toBe('+251911223344')
+      expect(store.contact.email).toBe('abebe@example.com')
+      expect(store.agreement.signatoryFullName).toBe('Abebe Kebede')
+      expect(preview).toHaveBeenCalledTimes(2) // re-rendered for the signed-in buyer
+      store.agreement.scrolledToEnd = true
+      store.agreement.accepted = true
+      expect(store.canSubmit).toBe(true)
+    })
+
+    it('never overwrites a saved draft phone with the account phone', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1', null, undefined, true)
+      store.contact.phone = '0700000000'
+      await store.accountReady({ phone: '+251911223344' })
+      expect(store.contact.phone).toBe('0700000000')
+    })
+  })
 })
