@@ -131,12 +131,18 @@ All strings live under `purchase.*` in `src/i18n/locales/en.json` and `am.json` 
 same key set). Server-provided messages are shown verbatim; our own fall-backs are keys that the
 views translate through `te()`/`t()`.
 
-## Verification performed
+## Tests
 
-* `vite build` succeeds; `vue-tsc` reports no errors in `src/features/purchase` (pre-existing
-  errors remain in shared map components).
-* A Node script bundled with esbuild exercises the utilities and the store against fixtures:
-  phone normalisation parity with the backend, instalment figures identical to the backend tests
-  (87,039.85 / 58,033.79), Markdown escaping, dynamic steps, every validation gate, payload shape,
-  409 and "template changed" handling. The repo has no test runner; adding Vitest would let this
-  script become a permanent test.
+Vitest (jsdom + Vue Test Utils) is configured in `vitest.config.ts`; run `npm test` (or
+`npm run test:watch`). Tests live next to the code under `src/features/purchase`:
+
+| File | Covers |
+| --- | --- |
+| `utils/phone.test.ts` | the same cases as the backend `PhoneNumberNormalizerTest`, so client and server agree |
+| `utils/financing.test.ts` | instalment figures identical to the backend tests (87,039.85 / 58,033.79), split classification, clamping, range validation |
+| `utils/markdown.test.ts` | the supported Markdown subset and HTML escaping |
+| `stores/purchaseOrderForm.test.ts` | prefill, dynamic steps, every validation gate, payload normalisation, cash opt-out, 409 and "template changed" handling, server field errors, draft persistence |
+| `components/AgreementReviewPanel.test.ts` | controls disabled until scrolled to the end, scroll detection, emitted signature input, attempted-only errors, escaped rendering, reset on new text |
+
+`vite build` and `vue-tsc` (on the feature) were also run; the remaining type errors in the repo
+are pre-existing, in the shared map components.
