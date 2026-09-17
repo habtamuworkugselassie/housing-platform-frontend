@@ -1,0 +1,438 @@
+/**
+ * State for the "place a purchase order" wizard.
+ *
+ * One store instance per screen visit (reset on init) holding the property preview, the four
+ * steps' inputs, derived validation and the submission state. Contact and financing inputs are
+ * mirrored to sessionStorage per property so a reload does not lose them; the agreement
+ * acceptance is deliberately NOT persisted — the buyer must read and accept the current text in
+ * the session that submits it.
+ */
+import { computed, reactive, ref } from 'vue'
+import { defineStore } from 'pinia'
+import type { Currency } from '@/shared/types'
+import { purchaseApi } from '../api/purchase.api'
+import type {
+  CreatePurchaseOrderRequest,
+  FinancingOption,
+  PurchaseOrderResponse,
+  PurchasePreviewResponse
+} from '../api/purchase.types'
+import { isValidEmail, isValidPhone, normalizePhone } from '../utils/phone'
+import { computeSplit, validateFinancedAmount, validateTenure } from '../utils/financing'
+
+export type WizardStep = 'contact' | 'financing' | 'agreement' | 'review'
+
+export interface FieldErrors {
+  [field: string]: string
+}
+
+interface DraftSnapshot {
+  contact: { phone: string; email: string; message: string }
+  financing: {
+    useFinancing: boolean
+    selectedOfferId: string | null
+    financedAmount: number | null
+    tenureMonths: number | null
+  }
+}
+
+const DRAFT_KEY = (propertyId: string) => `purchase-order-draft:${propertyId}`
+
+export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => {
+  // ------------------------------------------------------------------ state
+  const propertyId = ref<string | null>(null)
+  const preview = ref<PurchasePreviewResponse | null>(null)
+  const loadingPreview = ref(false)
+  const previewError = ref<string | null>(null)
+
+  const step = ref<WizardStep>('contact')
+
+  const contact = reactive({ phone: '', email: '', message: '' })
+  const financing = reactive({
+    /** The opt-in toggle shown only when the property carries an active financing product. */
+    useFinancing: true,
+    selectedOfferId: null as string | null,
+    financedAmount: null as number | null,
+    tenureMonths: null as number | null
+  })
+  const agreement = reactive({
+    templateId: null as string | null,
+    scrolledToEnd: false,
+    accepted: false,
+    signatoryFullName: ''
+  })
+
+  const submitting = ref(false)
+  const submitError = ref<string | null>(null)
+  const serverFieldErrors = ref<FieldErrors>({})
+  const createdOrder = ref<PurchaseOrderResponse | null>(null)
+
+  // ------------------------------------------------------------------ derived
+  const financingAvailable = computed(() => preview.value?.financingAvailable === true)
+
+  /** The wizard skips the financing step entirely when nothing is linked to the property. */
+  const steps = computed<WizardStep[]>(() =>
+    financingAvailable.value
+      ? ['contact', 'financing', 'agreement', 'review']
+      : ['contact', 'agreement', 'review']
+  )
+  const stepIndex = computed(() => steps.value.indexOf(step.value))
+
+  const selectedOffer = computed<FinancingOption | null>(() => {
+    if (!preview.value) return null
+    return (
+      preview.value.financingOffers.find((o) => o.financingOfferId === financing.selectedOfferId) ??
+      null
+    )
+  })
+
+  /** Whether the order will be bank financed given the current inputs. */
+  const financingApplied = computed(
+    () => financingAvailable.value && financing.useFinancing && selectedOffer.value !== null
+  )
+
+  const split = computed(() => {
+    if (!financingApplied.value || !preview.value || !selectedOffer.value) return null
+    return computeSplit(
+      selectedOffer.value,
+      preview.value.listedPrice,
+      financing.financedAmount ?? selectedOffer.value.maxFinanceableAmount,
+      financing.tenureMonths ?? selectedOffer.value.maxTenureMonths
+    )
+  })
+
+  const promiseAgreement = computed(() => preview.value?.agreementsToSign?.[0] ?? null)
+
+  const contactErrors = computed<FieldErrors>(() => {
+    const errors: FieldErrors = {}
+    if (!contact.phone.trim()) errors.phone = 'purchase.errors.phoneRequired'
+    else if (!isValidPhone(contact.phone)) errors.phone = 'purchase.errors.phoneInvalid'
+    if (contact.email.trim() && !isValidEmail(contact.email)) errors.email = 'validation.email'
+    if (contact.message.length > 2000) errors.message = 'purchase.errors.messageTooLong'
+    return errors
+  })
+
+  const financingErrors = computed<FieldErrors>(() => {
+    const errors: FieldErrors = {}
+    if (!financingAvailable.value || !financing.useFinancing) return errors
+    const offer = selectedOffer.value
+    if (!offer) {
+      errors.offer = 'purchase.errors.offerRequired'
+      return errors
+    }
+    const amountError = validateFinancedAmount(
+      offer,
+      financing.financedAmount ?? offer.maxFinanceableAmount
+    )
+    if (amountError) errors.financedAmount = amountError
+    const tenureError = validateTenure(offer, financing.tenureMonths ?? offer.maxTenureMonths)
+    if (tenureError) errors.tenureMonths = tenureError
+    return errors
+  })
+
+  const agreementErrors = computed<FieldErrors>(() => {
+    const errors: FieldErrors = {}
+    if (!promiseAgreement.value) {
+      errors.agreement = 'purchase.errors.agreementUnavailable'
+      return errors
+    }
+    if (!agreement.scrolledToEnd) errors.scroll = 'purchase.errors.agreementNotRead'
+    if (!agreement.accepted) errors.accepted = 'purchase.errors.agreementNotAccepted'
+    if (agreement.signatoryFullName.trim().length < 3) {
+      errors.signatoryFullName = 'purchase.errors.signatoryRequired'
+    }
+    return errors
+  })
+
+  const stepValid = computed<Record<WizardStep, boolean>>(() => ({
+    contact: Object.keys(contactErrors.value).length === 0,
+    financing: Object.keys(financingErrors.value).length === 0,
+    agreement: Object.keys(agreementErrors.value).length === 0,
+    review: true
+  }))
+
+  const canSubmit = computed(
+    () =>
+      !submitting.value &&
+      stepValid.value.contact &&
+      stepValid.value.financing &&
+      stepValid.value.agreement
+  )
+
+  /** Exactly what will be posted; also shown on the review step. */
+  const payload = computed<CreatePurchaseOrderRequest | null>(() => {
+    if (!propertyId.value || !preview.value || !promiseAgreement.value) return null
+    const request: CreatePurchaseOrderRequest = {
+      propertyId: propertyId.value,
+      contactPhone: normalizePhone(contact.phone) ?? contact.phone.trim(),
+      currency: preview.value.currency,
+      promiseToPurchase: {
+        templateId: promiseAgreement.value.templateId,
+        accepted: agreement.accepted,
+        signatoryFullName: agreement.signatoryFullName.trim()
+      }
+    }
+    if (contact.email.trim()) request.contactEmail = contact.email.trim()
+    if (contact.message.trim()) request.buyerMessage = contact.message.trim()
+    if (financingAvailable.value) {
+      if (!financing.useFinancing) {
+        request.useFinancing = false
+      } else if (selectedOffer.value && split.value) {
+        request.useFinancing = true
+        request.financing = {
+          financingOfferId: selectedOffer.value.financingOfferId,
+          financedAmount: split.value.financedAmount,
+          requestedTenureMonths: split.value.tenureMonths
+        }
+      }
+    }
+    return request
+  })
+
+  // ------------------------------------------------------------------ actions
+  function reset() {
+    propertyId.value = null
+    preview.value = null
+    loadingPreview.value = false
+    previewError.value = null
+    step.value = 'contact'
+    Object.assign(contact, { phone: '', email: '', message: '' })
+    Object.assign(financing, {
+      useFinancing: true,
+      selectedOfferId: null,
+      financedAmount: null,
+      tenureMonths: null
+    })
+    resetAgreement()
+    submitting.value = false
+    submitError.value = null
+    serverFieldErrors.value = {}
+    createdOrder.value = null
+  }
+
+  function resetAgreement() {
+    Object.assign(agreement, {
+      templateId: null,
+      scrolledToEnd: false,
+      accepted: false,
+      signatoryFullName: ''
+    })
+  }
+
+  /**
+   * Starts the wizard for a property. Pre-fills the contact fields from the signed-in user, then
+   * restores a saved draft (which wins over the profile values).
+   */
+  async function init(
+    id: string,
+    currentUser?: { phoneNumber?: string | null; email?: string | null } | null,
+    currency?: Currency
+  ) {
+    reset()
+    propertyId.value = id
+    contact.phone = currentUser?.phoneNumber ?? ''
+    contact.email = currentUser?.email ?? ''
+    restoreDraft()
+    await loadPreview(currency)
+  }
+
+  async function loadPreview(currency?: Currency) {
+    if (!propertyId.value) return
+    loadingPreview.value = true
+    previewError.value = null
+    try {
+      const data = await purchaseApi.preview(propertyId.value, currency)
+      preview.value = data
+      // Default to the recommended offer and its maximum split unless a draft chose otherwise.
+      const offers = data.financingOffers
+      if (offers.length) {
+        const keep = offers.find((o) => o.financingOfferId === financing.selectedOfferId)
+        const chosen = keep ?? offers.find((o) => o.recommended) ?? offers[0]
+        selectOffer(chosen.financingOfferId, keep !== undefined)
+      }
+      // A new template version invalidates any previous acceptance.
+      const promise = data.agreementsToSign?.[0]
+      if (!promise || promise.templateId !== agreement.templateId) {
+        resetAgreement()
+        agreement.templateId = promise?.templateId ?? null
+      }
+    } catch (err: any) {
+      previewError.value = extractMessage(err, 'purchase.errors.previewFailed')
+    } finally {
+      loadingPreview.value = false
+    }
+  }
+
+  function selectOffer(offerId: string, keepAmounts = false) {
+    financing.selectedOfferId = offerId
+    const offer = selectedOffer.value
+    if (!offer) return
+    if (!keepAmounts || financing.financedAmount == null) {
+      financing.financedAmount = offer.maxFinanceableAmount
+    } else {
+      financing.financedAmount = Math.min(
+        offer.maxFinanceableAmount,
+        Math.max(offer.minFinanceableAmount, financing.financedAmount)
+      )
+    }
+    if (!keepAmounts || financing.tenureMonths == null) {
+      financing.tenureMonths = offer.maxTenureMonths
+    } else {
+      financing.tenureMonths = Math.min(
+        offer.maxTenureMonths,
+        Math.max(offer.minTenureMonths, financing.tenureMonths)
+      )
+    }
+  }
+
+  /** Setting the cash portion is the same choice seen from the other side. */
+  function setDownPayment(cash: number) {
+    if (!preview.value) return
+    financing.financedAmount = Math.round((preview.value.listedPrice - cash) * 100) / 100
+  }
+
+  function goTo(target: WizardStep) {
+    // Never jump past a step that is still invalid.
+    const targetIndex = steps.value.indexOf(target)
+    for (let i = 0; i < targetIndex; i++) {
+      if (!stepValid.value[steps.value[i]]) {
+        step.value = steps.value[i]
+        return
+      }
+    }
+    step.value = target
+    saveDraft()
+  }
+
+  function next() {
+    if (!stepValid.value[step.value]) return
+    const i = stepIndex.value
+    if (i < steps.value.length - 1) goTo(steps.value[i + 1])
+  }
+
+  function back() {
+    const i = stepIndex.value
+    if (i > 0) step.value = steps.value[i - 1]
+  }
+
+  async function submit(): Promise<PurchaseOrderResponse | null> {
+    if (!canSubmit.value || !payload.value) {
+      // Send the buyer to the first step that still needs attention.
+      goTo(steps.value.find((s) => !stepValid.value[s]) ?? 'review')
+      return null
+    }
+    submitting.value = true
+    submitError.value = null
+    serverFieldErrors.value = {}
+    try {
+      const order = await purchaseApi.create(payload.value)
+      createdOrder.value = order
+      clearDraft()
+      return order
+    } catch (err: any) {
+      const status = err?.response?.status
+      const body = err?.response?.data
+      if (Array.isArray(body?.fieldErrors)) {
+        const errors: FieldErrors = {}
+        for (const fe of body.fieldErrors) errors[String(fe.field)] = String(fe.message)
+        serverFieldErrors.value = errors
+      }
+      if (status === 409) {
+        submitError.value = 'purchase.errors.duplicateOrder'
+      } else if (status === 400 && /Promise to Purchase agreement has changed/i.test(body?.message ?? '')) {
+        // The text changed under the buyer: reload it and make them read it again.
+        submitError.value = 'purchase.errors.agreementChanged'
+        await loadPreview()
+        goTo('agreement')
+      } else {
+        submitError.value = extractMessage(err, 'purchase.errors.submitFailed')
+      }
+      return null
+    } finally {
+      submitting.value = false
+    }
+  }
+
+  // ------------------------------------------------------------------ draft persistence
+  function saveDraft() {
+    if (!propertyId.value || typeof sessionStorage === 'undefined') return
+    const snapshot: DraftSnapshot = {
+      contact: { ...contact },
+      financing: { ...financing }
+    }
+    try {
+      sessionStorage.setItem(DRAFT_KEY(propertyId.value), JSON.stringify(snapshot))
+    } catch {
+      /* storage may be unavailable; the form still works */
+    }
+  }
+
+  function restoreDraft() {
+    if (!propertyId.value || typeof sessionStorage === 'undefined') return
+    try {
+      const raw = sessionStorage.getItem(DRAFT_KEY(propertyId.value))
+      if (!raw) return
+      const snapshot = JSON.parse(raw) as DraftSnapshot
+      Object.assign(contact, snapshot.contact)
+      Object.assign(financing, snapshot.financing)
+    } catch {
+      /* ignore a corrupt draft */
+    }
+  }
+
+  function clearDraft() {
+    if (!propertyId.value || typeof sessionStorage === 'undefined') return
+    try {
+      sessionStorage.removeItem(DRAFT_KEY(propertyId.value))
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return {
+    // state
+    propertyId,
+    preview,
+    loadingPreview,
+    previewError,
+    step,
+    contact,
+    financing,
+    agreement,
+    submitting,
+    submitError,
+    serverFieldErrors,
+    createdOrder,
+    // derived
+    financingAvailable,
+    steps,
+    stepIndex,
+    selectedOffer,
+    financingApplied,
+    split,
+    promiseAgreement,
+    contactErrors,
+    financingErrors,
+    agreementErrors,
+    stepValid,
+    canSubmit,
+    payload,
+    // actions
+    init,
+    loadPreview,
+    selectOffer,
+    setDownPayment,
+    goTo,
+    next,
+    back,
+    submit,
+    reset,
+    saveDraft
+  }
+})
+
+/** The server's message when it sent one, otherwise an i18n key the caller translates. */
+export function extractMessage(err: any, fallbackKey: string): string {
+  const message = err?.response?.data?.message
+  return typeof message === 'string' && message.trim() ? message : fallbackKey
+}

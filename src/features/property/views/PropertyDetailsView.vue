@@ -297,6 +297,14 @@
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                 {{ $t('property.contact') }}
               </button>
+              <router-link
+                v-if="canPlacePurchaseOrder"
+                :to="`/properties/${property.id}/purchase`"
+                class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold-400 px-4 py-3 text-sm font-semibold text-primary-950 transition-colors hover:bg-gold-500"
+              >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+                {{ financingOffers.length ? $t('purchase.cta.withFinancing') : $t('purchase.cta.cash') }}
+              </router-link>
               <button
                 v-if="canCreatePropertyLoan"
                 @click="showLoanModal = true"
@@ -806,6 +814,16 @@ function watchContactCard() {
 }
 const showGalleryModal = ref(false)
 const showLoanModal = ref(false)
+
+/**
+ * A buyer (or a visitor, who the route guard sends to login) can order a property that is for
+ * sale and still available. Sellers and bankers never see the button on their own listings.
+ */
+const canPlacePurchaseOrder = computed(() => {
+  if (!property.value || property.value.category !== 'FOR_SALE' || property.value.status !== 'AVAILABLE') return false
+  if (!authStore.isAuthenticated) return true
+  return authStore.hasRole('BUYER')
+})
 const galleryIndex = ref(0)
 const isFavorite = ref(false)
 const canCreatePropertyLoan = computed(

@@ -274,6 +274,24 @@ const routes = [
     meta: { requiresAuth: true, requiresBanker: true, noindex: true }
   },
   {
+    path: '/properties/:id/purchase',
+    name: 'PurchaseOrderCreate',
+    component: () => import('@/features/purchase/views/PurchaseOrderCreateView.vue'),
+    meta: { requiresAuth: true, requiresBuyer: true, noindex: true }
+  },
+  {
+    path: '/purchase-orders',
+    name: 'PurchaseOrders',
+    component: () => import('@/features/purchase/views/PurchaseOrdersView.vue'),
+    meta: { requiresAuth: true, requiresBuyer: true, noindex: true }
+  },
+  {
+    path: '/purchase-orders/:id',
+    name: 'PurchaseOrderDetails',
+    component: () => import('@/features/purchase/views/PurchaseOrderDetailsView.vue'),
+    meta: { requiresAuth: true, noindex: true }
+  },
+  {
     path: '/loan-applications',
     name: 'LoanApplications',
     component: () => import('@/features/loan/views/LoanApplicationsView.vue'),

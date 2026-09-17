@@ -1844,5 +1844,203 @@
       "home": "ወደ መነሻ ገጽ ይመለሱ",
       "homeBlurb": "ኤግዚቢሽኑ፣ አጋሮች እና የቅርብ ጊዜ ዝርዝሮች።"
     }
+  },
+  "purchase": {
+    "title": "የግዢ ትዕዛዝ ያስገቡ",
+    "loading": "የግዢ ትዕዛዝዎ እየተዘጋጀ ነው…",
+    "optional": "አማራጭ",
+    "months": "ወራት",
+    "month": "ወር",
+    "backToProperty": "ወደ ንብረቱ ተመለስ",
+    "listedBy": "በ{company} የተዘረዘረ",
+    "myOrders": "የግዢ ትዕዛዞቼ",
+    "noOrders": "እስካሁን ምንም የግዢ ትዕዛዝ አላስገቡም።",
+    "browseProperties": "ንብረቶችን ይመልከቱ",
+    "viewProperty": "ንብረቱን ይመልከቱ",
+    "history": "ታሪክ",
+    "nextSteps": "ቀጣይ እርምጃዎች",
+    "expiresOn": "ሻጩ እስከ {date} ድረስ መልስ መስጠት ይችላል።",
+    "cta": {
+      "withFinancing": "የግዢ ትዕዛዝ ያስገቡ · የባንክ ብድር አለ",
+      "cash": "የግዢ ትዕዛዝ ያስገቡ"
+    },
+    "steps": {
+      "contact": "አድራሻ",
+      "financing": "የባንክ ብድር",
+      "agreement": "ስምምነት",
+      "review": "ማረጋገጫ"
+    },
+    "types": {
+      "CASH": "በጥሬ ገንዘብ",
+      "BANK_FINANCED": "በባንክ ብድር"
+    },
+    "sidebar": {
+      "financingAvailable": "ለዚህ ንብረት የባንክ ብድር ይገኛል",
+      "financingAvailableHelp": "{count} ንቁ የብድር ምርት(ዎች) ከዚህ ዝርዝር ጋር ተያይዘዋል። ከተፈቀደው መጠን ከፊሉን ወይም ሙሉውን በብድር መሸፈን ወይም በጥሬ ገንዘብ መክፈል ይችላሉ።",
+      "cashOnly": "መደበኛ የጥሬ ገንዘብ ግዢ",
+      "cashOnlyHelp": "ከዚህ ዝርዝር ጋር የተያያዘ የባንክ ብድር ምርት ስለሌለ ትዕዛዙ እንደ ቀጥታ ግዢ ይቀጥላል።"
+    },
+    "contact": {
+      "title": "ሻጩ እንዴት ሊያገኝዎት ይችላል?",
+      "subtitle": "ሻጩ እና አስፈላጊ ሲሆን ባንኩ እንዲያገኙዎት የስልክ ቁጥርዎ ያስፈልጋል። ኢሜይል አማራጭ ነው።",
+      "phone": "የስልክ ቁጥር",
+      "phoneHelp": "የኢትዮጵያ ቁጥሮች 09XX XXX XXX ወይም +251 9XX XXX XXX፤ ሌሎች አገሮች በ+ ኮዳቸው።",
+      "phoneStoredAs": "እንደ {phone} ይቀመጣል",
+      "email": "የኢሜይል አድራሻ",
+      "emailHelp": "ካስገቡ የትዕዛዝ ዝመናዎችን እዚህም እንልካለን።",
+      "message": "ለሻጩ መልእክት",
+      "messagePlaceholder": "ሻጩ ማወቅ ያለበት ነገር፣ ለምሳሌ ለመጎብኘት የሚመርጡት ጊዜ።"
+    },
+    "financing": {
+      "title": "የባንክ ብድር",
+      "subtitle": "ይህ ንብረት ንቁ የብድር ምርት አለው። ከዋጋው ምን ያህል በብድር መሸፈን እንደሚፈልጉ ይምረጡ።",
+      "useFinancing": "የግዢውን ከፊል በባንክ ብድር ይሸፍኑ",
+      "useFinancingHelp": "ብድር ቢኖርም በጥሬ ገንዘብ ብቻ ለመግዛት ምልክቱን ያስወግዱ።",
+      "chooseOffer": "የብድር አማራጭ ይምረጡ",
+      "recommended": "የሚመከር",
+      "bank": "ባንክ",
+      "product": "ምርት",
+      "status": "ሁኔታ",
+      "interestRate": "የወለድ መጠን",
+      "maxCoverage": "ከፍተኛ ሽፋን",
+      "maxLoan": "ከፍተኛ ብድር",
+      "tenureRange": "የክፍያ ጊዜ",
+      "howMuch": "ምን ያህል በብድር መሸፈን ይፈልጋሉ?",
+      "modeMaximum": "ከፍተኛ ብድር",
+      "modePartial": "ከፊል ብድር",
+      "financedAmount": "የብድር መጠን",
+      "cashPortion": "የራስዎ መዋጮ",
+      "range": "ከ{min} እስከ {max}",
+      "cashHelp": "ቢያንስ {min}",
+      "partialNotAllowed": "ይህ ምርት አንድ የብድር መጠን ብቻ ይሰጣል።",
+      "tenure": "የመክፈያ ጊዜ",
+      "coverage": "ሽፋን",
+      "estimatedInstallment": "ግምታዊ ወርሃዊ ክፍያ",
+      "estimateDisclaimer": "ግምቶቹ የምርቱን የተዘረዘረ ወለድ ይጠቀማሉ። ባንኩ የብድር ማመልከቻዎን ሲገመግም የመጨረሻውን ውል ያረጋግጣል።",
+      "cashChosen": "በጥሬ ገንዘብ ለመክፈል መርጠዋል። ትዕዛዙ የብድር ማመልከቻ አያካትትም።"
+    },
+    "agreement": {
+      "title": "የግዢ ቃል ስምምነት",
+      "subtitle": "ትዕዛዝዎ ከመላኩ በፊት ከመድረኩ አቅራቢ ጋር የግዢ ቃል ስምምነት ይፈርማሉ። እባክዎ ሙሉውን ጽሑፍ ያንብቡ።",
+      "between": "በእርስዎ እና በ{provider} መካከል",
+      "version": "ስሪት {version}",
+      "scrollToRead": "ለማንበብ ይሸብልሉ",
+      "readComplete": "ሙሉ በሙሉ ተነብቧል",
+      "mustScroll": "ፊርማውን ለማንቃት ሙሉውን ስምምነት ይሸብልሉ።",
+      "jumpToEnd": "ወደ መጨረሻ ይሂዱ",
+      "signatoryName": "ሙሉ ህጋዊ ስምዎ",
+      "signatoryPlaceholder": "በመታወቂያዎ ላይ እንደተጻፈው",
+      "signatoryHelp": "ስምዎን መተየብ የኤሌክትሮኒክ ፊርማዎ ነው።",
+      "acceptLabel": "{title}ን አንብቤ ተስማምቻለሁ።",
+      "acceptHelp": "ትዕዛዙን ለማስገባት ያስፈልጋል። የተፈረመው ጽሑፍ እና አሻራው ከትዕዛዝዎ ጋር ይቀመጣል።"
+    },
+    "review": {
+      "title": "ይገምግሙ እና ያስገቡ",
+      "subtitle": "ሁሉንም እንደገና ያረጋግጡ። ማስገባት ትዕዛዙን ለሻጩ ይልካል እና ስምምነቱን ይፈርማል።",
+      "property": "ንብረት",
+      "contact": "አድራሻ",
+      "noEmail": "ኢሜይል አልተሰጠም",
+      "payment": "ክፍያ",
+      "cashExplainer": "ያለ ባንክ ብድር ቀጥታ ግዢ።",
+      "agreement": "ስምምነት",
+      "agreementAccepted": "ተቀባይነት አግኝቷል",
+      "signedAs": "እንደ {name} ተፈርሟል",
+      "reread": "እንደገና ያንብቡ",
+      "submitNote": "በማስገባትዎ ከላይ ያሉትን ዝርዝሮች ያረጋግጣሉ እና የግዢ ቃል ስምምነቱን በኤሌክትሮኒክ መንገድ ይፈርማሉ።",
+      "submit": "የግዢ ትዕዛዝ አስገባ",
+      "submitting": "እየተላከ ነው…"
+    },
+    "success": {
+      "title": "የግዢ ትዕዛዝ {number} ተመዝግቧል",
+      "body": "ሻጩ ተነግሮታል። በመድረኩ እና በሰጡት አድራሻ በኩል ይደርስዎታል።"
+    },
+    "status": {
+      "PENDING_SELLER_REVIEW": "የሻጭ ግምገማ በመጠባበቅ ላይ",
+      "AWAITING_FINANCING": "የባንክ ውሳኔ በመጠባበቅ ላይ",
+      "FINANCING_APPROVED": "ብድር ጸድቋል",
+      "FINANCING_PARTIALLY_APPROVED": "ብድር በከፊል ጸድቋል",
+      "FINANCING_REJECTED": "ብድር ውድቅ ተደርጓል",
+      "AWAITING_PAYMENT": "ክፍያ በመጠባበቅ ላይ",
+      "COMPLETED": "ተጠናቅቋል",
+      "CANCELLED": "ተሰርዟል",
+      "REJECTED": "በሻጭ ውድቅ ተደርጓል",
+      "EXPIRED": "ጊዜው አልፎበታል"
+    },
+    "statusHelp": {
+      "PENDING_SELLER_REVIEW": "ትዕዛዝዎ ለሻጩ ተልኳል። ሊቀበሉት ወይም ሊከለክሉት ይችላሉ።",
+      "AWAITING_FINANCING": "ሻጩ ተቀብሏል። ባንኩ አሁን የብድር ማመልከቻዎን እየገመገመ ነው።",
+      "FINANCING_APPROVED": "ባንኩ ብድርዎን አጽድቋል። ከሻጩ ጋር ክፍያውን ያዘጋጁ።",
+      "FINANCING_PARTIALLY_APPROVED": "ባንኩ ከጠየቁት ያነሰ ብድር አጽድቋል። ከታች እንዴት እንደሚቀጥሉ ይወስኑ።",
+      "FINANCING_REJECTED": "ባንኩ ብድሩን ውድቅ አድርጓል። ለያነሰ መጠን እንደገና ማመልከት፣ ወደ ጥሬ ገንዘብ ግዢ መቀየር ወይም መሰረዝ ይችላሉ።",
+      "AWAITING_PAYMENT": "ከሻጩ ጋር ክፍያውን ያዘጋጁ። ከተከፈለ በኋላ ሽያጩን እንደተጠናቀቀ ያመለክታሉ።",
+      "COMPLETED": "ሽያጩ ተጠናቅቋል። እንኳን ደስ አለዎት!",
+      "CANCELLED": "ይህን ትዕዛዝ ሰርዘዋል።",
+      "REJECTED": "ሻጩ ይህን ትዕዛዝ ውድቅ አድርጓል።",
+      "EXPIRED": "ሻጩ በጊዜው መልስ ስላልሰጠ ትዕዛዙ ጊዜው አልፎበታል።"
+    },
+    "financingStatus": {
+      "APPLICATION_SUBMITTED": "ማመልከቻ ቀርቧል",
+      "UNDER_REVIEW": "በግምገማ ላይ",
+      "APPROVED": "ጸድቋል",
+      "PARTIALLY_APPROVED": "በከፊል ጸድቋል",
+      "REJECTED": "ውድቅ ተደርጓል",
+      "DISBURSED": "ተከፍሏል",
+      "WITHDRAWN": "ተነስቷል"
+    },
+    "partial": {
+      "title": "ባንኩ ከጠየቁት ያነሰ አጽድቋል",
+      "body": "የጸደቀ ብድር፦ {approved}። ከተቀበሉ የራስዎ መዋጮ {cash} ይሆናል።",
+      "accept": "ተቀበል እና ቀጥል"
+    },
+    "rejectedFinancing": {
+      "title": "ብድሩ ውድቅ ተደርጓል",
+      "body": "ለያነሰ መጠን እንደገና ማመልከት፣ እንደ ጥሬ ገንዘብ ግዢ መቀጠል ወይም ትዕዛዙን መሰረዝ ይችላሉ።",
+      "newAmount": "አዲስ የብድር መጠን",
+      "reapply": "እንደገና አመልክት"
+    },
+    "agreements": {
+      "title": "ስምምነቶች",
+      "pending": "{count} ለመፈረም",
+      "signedOn": "በ{date} በ{name} ተፈርሟል",
+      "providerSigned": "ለ{provider} በ{name} በ{date} ተፈርሟል",
+      "fingerprint": "የሰነድ አሻራ",
+      "reviewAndSign": "ገምግም እና ፈርም",
+      "view": "ይመልከቱ",
+      "sign": "ስምምነቱን ፈርም"
+    },
+    "agreementStatus": {
+      "PENDING_BUYER_SIGNATURE": "ፊርማዎን በመጠባበቅ ላይ",
+      "PENDING_PROVIDER_SIGNATURE": "የአቅራቢ ፊርማ በመጠባበቅ ላይ",
+      "FULLY_SIGNED": "ተፈርሟል",
+      "VOID": "ዋጋ የለሽ"
+    },
+    "actions": {
+      "cancel": "የግዢ ትዕዛዝ ሰርዝ",
+      "cancelConfirm": "ይህን የግዢ ትዕዛዝ ይሰርዙ? በመጠባበቅ ላይ ያለ የብድር ማመልከቻ ይነሳል።",
+      "convertToCash": "እንደ ጥሬ ገንዘብ ግዢ ቀጥል"
+    },
+    "errors": {
+      "phoneRequired": "የስልክ ቁጥር ያስፈልጋል።",
+      "phoneInvalid": "ትክክለኛ የስልክ ቁጥር ያስገቡ፣ ለምሳሌ 0911223344 ወይም +251911223344።",
+      "messageTooLong": "መልእክቱ ከ2000 ፊደላት መብለጥ አይችልም።",
+      "offerRequired": "የብድር አማራጭ ይምረጡ ወይም የባንክ ብድርን ያስወግዱ።",
+      "financedAmountRequired": "በብድር መሸፈን የሚፈልጉትን መጠን ያስገቡ።",
+      "financedAmountBelowMin": "የብድር መጠኑ ቢያንስ {min} መሆን አለበት።",
+      "financedAmountAboveMax": "የብድር መጠኑ ከ{max} መብለጥ አይችልም።",
+      "tenureRequired": "የመክፈያ ጊዜውን በወራት ያስገቡ።",
+      "tenureOutOfRange": "የመክፈያ ጊዜው ከ{min} እስከ {max} ወራት መሆን አለበት።",
+      "agreementUnavailable": "የግዢ ቃል ስምምነቱ በአሁኑ ጊዜ አይገኝም። እባክዎ ቆይተው እንደገና ይሞክሩ።",
+      "agreementNotRead": "እባክዎ ሙሉውን ስምምነት ያንብቡ።",
+      "agreementNotAccepted": "ለመቀጠል ስምምነቱን መቀበል አለብዎት።",
+      "signatoryRequired": "ሙሉ ስምዎን እንደ ፊርማዎ ያስገቡ።",
+      "agreementChanged": "እያነበቡ ሳሉ የስምምነቱ ጽሑፍ ተዘምኗል። እባክዎ አዲሱን ስሪት ገምግመው ይቀበሉ።",
+      "duplicateOrder": "ለዚህ ንብረት ቀድሞውኑ ክፍት የግዢ ትዕዛዝ አለዎት።",
+      "submitFailed": "የግዢ ትዕዛዙ መላክ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "previewFailed": "የዚህ ንብረት የግዢ ዝርዝሮች መጫን አልተቻለም።",
+      "notPurchasable": "ይህ ንብረት ለግዢ አይገኝም።",
+      "orderNotFound": "የግዢ ትዕዛዝ አልተገኘም።",
+      "loadFailed": "የግዢ ትዕዛዙን መጫን አልተቻለም።",
+      "actionFailed": "እርምጃው መጠናቀቅ አልቻለም።"
+    }
   }
 }
