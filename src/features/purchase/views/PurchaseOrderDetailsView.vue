@@ -84,6 +84,44 @@
               </div>
             </section>
 
+            <!-- Reservation deposit -->
+            <section v-if="order.deposit" class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm" data-testid="deposit-card">
+              <div class="mb-3 flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h2 class="text-lg font-bold text-gray-900">{{ $t('purchase.deposit.title') }}</h2>
+                  <p class="text-sm text-gray-500">{{ $t('purchase.deposit.subtitle', { provider: providerName }) }}</p>
+                </div>
+                <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="depositClass(order.deposit.status)">{{ $t(`purchase.deposit.status.${order.deposit.status}`) }}</span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900">{{ money(order.deposit.amount) }}</p>
+              <p v-if="order.deposit.dueAt && (order.deposit.status === 'DUE' || order.deposit.status === 'FAILED')" class="text-xs text-gray-500">{{ $t('purchase.deposit.dueBy', { date: formatDate(order.deposit.dueAt) }) }}</p>
+              <p v-if="order.deposit.paidAt" class="text-xs text-gray-500">{{ $t('purchase.deposit.paidOn', { date: formatDate(order.deposit.paidAt), method: order.deposit.paymentMethod || order.deposit.provider }) }}</p>
+
+              <div v-if="depositOutcome" class="mt-3 rounded-xl p-3 text-sm" :class="depositOutcome === 'paid' ? 'bg-green-50 text-green-800' : depositOutcome === 'failed' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-800'" role="status">
+                {{ $t(`purchase.deposit.outcome.${depositOutcome}`) }}
+              </div>
+              <p v-if="order.deposit.failureReason && order.deposit.status === 'FAILED'" class="mt-2 text-xs text-red-600">{{ order.deposit.failureReason }}</p>
+              <p v-if="depositError" class="mt-2 text-xs text-red-600" role="alert">{{ translate(depositError) }}</p>
+
+              <div v-if="canPayDeposit" class="mt-4 space-y-2">
+                <p v-if="order.deposit.termsPending" class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">{{ $t('purchase.deposit.signTermsFirst') }}</p>
+                <p v-else-if="!order.deposit.checkoutAvailable" class="rounded-lg bg-gray-50 p-3 text-xs text-gray-600">{{ $t('purchase.deposit.unavailable') }}</p>
+                <button
+                  v-else
+                  type="button"
+                  data-testid="pay-deposit"
+                  class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60"
+                  :disabled="depositBusy"
+                  @click="payDeposit"
+                >
+                  <span v-if="depositBusy" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+                  {{ order.deposit.status === 'PENDING' ? $t('purchase.deposit.resume') : order.deposit.status === 'FAILED' ? $t('purchase.deposit.retry') : $t('purchase.deposit.pay') }}
+                </button>
+                <button v-if="order.deposit.status === 'PENDING'" type="button" class="ml-2 text-xs font-semibold text-primary-700 hover:underline" :disabled="depositBusy" @click="checkDeposit">{{ $t('purchase.deposit.checkStatus') }}</button>
+                <p class="text-[11px] text-gray-500">{{ $t('purchase.deposit.securityNote') }}</p>
+              </div>
+            </section>
+
             <!-- Agreements -->
             <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <div class="mb-4 flex items-center justify-between">
@@ -216,6 +254,8 @@ import { purchaseApi } from '../api/purchase.api'
 import type { AgreementStatus, PurchaseAgreementResponse, PurchaseOrderResponse } from '../api/purchase.types'
 import { renderMarkdown } from '../utils/markdown'
 import PurchaseOrderStatusBadge from '../components/PurchaseOrderStatusBadge.vue'
+import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCheckout'
+import type { DepositStatus } from '../api/purchase.types'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
 
 const route = useRoute()
@@ -228,6 +268,32 @@ const acting = ref(false)
 const actionError = ref<string | null>(null)
 const reapplyAmount = ref<number | null>(null)
 const justCreated = computed(() => route.query.created === '1')
+
+// ---- reservation deposit
+const orderIdRef = computed(() => String(route.params.id))
+const depositCheckout = useDepositCheckout(orderIdRef)
+const depositBusy = depositCheckout.busy
+const depositError = depositCheckout.error
+const depositOutcome = depositCheckout.outcome
+const providerName = computed(() => order.value?.agreements?.[0]?.providerName || 'the provider')
+const canPayDeposit = computed(() => {
+  const d = order.value?.deposit
+  return !!d && (d.status === 'DUE' || d.status === 'PENDING' || d.status === 'FAILED') && order.value!.status !== 'CANCELLED'
+})
+function depositClass(status: DepositStatus) {
+  if (status === 'PAID' || status === 'WAIVED') return 'bg-green-100 text-green-700'
+  if (status === 'FAILED' || status === 'REFUND_PENDING') return 'bg-red-100 text-red-700'
+  if (status === 'PENDING') return 'bg-amber-100 text-amber-800'
+  if (status === 'REFUNDED' || status === 'CANCELLED') return 'bg-gray-200 text-gray-700'
+  return 'bg-blue-100 text-blue-700'
+}
+async function payDeposit() {
+  await depositCheckout.pay()
+}
+async function checkDeposit() {
+  const deposit = await depositCheckout.confirmOnReturn()
+  if (deposit && order.value) order.value = { ...order.value, deposit }
+}
 
 const OPEN = new Set(['PENDING_SELLER_REVIEW', 'AWAITING_FINANCING', 'FINANCING_APPROVED', 'FINANCING_PARTIALLY_APPROVED', 'FINANCING_REJECTED', 'AWAITING_PAYMENT'])
 const canCancel = computed(() => order.value !== null && OPEN.has(order.value.status))
@@ -261,6 +327,11 @@ async function load() {
     error.value = err?.response?.status === 404 ? 'purchase.errors.orderNotFound' : (err?.response?.data?.message || 'purchase.errors.loadFailed')
   } finally {
     loading.value = false
+  }
+  // Back from the payment provider: confirm the result and refresh the deposit block.
+  if (order.value?.deposit && isDepositReturn(route.query)) {
+    await checkDeposit()
+    if (depositOutcome.value === 'paid') await load()
   }
 }
 

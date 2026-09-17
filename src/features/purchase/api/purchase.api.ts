@@ -6,6 +6,8 @@ import type { Currency, PaginatedResponse } from '@/shared/types'
 import type {
   AgreementSignatureRequest,
   CreatePurchaseOrderRequest,
+  DepositCheckoutResponse,
+  PurchaseDepositResponse,
   PurchaseAgreementResponse,
   PurchaseOrderResponse,
   PurchaseOrderStatus,
@@ -65,6 +67,18 @@ export const purchaseApi = {
 
   convertToCash: async (id: string): Promise<PurchaseOrderResponse> => {
     const response = await api.post<PurchaseOrderResponse>(`/purchase-orders/${id}/convert-to-cash`)
+    return response.data
+  },
+
+  /** Starts (or resumes) the reservation-deposit checkout at the payment provider. */
+  startDepositCheckout: async (orderId: string): Promise<DepositCheckoutResponse> => {
+    const response = await api.post<DepositCheckoutResponse>(`/purchase-orders/${orderId}/deposit/checkout`)
+    return response.data
+  },
+
+  /** Asks the server to confirm the deposit with the provider after the buyer returns. */
+  confirmDeposit: async (orderId: string): Promise<PurchaseDepositResponse> => {
+    const response = await api.post<PurchaseDepositResponse>(`/purchase-orders/${orderId}/deposit/confirm`)
     return response.data
   },
 

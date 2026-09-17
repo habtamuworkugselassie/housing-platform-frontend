@@ -1854,6 +1854,38 @@
     }
   },
   "purchase": {
+    "deposit": {
+      "title": "Reservation deposit",
+      "subtitle": "Paid to {provider} to reserve the property while the sale is arranged. Refund rules are in the deposit terms.",
+      "dueBy": "Due by {date}",
+      "paidOn": "Paid {date} via {method}",
+      "pay": "Pay deposit",
+      "resume": "Continue payment",
+      "retry": "Try again",
+      "checkStatus": "I have paid — check status",
+      "signTermsFirst": "Sign the Reservation Deposit Terms below before paying.",
+      "unavailable": "Online payment is not available yet. The provider will contact you with payment instructions.",
+      "securityNote": "You will be taken to Chapa's secure checkout. Card details are entered there and are never stored on this platform.",
+      "status": {
+        "DUE": "Due",
+        "PENDING": "Payment in progress",
+        "PAID": "Paid",
+        "FAILED": "Payment failed",
+        "CANCELLED": "Cancelled",
+        "WAIVED": "Waived",
+        "REFUND_PENDING": "Refund pending",
+        "REFUNDED": "Refunded"
+      },
+      "outcome": {
+        "paid": "Your reservation deposit has been received. Thank you!",
+        "failed": "The payment did not go through. You can try again.",
+        "pending": "The provider has not confirmed the payment yet. Check again in a moment."
+      },
+      "errors": {
+        "startFailed": "Could not start the payment. Please try again.",
+        "confirmFailed": "Could not confirm the payment yet. Please try again."
+      }
+    },
     "account": {
       "title": "First, who is ordering?",
       "subtitle": "Create an account in seconds or sign in. Your order and the agreements you sign are kept under it.",

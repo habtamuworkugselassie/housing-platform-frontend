@@ -159,6 +159,45 @@ export interface FinancingDetails {
   nextSteps: string[]
 }
 
+export type DepositStatus =
+  | 'DUE'
+  | 'PENDING'
+  | 'PAID'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'WAIVED'
+  | 'REFUND_PENDING'
+  | 'REFUNDED'
+
+/** Reservation deposit owed to the provider after seller acceptance. */
+export interface PurchaseDepositResponse {
+  amount: number
+  currency: Currency
+  status: DepositStatus
+  dueAt: string | null
+  provider: string
+  txRef: string | null
+  checkoutUrl: string | null
+  providerReference: string | null
+  paymentMethod: string | null
+  paidAt: string | null
+  failureReason: string | null
+  attempts: number
+  termsPending: boolean
+  checkoutAvailable: boolean
+  refundReference: string | null
+  refundedAt: string | null
+  waiveReason: string | null
+}
+
+export interface DepositCheckoutResponse {
+  checkoutUrl: string
+  txRef: string
+  amount: number
+  currency: Currency
+  provider: string
+}
+
 export interface PurchaseOrderResponse {
   id: string
   orderNumber: string
@@ -184,6 +223,7 @@ export interface PurchaseOrderResponse {
   warnings: string[]
   agreements: PurchaseAgreementResponse[]
   pendingSignatures: number
+  deposit: PurchaseDepositResponse | null
   createdAt: string
   updatedAt: string
   statusHistory: Array<{

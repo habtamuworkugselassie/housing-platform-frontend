@@ -70,6 +70,20 @@ phone/email and the agreement signatory name (a saved draft wins), and reloads t
 agreement is rendered for the signed-in buyer. A signed-in non-buyer (company or bank user) sees a
 notice instead of the wizard.
 
+## Reservation deposit (Chapa)
+
+After the seller accepts, the order carries a `deposit` block (amount, status, due date, whether
+the deposit terms are still unsigned, whether online checkout is available). The order details
+page renders it and, for `DUE` / `PENDING` / `FAILED`, a **Pay deposit** button:
+
+1. `useDepositCheckout.pay()` calls `POST /purchase-orders/{id}/deposit/checkout` and navigates
+   the tab to the returned Chapa hosted-checkout URL. Card details are entered on Chapa, never here.
+2. Chapa redirects back to `/purchase-orders/{id}?deposit=return`; on load the page calls
+   `confirmOnReturn()` → `POST /purchase-orders/{id}/deposit/confirm`, shows the outcome (paid /
+   failed / still pending) and refreshes the order. A "check status" link covers a late webhook.
+3. The button is replaced by a hint while the Reservation Deposit Terms agreement is unsigned
+   (sign it in the agreements list first) or when the server has no Chapa key configured.
+
 ## State management
 
 `usePurchaseOrderFormStore` (Pinia setup store):
@@ -166,6 +180,7 @@ Vitest (jsdom + Vue Test Utils) is configured in `vitest.config.ts`; run `npm te
 | `utils/financing.test.ts` | instalment figures identical to the backend tests (87,039.85 / 58,033.79), split classification, clamping, range validation |
 | `utils/markdown.test.ts` | the supported Markdown subset and HTML escaping |
 | `stores/purchaseOrderForm.test.ts` | prefill, dynamic steps, account step for visitors and `accountReady`, every validation gate, payload normalisation, cash opt-out, 409 and "template changed" handling, server field errors, draft persistence |
+| `composables/useDepositCheckout.test.ts` | redirect to the provider URL, server error surfacing, outcome mapping on return, return-query detection |
 | `components/PurchaseAccountStep.test.ts` | Google button hidden without a client id, quick sign-up validation and request shape, 409 → sign-in tab with the number kept, two-step WhatsApp-code sign-in |
 | `components/AgreementReviewPanel.test.ts` | controls disabled until scrolled to the end, scroll detection, emitted signature input, attempted-only errors, escaped rendering, reset on new text |
 
