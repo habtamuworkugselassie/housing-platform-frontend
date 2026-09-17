@@ -41,11 +41,21 @@
 .exhibition-landing .border-l-2, .exhibition-landing .border-l-4 { border-color: var(--public-accent) !important; }
 
 .property-marketplace, .property-details-page, .listing-directory { padding-bottom: 3.5rem; }
-.property-marketplace > .bg-zinc-900:first-child, .property-marketplace > .bg-zinc-900:nth-child(2) { background: var(--public-surface) !important; border-color: rgba(255,255,255,.18) !important; }
-.property-details-page .bg-zinc-900, .listing-directory .bg-zinc-900 { background: var(--public-surface) !important; border-color: rgba(255,255,255,.18) !important; }
-.property-details-page .bg-white\/5 { background: rgba(255,255,255,.08) !important; }
-.property-details-page .text-green-200 { color: #bbf7d0 !important; }
-.property-details-page .bg-green-500\/30 { background: rgba(22, 163, 74, .25) !important; }
+
+/* These three pages used to be dark, and a block here forced their bg-zinc-900 cards
+ * to the brand's dark surface with !important. They are light now (bg-violet-50), and
+ * the override outlived them in a way that could not be seen from this file alone:
+ * the companion rule that keeps text readable on that dark surface —
+ * `.public-page .text-white { color: #fff !important }` — is scoped to `.public-page`,
+ * which none of these three carry. So the panel was forced dark while light-app.css
+ * recoloured its text to ink, and anything using bg-zinc-900 here rendered ink on
+ * #3b0764: about 1.6:1, i.e. invisible. The property-credit modal on a listing page
+ * was reported exactly that way.
+ *
+ * Dropping the overrides lets light-app.css remap these surfaces to white with ink
+ * text, which is what the rest of the app already does. `.public-page` keeps its own
+ * dark-band rules: there the surface and the text rules agree, so those bands stay
+ * dark and legible on purpose. */
 
 @media (max-width: 640px) { .site-nav { position: sticky; } .public-page { overflow-x: clip; } }
 
