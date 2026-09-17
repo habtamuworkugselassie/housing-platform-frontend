@@ -1852,5 +1852,265 @@
       "home": "Back to the home page",
       "homeBlurb": "The expo, partners, and the latest listings."
     }
+  },
+  "purchase": {
+    "deposit": {
+      "title": "Reservation deposit",
+      "subtitle": "Paid to {provider} to reserve the property while the sale is arranged. Refund rules are in the deposit terms.",
+      "dueBy": "Due by {date}",
+      "paidOn": "Paid {date} via {method}",
+      "pay": "Pay deposit",
+      "resume": "Continue payment",
+      "retry": "Try again",
+      "checkStatus": "I have paid — check status",
+      "signTermsFirst": "Sign the Reservation Deposit Terms below before paying.",
+      "unavailable": "Online payment is not available yet. The provider will contact you with payment instructions.",
+      "securityNote": "You will be taken to Chapa's secure checkout. Card details are entered there and are never stored on this platform.",
+      "status": {
+        "DUE": "Due",
+        "PENDING": "Payment in progress",
+        "PAID": "Paid",
+        "FAILED": "Payment failed",
+        "CANCELLED": "Cancelled",
+        "WAIVED": "Waived",
+        "REFUND_PENDING": "Refund pending",
+        "REFUNDED": "Refunded"
+      },
+      "outcome": {
+        "paid": "Your reservation deposit has been received. Thank you!",
+        "failed": "The payment did not go through. You can try again.",
+        "pending": "The provider has not confirmed the payment yet. Check again in a moment."
+      },
+      "errors": {
+        "startFailed": "Could not start the payment. Please try again.",
+        "confirmFailed": "Could not confirm the payment yet. Please try again."
+      }
+    },
+    "account": {
+      "title": "First, who is ordering?",
+      "subtitle": "Create an account in seconds or sign in. Your order and the agreements you sign are kept under it.",
+      "newHere": "I'm new here",
+      "haveAccount": "I have an account",
+      "fullName": "Full name",
+      "phoneHelp": "We will send a WhatsApp code to confirm this number. It is also how the seller reaches you.",
+      "passwordOptional": "Add a password (optional)",
+      "passwordHelp": "Without a password you sign in with a WhatsApp code sent to your phone. At least 8 characters with upper, lower case and a number.",
+      "consent": "By continuing you create an Ethio Build Connect buyer account and accept the platform terms.",
+      "createAndContinue": "Create account & continue",
+      "code": "6-digit code",
+      "codeHelp": "Sent to your WhatsApp. It expires after a few minutes.",
+      "changePhone": "Use a different number",
+      "sendCode": "Send me a code",
+      "verifyAndContinue": "Verify & continue",
+      "preferPassword": "Prefer email and password?",
+      "passwordLogin": "Sign in the classic way",
+      "notABuyer": "This account cannot place purchase orders",
+      "notABuyerHelp": "You are signed in as a company or bank user. Sign in with a buyer account to order a property.",
+      "errors": {
+        "nameRequired": "Enter your full name.",
+        "passwordWeak": "Password needs 8+ characters with upper, lower case and a number.",
+        "codeInvalid": "Enter the 6-digit code from WhatsApp.",
+        "registerFailed": "Could not create the account. Please try again.",
+        "codeSendFailed": "Could not send the code. Check the number and try again.",
+        "googleFailed": "Google sign-in did not complete. Please try again."
+      }
+    },
+    "title": "Place a purchase order",
+    "loading": "Preparing your purchase order…",
+    "optional": "optional",
+    "months": "months",
+    "month": "mo",
+    "backToProperty": "Back to the property",
+    "listedBy": "Listed by {company}",
+    "myOrders": "My purchase orders",
+    "noOrders": "You have not placed any purchase orders yet.",
+    "browseProperties": "Browse properties",
+    "viewProperty": "View property",
+    "history": "History",
+    "nextSteps": "Next steps",
+    "expiresOn": "The seller has until {date} to respond.",
+    "cta": {
+      "withFinancing": "Place purchase order · financing available",
+      "cash": "Place purchase order"
+    },
+    "steps": {
+      "account": "Account",
+      "contact": "Contact",
+      "financing": "Financing",
+      "agreement": "Agreement",
+      "review": "Review"
+    },
+    "types": {
+      "CASH": "Cash purchase",
+      "BANK_FINANCED": "Bank financed"
+    },
+    "sidebar": {
+      "financingAvailable": "Bank financing is available for this property",
+      "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or pay cash.",
+      "cashOnly": "Standard cash purchase",
+      "cashOnlyHelp": "No bank financing product is linked to this listing, so the order proceeds as a direct purchase."
+    },
+    "contact": {
+      "title": "How can the seller reach you?",
+      "subtitle": "Your phone number is required so the seller and, if applicable, the bank can contact you. Email is optional.",
+      "phone": "Phone number",
+      "phoneHelp": "Ethiopian numbers as 09XX XXX XXX or +251 9XX XXX XXX; other countries with their + code.",
+      "phoneStoredAs": "Will be stored as {phone}",
+      "email": "Email address",
+      "emailHelp": "We will send order updates here as well if you provide one.",
+      "message": "Message to the seller",
+      "messagePlaceholder": "Anything the seller should know, e.g. preferred viewing time."
+    },
+    "financing": {
+      "title": "Bank financing",
+      "subtitle": "This property has an active financing product. Choose how much of the price you want to finance.",
+      "useFinancing": "Finance part of the purchase through a bank",
+      "useFinancingHelp": "Untick to place a plain cash order even though financing is available.",
+      "chooseOffer": "Choose a financing offer",
+      "recommended": "Recommended",
+      "bank": "Bank",
+      "product": "Product",
+      "status": "Status",
+      "interestRate": "Interest rate",
+      "maxCoverage": "Max. coverage",
+      "maxLoan": "Max. loan",
+      "tenureRange": "Tenure",
+      "howMuch": "How much do you want to finance?",
+      "modeMaximum": "Maximum financing",
+      "modePartial": "Partial financing",
+      "financedAmount": "Financed amount",
+      "cashPortion": "Your own contribution",
+      "range": "Between {min} and {max}",
+      "cashHelp": "At least {min}",
+      "partialNotAllowed": "This product only offers a single loan amount.",
+      "tenure": "Repayment period",
+      "coverage": "Coverage",
+      "estimatedInstallment": "Est. instalment",
+      "estimateDisclaimer": "Estimates use the product's listed rate. The bank confirms the final terms when it reviews your loan application.",
+      "cashChosen": "You chose to pay cash. The order will not include a loan application."
+    },
+    "agreement": {
+      "title": "Promise to Purchase Agreement",
+      "subtitle": "Before your order is sent, you sign a Promise to Purchase with the platform provider. Please read the whole text.",
+      "between": "Between you and {provider}",
+      "version": "version {version}",
+      "scrollToRead": "Scroll to read",
+      "readComplete": "Read in full",
+      "mustScroll": "Scroll through the whole agreement to enable the signature.",
+      "jumpToEnd": "Jump to the end",
+      "signatoryName": "Your full legal name",
+      "signatoryPlaceholder": "As written on your ID",
+      "signatoryHelp": "Typing your name is your electronic signature.",
+      "acceptLabel": "I have read and agree to the {title}.",
+      "acceptHelp": "Required to place the order. The signed text and its fingerprint are stored with your order."
+    },
+    "review": {
+      "title": "Review and submit",
+      "subtitle": "Check everything once more. Submitting sends the order to the seller and signs the agreement.",
+      "property": "Property",
+      "contact": "Contact",
+      "noEmail": "No email provided",
+      "payment": "Payment",
+      "cashExplainer": "Direct purchase without bank financing.",
+      "agreement": "Agreement",
+      "agreementAccepted": "Accepted",
+      "signedAs": "Signed as {name}",
+      "reread": "Re-read",
+      "submitNote": "By submitting you confirm the details above and electronically sign the Promise to Purchase Agreement.",
+      "submit": "Submit purchase order",
+      "submitting": "Submitting…"
+    },
+    "success": {
+      "title": "Purchase order {number} placed",
+      "body": "The seller has been notified. You will hear from them through the platform and the contact details you provided."
+    },
+    "status": {
+      "PENDING_SELLER_REVIEW": "Awaiting seller review",
+      "AWAITING_FINANCING": "Awaiting bank decision",
+      "FINANCING_APPROVED": "Financing approved",
+      "FINANCING_PARTIALLY_APPROVED": "Financing partially approved",
+      "FINANCING_REJECTED": "Financing declined",
+      "AWAITING_PAYMENT": "Awaiting payment",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "REJECTED": "Rejected by seller",
+      "EXPIRED": "Expired"
+    },
+    "statusHelp": {
+      "PENDING_SELLER_REVIEW": "Your order has been sent to the seller. They can accept or decline it.",
+      "AWAITING_FINANCING": "The seller accepted. The bank is now reviewing your loan application.",
+      "FINANCING_APPROVED": "The bank approved your financing. Arrange payment with the seller.",
+      "FINANCING_PARTIALLY_APPROVED": "The bank approved a smaller loan than requested. Decide how to proceed below.",
+      "FINANCING_REJECTED": "The bank declined the loan. You can re-apply for less, switch to a cash purchase, or cancel.",
+      "AWAITING_PAYMENT": "Arrange payment with the seller. They will mark the sale complete once paid.",
+      "COMPLETED": "The sale is complete. Congratulations!",
+      "CANCELLED": "You cancelled this order.",
+      "REJECTED": "The seller declined this order.",
+      "EXPIRED": "The seller did not respond in time and the order expired."
+    },
+    "financingStatus": {
+      "APPLICATION_SUBMITTED": "Application submitted",
+      "UNDER_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "PARTIALLY_APPROVED": "Partially approved",
+      "REJECTED": "Declined",
+      "DISBURSED": "Disbursed",
+      "WITHDRAWN": "Withdrawn"
+    },
+    "partial": {
+      "title": "The bank approved less than you requested",
+      "body": "Approved loan: {approved}. If you accept, your own contribution becomes {cash}.",
+      "accept": "Accept and continue"
+    },
+    "rejectedFinancing": {
+      "title": "Financing was declined",
+      "body": "You can apply again for a smaller amount, continue as a cash purchase, or cancel the order.",
+      "newAmount": "New financed amount",
+      "reapply": "Re-apply"
+    },
+    "agreements": {
+      "title": "Agreements",
+      "pending": "{count} to sign",
+      "signedOn": "Signed {date} by {name}",
+      "providerSigned": "Signed for {provider} by {name} on {date}",
+      "fingerprint": "Document fingerprint",
+      "reviewAndSign": "Review & sign",
+      "view": "View",
+      "sign": "Sign agreement"
+    },
+    "agreementStatus": {
+      "PENDING_BUYER_SIGNATURE": "Awaiting your signature",
+      "PENDING_PROVIDER_SIGNATURE": "Awaiting provider signature",
+      "FULLY_SIGNED": "Signed",
+      "VOID": "Void"
+    },
+    "actions": {
+      "cancel": "Cancel purchase order",
+      "cancelConfirm": "Cancel this purchase order? Any pending loan application will be withdrawn.",
+      "convertToCash": "Continue as cash purchase"
+    },
+    "errors": {
+      "phoneRequired": "Phone number is required.",
+      "phoneInvalid": "Enter a valid phone number, e.g. 0911223344 or +251911223344.",
+      "messageTooLong": "The message cannot exceed 2000 characters.",
+      "offerRequired": "Choose a financing offer or untick bank financing.",
+      "financedAmountRequired": "Enter the amount you want to finance.",
+      "financedAmountBelowMin": "The financed amount must be at least {min}.",
+      "financedAmountAboveMax": "The financed amount cannot exceed {max}.",
+      "tenureRequired": "Enter the repayment period in months.",
+      "tenureOutOfRange": "The repayment period must be between {min} and {max} months.",
+      "agreementUnavailable": "The Promise to Purchase agreement is not available right now. Please try again later.",
+      "agreementNotRead": "Please read the whole agreement.",
+      "agreementNotAccepted": "You must accept the agreement to continue.",
+      "signatoryRequired": "Enter your full name as your signature.",
+      "agreementChanged": "The agreement text was updated while you were reading. Please review and accept the new version.",
+      "duplicateOrder": "You already have an open purchase order for this property.",
+      "submitFailed": "The purchase order could not be submitted. Please try again.",
+      "previewFailed": "Could not load the purchase details for this property.",
+      "notPurchasable": "This property is not available for purchase.",
+      "orderNotFound": "Purchase order not found.",
+      "loadFailed": "Could not load the purchase order.",
+      "actionFailed": "The action could not be completed."
+    }
   }
 }

@@ -12,7 +12,9 @@ import type {
   RefreshTokenResponse,
   ForgotPasswordRequest,
   ResetPasswordRequest,
-  User
+  User,
+  QuickRegisterRequest,
+  GoogleLoginRequest
 } from './auth.types'
 
 export const authApi = {
@@ -29,6 +31,37 @@ export const authApi = {
    */
   register: async (userData: RegisterRequest): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/register', userData)
+    return response.data
+  },
+
+  /**
+   * Minimal buyer registration (full name + phone; email/password optional). Signs the user in.
+   */
+  quickRegister: async (data: QuickRegisterRequest): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/quick-register', data)
+    return response.data
+  },
+
+  /**
+   * Sign in (or register as BUYER) with a Google ID token from Google Identity Services.
+   */
+  loginWithGoogle: async (data: GoogleLoginRequest): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/google', data)
+    return response.data
+  },
+
+  /**
+   * Send a WhatsApp sign-in code to a registered phone number.
+   */
+  requestOtpLogin: async (phoneNumber: string): Promise<void> => {
+    await api.post('/auth/login/otp/send', { phoneNumber })
+  },
+
+  /**
+   * Exchange a WhatsApp sign-in code for tokens.
+   */
+  confirmOtpLogin: async (phoneNumber: string, code: string): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/login/otp/confirm', { phoneNumber, code })
     return response.data
   },
 
