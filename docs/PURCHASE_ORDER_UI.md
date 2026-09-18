@@ -27,13 +27,14 @@ src/features/purchase
 ├── api/purchase.api.ts              preview, create, mine, get, agreements, sign, cancel, …
 ├── stores/purchaseOrderForm.ts      Pinia store: all wizard state + validation + payload + submit
 ├── utils/phone.ts                   E.164 normalisation identical to the backend's rules
+├── composables/usePhoneParts.ts     bridges the country-code selector + number box to one stored string
 ├── utils/financing.ts               split / instalment maths for live previews
 ├── utils/markdown.ts                escaped Markdown subset for agreement texts
 ├── composables/useGoogleIdentity.ts loads Google Identity Services, renders the official button
 ├── components/
 │   ├── PurchaseAccountStep.vue      visitors: Google / quick sign-up / WhatsApp-code sign-in
 │   ├── PurchaseWizardSteps.vue      progress chips; forward jumps only across valid steps
-│   ├── PurchaseContactStep.vue      phone (required), email (optional), message
+│   ├── PurchaseContactStep.vue      phone with country-code selector (required), email (optional), message
 │   ├── PurchaseFinancingStep.vue    opt-in toggle, offer cards, amount slider, tenure, live summary
 │   ├── AgreementReviewPanel.vue     scrollable terms, scroll-to-end gate, name field, checkbox
 │   ├── PurchaseAgreementStep.vue    the panel bound to the Promise to Purchase in the store
@@ -141,7 +142,7 @@ open read-only with their SHA-256 fingerprint and both signatures.
 
 | Field | Rule | Where |
 | --- | --- | --- |
-| Phone | required; must normalise to E.164 (`09…`, `+2519…`, `2519…`, `00251…`, or `+` + 8–15 digits); shown "Will be stored as +251…" | `utils/phone.ts`, `contactErrors` |
+| Phone | Country-code selector (shared `CountryCodePhoneInput`, light variant, defaults to +251) plus a national-number box. `usePhoneParts` joins them into one string: a trunk 0 is dropped (0911… → +251911…), a full `+…` number pasted into the box re-selects its country. Must normalise to E.164; shown "Will be stored as +251…" | `utils/phone.ts` (`splitPhone`/`joinPhone`), `composables/usePhoneParts.ts`, `contactErrors` |
 | Email | optional; `^[^\s@]+@[^\s@]+\.[^\s@]+$` when present | `contactErrors` |
 | Message | ≤ 2000 chars (counter) | `contactErrors` |
 | Offer | required when `useFinancing` | `financingErrors` |
