@@ -33,7 +33,7 @@
       </div>
       <div>
         <label for="acc-phone" class="block text-sm font-medium text-gray-700">{{ $t('purchase.contact.phone') }} <span class="text-red-600" aria-hidden="true">*</span></label>
-        <input id="acc-phone" v-model="register.phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+251 9XX XXX XXX" class="mt-1 w-full rounded-xl border px-4 py-3 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-400" :class="attempted && registerErrors.phone ? 'border-red-400' : 'border-gray-300'" />
+        <CountryCodePhoneInput id="acc-phone" v-model:country-code="registerCountryCode" v-model:number="registerNational" variant="light" class="mt-1" required :invalid="Boolean(attempted && registerErrors.phone)" :placeholder="registerCountryCode === '+251' ? $t('purchase.contact.nationalPlaceholderEt') : $t('purchase.contact.phone')" :button-label="$t('purchase.contact.countryCode')" :search-placeholder="$t('purchase.contact.searchCountry')" :no-match-label="$t('purchase.contact.noCountryMatch', { query: '{query}' })" />
         <p class="mt-1 text-xs" :class="attempted && registerErrors.phone ? 'text-red-600' : 'text-gray-500'">
           <template v-if="attempted && registerErrors.phone">{{ $t(registerErrors.phone) }}</template>
           <template v-else-if="normalizedPhone">{{ $t('purchase.contact.phoneStoredAs', { phone: normalizedPhone }) }}</template>
@@ -63,7 +63,7 @@
     <form v-else class="space-y-4" novalidate @submit.prevent="codeSent ? confirmCode() : sendCode()">
       <div>
         <label for="login-phone" class="block text-sm font-medium text-gray-700">{{ $t('purchase.contact.phone') }}</label>
-        <input id="login-phone" v-model="login.phone" type="tel" inputmode="tel" autocomplete="tel" :disabled="codeSent" placeholder="+251 9XX XXX XXX" class="mt-1 w-full rounded-xl border px-4 py-3 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-400 disabled:bg-gray-100" :class="attempted && loginErrors.phone ? 'border-red-400' : 'border-gray-300'" />
+        <CountryCodePhoneInput id="login-phone" v-model:country-code="loginCountryCode" v-model:number="loginNational" variant="light" class="mt-1" :disabled="codeSent" :invalid="Boolean(attempted && loginErrors.phone)" :placeholder="loginCountryCode === '+251' ? $t('purchase.contact.nationalPlaceholderEt') : $t('purchase.contact.phone')" :button-label="$t('purchase.contact.countryCode')" :search-placeholder="$t('purchase.contact.searchCountry')" :no-match-label="$t('purchase.contact.noCountryMatch', { query: '{query}' })" />
         <p v-if="attempted && loginErrors.phone" class="mt-1 text-xs text-red-600">{{ $t(loginErrors.phone) }}</p>
       </div>
       <div v-if="codeSent">
@@ -86,12 +86,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, toRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { authApi } from '@/features/auth/api/auth.api'
 import type { AuthResponse } from '@/features/auth/api/auth.types'
 import { useAuthStore } from '@/features/auth'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
+import { usePhoneParts } from '../composables/usePhoneParts'
 import { isValidEmail, isValidPhone, normalizePhone } from '../utils/phone'
 import { useGoogleIdentity } from '../composables/useGoogleIdentity'
 
@@ -122,6 +124,9 @@ const codeSent = ref(false)
 
 const register = reactive({ fullName: '', phone: '', email: '', password: '' })
 const login = reactive({ phone: '', code: '' })
+/** Country-code selector + national number for each form, kept in sync with the single string. */
+const { countryCode: registerCountryCode, national: registerNational } = usePhoneParts(toRef(register, 'phone'))
+const { countryCode: loginCountryCode, national: loginNational } = usePhoneParts(toRef(login, 'phone'))
 
 const redirectPath = computed(() => route.fullPath)
 const normalizedPhone = computed(() => normalizePhone(register.phone))

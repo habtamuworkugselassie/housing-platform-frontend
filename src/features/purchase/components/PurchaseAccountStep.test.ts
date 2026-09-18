@@ -88,7 +88,9 @@ describe('PurchaseAccountStep', () => {
 
     expect(wrapper.text()).toContain('already registered')
     expect(wrapper.find('#login-phone').exists()).toBe(true)
-    expect((wrapper.find('#login-phone').element as HTMLInputElement).value).toBe('0911223344')
+    // The selector shows +251 and the number box the national part.
+    expect((wrapper.find('#login-phone').element as HTMLInputElement).value).toBe('911223344')
+    expect(wrapper.find('[data-testid="country-code-button"]').text()).toContain('+251')
   })
 
   it('signs in with a WhatsApp code in two steps', async () => {

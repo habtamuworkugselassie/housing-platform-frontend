@@ -9,18 +9,19 @@
       <label for="po-phone" class="block text-sm font-medium text-gray-700">
         {{ $t('purchase.contact.phone') }} <span class="text-red-600" aria-hidden="true">*</span>
       </label>
-      <input
+      <CountryCodePhoneInput
         id="po-phone"
-        v-model="form.contact.phone"
-        type="tel"
-        inputmode="tel"
-        autocomplete="tel"
+        v-model:country-code="countryCode"
+        v-model:number="national"
+        variant="light"
+        class="mt-1"
         required
-        placeholder="+251 9XX XXX XXX"
-        class="mt-1 w-full rounded-xl border px-4 py-3 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
-        :class="showError('phone') ? 'border-red-400' : 'border-gray-300'"
-        :aria-invalid="showError('phone') ? 'true' : 'false'"
-        aria-describedby="po-phone-help"
+        :invalid="showError('phone')"
+        describedby="po-phone-help"
+        :placeholder="nationalPlaceholder"
+        :button-label="$t('purchase.contact.countryCode')"
+        :search-placeholder="$t('purchase.contact.searchCountry')"
+        :no-match-label="$t('purchase.contact.noCountryMatch', { query: '{query}' })"
         @blur="touched.phone = true"
       />
       <p id="po-phone-help" class="mt-1 text-xs" :class="showError('phone') ? 'text-red-600' : 'text-gray-500'">
@@ -69,12 +70,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, toRef } from 'vue'
+import { useI18n } from 'vue-i18n'
+import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { usePurchaseOrderFormStore } from '../stores/purchaseOrderForm'
+import { usePhoneParts } from '../composables/usePhoneParts'
 import { normalizePhone } from '../utils/phone'
 
+const { t } = useI18n()
 const form = usePurchaseOrderFormStore()
 const touched = reactive({ phone: false, email: false })
+
+/** Country-code selector + national number, both writing back to the single stored string. */
+const { countryCode, national } = usePhoneParts(toRef(form.contact, 'phone'))
+const nationalPlaceholder = computed(() =>
+  countryCode.value === '+251' ? t('purchase.contact.nationalPlaceholderEt') : t('purchase.contact.phone')
+)
 
 const normalized = computed(() => normalizePhone(form.contact.phone))
 
