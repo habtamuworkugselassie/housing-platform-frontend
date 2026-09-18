@@ -98,7 +98,8 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-admin-line/10">
-                <tr v-for="o in orders" :key="o.id" class="hover:bg-admin-nav/10 transition-colors" data-testid="order-row">
+                <template v-for="o in orders" :key="o.id">
+                <tr class="hover:bg-admin-nav/10 transition-colors" data-testid="order-row">
                   <td class="px-4 py-3 text-sm font-mono text-admin-fg">{{ o.orderNumber }}</td>
                   <td class="px-4 py-3">
                     <div class="text-sm font-medium text-admin-fg">{{ o.property?.title || '—' }}</div>
@@ -125,12 +126,34 @@
                   </td>
                   <td class="px-4 py-3"><PurchaseOrderStatusBadge :status="o.status" /></td>
                   <td class="px-4 py-3 text-sm text-admin-subtle whitespace-nowrap">{{ formatDate(o.createdAt) }}</td>
-                  <td class="px-4 py-3 text-right text-sm font-medium">
+                  <td class="px-4 py-3 text-right text-sm font-medium whitespace-nowrap">
+                    <button
+                      v-if="canManage(o)"
+                      type="button"
+                      class="mr-3 rounded-md px-2 py-1 text-xs font-semibold transition-colors"
+                      :class="expanded === o.id ? 'bg-admin-accent text-admin-accent-fg' : 'border border-admin-line/20 text-admin-fg hover:text-primary-400'"
+                      :data-testid="`manage-${o.id}`"
+                      @click="expanded = expanded === o.id ? null : o.id"
+                    >
+                      {{ expanded === o.id ? $t('admin.purchaseOrders.hide') : $t('admin.purchaseOrders.manage') }}
+                    </button>
                     <router-link :to="{ name: 'PurchaseOrderDetails', params: { id: o.id } }" class="text-admin-fg hover:text-primary-400 transition-colors">
                       {{ $t('admin.purchaseOrders.view') }}
                     </router-link>
                   </td>
                 </tr>
+                <!-- Admin acts on behalf of the listing's company: same controls the realtor has. -->
+                <tr v-if="expanded === o.id" :data-testid="`manage-panel-${o.id}`">
+                  <td colspan="9" class="bg-admin-raised px-4 py-4">
+                    <div class="mx-auto max-w-2xl rounded-xl bg-white p-4 text-gray-900 shadow-sm">
+                      <p class="mb-3 text-xs text-gray-500">
+                        {{ $t('admin.purchaseOrders.onBehalf', { company: o.property?.realEstateCompanyName || '—' }) }}
+                      </p>
+                      <SellerOrderActions :order="o" @updated="onManaged" />
+                    </div>
+                  </td>
+                </tr>
+                </template>
               </tbody>
             </table>
           </div>
@@ -162,6 +185,7 @@ import type {
   PurchaseOrderStatus
 } from '@/features/purchase/api/purchase.types'
 import PurchaseOrderStatusBadge from '@/features/purchase/components/PurchaseOrderStatusBadge.vue'
+import SellerOrderActions from '@/features/purchase/components/SellerOrderActions.vue'
 
 const PAGE_SIZE = 25
 const STATUSES: PurchaseOrderStatus[] = [
@@ -186,6 +210,12 @@ const page = ref<PaginatedResponse<PurchaseOrderResponse> | null>(null)
 const stats = ref<PurchaseOrderStatsResponse | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
+/** Row whose management panel is open. */
+const expanded = ref<string | null>(null)
+const MANAGEABLE = new Set<PurchaseOrderStatus>(['PENDING_SELLER_REVIEW', 'AWAITING_PAYMENT'])
+function canManage(o: PurchaseOrderResponse) {
+  return MANAGEABLE.has(o.status)
+}
 
 const orders = computed(() => page.value?.content ?? [])
 const statusesWithOrders = computed(() => STATUSES.filter((s) => (stats.value?.byStatus[s] ?? 0) > 0))
@@ -230,6 +260,15 @@ function toggleStatus(status: PurchaseOrderStatus) {
 function goTo(index: number) {
   pageIndex.value = Math.max(0, index)
   load()
+}
+
+/** After accept / reject / complete on behalf of the seller: swap the row, refresh the chips. */
+function onManaged(updated: PurchaseOrderResponse) {
+  if (page.value) {
+    page.value = { ...page.value, content: page.value.content.map((o) => (o.id === updated.id ? updated : o)) }
+  }
+  if (!canManage(updated)) expanded.value = null
+  loadStats()
 }
 
 function depositClass(status: DepositStatus) {
