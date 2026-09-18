@@ -8,9 +8,9 @@ function mountPanel(overrides: Record<string, unknown> = {}) {
   return mount(AgreementReviewPanel, {
     props: {
       title: 'Promise to Purchase Agreement',
-      content: '# PROMISE\n\n**Dream Team PLC** and the buyer.',
+      content: '# PROMISE\n\n**Dream Teams Trading PLC** and the buyer.',
       version: 1,
-      providerName: 'Dream Team PLC',
+      providerName: 'Dream Teams Trading PLC',
       accepted: false,
       signatoryName: '',
       scrolledToEnd: false,

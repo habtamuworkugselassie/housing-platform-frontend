@@ -25,7 +25,7 @@ const PREVIEW: PurchasePreviewResponse = {
       type: 'PROMISE_TO_PURCHASE',
       version: 1,
       title: 'Promise to Purchase Agreement',
-      content: '# PROMISE\n\n**Dream Team PLC**'
+      content: '# PROMISE\n\n**Dream Teams Trading PLC**'
     }
   ]
 }
