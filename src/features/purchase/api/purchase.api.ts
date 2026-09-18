@@ -18,6 +18,53 @@ import type {
 } from './purchase.types'
 
 export const purchaseApi = {
+  // ---- seller (realtor / agent)
+
+  /** Orders placed on my company's listings, newest first. */
+  received: async (params?: {
+    status?: PurchaseOrderStatus | ''
+    page?: number
+    size?: number
+  }): Promise<PaginatedResponse<PurchaseOrderResponse>> => {
+    const query: Record<string, string | number> = {}
+    for (const [key, value] of Object.entries(params ?? {})) {
+      if (value !== undefined && value !== null && value !== '') query[key] = value as string | number
+    }
+    const response = await api.get<PaginatedResponse<PurchaseOrderResponse>>('/purchase-orders/received', {
+      params: query
+    })
+    return response.data
+  },
+
+  /** Orders on one of my listings. */
+  forProperty: async (propertyId: string, status?: PurchaseOrderStatus): Promise<PurchaseOrderResponse[]> => {
+    const response = await api.get<PurchaseOrderResponse[]>(`/purchase-orders/by-property/${propertyId}`, {
+      params: status ? { status } : {}
+    })
+    return response.data
+  },
+
+  /** Seller accepts a PENDING_SELLER_REVIEW order (reserves the property). */
+  accept: async (id: string, notes?: string): Promise<PurchaseOrderResponse> => {
+    const response = await api.post<PurchaseOrderResponse>(`/purchase-orders/${id}/accept`, notes ? { notes } : {})
+    return response.data
+  },
+
+  /** Seller rejects a PENDING_SELLER_REVIEW order; a reason is required. */
+  reject: async (id: string, reason: string): Promise<PurchaseOrderResponse> => {
+    const response = await api.post<PurchaseOrderResponse>(`/purchase-orders/${id}/reject`, { reason })
+    return response.data
+  },
+
+  /** Seller confirms payment on an AWAITING_PAYMENT order and closes the sale. */
+  complete: async (id: string, paymentReference?: string): Promise<PurchaseOrderResponse> => {
+    const response = await api.post<PurchaseOrderResponse>(
+      `/purchase-orders/${id}/complete`,
+      paymentReference ? { paymentReference } : {}
+    )
+    return response.data
+  },
+
   /** Admin: every order on the platform, newest first. Empty filter values are not sent. */
   adminSearch: async (
     filter: AdminPurchaseOrderFilter = {},

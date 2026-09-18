@@ -182,6 +182,7 @@
                 <li v-for="s in order.financing.nextSteps" :key="s">{{ s }}</li>
               </ul>
             </div>
+            <SellerOrderActions v-if="isSeller" :order="order" @updated="order = $event" />
             <button
               v-if="canCancel"
               type="button"
@@ -255,6 +256,7 @@ import { purchaseApi } from '../api/purchase.api'
 import type { AgreementStatus, PurchaseAgreementResponse, PurchaseOrderResponse } from '../api/purchase.types'
 import { renderMarkdown } from '../utils/markdown'
 import PurchaseOrderStatusBadge from '../components/PurchaseOrderStatusBadge.vue'
+import SellerOrderActions from '../components/SellerOrderActions.vue'
 import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCheckout'
 import type { DepositStatus } from '../api/purchase.types'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
@@ -301,6 +303,8 @@ async function checkDeposit() {
 
 const OPEN = new Set(['PENDING_SELLER_REVIEW', 'AWAITING_FINANCING', 'FINANCING_APPROVED', 'FINANCING_PARTIALLY_APPROVED', 'FINANCING_REJECTED', 'AWAITING_PAYMENT'])
 const canCancel = computed(() => isBuyer.value && order.value !== null && OPEN.has(order.value.status))
+/** Realtors and agents see accept / reject / complete here; the backend still checks the listing is theirs. */
+const isSeller = computed(() => !!order.value && !isBuyer.value && auth.hasRole('REALTOR'))
 
 function translate(message: string | null) {
   if (!message) return ''

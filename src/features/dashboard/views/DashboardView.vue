@@ -86,6 +86,13 @@
               <span class="material-icons mr-2" style="font-size: 18px;">chat</span>
               Buyer messages
             </router-link>
+            <router-link
+              to="/dashboard/purchase-orders"
+              class="mdc-button mdc-button--outlined mt-5 ml-2 inline-flex items-center"
+            >
+              <span class="material-icons mr-2" style="font-size: 18px;">receipt_long</span>
+              {{ $t('purchase.seller.dashboardLink') }}
+            </router-link>
           </div>
 
           <!-- Company Info Card -->

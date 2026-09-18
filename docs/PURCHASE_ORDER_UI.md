@@ -85,6 +85,26 @@ page renders it and, for `DUE` / `PENDING` / `FAILED`, a **Pay deposit** button:
 3. The button is replaced by a hint while the Reservation Deposit Terms agreement is unsigned
    (sign it in the agreements list first) or when the server has no Chapa key configured.
 
+## Seller view (realtors and agents)
+
+`/dashboard/purchase-orders` (`features/purchase/views/SellerPurchaseOrdersView.vue`, `requiresRealtor`,
+linked from the realtor dashboard as "Purchase orders received") lists the orders placed on the
+company's listings via `GET /api/v1/purchase-orders/received`:
+
+* Tabs: needs review, in progress (financing), awaiting payment, completed, closed, all. The API
+  filters on one status; tabs that span several statuses filter client-side.
+* Each card shows buyer name / phone / email, the buyer's message, financing (amount, bank,
+  status), the reservation deposit, when the order was placed and by when the seller must respond.
+* `SellerOrderActions` renders the seller's controls for the order's status and emits the updated
+  order, which the list swaps in place (and the details page replaces):
+  * `PENDING_SELLER_REVIEW`: **Accept** (optional note → `POST /{id}/accept`) or **Reject**
+    (reason required → `POST /{id}/reject`).
+  * `AWAITING_PAYMENT`: **Confirm payment & complete sale** (optional payment reference →
+    `POST /{id}/complete`). Disabled with an explanation while the buyer still has agreements to
+    sign or the reservation deposit is not PAID/WAIVED, mirroring the backend's checks.
+* The same component sits in the details-page sidebar for signed-in realtors who are not the
+  order's buyer; the backend still verifies the listing belongs to their company or agent.
+
 ## Admin view
 
 `/admin/purchase-orders` (`features/admin/views/AdminPurchaseOrdersView.vue`, admin-only route,
@@ -196,6 +216,8 @@ Vitest (jsdom + Vue Test Utils) is configured in `vitest.config.ts`; run `npm te
 
 | File | Covers |
 | --- | --- |
+| `components/SellerOrderActions.test.ts` | accept with note; reject needs a reason; complete blocked by unsigned agreements / unpaid deposit, allowed when paid; server error keeps the form; nothing for other statuses |
+| `views/SellerPurchaseOrdersView.test.ts` | cards with buyer contact, message and inline actions; review tab sends the status; closed tab filters client-side; card swaps after an action; empty state |
 | `admin/views/AdminPurchaseOrdersView.test.ts` | rows render buyer/property/financing/deposit and link to details; status chips filter and un-filter; search + type filters are sent together; empty and error states |
 | `utils/phone.test.ts` | the same cases as the backend `PhoneNumberNormalizerTest`, so client and server agree |
 | `utils/financing.test.ts` | instalment figures identical to the backend tests (87,039.85 / 58,033.79), split classification, clamping, range validation |

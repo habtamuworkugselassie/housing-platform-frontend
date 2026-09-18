@@ -55,6 +55,8 @@ export interface User {
   profileImageUrl?: string | null
   roles: string[]
   scopes: string[]
+  /** Real-estate company / bank the account belongs to, from GET /users/me. */
+  organizationId?: string | null
 }
 
 /** Minimal buyer sign-up used from the purchase flow: name + phone, the rest optional. */
