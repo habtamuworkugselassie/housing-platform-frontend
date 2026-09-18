@@ -247,6 +247,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useAuthStore } from '@/features/auth'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { formatPrice } from '@/shared/utils'
@@ -276,9 +277,12 @@ const depositBusy = depositCheckout.busy
 const depositError = depositCheckout.error
 const depositOutcome = depositCheckout.outcome
 const providerName = computed(() => order.value?.agreements?.[0]?.providerName || 'the provider')
+// Buyer-only controls stay hidden for the seller, the bank and admins who open the same page.
+const auth = useAuthStore()
+const isBuyer = computed(() => !!order.value && !!auth.user?.id && auth.user.id === order.value.buyer?.id)
 const canPayDeposit = computed(() => {
   const d = order.value?.deposit
-  return !!d && (d.status === 'DUE' || d.status === 'PENDING' || d.status === 'FAILED') && order.value!.status !== 'CANCELLED'
+  return isBuyer.value && !!d && (d.status === 'DUE' || d.status === 'PENDING' || d.status === 'FAILED') && order.value!.status !== 'CANCELLED'
 })
 function depositClass(status: DepositStatus) {
   if (status === 'PAID' || status === 'WAIVED') return 'bg-green-100 text-green-700'
@@ -296,7 +300,7 @@ async function checkDeposit() {
 }
 
 const OPEN = new Set(['PENDING_SELLER_REVIEW', 'AWAITING_FINANCING', 'FINANCING_APPROVED', 'FINANCING_PARTIALLY_APPROVED', 'FINANCING_REJECTED', 'AWAITING_PAYMENT'])
-const canCancel = computed(() => order.value !== null && OPEN.has(order.value.status))
+const canCancel = computed(() => isBuyer.value && order.value !== null && OPEN.has(order.value.status))
 
 function translate(message: string | null) {
   if (!message) return ''
