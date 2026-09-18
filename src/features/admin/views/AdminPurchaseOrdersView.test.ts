@@ -14,7 +14,7 @@ const order = (overrides: Record<string, unknown> = {}) => ({
   orderNumber: 'PPO-2026-000001',
   status: 'PENDING_SELLER_REVIEW',
   purchaseType: 'BANK_FINANCED',
-  property: { id: 'p1', title: 'Bole 3BR', city: 'Addis Ababa', realEstateCompanyName: 'Dream Team PLC' },
+  property: { id: 'p1', title: 'Bole 3BR', city: 'Addis Ababa', realEstateCompanyName: 'Dream Teams Trading PLC' },
   buyer: { id: 'u1', fullName: 'Abebe Kebede', contactPhone: '+251911223344', contactEmail: null },
   pricing: { listedPrice: 8500000, currency: 'ETB' },
   financing: { financedAmount: 6800000, bankName: 'Awash Bank' },
@@ -74,7 +74,7 @@ describe('AdminPurchaseOrdersView', () => {
     expect(rows[0].text()).toContain('Abebe Kebede')
     expect(rows[0].text()).toContain('+251911223344')
     expect(rows[0].text()).toContain('Bole 3BR')
-    expect(rows[0].text()).toContain('Dream Team PLC')
+    expect(rows[0].text()).toContain('Dream Teams Trading PLC')
     expect(rows[0].text()).toContain('purchase.deposit.status.DUE')
     expect(rows[1].text()).toContain('admin.purchaseOrders.noDeposit')
     expect(rows[0].find('a').attributes('data-to')).toContain('"id":"o1"')
