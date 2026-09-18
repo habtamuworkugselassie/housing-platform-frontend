@@ -118,8 +118,15 @@ linked from the admin sidebar as "Purchase orders") lists every order on the pla
 * **Table**: order number, property (title, city, company), buyer (name, phone, email), type with
   financed amount and bank, listed price, deposit status, order status, created date, and a link
   to the shared details page `/purchase-orders/:id`, which admins may read.
+* **Manage on behalf of the seller**: rows in `PENDING_SELLER_REVIEW` or `AWAITING_PAYMENT` get a
+  **Manage** button that expands the same `SellerOrderActions` the realtor uses (accept with note,
+  reject with reason, confirm payment). The panel says which company the admin is acting for; the
+  buyer sees the outcome as if the seller had done it. The backend admits admins on these endpoints
+  (`ScopeAuthorizationFilter` passes ADMIN tokens through every non-super-admin policy and
+  `PurchaseOrderAccess.canSell` returns true for admins), and records the admin's user id in the
+  status history.
 * Buyer-only controls on the details page (cancel, pay deposit) are shown only when the signed-in
-  user is the order's buyer, so an admin or seller opening it sees a read-only view.
+  user is the order's buyer. Realtors and admins see the seller controls there instead.
 
 Deposit waive / refund exist as admin API calls (`POST /admin/purchase-orders/{id}/deposit/…`)
 but have no UI yet.

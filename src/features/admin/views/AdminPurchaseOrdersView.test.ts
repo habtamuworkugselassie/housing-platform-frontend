@@ -6,7 +6,7 @@ import AdminPurchaseOrdersView from './AdminPurchaseOrdersView.vue'
 import { purchaseApi } from '@/features/purchase/api/purchase.api'
 
 vi.mock('@/features/purchase/api/purchase.api', () => ({
-  purchaseApi: { adminSearch: vi.fn(), adminStats: vi.fn() }
+  purchaseApi: { adminSearch: vi.fn(), adminStats: vi.fn(), accept: vi.fn(), reject: vi.fn(), complete: vi.fn() }
 }))
 
 const order = (overrides: Record<string, unknown> = {}) => ({
@@ -123,5 +123,26 @@ describe('AdminPurchaseOrdersView', () => {
     await wrapper.find('form').trigger('submit')
     await flushPromises()
     expect(wrapper.find('[role="alert"]').text()).toContain('Forbidden')
+  })
+
+  it('lets the admin accept an order on the seller\'s behalf from a Manage panel and refreshes the chips', async () => {
+    vi.mocked(purchaseApi.accept).mockResolvedValue(order({ status: 'AWAITING_PAYMENT' }) as any)
+    const wrapper = mountView()
+    await flushPromises()
+
+    // Only orders the seller could act on get a Manage button.
+    expect(wrapper.find('[data-testid="manage-o1"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="manage-o2"]').exists()).toBe(false)
+
+    await wrapper.find('[data-testid="manage-o1"]').trigger('click')
+    const panel = wrapper.find('[data-testid="manage-panel-o1"]')
+    expect(panel.text()).toContain('admin.purchaseOrders.onBehalf')
+    await panel.find('[data-testid="accept"]').trigger('click')
+    await panel.find('[data-testid="accept-confirm"]').trigger('submit')
+    await flushPromises()
+
+    expect(purchaseApi.accept).toHaveBeenCalledWith('o1', undefined)
+    expect(wrapper.findAll('[data-testid="order-row"]')[0].text()).toContain('purchase.status.AWAITING_PAYMENT')
+    expect(purchaseApi.adminStats).toHaveBeenCalledTimes(2)
   })
 })

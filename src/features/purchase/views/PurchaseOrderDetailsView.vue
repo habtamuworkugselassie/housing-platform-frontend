@@ -303,8 +303,8 @@ async function checkDeposit() {
 
 const OPEN = new Set(['PENDING_SELLER_REVIEW', 'AWAITING_FINANCING', 'FINANCING_APPROVED', 'FINANCING_PARTIALLY_APPROVED', 'FINANCING_REJECTED', 'AWAITING_PAYMENT'])
 const canCancel = computed(() => isBuyer.value && order.value !== null && OPEN.has(order.value.status))
-/** Realtors and agents see accept / reject / complete here; the backend still checks the listing is theirs. */
-const isSeller = computed(() => !!order.value && !isBuyer.value && auth.hasRole('REALTOR'))
+/** Realtors and agents see accept / reject / complete here, and platform admins may act on the seller's behalf; the backend checks both. */
+const isSeller = computed(() => !!order.value && !isBuyer.value && (auth.hasRole('REALTOR') || auth.isAdmin))
 
 function translate(message: string | null) {
   if (!message) return ''
