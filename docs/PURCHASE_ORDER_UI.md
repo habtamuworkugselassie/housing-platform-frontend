@@ -85,6 +85,25 @@ page renders it and, for `DUE` / `PENDING` / `FAILED`, a **Pay deposit** button:
 3. The button is replaced by a hint while the Reservation Deposit Terms agreement is unsigned
    (sign it in the agreements list first) or when the server has no Chapa key configured.
 
+## Admin view
+
+`/admin/purchase-orders` (`features/admin/views/AdminPurchaseOrdersView.vue`, admin-only route,
+linked from the admin sidebar as "Purchase orders") lists every order on the platform through
+`GET /api/v1/admin/purchase-orders`:
+
+* **Overview chips** from `GET /admin/purchase-orders/stats`: total, open, and one chip per status
+  that has orders; clicking a chip filters by that status, clicking again clears it.
+* **Filters**: free text (order number, contact phone or email), status, type, created-from /
+  created-to. Empty values are not sent (`purchaseApi.adminSearch`).
+* **Table**: order number, property (title, city, company), buyer (name, phone, email), type with
+  financed amount and bank, listed price, deposit status, order status, created date, and a link
+  to the shared details page `/purchase-orders/:id`, which admins may read.
+* Buyer-only controls on the details page (cancel, pay deposit) are shown only when the signed-in
+  user is the order's buyer, so an admin or seller opening it sees a read-only view.
+
+Deposit waive / refund exist as admin API calls (`POST /admin/purchase-orders/{id}/deposit/…`)
+but have no UI yet.
+
 ## State management
 
 `usePurchaseOrderFormStore` (Pinia setup store):
@@ -177,6 +196,7 @@ Vitest (jsdom + Vue Test Utils) is configured in `vitest.config.ts`; run `npm te
 
 | File | Covers |
 | --- | --- |
+| `admin/views/AdminPurchaseOrdersView.test.ts` | rows render buyer/property/financing/deposit and link to details; status chips filter and un-filter; search + type filters are sent together; empty and error states |
 | `utils/phone.test.ts` | the same cases as the backend `PhoneNumberNormalizerTest`, so client and server agree |
 | `utils/financing.test.ts` | instalment figures identical to the backend tests (87,039.85 / 58,033.79), split classification, clamping, range validation |
 | `utils/markdown.test.ts` | the supported Markdown subset and HTML escaping |

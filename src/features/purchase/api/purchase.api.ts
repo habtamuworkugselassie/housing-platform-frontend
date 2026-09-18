@@ -12,10 +12,33 @@ import type {
   PurchaseOrderResponse,
   PurchaseOrderStatus,
   PurchasePreviewResponse,
-  UpdatePurchaseFinancingRequest
+  UpdatePurchaseFinancingRequest,
+  AdminPurchaseOrderFilter,
+  PurchaseOrderStatsResponse
 } from './purchase.types'
 
 export const purchaseApi = {
+  /** Admin: every order on the platform, newest first. Empty filter values are not sent. */
+  adminSearch: async (
+    filter: AdminPurchaseOrderFilter = {},
+    params: { page?: number; size?: number } = {}
+  ): Promise<PaginatedResponse<PurchaseOrderResponse>> => {
+    const query: Record<string, string | number> = {}
+    for (const [key, value] of Object.entries({ ...filter, ...params })) {
+      if (value !== undefined && value !== null && value !== '') query[key] = value as string | number
+    }
+    const response = await api.get<PaginatedResponse<PurchaseOrderResponse>>('/admin/purchase-orders', {
+      params: query
+    })
+    return response.data
+  },
+
+  /** Admin: counts per status for the overview chips. */
+  adminStats: async (): Promise<PurchaseOrderStatsResponse> => {
+    const response = await api.get<PurchaseOrderStatsResponse>('/admin/purchase-orders/stats')
+    return response.data
+  },
+
   preview: async (propertyId: string, currency?: Currency): Promise<PurchasePreviewResponse> => {
     const response = await api.get<PurchasePreviewResponse>(
       `/properties/${propertyId}/purchase-preview`,

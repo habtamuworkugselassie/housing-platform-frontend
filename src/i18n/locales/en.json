@@ -583,6 +583,7 @@
       "settings": "Settings",
       "exhibitionInterests": "Exhibition leads",
       "videoFeedback": "Video feedback",
+      "purchaseOrders": "Purchase orders",
       "liveBroadcasts": "Live broadcasts"
     },
     "simulcast": {
@@ -608,6 +609,43 @@
       "confirmDelete": "Delete this destination?",
       "startError": "Could not start the simulcast.",
       "saveError": "Could not save the destination."
+    },
+    "purchaseOrders": {
+      "title": "Purchase orders",
+      "subtitle": "Every purchase order on the platform: who is buying what, how it is financed, and where it stands.",
+      "total": "Total",
+      "open": "Open",
+      "filters": {
+        "status": "Status",
+        "type": "Type",
+        "search": "Search",
+        "searchPlaceholder": "Order number, phone or email",
+        "from": "Created from",
+        "to": "Created to",
+        "apply": "Apply",
+        "reset": "Reset",
+        "allStatuses": "All statuses",
+        "allTypes": "All types"
+      },
+      "columns": {
+        "order": "Order",
+        "property": "Property",
+        "buyer": "Buyer",
+        "type": "Type",
+        "price": "Price",
+        "deposit": "Deposit",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "financedVia": "{amount} via {bank}",
+      "noDeposit": "—",
+      "view": "View",
+      "empty": "No purchase orders match these filters.",
+      "loadError": "Could not load purchase orders.",
+      "range": "{from}–{to} of {total}",
+      "prev": "Previous",
+      "next": "Next"
     },
     "liveBroadcasts": {
       "title": "Live broadcasts",

@@ -234,3 +234,24 @@ export interface PurchaseOrderResponse {
     notes: string | null
   }>
 }
+
+// ---- admin
+
+export interface AdminPurchaseOrderFilter {
+  status?: PurchaseOrderStatus | ''
+  purchaseType?: PurchaseType | ''
+  realEstateCompanyId?: string
+  bankId?: string
+  buyerId?: string
+  /** Substring of the order number, contact phone or contact email. */
+  q?: string
+  /** ISO dates (YYYY-MM-DD); from inclusive, to inclusive of that day. */
+  createdFrom?: string
+  createdTo?: string
+}
+
+export interface PurchaseOrderStatsResponse {
+  total: number
+  open: number
+  byStatus: Record<PurchaseOrderStatus, number>
+}

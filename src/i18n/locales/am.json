@@ -589,6 +589,7 @@
       "settings": "ቅንብሮች",
       "exhibitionInterests": "የኤግዚቢሽን ፍላጎቶች",
       "videoFeedback": "የቪዲዮ አስተያየት",
+      "purchaseOrders": "የግዢ ትዕዛዞች",
       "liveBroadcasts": "የቀጥታ ስርጭቶች"
     },
     "simulcast": {
@@ -614,6 +615,43 @@
       "confirmDelete": "ይህን መድረሻ ይሰርዙ?",
       "startError": "ማሰራጨት መጀመር አልተቻለም።",
       "saveError": "መድረሻውን ማስቀመጥ አልተቻለም።"
+    },
+    "purchaseOrders": {
+      "title": "የግዢ ትዕዛዞች",
+      "subtitle": "በመድረኩ ላይ ያሉ ሁሉም የግዢ ትዕዛዞች፦ ማን ምን እየገዛ ነው፣ እንዴት እንደሚሸፈን፣ እና በምን ደረጃ ላይ እንዳለ።",
+      "total": "ጠቅላላ",
+      "open": "ክፍት",
+      "filters": {
+        "status": "ሁኔታ",
+        "type": "ዓይነት",
+        "search": "ፍለጋ",
+        "searchPlaceholder": "የትዕዛዝ ቁጥር፣ ስልክ ወይም ኢሜይል",
+        "from": "ከተፈጠረበት ቀን",
+        "to": "እስከተፈጠረበት ቀን",
+        "apply": "ተግብር",
+        "reset": "አጽዳ",
+        "allStatuses": "ሁሉም ሁኔታዎች",
+        "allTypes": "ሁሉም ዓይነቶች"
+      },
+      "columns": {
+        "order": "ትዕዛዝ",
+        "property": "ንብረት",
+        "buyer": "ገዢ",
+        "type": "ዓይነት",
+        "price": "ዋጋ",
+        "deposit": "ተቀማጭ",
+        "status": "ሁኔታ",
+        "created": "የተፈጠረበት",
+        "actions": "እርምጃዎች"
+      },
+      "financedVia": "{amount} በ{bank}",
+      "noDeposit": "—",
+      "view": "ተመልከት",
+      "empty": "ከእነዚህ ማጣሪያዎች ጋር የሚዛመድ የግዢ ትዕዛዝ የለም።",
+      "loadError": "የግዢ ትዕዛዞችን መጫን አልተቻለም።",
+      "range": "{from}–{to} ከ{total}",
+      "prev": "ቀዳሚ",
+      "next": "ቀጣይ"
     },
     "liveBroadcasts": {
       "title": "የቀጥታ ስርጭቶች",
