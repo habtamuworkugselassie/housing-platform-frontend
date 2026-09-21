@@ -75,7 +75,7 @@ function toggle(i) {
 }
 
 const supportEmail = computed(
-  () => import.meta.env.VITE_SUPPORT_EMAIL || 'info@ethiobuildconnect.et'
+  () => import.meta.env.VITE_SUPPORT_EMAIL || 'ethiobuildconnect@gmail.com'
 )
 const supportMailto = computed(() => `mailto:${supportEmail.value}`)
 
