@@ -57,7 +57,7 @@ const route = useRoute()
 const requestedPath = computed(() => route.fullPath)
 
 const supportEmail = computed(
-  () => import.meta.env.VITE_SUPPORT_EMAIL || 'info@ethiobuildconnect.et'
+  () => import.meta.env.VITE_SUPPORT_EMAIL || 'ethiobuildconnect@gmail.com'
 )
 const supportMailto = computed(() => `mailto:${supportEmail.value}`)
 </script>
