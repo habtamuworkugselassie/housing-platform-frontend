@@ -356,6 +356,8 @@ export interface PurchaseBalanceResponse {
   fullyPaid: boolean
   payable: boolean
   checkoutAvailable: boolean
+  /** The most one online payment may be (Chapa's limit); null when none is set. */
+  onlineMaxPerPayment?: number | null
   paymentMethods: DepositPaymentMethod[]
   bankAccount: ProviderBankAccount | null
   transferReference: string

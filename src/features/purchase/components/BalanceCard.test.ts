@@ -164,4 +164,23 @@ describe('BalanceCard', () => {
     await w.find('[data-testid="purpose-BALANCE"]').trigger('click')
     expect((w.find('[data-testid="balance-amount"]').element as HTMLInputElement).value).toBe('1168000')
   })
+
+  it('caps online payments at the per-payment limit and says so', async () => {
+    vi.mocked(purchaseApi.getBalance).mockResolvedValue({
+      ...structuredClone(BALANCE),
+      onlineMaxPerPayment: 75000,
+      fees: { markupPercent: 2, markupAmount: 64000, vatRate: 15, vatAmount: 489600, total: 553600, paid: 0, inProgress: 0, remaining: 553600, fullyPaid: false }
+    })
+    const w = mountCard()
+    await flushPromises()
+    expect((w.find('[data-testid="balance-amount"]').element as HTMLInputElement).value).toBe('75000')
+    expect(w.find('[data-testid="online-limit"]').text()).toContain('75,000')
+    await w.find('[data-testid="balance-amount"]').setValue(80000)
+    await w.find('[data-testid="deposit-method-TELEBIRR"] input').setValue(true)
+    expect(w.find('[data-testid="balance-pay-online"]').attributes('disabled')).toBeDefined()
+    // A bank transfer is not limited.
+    await w.find('[data-testid="balance-tab-transfer"]').trigger('click')
+    await w.find('[data-testid="balance-amount"]').setValue(553600)
+    expect(w.find('[data-testid="online-limit"]').exists()).toBe(false)
+  })
 })

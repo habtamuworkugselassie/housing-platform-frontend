@@ -7,6 +7,7 @@
       </div>
 
       <AdminFeeRatesCard />
+      <AdminOnlineLimitsCard />
       <AdminUsdRateCard />
       <AdminBankAccountCard />
 
@@ -180,6 +181,7 @@ import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import AdminUsdRateCard from '../components/AdminUsdRateCard.vue'
 import AdminFeeRatesCard from '../components/AdminFeeRatesCard.vue'
+import AdminOnlineLimitsCard from '../components/AdminOnlineLimitsCard.vue'
 import AdminBankAccountCard from '../components/AdminBankAccountCard.vue'
 import { formatPrice } from '@/shared/utils'
 import type { PaginatedResponse } from '@/shared/types'

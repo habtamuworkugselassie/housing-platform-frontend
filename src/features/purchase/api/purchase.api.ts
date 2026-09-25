@@ -194,6 +194,13 @@ export const purchaseApi = {
   recordBalancePayment: async (orderId: string, input: { amount: number; reference: string; paidOn?: string | null; note?: string; purpose?: BalancePurpose }): Promise<PurchaseBalanceResponse> =>
     (await api.post<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/payments`, input)).data,
 
+  /** Admin: the most one online (Chapa) payment may be; null = no limit. */
+  getOnlineLimits: async (): Promise<{ maxEtb: number | null; maxUsd: number | null }> =>
+    (await api.get<{ maxEtb: number | null; maxUsd: number | null }>('/admin/purchase-settings/online-limits')).data,
+
+  setOnlineLimits: async (limits: { maxEtb: number | null; maxUsd: number | null }): Promise<{ maxEtb: number | null; maxUsd: number | null }> =>
+    (await api.put<{ maxEtb: number | null; maxUsd: number | null }>('/admin/purchase-settings/online-limits', limits)).data,
+
   /** Admin: markup % and VAT rate charged on top of the price (placed orders keep theirs). */
   getFeeRates: async (): Promise<{ markupPercent: number; vatRate: number }> =>
     (await api.get<{ markupPercent: number; vatRate: number }>('/admin/purchase-settings/fees')).data,
