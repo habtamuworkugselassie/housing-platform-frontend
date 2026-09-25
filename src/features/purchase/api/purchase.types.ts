@@ -95,6 +95,8 @@ export interface PurchasePreviewResponse {
   agreementsToSign: AgreementPreview[]
   /** The reservation deposit paid when placing the order; null when deposits are disabled. */
   deposit?: DepositQuote | null
+  /** Verified official documents (Annex A of the Promise to Purchase); signed-in users only. */
+  documents?: import('@/features/property/api/documents.api').PropertyDocument[] | null
 }
 
 export interface AgreementSignatureRequest {

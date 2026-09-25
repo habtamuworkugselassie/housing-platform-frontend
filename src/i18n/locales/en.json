@@ -581,6 +581,7 @@
     "administrator": "Administrator",
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
     "nav": {
+      "propertyDocuments": "Property documents",
       "settings": "Settings",
       "exhibitionInterests": "Exhibition leads",
       "videoFeedback": "Video feedback",
@@ -1901,6 +1902,57 @@
       "brochureBlurb": "What the show covers and who exhibits.",
       "home": "Back to the home page",
       "homeBlurb": "The expo, partners, and the latest listings."
+    }
+  },
+  "documents": {
+    "view": "View",
+    "types": {
+      "TITLE_DEED": "Title deed / ownership certificate",
+      "LEASE_AGREEMENT": "Land lease contract",
+      "BUILDING_PERMIT": "Building permit",
+      "OCCUPANCY_PERMIT": "Occupancy permit",
+      "OTHER": "Other document"
+    },
+    "status": {
+      "PENDING": "Awaiting review",
+      "VERIFIED": "Verified",
+      "REJECTED": "Rejected"
+    },
+    "panel": {
+      "title": "Official documents",
+      "help": "Upload the title deed (ካርታ) and land lease contract. The platform checks them; verified documents are listed in buyers' agreements and buyers can view them.",
+      "none": "No documents uploaded yet.",
+      "type": "Document type",
+      "number": "Document number",
+      "authority": "Issued by",
+      "issuedOn": "Issue date",
+      "upload": "Upload document",
+      "uploading": "Uploading…",
+      "formats": "PDF, JPG or PNG, up to 15 MB",
+      "rejectedBecause": "Rejected: {reason}"
+    },
+    "buyer": {
+      "title": "Property documents",
+      "help": "Verified by the platform and listed in Annex A of the agreement. Open them to check before you sign.",
+      "none": "No verified title deed or lease contract is on file for this property yet. You can ask the provider for them before completion."
+    },
+    "admin": {
+      "title": "Property documents",
+      "subtitle": "Check each title deed and lease contract against the listing before it appears in buyers' agreements.",
+      "all": "All",
+      "empty": "Nothing here.",
+      "note": "Note",
+      "notePlaceholder": "Note for the seller (required to reject)",
+      "verify": "Verify",
+      "reject": "Reject"
+    },
+    "errors": {
+      "loadFailed": "Could not load the documents.",
+      "uploadFailed": "Could not upload the document.",
+      "deleteFailed": "Could not remove the document.",
+      "openFailed": "Could not open the document.",
+      "reviewFailed": "Could not save the review.",
+      "tooLarge": "The file is larger than 15 MB."
     }
   },
   "purchase": {

@@ -1360,6 +1360,8 @@
               </div>
             </div>
           </div>
+          <!-- Official documents: uploaded right away for admin review, listed in buyers' agreements. -->
+          <PropertyDocumentsPanel v-if="editingProperty?.id" class="mt-6" :property-id="editingProperty.id" />
         <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
           <button
             type="button"
@@ -1534,6 +1536,7 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
+import PropertyDocumentsPanel from '@/features/property/components/PropertyDocumentsPanel.vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'

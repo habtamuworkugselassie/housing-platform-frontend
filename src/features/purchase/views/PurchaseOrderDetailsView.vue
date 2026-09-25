@@ -130,6 +130,11 @@
               </div>
             </section>
 
+            <!-- Official property documents (Annex A of the Promise to Purchase) -->
+            <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <PropertyDocumentsList :documents="orderDocuments" :file-path="(id) => documentsApi.orderFilePath(order!.id, id)" />
+            </section>
+
             <!-- Agreements -->
             <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <div class="mb-4 flex items-center justify-between">
@@ -268,6 +273,8 @@ import SellerOrderActions from '../components/SellerOrderActions.vue'
 import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCheckout'
 import type { DepositPaymentMethod, DepositStatus } from '../api/purchase.types'
 import DepositMethodPicker from '../components/DepositMethodPicker.vue'
+import PropertyDocumentsList from '../components/PropertyDocumentsList.vue'
+import { documentsApi, type PropertyDocument } from '@/features/property/api/documents.api'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
 
 const route = useRoute()
@@ -302,6 +309,7 @@ function depositClass(status: DepositStatus) {
   if (status === 'REFUNDED' || status === 'CANCELLED') return 'bg-gray-200 text-gray-700'
   return 'bg-blue-100 text-blue-700'
 }
+const orderDocuments = ref<PropertyDocument[]>([])
 const DEPOSIT_METHODS: DepositPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
 const depositMethod = ref<DepositPaymentMethod | null>(null)
 watch(
@@ -348,6 +356,11 @@ async function load() {
   error.value = null
   try {
     order.value = await purchaseApi.getById(String(route.params.id))
+    // Documents are secondary: the order page still shows if they fail to load.
+    documentsApi
+      .forOrder(order.value.id)
+      .then((docs) => (orderDocuments.value = docs))
+      .catch(() => (orderDocuments.value = []))
     if (order.value.financing) reapplyAmount.value = Math.max(order.value.financing.minFinanceableAmount, Math.round(order.value.financing.financedAmount * 0.8))
   } catch (err: any) {
     error.value = err?.response?.status === 404 ? 'purchase.errors.orderNotFound' : (err?.response?.data?.message || 'purchase.errors.loadFailed')

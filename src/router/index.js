@@ -232,6 +232,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {
+    path: '/admin/property-documents',
+    name: 'AdminPropertyDocuments',
+    component: () => import('@/features/admin/views/AdminPropertyDocumentsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
     path: '/admin/purchase-orders',
     name: 'AdminPurchaseOrders',
     component: () => import('@/features/admin/views/AdminPurchaseOrdersView.vue'),
