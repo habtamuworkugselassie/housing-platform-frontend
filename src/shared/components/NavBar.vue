@@ -174,6 +174,13 @@
                 {{ $t('nav.myLoans') }}
               </router-link>
               <router-link
+                v-if="authStore.hasRole('BUYER')"
+                to="/purchase-orders"
+                class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
+              >
+                {{ $t('nav.myPurchases') }}
+              </router-link>
+              <router-link
                 v-if="authStore.hasRole('REALTOR')"
                 to="/construction/dashboard"
                 class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
@@ -410,6 +417,7 @@ const menuGroups = computed(() => {
       { key: 'sponsorships', to: '/sponsorships', icon: 'handshake', label: t('nav.sponsorships'), show: authStore.isAdmin },
       { key: 'banking', to: '/banking/dashboard', icon: 'account_balance', label: t('nav.banking'), show: authStore.hasRole('BANKER') },
       { key: 'loans', to: '/loan-applications', icon: 'request_quote', label: t('nav.myLoans'), show: authStore.hasRole('BUYER') },
+      { key: 'purchases', to: '/purchase-orders', icon: 'receipt_long', label: t('nav.myPurchases'), show: authStore.hasRole('BUYER') },
       { key: 'construction', to: '/construction/dashboard', icon: 'construction', label: t('nav.construction'), show: isRealtor },
       { key: 'supplier', to: '/supplier/dashboard', icon: 'local_shipping', label: t('nav.supplier'), show: authStore.hasRole('SUPPLIER') },
       { key: 'dashboard', to: '/dashboard', icon: 'dashboard', label: t('nav.dashboard'), show: !authStore.isAdmin },
