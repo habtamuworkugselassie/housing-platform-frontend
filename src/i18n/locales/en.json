@@ -613,6 +613,15 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
+      "bankAccount": {
+        "title": "Bank account for balance transfers",
+        "help": "Shown to buyers who pay the balance by bank transfer. Leave the bank name or account number empty to hide it.",
+        "bankName": "Bank",
+        "accountName": "Account name",
+        "accountNumber": "Account number",
+        "branch": "Branch",
+        "saved": "Saved."
+      },
       "usdRate": {
         "title": "USD deposit exchange rate",
         "help": "Birr per US dollar used when a buyer pays an ETB deposit in USD by international card. Leave empty to turn USD payments off.",
@@ -1956,6 +1965,83 @@
     }
   },
   "purchase": {
+    "balance": {
+      "title": "Balance",
+      "subtitle": "The rest of the price, paid to Dream Teams Trading PLC after the seller accepts.",
+      "open": "Open",
+      "paidInFull": "Paid in full",
+      "price": "Price",
+      "depositCredit": "Reservation deposit",
+      "loan": "Bank loan",
+      "due": "Balance due",
+      "paid": "Paid",
+      "inProgress": "Awaiting confirmation",
+      "remaining": "Left to pay",
+      "schedule": "Payment schedule",
+      "dueOn": "Due {date}",
+      "noDueDate": "No due date",
+      "linePaid": "Paid",
+      "linePartly": "{amount} paid",
+      "lineOverdue": "Overdue",
+      "lineDue": "Due",
+      "tabs": {
+        "online": "Pay online",
+        "transfer": "Bank transfer"
+      },
+      "amount": "Amount",
+      "amountHelp": "Up to {max}. You can pay in several parts.",
+      "limitsNote": "Wallets and cards have limits per payment and per day. If a payment is refused, pay a smaller amount or use a bank transfer.",
+      "payOnline": "Pay {amount} now",
+      "transferTo": "Transfer to",
+      "quoteReference": "Quote this reference:",
+      "noBankAccount": "The provider's bank details are not published yet. Contact support before transferring.",
+      "bankReference": "Bank transaction reference",
+      "paidOn": "Transfer date",
+      "receipt": "Bank receipt (PDF, JPG or PNG, up to 10 MB)",
+      "sendTransfer": "Send for confirmation",
+      "notYetPayable": "You can pay the balance once the seller accepts your order.",
+      "history": "Payments",
+      "viewReceipt": "Receipt",
+      "channel": {
+        "ONLINE": "Online",
+        "BANK_TRANSFER": "Bank transfer",
+        "RECORDED": "Recorded by seller"
+      },
+      "status": {
+        "PENDING": "Waiting for Chapa",
+        "SUBMITTED": "Awaiting confirmation",
+        "PAID": "Paid",
+        "FAILED": "Failed",
+        "REJECTED": "Rejected",
+        "CANCELLED": "Cancelled",
+        "REFUND_PENDING": "Refund due",
+        "REFUNDED": "Refunded"
+      },
+      "outcome": {
+        "paid": "Payment received. Thank you!",
+        "failed": "The payment did not go through. You can try again.",
+        "pending": "We are still waiting for Chapa to confirm the payment."
+      },
+      "seller": {
+        "toConfirm": "Bank transfers to confirm",
+        "notePlaceholder": "Note (required to reject)",
+        "approve": "Confirm received",
+        "decline": "Reject",
+        "record": "Record a payment received",
+        "recordHelp": "For money received outside the platform, e.g. a cheque or direct transfer.",
+        "recordSave": "Record payment",
+        "editSchedule": "Set instalments",
+        "scheduleHelp": "Split the balance of {total} into instalments with due dates.",
+        "label": "Instalment {n}",
+        "addLine": "Add instalment",
+        "scheduleTotal": "Total {total} of {due}"
+      },
+      "errors": {
+        "load": "Could not load the balance.",
+        "action": "Something went wrong. Please try again.",
+        "slipTooLarge": "The receipt is larger than 10 MB."
+      }
+    },
     "deposit": {
       "title": "Reservation deposit",
       "subtitle": "Paid to {provider} to reserve the property while the sale is arranged. Refund rules are in the deposit terms.",
@@ -2241,6 +2327,7 @@
       "convertToCash": "Continue without a loan"
     },
     "seller": {
+      "blockedBalance": "The balance is not fully paid yet. Confirm the buyer's transfers or record the payments first.",
       "title": "Purchase orders received",
       "subtitle": "Orders buyers placed on your listings. Accept to reserve the property, reject with a reason, and confirm payment to close the sale.",
       "needsReview": "{count} waiting for your review",

@@ -7,6 +7,7 @@
       </div>
 
       <AdminUsdRateCard />
+      <AdminBankAccountCard />
 
       <!-- Overview chips: click a status to filter by it, click again to clear. -->
       <div v-if="stats" class="flex flex-wrap gap-2" data-testid="stats">
@@ -177,6 +178,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import AdminUsdRateCard from '../components/AdminUsdRateCard.vue'
+import AdminBankAccountCard from '../components/AdminBankAccountCard.vue'
 import { formatPrice } from '@/shared/utils'
 import type { PaginatedResponse } from '@/shared/types'
 import { purchaseApi } from '@/features/purchase/api/purchase.api'

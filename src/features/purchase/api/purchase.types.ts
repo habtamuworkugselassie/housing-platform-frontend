@@ -287,3 +287,70 @@ export interface PurchaseOrderStatsResponse {
   open: number
   byStatus: Record<PurchaseOrderStatus, number>
 }
+
+// ------------------------------------------------------------------ balance (after the deposit)
+
+export type BalancePaymentChannel = 'ONLINE' | 'BANK_TRANSFER' | 'RECORDED'
+export type BalancePaymentStatus = 'PENDING' | 'SUBMITTED' | 'PAID' | 'FAILED' | 'REJECTED' | 'CANCELLED' | 'REFUND_PENDING' | 'REFUNDED'
+
+export interface BalanceInstalment {
+  id: string | null
+  sequence: number
+  label: string
+  amount: number
+  dueDate: string | null
+  covered: number
+  paid: boolean
+  overdue: boolean
+}
+
+export interface BalancePayment {
+  id: string
+  channel: BalancePaymentChannel
+  status: BalancePaymentStatus
+  amount: number
+  currency: Currency
+  txRef: string | null
+  checkoutUrl: string | null
+  preferredMethod: DepositPaymentMethod | null
+  paymentMethod: string | null
+  reference: string | null
+  paidOn: string | null
+  hasSlip: boolean
+  slipFileName: string | null
+  note: string | null
+  paidAt: string | null
+  createdAt: string
+}
+
+export interface ProviderBankAccount {
+  bankName: string | null
+  accountName: string | null
+  accountNumber: string | null
+  branch: string | null
+}
+
+export interface PurchaseBalanceResponse {
+  currency: Currency
+  listedPrice: number
+  depositCredit: number
+  loanAmount: number
+  balanceDue: number
+  paid: number
+  inProgress: number
+  remaining: number
+  fullyPaid: boolean
+  payable: boolean
+  checkoutAvailable: boolean
+  paymentMethods: DepositPaymentMethod[]
+  bankAccount: ProviderBankAccount | null
+  transferReference: string
+  instalments: BalanceInstalment[]
+  payments: BalancePayment[]
+}
+
+export interface BalanceInstalmentLine {
+  label: string
+  amount: number
+  dueDate: string | null
+}

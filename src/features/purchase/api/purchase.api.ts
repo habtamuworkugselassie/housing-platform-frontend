@@ -6,8 +6,11 @@ import type { Currency, PaginatedResponse } from '@/shared/types'
 import type {
   AgreementSignatureRequest,
   CreatePurchaseOrderRequest,
+  BalanceInstalmentLine,
   DepositCheckoutResponse,
   DepositPaymentMethod,
+  ProviderBankAccount,
+  PurchaseBalanceResponse,
   PurchaseDepositResponse,
   PurchaseAgreementResponse,
   PurchaseOrderResponse,
@@ -158,6 +161,43 @@ export const purchaseApi = {
     const response = await api.post<PurchaseDepositResponse>(`/purchase-orders/${orderId}/deposit/confirm`)
     return response.data
   },
+
+  // ---- balance (paid to the provider after the deposit)
+  getBalance: async (orderId: string): Promise<PurchaseBalanceResponse> =>
+    (await api.get<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance`)).data,
+
+  payBalanceOnline: async (orderId: string, amount: number, paymentMethod: DepositPaymentMethod | null): Promise<DepositCheckoutResponse> =>
+    (await api.post<DepositCheckoutResponse>(`/purchase-orders/${orderId}/balance/checkout`, { amount, paymentMethod })).data,
+
+  confirmBalance: async (orderId: string): Promise<PurchaseBalanceResponse> =>
+    (await api.post<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/confirm`)).data,
+
+  reportBalanceTransfer: async (orderId: string, input: { amount: number; reference: string; paidOn?: string; slip: File }): Promise<PurchaseBalanceResponse> => {
+    const form = new FormData()
+    form.append('amount', String(input.amount))
+    form.append('reference', input.reference)
+    if (input.paidOn) form.append('paidOn', input.paidOn)
+    form.append('slip', input.slip)
+    return (await api.post<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/transfers`, form)).data
+  },
+
+  balanceSlipPath: (orderId: string, paymentId: string) => `/purchase-orders/${orderId}/balance/payments/${paymentId}/slip`,
+
+  setBalanceSchedule: async (orderId: string, instalments: BalanceInstalmentLine[]): Promise<PurchaseBalanceResponse> =>
+    (await api.put<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/schedule`, { instalments })).data,
+
+  reviewBalanceTransfer: async (orderId: string, paymentId: string, approve: boolean, note?: string): Promise<PurchaseBalanceResponse> =>
+    (await api.post<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/payments/${paymentId}/review`, { approve, note: note || null })).data,
+
+  recordBalancePayment: async (orderId: string, input: { amount: number; reference: string; paidOn?: string | null; note?: string }): Promise<PurchaseBalanceResponse> =>
+    (await api.post<PurchaseBalanceResponse>(`/purchase-orders/${orderId}/balance/payments`, input)).data,
+
+  /** Admin: the provider's account buyers transfer the balance to. */
+  getBankAccount: async (): Promise<ProviderBankAccount | null> =>
+    (await api.get<ProviderBankAccount | null>('/admin/purchase-settings/bank-account')).data || null,
+
+  setBankAccount: async (account: ProviderBankAccount): Promise<ProviderBankAccount | null> =>
+    (await api.put<ProviderBankAccount | null>('/admin/purchase-settings/bank-account', account)).data || null,
 
   /** Admin: birr per USD for deposits paid in USD by card; null means USD is off. */
   getUsdRate: async (): Promise<{ etbPerUsd: number | null }> => {

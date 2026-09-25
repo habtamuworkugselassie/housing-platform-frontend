@@ -36,6 +36,7 @@
     <template v-else-if="order.status === 'AWAITING_PAYMENT'">
       <p v-if="blockedBySignatures" class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800" data-testid="blocked">{{ $t('purchase.seller.blockedSignatures', { count: order.pendingSignatures }) }}</p>
       <p v-else-if="blockedByDeposit" class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800" data-testid="blocked">{{ $t('purchase.seller.blockedDeposit') }}</p>
+      <p v-else-if="blockedByBalance" class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800" data-testid="blocked">{{ $t('purchase.seller.blockedBalance') }}</p>
 
       <button v-if="mode === 'idle'" type="button" class="inline-flex w-full items-center justify-center rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50" :disabled="busy || blocked" data-testid="complete" @click="mode = 'complete'">
         {{ $t('purchase.seller.complete') }}
@@ -66,7 +67,11 @@ import type { PurchaseOrderResponse } from '../api/purchase.types'
  * "confirm payment" once it awaits payment. Renders nothing for other statuses. Emits the
  * updated order so the parent (list row or details page) can replace its copy.
  */
-const props = defineProps<{ order: PurchaseOrderResponse }>()
+const props = defineProps<{
+  order: PurchaseOrderResponse
+  /** Left to pay on the balance, when the caller knows it (order details page). */
+  balanceRemaining?: number | null
+}>()
 const emit = defineEmits<{ updated: [order: PurchaseOrderResponse] }>()
 const { t } = useI18n()
 
@@ -84,7 +89,8 @@ const blockedByDeposit = computed(() => {
   const d = props.order.deposit
   return !!d && d.status !== 'PAID' && d.status !== 'WAIVED'
 })
-const blocked = computed(() => blockedBySignatures.value || blockedByDeposit.value)
+const blockedByBalance = computed(() => props.balanceRemaining != null && props.balanceRemaining > 0)
+const blocked = computed(() => blockedBySignatures.value || blockedByDeposit.value || blockedByBalance.value)
 
 function reset() {
   mode.value = 'idle'
