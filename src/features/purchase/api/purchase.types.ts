@@ -68,6 +68,17 @@ export interface AgreementPreview {
   content: string
 }
 
+/** How the buyer pays the reservation deposit; each steers Chapa's hosted checkout. */
+export type DepositPaymentMethod = 'TELEBIRR' | 'CBE_BIRR' | 'MPESA' | 'AWASH_BIRR' | 'CARD'
+
+export interface DepositQuote {
+  amount: number
+  currency: Currency
+  /** False when online checkout is not configured on the server. */
+  checkoutAvailable: boolean
+  paymentMethods: DepositPaymentMethod[]
+}
+
 export interface PurchasePreviewResponse {
   propertyId: string
   listedPrice: number
@@ -76,6 +87,8 @@ export interface PurchasePreviewResponse {
   financingAvailable: boolean
   financingOffers: FinancingOption[]
   agreementsToSign: AgreementPreview[]
+  /** The reservation deposit paid when placing the order; null when deposits are disabled. */
+  deposit?: DepositQuote | null
 }
 
 export interface AgreementSignatureRequest {
@@ -101,6 +114,9 @@ export interface CreatePurchaseOrderRequest {
   useFinancing?: boolean | null
   financing?: FinancingSelection
   promiseToPurchase: AgreementSignatureRequest
+  /** Signs the Reservation Deposit Terms with the order so the deposit can be paid right away. */
+  depositTerms?: AgreementSignatureRequest
+  depositPaymentMethod?: DepositPaymentMethod
 }
 
 export interface UpdatePurchaseFinancingRequest {
@@ -180,6 +196,8 @@ export interface PurchaseDepositResponse {
   checkoutUrl: string | null
   providerReference: string | null
   paymentMethod: string | null
+  /** The method the buyer picked on our side. */
+  preferredMethod?: DepositPaymentMethod | null
   paidAt: string | null
   failureReason: string | null
   attempts: number

@@ -106,12 +106,17 @@
               <div v-if="canPayDeposit" class="mt-4 space-y-2">
                 <p v-if="order.deposit.termsPending" class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">{{ $t('purchase.deposit.signTermsFirst') }}</p>
                 <p v-else-if="!order.deposit.checkoutAvailable" class="rounded-lg bg-gray-50 p-3 text-xs text-gray-600">{{ $t('purchase.deposit.unavailable') }}</p>
+                <!-- A pending checkout resumes as started; otherwise the buyer can pick or change the method. -->
+                <div v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable && order.deposit.status !== 'PENDING'" class="pb-2">
+                  <p class="mb-2 text-sm font-medium text-gray-700">{{ $t('purchase.payment.chooseMethod') }}</p>
+                  <DepositMethodPicker v-model="depositMethod" :methods="DEPOSIT_METHODS" name="order-deposit-method" :disabled="depositBusy" />
+                </div>
                 <button
-                  v-else
+                  v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable"
                   type="button"
                   data-testid="pay-deposit"
                   class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60"
-                  :disabled="depositBusy"
+                  :disabled="depositBusy || (order.deposit.status !== 'PENDING' && !depositMethod)"
                   @click="payDeposit"
                 >
                   <span v-if="depositBusy" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
@@ -258,7 +263,8 @@ import { renderMarkdown } from '../utils/markdown'
 import PurchaseOrderStatusBadge from '../components/PurchaseOrderStatusBadge.vue'
 import SellerOrderActions from '../components/SellerOrderActions.vue'
 import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCheckout'
-import type { DepositStatus } from '../api/purchase.types'
+import type { DepositPaymentMethod, DepositStatus } from '../api/purchase.types'
+import DepositMethodPicker from '../components/DepositMethodPicker.vue'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
 
 const route = useRoute()
@@ -293,8 +299,17 @@ function depositClass(status: DepositStatus) {
   if (status === 'REFUNDED' || status === 'CANCELLED') return 'bg-gray-200 text-gray-700'
   return 'bg-blue-100 text-blue-700'
 }
+const DEPOSIT_METHODS: DepositPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
+const depositMethod = ref<DepositPaymentMethod | null>(null)
+watch(
+  () => order.value?.deposit?.preferredMethod,
+  (m) => {
+    if (m && !depositMethod.value) depositMethod.value = m
+  },
+  { immediate: true }
+)
 async function payDeposit() {
-  await depositCheckout.pay()
+  await depositCheckout.pay(order.value?.deposit?.status === 'PENDING' ? null : depositMethod.value)
 }
 async function checkDeposit() {
   const deposit = await depositCheckout.confirmOnReturn()

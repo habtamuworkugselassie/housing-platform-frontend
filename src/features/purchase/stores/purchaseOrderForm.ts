@@ -1,7 +1,7 @@
 /**
  * State for the "place a purchase order" wizard.
  *
- * One store instance per screen visit (reset on init) holding the property preview, the four
+ * One store instance per screen visit (reset on init) holding the property preview, the
  * steps' inputs, derived validation and the submission state. Contact and financing inputs are
  * mirrored to sessionStorage per property so a reload does not lose them; the agreement
  * acceptance is deliberately NOT persisted — the buyer must read and accept the current text in
@@ -13,6 +13,7 @@ import type { Currency } from '@/shared/types'
 import { purchaseApi } from '../api/purchase.api'
 import type {
   CreatePurchaseOrderRequest,
+  DepositPaymentMethod,
   FinancingOption,
   PurchaseOrderResponse,
   PurchasePreviewResponse
@@ -20,7 +21,7 @@ import type {
 import { isValidEmail, isValidPhone, normalizePhone } from '../utils/phone'
 import { computeSplit, validateFinancedAmount, validateTenure } from '../utils/financing'
 
-export type WizardStep = 'account' | 'contact' | 'financing' | 'agreement' | 'review'
+export type WizardStep = 'account' | 'contact' | 'financing' | 'payment' | 'agreement' | 'review'
 
 export interface FieldErrors {
   [field: string]: string
@@ -34,6 +35,7 @@ interface DraftSnapshot {
     financedAmount: number | null
     tenureMonths: number | null
   }
+  payment?: { method: DepositPaymentMethod | null }
 }
 
 const DRAFT_KEY = (propertyId: string) => `purchase-order-draft:${propertyId}`
@@ -64,6 +66,14 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     accepted: false,
     signatoryFullName: ''
   })
+  /** How the buyer will pay the reservation deposit (paid right after the order is placed). */
+  const payment = reactive({ method: null as DepositPaymentMethod | null })
+  /** The Reservation Deposit Terms, signed with the same name as the Promise to Purchase. */
+  const depositAgreement = reactive({
+    templateId: null as string | null,
+    scrolledToEnd: false,
+    accepted: false
+  })
 
   const submitting = ref(false)
   const submitError = ref<string | null>(null)
@@ -73,11 +83,20 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   // ------------------------------------------------------------------ derived
   const financingAvailable = computed(() => preview.value?.financingAvailable === true)
 
-  /** The wizard skips the financing step entirely when nothing is linked to the property. */
+  /** The reservation deposit paid when placing the order; null when deposits are disabled. */
+  const depositQuote = computed(() => preview.value?.deposit ?? null)
+  /** Online checkout works on this server, so the buyer picks a method and pays right away. */
+  const depositOnline = computed(() => depositQuote.value?.checkoutAvailable === true)
+
+  /**
+   * The wizard skips the financing step entirely when nothing is linked to the property, and the
+   * payment step when no deposit is taken.
+   */
   const steps = computed<WizardStep[]>(() => {
-    const rest: WizardStep[] = financingAvailable.value
-      ? ['contact', 'financing', 'agreement', 'review']
-      : ['contact', 'agreement', 'review']
+    const rest: WizardStep[] = ['contact']
+    if (financingAvailable.value) rest.push('financing')
+    if (depositQuote.value) rest.push('payment')
+    rest.push('agreement', 'review')
     return needsAccount.value ? ['account', ...rest] : rest
   })
   const stepIndex = computed(() => steps.value.indexOf(step.value))
@@ -105,7 +124,21 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     )
   })
 
-  const promiseAgreement = computed(() => preview.value?.agreementsToSign?.[0] ?? null)
+  const promiseAgreement = computed(
+    () =>
+      preview.value?.agreementsToSign?.find((a) => a.type === 'PROMISE_TO_PURCHASE') ??
+      preview.value?.agreementsToSign?.[0] ??
+      null
+  )
+  const depositTermsAgreement = computed(
+    () => preview.value?.agreementsToSign?.find((a) => a.type === 'RESERVATION_DEPOSIT_TERMS') ?? null
+  )
+
+  const paymentErrors = computed<FieldErrors>(() => {
+    const errors: FieldErrors = {}
+    if (depositOnline.value && !payment.method) errors.method = 'purchase.errors.paymentMethodRequired'
+    return errors
+  })
 
   const contactErrors = computed<FieldErrors>(() => {
     const errors: FieldErrors = {}
@@ -145,6 +178,10 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     if (agreement.signatoryFullName.trim().length < 3) {
       errors.signatoryFullName = 'purchase.errors.signatoryRequired'
     }
+    if (depositTermsAgreement.value) {
+      if (!depositAgreement.scrolledToEnd) errors.depositScroll = 'purchase.errors.agreementNotRead'
+      if (!depositAgreement.accepted) errors.depositAccepted = 'purchase.errors.agreementNotAccepted'
+    }
     return errors
   })
 
@@ -152,6 +189,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     account: !needsAccount.value,
     contact: Object.keys(contactErrors.value).length === 0,
     financing: Object.keys(financingErrors.value).length === 0,
+    payment: Object.keys(paymentErrors.value).length === 0,
     agreement: Object.keys(agreementErrors.value).length === 0,
     review: true
   }))
@@ -162,6 +200,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       !needsAccount.value &&
       stepValid.value.contact &&
       stepValid.value.financing &&
+      stepValid.value.payment &&
       stepValid.value.agreement
   )
 
@@ -178,6 +217,14 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
         signatoryFullName: agreement.signatoryFullName.trim()
       }
     }
+    if (depositTermsAgreement.value) {
+      request.depositTerms = {
+        templateId: depositTermsAgreement.value.templateId,
+        accepted: depositAgreement.accepted,
+        signatoryFullName: agreement.signatoryFullName.trim()
+      }
+    }
+    if (depositQuote.value && payment.method) request.depositPaymentMethod = payment.method
     if (contact.email.trim()) request.contactEmail = contact.email.trim()
     if (contact.message.trim()) request.buyerMessage = contact.message.trim()
     if (financingAvailable.value) {
@@ -211,10 +258,16 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       tenureMonths: null
     })
     resetAgreement()
+    resetDepositAgreement()
+    payment.method = null
     submitting.value = false
     submitError.value = null
     serverFieldErrors.value = {}
     createdOrder.value = null
+  }
+
+  function resetDepositAgreement() {
+    Object.assign(depositAgreement, { templateId: null, scrolledToEnd: false, accepted: false })
   }
 
   function resetAgreement() {
@@ -274,11 +327,19 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
         selectOffer(chosen.financingOfferId, keep !== undefined)
       }
       // A new template version invalidates any previous acceptance.
-      const promise = data.agreementsToSign?.[0]
+      const promise =
+        data.agreementsToSign?.find((a) => a.type === 'PROMISE_TO_PURCHASE') ?? data.agreementsToSign?.[0]
       if (!promise || promise.templateId !== agreement.templateId) {
         resetAgreement()
         agreement.templateId = promise?.templateId ?? null
       }
+      const terms = data.agreementsToSign?.find((a) => a.type === 'RESERVATION_DEPOSIT_TERMS')
+      if (!terms || terms.templateId !== depositAgreement.templateId) {
+        resetDepositAgreement()
+        depositAgreement.templateId = terms?.templateId ?? null
+      }
+      // Drop a remembered method the server no longer offers.
+      if (payment.method && !data.deposit?.paymentMethods?.includes(payment.method)) payment.method = null
     } catch (err: any) {
       previewError.value = extractMessage(err, 'purchase.errors.previewFailed')
     } finally {
@@ -362,7 +423,10 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       }
       if (status === 409) {
         submitError.value = 'purchase.errors.duplicateOrder'
-      } else if (status === 400 && /Promise to Purchase agreement has changed/i.test(body?.message ?? '')) {
+      } else if (
+        status === 400 &&
+        /(Promise to Purchase agreement|Reservation Deposit Terms) ha(s|ve) changed/i.test(body?.message ?? '')
+      ) {
         // The text changed under the buyer: reload it and make them read it again.
         submitError.value = 'purchase.errors.agreementChanged'
         await loadPreview()
@@ -381,7 +445,8 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     if (!propertyId.value || typeof sessionStorage === 'undefined') return
     const snapshot: DraftSnapshot = {
       contact: { ...contact },
-      financing: { ...financing }
+      financing: { ...financing },
+      payment: { ...payment }
     }
     try {
       sessionStorage.setItem(DRAFT_KEY(propertyId.value), JSON.stringify(snapshot))
@@ -398,6 +463,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       const snapshot = JSON.parse(raw) as DraftSnapshot
       Object.assign(contact, snapshot.contact)
       Object.assign(financing, snapshot.financing)
+      if (snapshot.payment) Object.assign(payment, snapshot.payment)
     } catch {
       /* ignore a corrupt draft */
     }
@@ -423,6 +489,8 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     contact,
     financing,
     agreement,
+    payment,
+    depositAgreement,
     submitting,
     submitError,
     serverFieldErrors,
@@ -435,6 +503,10 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     financingApplied,
     split,
     promiseAgreement,
+    depositTermsAgreement,
+    depositQuote,
+    depositOnline,
+    paymentErrors,
     contactErrors,
     financingErrors,
     agreementErrors,

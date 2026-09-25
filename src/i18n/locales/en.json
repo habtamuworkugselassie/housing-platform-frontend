@@ -1975,10 +1975,41 @@
       "withFinancing": "Place purchase order · financing available",
       "cash": "Place purchase order"
     },
+    "payment": {
+      "title": "Payment method",
+      "subtitle": "Choose how you will pay the reservation deposit. You pay it right after placing the order, on Chapa's secure checkout.",
+      "chooseMethod": "Pay the deposit with",
+      "depositExplainer": "Paid to reserve the property while the seller reviews your order. Refunded in full if the seller declines or does not respond.",
+      "unavailable": "Online payment is not available yet. The provider will contact you with payment instructions.",
+      "financedNote": "The deposit is separate from your loan; the bank pays its share after approval.",
+      "methods": {
+        "TELEBIRR": {
+          "label": "telebirr",
+          "help": "Pay from your telebirr wallet"
+        },
+        "CBE_BIRR": {
+          "label": "CBE Birr",
+          "help": "Pay from your CBE Birr wallet"
+        },
+        "MPESA": {
+          "label": "M-Pesa",
+          "help": "Pay from your M-Pesa wallet"
+        },
+        "AWASH_BIRR": {
+          "label": "Awash Birr",
+          "help": "Pay from your Awash Birr wallet"
+        },
+        "CARD": {
+          "label": "Card or other method",
+          "help": "Visa, Mastercard and every other method Chapa offers"
+        }
+      }
+    },
     "steps": {
       "account": "Account",
       "contact": "Contact",
       "financing": "Financing",
+      "payment": "Payment",
       "agreement": "Agreement",
       "review": "Review"
     },
@@ -1990,7 +2021,9 @@
       "financingAvailable": "Bank financing is available for this property",
       "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or pay cash.",
       "cashOnly": "Standard cash purchase",
-      "cashOnlyHelp": "No bank financing product is linked to this listing, so the order proceeds as a direct purchase."
+      "cashOnlyHelp": "No bank financing product is linked to this listing, so the order proceeds as a direct purchase.",
+      "payOnline": "Pay online with telebirr, CBE Birr, M-Pesa, Awash Birr or card",
+      "payOnlineHelp": "You pay a reservation deposit of {amount} when placing the order, on Chapa's secure checkout. The balance is arranged with the seller."
     },
     "contact": {
       "title": "How can the seller reach you?",
@@ -2064,7 +2097,11 @@
       "reread": "Re-read",
       "submitNote": "By submitting you confirm the details above and electronically sign the Promise to Purchase Agreement.",
       "submit": "Submit purchase order",
-      "submitting": "Submitting…"
+      "submitting": "Submitting…",
+      "depositNow": "Reservation deposit {amount}, paid now",
+      "via": "via {method}",
+      "submitAndPay": "Place order and pay deposit",
+      "redirecting": "Opening secure checkout…"
     },
     "success": {
       "title": "Purchase order {number} placed",
@@ -2180,6 +2217,7 @@
       "phoneInvalid": "Enter a valid phone number for the selected country, e.g. 911 223 344 for Ethiopia.",
       "messageTooLong": "The message cannot exceed 2000 characters.",
       "offerRequired": "Choose a financing offer or untick bank financing.",
+      "paymentMethodRequired": "Choose how you will pay the deposit.",
       "financedAmountRequired": "Enter the amount you want to finance.",
       "financedAmountBelowMin": "The financed amount must be at least {min}.",
       "financedAmountAboveMax": "The financed amount cannot exceed {max}.",

@@ -22,7 +22,7 @@ describe('useDepositCheckout', () => {
     const navigate = vi.fn()
     const c = useDepositCheckout(ref('order-1'), navigate)
     await c.pay()
-    expect(purchaseApi.startDepositCheckout).toHaveBeenCalledWith('order-1')
+    expect(purchaseApi.startDepositCheckout).toHaveBeenCalledWith('order-1', undefined)
     expect(navigate).toHaveBeenCalledWith('https://checkout.chapa.co/x')
     expect(c.error.value).toBeNull()
   })

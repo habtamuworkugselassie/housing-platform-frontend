@@ -23,6 +23,24 @@
       @update:signatory-name="form.agreement.signatoryFullName = $event"
       @update:scrolled-to-end="form.agreement.scrolledToEnd = $event"
     />
+
+    <!-- Reservation deposit terms: signed together so the deposit can be paid right away. -->
+    <AgreementReviewPanel
+      v-if="form.promiseAgreement && form.depositTermsAgreement"
+      class="border-t border-gray-200 pt-5"
+      data-testid="deposit-terms-panel"
+      :title="form.depositTermsAgreement.title"
+      :content="form.depositTermsAgreement.content"
+      :version="form.depositTermsAgreement.version"
+      :provider-name="providerName"
+      :accepted="form.depositAgreement.accepted"
+      :signatory-name="form.agreement.signatoryFullName"
+      :scrolled-to-end="form.depositAgreement.scrolledToEnd"
+      :attempted="attempted"
+      @update:accepted="form.depositAgreement.accepted = $event"
+      @update:signatory-name="form.agreement.signatoryFullName = $event"
+      @update:scrolled-to-end="form.depositAgreement.scrolledToEnd = $event"
+    />
   </section>
 </template>
 

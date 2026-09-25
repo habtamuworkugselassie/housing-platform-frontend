@@ -34,12 +34,18 @@
               <li>{{ $t('purchase.financing.tenure') }}: {{ form.split.tenureMonths }} {{ $t('purchase.months') }} · ≈ {{ money(form.split.installment) }}/{{ $t('purchase.month') }}</li>
             </ul>
           </template>
-          <template v-else>
+          <template v-else-if="!form.depositQuote">
             <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">{{ $t('purchase.types.CASH') }}</span>
             <span class="mt-1 block text-gray-600">{{ $t('purchase.review.cashExplainer') }}</span>
           </template>
+          <div v-if="form.depositQuote" :class="{ 'mt-3': form.financingApplied }" data-testid="review-deposit">
+            <span class="block font-semibold">{{ $t('purchase.review.depositNow', { amount: money(form.depositQuote.amount) }) }}</span>
+            <span v-if="form.payment.method" class="block text-gray-600">{{ $t('purchase.review.via', { method: $t(`purchase.payment.methods.${form.payment.method}.label`) }) }}</span>
+            <span v-else class="block text-gray-600">{{ $t('purchase.payment.unavailable') }}</span>
+          </div>
         </dd>
-        <button v-if="form.financingAvailable" type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('financing')">{{ $t('common.edit') }}</button>
+        <button v-if="form.depositQuote" type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('payment')">{{ $t('common.edit') }}</button>
+        <button v-else-if="form.financingAvailable" type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('financing')">{{ $t('common.edit') }}</button>
       </div>
       <div class="grid gap-1 p-4 sm:grid-cols-3">
         <dt class="text-sm font-medium text-gray-500">{{ $t('purchase.review.agreement') }}</dt>
@@ -49,6 +55,7 @@
             {{ $t('purchase.review.agreementAccepted') }}
           </span>
           <span class="mt-1 block text-gray-600">{{ form.promiseAgreement?.title }} · {{ $t('purchase.agreement.version', { version: form.promiseAgreement?.version }) }}</span>
+          <span v-if="form.depositTermsAgreement" class="block text-gray-600">{{ form.depositTermsAgreement.title }} · {{ $t('purchase.agreement.version', { version: form.depositTermsAgreement.version }) }}</span>
           <span class="block text-gray-600">{{ $t('purchase.review.signedAs', { name: payload?.promiseToPurchase.signatoryFullName }) }}</span>
         </dd>
         <button type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('agreement')">{{ $t('purchase.review.reread') }}</button>
