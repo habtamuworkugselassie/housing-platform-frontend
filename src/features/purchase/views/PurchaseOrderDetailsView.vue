@@ -93,7 +93,10 @@
                 </div>
                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="depositClass(order.deposit.status)">{{ $t(`purchase.deposit.status.${order.deposit.status}`) }}</span>
               </div>
-              <p class="text-2xl font-bold text-gray-900">{{ money(order.deposit.amount) }}</p>
+              <p class="text-2xl font-bold text-gray-900">{{ formatPrice(order.deposit.amount, order.deposit.currency) }}</p>
+              <p v-if="order.deposit.baseAmount && order.deposit.exchangeRate" class="text-xs text-gray-600">
+                {{ $t('purchase.payment.conversion', { base: formatPrice(order.deposit.baseAmount, order.deposit.baseCurrency ?? 'ETB'), rate: order.deposit.exchangeRate }) }}
+              </p>
               <p v-if="order.deposit.dueAt && (order.deposit.status === 'DUE' || order.deposit.status === 'FAILED')" class="text-xs text-gray-500">{{ $t('purchase.deposit.dueBy', { date: formatDate(order.deposit.dueAt) }) }}</p>
               <p v-if="order.deposit.paidAt" class="text-xs text-gray-500">{{ $t('purchase.deposit.paidOn', { date: formatDate(order.deposit.paidAt), method: order.deposit.paymentMethod || order.deposit.provider }) }}</p>
 
@@ -109,7 +112,7 @@
                 <!-- A pending checkout resumes as started; otherwise the buyer can pick or change the method. -->
                 <div v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable && order.deposit.status !== 'PENDING'" class="pb-2">
                   <p class="mb-2 text-sm font-medium text-gray-700">{{ $t('purchase.payment.chooseMethod') }}</p>
-                  <DepositMethodPicker v-model="depositMethod" :methods="DEPOSIT_METHODS" name="order-deposit-method" :disabled="depositBusy" />
+                  <DepositMethodPicker v-model="depositMethod" :methods="order.deposit.currency === 'USD' ? ['CARD'] : DEPOSIT_METHODS" name="order-deposit-method" :disabled="depositBusy" />
                 </div>
                 <button
                   v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable"
@@ -125,6 +128,11 @@
                 <button v-if="order.deposit.status === 'PENDING'" type="button" class="ml-2 text-xs font-semibold text-primary-700 hover:underline" :disabled="depositBusy" @click="checkDeposit">{{ $t('purchase.deposit.checkStatus') }}</button>
                 <p class="text-[11px] text-gray-500">{{ $t('purchase.deposit.securityNote') }}</p>
               </div>
+            </section>
+
+            <!-- Official property documents (Annex A of the Promise to Purchase) -->
+            <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <PropertyDocumentsList :documents="orderDocuments" :file-path="(id) => documentsApi.orderFilePath(order!.id, id)" />
             </section>
 
             <!-- Agreements -->
@@ -265,6 +273,8 @@ import SellerOrderActions from '../components/SellerOrderActions.vue'
 import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCheckout'
 import type { DepositPaymentMethod, DepositStatus } from '../api/purchase.types'
 import DepositMethodPicker from '../components/DepositMethodPicker.vue'
+import PropertyDocumentsList from '../components/PropertyDocumentsList.vue'
+import { documentsApi, type PropertyDocument } from '@/features/property/api/documents.api'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
 
 const route = useRoute()
@@ -299,6 +309,7 @@ function depositClass(status: DepositStatus) {
   if (status === 'REFUNDED' || status === 'CANCELLED') return 'bg-gray-200 text-gray-700'
   return 'bg-blue-100 text-blue-700'
 }
+const orderDocuments = ref<PropertyDocument[]>([])
 const DEPOSIT_METHODS: DepositPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
 const depositMethod = ref<DepositPaymentMethod | null>(null)
 watch(
@@ -345,6 +356,11 @@ async function load() {
   error.value = null
   try {
     order.value = await purchaseApi.getById(String(route.params.id))
+    // Documents are secondary: the order page still shows if they fail to load.
+    documentsApi
+      .forOrder(order.value.id)
+      .then((docs) => (orderDocuments.value = docs))
+      .catch(() => (orderDocuments.value = []))
     if (order.value.financing) reapplyAmount.value = Math.max(order.value.financing.minFinanceableAmount, Math.round(order.value.financing.financedAmount * 0.8))
   } catch (err: any) {
     error.value = err?.response?.status === 404 ? 'purchase.errors.orderNotFound' : (err?.response?.data?.message || 'purchase.errors.loadFailed')

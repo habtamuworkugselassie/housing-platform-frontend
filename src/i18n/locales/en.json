@@ -581,6 +581,7 @@
     "administrator": "Administrator",
     "portalSubtitle": "Access the admin portal to manage users, organizations, properties, and more.",
     "nav": {
+      "propertyDocuments": "Property documents",
       "settings": "Settings",
       "exhibitionInterests": "Exhibition leads",
       "videoFeedback": "Video feedback",
@@ -612,6 +613,14 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
+      "usdRate": {
+        "title": "USD deposit exchange rate",
+        "help": "Birr per US dollar used when a buyer pays an ETB deposit in USD by international card. Leave empty to turn USD payments off.",
+        "placeholder": "e.g. 155.50",
+        "unit": "ETB per USD",
+        "on": "USD payments are on at {rate} birr per US dollar.",
+        "off": "USD payments are off until a rate is set."
+      },
       "title": "Purchase orders",
       "subtitle": "Every purchase order on the platform: who is buying what, how it is financed, and where it stands.",
       "total": "Total",
@@ -1895,6 +1904,57 @@
       "homeBlurb": "The expo, partners, and the latest listings."
     }
   },
+  "documents": {
+    "view": "View",
+    "types": {
+      "TITLE_DEED": "Title deed / ownership certificate",
+      "LEASE_AGREEMENT": "Land lease contract",
+      "BUILDING_PERMIT": "Building permit",
+      "OCCUPANCY_PERMIT": "Occupancy permit",
+      "OTHER": "Other document"
+    },
+    "status": {
+      "PENDING": "Awaiting review",
+      "VERIFIED": "Verified",
+      "REJECTED": "Rejected"
+    },
+    "panel": {
+      "title": "Official documents",
+      "help": "Upload the title deed (ካርታ) and land lease contract. The platform checks them; verified documents are listed in buyers' agreements and buyers can view them.",
+      "none": "No documents uploaded yet.",
+      "type": "Document type",
+      "number": "Document number",
+      "authority": "Issued by",
+      "issuedOn": "Issue date",
+      "upload": "Upload document",
+      "uploading": "Uploading…",
+      "formats": "PDF, JPG or PNG, up to 15 MB",
+      "rejectedBecause": "Rejected: {reason}"
+    },
+    "buyer": {
+      "title": "Property documents",
+      "help": "Verified by the platform and listed in Annex A of the agreement. Open them to check before you sign.",
+      "none": "No verified title deed or lease contract is on file for this property yet. You can ask the provider for them before completion."
+    },
+    "admin": {
+      "title": "Property documents",
+      "subtitle": "Check each title deed and lease contract against the listing before it appears in buyers' agreements.",
+      "all": "All",
+      "empty": "Nothing here.",
+      "note": "Note",
+      "notePlaceholder": "Note for the seller (required to reject)",
+      "verify": "Verify",
+      "reject": "Reject"
+    },
+    "errors": {
+      "loadFailed": "Could not load the documents.",
+      "uploadFailed": "Could not upload the document.",
+      "deleteFailed": "Could not remove the document.",
+      "openFailed": "Could not open the document.",
+      "reviewFailed": "Could not save the review.",
+      "tooLarge": "The file is larger than 15 MB."
+    }
+  },
   "purchase": {
     "deposit": {
       "title": "Reservation deposit",
@@ -1976,6 +2036,14 @@
       "cash": "Place purchase order"
     },
     "payment": {
+      "currencyLabel": "Pay the deposit in",
+      "currency": {
+        "ETB": "Birr (ETB)",
+        "USD": "US dollars (USD)"
+      },
+      "currencyEtbHelp": "telebirr, CBE Birr, M-Pesa, Awash Birr or card",
+      "currencyUsdHelp": "International Visa or Mastercard",
+      "conversion": "Equivalent to {base} at {rate} birr per US dollar",
       "title": "Payment method",
       "subtitle": "Choose how you will pay the reservation deposit. You pay it right after placing the order, on Chapa's secure checkout.",
       "chooseMethod": "Pay the deposit with",
@@ -2014,13 +2082,13 @@
       "review": "Review"
     },
     "types": {
-      "CASH": "Cash purchase",
+      "CASH": "Direct purchase",
       "BANK_FINANCED": "Bank financed"
     },
     "sidebar": {
       "financingAvailable": "Bank financing is available for this property",
-      "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or pay cash.",
-      "cashOnly": "Standard cash purchase",
+      "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or buy without a loan.",
+      "cashOnly": "Direct purchase",
       "cashOnlyHelp": "No bank financing product is linked to this listing, so the order proceeds as a direct purchase.",
       "payOnline": "Pay online with telebirr, CBE Birr, M-Pesa, Awash Birr or card",
       "payOnlineHelp": "You pay a reservation deposit of {amount} when placing the order, on Chapa's secure checkout. The balance is arranged with the seller."
@@ -2044,7 +2112,7 @@
       "title": "Bank financing",
       "subtitle": "This property has an active financing product. Choose how much of the price you want to finance.",
       "useFinancing": "Finance part of the purchase through a bank",
-      "useFinancingHelp": "Untick to place a plain cash order even though financing is available.",
+      "useFinancingHelp": "Untick to buy without a bank loan even though financing is available.",
       "chooseOffer": "Choose a financing offer",
       "recommended": "Recommended",
       "bank": "Bank",
@@ -2066,7 +2134,7 @@
       "coverage": "Coverage",
       "estimatedInstallment": "Est. instalment",
       "estimateDisclaimer": "Estimates use the product's listed rate. The bank confirms the final terms when it reviews your loan application.",
-      "cashChosen": "You chose to pay cash. The order will not include a loan application."
+      "cashChosen": "You chose to buy without a bank loan. The order will not include a loan application."
     },
     "agreement": {
       "title": "Promise to Purchase Agreement",
@@ -2124,7 +2192,7 @@
       "AWAITING_FINANCING": "The seller accepted. The bank is now reviewing your loan application.",
       "FINANCING_APPROVED": "The bank approved your financing. Arrange payment with the seller.",
       "FINANCING_PARTIALLY_APPROVED": "The bank approved a smaller loan than requested. Decide how to proceed below.",
-      "FINANCING_REJECTED": "The bank declined the loan. You can re-apply for less, switch to a cash purchase, or cancel.",
+      "FINANCING_REJECTED": "The bank declined the loan. You can re-apply for less, continue without a loan, or cancel.",
       "AWAITING_PAYMENT": "Arrange payment with the seller. They will mark the sale complete once paid.",
       "COMPLETED": "The sale is complete. Congratulations!",
       "CANCELLED": "You cancelled this order.",
@@ -2147,7 +2215,7 @@
     },
     "rejectedFinancing": {
       "title": "Financing was declined",
-      "body": "You can apply again for a smaller amount, continue as a cash purchase, or cancel the order.",
+      "body": "You can apply again for a smaller amount, continue without a loan, or cancel the order.",
       "newAmount": "New financed amount",
       "reapply": "Re-apply"
     },
@@ -2170,7 +2238,7 @@
     "actions": {
       "cancel": "Cancel purchase order",
       "cancelConfirm": "Cancel this purchase order? Any pending loan application will be withdrawn.",
-      "convertToCash": "Continue as cash purchase"
+      "convertToCash": "Continue without a loan"
     },
     "seller": {
       "title": "Purchase orders received",

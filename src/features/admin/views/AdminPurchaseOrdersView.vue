@@ -6,6 +6,8 @@
         <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.purchaseOrders.subtitle') }}</p>
       </div>
 
+      <AdminUsdRateCard />
+
       <!-- Overview chips: click a status to filter by it, click again to clear. -->
       <div v-if="stats" class="flex flex-wrap gap-2" data-testid="stats">
         <span class="rounded-full border border-admin-line/20 bg-admin-surface px-3 py-1 text-xs font-semibold text-admin-fg">
@@ -174,6 +176,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminUsdRateCard from '../components/AdminUsdRateCard.vue'
 import { formatPrice } from '@/shared/utils'
 import type { PaginatedResponse } from '@/shared/types'
 import { purchaseApi } from '@/features/purchase/api/purchase.api'

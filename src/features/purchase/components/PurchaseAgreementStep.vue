@@ -9,8 +9,14 @@
       {{ $t('purchase.errors.agreementUnavailable') }}
     </div>
 
+    <PropertyDocumentsList
+      v-if="form.promiseAgreement && form.preview?.documents"
+      :documents="form.preview.documents"
+      :file-path="(id) => documentsApi.previewFilePath(form.propertyId!, id)"
+    />
+
     <AgreementReviewPanel
-      v-else
+      v-if="form.promiseAgreement"
       :title="form.promiseAgreement.title"
       :content="form.promiseAgreement.content"
       :version="form.promiseAgreement.version"
@@ -47,6 +53,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import AgreementReviewPanel from './AgreementReviewPanel.vue'
+import PropertyDocumentsList from './PropertyDocumentsList.vue'
+import { documentsApi } from '@/features/property/api/documents.api'
 import { usePurchaseOrderFormStore } from '../stores/purchaseOrderForm'
 
 defineProps<{ attempted?: boolean }>()

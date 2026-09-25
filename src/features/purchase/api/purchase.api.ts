@@ -87,10 +87,13 @@ export const purchaseApi = {
     return response.data
   },
 
-  preview: async (propertyId: string, currency?: Currency): Promise<PurchasePreviewResponse> => {
+  preview: async (propertyId: string, currency?: Currency, depositCurrency?: Currency): Promise<PurchasePreviewResponse> => {
+    const params: Record<string, string> = {}
+    if (currency) params.currency = currency
+    if (depositCurrency) params.depositCurrency = depositCurrency
     const response = await api.get<PurchasePreviewResponse>(
       `/properties/${propertyId}/purchase-preview`,
-      { params: currency ? { currency } : undefined }
+      { params: Object.keys(params).length ? params : undefined }
     )
     return response.data
   },
@@ -153,6 +156,17 @@ export const purchaseApi = {
   /** Asks the server to confirm the deposit with the provider after the buyer returns. */
   confirmDeposit: async (orderId: string): Promise<PurchaseDepositResponse> => {
     const response = await api.post<PurchaseDepositResponse>(`/purchase-orders/${orderId}/deposit/confirm`)
+    return response.data
+  },
+
+  /** Admin: birr per USD for deposits paid in USD by card; null means USD is off. */
+  getUsdRate: async (): Promise<{ etbPerUsd: number | null }> => {
+    const response = await api.get<{ etbPerUsd: number | null }>('/admin/purchase-settings/usd-rate')
+    return response.data
+  },
+
+  setUsdRate: async (etbPerUsd: number | null): Promise<{ etbPerUsd: number | null }> => {
+    const response = await api.put<{ etbPerUsd: number | null }>('/admin/purchase-settings/usd-rate', { etbPerUsd })
     return response.data
   },
 

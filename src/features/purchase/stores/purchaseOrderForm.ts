@@ -35,7 +35,7 @@ interface DraftSnapshot {
     financedAmount: number | null
     tenureMonths: number | null
   }
-  payment?: { method: DepositPaymentMethod | null }
+  payment?: { method: DepositPaymentMethod | null; currency?: Currency | null }
 }
 
 const DRAFT_KEY = (propertyId: string) => `purchase-order-draft:${propertyId}`
@@ -67,7 +67,11 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     signatoryFullName: ''
   })
   /** How the buyer will pay the reservation deposit (paid right after the order is placed). */
-  const payment = reactive({ method: null as DepositPaymentMethod | null })
+  const payment = reactive({
+    method: null as DepositPaymentMethod | null,
+    /** 'USD' pays an ETB deposit by international card; null pays it as quoted. */
+    currency: null as Currency | null
+  })
   /** The Reservation Deposit Terms, signed with the same name as the Promise to Purchase. */
   const depositAgreement = reactive({
     templateId: null as string | null,
@@ -225,6 +229,9 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       }
     }
     if (depositQuote.value && payment.method) request.depositPaymentMethod = payment.method
+    if (depositQuote.value && payment.currency === 'USD' && depositQuote.value.currency === 'USD' && depositQuote.value.baseAmount) {
+      request.depositCurrency = 'USD'
+    }
     if (contact.email.trim()) request.contactEmail = contact.email.trim()
     if (contact.message.trim()) request.buyerMessage = contact.message.trim()
     if (financingAvailable.value) {
@@ -260,6 +267,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     resetAgreement()
     resetDepositAgreement()
     payment.method = null
+    payment.currency = null
     submitting.value = false
     submitError.value = null
     serverFieldErrors.value = {}
@@ -317,7 +325,11 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     loadingPreview.value = true
     previewError.value = null
     try {
-      const data = await purchaseApi.preview(propertyId.value, currency)
+      const data = await purchaseApi.preview(
+        propertyId.value,
+        currency,
+        payment.currency === 'USD' ? 'USD' : undefined
+      )
       preview.value = data
       // Default to the recommended offer and its maximum split unless a draft chose otherwise.
       const offers = data.financingOffers
@@ -338,6 +350,8 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
         resetDepositAgreement()
         depositAgreement.templateId = terms?.templateId ?? null
       }
+      // USD no longer offered (rate removed): fall back to birr.
+      if (payment.currency === 'USD' && data.deposit && !data.deposit.baseAmount) payment.currency = null
       // Drop a remembered method the server no longer offers.
       if (payment.method && !data.deposit?.paymentMethods?.includes(payment.method)) payment.method = null
     } catch (err: any) {
@@ -373,6 +387,21 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
   function setDownPayment(cash: number) {
     if (!preview.value) return
     financing.financedAmount = Math.round((preview.value.listedPrice - cash) * 100) / 100
+  }
+
+  /**
+   * Switch the deposit between birr and USD (international card). The deposit terms quote the
+   * amount, so they are re-rendered and must be read and accepted again.
+   */
+  async function setDepositCurrency(currency: 'ETB' | 'USD') {
+    const next = currency === 'USD' ? 'USD' : null
+    if (payment.currency === next) return
+    payment.currency = next
+    if (next === 'USD') payment.method = 'CARD'
+    resetDepositAgreement()
+    await loadPreview(preview.value?.currency)
+    const terms = preview.value?.agreementsToSign?.find((a) => a.type === 'RESERVATION_DEPOSIT_TERMS')
+    depositAgreement.templateId = terms?.templateId ?? null
   }
 
   function goTo(target: WizardStep) {
@@ -519,6 +548,7 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
     loadPreview,
     selectOffer,
     setDownPayment,
+    setDepositCurrency,
     goTo,
     next,
     back,
