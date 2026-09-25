@@ -612,6 +612,14 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
+      "usdRate": {
+        "title": "USD deposit exchange rate",
+        "help": "Birr per US dollar used when a buyer pays an ETB deposit in USD by international card. Leave empty to turn USD payments off.",
+        "placeholder": "e.g. 155.50",
+        "unit": "ETB per USD",
+        "on": "USD payments are on at {rate} birr per US dollar.",
+        "off": "USD payments are off until a rate is set."
+      },
       "title": "Purchase orders",
       "subtitle": "Every purchase order on the platform: who is buying what, how it is financed, and where it stands.",
       "total": "Total",
@@ -1976,6 +1984,14 @@
       "cash": "Place purchase order"
     },
     "payment": {
+      "currencyLabel": "Pay the deposit in",
+      "currency": {
+        "ETB": "Birr (ETB)",
+        "USD": "US dollars (USD)"
+      },
+      "currencyEtbHelp": "telebirr, CBE Birr, M-Pesa, Awash Birr or card",
+      "currencyUsdHelp": "International Visa or Mastercard",
+      "conversion": "Equivalent to {base} at {rate} birr per US dollar",
       "title": "Payment method",
       "subtitle": "Choose how you will pay the reservation deposit. You pay it right after placing the order, on Chapa's secure checkout.",
       "chooseMethod": "Pay the deposit with",

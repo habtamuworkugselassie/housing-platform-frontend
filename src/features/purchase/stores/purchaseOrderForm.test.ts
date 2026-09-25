@@ -374,6 +374,33 @@ describe('usePurchaseOrderFormStore', () => {
       expect(store.stepValid.payment).toBe(true)
     })
 
+    it('switches the deposit to USD by card and re-renders the terms', async () => {
+      preview.mockResolvedValueOnce({ ...WITH_DEPOSIT, deposit: { ...WITH_DEPOSIT.deposit!, usdAmount: 566.67 } })
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      store.payment.method = 'TELEBIRR'
+      store.depositAgreement.scrolledToEnd = true
+      store.depositAgreement.accepted = true
+      preview.mockResolvedValueOnce({
+        ...WITH_DEPOSIT,
+        deposit: {
+          amount: 566.67,
+          currency: 'USD',
+          checkoutAvailable: true,
+          paymentMethods: ['CARD'],
+          baseAmount: 85_000,
+          baseCurrency: 'ETB',
+          exchangeRate: 150
+        }
+      })
+      await store.setDepositCurrency('USD')
+      expect(preview).toHaveBeenLastCalledWith('prop-1', 'ETB', 'USD')
+      expect(store.payment.method).toBe('CARD')
+      expect(store.depositAgreement.accepted).toBe(false)
+      expect(store.payload?.depositCurrency).toBe('USD')
+      expect(store.depositQuote?.amount).toBe(566.67)
+    })
+
     it('has no payment step when deposits are disabled', async () => {
       preview.mockResolvedValue({ ...WITH_DEPOSIT, deposit: null, agreementsToSign: PREVIEW.agreementsToSign })
       const store = usePurchaseOrderFormStore()

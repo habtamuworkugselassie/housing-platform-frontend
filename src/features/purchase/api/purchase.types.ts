@@ -77,6 +77,12 @@ export interface DepositQuote {
   /** False when online checkout is not configured on the server. */
   checkoutAvailable: boolean
   paymentMethods: DepositPaymentMethod[]
+  /** When an ETB deposit is quoted in USD: the ETB amount and the rate (birr per USD). */
+  baseAmount?: number | null
+  baseCurrency?: Currency | null
+  exchangeRate?: number | null
+  /** The deposit in USD by international card, when that option is on; null otherwise. */
+  usdAmount?: number | null
 }
 
 export interface PurchasePreviewResponse {
@@ -117,6 +123,8 @@ export interface CreatePurchaseOrderRequest {
   /** Signs the Reservation Deposit Terms with the order so the deposit can be paid right away. */
   depositTerms?: AgreementSignatureRequest
   depositPaymentMethod?: DepositPaymentMethod
+  /** USD pays an ETB deposit by international card at the platform's rate. */
+  depositCurrency?: Currency
 }
 
 export interface UpdatePurchaseFinancingRequest {
@@ -198,6 +206,10 @@ export interface PurchaseDepositResponse {
   paymentMethod: string | null
   /** The method the buyer picked on our side. */
   preferredMethod?: DepositPaymentMethod | null
+  /** Set when an ETB deposit was paid in USD: the ETB amount and the rate used. */
+  baseAmount?: number | null
+  baseCurrency?: Currency | null
+  exchangeRate?: number | null
   paidAt: string | null
   failureReason: string | null
   attempts: number

@@ -93,7 +93,10 @@
                 </div>
                 <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold" :class="depositClass(order.deposit.status)">{{ $t(`purchase.deposit.status.${order.deposit.status}`) }}</span>
               </div>
-              <p class="text-2xl font-bold text-gray-900">{{ money(order.deposit.amount) }}</p>
+              <p class="text-2xl font-bold text-gray-900">{{ formatPrice(order.deposit.amount, order.deposit.currency) }}</p>
+              <p v-if="order.deposit.baseAmount && order.deposit.exchangeRate" class="text-xs text-gray-600">
+                {{ $t('purchase.payment.conversion', { base: formatPrice(order.deposit.baseAmount, order.deposit.baseCurrency ?? 'ETB'), rate: order.deposit.exchangeRate }) }}
+              </p>
               <p v-if="order.deposit.dueAt && (order.deposit.status === 'DUE' || order.deposit.status === 'FAILED')" class="text-xs text-gray-500">{{ $t('purchase.deposit.dueBy', { date: formatDate(order.deposit.dueAt) }) }}</p>
               <p v-if="order.deposit.paidAt" class="text-xs text-gray-500">{{ $t('purchase.deposit.paidOn', { date: formatDate(order.deposit.paidAt), method: order.deposit.paymentMethod || order.deposit.provider }) }}</p>
 
@@ -109,7 +112,7 @@
                 <!-- A pending checkout resumes as started; otherwise the buyer can pick or change the method. -->
                 <div v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable && order.deposit.status !== 'PENDING'" class="pb-2">
                   <p class="mb-2 text-sm font-medium text-gray-700">{{ $t('purchase.payment.chooseMethod') }}</p>
-                  <DepositMethodPicker v-model="depositMethod" :methods="DEPOSIT_METHODS" name="order-deposit-method" :disabled="depositBusy" />
+                  <DepositMethodPicker v-model="depositMethod" :methods="order.deposit.currency === 'USD' ? ['CARD'] : DEPOSIT_METHODS" name="order-deposit-method" :disabled="depositBusy" />
                 </div>
                 <button
                   v-if="!order.deposit.termsPending && order.deposit.checkoutAvailable"
