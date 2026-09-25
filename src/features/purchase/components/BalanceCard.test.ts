@@ -43,7 +43,8 @@ const BALANCE: PurchaseBalanceResponse = {
     { id: 'i1', sequence: 1, label: 'On signing', amount: 1_168_000, dueDate: '2026-10-01', covered: 0, paid: false, overdue: false },
     { id: 'i2', sequence: 2, label: 'Handover', amount: 2_000_000, dueDate: '2027-01-01', covered: 0, paid: false, overdue: false }
   ],
-  payments: []
+  payments: [],
+  fees: null
 }
 
 function mountCard(props: Record<string, unknown> = {}) {
@@ -76,7 +77,7 @@ describe('BalanceCard', () => {
     await w.find('[data-testid="deposit-method-TELEBIRR"] input').setValue(true)
     await w.find('[data-testid="balance-pay-online"]').trigger('click')
     await flushPromises()
-    expect(purchaseApi.payBalanceOnline).toHaveBeenCalledWith('o1', 150000, 'TELEBIRR')
+    expect(purchaseApi.payBalanceOnline).toHaveBeenCalledWith('o1', 150000, 'TELEBIRR', 'BALANCE')
     expect(navigate).toHaveBeenCalledWith('https://checkout/x')
   })
 
@@ -142,5 +143,25 @@ describe('BalanceCard', () => {
     await w.find('[data-testid="line-amount-0"]').setValue(1000)
     expect(w.find('[data-testid="schedule-save"]').attributes('disabled')).toBeDefined()
     expect(w.find('[data-testid="schedule-total"]').text()).toContain('2,001,000')
+  })
+
+  it('opens with the service fee and pays it with purpose FEES', async () => {
+    vi.mocked(purchaseApi.getBalance).mockResolvedValue({
+      ...structuredClone(BALANCE),
+      fees: { markupPercent: 2, markupAmount: 64000, vatRate: 15, vatAmount: 489600, total: 553600, paid: 0, inProgress: 0, remaining: 553600, fullyPaid: false }
+    })
+    vi.mocked(purchaseApi.payBalanceOnline).mockResolvedValue({ checkoutUrl: 'https://checkout/f' } as any)
+    const navigate = vi.fn()
+    const w = mountCard({ navigate })
+    await flushPromises()
+    expect(w.find('[data-testid="fees-total"]').text()).toContain('553,600')
+    expect((w.find('[data-testid="balance-amount"]').element as HTMLInputElement).value).toBe('553600')
+    await w.find('[data-testid="deposit-method-CBE_BIRR"] input').setValue(true)
+    await w.find('[data-testid="balance-pay-online"]').trigger('click')
+    await flushPromises()
+    expect(purchaseApi.payBalanceOnline).toHaveBeenCalledWith('o1', 553600, 'CBE_BIRR', 'FEES')
+
+    await w.find('[data-testid="purpose-BALANCE"]').trigger('click')
+    expect((w.find('[data-testid="balance-amount"]').element as HTMLInputElement).value).toBe('1168000')
   })
 })

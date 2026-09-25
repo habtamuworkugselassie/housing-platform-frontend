@@ -613,6 +613,14 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
+      "fees": {
+        "title": "Service fee (markup) and VAT",
+        "help": "Charged to buyers on top of the price and paid once the seller accepts. VAT is charged on the price plus the fee. New orders use these rates; placed orders keep theirs.",
+        "markup": "Markup %",
+        "vat": "VAT %",
+        "off": "No service fee is charged while the markup is 0 %.",
+        "example": "New orders pay {markup} % of the price plus {vat} % VAT on price + fee."
+      },
       "bankAccount": {
         "title": "Bank account for balance transfers",
         "help": "Shown to buyers who pay the balance by bank transfer. Leave the bank name or account number empty to hide it.",
@@ -1965,6 +1973,20 @@
     }
   },
   "purchase": {
+    "fees": {
+      "title": "Service fee and VAT",
+      "markup": "Service fee ({percent} %)",
+      "vat": "VAT ({rate} % on price + fee)",
+      "total": "Total fee",
+      "whenDue": "Paid to Dream Teams Trading PLC once the seller accepts, separately from the price. Stated in the Promise to Purchase.",
+      "reviewLine": "Service fee and VAT {amount}, due when the seller accepts",
+      "reviewDetail": "{percent} % service fee plus {rate} % VAT on the price and fee",
+      "whatToPay": "What to pay",
+      "purpose": {
+        "FEES": "Service fee & VAT",
+        "BALANCE": "Balance of the price"
+      }
+    },
     "balance": {
       "title": "Balance",
       "subtitle": "The rest of the price, paid to Dream Teams Trading PLC after the seller accepts.",

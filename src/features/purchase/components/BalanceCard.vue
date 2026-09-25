@@ -24,6 +24,21 @@
       <div class="h-full rounded-full bg-green-500 transition-all" :style="{ width: `${percent}%` }" />
     </div>
 
+    <!-- The provider's service fee: markup + VAT on price and markup, paid separately -->
+    <div v-if="balance.fees" class="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm" data-testid="fees-summary">
+      <div class="flex items-center justify-between">
+        <p class="font-semibold text-gray-900">{{ $t('purchase.fees.title') }}</p>
+        <span class="rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="balance.fees.fullyPaid ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'">{{ balance.fees.fullyPaid ? $t('purchase.balance.paidInFull') : $t('purchase.balance.open') }}</span>
+      </div>
+      <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
+        <dt class="text-gray-500">{{ $t('purchase.fees.markup', { percent: balance.fees.markupPercent }) }}</dt><dd class="text-right">{{ money(balance.fees.markupAmount) }}</dd>
+        <dt class="text-gray-500">{{ $t('purchase.fees.vat', { rate: balance.fees.vatRate }) }}</dt><dd class="text-right">{{ money(balance.fees.vatAmount) }}</dd>
+        <dt class="font-semibold text-gray-900">{{ $t('purchase.fees.total') }}</dt><dd class="text-right font-semibold" data-testid="fees-total">{{ money(balance.fees.total) }}</dd>
+        <template v-if="balance.fees.paid > 0"><dt class="text-gray-500">{{ $t('purchase.balance.paid') }}</dt><dd class="text-right text-green-700">{{ money(balance.fees.paid) }}</dd></template>
+        <template v-if="!balance.fees.fullyPaid"><dt class="text-gray-500">{{ $t('purchase.balance.remaining') }}</dt><dd class="text-right font-semibold">{{ money(balance.fees.remaining) }}</dd></template>
+      </dl>
+    </div>
+
     <!-- Schedule -->
     <h3 class="mt-5 text-sm font-semibold text-gray-900">{{ $t('purchase.balance.schedule') }}</h3>
     <ul class="mt-2 divide-y divide-gray-100 rounded-xl border border-gray-200 text-sm">
@@ -43,7 +58,14 @@
     <p v-if="error" class="mt-3 text-xs text-red-600" role="alert">{{ error }}</p>
 
     <!-- Buyer: pay -->
-    <div v-if="isBuyer && balance.payable && room > 0" class="mt-5 space-y-3" data-testid="balance-pay">
+    <div v-if="isBuyer && balance.payable && anyRoom" class="mt-5 space-y-3" data-testid="balance-pay">
+      <!-- What to pay: the service fee first, then the balance -->
+      <div v-if="balance.fees && feesRoom > 0 && balanceRoom > 0" class="grid grid-cols-2 gap-2" role="radiogroup" :aria-label="$t('purchase.fees.whatToPay')">
+        <button v-for="p in (['FEES', 'BALANCE'] as const)" :key="p" type="button" role="radio" :aria-checked="purpose === p" class="rounded-xl border px-3 py-2 text-left text-sm" :class="purpose === p ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-300' : 'border-gray-200'" :data-testid="`purpose-${p}`" @click="setPurpose(p)">
+          <span class="block font-semibold text-gray-900">{{ $t(`purchase.fees.purpose.${p}`) }}</span>
+          <span class="block text-xs text-gray-500">{{ money(p === 'FEES' ? feesRoom : balanceRoom) }}</span>
+        </button>
+      </div>
       <div class="grid grid-cols-2 gap-2" role="tablist">
         <button v-for="tab in (['online', 'transfer'] as const)" :key="tab" type="button" role="tab" :aria-selected="payTab === tab" class="rounded-xl border px-3 py-2 text-sm font-semibold" :class="payTab === tab ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-gray-200 text-gray-700'" :data-testid="`balance-tab-${tab}`" @click="payTab = tab">
           {{ $t(`purchase.balance.tabs.${tab}`) }}
@@ -76,7 +98,7 @@
           <p class="mt-1 font-semibold text-gray-900">{{ balance.bankAccount.bankName }}<span v-if="balance.bankAccount.branch" class="font-normal text-gray-600"> · {{ balance.bankAccount.branch }}</span></p>
           <p class="text-gray-800">{{ balance.bankAccount.accountName }}</p>
           <p class="font-mono text-gray-900">{{ balance.bankAccount.accountNumber }}</p>
-          <p class="mt-2 text-xs text-gray-600">{{ $t('purchase.balance.quoteReference') }} <strong class="font-mono">{{ balance.transferReference }}</strong></p>
+          <p class="mt-2 text-xs text-gray-600">{{ $t('purchase.balance.quoteReference') }} <strong class="font-mono">{{ transferReference }}</strong></p>
         </div>
         <p v-else class="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">{{ $t('purchase.balance.noBankAccount') }}</p>
         <div class="grid gap-2 sm:grid-cols-2">
@@ -106,7 +128,7 @@
       <ul class="mt-2 divide-y divide-gray-100 rounded-xl border border-gray-200 text-sm">
         <li v-for="p in [...balance.payments].reverse()" :key="p.id" class="flex flex-wrap items-center gap-2 px-3 py-2" :data-testid="`balance-payment-${p.id}`">
           <span class="min-w-0 flex-1">
-            <span class="block font-medium text-gray-900">{{ money(p.amount) }} · {{ $t(`purchase.balance.channel.${p.channel}`) }}<span v-if="p.paymentMethod || p.preferredMethod"> · {{ p.paymentMethod || $t(`purchase.payment.methods.${p.preferredMethod}.label`) }}</span></span>
+            <span class="block font-medium text-gray-900">{{ money(p.amount) }}<span v-if="p.purpose === 'FEES'"> · {{ $t('purchase.fees.purpose.FEES') }}</span> · {{ $t(`purchase.balance.channel.${p.channel}`) }}<span v-if="p.paymentMethod || p.preferredMethod"> · {{ p.paymentMethod || $t(`purchase.payment.methods.${p.preferredMethod}.label`) }}</span></span>
             <span class="block text-xs text-gray-500">{{ [p.reference, p.paidOn ? formatDay(p.paidOn) : null, formatDay(p.createdAt)].filter(Boolean).join(' · ') }}</span>
             <span v-if="p.note && (p.status === 'REJECTED' || p.status === 'FAILED')" class="block text-xs text-red-600">{{ p.note }}</span>
           </span>
@@ -126,7 +148,7 @@ import { useI18n } from 'vue-i18n'
 import { formatPrice } from '@/shared/utils'
 import { openProtectedFile } from '@/shared/api/protectedFile'
 import { purchaseApi } from '../api/purchase.api'
-import type { DepositPaymentMethod, PurchaseBalanceResponse } from '../api/purchase.types'
+import type { BalancePurpose, DepositPaymentMethod, PurchaseBalanceResponse } from '../api/purchase.types'
 import DepositMethodPicker from './DepositMethodPicker.vue'
 import BalanceSellerTools from './BalanceSellerTools.vue'
 
@@ -165,7 +187,19 @@ const method = ref<DepositPaymentMethod | null>(null)
 const transfer = reactive({ reference: '', paidOn: '', slip: null as File | null })
 
 /** What can still be paid now: remaining minus payments waiting for Chapa or a confirmation. */
-const room = computed(() => (balance.value ? Math.max(0, round2(balance.value.remaining - balance.value.inProgress)) : 0))
+const balanceRoom = computed(() => (balance.value ? Math.max(0, round2(balance.value.remaining - balance.value.inProgress)) : 0))
+const feesRoom = computed(() => {
+  const f = balance.value?.fees
+  return f ? Math.max(0, round2(f.remaining - f.inProgress)) : 0
+})
+const anyRoom = computed(() => balanceRoom.value > 0 || feesRoom.value > 0)
+/** The service fee comes first while it is open. */
+const purpose = ref<BalancePurpose>('BALANCE')
+const room = computed(() => (purpose.value === 'FEES' ? feesRoom.value : balanceRoom.value))
+const transferReference = computed(() => {
+  const ref = balance.value?.transferReference ?? ''
+  return purpose.value === 'FEES' ? ref.replace(/-BAL$/, '-FEE') : ref
+})
 const validAmount = computed(() => amount.value != null && amount.value > 0 && amount.value <= room.value + 1e-9)
 const percent = computed(() => {
   const b = balance.value
@@ -189,14 +223,25 @@ function formatDay(value: string) {
 
 /** Default to the uncovered part of the next instalment, within what can be paid now. */
 function defaultAmount(b: PurchaseBalanceResponse) {
+  if (purpose.value === 'FEES') return feesRoom.value
   const next = b.instalments.find((i) => !i.paid)
   const suggested = next ? next.amount - next.covered : b.remaining
   return round2(Math.min(Math.max(0, b.remaining - b.inProgress), suggested))
 }
 
+function setPurpose(p: BalancePurpose) {
+  purpose.value = p
+  if (balance.value) amount.value = defaultAmount(balance.value) || null
+}
+
 function set(b: PurchaseBalanceResponse) {
+  const first = balance.value == null
   balance.value = b
-  if (amount.value == null || amount.value > room.value) amount.value = defaultAmount(b) || null
+  // Open with the service fee while it is due; afterwards keep the buyer's choice when possible.
+  if (first && b.fees && feesRoom.value > 0) purpose.value = 'FEES'
+  if (purpose.value === 'FEES' && feesRoom.value <= 0) purpose.value = 'BALANCE'
+  if (purpose.value === 'BALANCE' && balanceRoom.value <= 0 && feesRoom.value > 0) purpose.value = 'FEES'
+  if (first || amount.value == null || amount.value > room.value) amount.value = defaultAmount(b) || null
   if (!method.value && b.paymentMethods.length === 1) method.value = b.paymentMethods[0]
   emit('changed', b)
 }
@@ -226,7 +271,7 @@ async function run(action: () => Promise<PurchaseBalanceResponse | void>) {
 
 function payOnline() {
   return run(async () => {
-    const checkout = await purchaseApi.payBalanceOnline(props.orderId, round2(amount.value!), method.value)
+    const checkout = await purchaseApi.payBalanceOnline(props.orderId, round2(amount.value!), method.value, purpose.value)
     props.navigate(checkout.checkoutUrl)
   })
 }
@@ -247,7 +292,8 @@ function reportTransfer() {
       amount: round2(amount.value!),
       reference: transfer.reference.trim(),
       paidOn: transfer.paidOn || undefined,
-      slip: transfer.slip!
+      slip: transfer.slip!,
+      purpose: purpose.value
     })
     Object.assign(transfer, { reference: '', paidOn: '', slip: null })
     return b

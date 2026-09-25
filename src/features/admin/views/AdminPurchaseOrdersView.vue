@@ -6,6 +6,7 @@
         <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.purchaseOrders.subtitle') }}</p>
       </div>
 
+      <AdminFeeRatesCard />
       <AdminUsdRateCard />
       <AdminBankAccountCard />
 
@@ -178,6 +179,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import AdminUsdRateCard from '../components/AdminUsdRateCard.vue'
+import AdminFeeRatesCard from '../components/AdminFeeRatesCard.vue'
 import AdminBankAccountCard from '../components/AdminBankAccountCard.vue'
 import { formatPrice } from '@/shared/utils'
 import type { PaginatedResponse } from '@/shared/types'

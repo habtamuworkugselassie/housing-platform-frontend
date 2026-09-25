@@ -68,6 +68,15 @@ export interface AgreementPreview {
   content: string
 }
 
+export interface FeeQuote {
+  markupPercent: number
+  markupAmount: number
+  vatRate: number
+  vatAmount: number
+  total: number
+  currency: Currency
+}
+
 /** How the buyer pays the reservation deposit; each steers Chapa's hosted checkout. */
 export type DepositPaymentMethod = 'TELEBIRR' | 'CBE_BIRR' | 'MPESA' | 'AWASH_BIRR' | 'CARD'
 
@@ -95,6 +104,8 @@ export interface PurchasePreviewResponse {
   agreementsToSign: AgreementPreview[]
   /** The reservation deposit paid when placing the order; null when deposits are disabled. */
   deposit?: DepositQuote | null
+  /** The provider's service fee (markup + VAT on price and markup), due once the seller accepts. */
+  fees?: FeeQuote | null
   /** Verified official documents (Annex A of the Promise to Purchase); signed-in users only. */
   documents?: import('@/features/property/api/documents.api').PropertyDocument[] | null
 }
@@ -291,6 +302,8 @@ export interface PurchaseOrderStatsResponse {
 // ------------------------------------------------------------------ balance (after the deposit)
 
 export type BalancePaymentChannel = 'ONLINE' | 'BANK_TRANSFER' | 'RECORDED'
+/** BALANCE = the rest of the price; FEES = the provider's service fee (markup + VAT). */
+export type BalancePurpose = 'BALANCE' | 'FEES'
 export type BalancePaymentStatus = 'PENDING' | 'SUBMITTED' | 'PAID' | 'FAILED' | 'REJECTED' | 'CANCELLED' | 'REFUND_PENDING' | 'REFUNDED'
 
 export interface BalanceInstalment {
@@ -307,6 +320,7 @@ export interface BalanceInstalment {
 export interface BalancePayment {
   id: string
   channel: BalancePaymentChannel
+  purpose: BalancePurpose
   status: BalancePaymentStatus
   amount: number
   currency: Currency
@@ -347,6 +361,19 @@ export interface PurchaseBalanceResponse {
   transferReference: string
   instalments: BalanceInstalment[]
   payments: BalancePayment[]
+  fees: BalanceFees | null
+}
+
+export interface BalanceFees {
+  markupPercent: number
+  markupAmount: number
+  vatRate: number
+  vatAmount: number
+  total: number
+  paid: number
+  inProgress: number
+  remaining: number
+  fullyPaid: boolean
 }
 
 export interface BalanceInstalmentLine {

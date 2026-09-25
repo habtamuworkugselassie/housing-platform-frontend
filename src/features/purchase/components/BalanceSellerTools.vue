@@ -4,7 +4,7 @@
     <div v-if="submitted.length" class="space-y-2 rounded-xl border border-amber-200 bg-amber-50 p-3">
       <p class="text-sm font-semibold text-amber-900">{{ $t('purchase.balance.seller.toConfirm') }}</p>
       <div v-for="p in submitted" :key="p.id" class="space-y-2 rounded-lg bg-white p-3 text-sm" :data-testid="`review-${p.id}`">
-        <p class="font-medium text-gray-900">{{ money(p.amount) }} · {{ p.reference }}<span v-if="p.paidOn" class="text-gray-500"> · {{ p.paidOn }}</span></p>
+        <p class="font-medium text-gray-900">{{ money(p.amount) }}<span v-if="p.purpose === 'FEES'"> · {{ $t('purchase.fees.purpose.FEES') }}</span> · {{ p.reference }}<span v-if="p.paidOn" class="text-gray-500"> · {{ p.paidOn }}</span></p>
         <div class="flex flex-wrap items-center gap-2">
           <button type="button" class="text-xs font-semibold text-primary-700 hover:underline" @click="openSlip(p.id)">{{ $t('purchase.balance.viewReceipt') }}</button>
           <input v-model="notes[p.id]" type="text" maxlength="2000" :placeholder="$t('purchase.balance.seller.notePlaceholder')" class="min-w-[10rem] flex-1 rounded-lg border border-gray-300 px-2 py-1 text-xs" />
@@ -22,6 +22,10 @@
     <!-- Record money received outside the platform -->
     <div v-if="panel === 'record'" class="space-y-2 rounded-xl border border-gray-200 p-3" data-testid="record-form">
       <p class="text-xs text-gray-600">{{ $t('purchase.balance.seller.recordHelp') }}</p>
+      <select v-if="balance.fees" v-model="record.purpose" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" data-testid="record-purpose">
+        <option value="BALANCE">{{ $t('purchase.fees.purpose.BALANCE') }}</option>
+        <option value="FEES">{{ $t('purchase.fees.purpose.FEES') }}</option>
+      </select>
       <div class="grid gap-2 sm:grid-cols-3">
         <input v-model.number="record.amount" type="number" min="1" step="0.01" :placeholder="$t('purchase.balance.amount')" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" data-testid="record-amount" />
         <input v-model="record.reference" type="text" maxlength="255" :placeholder="$t('purchase.balance.bankReference')" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" data-testid="record-reference" />
@@ -63,13 +67,14 @@ import type { PurchaseBalanceResponse } from '../api/purchase.types'
 const props = defineProps<{ orderId: string; balance: PurchaseBalanceResponse }>()
 const emit = defineEmits<{ updated: [balance: PurchaseBalanceResponse] }>()
 const { t } = useI18n()
+type BalancePurpose = 'BALANCE' | 'FEES'
 const auth = useAuthStore()
 
 const busy = ref(false)
 const error = ref<string | null>(null)
 const panel = ref<'record' | 'schedule' | null>(null)
 const notes = reactive<Record<string, string>>({})
-const record = reactive({ amount: 0, reference: '', paidOn: '' })
+const record = reactive({ amount: 0, reference: '', paidOn: '', purpose: 'BALANCE' as BalancePurpose })
 const lines = ref<{ label: string; amount: number; dueDate: string }[]>([])
 
 const submitted = computed(() => props.balance.payments.filter((p) => p.status === 'SUBMITTED'))
@@ -102,10 +107,10 @@ function review(paymentId: string, approve: boolean) {
 
 async function saveRecord() {
   const ok = await run(() =>
-    purchaseApi.recordBalancePayment(props.orderId, { amount: record.amount, reference: record.reference.trim(), paidOn: record.paidOn || null })
+    purchaseApi.recordBalancePayment(props.orderId, { amount: record.amount, reference: record.reference.trim(), paidOn: record.paidOn || null, purpose: record.purpose })
   )
   if (ok) {
-    Object.assign(record, { amount: 0, reference: '', paidOn: '' })
+    Object.assign(record, { amount: 0, reference: '', paidOn: '', purpose: 'BALANCE' })
     panel.value = null
   }
 }

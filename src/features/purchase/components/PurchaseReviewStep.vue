@@ -43,6 +43,10 @@
             <span v-if="form.payment.method" class="block text-gray-600">{{ $t('purchase.review.via', { method: $t(`purchase.payment.methods.${form.payment.method}.label`) }) }}</span>
             <span v-else class="block text-gray-600">{{ $t('purchase.payment.unavailable') }}</span>
           </div>
+          <div v-if="form.preview?.fees" class="mt-3" data-testid="review-fees">
+            <span class="block font-semibold">{{ $t('purchase.fees.reviewLine', { amount: money(form.preview.fees.total) }) }}</span>
+            <span class="block text-gray-600">{{ $t('purchase.fees.reviewDetail', { percent: form.preview.fees.markupPercent, rate: form.preview.fees.vatRate }) }}</span>
+          </div>
         </dd>
         <button v-if="form.depositQuote" type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('payment')">{{ $t('common.edit') }}</button>
         <button v-else-if="form.financingAvailable" type="button" class="text-left text-xs font-semibold text-primary-600 hover:underline sm:col-start-3" @click="form.goTo('financing')">{{ $t('common.edit') }}</button>

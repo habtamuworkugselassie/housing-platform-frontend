@@ -41,6 +41,16 @@
     </fieldset>
     <p v-else class="rounded-lg bg-gray-50 p-3 text-xs text-gray-600">{{ $t('purchase.payment.unavailable') }}</p>
 
+    <div v-if="form.preview?.fees" class="rounded-xl border border-gray-200 p-4 text-sm" data-testid="fees-quote">
+      <p class="font-semibold text-gray-900">{{ $t('purchase.fees.title') }}</p>
+      <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
+        <dt class="text-gray-500">{{ $t('purchase.fees.markup', { percent: form.preview.fees.markupPercent }) }}</dt><dd class="text-right">{{ formatPrice(form.preview.fees.markupAmount, form.preview.fees.currency) }}</dd>
+        <dt class="text-gray-500">{{ $t('purchase.fees.vat', { rate: form.preview.fees.vatRate }) }}</dt><dd class="text-right">{{ formatPrice(form.preview.fees.vatAmount, form.preview.fees.currency) }}</dd>
+        <dt class="font-semibold text-gray-900">{{ $t('purchase.fees.total') }}</dt><dd class="text-right font-semibold">{{ formatPrice(form.preview.fees.total, form.preview.fees.currency) }}</dd>
+      </dl>
+      <p class="mt-2 text-xs text-gray-500">{{ $t('purchase.fees.whenDue') }}</p>
+    </div>
+
     <p v-if="form.financingApplied" class="text-xs text-gray-500">{{ $t('purchase.payment.financedNote') }}</p>
   </section>
 </template>

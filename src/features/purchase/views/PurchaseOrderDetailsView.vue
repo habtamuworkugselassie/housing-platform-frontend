@@ -131,7 +131,7 @@
             </section>
 
             <!-- Balance: price − deposit − loan, paid to the provider after acceptance -->
-            <BalanceCard :order-id="order.id" :is-buyer="isBuyer" :is-seller="isSeller" @changed="balanceRemaining = $event.remaining" />
+            <BalanceCard :order-id="order.id" :is-buyer="isBuyer" :is-seller="isSeller" @changed="balanceRemaining = $event.remaining + ($event.fees?.remaining ?? 0)" />
 
             <!-- Official property documents (Annex A of the Promise to Purchase) -->
             <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
