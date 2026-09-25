@@ -130,6 +130,9 @@
               </div>
             </section>
 
+            <!-- Balance: price − deposit − loan, paid to the provider after acceptance -->
+            <BalanceCard :order-id="order.id" :is-buyer="isBuyer" :is-seller="isSeller" @changed="balanceRemaining = $event.remaining + ($event.fees?.remaining ?? 0)" />
+
             <!-- Official property documents (Annex A of the Promise to Purchase) -->
             <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <PropertyDocumentsList :documents="orderDocuments" :file-path="(id) => documentsApi.orderFilePath(order!.id, id)" />
@@ -195,7 +198,7 @@
                 <li v-for="s in order.financing.nextSteps" :key="s">{{ s }}</li>
               </ul>
             </div>
-            <SellerOrderActions v-if="isSeller" :order="order" @updated="order = $event" />
+            <SellerOrderActions v-if="isSeller" :order="order" :balance-remaining="balanceRemaining" @updated="order = $event" />
             <button
               v-if="canCancel"
               type="button"
@@ -274,6 +277,7 @@ import { isDepositReturn, useDepositCheckout } from '../composables/useDepositCh
 import type { DepositPaymentMethod, DepositStatus } from '../api/purchase.types'
 import DepositMethodPicker from '../components/DepositMethodPicker.vue'
 import PropertyDocumentsList from '../components/PropertyDocumentsList.vue'
+import BalanceCard from '../components/BalanceCard.vue'
 import { documentsApi, type PropertyDocument } from '@/features/property/api/documents.api'
 import AgreementReviewPanel from '../components/AgreementReviewPanel.vue'
 
@@ -310,6 +314,8 @@ function depositClass(status: DepositStatus) {
   return 'bg-blue-100 text-blue-700'
 }
 const orderDocuments = ref<PropertyDocument[]>([])
+/** From the balance card; the seller cannot complete the sale while anything is left. */
+const balanceRemaining = ref<number | null>(null)
 const DEPOSIT_METHODS: DepositPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
 const depositMethod = ref<DepositPaymentMethod | null>(null)
 watch(
