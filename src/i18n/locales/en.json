@@ -2082,13 +2082,13 @@
       "review": "Review"
     },
     "types": {
-      "CASH": "Cash purchase",
+      "CASH": "Direct purchase",
       "BANK_FINANCED": "Bank financed"
     },
     "sidebar": {
       "financingAvailable": "Bank financing is available for this property",
-      "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or pay cash.",
-      "cashOnly": "Standard cash purchase",
+      "financingAvailableHelp": "{count} active financing product(s) are linked to this listing. You can finance part or all of the allowed amount, or buy without a loan.",
+      "cashOnly": "Direct purchase",
       "cashOnlyHelp": "No bank financing product is linked to this listing, so the order proceeds as a direct purchase.",
       "payOnline": "Pay online with telebirr, CBE Birr, M-Pesa, Awash Birr or card",
       "payOnlineHelp": "You pay a reservation deposit of {amount} when placing the order, on Chapa's secure checkout. The balance is arranged with the seller."
@@ -2112,7 +2112,7 @@
       "title": "Bank financing",
       "subtitle": "This property has an active financing product. Choose how much of the price you want to finance.",
       "useFinancing": "Finance part of the purchase through a bank",
-      "useFinancingHelp": "Untick to place a plain cash order even though financing is available.",
+      "useFinancingHelp": "Untick to buy without a bank loan even though financing is available.",
       "chooseOffer": "Choose a financing offer",
       "recommended": "Recommended",
       "bank": "Bank",
@@ -2134,7 +2134,7 @@
       "coverage": "Coverage",
       "estimatedInstallment": "Est. instalment",
       "estimateDisclaimer": "Estimates use the product's listed rate. The bank confirms the final terms when it reviews your loan application.",
-      "cashChosen": "You chose to pay cash. The order will not include a loan application."
+      "cashChosen": "You chose to buy without a bank loan. The order will not include a loan application."
     },
     "agreement": {
       "title": "Promise to Purchase Agreement",
@@ -2192,7 +2192,7 @@
       "AWAITING_FINANCING": "The seller accepted. The bank is now reviewing your loan application.",
       "FINANCING_APPROVED": "The bank approved your financing. Arrange payment with the seller.",
       "FINANCING_PARTIALLY_APPROVED": "The bank approved a smaller loan than requested. Decide how to proceed below.",
-      "FINANCING_REJECTED": "The bank declined the loan. You can re-apply for less, switch to a cash purchase, or cancel.",
+      "FINANCING_REJECTED": "The bank declined the loan. You can re-apply for less, continue without a loan, or cancel.",
       "AWAITING_PAYMENT": "Arrange payment with the seller. They will mark the sale complete once paid.",
       "COMPLETED": "The sale is complete. Congratulations!",
       "CANCELLED": "You cancelled this order.",
@@ -2215,7 +2215,7 @@
     },
     "rejectedFinancing": {
       "title": "Financing was declined",
-      "body": "You can apply again for a smaller amount, continue as a cash purchase, or cancel the order.",
+      "body": "You can apply again for a smaller amount, continue without a loan, or cancel the order.",
       "newAmount": "New financed amount",
       "reapply": "Re-apply"
     },
@@ -2238,7 +2238,7 @@
     "actions": {
       "cancel": "Cancel purchase order",
       "cancelConfirm": "Cancel this purchase order? Any pending loan application will be withdrawn.",
-      "convertToCash": "Continue as cash purchase"
+      "convertToCash": "Continue without a loan"
     },
     "seller": {
       "title": "Purchase orders received",
