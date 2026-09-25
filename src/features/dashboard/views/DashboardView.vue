@@ -340,7 +340,7 @@
             <div class="flex items-center">
               <span class="material-icons text-teal-600 mr-2">home</span>
               <h2 class="mdc-typography--headline6 m-0">
-                {{ isSuperAgent ? $t('dashboard.companyProperties') : $t('dashboard.myProperties') }}
+                {{ $t('dashboard.companyProperties') }}
               </h2>
             </div>
             <button
@@ -1683,8 +1683,11 @@ const loadDashboardData = async () => {
           loadSponsorshipApplications()
         ])
       } else {
-        // Regular agent: load only their properties
-        await loadMyProperties()
+        // A regular agent sees the same company listings a super agent does. They
+        // could already edit any of them — validateAgentCanManageProperty checks the
+        // company, not the agent — so showing only their own was hiding work they are
+        // responsible for rather than enforcing anything.
+        await loadProperties()
       }
     } catch (err) {
       if (err.response?.status === 404) {
@@ -1731,29 +1734,18 @@ const loadAgents = async () => {
   }
 }
 
+// Every agent sees their whole organization's listings, not just the ones they
+// created themselves. The endpoint takes no id — the backend resolves the company
+// from the authenticated agent — so this is also the loader for a regular agent,
+// who has no organization object of their own to pass.
 const loadProperties = async () => {
-  if (!organization.value) return
-  
   propertiesLoading.value = true
   try {
-    const response = await api.get(`/properties/organization/${organization.value.id}`)
-    properties.value = response.data
+    const response = await api.get('/properties/my-organization')
+    properties.value = Array.isArray(response.data) ? response.data : []
   } catch (err) {
     console.error('Failed to load properties:', err)
-  } finally {
-    propertiesLoading.value = false
-  }
-}
-
-const loadMyProperties = async () => {
-  if (!agent.value) return
-  
-  propertiesLoading.value = true
-  try {
-    const response = await api.get(`/properties/agent/${agent.value.id}`)
-    properties.value = response.data
-  } catch (err) {
-    console.error('Failed to load my properties:', err)
+    properties.value = []
   } finally {
     propertiesLoading.value = false
   }
