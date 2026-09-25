@@ -8,7 +8,7 @@
 import { computed, ref, type Ref } from 'vue'
 import type { LocationQuery } from 'vue-router'
 import { purchaseApi } from '../api/purchase.api'
-import type { PurchaseDepositResponse } from '../api/purchase.types'
+import type { DepositPaymentMethod, PurchaseDepositResponse } from '../api/purchase.types'
 
 export type DepositOutcome = 'paid' | 'failed' | 'pending' | null
 
@@ -32,11 +32,12 @@ export function useDepositCheckout(orderId: Ref<string>, navigate: (url: string)
 
   const busy = computed(() => starting.value || confirming.value)
 
-  async function pay() {
+  /** {@code method} replaces the one picked when the order was placed (a pending checkout resumes). */
+  async function pay(method?: DepositPaymentMethod | null) {
     starting.value = true
     error.value = null
     try {
-      const checkout = await purchaseApi.startDepositCheckout(orderId.value)
+      const checkout = await purchaseApi.startDepositCheckout(orderId.value, method)
       navigate(checkout.checkoutUrl)
     } catch (err: any) {
       error.value = err?.response?.data?.message || 'purchase.deposit.errors.startFailed'

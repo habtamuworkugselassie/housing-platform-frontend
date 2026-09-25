@@ -38,6 +38,7 @@
             <form v-else novalidate @submit.prevent="onPrimary">
               <PurchaseContactStep v-if="form.step === 'contact'" :attempted="attempted.contact" />
               <PurchaseFinancingStep v-else-if="form.step === 'financing'" :attempted="attempted.financing" />
+              <PurchasePaymentStep v-else-if="form.step === 'payment'" :attempted="attempted.payment" />
               <PurchaseAgreementStep v-else-if="form.step === 'agreement'" :attempted="attempted.agreement" />
               <PurchaseReviewStep v-else :property-title="property.title" />
 
@@ -72,11 +73,11 @@
                   v-else
                   type="submit"
                   class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
-                  :disabled="!form.canSubmit"
-                  :aria-busy="form.submitting ? 'true' : 'false'"
+                  :disabled="!form.canSubmit || redirecting"
+                  :aria-busy="form.submitting || redirecting ? 'true' : 'false'"
                 >
-                  <span v-if="form.submitting" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true"></span>
-                  {{ form.submitting ? $t('purchase.review.submitting') : $t('purchase.review.submit') }}
+                  <span v-if="form.submitting || redirecting" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true"></span>
+                  {{ redirecting ? $t('purchase.review.redirecting') : form.submitting ? $t('purchase.review.submitting') : form.depositOnline && form.payment.method ? $t('purchase.review.submitAndPay') : $t('purchase.review.submit') }}
                 </button>
               </div>
             </form>
@@ -98,10 +99,10 @@
 
             <div class="rounded-2xl border p-5 text-sm" :class="form.preview.financingAvailable ? 'border-blue-200 bg-blue-50 text-blue-900' : 'border-gray-200 bg-white text-gray-700'">
               <p class="font-semibold">
-                {{ form.preview.financingAvailable ? $t('purchase.sidebar.financingAvailable') : $t('purchase.sidebar.cashOnly') }}
+                {{ form.preview.financingAvailable ? $t('purchase.sidebar.financingAvailable') : form.depositOnline ? $t('purchase.sidebar.payOnline') : $t('purchase.sidebar.cashOnly') }}
               </p>
               <p class="mt-1 text-xs opacity-80">
-                {{ form.preview.financingAvailable ? $t('purchase.sidebar.financingAvailableHelp', { count: form.preview.financingOffers.length }) : $t('purchase.sidebar.cashOnlyHelp') }}
+                {{ form.preview.financingAvailable ? $t('purchase.sidebar.financingAvailableHelp', { count: form.preview.financingOffers.length }) : form.depositOnline ? $t('purchase.sidebar.payOnlineHelp', { amount: formatPrice(form.depositQuote?.amount ?? 0, form.depositQuote?.currency ?? 'ETB') }) : $t('purchase.sidebar.cashOnlyHelp') }}
               </p>
             </div>
           </div>
@@ -120,12 +121,14 @@ import { formatPrice } from '@/shared/utils'
 import { Breadcrumbs } from '@/shared/components'
 import { useAuthStore } from '@/features/auth'
 import { usePurchaseOrderFormStore } from '../stores/purchaseOrderForm'
+import { purchaseApi } from '../api/purchase.api'
 import PurchaseWizardSteps from '../components/PurchaseWizardSteps.vue'
 import PurchaseAccountStep from '../components/PurchaseAccountStep.vue'
 import type { AccountDetails } from '../components/PurchaseAccountStep.vue'
 import PurchaseContactStep from '../components/PurchaseContactStep.vue'
 import PurchaseFinancingStep from '../components/PurchaseFinancingStep.vue'
 import PurchaseAgreementStep from '../components/PurchaseAgreementStep.vue'
+import PurchasePaymentStep from '../components/PurchasePaymentStep.vue'
 import PurchaseReviewStep from '../components/PurchaseReviewStep.vue'
 
 const route = useRoute()
@@ -140,7 +143,13 @@ const loadingProperty = ref(true)
 const propertyError = ref<string | null>(null)
 
 /** Per-step "the buyer tried to continue" flags; errors show after that, or after blur. */
-const attempted = reactive({ contact: false, financing: false, agreement: false })
+const attempted = reactive({ contact: false, financing: false, payment: false, agreement: false })
+
+/** True while the new order is being handed to the payment provider's checkout. */
+const redirecting = ref(false)
+function navigateToCheckout(url: string) {
+  window.location.assign(url)
+}
 
 const coverImage = computed(() => {
   const first = property.value?.images?.[0]
@@ -186,12 +195,23 @@ async function onAuthenticated(details: AccountDetails) {
 async function onPrimary() {
   if (form.step === 'review') {
     const order = await form.submit()
-    if (order) {
-      router.push({ name: 'PurchaseOrderDetails', params: { id: order.id }, query: { created: '1' } })
+    if (!order) return
+    // The deposit is paid right away: go straight to the provider's checkout on the chosen method.
+    if (order.deposit && order.deposit.checkoutAvailable && !order.deposit.termsPending && form.payment.method) {
+      redirecting.value = true
+      try {
+        const checkout = await purchaseApi.startDepositCheckout(order.id, form.payment.method)
+        navigateToCheckout(checkout.checkoutUrl)
+        return
+      } catch {
+        redirecting.value = false
+        // The order exists; the buyer can retry the payment from the order page.
+      }
     }
+    router.push({ name: 'PurchaseOrderDetails', params: { id: order.id }, query: { created: '1' } })
     return
   }
-  attempted[form.step as 'contact' | 'financing' | 'agreement'] = true
+  attempted[form.step as 'contact' | 'financing' | 'payment' | 'agreement'] = true
   form.next()
 }
 
@@ -199,7 +219,7 @@ async function onPrimary() {
 watch(
   () => form.step,
   (s) => {
-    if (s in attempted) attempted[s as 'contact' | 'financing' | 'agreement'] = false
+    if (s in attempted) attempted[s as 'contact' | 'financing' | 'payment' | 'agreement'] = false
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 )

@@ -306,4 +306,80 @@ describe('usePurchaseOrderFormStore', () => {
       expect(store.contact.phone).toBe('0700000000')
     })
   })
+
+  describe('reservation deposit at order placement', () => {
+    const WITH_DEPOSIT: PurchasePreviewResponse = {
+      ...PREVIEW,
+      financingAvailable: false,
+      financingOffers: [],
+      purchaseType: 'CASH',
+      deposit: {
+        amount: 85_000,
+        currency: 'ETB',
+        checkoutAvailable: true,
+        paymentMethods: ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
+      },
+      agreementsToSign: [
+        ...PREVIEW.agreementsToSign,
+        {
+          templateId: 'tpl-dep',
+          type: 'RESERVATION_DEPOSIT_TERMS',
+          version: 2,
+          title: 'Reservation Deposit Terms',
+          content: '# DEPOSIT'
+        }
+      ]
+    }
+
+    beforeEach(() => preview.mockResolvedValue(WITH_DEPOSIT))
+
+    it('adds a payment step before the agreement', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      expect(store.steps).toEqual(['contact', 'payment', 'agreement', 'review'])
+    })
+
+    it('requires a method and both agreements before submitting', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      fillValid(store)
+      expect(store.stepValid.payment).toBe(false)
+      store.payment.method = 'TELEBIRR'
+      expect(store.stepValid.payment).toBe(true)
+      expect(store.stepValid.agreement).toBe(false)
+      store.depositAgreement.scrolledToEnd = true
+      store.depositAgreement.accepted = true
+      expect(store.canSubmit).toBe(true)
+    })
+
+    it('posts the method and signs the deposit terms with the same name', async () => {
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      fillValid(store)
+      store.payment.method = 'CBE_BIRR'
+      store.depositAgreement.scrolledToEnd = true
+      store.depositAgreement.accepted = true
+      await store.submit()
+      const body = create.mock.calls[0][0]
+      expect(body.depositPaymentMethod).toBe('CBE_BIRR')
+      expect(body.depositTerms).toEqual({ templateId: 'tpl-dep', accepted: true, signatoryFullName: 'Abebe Kebede' })
+      expect(body.promiseToPurchase.templateId).toBe('tpl-1')
+    })
+
+    it('skips the method choice when online checkout is not configured', async () => {
+      preview.mockResolvedValue({ ...WITH_DEPOSIT, deposit: { ...WITH_DEPOSIT.deposit!, checkoutAvailable: false } })
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      expect(store.steps).toContain('payment')
+      expect(store.stepValid.payment).toBe(true)
+    })
+
+    it('has no payment step when deposits are disabled', async () => {
+      preview.mockResolvedValue({ ...WITH_DEPOSIT, deposit: null, agreementsToSign: PREVIEW.agreementsToSign })
+      const store = usePurchaseOrderFormStore()
+      await store.init('prop-1')
+      expect(store.steps).toEqual(['contact', 'agreement', 'review'])
+      expect(store.payload?.depositTerms).toBeUndefined()
+    })
+  })
 })

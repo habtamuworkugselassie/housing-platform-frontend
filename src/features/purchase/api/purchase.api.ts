@@ -7,6 +7,7 @@ import type {
   AgreementSignatureRequest,
   CreatePurchaseOrderRequest,
   DepositCheckoutResponse,
+  DepositPaymentMethod,
   PurchaseDepositResponse,
   PurchaseAgreementResponse,
   PurchaseOrderResponse,
@@ -141,8 +142,11 @@ export const purchaseApi = {
   },
 
   /** Starts (or resumes) the reservation-deposit checkout at the payment provider. */
-  startDepositCheckout: async (orderId: string): Promise<DepositCheckoutResponse> => {
-    const response = await api.post<DepositCheckoutResponse>(`/purchase-orders/${orderId}/deposit/checkout`)
+  startDepositCheckout: async (orderId: string, paymentMethod?: DepositPaymentMethod | null): Promise<DepositCheckoutResponse> => {
+    const response = await api.post<DepositCheckoutResponse>(
+      `/purchase-orders/${orderId}/deposit/checkout`,
+      paymentMethod ? { paymentMethod } : undefined
+    )
     return response.data
   },
 
