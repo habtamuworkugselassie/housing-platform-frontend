@@ -6,12 +6,19 @@
       class="flex h-full min-h-[5.5rem] sm:min-h-28 w-full gap-2 sm:gap-3"
     >
       <template v-if="adContents && adContents.length > 0">
+        <!-- on-dark: every sponsorship tier paints this card with a dark gradient
+             (headerBg, e.g. GOLD's from-orange-950/45 via-zinc-900/95 to-zinc-950).
+             A gradient is a background-image, so light-app.css cannot remap it the
+             way it remaps bg-zinc-900 — the card stays dark by design. Its text-white
+             title, though, was being recoloured to ink, leaving the sponsor's name
+             nearly unreadable on its own card. on-dark excludes the subtree from every
+             light remap so the tier palette renders as written. -->
         <div
           v-for="ad in adContents.slice(0, 2)"
           :key="ad.id"
           role="link"
           tabindex="0"
-          class="flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
+          class="on-dark flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
           :class="tierFor(ad).shadowGlow"
           @click="handleAdClick(ad)"
           @keydown.enter.prevent="handleAdClick(ad)"
@@ -78,7 +85,7 @@
         <div
           role="link"
           tabindex="0"
-          class="flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
+          class="on-dark flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
           :class="tierFor(adContent).shadowGlow"
           @click="handleClick"
           @keydown.enter.prevent="handleClick"
@@ -146,7 +153,7 @@
     <!-- Sidebar / rectangle: same exhibition tier system -->
     <div
       v-else
-      class="h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-primary-400/40 w-full"
+      class="on-dark h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-primary-400/40 w-full"
       :class="[
         sidebarTier.shadowGlow,
         size === 'sidebar' ? 'min-h-[300px]' : '',
