@@ -67,7 +67,7 @@
         </button>
       </div>
       <div class="grid grid-cols-2 gap-2" role="tablist">
-        <button v-for="tab in (['online', 'transfer'] as const)" :key="tab" type="button" role="tab" :aria-selected="payTab === tab" class="rounded-xl border px-3 py-2 text-sm font-semibold" :class="payTab === tab ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-gray-200 text-gray-700'" :data-testid="`balance-tab-${tab}`" @click="payTab = tab">
+        <button v-for="tab in (['online', 'transfer'] as const)" :key="tab" type="button" role="tab" :aria-selected="payTab === tab" class="rounded-xl border px-3 py-2 text-sm font-semibold" :class="payTab === tab ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-gray-200 text-gray-700'" :data-testid="`balance-tab-${tab}`" @click="setTab(tab)">
           {{ $t(`purchase.balance.tabs.${tab}`) }}
         </button>
       </div>
@@ -75,10 +75,11 @@
       <div class="space-y-1">
         <label :for="`${uid}-amount`" class="block text-xs font-medium text-gray-700">{{ $t('purchase.balance.amount') }}</label>
         <div class="flex items-center gap-2">
-          <input :id="`${uid}-amount`" v-model.number="amount" type="number" inputmode="decimal" min="1" :max="room" step="0.01" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" data-testid="balance-amount" />
+          <input :id="`${uid}-amount`" v-model.number="amount" type="number" inputmode="decimal" min="1" :max="payMax" step="0.01" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" data-testid="balance-amount" />
           <span class="text-sm text-gray-500">{{ balance.currency }}</span>
         </div>
-        <p class="text-[11px] text-gray-500">{{ $t('purchase.balance.amountHelp', { max: money(room) }) }}</p>
+        <p class="text-[11px] text-gray-500">{{ $t('purchase.balance.amountHelp', { max: money(payMax) }) }}</p>
+        <p v-if="payTab === 'online' && onlineMax && room > onlineMax" class="text-[11px] text-amber-700" data-testid="online-limit">{{ $t('purchase.balance.onlineLimit', { max: money(onlineMax) }) }}</p>
       </div>
 
       <template v-if="payTab === 'online'">
@@ -196,11 +197,14 @@ const anyRoom = computed(() => balanceRoom.value > 0 || feesRoom.value > 0)
 /** The service fee comes first while it is open. */
 const purpose = ref<BalancePurpose>('BALANCE')
 const room = computed(() => (purpose.value === 'FEES' ? feesRoom.value : balanceRoom.value))
+/** An online payment also has to fit Chapa's per-payment maximum. */
+const onlineMax = computed(() => balance.value?.onlineMaxPerPayment ?? null)
+const payMax = computed(() => (payTab.value === 'online' && onlineMax.value ? Math.min(room.value, onlineMax.value) : room.value))
 const transferReference = computed(() => {
   const ref = balance.value?.transferReference ?? ''
   return purpose.value === 'FEES' ? ref.replace(/-BAL$/, '-FEE') : ref
 })
-const validAmount = computed(() => amount.value != null && amount.value > 0 && amount.value <= room.value + 1e-9)
+const validAmount = computed(() => amount.value != null && amount.value > 0 && amount.value <= payMax.value + 1e-9)
 const percent = computed(() => {
   const b = balance.value
   if (!b || b.balanceDue <= 0) return 100
@@ -223,10 +227,16 @@ function formatDay(value: string) {
 
 /** Default to the uncovered part of the next instalment, within what can be paid now. */
 function defaultAmount(b: PurchaseBalanceResponse) {
-  if (purpose.value === 'FEES') return feesRoom.value
+  const cap = (v: number) => round2(Math.min(v, payMax.value))
+  if (purpose.value === 'FEES') return cap(feesRoom.value)
   const next = b.instalments.find((i) => !i.paid)
   const suggested = next ? next.amount - next.covered : b.remaining
-  return round2(Math.min(Math.max(0, b.remaining - b.inProgress), suggested))
+  return cap(Math.min(Math.max(0, b.remaining - b.inProgress), suggested))
+}
+
+function setTab(tab: 'online' | 'transfer') {
+  payTab.value = tab
+  if (balance.value && (amount.value == null || amount.value > payMax.value)) amount.value = defaultAmount(balance.value) || null
 }
 
 function setPurpose(p: BalancePurpose) {

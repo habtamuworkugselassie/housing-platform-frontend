@@ -613,6 +613,7 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
+      "onlineLimits": {"title": "Maximum per online payment", "help": "The most Chapa accepts in one payment (ETB 75,000 on the test account). Deposits are capped at it; buyers pay larger amounts in parts or by transfer. Empty or 0 removes the limit."},
       "fees": {
         "title": "Service fee (markup) and VAT",
         "help": "Charged to buyers on top of the price and paid once the seller accepts. VAT is charged on the price plus the fee. New orders use these rates; placed orders keep theirs.",
@@ -1988,6 +1989,7 @@
       }
     },
     "balance": {
+      "onlineLimit": "Online payments are limited to {max} each. Pay the rest in more parts or by bank transfer.",
       "title": "Balance",
       "subtitle": "The rest of the price, paid to Dream Teams Trading PLC after the seller accepts.",
       "open": "Open",
