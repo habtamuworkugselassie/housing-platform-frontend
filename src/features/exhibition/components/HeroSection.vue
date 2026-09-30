@@ -106,8 +106,8 @@ import { getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.
 const { locale } = useI18n()
 const brochureHref = computed(() =>
   locale.value === 'am'
-    ? '/docs/ethio-build-connect-expo-2026-brochure-am.html'
-    : '/docs/ethio-build-connect-expo-2026-brochure.html'
+    ? '/docs/ethio-build-connect-expo-2027-brochure-am.html'
+    : '/docs/ethio-build-connect-expo-2027-brochure.html'
 )
 
 const partners = ref([])
