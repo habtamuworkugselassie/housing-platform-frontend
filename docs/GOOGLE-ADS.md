@@ -1,8 +1,8 @@
 # Google Ads — expo campaign
 
-Built for a nine-week run to the expo on **16–18 November 2026**. Paid search is here because
+Built for the run-up to the expo on **9–13 January 2027**. Paid search is here because
 organic ranking for the competitive terms is a six-to-twelve month project and the event is not
-waiting; see `SEO-TARGETS.md` for who holds those results and why. Switch this off on 19 November.
+waiting; see `SEO-TARGETS.md` for who holds those results and why. Switch this off on 14 January.
 
 Every asset below is within Google's character limits (headline 30, description 90, callout 25,
 sitelink text 25, sitelink description 35), checked rather than eyeballed. Paste them as they are.
@@ -36,7 +36,7 @@ Three campaigns, because the intents have different values and should not share 
 | --- | --- |
 | Real estate expo | "real estate expo ethiopia", "real estate exhibition ethiopia", "real estate expo addis ababa", [ethiopia real estate exhibition], "property expo ethiopia", "home expo addis ababa" |
 | Construction expo | "construction expo ethiopia", "construction exhibition ethiopia", "building expo addis ababa", "building exhibition ethiopia" |
-| Expo in Addis | "expo addis ababa", "exhibition addis ababa november", "trade show addis ababa" |
+| Expo in Addis | "expo addis ababa", "exhibition addis ababa january", "trade show addis ababa" |
 
 ### 2. Expo — exhibitors and sponsors (Search, Ethiopia + UAE, Turkey, China)
 
@@ -81,7 +81,7 @@ impression should carry.
 **Headlines**
 
 ```
-Ethiopia Real Estate Expo      16-18 November 2026            Addis Convention Center
+Ethiopia Real Estate Expo      9-13 January 2027            Addis Convention Center
 Ethio Build Connect Expo       Real Estate & Construction     Register Your Interest
 Meet Developers & Builders     Book Your Stand                Exhibit at the Expo
 Register to Visit              Addis Ababa, Ethiopia          Property, Finance, Building
@@ -91,7 +91,7 @@ Banks, Builders, Suppliers     Ethiopia's Building Show       Three Days in Addi
 **Descriptions**
 
 ```
-Ethiopia's real estate and construction exhibition, 16-18 November 2026 in Addis Ababa.
+Ethiopia's real estate and construction exhibition, 9-13 January 2027 in Addis Ababa.
 Meet developers, contractors, banks and suppliers under one roof. Register your interest.
 Showcase your projects to buyers and investors. Ask about exhibiting or sponsoring.
 Three days at the Addis Convention Center. Register your interest in a few minutes.
@@ -101,7 +101,7 @@ Note what is *not* claimed: no exhibitor counts, no visitor numbers, no "free en
 requires ad claims to be substantiated on the landing page, and the site does not state any of
 those. Add them to the copy only once the page says them.
 
-**Callouts:** `16-18 November 2026` · `Addis Convention Center` · `Verified companies` ·
+**Callouts:** `9-13 January 2027` · `Addis Convention Center` · `Verified companies` ·
 `English & Amharic`
 
 **Sitelinks**
@@ -118,9 +118,9 @@ those. Add them to the copy only once the page says them.
 The site now serves Amharic at its own URLs, so Amharic ads have somewhere to land. Run these as a
 separate ad group pointing at `/am`, so performance is measurable on its own.
 
-**Headlines:** `የኢትዮጵያ የሪል እስቴት ኤክስፖ` · `16-18 ኖቬምበር 2026` · `ፍላጎትዎን ይመዝግቡ` · `አዲስ ኮንቬንሽን ማእከል`
+**Headlines:** `የኢትዮጵያ የሪል እስቴት ኤክስፖ` · `9-13 ጃንዋሪ 2027` · `ፍላጎትዎን ይመዝግቡ` · `አዲስ ኮንቬንሽን ማእከል`
 
-**Description:** `የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን። 16-18 ኖቬምበር 2026፣ አዲስ አበባ።`
+**Description:** `የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን። 9-13 ጃንዋሪ 2027፣ አዲስ አበባ።`
 
 Every word is taken from the site's own Amharic catalogue, where a translator wrote it. **Have a
 native speaker read it before spending money on it** — ad copy is not the place to discover a

@@ -9,6 +9,7 @@
              page carried ExhibitionEvent markup claiming a date the page never showed.
              Event rich results are held to agreeing with the visible page. -->
         <p class="landing-hero__when">{{ $t('exhibition.hero.dateVenue') }}</p>
+        <ExpoCountdown />
         <p class="landing-hero__lead">{{ $t('exhibition.planning.body') }}</p>
         <p class="landing-hero__who">{{ $t('exhibition.planning.whoShowcases') }}</p>
 
@@ -53,6 +54,7 @@
 </template>
 
 <script setup>
+import ExpoCountdown from '@/features/exhibition/components/ExpoCountdown.vue'
 import { ref, onMounted } from 'vue'
 import { getSponsoredOrganizations } from '@/features/exhibition/api/exhibition.api'
 

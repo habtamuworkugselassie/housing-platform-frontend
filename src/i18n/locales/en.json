@@ -1262,7 +1262,7 @@
       "items": {
         "whenWhere": {
           "q": "When and where is the Ethio Build Connect Expo?",
-          "a": "The expo runs 16–18 November 2026 at the Addis Convention Center in Addis Ababa, Ethiopia."
+          "a": "The expo runs 9–13 January 2027 at the Addis Convention Center in Addis Ababa, Ethiopia."
         },
         "whoExhibits": {
           "q": "Who can exhibit at the expo?",
@@ -1356,12 +1356,20 @@
       "looping": "Rotating…",
       "cameraError": "Could not access that camera. Check it's connected and permitted."
     },
+    "countdown": {
+      "label": "Countdown to the expo",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "happeningNow": "Happening now — the expo is open"
+    },
     "hero": {
       "eventName": "Ethio Build Connect Expo",
       "tagline1": "Bold Projects.",
       "tagline2": "Big Connections.",
       "tagline3": "Bigger Opportunities.",
-      "dateVenue": "16–18 November 2026 — Addis Convention Center — Addis Ababa, Ethiopia",
+      "dateVenue": "9–13 January 2027 — Addis Convention Center — Addis Ababa, Ethiopia",
       "subtitle": "Meet global visionaries, explore iconic projects, and unlock pathways to growth and collaboration at the region's biggest real estate and construction show.",
       "registerInterest": "Register your interest 2026",
       "downloadBrochure": "Download event brochure",
