@@ -22,7 +22,7 @@ export const seoByRouteName = {
   // the WebSite/Organization markup already names the site and Google appends it for a
   // home page, so the 58 characters go to the keywords instead of repeating it.
   Home: {
-    title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
+    title: 'Ethiopia Real Estate Expo and Construction Exhibition 2027',
     description:
       "Ethiopia's real estate and construction expo: 9-13 January 2027 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
@@ -100,7 +100,7 @@ export const seoByRouteName = {
   // canonicalises to `/`, so describing it differently would advertise two pages
   // where there is one.
   ExhibitionLanding: {
-    title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
+    title: 'Ethiopia Real Estate Expo and Construction Exhibition 2027',
     description:
       "Ethiopia's real estate and construction expo: 9-13 January 2027 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
@@ -176,12 +176,12 @@ export const seoByRouteName = {
  */
 export const amSeoByRouteName = {
   Home: {
-    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
+    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2027',
     description:
       '9–13 ጃንዋሪ 2027፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
   },
   ExhibitionLanding: {
-    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
+    title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2027',
     description:
       '9–13 ጃንዋሪ 2027፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
   },

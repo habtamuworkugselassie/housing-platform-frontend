@@ -423,8 +423,8 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const brochureHref = computed(() =>
   locale.value === 'am'
-    ? '/docs/ethio-build-connect-expo-2026-brochure-am.html'
-    : '/docs/ethio-build-connect-expo-2026-brochure.html'
+    ? '/docs/ethio-build-connect-expo-2027-brochure-am.html'
+    : '/docs/ethio-build-connect-expo-2027-brochure.html'
 )
 
 // Register interest form (exhibition) – creates Organization and ExhibitionInterest in backend

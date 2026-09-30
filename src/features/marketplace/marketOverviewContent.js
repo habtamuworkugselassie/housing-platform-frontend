@@ -172,7 +172,7 @@ export const MARKET_OVERVIEW = {
         'The whole chain described above — developers, contractors, architects, suppliers, banks and insurers — gathers at Ethio Build Connect Expo, Ethiopia\'s real estate and construction exhibition, on 9–13 January 2027 at the Addis Convention Center in Addis Ababa. It is the most efficient way to compare developers and suppliers side by side, and to ask the questions above of several of them in one afternoon.'
       ],
       links: [
-        { label: 'Ethiopia Real Estate Expo and Construction Exhibition 2026', to: '/' }
+        { label: 'Ethiopia Real Estate Expo and Construction Exhibition 2027', to: '/' }
       ]
     }
   ]
