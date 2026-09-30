@@ -24,7 +24,7 @@ export const seoByRouteName = {
   Home: {
     title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
     description:
-      "Ethiopia's real estate and construction expo: 16-18 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
+      "Ethiopia's real estate and construction expo: 9-13 January 2027 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
   EthiopiaRealEstateMarket: {
     title: 'Ethiopia Real Estate Market Overview - Prices, Demand and Outlook',
@@ -102,7 +102,7 @@ export const seoByRouteName = {
   ExhibitionLanding: {
     title: 'Ethiopia Real Estate Expo and Construction Exhibition 2026',
     description:
-      "Ethiopia's real estate and construction expo: 16-18 November 2026 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
+      "Ethiopia's real estate and construction expo: 9-13 January 2027 at the Addis Convention Center, Addis Ababa. See exhibitors, sponsors and property listings."
   },
   Register: {
     title: 'Create Account - Ethio Build Connect',
@@ -178,12 +178,12 @@ export const amSeoByRouteName = {
   Home: {
     title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
     description:
-      '16–18 ኖቬምበር 2026፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
+      '9–13 ጃንዋሪ 2027፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
   },
   ExhibitionLanding: {
     title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2026',
     description:
-      '16–18 ኖቬምበር 2026፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
+      '9–13 ጃንዋሪ 2027፣ በአዲስ ኮንቬንሽን ማእከል፣ አዲስ አበባ። የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት መድረክ።'
   },
   RealEstateSearch: {
     title: 'በኢትዮጵያ ቀጣዩን ቤትዎን ይፈልጉ',

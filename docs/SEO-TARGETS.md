@@ -98,12 +98,17 @@ practical mitigations are to always publish the full name with the organiser att
 consistent about it everywhere (site, directories, press, sponsor links), and to make the
 dates and venue part of how the event is identified in every listing.
 
-### 3. Dates are 16–18 November 2026, the same window the listings give Ethiopia Build Expo
+### 3. Dates are 9–13 January 2027 (Tir 1–5), and no longer overlap Ethiopia Build Expo
 
-This section previously flagged a clash: the listings put Ethiopia Build Expo 2026 on 16–18
-November while the site said 10–13 November, so the two looked like neighbouring events. The
-site owner has since confirmed 16–18 November 2026 as the schedule, and every date on the
-site now says so. The two are therefore in the same window, not adjacent.
+This section has tracked two revisions. It first flagged a clash: the listings put Ethiopia
+Build Expo 2026 on 16–18 November while the site said 10–13 November, so the two looked like
+neighbouring events; the site owner then confirmed 16–18 November 2026, putting them in the
+same window. The expo has since moved again, to **9–13 January 2027**, starting on Tir 1 in
+the Ethiopian calendar. Every date on the site now says so.
+
+That removes the overlap entirely — the two events are now nearly two months apart, so the
+risk this section was written about (search results conflating them) no longer applies. What
+follows about identifying the event consistently still does.
 
 **What was not confirmed is whether Ethiopia Build Expo is the same event.** The distinction
 decides the whole approach, so establish it before any outreach:

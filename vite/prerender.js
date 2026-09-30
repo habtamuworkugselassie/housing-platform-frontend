@@ -317,10 +317,10 @@ export default function prerenderMarketingPages() {
       // running JavaScript. `url` is always the English canonical: /am is a translation of
       // the same event, not a second one.
       // Two cards. The expo pages sell a dated event; the marketplace pages sell listings, and
-      // sharing a property search should not advertise a trade show in November.
+      // sharing a property search should not advertise a trade show in January.
       const EXPO_CARD = {
         url: `${SITE_URL}/images/branding/ethio-build-connect-share-card.png`,
-        alt: 'Ethiopia Real Estate Expo and Construction Exhibition, 16-18 November 2026, Addis Convention Center, Addis Ababa'
+        alt: 'Ethiopia Real Estate Expo and Construction Exhibition, 9-13 January 2027, Addis Convention Center, Addis Ababa'
       }
       const MARKETPLACE_CARD = {
         url: `${SITE_URL}/images/branding/ethio-build-connect-marketplace-card.png`,
