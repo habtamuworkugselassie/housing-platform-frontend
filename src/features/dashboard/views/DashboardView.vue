@@ -728,6 +728,36 @@
                   </div>
                 </div>
               </div>
+              <!-- eTrade (Ministry of Trade) lookup by TIN -->
+              <div class="rounded-md border border-white/10 bg-white/5 p-3" data-testid="dash-etrade-panel">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <p class="text-xs text-gray-400">{{ $t('etrade.hint') }}</p>
+                  <button
+                    type="button"
+                    class="rounded border border-primary-400/60 px-3 py-1 text-sm text-primary-300 transition-colors hover:bg-primary-400/10 disabled:opacity-50"
+                    :disabled="etradeLookup.loading"
+                    data-testid="dash-etrade-lookup"
+                    @click="lookupOrganizationOnEtrade"
+                  >
+                    {{ etradeLookup.loading ? $t('etrade.checking') : $t('etrade.lookup') }}
+                  </button>
+                </div>
+                <p v-if="etradeLookup.error" class="mt-2 text-sm text-red-300" data-testid="dash-etrade-error">{{ etradeLookup.error }}</p>
+                <div v-if="etradeLookup.details" class="mt-3 space-y-2">
+                  <EtradeBusinessCard :details="etradeLookup.details" dark />
+                  <div class="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      class="rounded bg-primary-500/80 px-3 py-1 text-sm font-medium text-white hover:bg-primary-500"
+                      data-testid="dash-etrade-apply"
+                      @click="applyEtradeDetails"
+                    >
+                      {{ $t('etrade.useDetails') }}
+                    </button>
+                    <span v-if="etradeLookup.applied" class="text-xs text-green-300">{{ $t('etrade.detailsApplied') }}</span>
+                  </div>
+                </div>
+              </div>
               <div>
                 <label for="dash-org-address" class="block text-sm font-medium text-gray-300">{{ $t('property.address') }}</label>
                 <input
@@ -1541,6 +1571,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import { useRouter } from 'vue-router'
 import api, { mediaUrl } from '@/shared/api/client'
+import { etradeApi, etradeErrorMessage, normalizeTin } from '@/shared/api/etrade'
+import { EtradeBusinessCard } from '@/shared/components'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
@@ -1568,6 +1600,42 @@ const showEditOrganizationModal = ref(false)
 const organizationFormTab = ref('profile')
 const organizationFormSaving = ref(false)
 const organizationFormError = ref('')
+/** eTrade (etrade.gov.et) lookup of the TIN typed into the organization form. */
+const etradeLookup = ref({ loading: false, error: '', details: null, applied: false })
+
+const resetEtradeLookup = () => {
+  etradeLookup.value = { loading: false, error: '', details: null, applied: false }
+}
+
+const lookupOrganizationOnEtrade = async () => {
+  const tin = normalizeTin(organizationForm.value.tinNumber)
+  etradeLookup.value = { loading: false, error: '', details: null, applied: false }
+  if (!tin) {
+    etradeLookup.value.error = t('etrade.invalidTin')
+    return
+  }
+  etradeLookup.value.loading = true
+  try {
+    etradeLookup.value.details = await etradeApi.lookupBusiness(tin)
+  } catch (err) {
+    etradeLookup.value.error = etradeErrorMessage(err, t)
+  } finally {
+    etradeLookup.value.loading = false
+  }
+}
+
+/** Copies eTrade's registration number, preferred licence number and (if empty) the name into the form. */
+const applyEtradeDetails = () => {
+  const d = etradeLookup.value.details
+  if (!d) return
+  const form = organizationForm.value
+  if (d.registrationNumber) form.businessRegistrationNumber = d.registrationNumber
+  const licence = (d.businesses || []).find((b) => b.licenseStatus === 'ACTIVE') || (d.businesses || [])[0]
+  if (licence?.licenseNumber) form.licenseNumber = licence.licenseNumber
+  if (!(form.name || '').trim() && d.businessName) form.name = d.businessName
+  form.tinNumber = d.tin
+  etradeLookup.value.applied = true
+}
 const showEditAgentModal = ref(false)
 const showEditPropertyModal = ref(false)
 const editingAgent = ref(null)
@@ -1885,6 +1953,7 @@ const cancelApplication = async (id) => {
 }
 
 const openEditOrganizationModal = async () => {
+  resetEtradeLookup()
   if (!organization.value) return
   organizationFormError.value = ''
   organizationFormTab.value = 'profile'

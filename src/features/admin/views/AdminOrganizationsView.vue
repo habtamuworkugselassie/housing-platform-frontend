@@ -934,6 +934,35 @@
                     @update:comment="docReviewDraft.tinRegistrationReviewComment = $event"
                     @save="saveViewDocumentReview('tin')"
                   />
+                  <!-- eTrade (Ministry of Trade) check of the declared TIN -->
+                  <div class="border-t border-admin-line/10 pt-4 space-y-3" data-testid="admin-etrade-panel">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <p class="text-xs text-admin-subtle">{{ $t('etrade.hint') }}</p>
+                      <button
+                        type="button"
+                        class="rounded-lg border border-admin-line/20 px-3 py-1.5 text-sm font-medium text-admin-fg hover:bg-admin-field/10 disabled:opacity-50"
+                        :disabled="etradeCheck.loading || !viewingOrg.tinNumber"
+                        data-testid="admin-etrade-check"
+                        @click="checkOrganizationOnEtrade"
+                      >
+                        {{ etradeCheck.loading ? $t('etrade.checking') : $t('etrade.check') }}
+                      </button>
+                    </div>
+                    <p v-if="!viewingOrg.tinNumber" class="text-xs text-admin-faint">{{ $t('etrade.noTinOnOrganization') }}</p>
+                    <p v-if="etradeCheck.error" class="text-sm text-red-400" data-testid="admin-etrade-error">{{ etradeCheck.error }}</p>
+                    <p
+                      v-if="etradeCheck.result && !etradeCheck.result.found"
+                      class="text-sm text-amber-400"
+                      data-testid="admin-etrade-not-found"
+                    >
+                      {{ $t('etrade.notFoundForOrganization', { tin: etradeCheck.result.tin }) }}
+                    </p>
+                    <EtradeBusinessCard
+                      v-if="etradeCheck.result?.details"
+                      :details="etradeCheck.result.details"
+                      :checks="etradeCheck.result.checks"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1685,12 +1714,13 @@
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
+import { etradeApi, etradeErrorMessage } from '@/shared/api/etrade'
 import { useMediaWarmup } from '@/shared/composables/useMediaWarmup'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import OrganizationAccountsPanel from '@/features/admin/components/OrganizationAccountsPanel.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { formatOrganizationPhones, getVerificationLevel } from '@/shared/utils'
-import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
+import { VerifiedBadge, OsmMapPicker, EtradeBusinessCard } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import AdminLayout from '../components/AdminLayout.vue'
 import OrgDocumentReviewPanel from '../components/OrgDocumentReviewPanel.vue'
@@ -2003,6 +2033,28 @@ function syncDocReviewDraftFromOrg(org) {
 }
 
 watch(viewingOrg, (o) => syncDocReviewDraftFromOrg(o), { deep: true })
+
+/** eTrade (etrade.gov.et) verification of the organization being viewed. */
+const etradeCheck = ref({ loading: false, error: '', result: null })
+
+watch(
+  () => viewingOrg.value?.id,
+  () => {
+    etradeCheck.value = { loading: false, error: '', result: null }
+  }
+)
+
+async function checkOrganizationOnEtrade() {
+  if (!viewingOrg.value?.id) return
+  etradeCheck.value = { loading: true, error: '', result: null }
+  try {
+    etradeCheck.value.result = await etradeApi.verifyOrganization(viewingOrg.value.id)
+  } catch (e) {
+    etradeCheck.value.error = etradeErrorMessage(e, t)
+  } finally {
+    etradeCheck.value.loading = false
+  }
+}
 
 async function saveViewDocumentReview(which) {
   if (!viewingOrg.value?.id) return
