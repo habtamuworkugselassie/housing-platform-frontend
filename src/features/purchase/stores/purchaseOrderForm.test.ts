@@ -206,8 +206,11 @@ describe('usePurchaseOrderFormStore', () => {
       await store.init('prop-1')
       fillValid(store)
       create.mockRejectedValue({ response: { status: 409, data: { message: 'dup' } } })
+      preview.mockResolvedValue({ ...PREVIEW, existingOrder: { id: 'o-1', orderNumber: 'PPO-1', status: 'PENDING_SELLER_REVIEW' } })
       expect(await store.submit()).toBeNull()
       expect(store.submitError).toBe('purchase.errors.duplicateOrder')
+      // Reloaded, so the page can link to the order that already exists.
+      expect(store.preview?.existingOrder?.id).toBe('o-1')
     })
 
     it('reloads the agreement and sends the buyer back when the text changed under them', async () => {

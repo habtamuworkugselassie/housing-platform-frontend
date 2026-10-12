@@ -2010,6 +2010,11 @@
     }
   },
   "purchase": {
+    "existingOrder": {
+      "title": "You already have purchase order {number} for this property",
+      "help": "Only one order per property can be open at a time. Continue with your existing order, or place a new one if it is cancelled, rejected or expires.",
+      "view": "View my order"
+    },
     "fees": {
       "title": "Service fee and VAT",
       "markup": "Service fee ({percent} %)",

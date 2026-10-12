@@ -456,6 +456,8 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       }
       if (status === 409) {
         submitError.value = 'purchase.errors.duplicateOrder'
+        // The preview now carries that order, so the page switches to a link to it.
+        await loadPreview()
       } else if (
         status === 400 &&
         /(Promise to Purchase agreement|Reservation Deposit Terms) ha(s|ve) changed/i.test(body?.message ?? '')

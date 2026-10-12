@@ -24,6 +24,16 @@
         <router-link :to="`/properties/${propertyId}`" class="mt-4 inline-block font-medium text-primary-700 hover:underline">{{ $t('purchase.backToProperty') }}</router-link>
       </div>
 
+      <!-- One open order per buyer and property: send them to the one they have -->
+      <div v-else-if="form.preview?.existingOrder" class="rounded-2xl border border-primary-200 bg-primary-50 p-6 text-center" data-testid="existing-order">
+        <p class="font-semibold text-gray-900">{{ $t('purchase.existingOrder.title', { number: form.preview.existingOrder.orderNumber }) }}</p>
+        <p class="mt-1 text-sm text-gray-700">{{ $t('purchase.existingOrder.help') }}</p>
+        <div class="mt-4 flex flex-wrap justify-center gap-3">
+          <router-link :to="`/purchase-orders/${form.preview.existingOrder.id}`" class="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-700" data-testid="existing-order-view">{{ $t('purchase.existingOrder.view') }}</router-link>
+          <router-link :to="`/properties/${propertyId}`" class="inline-flex items-center rounded-xl border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">{{ $t('purchase.backToProperty') }}</router-link>
+        </div>
+      </div>
+
       <!-- Wizard -->
       <div v-else-if="property && form.preview" class="grid gap-6 lg:grid-cols-3">
         <div class="lg:col-span-2">

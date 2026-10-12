@@ -108,6 +108,8 @@ export interface PurchasePreviewResponse {
   fees?: FeeQuote | null
   /** Verified official documents (Annex A of the Promise to Purchase); signed-in users only. */
   documents?: import('@/features/property/api/documents.api').PropertyDocument[] | null
+  /** The signed-in buyer's open order on this property; only one may be open at a time. */
+  existingOrder?: { id: string; orderNumber: string; status: PurchaseOrderStatus } | null
 }
 
 export interface AgreementSignatureRequest {
