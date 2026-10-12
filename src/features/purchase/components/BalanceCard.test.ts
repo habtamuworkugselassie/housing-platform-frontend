@@ -3,6 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import en from '@/i18n/locales/en.json'
+import { useAuthStore } from '@/features/auth'
 import BalanceCard from './BalanceCard.vue'
 import { purchaseApi } from '../api/purchase.api'
 import type { PurchaseBalanceResponse } from '../api/purchase.types'
@@ -182,5 +183,12 @@ describe('BalanceCard', () => {
     await w.find('[data-testid="balance-tab-transfer"]').trigger('click')
     await w.find('[data-testid="balance-amount"]').setValue(553600)
     expect(w.find('[data-testid="online-limit"]').exists()).toBe(false)
+  })
+
+  it('preselects the payment method saved on the buyer profile', async () => {
+    useAuthStore().user = { id: 'b', email: 'b@x.et', firstName: 'B', lastName: 'B', roles: ['BUYER'], scopes: [], preferredPaymentMethod: 'MPESA' }
+    const w = mountCard()
+    await flushPromises()
+    expect((w.find('[data-testid="deposit-method-MPESA"] input').element as HTMLInputElement).checked).toBe(true)
   })
 })

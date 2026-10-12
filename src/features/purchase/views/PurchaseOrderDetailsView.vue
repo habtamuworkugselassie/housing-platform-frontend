@@ -319,9 +319,13 @@ const balanceRemaining = ref<number | null>(null)
 const DEPOSIT_METHODS: DepositPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
 const depositMethod = ref<DepositPaymentMethod | null>(null)
 watch(
-  () => order.value?.deposit?.preferredMethod,
-  (m) => {
-    if (m && !depositMethod.value) depositMethod.value = m
+  () => [order.value?.deposit?.preferredMethod, order.value?.deposit?.currency] as const,
+  ([m, currency]) => {
+    if (!order.value?.deposit) return
+    // The order's own choice wins; otherwise the method saved on the buyer's profile.
+    const saved = auth.user?.preferredPaymentMethod
+    const fallback = saved && (currency !== 'USD' || saved === 'CARD') ? saved : null
+    if (!depositMethod.value) depositMethod.value = m ?? fallback
   },
   { immediate: true }
 )

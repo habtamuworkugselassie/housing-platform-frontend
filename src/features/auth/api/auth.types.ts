@@ -57,6 +57,25 @@ export interface User {
   scopes: string[]
   /** Real-estate company / bank the account belongs to, from GET /users/me. */
   organizationId?: string | null
+  /** False: no password yet (signed up while ordering, or with Google). Null: not recorded. */
+  passwordSet?: boolean | null
+  /** Payment method preselected at checkout. */
+  preferredPaymentMethod?: PaymentMethodPreference | null
+  /** Mobile-money number Chapa is prefilled with for wallet payments. */
+  paymentPhone?: string | null
+}
+
+export type PaymentMethodPreference = 'TELEBIRR' | 'CBE_BIRR' | 'MPESA' | 'AWASH_BIRR' | 'CARD'
+
+export interface ChangePasswordRequest {
+  /** Needed only when the account already has a password. */
+  currentPassword?: string
+  newPassword: string
+}
+
+export interface PaymentPreferencesRequest {
+  preferredPaymentMethod: PaymentMethodPreference | null
+  paymentPhone: string | null
 }
 
 /** Minimal buyer sign-up used from the purchase flow: name + phone, the rest optional. */

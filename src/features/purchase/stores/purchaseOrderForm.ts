@@ -10,6 +10,7 @@
 import { computed, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Currency } from '@/shared/types'
+import { useAuthStore } from '@/features/auth'
 import { purchaseApi } from '../api/purchase.api'
 import type {
   CreatePurchaseOrderRequest,
@@ -354,6 +355,9 @@ export const usePurchaseOrderFormStore = defineStore('purchaseOrderForm', () => 
       if (payment.currency === 'USD' && data.deposit && !data.deposit.baseAmount) payment.currency = null
       // Drop a remembered method the server no longer offers.
       if (payment.method && !data.deposit?.paymentMethods?.includes(payment.method)) payment.method = null
+      // Start from the method saved on the buyer's profile.
+      const preferred = useAuthStore().user?.preferredPaymentMethod
+      if (!payment.method && preferred && data.deposit?.paymentMethods?.includes(preferred)) payment.method = preferred
     } catch (err: any) {
       previewError.value = extractMessage(err, 'purchase.errors.previewFailed')
     } finally {
