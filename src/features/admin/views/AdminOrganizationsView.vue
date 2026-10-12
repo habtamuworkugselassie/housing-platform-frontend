@@ -17,63 +17,22 @@
         </button>
       </div>
 
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 bg-admin-nav/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-admin-fg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-admin-subtle">Pending</p>
-              <p class="text-2xl font-semibold text-admin-fg">{{ pendingCount }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 bg-green-500/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-admin-ok" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-admin-subtle">Approved</p>
-              <p class="text-2xl font-semibold text-admin-fg">{{ approvedCount }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 bg-blue-500/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-admin-subtle">Real Estate</p>
-              <p class="text-2xl font-semibold text-admin-fg">{{ realEstateCount }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-6 hover:border-primary-400 hover:bg-admin-nav/10 transition-colors">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 bg-purple-500/30 rounded-lg p-3">
-              <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-admin-subtle">Banks</p>
-              <p class="text-2xl font-semibold text-admin-fg">{{ bankCount }}</p>
-            </div>
-          </div>
-        </div>
+      <!-- Status tabs: counts double as the overview and as one-tap filters -->
+      <div class="flex gap-2 overflow-x-auto pb-1" role="tablist" :aria-label="$t('admin.orgList.statusFilter')">
+        <button
+          v-for="tab in STATUS_TABS"
+          :key="`status-tab-${tab || 'all'}`"
+          type="button"
+          role="tab"
+          :aria-selected="filters.status === tab"
+          class="inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+          :class="filters.status === tab ? 'border-admin-accent bg-admin-accent text-admin-accent-fg' : 'border-admin-line/15 bg-admin-surface text-admin-muted hover:border-admin-line/30 hover:text-admin-fg'"
+          :data-testid="`status-tab-${tab || 'ALL'}`"
+          @click="setStatusTab(tab)"
+        >
+          {{ tab ? $t(statusMeta(tab).key) : $t('admin.orgList.all') }}
+          <span class="rounded-full px-2 py-0.5 text-xs font-semibold" :class="filters.status === tab ? 'bg-black/15' : 'bg-admin-raised text-admin-fg'">{{ statusCounts[tab || 'ALL'] }}</span>
+        </button>
       </div>
 
       <!-- Filters -->
@@ -96,29 +55,26 @@
               @change="onTypeOrStatusChange"
               class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
-              <option value="">All Types</option>
+              <option value="">{{ $t('admin.orgList.allTypes') }}</option>
               <option
                 v-for="type in organizationTypeFilterOptions"
                 :key="`filter-type-${type}`"
                 :value="type"
               >
-                {{ getOrganizationTypeLabel(type) }}
+                {{ getOrganizationTypeLabel(type) }} ({{ typeCounts[type] || 0 }})
               </option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-admin-muted">Status</label>
+            <label for="org-sort" class="block text-sm font-medium text-admin-muted">{{ $t('admin.orgList.sortBy') }}</label>
             <select
-              v-model="filters.status"
-              @change="onTypeOrStatusChange"
+              id="org-sort"
+              v-model="sortKey"
               class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
             >
-              <option value="">All Status</option>
-              <option value="PENDING">Pending</option>
-              <option value="SPONSORSHIP_PENDING">Sponsorship review</option>
-              <option value="APPROVED">Approved</option>
-              <option value="REJECTED">Rejected</option>
-              <option value="SUSPENDED">Suspended</option>
+              <option value="newest">{{ $t('admin.orgList.sort.newest') }}</option>
+              <option value="oldest">{{ $t('admin.orgList.sort.oldest') }}</option>
+              <option value="name">{{ $t('admin.orgList.sort.name') }}</option>
             </select>
           </div>
           <div class="flex items-end">
@@ -126,7 +82,7 @@
               @click="clearFilters"
               class="w-full px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
             >
-              Clear Filters
+              {{ $t('admin.orgList.clearFilters') }}
             </button>
           </div>
         </div>
@@ -146,178 +102,33 @@
 
       <!-- Organizations Table -->
       <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
-        <div class="hidden lg:block overflow-x-auto">
-          <table class="w-full min-w-[56rem] divide-y divide-admin-line/10">
-          <thead class="bg-admin-raised">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Organization</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Type</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Contact</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">Created</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-admin-line/10">
-            <tr v-if="loading">
-              <td colspan="6" class="px-6 py-12 text-center bg-admin-surface">
-                <div class="flex flex-col items-center">
-                  <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
-                  <span class="text-sm text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</span>
-                </div>
-              </td>
-            </tr>
-            <tr v-else-if="error">
-              <td colspan="6" class="px-6 py-12 text-center text-sm text-admin-danger bg-admin-surface">
-                <div>Error: {{ error }}</div>
-                <button @click="loadOrgs" class="mt-2 px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover transition-colors">
-                  Retry
-                </button>
-              </td>
-            </tr>
-            <tr v-else-if="!filteredOrganizations.length">
-              <td colspan="6" class="px-6 py-12 text-center text-sm text-admin-subtle bg-admin-surface">
-                No organizations found
-              </td>
-            </tr>
-            <template v-else>
-              <tr
-                v-for="org in paginatedOrganizations"
-                :key="org?.id || org?.name || Math.random()"
-                class="hover:bg-admin-nav/10 transition-colors"
-              >
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-admin-fg flex items-center gap-2 flex-wrap">
-                    {{ org.name }}
-                    <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
-                  </div>
-                  <div class="text-sm text-admin-subtle">{{ org.city }}, {{ org.country }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs font-medium bg-gray-500/30 text-admin-muted rounded">
-                    {{ getTypeLabel(org.type) }}
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-admin-fg">{{ org.email || 'N/A' }}</div>
-                  <div class="text-sm text-admin-subtle">{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span
-                    :class="[
-                      'px-2 py-1 text-xs font-medium rounded',
-                      org.status === 'APPROVED' ? 'bg-green-500/30 text-admin-ok' :
-                      (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-admin-nav/30 text-admin-fg' :
-                      org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
-                      org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
-                      'bg-red-500/30 text-admin-danger'
-                    ]"
-                  >
-                    {{ org.status }}
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-subtle">
-                  {{ formatDate(org.createdAt) }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex items-center justify-end space-x-2">
-                    <button
-                      v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
-                      @click="approveOrg(org.id)"
-                      class="text-admin-ok hover:text-primary-400 transition-colors"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'"
-                      @click="showRejectModal(org)"
-                      class="text-admin-danger hover:text-primary-400 transition-colors"
-                    >
-                      Reject
-                    </button>
-                    <button
-                      v-if="org.status === 'APPROVED'"
-                      @click="showSuspendModal(org)"
-                      class="text-orange-300 hover:text-primary-400 transition-colors"
-                    >
-                      Suspend
-                    </button>
-                    <button
-                      v-if="org.status === 'SUSPENDED'"
-                      @click="reactivateOrg(org)"
-                      class="text-admin-ok hover:text-primary-400 transition-colors"
-                    >
-                      {{ $t('admin.reactivate') }}
-                    </button>
-                    <button
-                      @click="viewOrg(org)"
-                      class="text-admin-fg hover:text-primary-400 transition-colors"
-                    >
-                      View
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
+        <p v-if="actionError" class="border-b border-admin-line/10 bg-admin-danger/10 px-4 py-3 text-sm text-admin-danger" role="alert" data-testid="org-action-error">{{ actionError }}</p>
+        <div v-if="loading" class="px-4 py-12 text-center">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
+          <div class="text-sm text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</div>
         </div>
-
-        <!-- Card list below lg: the 6-column table is unreadable on phones and tablets -->
-        <div class="lg:hidden">
-          <div v-if="loading" class="px-4 py-12 text-center">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15 mb-2"></div>
-            <div class="text-sm text-admin-subtle">{{ $t('admin.loadingOrganizations') }}</div>
-          </div>
-          <div v-else-if="error" class="px-4 py-10 text-center text-sm text-admin-danger space-y-3">
-            <div>Error: {{ error }}</div>
-            <button @click="loadOrgs" class="px-4 py-2 bg-gold-400 text-primary-950 rounded-md text-sm font-medium">Retry</button>
-          </div>
-          <div v-else-if="!filteredOrganizations.length" class="px-4 py-12 text-center text-sm text-admin-subtle">
-            No organizations found
-          </div>
-          <ul v-else class="divide-y divide-admin-line/10">
-            <li v-for="org in paginatedOrganizations" :key="`m-${org?.id || org?.name}`" class="p-4 space-y-3">
-              <div class="flex items-start justify-between gap-3">
-                <div class="min-w-0">
-                  <div class="text-sm font-medium text-admin-fg flex items-center gap-2 flex-wrap">
-                    <span class="truncate">{{ org.name }}</span>
-                    <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
-                  </div>
-                  <div class="text-xs text-admin-subtle">{{ org.city }}, {{ org.country }}</div>
-                </div>
-                <span
-                  :class="[
-                    'shrink-0 px-2 py-1 text-xs font-medium rounded',
-                    org.status === 'APPROVED' ? 'bg-green-500/30 text-admin-ok' :
-                    (org.status === 'PENDING_APPROVAL' || org.status === 'PENDING') ? 'bg-primary-500/30 text-primary-200' :
-                    org.status === 'SPONSORSHIP_PENDING' ? 'bg-amber-500/30 text-amber-100' :
-                    org.status === 'SUSPENDED' ? 'bg-orange-500/30 text-orange-200' :
-                    'bg-red-500/30 text-admin-danger'
-                  ]"
-                >{{ org.status }}</span>
-              </div>
-
-              <div class="flex flex-wrap items-center gap-2 text-xs">
-                <span class="px-2 py-0.5 font-medium bg-gray-500/30 text-admin-muted rounded">{{ getTypeLabel(org.type) }}</span>
-                <span class="text-admin-faint">{{ formatDate(org.createdAt) }}</span>
-              </div>
-
-              <div class="text-xs text-admin-subtle space-y-0.5">
-                <div class="truncate">{{ org.email || 'N/A' }}</div>
-                <div>{{ formatOrganizationPhones(org).join(', ') || 'N/A' }}</div>
-              </div>
-
-              <div class="flex flex-wrap gap-3 pt-1 text-sm font-medium">
-                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="approveOrg(org.id)" class="text-admin-ok hover:text-primary-400">Approve</button>
-                <button v-if="org.status === 'PENDING_APPROVAL' || org.status === 'PENDING'" @click="showRejectModal(org)" class="text-admin-danger hover:text-primary-400">Reject</button>
-                <button v-if="org.status === 'APPROVED'" @click="showSuspendModal(org)" class="text-orange-300 hover:text-primary-400">Suspend</button>
-                <button v-if="org.status === 'SUSPENDED'" @click="reactivateOrg(org)" class="text-admin-ok hover:text-primary-400">{{ $t('admin.reactivate') }}</button>
-                <button @click="viewOrg(org)" class="text-admin-fg hover:text-primary-400">View</button>
-              </div>
-            </li>
-          </ul>
+        <div v-else-if="error" class="px-4 py-10 text-center text-sm text-admin-danger space-y-3">
+          <div>{{ error }}</div>
+          <button @click="loadOrgs" class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md text-sm font-medium hover:bg-admin-accent-hover">{{ $t('admin.orgList.retry') }}</button>
         </div>
+        <div v-else-if="!filteredOrganizations.length" class="px-4 py-12 text-center">
+          <p class="text-sm font-medium text-admin-fg">{{ $t('admin.orgList.empty') }}</p>
+          <button v-if="filters.search || filters.type || filters.status" type="button" class="mt-2 text-sm font-medium text-admin-subtle underline hover:text-admin-fg" @click="clearFilters">{{ $t('admin.orgList.clearFilters') }}</button>
+        </div>
+        <ul v-else class="divide-y divide-admin-line/10" data-testid="org-list">
+          <AdminOrganizationRow
+            v-for="org in paginatedOrganizations"
+            :key="org.id"
+            :org="org"
+            :type-label="getTypeLabel(org.type)"
+            @approve="approveOrg(org.id)"
+            @reject="showRejectModal"
+            @suspend="showSuspendModal"
+            @reactivate="reactivateOrg"
+            @edit="openEditModal"
+            @view="viewOrg"
+          />
+        </ul>
 
         <div
           v-if="!loading && !error && filteredOrganizations.length > 0"
@@ -1694,6 +1505,8 @@ import { VerifiedBadge, OsmMapPicker } from '@/shared/components'
 import OrganizationSocialLinks from '@/shared/components/OrganizationSocialLinks.vue'
 import AdminLayout from '../components/AdminLayout.vue'
 import OrgDocumentReviewPanel from '../components/OrgDocumentReviewPanel.vue'
+import AdminOrganizationRow from '../components/AdminOrganizationRow.vue'
+import { STATUS_TABS, matchesStatus, sortOrganizations, statusMeta } from '../utils/organizationList'
 import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 import { useAdminOrganizations } from '../composables/useAdmin'
 import { adminApi } from '../api/admin.api'
@@ -1781,44 +1594,42 @@ const provisionPrimaryUserNames = ref({ firstName: '', lastName: '' })
 const provisionPrimaryUserApp = ref(null)
 const provisionPrimaryUserBusy = ref(false)
 
-const pendingCount = computed(() => {
-  if (!Array.isArray(organizations.value)) return 0
-  return organizations.value.filter(
-    org =>
-      org.status === 'PENDING_APPROVAL' ||
-      org.status === 'PENDING' ||
-      org.status === 'SPONSORSHIP_PENDING'
-  ).length
+const sortKey = ref('newest')
+const actionError = ref('')
+
+/** Counts per status tab, within the selected type, so the tabs always add up. */
+const statusCounts = computed(() => {
+  const list = (Array.isArray(organizations.value) ? organizations.value : []).filter(
+    (org) => !filters.value.type || org.type === filters.value.type
+  )
+  const counts = { ALL: list.length }
+  for (const tab of STATUS_TABS) if (tab) counts[tab] = list.filter((org) => matchesStatus(org, tab)).length
+  return counts
 })
 
-const approvedCount = computed(() => {
-  if (!Array.isArray(organizations.value)) return 0
-  return organizations.value.filter(org => org.status === 'APPROVED').length
+const typeCounts = computed(() => {
+  const counts = {}
+  for (const org of Array.isArray(organizations.value) ? organizations.value : []) counts[org.type] = (counts[org.type] || 0) + 1
+  return counts
 })
 
-const realEstateCount = computed(() => {
-  if (!Array.isArray(organizations.value)) return 0
-  return organizations.value.filter(org => org.type === 'REAL_ESTATE_COMPANY').length
-})
-
-const bankCount = computed(() => {
-  if (!Array.isArray(organizations.value)) return 0
-  return organizations.value.filter(org => org.type === 'BANK').length
-})
+function setStatusTab(tab) {
+  filters.value.status = tab
+  currentPage.value = 1
+}
 
 const filteredOrganizations = computed(() => {
   const list = Array.isArray(organizations.value) ? organizations.value : []
   const selectedType = (filters.value.type || '').trim()
   const selectedStatus = (filters.value.status || '').trim().toUpperCase()
-  return list.filter((org) => {
-    const typeMatch = !selectedType || org.type === selectedType
-    if (!typeMatch) return false
-    if (!selectedStatus) return true
-    if (selectedStatus === 'PENDING') {
-      return org.status === 'PENDING' || org.status === 'PENDING_APPROVAL'
-    }
-    return org.status === selectedStatus
-  })
+  const matching = list.filter(
+    (org) => (!selectedType || org.type === selectedType) && matchesStatus(org, selectedStatus)
+  )
+  return sortOrganizations(matching, sortKey.value)
+})
+
+watch(sortKey, () => {
+  currentPage.value = 1
 })
 
 const totalPages = computed(() => {
@@ -1933,12 +1744,18 @@ const getMarketplaceOrganizationTypeLabel = (type) => {
 
 const getTypeLabel = (type) => getOrganizationTypeLabel(type)
 
+function showActionError(err, fallbackKey) {
+  actionError.value = err?.response?.data?.message || t(fallbackKey)
+}
+
 const approveOrg = async (id) => {
+  actionError.value = ''
   try {
     await approveOrganization(id)
     await loadOrgs()
   } catch (err) {
     console.error('Failed to approve organization:', err)
+    showActionError(err, 'admin.orgList.errors.approve')
   }
 }
 
@@ -1960,6 +1777,7 @@ const rejectOrg = async () => {
     await loadOrgs()
   } catch (err) {
     console.error('Failed to reject organization:', err)
+    showActionError(err, 'admin.orgList.errors.reject')
   }
 }
 
@@ -2460,6 +2278,7 @@ async function suspendOrg() {
     }
   } catch (e) {
     console.error('Suspend organization failed:', e)
+    showActionError(e, 'admin.orgList.errors.suspend')
   }
 }
 
@@ -2474,6 +2293,7 @@ async function reactivateOrg(org) {
     await loadOrgs()
   } catch (e) {
     console.error('Reactivate organization failed:', e)
+    showActionError(e, 'admin.orgList.errors.reactivate')
   }
 }
 

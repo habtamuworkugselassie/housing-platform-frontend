@@ -65,6 +65,8 @@ export default {
           'accent-hover':'rgb(var(--admin-accent-hover) / <alpha-value>)',
           ok:            'rgb(var(--admin-ok) / <alpha-value>)',
           danger:        'rgb(var(--admin-danger) / <alpha-value>)',
+          warn:          'rgb(var(--admin-warn) / <alpha-value>)',
+          info:          'rgb(var(--admin-info) / <alpha-value>)',
         },
       },
       fontFamily: {
