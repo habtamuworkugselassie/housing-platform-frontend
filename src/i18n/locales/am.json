@@ -830,6 +830,50 @@
     "createPackage": "ጥቅል ይፍጠሩ",
     "loadingSponsorships": "ስፖንሰርሺፖች በመጫን ላይ...",
     "noSponsorshipsFound": "ስፖንሰርሺፖች አልተገኙም።",
+    "orgList": {
+      "all": "ሁሉም",
+      "allTypes": "ሁሉም ዓይነቶች",
+      "statusFilter": "በሁኔታ አጣራ",
+      "sortBy": "ደርድር በ",
+      "sort": {
+        "newest": "አዲሶቹ መጀመሪያ",
+        "oldest": "የቆዩት መጀመሪያ",
+        "name": "ስም ሀ–ፐ"
+      },
+      "status": {
+        "PENDING": "ማጽደቅ በመጠባበቅ ላይ",
+        "APPROVED": "ጸድቋል",
+        "SPONSORSHIP_PENDING": "የስፖንሰርሺፕ ግምገማ",
+        "SUSPENDED": "ታግዷል",
+        "REJECTED": "ውድቅ ተደርጓል",
+        "UNKNOWN": "ያልታወቀ"
+      },
+      "joined": "የተመዘገበው {date}",
+      "sponsored": "ስፖንሰር",
+      "fromExhibition": "የኤክስፖ ፍላጎት",
+      "unnamed": "ስም የሌለው ድርጅት",
+      "viewDetails": "የ{name} ዝርዝር ይመልከቱ",
+      "docs": {
+        "none": "ምንም ሰነድ አልተጫነም",
+        "toReview": "{count} ሰነድ(ዎች) ለግምገማ",
+        "needsFix": "{count} ሰነድ(ዎች) ማስተካከያ ያስፈልጋቸዋል",
+        "approved": "ከ{uploaded} ሰነዶች {approved} ጸድቀዋል"
+      },
+      "approve": "አጽድቅ",
+      "reject": "ውድቅ አድርግ",
+      "suspend": "አግድ",
+      "edit": "አስተካክል",
+      "view": "ዝርዝር ይመልከቱ",
+      "retry": "እንደገና ይሞክሩ",
+      "empty": "ከእነዚህ ማጣሪያዎች ጋር የሚዛመድ ድርጅት የለም።",
+      "clearFilters": "ማጣሪያዎችን አጽዳ",
+      "errors": {
+        "approve": "ድርጅቱን ማጽደቅ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "reject": "ድርጅቱን ውድቅ ማድረግ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "suspend": "ድርጅቱን ማገድ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "reactivate": "ድርጅቱን እንደገና ማንቃት አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+      }
+    },
     "organizationManagement": "የድርጅት አስተዳደር",
     "registerOrganization": "ድርጅት ይመዝገቡ",
     "editOrganization": "ድርጅት አርትዕ",

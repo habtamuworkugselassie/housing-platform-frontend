@@ -824,6 +824,50 @@
     "createPackage": "Create Package",
     "loadingSponsorships": "Loading sponsorships...",
     "noSponsorshipsFound": "No sponsorships found.",
+    "orgList": {
+      "all": "All",
+      "allTypes": "All types",
+      "statusFilter": "Filter by status",
+      "sortBy": "Sort by",
+      "sort": {
+        "newest": "Newest first",
+        "oldest": "Oldest first",
+        "name": "Name A–Z"
+      },
+      "status": {
+        "PENDING": "Pending approval",
+        "APPROVED": "Approved",
+        "SPONSORSHIP_PENDING": "Sponsorship review",
+        "SUSPENDED": "Suspended",
+        "REJECTED": "Rejected",
+        "UNKNOWN": "Unknown"
+      },
+      "joined": "Joined {date}",
+      "sponsored": "Sponsored",
+      "fromExhibition": "Expo interest",
+      "unnamed": "Unnamed organization",
+      "viewDetails": "View details for {name}",
+      "docs": {
+        "none": "No documents uploaded",
+        "toReview": "{count} document(s) to review",
+        "needsFix": "{count} document(s) need changes",
+        "approved": "{approved} of {uploaded} documents approved"
+      },
+      "approve": "Approve",
+      "reject": "Reject",
+      "suspend": "Suspend",
+      "edit": "Edit",
+      "view": "View details",
+      "retry": "Try again",
+      "empty": "No organizations match these filters.",
+      "clearFilters": "Clear filters",
+      "errors": {
+        "approve": "Could not approve the organization. Please try again.",
+        "reject": "Could not reject the organization. Please try again.",
+        "suspend": "Could not suspend the organization. Please try again.",
+        "reactivate": "Could not reactivate the organization. Please try again."
+      }
+    },
     "organizationManagement": "Organization Management",
     "manageMaterialSubcategories": "Manage material subcategories",
     "materialSupplierSubcategories": "Material supplier categories",

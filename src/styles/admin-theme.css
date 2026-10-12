@@ -37,6 +37,8 @@
   --admin-accent-hover: 237 233 254; /* primary-100      button hover       */
   --admin-ok: 187 247 208;        /* green-200           positive text      */
   --admin-danger: 254 202 202;    /* red-200             negative text      */
+  --admin-warn: 253 230 138;      /* amber-200           waiting / review   */
+  --admin-info: 186 230 253;      /* sky-200             informational      */
 
   background-color: rgb(var(--admin-bg));
   color: rgb(var(--admin-fg));
@@ -65,6 +67,8 @@
   --admin-accent-hover: 109 40 217; /* violet-700 #6d28d9 button hover        */
   --admin-ok: 21 128 61;          /* green-700   #15803d  positive text       */
   --admin-danger: 185 28 28;      /* red-700     #b91c1c  negative text       */
+  --admin-warn: 180 83 9;         /* amber-700   #b45309  waiting / review    */
+  --admin-info: 3 105 161;        /* sky-700     #0369a1  informational       */
 }
 
 /*
