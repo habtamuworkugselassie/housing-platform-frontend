@@ -102,6 +102,9 @@
         </form>
       </div>
 
+      <ProfilePasswordCard />
+      <ProfilePaymentCard />
+
       <!-- Danger zone: delete account -->
       <div class="mt-6 rounded-2xl border border-red-500/30 bg-red-500/5 p-6">
         <h2 class="text-lg font-semibold text-white">{{ $t('profile.deleteTitle') }}</h2>
@@ -129,6 +132,8 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl, sanitizeProfileImageUrl } from '@/shared/api/client'
+import ProfilePasswordCard from '../components/ProfilePasswordCard.vue'
+import ProfilePaymentCard from '../components/ProfilePaymentCard.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -174,6 +179,8 @@ const userRoles = computed(() => {
 })
 
 onMounted(() => {
+  // Fresh copy: whether a password is set and the payment preferences come from the server.
+  void authStore.hydrateUser()
   if (authStore.user) {
     formData.value = {
       firstName: authStore.user.firstName || '',
@@ -190,25 +197,16 @@ const handleUpdateProfile = async () => {
   errorMessage.value = ''
 
   try {
-    // Assuming backend endpoint /api/v1/users/me exists or /api/v1/users/{id}
-    // Since we don't have the explicit backend endpoint configured, we fall back to a mock success
-    // Wait, the API base sets the prefix. We'll try a PUT to /users/{id}
     const userId = authStore.user?.id
     if (!userId) throw new Error('User ID not found')
-    
-    // We will attempt the API call. If it 404s, backend API doesn't exist yet, 
-    // but we can still optimistically update the store for UI purposes.
-    try {
-      await api.put(`/users/${userId}`, {
-        firstName: formData.value.firstName,
-        lastName: formData.value.lastName,
-        phoneNumber: formData.value.phoneNumber
-      })
-    } catch (apiError) {
-      console.warn("Backend user update endpoint might not be ready. Optimistically updating store.", apiError)
-    }
 
-    // Optimistically update the authStore 
+    await api.put('/users/me', {
+      firstName: formData.value.firstName,
+      lastName: formData.value.lastName,
+      phoneNumber: formData.value.phoneNumber
+    })
+
+    // Reflect the saved values in the auth store
     const updatedUser = {
       ...authStore.user,
       firstName: formData.value.firstName,

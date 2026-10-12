@@ -54,7 +54,10 @@ export const useAuthStore = defineStore('auth', () => {
         profileImageUrl: sanitizeProfileImageUrl(me.profileImageUrl ?? undefined),
         roles,
         scopes: user.value?.scopes ?? [],
-        organizationId: (me as { organizationId?: string | null }).organizationId ?? user.value?.organizationId ?? null
+        organizationId: (me as { organizationId?: string | null }).organizationId ?? user.value?.organizationId ?? null,
+        passwordSet: me.passwordSet ?? null,
+        preferredPaymentMethod: me.preferredPaymentMethod ?? null,
+        paymentPhone: me.paymentPhone ?? null
       }
       localStorage.setItem('user', JSON.stringify(user.value))
     } catch {

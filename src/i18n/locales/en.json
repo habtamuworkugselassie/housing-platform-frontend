@@ -109,7 +109,35 @@
     "deleteHelp": "Permanently delete your account and personal data. This can't be undone.",
     "deleteButton": "Delete my account",
     "deleteConfirm": "This permanently deletes your account and personal data, and cannot be undone. Continue?",
-    "deleteError": "Could not delete your account. Please try again."
+    "deleteError": "Could not delete your account. Please try again.",
+    "password": {
+      "setTitle": "Set a password",
+      "changeTitle": "Change password",
+      "setHelp": "Your account has no password yet. Set one so you can sign in again after signing out, without waiting for a code.",
+      "changeHelp": "Enter your current password, then choose a new one.",
+      "signInAs": "You will sign in with {who} and this password.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Repeat new password",
+      "rules": "At least 8 characters, with an uppercase letter, a lowercase letter and a number.",
+      "currentRequired": "Enter your current password.",
+      "mismatch": "The two new passwords do not match.",
+      "setButton": "Set password",
+      "changeButton": "Change password",
+      "saved": "Password saved. Use it the next time you sign in.",
+      "failed": "Could not save your password. Please try again."
+    },
+    "payment": {
+      "title": "Payment method",
+      "help": "Choose how you usually pay. It is selected for you when you pay a deposit, the balance or fees; you can still pick another method each time.",
+      "clear": "No preferred method",
+      "phone": "Mobile money number",
+      "phoneHelp": "Used for telebirr, CBE Birr, M-Pesa and Awash Birr payments. Leave empty to use your order's contact phone.",
+      "noCardsStored": "Payments are processed by Chapa. We never store card numbers or wallet PINs.",
+      "save": "Save payment method",
+      "saved": "Payment method saved.",
+      "failed": "Could not save your payment method. Please try again."
+    }
   },
   "nav": {
     "browse": "Browse",
@@ -1982,6 +2010,11 @@
     }
   },
   "purchase": {
+    "existingOrder": {
+      "title": "You already have purchase order {number} for this property",
+      "help": "Only one order per property can be open at a time. Continue with your existing order, or place a new one if it is cancelled, rejected or expires.",
+      "view": "View my order"
+    },
     "fees": {
       "title": "Service fee and VAT",
       "markup": "Service fee ({percent} %)",

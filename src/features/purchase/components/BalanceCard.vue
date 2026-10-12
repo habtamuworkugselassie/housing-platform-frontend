@@ -148,6 +148,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { formatPrice } from '@/shared/utils'
 import { openProtectedFile } from '@/shared/api/protectedFile'
+import { useAuthStore } from '@/features/auth'
 import { purchaseApi } from '../api/purchase.api'
 import type { BalancePurpose, DepositPaymentMethod, PurchaseBalanceResponse } from '../api/purchase.types'
 import DepositMethodPicker from './DepositMethodPicker.vue'
@@ -184,6 +185,7 @@ const error = ref<string | null>(null)
 const outcome = ref<'paid' | 'failed' | 'pending' | null>(null)
 const payTab = ref<'online' | 'transfer'>('online')
 const amount = ref<number | null>(null)
+const authStore = useAuthStore()
 const method = ref<DepositPaymentMethod | null>(null)
 const transfer = reactive({ reference: '', paidOn: '', slip: null as File | null })
 
@@ -252,6 +254,8 @@ function set(b: PurchaseBalanceResponse) {
   if (purpose.value === 'FEES' && feesRoom.value <= 0) purpose.value = 'BALANCE'
   if (purpose.value === 'BALANCE' && balanceRoom.value <= 0 && feesRoom.value > 0) purpose.value = 'FEES'
   if (first || amount.value == null || amount.value > room.value) amount.value = defaultAmount(b) || null
+  const preferred = authStore.user?.preferredPaymentMethod
+  if (!method.value && preferred && b.paymentMethods.includes(preferred)) method.value = preferred
   if (!method.value && b.paymentMethods.length === 1) method.value = b.paymentMethods[0]
   emit('changed', b)
 }

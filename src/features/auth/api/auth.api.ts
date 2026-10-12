@@ -14,7 +14,9 @@ import type {
   ResetPasswordRequest,
   User,
   QuickRegisterRequest,
-  GoogleLoginRequest
+  GoogleLoginRequest,
+  ChangePasswordRequest,
+  PaymentPreferencesRequest
 } from './auth.types'
 
 export const authApi = {
@@ -80,6 +82,17 @@ export const authApi = {
    */
   getCurrentUser: async (): Promise<User> => {
     const response = await api.get<User>('/users/me')
+    return response.data
+  },
+
+  /** Sets a first password, or changes the current one. */
+  changePassword: async (data: ChangePasswordRequest): Promise<User> => {
+    const response = await api.post<User>('/users/me/password', data)
+    return response.data
+  },
+
+  updatePaymentPreferences: async (data: PaymentPreferencesRequest): Promise<User> => {
+    const response = await api.put<User>('/users/me/payment-preferences', data)
     return response.data
   },
 
