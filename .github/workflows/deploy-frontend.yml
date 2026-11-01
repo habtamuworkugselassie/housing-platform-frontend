@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  # Run by hand from the Actions tab. The first deploy to a fresh droplet needs a
+  # retry loop that does not depend on inventing commits to main.
+  workflow_dispatch:
 
 env:
   # Image lives in GitHub Container Registry, authenticated with the workflow's own
@@ -11,10 +14,13 @@ env:
   # PAT blocked every backend deploy between 2026-04-25 and 2026-08-26; this repo's last
   # green run (56, 23 July) was the last one before it would have bitten here too.
   REGISTRY_IMAGE: ghcr.io/${{ github.repository }}
-  # Image name the droplet's ~/housing-platform/docker-compose.yml already references.
-  # The image pulled from GHCR is retagged to this name on the server, so the compose
-  # file (which is not in this repo) needs no change.
+  # Image name deploy/docker-compose.prod.yml references. That file lives in the
+  # BACKEND repo — it defines the whole stack, so both deploys drive the same one.
+  # The GHCR image is retagged to this on the droplet, so compose starts this build.
   DEPLOY_IMAGE: habtamuwgs/housing-platform-frontend
+  # Where the BACKEND repo is checked out on the droplet (it holds the compose file).
+  # Override with an Actions variable if the layout differs.
+  DEPLOY_DIR: ${{ vars.DEPLOY_DIR || '/opt/ethiobuildconnect/housing-platform-backend' }}
 
 jobs:
   build:
@@ -73,15 +79,21 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_IMAGE: ${{ env.REGISTRY_IMAGE }}
           DEPLOY_IMAGE: ${{ env.DEPLOY_IMAGE }}
+          DEPLOY_DIR: ${{ env.DEPLOY_DIR }}
           SHA: ${{ github.sha }}
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_SSH_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
-          envs: GHCR_USER,GHCR_TOKEN,REGISTRY_IMAGE,DEPLOY_IMAGE,SHA
+          envs: GHCR_USER,GHCR_TOKEN,REGISTRY_IMAGE,DEPLOY_IMAGE,DEPLOY_DIR,SHA
           script: |
             set -euo pipefail
-            cd ~/housing-platform
+            # The compose file is versioned in the backend repo, so the frontend
+            # deploy drives the stack from that checkout rather than a copy on the
+            # server that nothing keeps in step.
+            cd "$DEPLOY_DIR"
+            git pull --ff-only
+            COMPOSE="docker compose -f deploy/docker-compose.prod.yml"
 
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
@@ -92,19 +104,19 @@ jobs:
             docker pull "$REGISTRY_IMAGE:$SHA"
             docker tag "$REGISTRY_IMAGE:$SHA" "$DEPLOY_IMAGE:latest"
 
-            docker compose up -d
+            $COMPOSE up -d
 
             # Lightweight health gate. The frontend is a static nginx image with no migrations or
             # DB, so the failure mode is a corrupt/mis-tagged image that crash-loops rather than a
             # runtime health problem. Give it a moment, then confirm nothing is restarting or exited;
             # roll back and fail the job if so.
             sleep 8
-            if docker compose ps --format '{{.Service}} {{.State}}' | grep -Eiv ' (running|up)$' | grep -q .; then
+            if $COMPOSE ps --format '{{.Service}} {{.State}}' | grep -Eiv ' (running|up)$' | grep -q .; then
               echo "::error::A frontend container is not running after deploy — rolling back."
-              docker compose ps
-              docker compose logs --tail 40 || true
+              $COMPOSE ps
+              $COMPOSE logs --tail 40 || true
               docker tag "$DEPLOY_IMAGE:rollback-$SHA" "$DEPLOY_IMAGE:latest" 2>/dev/null \
-                && docker compose up -d \
+                && $COMPOSE up -d \
                 && echo "Rolled back to the previous image." \
                 || echo "::warning::No previous image to roll back to."
               exit 1
