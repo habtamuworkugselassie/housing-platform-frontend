@@ -104,7 +104,11 @@ jobs:
             docker pull "$REGISTRY_IMAGE:$SHA"
             docker tag "$REGISTRY_IMAGE:$SHA" "$DEPLOY_IMAGE:latest"
 
-            $COMPOSE up -d
+            # frontend and the caddy edge in front of it. Through depends_on this also brings up
+            # backend/postgres/redis if they are not running, so the backend workflow must have
+            # deployed at least once first — otherwise this fails on its missing image, which is
+            # the right error to see.
+            $COMPOSE up -d frontend caddy
 
             # Lightweight health gate. The frontend is a static nginx image with no migrations or
             # DB, so the failure mode is a corrupt/mis-tagged image that crash-loops rather than a
@@ -116,7 +120,7 @@ jobs:
               $COMPOSE ps
               $COMPOSE logs --tail 40 || true
               docker tag "$DEPLOY_IMAGE:rollback-$SHA" "$DEPLOY_IMAGE:latest" 2>/dev/null \
-                && $COMPOSE up -d \
+                && $COMPOSE up -d frontend caddy \
                 && echo "Rolled back to the previous image." \
                 || echo "::warning::No previous image to roll back to."
               exit 1
