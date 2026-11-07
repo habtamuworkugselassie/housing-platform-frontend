@@ -83,7 +83,7 @@
           <div :class="orgCardTopBarClass(org)" />
           <div
             v-if="org.isSponsored && isPremierListingTier(org.sponsorshipType)"
-            class="absolute top-11 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-gold-400 text-primary-950 shadow-md ring-1 ring-white/60"
+            class="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-gold-400 text-primary-950 shadow-md ring-1 ring-white/60"
           >
             {{ $t('property.premier') }}
           </div>
@@ -112,7 +112,10 @@
                 {{ (org.name || 'O').charAt(0).toUpperCase() }}
               </div>
               <div class="min-w-0 flex-1">
-                <h2 class="pr-20 text-base sm:text-lg font-bold leading-snug text-gray-900 line-clamp-2">
+                <h2
+                  class="text-base sm:text-lg font-bold leading-snug text-gray-900 line-clamp-2"
+                  :class="{ 'pr-16': org.isSponsored && isPremierListingTier(org.sponsorshipType) }"
+                >
                   {{ org.name }}
                   <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
                 </h2>
