@@ -105,21 +105,42 @@
     <ValueChainGrid />
 
     <!-- Testimonial -->
-    <!-- on-dark: this band keeps its dark brand surface, so the light theme must
-         leave its text alone (see styles/light-app.css). -->
-    <section class="on-dark py-20 lg:py-24 bg-violet-950 border-t border-white/10">
-      <div v-reveal class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="mb-4 text-center text-[13px] font-bold uppercase tracking-[0.12em] text-gold-300">
-          {{ $t('exhibition.testimonial.eyebrow') }}
-        </p>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-10 text-center leading-[1.08]">
-          {{ $t('exhibition.testimonial.title') }}
-        </h2>
-        <blockquote class="relative pl-8 sm:pl-10 text-xl sm:text-2xl text-white/90 leading-relaxed mb-6">
-          <span class="absolute -top-3 left-0 text-6xl font-black leading-none text-gold-400/80" aria-hidden="true">“</span>
-          {{ $t('exhibition.testimonial.quote') }}
-        </blockquote>
-        <p class="pl-8 sm:pl-10 text-sm font-medium text-white/70">— {{ $t('exhibition.testimonial.author') }}</p>
+    <!-- In their words: one rounded deep-violet panel in the page rhythm. on-dark keeps the
+         light theme from recolouring the white text (see styles/light-app.css). -->
+    <section class="bg-white px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
+      <div
+        v-reveal
+        class="on-dark relative mx-auto max-w-7xl overflow-clip rounded-[1.75rem] bg-primary-950 px-5 py-12 text-white sm:px-10 sm:py-16 lg:px-16 lg:py-20"
+      >
+        <div class="dots-bg absolute inset-0 opacity-20" aria-hidden="true" />
+        <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl" aria-hidden="true" />
+        <div class="absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-primary-500/30 blur-3xl" aria-hidden="true" />
+
+        <div class="relative mx-auto max-w-4xl text-center">
+          <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/15">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
+            {{ $t('exhibition.testimonial.eyebrow') }}
+          </span>
+          <h2 class="mt-6 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl">
+            {{ $t('exhibition.testimonial.title') }}
+          </h2>
+
+          <figure class="relative mx-auto mt-10 max-w-3xl rounded-2xl border border-white/15 bg-white/10 px-6 pb-7 pt-10 text-left backdrop-blur-sm sm:px-10 sm:pb-9 sm:pt-12">
+            <span
+              class="absolute -top-6 left-6 flex h-12 w-12 items-center justify-center rounded-full bg-gold-400 text-3xl font-black leading-none text-primary-950 shadow-lg sm:left-10"
+              aria-hidden="true"
+            >
+              &ldquo;
+            </span>
+            <blockquote class="text-lg leading-relaxed text-white/90 sm:text-2xl sm:leading-relaxed">
+              {{ $t('exhibition.testimonial.quote') }}
+            </blockquote>
+            <figcaption class="mt-6 flex items-center gap-3 text-sm font-semibold text-white/80">
+              <span class="h-px w-8 bg-gold-400" aria-hidden="true" />
+              {{ $t('exhibition.testimonial.author') }}
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 

@@ -5,7 +5,8 @@
  *   <div v-reveal data-stagger>…children…</div> children rise one after another
  *   <div v-reveal="{ delay: 120 }">…</div>      extra delay in ms
  *
- * The directive adds `.reveal` and, once the element is ~15% visible, `.is-in`. The
+ * The directive adds `.reveal` and, once the element's top edge is a little way into the
+ * viewport, `.is-in` (a tall panel must not wait until a large share of it is on screen). The
  * hidden state is applied by styles/motion.css only when <html> carries `has-reveal`,
  * which this module sets as soon as it runs: markup that reaches a browser without
  * JavaScript (prerendered HTML, a failed chunk) is simply visible, never stuck at
@@ -25,7 +26,7 @@ function getObserver() {
         observer.unobserve(e.target)
       }
     },
-    { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    { threshold: 0.01, rootMargin: '0px 0px -6% 0px' }
   )
   return observer
 }
