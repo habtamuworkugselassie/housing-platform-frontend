@@ -1,23 +1,18 @@
 <template>
-  <section class="py-24 lg:py-32 bg-white text-gray-900">
+  <section id="sectors" class="py-16 lg:py-24 bg-white text-gray-900 scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 mb-2">
-        {{ $t('exhibition.valueChain.eyebrow') }}
-      </p>
-      <div class="mb-16">
-        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider mb-4 text-gray-900">
-          {{ $t('exhibition.valueChain.title') }}
-        </h2>
-        <p class="text-lg text-gray-600 max-w-2xl">
-          {{ $t('exhibition.valueChain.subtitle') }}
-        </p>
-      </div>
+      <SectionHeader
+        v-reveal
+        :eyebrow="$t('exhibition.valueChain.eyebrow')"
+        :title="$t('exhibition.valueChain.title')"
+        :subtitle="$t('exhibition.valueChain.subtitle')"
+      />
 
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+      <div v-reveal data-stagger class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         <div
           v-for="(item, index) in sectorConfigs"
           :key="index"
-          class="group relative h-44 sm:h-48 overflow-hidden rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition-all duration-300"
+          class="group hover-lift relative h-44 sm:h-48 overflow-hidden rounded-2xl border border-gray-200 hover:border-primary-400"
         >
           <!-- Fallback gradient (shows when image fails or is loading) -->
           <div class="absolute inset-0 z-0 bg-gradient-to-br from-zinc-700 to-zinc-900" aria-hidden="true" />
@@ -45,6 +40,7 @@
 </template>
 
 <script setup>
+import SectionHeader from '@/shared/components/SectionHeader.vue'
 // Each sector: labelKey (i18n) + local background image (Picsum photos downloaded to public/images/exhibition/sectors/).
 const sectorConfigs = [
   { labelKey: 'exhibition.valueChain.buildingMaterials', imageUrl: '/images/exhibition/sectors/building-materials.jpg' },
