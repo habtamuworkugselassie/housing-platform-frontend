@@ -6,7 +6,7 @@
   <section class="message-carousel bg-violet-50 px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
     <div
       v-reveal
-      class="on-dark relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] bg-primary-900 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+      class="on-dark relative mx-auto max-w-7xl overflow-clip rounded-[1.75rem] bg-primary-900 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
       role="region"
       aria-roledescription="carousel"
       :aria-label="$t('exhibition.stories.toggleLabel')"
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Slides -->
-      <div class="relative overflow-hidden">
+      <div class="relative overflow-clip">
         <div
           class="flex will-change-transform"
           :style="{
@@ -66,13 +66,13 @@
           <article
             v-for="(slide, slideIndex) in slides"
             :key="slideIndex"
-            class="grid w-full min-w-0 flex-shrink-0 gap-6 p-5 sm:p-8 md:grid-cols-2 md:items-center lg:gap-12 lg:p-12"
+            class="grid w-full min-w-0 flex-shrink-0 grid-cols-1 gap-6 p-5 sm:p-8 md:grid-cols-2 md:items-center lg:gap-12 lg:p-12"
             :aria-hidden="currentIndex !== slideIndex"
             :inert="currentIndex !== slideIndex"
           >
             <!-- Imagery tile with floating stat cards -->
             <div
-              class="relative aspect-[16/11] md:aspect-[4/3] lg:aspect-[5/4]"
+              class="relative w-full min-w-0 aspect-[16/11] md:aspect-[4/3] lg:aspect-[5/4]"
               :class="slide.imagePosition === 'right' ? 'md:order-2' : ''"
             >
               <div class="absolute inset-0 overflow-hidden rounded-2xl ring-1 ring-white/15">

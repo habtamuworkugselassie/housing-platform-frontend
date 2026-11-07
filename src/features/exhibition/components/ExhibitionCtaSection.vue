@@ -5,7 +5,7 @@
   <section id="get-involved" class="scroll-mt-24 bg-white px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
     <div
       v-reveal
-      class="on-dark relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] bg-primary-900 px-5 py-12 text-white sm:px-10 sm:py-16 lg:px-16 lg:py-20"
+      class="on-dark relative mx-auto max-w-7xl overflow-clip rounded-[1.75rem] bg-primary-900 px-5 py-12 text-white sm:px-10 sm:py-16 lg:px-16 lg:py-20"
     >
       <div class="dots-bg absolute inset-0 opacity-20" aria-hidden="true" />
       <div class="absolute -bottom-32 -right-20 h-80 w-80 rounded-full bg-gold-400/30 blur-3xl" aria-hidden="true" />
