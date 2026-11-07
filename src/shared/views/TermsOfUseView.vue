@@ -1,9 +1,9 @@
 <template>
   <div class="px-4 sm:px-6 lg:px-8 py-12 lg:py-16 max-w-3xl mx-auto">
-    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/60 mb-2">
+    <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-primary-100 bg-primary-50 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-700"><span class="h-1.5 w-1.5 rounded-full bg-gold-500" aria-hidden="true" />
       {{ $t('legal.badge') }}
     </p>
-    <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.06] tracking-tight text-gray-900">
       {{ $t('legal.terms.title') }}
     </h1>
     <p class="mt-2 text-sm text-white/60">{{ $t('legal.lastUpdated') }}</p>

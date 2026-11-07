@@ -18,7 +18,7 @@
           :key="ad.id"
           role="link"
           tabindex="0"
-          class="on-dark flex-1 min-w-0 flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
+          class="on-dark flex-1 min-w-0 flex flex-col hover-lift rounded-2xl border border-white/10 overflow-hidden hover:border-gold-400/50 cursor-pointer"
           :class="tierFor(ad).shadowGlow"
           @click="handleAdClick(ad)"
           @keydown.enter.prevent="handleAdClick(ad)"
@@ -85,7 +85,7 @@
         <div
           role="link"
           tabindex="0"
-          class="on-dark flex-1 w-full flex flex-col rounded-lg border border-white/10 overflow-hidden transition-all hover:border-primary-400/40 cursor-pointer"
+          class="on-dark flex-1 w-full flex flex-col hover-lift rounded-2xl border border-white/10 overflow-hidden hover:border-gold-400/50 cursor-pointer"
           :class="tierFor(adContent).shadowGlow"
           @click="handleClick"
           @keydown.enter.prevent="handleClick"
@@ -153,7 +153,7 @@
     <!-- Sidebar / rectangle: same exhibition tier system -->
     <div
       v-else
-      class="on-dark h-full flex flex-col rounded-lg border border-white/10 overflow-hidden cursor-pointer transition-all hover:border-primary-400/40 w-full"
+      class="on-dark h-full flex flex-col hover-lift rounded-2xl border border-white/10 overflow-hidden cursor-pointer hover:border-gold-400/50 w-full"
       :class="[
         sidebarTier.shadowGlow,
         size === 'sidebar' ? 'min-h-[300px]' : '',

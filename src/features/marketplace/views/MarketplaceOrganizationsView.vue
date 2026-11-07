@@ -16,14 +16,9 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-        {{ pageTitle }}
-      </h1>
-      <p class="text-gray-500 text-sm sm:text-base mb-6">
-        {{ $t('marketplace.organizationsByType') }}
-      </p>
+      <PageHeader :eyebrow="$t('marketplace.eyebrow')" :title="pageTitle" :subtitle="$t('marketplace.organizationsByType')" />
 
-      <div v-if="!loading && !error && config?.type" class="mb-6 rounded-xl border border-gray-200 bg-white/80 p-4 sm:p-5">
+      <div v-if="!loading && !error && config?.type" class="mb-6 rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
             <div v-if="config?.type === 'SUPPLIER' && supplierSubcategories.length" class="w-full sm:w-56 shrink-0">
@@ -80,7 +75,7 @@
           v-for="org in paginatedOrganizations"
           :key="org.id"
           :class="[
-            'group relative overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg',
+            'group hover-lift relative overflow-hidden rounded-2xl bg-white',
             orgCardBorderClass(org),
             'hover:border-primary-400'
           ]"
@@ -213,6 +208,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/shared/components/PageHeader.vue'
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { stripLocale } from '@/i18n/localeRoutes'

@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-violet-950 text-white">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="bg-zinc-900 border border-white/10 rounded-lg p-8">
-        <h2 class="text-2xl font-bold text-white mb-6">{{ $t('register.registerAsRealEstateAgent') }}</h2>
+      <div class="w-full rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_60px_-30px_rgba(46,16,101,0.35)] sm:p-10">
+        <p class="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-100 bg-primary-50 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-700"><span class="h-1.5 w-1.5 rounded-full bg-gold-500" aria-hidden="true" />{{ $t('auth.registerEyebrow') }}</p><h2 class="mb-6 text-3xl font-extrabold tracking-tight text-gray-900">{{ $t('register.registerAsRealEstateAgent') }}</h2>
         
         <div v-if="!companies.length && !loadingCompanies" class="mb-6 rounded-md bg-violet-950/20 border border-white/15 p-4">
           <div class="text-sm text-white">

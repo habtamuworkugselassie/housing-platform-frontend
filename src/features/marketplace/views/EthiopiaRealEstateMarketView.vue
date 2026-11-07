@@ -5,7 +5,7 @@
   <div lang="en" class="px-4 sm:px-6 lg:px-8 py-12 lg:py-16 max-w-3xl mx-auto">
     <Breadcrumbs :crumbs="trail" />
 
-    <h1 class="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+    <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-[1.06] tracking-tight text-gray-900">
       {{ content.h1 }}
     </h1>
     <p class="mt-4 text-base sm:text-lg leading-relaxed text-gray-600">
@@ -39,7 +39,7 @@
     <!-- Placed before the prose: it is the only thing on this page no other site can
          publish, and the reason the page has a chance of ranking at all. -->
     <section v-if="statistics" :id="statistics.id" class="mt-12 scroll-mt-24">
-      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
         {{ statistics.heading }}
       </h2>
       <p class="mt-4 text-[15px] leading-relaxed text-gray-700">{{ statistics.standfirst }}</p>
@@ -51,7 +51,7 @@
         <div
           v-for="item in statistics.headline"
           :key="item.key"
-          class="rounded-lg border border-gray-200 bg-white p-4"
+          class="hover-lift rounded-2xl border border-gray-200 bg-white p-5"
         >
           <dt class="text-sm text-gray-600">{{ item.label }}</dt>
           <dd class="mt-1 text-xl font-bold tracking-tight text-gray-900">{{ item.value }}</dd>
@@ -97,7 +97,7 @@
       :key="section.id"
       class="mt-12 scroll-mt-24"
     >
-      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
         {{ section.heading }}
       </h2>
 

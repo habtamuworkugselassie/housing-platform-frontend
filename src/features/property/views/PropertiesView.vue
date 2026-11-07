@@ -1,18 +1,16 @@
 <template>
   <div class="listing-directory min-h-screen bg-violet-50 pb-14">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-    <div class="mb-5 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ t('property.propertiesAndBuildings') }}</h1>
-        <p class="mt-1 text-sm text-gray-500 sm:text-base">{{ t('property.browsePropertiesBuildings') }}</p>
-      </div>
-      <p v-if="!loading" class="text-sm font-medium text-gray-500">
-        {{ combinedList.length }} {{ combinedList.length === 1 ? 'result' : 'results' }}
-      </p>
-    </div>
+    <PageHeader :eyebrow="$t('marketplace.eyebrow')" :title="t('property.propertiesAndBuildings')" :subtitle="t('property.browsePropertiesBuildings')">
+      <template #aside>
+        <p v-if="!loading" class="inline-flex w-fit rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-semibold text-gray-700">
+          {{ combinedList.length }} {{ combinedList.length === 1 ? 'result' : 'results' }}
+        </p>
+      </template>
+    </PageHeader>
 
     <!-- Filters toolbar -->
-    <div class="mb-6 rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
+    <div class="mb-6 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div class="flex-1">
           <label for="city" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $t('property.city') }}</label>
@@ -59,7 +57,7 @@
     </div>
 
     <!-- Properties and Buildings Grid -->
-    <div v-else-if="combinedList.length" class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div v-else-if="combinedList.length" v-reveal data-stagger class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <ListingCard
         v-for="item in combinedList"
         :key="`${item.type}-${item.id}`"
@@ -105,6 +103,7 @@ import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
 import { formatPrice as formatCurrencyPrice, getVerificationLevel } from '@/shared/utils'
 import { ListingCard } from '@/shared/components'
+import PageHeader from '@/shared/components/PageHeader.vue'
 import {
   isPremierListingTier,
   isGoldListingTier,

@@ -84,3 +84,18 @@
     margin-block: -0.625rem;
   }
 }
+
+/* ---- Shared primitives on every inner page -------------------------------------
+ * The landing set the vocabulary — pill buttons, soft-cornered fields and cards,
+ * lifting cards — and these rules carry it to pages whose markup predates it,
+ * so a page gets the shape without each button being rewritten. The admin shell
+ * keeps its own system and is excluded throughout. */
+.app-canvas :is(a, button):is(.bg-primary-600, .bg-primary-700, .bg-primary-950, .bg-gold-400, .bg-gold-500):not(.admin-shell *):not(.rounded-none) {
+  border-radius: 9999px;
+}
+.app-canvas :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea):not(.admin-shell *):not(.rounded-full):not(.rounded-none) {
+  border-radius: 0.75rem;
+}
+.app-canvas .rounded-xl.border.bg-white:not(.admin-shell *) { border-radius: 1rem; }
+.app-canvas .rounded-lg.border.bg-white:not(.admin-shell *) { border-radius: 0.875rem; }
+

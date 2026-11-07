@@ -37,12 +37,9 @@
 
     <!-- Grid of live streams -->
     <main v-else class="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6">
-      <div class="flex flex-wrap items-start justify-between gap-3">
-        <div class="min-w-0">
-          <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{{ $t('live.page.title') }}</h1>
-          <p class="mt-1 text-sm text-gray-600">{{ $t('live.page.subtitle') }}</p>
-        </div>
-        <div v-if="broadcasts.length || replays.length" class="flex shrink-0 items-center gap-2">
+      <PageHeader :eyebrow="$t('nav.live')" :title="$t('live.page.title')" :subtitle="$t('live.page.subtitle')">
+        <template v-if="broadcasts.length || replays.length" #aside>
+        <div class="flex shrink-0 items-center gap-2">
           <span
             v-if="broadcasts.length"
             class="inline-flex items-center gap-1 rounded-full bg-red-600 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white"
@@ -58,12 +55,13 @@
             {{ $t('live.page.goLive') }}
           </RouterLink>
         </div>
-      </div>
+        </template>
+      </PageHeader>
 
       <div v-if="loading" class="mt-8 text-center text-sm text-gray-500">{{ $t('common.loading') }}</div>
 
-      <div v-else-if="!broadcasts.length" class="flex flex-1 flex-col items-center justify-center py-16 text-center">
-        <span class="material-icons !text-5xl text-gray-300">live_tv</span>
+      <div v-else-if="!broadcasts.length" class="flex flex-1 flex-col items-center justify-center rounded-[1.75rem] border border-gray-200 bg-white px-6 py-16 text-center">
+        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-50 text-primary-600"><span class="material-icons !text-4xl">live_tv</span></span>
         <p class="mt-3 text-lg font-semibold">{{ $t('live.page.emptyTitle') }}</p>
         <p class="mt-1 max-w-md text-sm text-gray-600">{{ $t('live.page.emptyBody') }}</p>
         <RouterLink
@@ -80,7 +78,7 @@
           v-for="b in broadcasts"
           :key="b.id"
           type="button"
-          class="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lg"
+          class="group hover-lift flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-left hover:border-primary-400"
           @click="open(b)"
         >
           <div class="relative flex aspect-video w-full items-center justify-center bg-gray-100">
@@ -107,7 +105,7 @@
             v-for="r in replays"
             :key="r.id"
             type="button"
-            class="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lg"
+            class="group hover-lift flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white text-left hover:border-primary-400"
             @click="openReplay(r)"
           >
             <div class="relative flex aspect-video w-full items-center justify-center bg-gray-100">
@@ -166,6 +164,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/shared/components/PageHeader.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { exhibitionApi } from '@/features/exhibition/api/exhibition.api'
