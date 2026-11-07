@@ -231,9 +231,9 @@
     >
       <div
         v-if="showHint"
-        class="pointer-events-auto flex items-center gap-2 rounded-full border border-gray-200 bg-white py-2 pl-4 pr-2 shadow-lg"
+        class="pointer-events-auto flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full border border-gray-200 bg-white py-1.5 pl-3.5 pr-1.5 shadow-lg sm:py-2 sm:pl-4 sm:pr-2"
       >
-        <button type="button" class="text-sm font-medium text-gray-800" @click="toggleOpen">
+        <button type="button" class="text-[13px] font-medium text-gray-800 sm:text-sm" @click="toggleOpen">
           {{ $t('common.supportChat.hint') }}
         </button>
         <button
@@ -249,7 +249,7 @@
 
     <button
       type="button"
-      class="support-chat-launcher pointer-events-auto relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-800 text-white shadow-xl shadow-violet-950/30 transition-transform duration-200 hover:scale-105 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-300 active:scale-95 sm:h-[4.25rem] sm:w-[4.25rem]"
+      class="support-chat-launcher pointer-events-auto relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-primary-800 text-white shadow-xl shadow-violet-950/30 transition-transform duration-200 hover:scale-105 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-300 active:scale-95 sm:h-[4.25rem] sm:w-[4.25rem]"
       :class="{ 'is-attention': showHint }"
       :aria-label="open ? $t('common.close') : $t('common.supportChat.open')"
       :aria-expanded="open"
@@ -318,6 +318,10 @@ const DEFAULT_PANEL_W = 440
 const DEFAULT_PANEL_H = 580
 const PANEL_SIZE_STORAGE_KEY = 'housing.supportChat.panelSize'
 const HINT_SEEN_KEY = 'housing.supportChat.hintSeen'
+/* On a phone the nudge is not left up until someone taps it: it sits over whatever the
+ * visitor is reading, so it shows for a few seconds and then withdraws for the session. */
+const HINT_SHOWN_SESSION_KEY = 'housing.supportChat.hintShownSession'
+const HINT_PHONE_VISIBLE_MS = 7000
 
 /** The one-time nudge beside the launcher, and the pulse on the launcher itself.
  *  Both stop for good once the widget has been opened or the nudge dismissed. */
@@ -424,8 +428,16 @@ onMounted(() => {
   try {
     // Held back a few seconds: appearing the instant the page paints reads as an
     // interruption, and competes with the content the visitor came for.
-    if (!localStorage.getItem(HINT_SEEN_KEY)) {
-      setTimeout(() => { hintDismissed.value = false }, 4000)
+    const onPhone = typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 639px)').matches
+    const shownThisSession = onPhone && sessionStorage.getItem(HINT_SHOWN_SESSION_KEY)
+    if (!localStorage.getItem(HINT_SEEN_KEY) && !shownThisSession) {
+      setTimeout(() => {
+        hintDismissed.value = false
+        if (onPhone) {
+          try { sessionStorage.setItem(HINT_SHOWN_SESSION_KEY, '1') } catch { /* fine */ }
+          setTimeout(() => { if (!open.value) hintDismissed.value = true }, HINT_PHONE_VISIBLE_MS)
+        }
+      }, 4000)
     }
   } catch {
     /* storage blocked — skip the nudge rather than showing it every route change */

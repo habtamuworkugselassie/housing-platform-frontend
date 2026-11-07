@@ -120,7 +120,9 @@ const props = defineProps({
   autoplayMs: { type: Number, default: 6000 }
 })
 
-// Slide config: imagery + i18n keys. Replace imageUrl with your own assets (e.g. /img/why-exhibit.jpg).
+// Slide config: imagery + i18n keys. Local assets: the Unsplash hot-links this used to carry
+// broke in production (the first slide rendered its alt text), and a third party can remove
+// a photo at any time.
 const slides = [
   {
     titleKey: 'exhibition.whyExhibit.title',
@@ -128,7 +130,7 @@ const slides = [
     bulletKeys: ['exhibition.whyExhibit.bullet1', 'exhibition.whyExhibit.bullet2', 'exhibition.whyExhibit.bullet3'],
     ctaKey: 'exhibition.whyExhibit.bookStand',
     ctaHref: '#register',
-    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178bf58e770f?w=800&q=80',
+    imageUrl: '/images/exhibition/sectors/urban-design.jpg',
     imageAlt: 'Exhibition hall',
     imagePosition: 'left'
   },
@@ -138,7 +140,7 @@ const slides = [
     bulletKeys: ['exhibition.whyVisit.bullet1', 'exhibition.whyVisit.bullet2', 'exhibition.whyVisit.bullet3'],
     ctaKey: 'exhibition.whyVisit.registerToVisit',
     ctaHref: '#register',
-    imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80',
+    imageUrl: '/images/exhibition/sectors/intelligent-building.jpg',
     imageAlt: 'Real estate and future of living',
     imagePosition: 'right'
   }
