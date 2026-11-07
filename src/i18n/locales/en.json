@@ -178,7 +178,10 @@
     "whyExhibit": "Why Exhibit",
     "whyVisit": "Why Visit",
     "showFeatures": "Show Features",
-    "whoAttends": "Who Attends"
+    "whoAttends": "Who Attends",
+    "menuTitle": "Menu",
+    "menuSubtitle": "Jump to a section on the page.",
+    "sectors": "Sectors"
   },
   "splash": {
     "enter": "Enter",

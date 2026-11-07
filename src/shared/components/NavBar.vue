@@ -215,15 +215,11 @@
       </div>
     </div>
 
-    <!-- Mobile menu.
-         Teleported to <body> because .site-nav sets backdrop-filter, which makes the
-         nav a containing block for fixed-position descendants — a drawer left inside
-         it would be measured against the 64px bar instead of the viewport. It used to
-         be an in-flow block that simply pushed the bar taller: it ended partway down
-         the screen with the page showing through underneath, could not scroll when the
-         list outgrew the viewport, and left the page behind it scrollable.
-         z-order: backdrop 65 < panel 68 < nav 70, so the bar and its close button stay
-         above the drawer, and both cover the support-chat bubble at z-60. -->
+    <!-- Mobile menu: a sheet from the right edge, above the bar (z 72 > nav 70), with its
+         own close control — so it reads as one surface rather than a panel hanging off the
+         bar. Teleported to <body> because .site-nav's descendants would otherwise be
+         measured against the bar. The strip of page left showing beside it is the backdrop,
+         which is what makes tap-outside-to-close reachable at all. -->
     <Teleport to="body">
       <Transition
         enter-active-class="transition-opacity ease-out duration-200"
@@ -234,7 +230,7 @@
         <div
           v-if="mobileMenuOpen"
           data-nav-backdrop
-          class="lg:hidden fixed inset-0 z-[65] bg-black/50"
+          class="lg:hidden fixed inset-0 z-[71] bg-primary-950/55 backdrop-blur-[2px]"
           aria-hidden="true"
           @click="mobileMenuOpen = false"
         />
@@ -242,83 +238,118 @@
 
       <Transition
         enter-active-class="transition ease-out duration-200"
-        enter-from-class="opacity-0 -translate-x-4"
+        enter-from-class="opacity-0 translate-x-6"
         enter-to-class="opacity-100 translate-x-0"
         leave-active-class="transition ease-in duration-150"
         leave-from-class="opacity-100 translate-x-0"
-        leave-to-class="opacity-0 -translate-x-4"
+        leave-to-class="opacity-0 translate-x-6"
       >
-        <!-- A side panel, not a full-width sheet: the strip of page left showing
-             beside it is the backdrop, which is what makes tap-outside-to-close
-             reachable at all. -->
         <div
           v-if="mobileMenuOpen"
           id="mobile-nav-panel"
           role="dialog"
           aria-modal="true"
-          :aria-label="$t('nav.toggleMenu')"
-          class="lg:hidden fixed start-0 top-16 bottom-0 z-[68] w-[86%] max-w-[22rem] flex flex-col overflow-y-auto overscroll-contain border-e border-gray-200 bg-white text-gray-900 shadow-2xl"
+          :aria-label="$t('nav.menuTitle')"
+          class="lg:hidden fixed end-0 top-0 bottom-0 z-[72] flex w-[88%] max-w-[23rem] flex-col overflow-y-auto overscroll-contain rounded-s-3xl bg-[#f7f6fb] text-gray-900 shadow-[0_0_80px_rgba(17,4,39,0.5)]"
         >
-          <div class="flex-1 py-3">
-            <section
-              v-for="(group, gi) in menuGroups"
-              :key="group.key"
-              :class="gi > 0 ? 'mt-1 border-t border-gray-200 pt-1' : ''"
+          <div class="flex items-start justify-between gap-4 px-6 pb-1 pt-5">
+            <div>
+              <p class="text-2xl font-bold tracking-tight text-gray-900">{{ $t('nav.menuTitle') }}</p>
+              <p class="mt-1 text-sm text-gray-500">{{ $t('nav.menuSubtitle') }}</p>
+            </div>
+            <button
+              type="button"
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold-400 text-gray-700 transition-colors hover:bg-gold-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+              :aria-label="$t('common.close')"
+              @click="mobileMenuOpen = false"
             >
-              <button
-                type="button"
-                class="flex w-full items-center justify-between gap-3 rounded-full px-4 py-3 text-left text-[15px] font-normal text-gray-800 hover:bg-gray-100"
-                :aria-expanded="!collapsedGroups[group.key]"
-                :aria-controls="`nav-group-${group.key}`"
-                @click="toggleGroup(group.key)"
-              >
-                <span>{{ group.label }}</span>
-                <span
-                  class="material-icons !text-[20px] leading-none text-gray-600 transition-transform duration-200"
-                  :class="collapsedGroups[group.key] ? 'rotate-180' : ''"
-                  aria-hidden="true"
-                >expand_less</span>
-              </button>
-
-              <ul v-show="!collapsedGroups[group.key]" :id="`nav-group-${group.key}`" class="pb-1">
-                <li v-for="item in group.items" :key="item.key">
-                  <!-- Signing out is the one row that is not a link. -->
-                  <button
-                    v-if="item.action === 'logout'"
-                    type="button"
-                    class="flex w-full items-center gap-4 rounded-full py-3 pe-4 ps-5 text-left text-[15px] text-gray-800 hover:bg-gray-100"
-                    @click="handleLogout"
-                  >
-                    <span class="material-icons !text-[22px] leading-none text-gray-600" aria-hidden="true">{{ item.icon }}</span>
-                    <span class="min-w-0 truncate">{{ item.label }}</span>
-                  </button>
-                  <router-link
-                    v-else
-                    :to="item.to"
-                    class="flex items-center gap-4 rounded-full py-3 pe-4 ps-5 text-[15px]"
-                    :class="isCurrent(item.to)
-                      ? 'bg-sky-100 font-medium text-sky-900'
-                      : 'text-gray-800 hover:bg-gray-100'"
-                    :aria-current="isCurrent(item.to) ? 'page' : undefined"
-                    @click="mobileMenuOpen = false"
-                  >
-                    <span
-                      class="material-icons !text-[22px] leading-none"
-                      :class="isCurrent(item.to) ? 'text-sky-800' : 'text-gray-600'"
-                      aria-hidden="true"
-                    >{{ item.icon }}</span>
-                    <span class="min-w-0 truncate">{{ item.label }}</span>
-                  </router-link>
-                </li>
-              </ul>
-            </section>
-
+              <span class="material-icons !text-[22px] leading-none" aria-hidden="true">close</span>
+            </button>
           </div>
 
-          <!-- Pinned to the bottom of the panel. The pb clears the iOS home
-               indicator, which otherwise sits on top of these links. -->
-          <div class="mt-auto border-t border-gray-200 px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4">
-            <div class="flex items-center gap-6 text-[13px] text-gray-500">
+          <!-- The page's sections, big and flat -->
+          <ul class="px-3 pt-3">
+            <li v-for="link in jumpLinks" :key="link.key">
+              <router-link
+                :to="link.to"
+                class="flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-[17px] font-medium text-gray-900 transition-colors hover:bg-white"
+                :class="isCurrent(link.to) ? 'bg-white' : ''"
+                :aria-current="isCurrent(link.to) ? 'page' : undefined"
+                @click="mobileMenuOpen = false"
+              >
+                <span>{{ link.label }}</span>
+                <span v-if="link.live" class="h-2 w-2 rounded-full bg-red-500 motion-safe:animate-pulse" aria-hidden="true" />
+              </router-link>
+            </li>
+          </ul>
+
+          <!-- Marketplace: every category, as a compact two-column grid of chips -->
+          <div class="px-6 pt-5">
+            <p class="text-[12px] font-bold uppercase tracking-[0.14em] text-gray-500">{{ $t('nav.marketplace') }}</p>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              <router-link
+                v-for="cat in marketplaceCategories"
+                :key="cat.to"
+                :to="cat.to"
+                class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-[13px] font-medium text-gray-800 transition-colors hover:border-primary-300 hover:bg-primary-50"
+                :class="isCurrent(cat.to) ? 'border-primary-300 bg-primary-50 text-primary-900' : ''"
+                :aria-current="isCurrent(cat.to) ? 'page' : undefined"
+                @click="mobileMenuOpen = false"
+              >
+                <span class="material-icons !text-[18px] leading-none text-primary-600" aria-hidden="true">{{ cat.icon }}</span>
+                <span class="min-w-0 truncate">{{ $t(cat.labelKey) }}</span>
+              </router-link>
+            </div>
+          </div>
+
+          <!-- Signed-in destinations -->
+          <div v-if="accountItems.length" class="px-6 pt-6">
+            <p class="text-[12px] font-bold uppercase tracking-[0.14em] text-gray-500">{{ $t('nav.account') }}</p>
+            <ul class="mt-2 -mx-3">
+              <li v-for="item in accountItems" :key="item.key">
+                <button
+                  v-if="item.action === 'logout'"
+                  type="button"
+                  class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] text-gray-800 hover:bg-white"
+                  @click="handleLogout"
+                >
+                  <span class="material-icons !text-[20px] leading-none text-gray-500" aria-hidden="true">{{ item.icon }}</span>
+                  <span class="min-w-0 truncate">{{ item.label }}</span>
+                </button>
+                <router-link
+                  v-else
+                  :to="item.to"
+                  class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px]"
+                  :class="isCurrent(item.to) ? 'bg-white font-medium text-primary-900' : 'text-gray-800 hover:bg-white'"
+                  :aria-current="isCurrent(item.to) ? 'page' : undefined"
+                  @click="mobileMenuOpen = false"
+                >
+                  <span class="material-icons !text-[20px] leading-none" :class="isCurrent(item.to) ? 'text-primary-700' : 'text-gray-500'" aria-hidden="true">{{ item.icon }}</span>
+                  <span class="min-w-0 truncate">{{ item.label }}</span>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pinned to the bottom: the two calls to action, then the legal links. The pb
+               clears the iOS home indicator. -->
+          <div class="mt-auto space-y-2.5 px-6 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-5">
+            <router-link
+              :to="{ path: '/', query: { interest: 'exhibitor' }, hash: '#register' }"
+              class="flex w-full items-center justify-center gap-2 rounded-full bg-gold-400 px-5 py-3.5 text-[15px] font-bold text-primary-950 transition-colors hover:bg-gold-300"
+              @click="mobileMenuOpen = false"
+            >
+              {{ $t('exhibition.hero.registerInterest') }}
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 6l6 6-6 6M5 12h14" /></svg>
+            </router-link>
+            <a
+              href="/download.html"
+              class="flex w-full items-center justify-center gap-2 rounded-full bg-primary-950 px-5 py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-primary-900"
+            >
+              {{ $t('nav.getAppShort') }}
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" /></svg>
+            </a>
+            <div class="flex items-center gap-6 pt-1 text-[13px] text-gray-500">
               <router-link to="/privacy" class="hover:text-gray-800" @click="mobileMenuOpen = false">
                 {{ $t('legal.navPrivacy') }}
               </router-link>
@@ -379,71 +410,48 @@ const isExhibitionPage = computed(() => {
 //
 // Show Features and Who Attends are anchors into the landing page, so they only
 // appear where those sections exist. Live is site-wide.
-const menuGroups = computed(() => {
-  const groups = [
-    {
-      key: 'marketplace',
-      label: t('nav.marketplace'),
-      items: marketplaceCategories.map((cat) => ({
-        key: cat.to,
-        to: cat.to,
-        icon: cat.icon,
-        label: t(cat.labelKey)
-      }))
-    },
-    {
-      key: 'browse',
-      label: t('nav.browse'),
-      items: [
-        { key: 'properties', to: '/properties', icon: 'apartment', label: t('nav.properties') },
-        ...(isExhibitionPage.value
-          ? [
-              { key: 'show-features', to: '/#show-features', icon: 'view_carousel', label: t('nav.showFeatures') },
-              { key: 'who-attends', to: '/#who-attends', icon: 'groups', label: t('nav.whoAttends') }
-            ]
-          : []),
-        { key: 'live', to: '/live', icon: 'sensors', label: t('nav.live') }
-      ]
-    }
-  ]
-
-  if (authStore.isAuthenticated) {
-    const isRealtor = authStore.hasRole('REALTOR')
-    // Gated by role exactly as the desktop bar gates the same destinations.
-    const account = [
-      { key: 'buildings', to: '/buildings', icon: 'domain', label: t('nav.buildings'), show: isRealtor },
-      { key: 'submit-property', to: '/submit-property', icon: 'add_home_work', label: t('nav.submitProperty'), show: isRealtor },
-      { key: 'messages', to: '/agent/messages', icon: 'forum', label: 'Messages', show: isRealtor },
-      { key: 'go-live', to: '/go-live', icon: 'sensors', label: t('nav.goLive'), show: authStore.isAdmin },
-      { key: 'admin', to: '/admin', icon: 'admin_panel_settings', label: t('nav.adminPortal'), show: authStore.isAdmin },
-      { key: 'sponsorships', to: '/sponsorships', icon: 'handshake', label: t('nav.sponsorships'), show: authStore.isAdmin },
-      { key: 'banking', to: '/banking/dashboard', icon: 'account_balance', label: t('nav.banking'), show: authStore.hasRole('BANKER') },
-      { key: 'loans', to: '/loan-applications', icon: 'request_quote', label: t('nav.myLoans'), show: authStore.hasRole('BUYER') },
-      { key: 'purchases', to: '/purchase-orders', icon: 'receipt_long', label: t('nav.myPurchases'), show: authStore.hasRole('BUYER') },
-      { key: 'construction', to: '/construction/dashboard', icon: 'construction', label: t('nav.construction'), show: isRealtor },
-      { key: 'supplier', to: '/supplier/dashboard', icon: 'local_shipping', label: t('nav.supplier'), show: authStore.hasRole('SUPPLIER') },
-      { key: 'dashboard', to: '/dashboard', icon: 'dashboard', label: t('nav.dashboard'), show: !authStore.isAdmin },
-      { key: 'profile', to: '/profile', icon: 'person', label: t('common.profile') || 'Profile', show: true }
-    ].filter((e) => e.show)
-
-    account.push({ key: 'logout', action: 'logout', icon: 'logout', label: t('nav.logout') })
-    groups.push({ key: 'account', label: t('nav.account'), items: account })
+// The page's own sections first (on the landing), then the two destinations that exist
+// everywhere. Big flat rows, the way a one-page site's menu reads.
+const jumpLinks = computed(() => {
+  const links = []
+  if (isExhibitionPage.value) {
+    links.push(
+      { key: 'show-features', to: '/#show-features', label: t('nav.showFeatures') },
+      { key: 'who-attends', to: '/#who-attends', label: t('nav.whoAttends') },
+      { key: 'sectors', to: '/#sectors', label: t('nav.sectors') },
+      { key: 'get-involved', to: '/#get-involved', label: t('exhibition.cta.eyebrow') },
+      { key: 'register', to: '/#register', label: t('exhibition.registerInterest.title') }
+    )
   }
-
-  return groups
+  links.push(
+    { key: 'properties', to: '/properties', label: t('nav.properties') },
+    { key: 'live', to: '/live', label: t('nav.live'), live: true }
+  )
+  return links
 })
 
-// Every group starts expanded; collapsing is a per-session convenience for the
-// signed-in lists, which run long.
-const collapsedGroups = ref({})
+const accountItems = computed(() => {
+  if (!authStore.isAuthenticated) return []
+  const isRealtor = authStore.hasRole('REALTOR')
+  const account = [
+    { key: 'buildings', to: '/buildings', icon: 'domain', label: t('nav.buildings'), show: isRealtor },
+    { key: 'submit-property', to: '/submit-property', icon: 'add_home_work', label: t('nav.submitProperty'), show: isRealtor },
+    { key: 'messages', to: '/agent/messages', icon: 'forum', label: 'Messages', show: isRealtor },
+    { key: 'go-live', to: '/go-live', icon: 'sensors', label: t('nav.goLive'), show: authStore.isAdmin },
+    { key: 'admin', to: '/admin', icon: 'admin_panel_settings', label: t('nav.adminPortal'), show: authStore.isAdmin },
+    { key: 'sponsorships', to: '/sponsorships', icon: 'handshake', label: t('nav.sponsorships'), show: authStore.isAdmin },
+    { key: 'banking', to: '/banking/dashboard', icon: 'account_balance', label: t('nav.banking'), show: authStore.hasRole('BANKER') },
+    { key: 'loans', to: '/loan-applications', icon: 'request_quote', label: t('nav.myLoans'), show: authStore.hasRole('BUYER') },
+    { key: 'purchases', to: '/purchase-orders', icon: 'receipt_long', label: t('nav.myPurchases'), show: authStore.hasRole('BUYER') },
+    { key: 'construction', to: '/construction/dashboard', icon: 'construction', label: t('nav.construction'), show: isRealtor },
+    { key: 'supplier', to: '/supplier/dashboard', icon: 'local_shipping', label: t('nav.supplier'), show: authStore.hasRole('SUPPLIER') },
+    { key: 'dashboard', to: '/dashboard', icon: 'dashboard', label: t('nav.dashboard'), show: !authStore.isAdmin },
+    { key: 'profile', to: '/profile', icon: 'person', label: t('common.profile') || 'Profile', show: true }
+  ].filter((e) => e.show)
+  account.push({ key: 'logout', action: 'logout', icon: 'logout', label: t('nav.logout') })
+  return account
+})
 
-function toggleGroup(key) {
-  collapsedGroups.value = { ...collapsedGroups.value, [key]: !collapsedGroups.value[key] }
-}
-
-// Highlights the row for the page you are on. Anchor entries (/#who-attends) share
-// the landing page's path, so matching on path alone would light up all of them at
-// once — they are deliberately never marked current.
 function isCurrent(to) {
   if (typeof to !== 'string' || to.includes('#')) return false
   // Links are written unprefixed, so the active check compares against the stripped path.
