@@ -189,7 +189,8 @@
   },
   "marketplace": {
     "organizationsByType": "በዚህ ምድብ ውስጥ የተጸድቁ ድርጅቶች",
-    "noOrganizations": "በዚህ ምድብ ውስጥ ገና ድርጅቶች የሉም።"
+    "noOrganizations": "በዚህ ምድብ ውስጥ ገና ድርጅቶች የሉም።",
+    "eyebrow": "ገበያ"
   },
   "organization": {
     "documentReviewSummaryTitle": "በማረጋገጫ ሰነዶችዎ ላይ የአስተዳዳር አስተያየት"
@@ -233,7 +234,10 @@
     "passwordsDoNotMatch": "የይለፍ ቃላት አይጣጣሙም።",
     "passwordMinLength": "የይለፍ ቃል ቢያንስ 8 ቁምፊዎች መሆን አለበት።",
     "linkExpiredError": "ይህ አገናኝ ጊዜው ሊያልፍ ይችላል። አዲስ የይለፍ ቃል ማስተካከል ይጠይቁ።",
-    "somethingWentWrong": "የሆነ ችግር ተፈጥሯል። እባክዎ ይሞክሩ።"
+    "somethingWentWrong": "የሆነ ችግር ተፈጥሯል። እባክዎ ይሞክሩ።",
+    "loginEyebrow": "እንኳን ደህና መጡ",
+    "registerEyebrow": "መድረኩን ይቀላቀሉ",
+    "accountEyebrow": "መለያዎ"
   },
   "property": {
     "noListingsYet": "እስካሁን የታተመ ዝርዝር የለም።",
@@ -1103,7 +1107,9 @@
     "noCompaniesMatch": "ከፍለጋዎ ጋር የሚጣጣም ኩባንያ አልተገኘም።",
     "addisAbaba": "አዲስ አበባ",
     "bole": "ቦሌ",
-    "megenagna": "መገናኛ"
+    "megenagna": "መገናኛ",
+    "realEstateTitle": "የሪል እስቴት ኩባንያዎች",
+    "realEstateSubtitle": "በመድረኩ ላይ ዝርዝሮች ያሏቸው ገንቢዎች እና ኤጀንሲዎች — በኩባንያ ይመልከቱ፣ ወይም በአገልግሎት፣ በአካባቢ እና በዋጋ ያጣሩ።"
   },
   "filters": {
     "all": "ሁሉም",

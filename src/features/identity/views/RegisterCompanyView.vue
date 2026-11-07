@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-white">
-    <div class="bg-zinc-900 border border-white/10 shadow rounded-lg p-8">
-      <h2 class="text-2xl font-bold text-white mb-6">Register Real Estate Company</h2>
+    <div class="w-full rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_60px_-30px_rgba(46,16,101,0.35)] sm:p-10">
+      <p class="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-100 bg-primary-50 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-700"><span class="h-1.5 w-1.5 rounded-full bg-gold-500" aria-hidden="true" />{{ $t('auth.registerEyebrow') }}</p><h2 class="mb-6 text-3xl font-extrabold tracking-tight text-gray-900">Register Real Estate Company</h2>
       
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">

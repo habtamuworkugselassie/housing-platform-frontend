@@ -12,8 +12,12 @@
       </div>
     </div>
 
-    <!-- Top Search Bar with Filters -->
-    <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-8 sm:pt-10">
+      <PageHeader compact :eyebrow="$t('marketplace.eyebrow')" :title="$t('home.realEstateTitle')" :subtitle="$t('home.realEstateSubtitle')" />
+    </div>
+
+    <!-- Top Search Bar with Filters. Sticks below the floating nav pill, not under it. -->
+    <div class="bg-white/90 backdrop-blur border-y border-gray-200 sticky top-[4.75rem] z-40">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <!-- Search Filters -->
@@ -22,7 +26,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.serviceType"
-                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-full px-4 py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.serviceType') }}</option>
                 <option value="rental">{{ $t('home.rental') }}</option>
@@ -39,7 +43,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.location"
-                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-full px-4 py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.location') }}</option>
                 <option value="Bole">{{ $t('home.bole') }}</option>
@@ -57,7 +61,7 @@
             <div class="relative flex-1 sm:flex-none">
               <select
                 v-model="filters.priceRange"
-                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-lg px-3 sm:px-4 py-2 sm:py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
+                class="w-full appearance-none bg-white border border-gray-300 text-gray-900 rounded-full px-4 py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-primary-400 focus:border-primary-400 cursor-pointer"
               >
                 <option value="">{{ $t('home.priceRange') }}</option>
                 <option value="0-5000">ብ0 - ብ5,000</option>
@@ -264,6 +268,7 @@
 </template>
 
 <script setup>
+import PageHeader from '@/shared/components/PageHeader.vue'
 import { AppButton } from '@/shared/components/ui'
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'

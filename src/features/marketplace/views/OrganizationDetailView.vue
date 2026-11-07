@@ -19,7 +19,7 @@
       <button
         @click="goBack"
         type="button"
-        class="mb-5 -ms-2 inline-flex items-center gap-2 rounded-md px-2 py-2.5 text-sm font-medium text-gray-600 hover:text-primary-400 focus:outline-none"
+        class="mb-5 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-primary-300 hover:bg-primary-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
       >
         <span aria-hidden="true">&larr;</span>
         <span>{{ $t('common.back') }}</span>
@@ -160,20 +160,20 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3 border-t border-gray-200 bg-white p-3 sm:grid-cols-4 sm:p-4">
-          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
-            <p class="text-xs uppercase tracking-wide text-gray-500">Contact Channels</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ contactChannelsCount }}</p>
+          <div class="rounded-2xl border border-primary-100 bg-primary-50 p-4">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-primary-700">Contact Channels</p>
+            <p class="mt-1 text-2xl font-extrabold tracking-tight text-gray-900">{{ contactChannelsCount }}</p>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
-            <p class="text-xs uppercase tracking-wide text-gray-500">Phone Lines</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ organizationPhoneDisplay.length }}</p>
+          <div class="rounded-2xl border border-primary-100 bg-primary-50 p-4">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-primary-700">Phone Lines</p>
+            <p class="mt-1 text-2xl font-extrabold tracking-tight text-gray-900">{{ organizationPhoneDisplay.length }}</p>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
-            <p class="text-xs uppercase tracking-wide text-gray-500">Media Items</p>
-            <p class="mt-1 text-lg font-semibold text-gray-900">{{ galleryMedia.length }}</p>
+          <div class="rounded-2xl border border-primary-100 bg-primary-50 p-4">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-primary-700">Media Items</p>
+            <p class="mt-1 text-2xl font-extrabold tracking-tight text-gray-900">{{ galleryMedia.length }}</p>
           </div>
-          <div class="rounded-lg border border-gray-200 bg-white/60 p-3">
-            <p class="text-xs uppercase tracking-wide text-gray-500">Registered</p>
+          <div class="rounded-2xl border border-primary-100 bg-primary-50 p-4">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-primary-700">Registered</p>
             <p class="mt-1 text-sm font-semibold text-gray-900">{{ createdAtDisplay || 'N/A' }}</p>
           </div>
         </div>
@@ -182,7 +182,7 @@
       <section class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div class="space-y-6 lg:col-span-2">
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-gray-900">Organization Profile</h2>
+            <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Organization Profile</h2>
             <p v-if="organization.description" class="mt-4 whitespace-pre-line text-sm leading-relaxed text-gray-600">
               {{ organization.description }}
             </p>
@@ -192,7 +192,7 @@
           </div>
 
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-gray-900">Business Information</h2>
+            <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Business Information</h2>
             <dl class="mt-5 space-y-3">
               <div class="flex items-center justify-between gap-4 border-b border-gray-200 pb-3">
                 <dt class="text-sm font-medium text-gray-500">{{ $t('admin.orgType') }}</dt>
@@ -258,7 +258,7 @@
 
           <!-- Location map: only when organization has coordinates -->
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ $t('building.locationMap') }}</h2>
+            <h2 class="text-xl font-extrabold tracking-tight text-gray-900 mb-4">{{ $t('building.locationMap') }}</h2>
             <OsmMap
               v-if="organization.latitude != null && organization.longitude != null"
               :latitude="organization.latitude"
@@ -288,7 +288,7 @@
 
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
             <div class="flex items-center justify-between gap-3">
-              <h2 class="text-xl font-bold text-gray-900">Media Gallery</h2>
+              <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Media Gallery</h2>
               <p class="text-xs text-gray-500">{{ imageMedia.length }} images, {{ videoMedia.length }} videos</p>
             </div>
             <div v-if="galleryMedia.length" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -296,7 +296,7 @@
                 v-for="(item, index) in galleryMedia"
                 :key="item.id || item.url || index"
                 type="button"
-                class="group relative overflow-hidden rounded-lg border border-gray-200 bg-white"
+                class="group hover-lift relative overflow-hidden rounded-xl border border-gray-200 bg-white"
                 @click="openGallery(index)"
               >
                 <img
@@ -329,7 +329,7 @@
 
         <div class="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-gray-900">Contact Information</h2>
+            <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Contact Information</h2>
             <div class="mt-4 space-y-3 text-sm">
               <div v-if="organizationPhoneDisplay.length" class="rounded-lg border border-gray-200 bg-white p-3">
                 <p class="text-xs uppercase tracking-wide text-gray-500">{{ $t('admin.orgPhone') }}</p>
@@ -388,7 +388,7 @@
             class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6"
           >
             <div class="flex items-start justify-between gap-3">
-              <h2 class="text-xl font-bold text-gray-900">Sponsorship applications</h2>
+              <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Sponsorship applications</h2>
               <router-link
                 v-if="authStore.isAdmin"
                 to="/admin/sponsorships"
@@ -432,7 +432,7 @@
           </div>
 
           <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <h2 class="text-xl font-bold text-gray-900">Activity Log</h2>
+            <h2 class="text-xl font-extrabold tracking-tight text-gray-900">Activity Log</h2>
             <div v-if="timelineEntries.length" class="mt-4 space-y-3">
               <div
                 v-for="entry in timelineEntries"

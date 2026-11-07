@@ -164,13 +164,13 @@
 
           <!-- Overview -->
           <section v-if="property.description" class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-            <h2 class="mb-3 text-xl font-bold text-gray-900">{{ $t('property.description') }}</h2>
+            <h2 class="mb-3 text-xl font-extrabold tracking-tight text-gray-900">{{ $t('property.description') }}</h2>
             <p class="whitespace-pre-line leading-relaxed text-gray-600">{{ property.description }}</p>
           </section>
 
           <!-- Details -->
           <section class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-            <h2 class="mb-5 text-xl font-bold text-gray-900">{{ $t('property.propertyDetails') }}</h2>
+            <h2 class="mb-5 text-xl font-extrabold tracking-tight text-gray-900">{{ $t('property.propertyDetails') }}</h2>
             <dl class="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
               <div class="flex items-center justify-between gap-4 border-b border-gray-100 py-3">
                 <dt class="text-sm text-gray-500">{{ $t('property.type') }}</dt>
@@ -214,7 +214,7 @@
 
           <!-- Location -->
           <section class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-            <h2 class="mb-5 text-xl font-bold text-gray-900">{{ $t('property.locationMap') }}</h2>
+            <h2 class="mb-5 text-xl font-extrabold tracking-tight text-gray-900">{{ $t('property.locationMap') }}</h2>
             <div class="overflow-hidden rounded-xl border border-gray-200">
               <OsmMap
                 v-if="property.latitude != null && property.longitude != null"
@@ -242,9 +242,9 @@
 
           <!-- Financing -->
           <section v-if="financingOffers.length" class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-            <h2 class="mb-5 text-xl font-bold text-gray-900">{{ $t('property.financingOptions') }}</h2>
+            <h2 class="mb-5 text-xl font-extrabold tracking-tight text-gray-900">{{ $t('property.financingOptions') }}</h2>
             <div class="space-y-4">
-              <div v-for="offer in financingOffers" :key="offer.id" class="rounded-xl border border-gray-200 bg-gray-50 p-5 transition-colors hover:border-primary-300">
+              <div v-for="offer in financingOffers" :key="offer.id" class="hover-lift rounded-2xl border border-gray-200 bg-gray-50 p-5 hover:border-primary-300">
                 <div class="mb-2 flex flex-wrap items-center gap-3">
                   <h4 class="text-base font-bold text-gray-900">{{ offer.creditProductName || 'Financing Offer' }}</h4>
                   <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">{{ $t('banking.active') }}</span>

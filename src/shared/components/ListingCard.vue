@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+    class="group hover-lift relative flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-white"
     :class="{
       'border border-gray-200 hover:border-primary-300': !item.isSponsored,
       'border-2 border-gold-400/70': item.isSponsored && isPremierListingTier(item.sponsorshipType),

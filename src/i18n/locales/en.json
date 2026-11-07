@@ -192,7 +192,8 @@
     "noOrganizations": "No organizations in this category yet.",
     "materialSubcategory": "Material type",
     "allSubcategories": "All material types",
-    "materialSpecialties": "Material specialties"
+    "materialSpecialties": "Material specialties",
+    "eyebrow": "Marketplace"
   },
   "organization": {
     "documentReviewSummaryTitle": "Admin feedback on your verification documents",
@@ -242,7 +243,10 @@
     "passwordsDoNotMatch": "Passwords do not match.",
     "passwordMinLength": "Password must be at least 8 characters.",
     "linkExpiredError": "This link may have expired. Please request a new password reset.",
-    "somethingWentWrong": "Something went wrong. Please try again."
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "loginEyebrow": "Welcome back",
+    "registerEyebrow": "Join the platform",
+    "accountEyebrow": "Your account"
   },
   "property": {
     "noListingsYet": "No listings published yet.",
@@ -1111,7 +1115,9 @@
     "noCompaniesMatch": "No companies match your search.",
     "addisAbaba": "Addis Ababa",
     "bole": "Bole",
-    "megenagna": "Megenagna"
+    "megenagna": "Megenagna",
+    "realEstateTitle": "Real estate companies",
+    "realEstateSubtitle": "Developers and agencies with listings on the platform — browse by company, or filter by service, location and price."
   },
   "filters": {
     "all": "All",
