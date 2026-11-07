@@ -101,7 +101,7 @@
       :class="[
         light
           ? 'rounded-xl bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none disabled:bg-gray-100'
-          : 'border-white/20 bg-white/5 text-white placeholder-gray-400',
+          : 'border-white/20 bg-white/5 placeholder-gray-400',
         light ? (invalid ? 'border-red-400' : 'border-gray-300') : ''
       ]"
       @input="$emit('update:number', $event.target.value)"
@@ -123,6 +123,11 @@ const props = defineProps({
    * purchase wizard. Existing callers are unaffected.
    */
   variant: { type: String, default: 'dark' },
+  // The dark variant sets no text colour on the number input on purpose: it inherits the
+  // surrounding text colour, exactly like the country-code button beside it. It used to
+  // force `text-white`, which the light public theme and the light admin theme do not
+  // remap on form controls — so on a white form the typed number was white on white,
+  // and "the phone is not saved" reports were really "the phone is invisible".
   /** id for the national-number input so a <label for> and tests can target it. */
   id: { type: String, default: '' },
   inputmode: { type: String, default: 'tel' },
