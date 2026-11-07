@@ -106,7 +106,7 @@
         <a
           v-if="!authStore.isAuthenticated"
           href="/download.html"
-          class="inline-flex shrink-0 items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-1.5 text-xs sm:text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
+          class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-gold-400 px-3.5 py-2 text-xs font-bold text-primary-950 shadow-[0_8px_20px_-10px_rgba(244,201,119,0.9)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 sm:gap-2 sm:px-4 sm:text-sm"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />

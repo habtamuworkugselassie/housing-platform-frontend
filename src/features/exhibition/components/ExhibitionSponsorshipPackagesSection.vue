@@ -4,17 +4,12 @@
     class="relative scroll-mt-20 bg-white py-16 lg:py-24 text-gray-900"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mb-10 lg:mb-14">
-        <p class="text-sm font-semibold text-primary-600 mb-3">
-          {{ $t('exhibition.sponsorshipPackages.eyebrow') }}
-        </p>
-        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-4">
-          {{ $t('exhibition.sponsorshipPackages.title') }}
-        </h2>
-        <p class="text-gray-600 text-base leading-relaxed">
-          {{ $t('exhibition.sponsorshipPackages.subtitle') }}
-        </p>
-      </div>
+      <SectionHeader
+        v-reveal
+        :eyebrow="$t('exhibition.sponsorshipPackages.eyebrow')"
+        :title="$t('exhibition.sponsorshipPackages.title')"
+        :subtitle="$t('exhibition.sponsorshipPackages.subtitle')"
+      />
 
       <div v-if="loading" class="flex justify-center py-16">
         <div
@@ -34,23 +29,23 @@
         {{ $t('exhibition.sponsorshipPackages.empty') }}
       </p>
 
-      <div v-else class="grid gap-6 lg:gap-8 md:grid-cols-2 xl:grid-cols-3">
+      <div v-else v-reveal data-stagger class="grid gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
         <article
           v-for="pkg in sortedPackages"
           :key="pkg.id"
-          class="group flex h-full flex-col motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:-translate-y-1"
+          class="group flex h-full flex-col"
         >
           <div
-            class="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl"
+            class="hover-lift relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white"
             :class="tierAccent(pkg).ring"
           >
             <!-- Tier accent bar -->
             <div class="h-1.5 w-full shrink-0 bg-gradient-to-r" :class="tierAccent(pkg).bar" />
             <!-- Header: tier chip + price -->
-            <div class="shrink-0 border-b border-gray-100 px-5 pb-3 pt-4 sm:px-6 sm:pt-5">
-              <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="shrink-0 border-b border-gray-100 px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
+              <div class="flex flex-wrap items-center justify-between gap-3">
                 <span
-                  class="inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
+                  class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em]"
                   :class="tierAccent(pkg).chip"
                 >
                   <SparklesIcon
@@ -62,15 +57,15 @@
                 </span>
                 <p
                   v-if="showSponsorshipPackagePrices"
-                  class="text-right text-lg font-bold tabular-nums leading-tight tracking-tight"
+                  class="text-right text-xl font-extrabold tabular-nums leading-tight tracking-tight sm:text-2xl"
                   :class="tierAccent(pkg).price"
                 >
                   {{ formatPriceEt(pkg.basePrice) }}
                 </p>
               </div>
             </div>
-            <div class="flex min-h-0 flex-1 flex-col px-5 pb-6 pt-4 sm:px-6">
-              <h3 class="shrink-0 text-lg font-semibold text-gray-900 leading-snug mb-2">
+            <div class="flex min-h-0 flex-1 flex-col px-5 pb-6 pt-5 sm:px-6">
+              <h3 class="shrink-0 text-xl font-extrabold tracking-tight text-gray-900 leading-snug mb-2">
                 {{ pkg.name }}
               </h3>
               <p
@@ -81,21 +76,25 @@
               </p>
               <!-- Scroll features only so payment notes + CTA stay fully visible in equal-height grid rows -->
               <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
-                <p class="text-xs font-semibold text-gray-500 mb-2">
+                <p class="mb-3 text-[11px] font-bold uppercase tracking-wider text-gray-500">
                   {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                 </p>
-                <ul
-                  class="space-y-2 text-sm text-gray-700 leading-relaxed list-disc pl-4 pb-1"
-                  :class="tierAccent(pkg).marker"
-                >
-                  <li v-for="(line, idx) in featurePreviewBullets(pkg)" :key="idx">
-                    {{ line }}
+                <ul class="space-y-2.5 pb-1 text-sm leading-relaxed text-gray-700">
+                  <li v-for="(line, idx) in featurePreviewBullets(pkg)" :key="idx" class="flex items-start gap-2.5">
+                    <span
+                      class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border"
+                      :class="tierAccent(pkg).chip"
+                      aria-hidden="true"
+                    >
+                      <CheckIcon class="h-3 w-3" stroke-width="3" />
+                    </span>
+                    <span class="min-w-0">{{ line }}</span>
                   </li>
                 </ul>
                 <button
                   v-if="hasTruncatedFeatures(pkg)"
                   type="button"
-                  class="mt-3 text-sm font-semibold text-gray-500 hover:text-gray-800 underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded-sm hover:underline"
+                  class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-700 underline-offset-4 transition-colors hover:text-primary-900 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded-sm"
                   @click="openDetailsModal(pkg)"
                 >
                   {{ $t('exhibition.sponsorshipPackages.seeMore') }}
@@ -103,7 +102,7 @@
                 <button
                   v-else-if="featureBullets(pkg.features).length === 0 && (pkg.description || pkg.notes)"
                   type="button"
-                  class="mt-3 text-sm font-semibold text-gray-500 hover:text-gray-800 underline-offset-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white rounded-sm hover:underline"
+                  class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-700 underline-offset-4 transition-colors hover:text-primary-900 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded-sm"
                   @click="openDetailsModal(pkg)"
                 >
                   {{ $t('exhibition.sponsorshipPackages.viewDetails') }}
@@ -111,17 +110,18 @@
               </div>
               <div
                 v-if="pkg.notes"
-                class="mt-4 shrink-0 rounded-lg border border-gray-200 bg-gray-50 px-3 py-3 text-xs leading-relaxed text-gray-600 break-words [overflow-wrap:anywhere]"
+                class="mt-4 shrink-0 rounded-2xl border border-primary-100 bg-violet-50 px-4 py-3 text-xs leading-relaxed text-gray-700 break-words [overflow-wrap:anywhere]"
               >
                 {{ pkg.notes }}
               </div>
               <button
                 type="button"
-                class="mt-5 shrink-0 inline-flex w-full items-center justify-center px-4 py-3 text-sm font-semibold rounded-xl text-white transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+                class="mt-5 inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
                 :class="tierAccent(pkg).cta"
                 @click="openRegisterModal(pkg)"
               >
                 {{ $t('exhibition.sponsorshipPackages.enquireCta') }}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 6l6 6-6 6M5 12h14" /></svg>
               </button>
             </div>
           </div>
@@ -129,11 +129,12 @@
       </div>
 
       <div
-        class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 rounded-xl border border-gray-200 bg-violet-50 px-6 py-8"
+        v-reveal
+        class="mt-12 flex flex-col items-center justify-center gap-4 rounded-[1.75rem] border border-primary-100 bg-violet-50 px-6 py-8 sm:flex-row"
       >
         <button
           type="button"
-          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full bg-primary-600 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
           @click="openRegisterModal(null)"
         >
           {{ $t('exhibition.cta.standEnquiry') }}
@@ -142,7 +143,7 @@
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-primary-700 font-semibold text-sm hover:bg-primary-50 hover:border-primary-400 transition-colors min-w-[200px] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex min-w-[200px] items-center justify-center rounded-full border-2 border-primary-300 bg-white px-8 py-3.5 text-sm font-bold text-primary-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-400 hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
         >
           {{ $t('exhibition.cta.viewBrochure') }}
         </a>
@@ -160,9 +161,9 @@
         @click.self="closeDetailsModal"
       >
         <div class="relative w-full max-w-lg sm:max-w-2xl max-h-[min(92vh,900px)] flex flex-col sm:mx-4">
-          <div class="relative w-full rounded-t-2xl sm:rounded-2xl shadow-2xl">
+          <div class="relative w-full rounded-t-3xl sm:rounded-3xl shadow-2xl">
             <div
-              class="relative flex max-h-[min(92vh,900px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-gray-200 bg-white"
+              class="relative flex max-h-[min(92vh,900px)] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
@@ -178,12 +179,12 @@
                   >
                     {{ formatTierLabel(detailsModalPackage.type) }}
                   </p>
-                  <h3 :id="detailsTitleId" class="text-xl font-bold text-gray-900 leading-tight tracking-tight">
+                  <h3 :id="detailsTitleId" class="text-xl font-extrabold text-gray-900 leading-tight tracking-tight sm:text-2xl">
                     {{ detailsModalPackage.name }}
                   </h3>
                   <p
                     v-if="showSponsorshipPackagePrices"
-                    class="mt-3 text-2xl font-bold tabular-nums tracking-tight"
+                    class="mt-3 text-2xl font-extrabold tabular-nums tracking-tight sm:text-3xl"
                     :class="detailsModalTheme.price"
                   >
                     {{ formatPriceEt(detailsModalPackage.basePrice) }}
@@ -207,12 +208,16 @@
                   <p class="text-xs font-semibold text-gray-500 mb-3">
                     {{ $t('exhibition.sponsorshipPackages.benefitsHeading') }}
                   </p>
-                  <ul
-                    class="space-y-2.5 text-sm text-gray-700 leading-relaxed list-disc pl-4"
-                    :class="detailsModalTheme.bulletMarker"
-                  >
-                    <li v-for="(line, idx) in featureBullets(detailsModalPackage.features)" :key="idx">
-                      {{ line }}
+                  <ul class="space-y-2.5 text-sm leading-relaxed text-gray-700">
+                    <li v-for="(line, idx) in featureBullets(detailsModalPackage.features)" :key="idx" class="flex items-start gap-2.5">
+                      <span
+                        class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border"
+                        :class="detailsModalTheme.hintChip"
+                        aria-hidden="true"
+                      >
+                        <CheckIcon class="h-3 w-3" stroke-width="3" />
+                      </span>
+                      <span class="min-w-0">{{ line }}</span>
                     </li>
                   </ul>
                   <p
@@ -240,7 +245,7 @@
               >
                 <button
                   type="button"
-                  class="w-full sm:w-auto px-5 py-3 border text-sm font-semibold rounded-xl transition-colors"
+                  class="w-full rounded-full border px-5 py-3 text-sm font-semibold transition-colors sm:w-auto"
                   :class="detailsModalTheme.secondaryCta"
                   @click="closeDetailsModal"
                 >
@@ -248,7 +253,7 @@
                 </button>
                 <button
                   type="button"
-                  class="w-full sm:w-auto px-5 py-3 text-sm font-semibold rounded-xl transition-all shadow-lg"
+                  class="w-full rounded-full px-5 py-3 text-sm font-bold shadow-lg transition-all sm:w-auto"
                   :class="detailsModalTheme.primaryCta"
                   @click="openRegisterFromDetails"
                 >
@@ -272,9 +277,9 @@
         @click.self="closeRegisterModal"
       >
         <div class="relative w-full max-w-lg max-h-[min(94vh,920px)] flex flex-col sm:mx-4">
-          <div class="relative w-full rounded-t-2xl sm:rounded-2xl shadow-2xl">
+          <div class="relative w-full rounded-t-3xl sm:rounded-3xl shadow-2xl">
             <div
-              class="relative z-[1] flex max-h-[min(94vh,920px)] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl border border-gray-200 bg-white"
+              class="relative z-[1] flex max-h-[min(94vh,920px)] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
@@ -290,7 +295,7 @@
                   >
                     {{ $t('exhibition.registerInterest.eyebrow') }}
                   </p>
-                  <h3 :id="registerTitleId" class="text-xl font-bold text-gray-900 tracking-tight">
+                  <h3 :id="registerTitleId" class="text-xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
                     {{ $t('exhibition.sponsorshipPackages.registerModalTitle') }}
                   </h3>
                   <p class="mt-1.5 text-sm text-gray-600 leading-relaxed">
@@ -298,7 +303,7 @@
                   </p>
                   <p
                     v-if="registerPackageHint"
-                    class="mt-3 inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold"
+                    class="mt-3 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold"
                     :class="registerModalTheme.hintChip"
                   >
                     <span class="h-1.5 w-1.5 shrink-0 rounded-full" :class="registerModalTheme.hintDot" />
@@ -330,7 +335,7 @@
                   <p class="text-sm text-gray-600">{{ $t('exhibition.registerInterest.successMessage') }}</p>
                   <button
                     type="button"
-                    class="mt-6 px-6 py-3 text-sm font-semibold rounded-xl transition-colors"
+                    class="mt-6 rounded-full px-6 py-3 text-sm font-bold transition-colors"
                     :class="registerModalTheme.primaryCta"
                     @click="closeRegisterModal"
                   >
@@ -351,7 +356,7 @@
                   <button
                     type="submit"
                     :disabled="registerSubmitting"
-                    class="w-full py-3.5 px-6 font-semibold text-sm rounded-xl transition-all shadow-lg disabled:opacity-50 disabled:shadow-none"
+                    class="w-full rounded-full px-6 py-3.5 text-sm font-bold shadow-lg transition-all disabled:opacity-50 disabled:shadow-none"
                     :class="registerModalTheme.primaryCta"
                   >
                     {{
@@ -397,17 +402,17 @@ const LIGHT_TIER_ACCENTS = {
     chip: 'border-primary-200 bg-primary-50 text-primary-700',
     price: 'text-primary-700',
     marker: 'marker:text-primary-400',
-    cta: 'bg-primary-600 hover:bg-primary-700',
+    cta: 'bg-primary-600 text-white hover:bg-primary-700',
     ring: '',
     featured: false,
   },
   EXCLUSIVE: {
-    bar: 'from-amber-400 via-yellow-400 to-amber-500',
-    chip: 'border-amber-300 bg-amber-100 text-amber-800',
-    price: 'text-amber-700',
-    marker: 'marker:text-amber-500',
-    cta: 'bg-amber-500 hover:bg-amber-600',
-    ring: 'ring-2 ring-amber-300',
+    bar: 'from-gold-300 via-gold-400 to-gold-600',
+    chip: 'border-gold-300 bg-gold-100 text-gold-800',
+    price: 'text-gold-700',
+    marker: 'marker:text-gold-500',
+    cta: 'bg-gold-400 text-primary-950 hover:bg-gold-300',
+    ring: 'ring-2 ring-gold-400 shadow-[0_24px_60px_-30px_rgba(217,159,63,0.55)]',
     featured: true,
   },
   PLATINUM: {
@@ -415,7 +420,7 @@ const LIGHT_TIER_ACCENTS = {
     chip: 'border-fuchsia-300 bg-fuchsia-100 text-fuchsia-800',
     price: 'text-fuchsia-700',
     marker: 'marker:text-fuchsia-500',
-    cta: 'bg-fuchsia-600 hover:bg-fuchsia-700',
+    cta: 'bg-fuchsia-600 text-white hover:bg-fuchsia-700',
     ring: '',
     featured: false,
   },
@@ -424,7 +429,7 @@ const LIGHT_TIER_ACCENTS = {
     chip: 'border-orange-300 bg-orange-100 text-orange-800',
     price: 'text-orange-700',
     marker: 'marker:text-orange-500',
-    cta: 'bg-orange-500 hover:bg-orange-600',
+    cta: 'bg-orange-500 text-white hover:bg-orange-600',
     ring: '',
     featured: false,
   },
@@ -433,7 +438,7 @@ const LIGHT_TIER_ACCENTS = {
     chip: 'border-slate-300 bg-slate-100 text-slate-700',
     price: 'text-slate-700',
     marker: 'marker:text-slate-400',
-    cta: 'bg-slate-600 hover:bg-slate-700',
+    cta: 'bg-slate-600 text-white hover:bg-slate-700',
     ring: '',
     featured: false,
   },
@@ -442,7 +447,7 @@ const LIGHT_TIER_ACCENTS = {
     chip: 'border-sky-300 bg-sky-100 text-sky-800',
     price: 'text-sky-700',
     marker: 'marker:text-sky-500',
-    cta: 'bg-sky-600 hover:bg-sky-700',
+    cta: 'bg-sky-600 text-white hover:bg-sky-700',
     ring: '',
     featured: false,
   },
@@ -465,7 +470,7 @@ function lightModalTheme(type) {
     eyebrow: a.price,
     price: a.price,
     bulletMarker: a.marker,
-    primaryCta: `${a.cta} text-white`,
+    primaryCta: a.cta,
     secondaryCta: 'border-gray-300 text-gray-700 hover:bg-gray-50',
     closeHover: 'hover:bg-gray-100',
     notesBox: 'border-gray-200 bg-gray-50',
@@ -477,6 +482,7 @@ function lightModalTheme(type) {
   }
 }
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
+import SectionHeader from '@/shared/components/SectionHeader.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 import { coerceDisplayBool } from '@/shared/utils/displaySettingsBooleans'
