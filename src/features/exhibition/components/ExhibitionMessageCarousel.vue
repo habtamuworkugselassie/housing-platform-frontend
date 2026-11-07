@@ -1,122 +1,128 @@
 <template>
-  <section
-    class="message-carousel relative flex w-full flex-col overflow-hidden bg-violet-950 m-0 min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
-    :class="heightClass"
-  >
-    <div class="relative flex-1 min-h-0 w-full overflow-hidden">
-      <div
-        class="flex h-full will-change-transform"
-        :style="{
-          transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
-          transition: 'transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1)'
-        }"
-      >
+  <!-- "Why exhibit / why visit" stories: one rounded brand-violet panel in the same rhythm as the
+       CTA band. The image lives in its own rounded tile, and the arrows sit in a control row with
+       the dots so they never cover the copy (they used to float over the headline on phones). -->
+  <section class="message-carousel bg-violet-50 px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
+    <div
+      v-reveal
+      class="on-dark relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] bg-primary-900 text-white"
+    >
+      <div class="dots-bg absolute inset-0 opacity-20" aria-hidden="true" />
+      <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold-400/25 blur-3xl" aria-hidden="true" />
+      <div class="absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+
+      <div class="relative overflow-hidden">
         <div
-          v-for="(slide, slideIndex) in slides"
-          :key="slideIndex"
-          class="flex h-full min-h-0 w-full min-w-0 flex-shrink-0 flex-col md:flex-row"
+          class="flex will-change-transform"
+          :style="{
+            transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
+            transition: 'transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1)'
+          }"
         >
-          <!-- Imagery: responsive height on mobile, fixed ratio on desktop -->
-          <div
-            class="relative h-36 flex-shrink-0 sm:h-40 md:h-full md:min-h-0 md:min-w-[260px] md:w-2/5 lg:h-full lg:min-w-[340px] xl:min-w-[400px]"
-            :class="slide.imagePosition === 'right' ? 'md:order-2' : ''"
+          <article
+            v-for="(slide, slideIndex) in slides"
+            :key="slideIndex"
+            class="grid w-full min-w-0 flex-shrink-0 gap-6 p-5 sm:p-8 md:grid-cols-2 md:items-center lg:gap-12 lg:p-12"
+            :aria-hidden="currentIndex !== slideIndex"
           >
-            <img
-              v-if="slide.imageUrl"
-              :src="slide.imageUrl"
-              :alt="slide.imageAlt"
-              loading="lazy"
-              class="h-full w-full object-cover object-center"
-            />
+            <!-- Imagery tile -->
             <div
-              v-else
-              class="flex h-full w-full items-center justify-center bg-violet-900/80 text-zinc-500"
+              class="relative aspect-[16/10] overflow-hidden rounded-2xl ring-1 ring-white/15 md:aspect-[4/3] lg:aspect-[5/4]"
+              :class="slide.imagePosition === 'right' ? 'md:order-2' : ''"
             >
-              <PhotoIcon class="h-12 w-12 sm:h-16 sm:w-16" />
+              <img
+                v-if="slide.imageUrl"
+                :src="slide.imageUrl"
+                :alt="slide.imageAlt"
+                loading="lazy"
+                class="h-full w-full object-cover object-center"
+              />
+              <div v-else class="flex h-full w-full items-center justify-center bg-white/10 text-white/50">
+                <PhotoIcon class="h-12 w-12 sm:h-16 sm:w-16" />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-primary-950/60 via-transparent to-transparent" aria-hidden="true" />
+              <span
+                class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-primary-950/70 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md ring-1 ring-white/20"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
+                {{ $t(slide.tagKey) }}
+              </span>
             </div>
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-violet-950/50 via-transparent to-transparent md:from-violet-950/60"
-              :class="slide.imagePosition === 'right' ? 'from-transparent via-transparent to-violet-950/60' : ''"
-              aria-hidden
-            />
-          </div>
-          <!-- Content: responsive padding, typography, spacing; top-aligned on mobile, centered on desktop -->
-          <div
-            class="flex min-h-0 min-w-0 flex-1 flex-col justify-start overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5 md:justify-center md:overflow-visible md:px-8 md:py-10 lg:px-12 lg:py-12 xl:px-16 xl:py-14"
-            :class="slide.imagePosition === 'right' ? 'md:order-1' : ''"
-          >
-            <div class="max-w-xl">
-              <h2 class="text-base font-bold leading-snug text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+
+            <!-- Copy -->
+            <div class="min-w-0" :class="slide.imagePosition === 'right' ? 'md:order-1' : ''">
+              <h2 class="text-2xl font-extrabold leading-[1.08] tracking-tight sm:text-3xl lg:text-4xl xl:text-[2.75rem]">
                 {{ $t(slide.titleKey) }}
               </h2>
-              <p class="mt-2.5 text-sm leading-relaxed text-white/80 sm:mt-3 sm:text-base md:mt-4 md:leading-6">
+              <p class="mt-4 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
                 {{ $t(slide.bodyKey) }}
               </p>
-              <ul class="mt-2.5 space-y-1.5 text-sm leading-snug text-white/80 sm:mt-4 sm:space-y-2 sm:text-base md:space-y-2.5">
-                <li v-for="(bulletKey, i) in slide.bulletKeys" :key="i" class="flex items-start gap-2 sm:gap-2.5">
-                  <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-white/80" />
+              <ul class="mt-5 space-y-2.5 text-sm text-white/90 sm:text-base">
+                <li v-for="(bulletKey, i) in slide.bulletKeys" :key="i" class="flex items-start gap-3">
+                  <span class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gold-400 text-primary-950" aria-hidden="true">
+                    <CheckIcon class="h-3 w-3" />
+                  </span>
                   <span class="min-w-0">{{ $t(bulletKey) }}</span>
                 </li>
               </ul>
               <a
                 :href="slide.ctaHref"
-                class="mt-4 inline-flex w-fit flex-shrink-0 bg-white px-4 py-2.5 text-xs font-semibold text-violet-950 transition-all duration-300 hover:bg-violet-100 hover:text-violet-950 focus:outline-none focus:ring-2 focus:ring-primary-400 sm:mt-6 sm:px-5 sm:py-3 sm:text-sm md:mt-8 md:px-6"
+                class="mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 shadow-lg shadow-gold-500/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-300 focus:outline-none focus:ring-2 focus:ring-gold-300/70"
               >
                 {{ $t(slide.ctaKey) }}
+                <ArrowRightIcon class="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
-          </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Controls: arrows and dots in their own row, never over the copy -->
+      <div class="relative flex items-center justify-between gap-4 border-t border-white/10 px-5 py-4 sm:px-8 lg:px-12">
+        <div class="flex items-center gap-1">
+          <button
+            v-for="(_, index) in slides.length"
+            :key="index"
+            type="button"
+            class="flex h-8 w-8 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-gold-400/60"
+            :aria-label="`Slide ${index + 1}`"
+            :aria-current="currentIndex === index ? 'true' : undefined"
+            @click="goTo(index)"
+          >
+            <span
+              class="h-2 rounded-full transition-all duration-300"
+              :class="currentIndex === index ? 'w-7 bg-gold-400' : 'w-2 bg-white/40 hover:bg-white/70'"
+            />
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-all duration-300 hover:border-gold-400/60 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-gold-400/60"
+            aria-label="Previous"
+            @click="prev"
+          >
+            <ChevronLeftIcon class="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            class="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-all duration-300 hover:border-gold-400/60 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-gold-400/60"
+            aria-label="Next"
+            @click="next"
+          >
+            <ChevronRightIcon class="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- Dots: responsive padding -->
-    <div class="flex flex-shrink-0 justify-center py-3 sm:py-4">
-      <div class="flex items-center gap-1">
-        <!-- The dot is the inner span; the button around it is a 24px square so the
-             target is tappable. Previously the button *was* the 8px dot. -->
-        <button
-          v-for="(_, index) in slides.length"
-          :key="index"
-          type="button"
-          class="flex h-6 w-6 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-white/50"
-          :aria-label="`Slide ${index + 1}`"
-          @click="currentIndex = index"
-        >
-          <span
-            class="h-2 rounded-full transition-all duration-300"
-            :class="currentIndex === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'"
-          />
-        </button>
-      </div>
-    </div>
-
-    <!-- Arrows - subtle, match sponsor carousel -->
-    <button
-      type="button"
-      class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-violet-950/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:left-6"
-      aria-label="Previous"
-      @click="prev"
-    >
-      <ChevronLeftIcon class="h-5 w-5" />
-    </button>
-    <button
-      type="button"
-      class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-violet-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-300 hover:bg-violet-950/50 focus:outline-none focus:ring-2 focus:ring-white/50 sm:right-6"
-      aria-label="Next"
-      @click="next"
-    >
-      <ChevronRightIcon class="h-5 w-5" />
-    </button>
   </section>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { ChevronLeftIcon, ChevronRightIcon, PhotoIcon } from '@heroicons/vue/24/solid'
+import { ChevronLeftIcon, ChevronRightIcon, PhotoIcon, CheckIcon, ArrowRightIcon } from '@heroicons/vue/24/solid'
 
 const props = defineProps({
-  heightClass: { type: String, default: 'min-h-[260px] h-[38vh] sm:h-[42vh] max-h-[480px]' },
   autoplayMs: { type: Number, default: 6000 }
 })
 
@@ -125,16 +131,18 @@ const props = defineProps({
 // a photo at any time.
 const slides = [
   {
+    tagKey: 'nav.whyExhibit',
     titleKey: 'exhibition.whyExhibit.title',
     bodyKey: 'exhibition.whyExhibit.body',
     bulletKeys: ['exhibition.whyExhibit.bullet1', 'exhibition.whyExhibit.bullet2', 'exhibition.whyExhibit.bullet3'],
     ctaKey: 'exhibition.whyExhibit.bookStand',
     ctaHref: '#register',
-    imageUrl: '/images/exhibition/sectors/urban-design.jpg',
-    imageAlt: 'Exhibition hall',
+    imageUrl: '/images/exhibition/sectors/construction-tools.jpg',
+    imageAlt: 'Tools laid out on a workbench',
     imagePosition: 'left'
   },
   {
+    tagKey: 'nav.whyVisit',
     titleKey: 'exhibition.whyVisit.title',
     bodyKey: 'exhibition.whyVisit.body',
     bulletKeys: ['exhibition.whyVisit.bullet1', 'exhibition.whyVisit.bullet2', 'exhibition.whyVisit.bullet3'],
@@ -148,6 +156,11 @@ const slides = [
 
 const currentIndex = ref(0)
 let autoplayTimer = null
+
+function goTo(index) {
+  currentIndex.value = index
+  resetAutoplay()
+}
 
 function next() {
   currentIndex.value = (currentIndex.value + 1) % slides.length
