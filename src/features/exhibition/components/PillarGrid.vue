@@ -11,19 +11,22 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+      <div v-reveal data-stagger class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
         <div
           v-for="(pillar, index) in pillars"
           :key="index"
           :class="[
-            'group p-8 rounded-lg transition-all duration-300',
+            'group hover-lift relative p-6 sm:p-7 rounded-2xl',
             dark
               ? 'bg-white/5 border border-white/10 hover:border-primary-400 hover:bg-primary-100/20'
-              : 'bg-white border border-gray-200 hover:border-primary-300 hover:bg-primary-50 hover:shadow-lg'
+              : 'bg-white border border-gray-200 hover:border-primary-300'
           ]"
         >
-          <div :class="['w-12 h-12 flex items-center justify-center mb-6 transition-colors', dark ? 'text-white/80 group-hover:text-white' : 'text-primary-600 group-hover:text-primary-700']">
-            <component :is="pillar.icon" class="w-8 h-8" />
+          <div class="mb-6 flex items-center justify-between">
+            <div :class="['flex h-12 w-12 items-center justify-center rounded-full transition-colors', dark ? 'bg-white/10 text-white/85 group-hover:text-white' : 'bg-primary-50 text-primary-600 group-hover:bg-gold-100 group-hover:text-gold-800']">
+              <component :is="pillar.icon" class="w-6 h-6" aria-hidden="true" />
+            </div>
+            <span :class="['rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wider', dark ? 'bg-white/10 text-white/80' : 'bg-gray-100 text-gray-500']">0{{ index + 1 }}</span>
           </div>
           <h3 :class="['text-xl font-bold mb-3 tracking-tight', dark ? 'text-white' : 'text-gray-900']">{{ pillar.title }}</h3>
           <p :class="['leading-relaxed text-sm', dark ? 'text-white/80' : 'text-gray-600']">{{ pillar.description }}</p>

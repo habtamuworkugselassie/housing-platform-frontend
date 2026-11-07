@@ -1436,6 +1436,9 @@
       "seconds": "Seconds",
       "happeningNow": "Happening now — the expo is open"
     },
+    "ticker": {
+      "label": "Sectors on show"
+    },
     "hero": {
       "eventName": "Ethio Build Connect Expo",
       "tagline1": "Bold Projects.",
@@ -1447,7 +1450,19 @@
       "downloadBrochure": "Download event brochure",
       "foundationPartners": "Foundation partners",
       "partner": "Partner",
-      "featured": "Featured"
+      "featured": "Featured",
+      "panelLabel": "Expo floor · 2027",
+      "panelStage": "Main stage",
+      "panelEntrance": "Entrance",
+      "datesLabel": "Dates",
+      "datesValue": "9–13 January 2027",
+      "venueLabel": "Venue",
+      "venueValue": "Addis Convention Center",
+      "statDays": "5 days",
+      "statDaysNote": "Launches, talks and deals",
+      "statVenue": "Addis",
+      "statVenueNote": "Convention Center",
+      "statOpen": "Open"
     },
     "whyExhibit": {
       "title": "Inspire industry leaders at the exhibition",
@@ -1659,7 +1674,12 @@
       "title": "Ready to join the leaders?",
       "body": "Book your stand or register to visit the most anticipated real estate and construction event of the year.",
       "standEnquiry": "Stand enquiry",
-      "viewBrochure": "View event brochure"
+      "viewBrochure": "View event brochure",
+      "exhibitorsTag": "Exhibitors & sponsors",
+      "exhibitorsTitle": "Book your stand",
+      "exhibitorsBody": "Put your projects and products in front of buyers, investors and partners from the whole value chain — five days, one roof.",
+      "visitorsTag": "Visitors & buyers",
+      "visitorsBody": "Meet developers, banks, contractors and suppliers in one place, compare what is on the market, and leave with the right contacts."
     },
     "footer": {
       "copyright": "© 2026 Dream Teams Trading PLC. All rights reserved.",

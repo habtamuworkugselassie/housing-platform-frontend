@@ -17,7 +17,10 @@
 }
 
 .site-shell { background: var(--public-canvas); color: var(--public-ink); }
-.site-nav { background: rgba(59, 7, 100, .96) !important; box-shadow: 0 1px 0 rgba(255,255,255,.11), 0 8px 30px rgba(34, 5, 63, .28); backdrop-filter: blur(14px); }
+/* The nav is a transparent sticky frame; the rounded bar inside it carries the surface,
+ * so the page scrolls past underneath a floating pill rather than a full-width band. */
+.site-nav { background: transparent !important; }
+.site-nav__bar { background: rgba(59, 7, 100, .94) !important; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 10px 34px rgba(34, 5, 63, .35), inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 .site-nav a:hover, .site-nav button:hover { color: var(--public-accent) !important; }
 .site-footer { background: #2e1065 !important; }
 

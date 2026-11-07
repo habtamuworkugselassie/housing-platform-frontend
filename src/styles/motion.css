@@ -1,0 +1,152 @@
+/*
+ * Motion and surface primitives for the public pages.
+ *
+ *  .reveal / .is-in   — scroll-in rise, driven by the v-reveal directive
+ *  [data-stagger]     — children of a revealed element rise one after another
+ *  .float             — slow vertical drift for floating badge cards
+ *  .marquee           — endless horizontal ticker; pauses on hover
+ *  .hover-lift        — cards lift and gain a shadow on hover
+ *  .dots-bg / .grid-bg— quiet background textures (dots on dark, grid on light)
+ *  .swash             — hand-drawn gold underline for the accent word of a heading
+ *
+ * Every animation is inside `prefers-reduced-motion: no-preference`; without it the
+ * elements simply sit in their final state.
+ */
+
+/* ---- reveal ---------------------------------------------------------------- */
+html.has-reveal .reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.has-reveal .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  html.has-reveal .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  /* Staggered children: the parent carries the observer; children carry the motion. */
+  html.has-reveal .reveal[data-stagger] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html.has-reveal .reveal[data-stagger] > * {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.has-reveal .reveal[data-stagger].is-in > * {
+    opacity: 1;
+    transform: none;
+  }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(2) { transition-delay: 90ms; }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(3) { transition-delay: 180ms; }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(4) { transition-delay: 270ms; }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(5) { transition-delay: 360ms; }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(6) { transition-delay: 450ms; }
+  html.has-reveal .reveal[data-stagger].is-in > *:nth-child(n + 7) { transition-delay: 520ms; }
+}
+
+/* ---- float ----------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ebc-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+  .float { animation: ebc-float 5s ease-in-out infinite; }
+  .float--slow { animation-duration: 7s; animation-delay: -2s; }
+}
+
+/* ---- marquee --------------------------------------------------------------- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ebc-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee__track { animation: ebc-marquee var(--marquee-duration, 48s) linear infinite; }
+  .marquee:hover .marquee__track,
+  .marquee:focus-within .marquee__track { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No motion: show one copy, let it wrap. */
+  .marquee { mask-image: none; -webkit-mask-image: none; }
+  .marquee__track { width: auto; flex-wrap: wrap; justify-content: center; }
+  .marquee__track > [aria-hidden="true"] { display: none; }
+}
+
+/* ---- hover lift ------------------------------------------------------------ */
+.hover-lift {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px -18px rgba(46, 16, 101, 0.28);
+  }
+}
+
+/* ---- textures -------------------------------------------------------------- */
+.dots-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(76, 29, 149, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76, 29, 149, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ---- swash underline ------------------------------------------------------- */
+.swash {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.swash > svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: 0.32em;
+  pointer-events: none;
+  overflow: visible;
+}
+.swash > svg path {
+  fill: none;
+  stroke: #f4c977;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .swash > svg path {
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    animation: ebc-swash 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+  }
+  @keyframes ebc-swash { to { stroke-dashoffset: 0; } }
+}
