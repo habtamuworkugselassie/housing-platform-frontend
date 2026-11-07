@@ -73,7 +73,7 @@
               <component
                 :is="slide.realEstateCompanyId ? 'router-link' : 'div'"
                 :to="slide.realEstateCompanyId ? `/organizations/${slide.realEstateCompanyId}?from=${$route.path}` : undefined"
-                class="group block h-auto min-h-0 w-full max-w-[min(100%,12.5rem)] sm:w-fit sm:max-w-md md:w-[min(100%,28rem)] text-left rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/10 md:border-white/15 md:border-l-4 md:border-l-black bg-violet-950/20 sm:bg-violet-950/35 md:bg-gradient-to-br md:from-black/55 md:via-black/40 md:to-zinc-900/45 backdrop-blur-sm sm:backdrop-blur-md md:backdrop-blur-xl px-2 py-2 sm:px-6 sm:py-7 md:px-8 md:py-8 lg:px-9 lg:py-9 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(255,255,255,0.1),0_25px_50px_-12px_rgba(0,0,0,0.45)] md:shadow-[inset_0_1px_0_0_rgba(250,204,21,0.06),0_32px_64px_-16px_rgba(0,0,0,0.55),0_0_40px_-8px_rgba(250,204,21,0.12)] transition-all duration-300 hover:-translate-y-0.5 md:hover:-translate-y-1 hover:border-primary-400/35 md:hover:border-l-black hover:shadow-[0_36px_70px_-18px_rgba(0,0,0,0.6),0_0_48px_-6px_rgba(250,204,21,0.18)] cursor-pointer shrink-0"
+                class="group hover-lift block h-auto min-h-0 w-full max-w-[min(100%,14rem)] sm:w-fit sm:max-w-md md:w-[min(100%,28rem)] text-left rounded-2xl md:rounded-[1.75rem] border border-white/15 bg-primary-950/55 backdrop-blur-xl px-3 py-2.5 sm:px-6 sm:py-7 md:px-8 md:py-8 lg:px-9 lg:py-9 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.45)] hover:border-gold-400/50 cursor-pointer shrink-0"
               >
                 <!-- Mobile: single horizontal strip (short). sm+: stacked / desktop layout -->
                 <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-stretch sm:gap-0 md:flex-row md:items-center md:gap-5 lg:gap-6">
@@ -95,10 +95,11 @@
                     {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
                   </div>
                   <div class="min-w-0 flex-1 break-words md:pl-1 lg:pl-2">
-                    <p class="hidden md:block text-[11px] font-semibold uppercase tracking-[0.22em] text-white mb-1.5 lg:mb-2">
+                    <p class="hidden md:inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white mb-3">
+                      <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
                       {{ $t('exhibition.sponsorCarousel.featuredPartner') }}
                     </p>
-                    <h3 class="text-xs sm:text-2xl md:text-2xl lg:text-[1.65rem] font-bold text-white uppercase md:normal-case md:font-semibold md:tracking-tight flex items-start sm:items-center gap-1 sm:gap-2 md:gap-2.5 flex-wrap leading-snug sm:leading-tight md:leading-snug line-clamp-2 sm:line-clamp-none">
+                    <h3 class="text-sm sm:text-2xl md:text-2xl lg:text-[1.65rem] font-bold text-white tracking-tight flex items-start sm:items-center gap-1 sm:gap-2 md:gap-2.5 flex-wrap leading-snug sm:leading-tight md:leading-snug line-clamp-2 sm:line-clamp-none">
                       <span class="min-w-0">{{ slide.realEstateCompanyName || slide.title }}</span>
                       <span class="hidden sm:inline-flex shrink-0 md:translate-y-px">
                         <VerifiedBadge :level="slide.realEstateCompanyVerificationLevel || (slide.realEstateCompanyVerified ? 'FULL' : null)" size="md" />
@@ -111,7 +112,7 @@
                       {{ slide.city }}
                     </p>
                     <span
-                      class="mt-1 max-sm:mt-0.5 sm:mt-3 md:mt-4 inline-block rounded px-1.5 py-0.5 sm:rounded-md sm:px-3 sm:py-1 text-[9px] sm:text-xs font-semibold uppercase tracking-wide sm:tracking-wider md:tracking-[0.12em]"
+                      class="mt-1 max-sm:mt-0.5 sm:mt-3 md:mt-4 inline-block rounded-full px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-wider md:tracking-[0.12em]"
                       :class="tierBadgeClass(slide)"
                     >
                       {{ slide.sponsorshipType || $t('exhibition.sponsorCarousel.sponsor') }}
@@ -127,7 +128,7 @@
         <template v-if="slides.length > 1">
           <button
             type="button"
-            class="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-violet-950/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-violet-950/55 hover:border-primary-400/40 focus:outline-none focus:ring-2 focus:ring-primary-400/50 sm:left-6 md:left-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
+            class="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:border-gold-400/60 focus:outline-none focus:ring-2 focus:ring-gold-400/60 sm:left-6 md:left-8 md:p-3 shadow-lg"
             aria-label="Previous"
             @click="prev"
           >
@@ -135,7 +136,7 @@
           </button>
           <button
             type="button"
-            class="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-violet-950/35 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-violet-950/55 hover:border-primary-400/40 focus:outline-none focus:ring-2 focus:ring-primary-400/50 sm:right-6 md:right-8 md:p-3 border border-white/10 shadow-lg md:shadow-xl"
+            class="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 p-2.5 text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:border-gold-400/60 focus:outline-none focus:ring-2 focus:ring-gold-400/60 sm:right-6 md:right-8 md:p-3 shadow-lg"
             aria-label="Next"
             @click="next"
           >
@@ -155,8 +156,8 @@
           v-for="(slide, index) in slides"
           :key="slide.id + (slide.realEstateCompanyId || '') + index"
           type="button"
-          class="flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 flex-shrink-0 items-center justify-center rounded-md overflow-hidden bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 hover:bg-primary-100/30 hover:border-primary-400 border border-transparent"
-          :class="currentIndex === index ? 'ring-2 ring-white sm:scale-110 scale-105' : ''"
+          class="flex h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 flex-shrink-0 items-center justify-center rounded-full overflow-hidden bg-white/90 transition-all focus:outline-none focus:ring-2 focus:ring-gold-400 hover:scale-105 border border-white/20"
+          :class="currentIndex === index ? 'ring-2 ring-gold-400 ring-offset-2 ring-offset-black/60 scale-110' : 'opacity-75'"
           :aria-label="(slide.realEstateCompanyName || slide.title) + (currentIndex === index ? ' (current)' : '')"
           :title="slide.realEstateCompanyName || slide.title"
           @click="goTo(index)"
@@ -166,11 +167,11 @@
             :src="mediaUrl(slide.logoUrl)"
             :alt="slide.realEstateCompanyName || slide.title"
             loading="lazy"
-            class="h-full w-full object-contain p-0.5"
+            class="h-full w-full object-contain p-1"
           />
           <span
             v-else
-            class="text-xs sm:text-sm font-bold text-white"
+            class="text-xs sm:text-sm font-bold text-primary-900"
           >
             {{ (slide.realEstateCompanyName || slide.title).charAt(0).toUpperCase() }}
           </span>

@@ -178,7 +178,10 @@
     "whyExhibit": "ለምን ይደርሱ",
     "whyVisit": "ለምን ይጎብኙ",
     "showFeatures": "የማሳያ ባህሪያት",
-    "whoAttends": "ማን ይገኛል"
+    "whoAttends": "ማን ይገኛል",
+    "menuTitle": "ምናሌ",
+    "menuSubtitle": "በገጹ ላይ ወደ አንድ ክፍል ይዝለሉ።",
+    "sectors": "ሴክተሮች"
   },
   "splash": {
     "enter": "ግባ",
