@@ -1483,6 +1483,17 @@
       "registerToVisit": "ለመጎብኘት ይመዝግቡ",
       "visitorExperience": "የጎብኚ ልምድ"
     },
+    "stories": {
+      "toggleLabel": "ታሪክ ይምረጡ",
+      "statExhibitors": "300+",
+      "statExhibitorsLabel": "ተሳታፊዎች",
+      "statSpeakers": "500+",
+      "statSpeakersLabel": "ተናጋሪዎች",
+      "statStages": "6",
+      "statStagesLabel": "ደረጃዎች",
+      "statHours": "180+",
+      "statHoursLabel": "የይዘት ሰዓታት"
+    },
     "brochureStrip": {
       "eyebrow": "አውርድ",
       "title": "የዝግጅት ብሮሹር",

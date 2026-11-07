@@ -1491,6 +1491,17 @@
       "registerToVisit": "Register to visit",
       "visitorExperience": "Visitor experience"
     },
+    "stories": {
+      "toggleLabel": "Choose a story",
+      "statExhibitors": "300+",
+      "statExhibitorsLabel": "Exhibitors",
+      "statSpeakers": "500+",
+      "statSpeakersLabel": "Speakers",
+      "statStages": "6",
+      "statStagesLabel": "Stages",
+      "statHours": "180+",
+      "statHoursLabel": "Hours of content"
+    },
     "brochureStrip": {
       "eyebrow": "Download",
       "title": "Event brochure",
