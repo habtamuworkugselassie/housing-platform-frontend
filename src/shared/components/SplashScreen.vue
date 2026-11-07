@@ -149,7 +149,7 @@ onUnmounted(() => {
 }
 
 .splash-screen {
-  background: linear-gradient(135deg, rgba(76, 29, 149, .28), rgba(59, 7, 100, .12));
+  background: linear-gradient(135deg, rgba(76, 29, 149, .28), rgba(46, 16, 101, .12));
   backdrop-filter: blur(3px);
 }
 
@@ -157,7 +157,7 @@ onUnmounted(() => {
   padding: clamp(1.5rem, 5vw, 3rem);
   border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 1.5rem;
-  background: rgba(59, 7, 100, .8);
+  background: rgba(46, 16, 101, .8);
   box-shadow: 0 1.5rem 5rem rgba(46, 16, 101, .3);
   backdrop-filter: blur(18px);
 }

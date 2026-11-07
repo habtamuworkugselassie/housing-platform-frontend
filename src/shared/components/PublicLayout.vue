@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-surface-canvas text-white flex flex-col">
+  <!-- No background of its own: the app canvas (light) shows through beside the content, so
+       the sponsor rail reads as floating cards on the page rather than a dark stripe. -->
+  <div class="min-h-screen flex flex-col">
     <!-- Optional full-width top (e.g. sponsor carousel) - the side panel starts below -->
     <div v-if="$slots.top" class="w-full flex-shrink-0">
       <slot name="top" />
@@ -15,9 +17,12 @@
 
       <aside
         v-if="sideSlots.some(Boolean)"
-        class="hidden xl:block w-80 flex-shrink-0 bg-black/20 border-l border-white/10 text-white"
+        class="hidden xl:block w-80 flex-shrink-0 px-4 py-6 text-white"
+        aria-label="Sponsors"
       >
-        <div class="p-4 space-y-4">
+        <!-- Sticky so the sponsor cards stay in view while the page scrolls; top clears the
+             floating nav. -->
+        <div class="sticky top-24 space-y-4">
           <AdSpace
             v-for="(ad, index) in sideSlots"
             :key="`side-ad-${index}`"

@@ -8,8 +8,8 @@
 :root {
   --public-canvas: #ffffff;
   --public-ink: #111827;
-  --public-surface: #3b0764;
-  --public-surface-raised: #581c87;
+  --public-surface: #2e1065;         /* brand violet-950: nav, footer, dark bands */
+  --public-surface-raised: #4c1d95;  /* brand violet-900: floating panels, raised cards */
   --public-muted: #eadcff;        /* light text on dark surfaces */
   --public-line: #e5e7eb;
   --public-accent: #f4c977;
@@ -20,7 +20,7 @@
 /* The nav is a transparent sticky frame; the rounded bar inside it carries the surface,
  * so the page scrolls past underneath a floating pill rather than a full-width band. */
 .site-nav { background: transparent !important; }
-.site-nav__bar { background: rgba(59, 7, 100, .94) !important; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 10px 34px rgba(34, 5, 63, .35), inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.site-nav__bar { background: rgba(46, 16, 101, .94) !important; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 10px 34px rgba(34, 5, 63, .35), inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 .site-nav a:hover, .site-nav button:hover { color: var(--public-accent) !important; }
 .site-footer { background: #2e1065 !important; }
 
@@ -52,7 +52,7 @@
  * `.public-page .text-white { color: #fff !important }` — is scoped to `.public-page`,
  * which none of these three carry. So the panel was forced dark while light-app.css
  * recoloured its text to ink, and anything using bg-zinc-900 here rendered ink on
- * #3b0764: about 1.6:1, i.e. invisible. The property-credit modal on a listing page
+ * the dark surface: about 1.6:1, i.e. invisible. The property-credit modal on a listing page
  * was reported exactly that way.
  *
  * Dropping the overrides lets light-app.css remap these surfaces to white with ink
