@@ -41,7 +41,7 @@
 
 <script setup>
 import SectionHeader from '@/shared/components/SectionHeader.vue'
-// Each sector: labelKey (i18n) + local background image (Picsum photos downloaded to public/images/exhibition/sectors/).
+// Each sector: labelKey (i18n) + local background image (Unsplash photos, see public/images/exhibition/CREDITS.md).
 const sectorConfigs = [
   { labelKey: 'exhibition.valueChain.buildingMaterials', imageUrl: '/images/exhibition/sectors/building-materials.jpg' },
   { labelKey: 'exhibition.valueChain.concreteCement', imageUrl: '/images/exhibition/sectors/concrete-cement.jpg' },
