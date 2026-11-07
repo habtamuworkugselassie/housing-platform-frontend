@@ -1,7 +1,9 @@
 # Photo credits
 
 Photos in `sectors/` and `stories/` are from Unsplash (https://unsplash.com/license) and are
-stored locally so a third party cannot break the page by removing or moving them.
+stored in the repo so a third party cannot break the page by removing or moving them. They are
+imported from components (not served from public/) so Vite fingerprints the file names and a
+replaced photo is never served stale from the one-year image cache.
 
 | File | Unsplash photo |
 | --- | --- |

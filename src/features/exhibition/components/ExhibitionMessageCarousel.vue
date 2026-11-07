@@ -177,8 +177,11 @@ const props = defineProps({
 const arrowClass =
   'flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-md transition-all duration-300 hover:border-gold-400/60 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/60'
 
-// Slide config: imagery + i18n keys. Photos are local (public/images/exhibition/CREDITS.md) so a
-// third party cannot break the page by removing or moving them.
+import whyExhibitPhoto from '@/assets/exhibition/stories/why-exhibit.jpg'
+import whyVisitPhoto from '@/assets/exhibition/stories/why-visit.jpg'
+
+// Slide config: imagery + i18n keys. Photos are imported (src/assets/exhibition/CREDITS.md) so
+// Vite fingerprints them and a replaced photo is never served stale from the image cache.
 const slides = [
   {
     tagKey: 'nav.whyExhibit',
@@ -187,7 +190,7 @@ const slides = [
     bulletKeys: ['exhibition.whyExhibit.bullet1', 'exhibition.whyExhibit.bullet2', 'exhibition.whyExhibit.bullet3'],
     ctaKey: 'exhibition.whyExhibit.bookStand',
     ctaHref: '#register',
-    imageUrl: '/images/exhibition/stories/why-exhibit.jpg',
+    imageUrl: whyExhibitPhoto,
     imageAlt: 'A speaker presenting to a full hall at an industry event',
     imagePosition: 'left',
     stats: [
@@ -202,7 +205,7 @@ const slides = [
     bulletKeys: ['exhibition.whyVisit.bullet1', 'exhibition.whyVisit.bullet2', 'exhibition.whyVisit.bullet3'],
     ctaKey: 'exhibition.whyVisit.registerToVisit',
     ctaHref: '#register',
-    imageUrl: '/images/exhibition/stories/why-visit.jpg',
+    imageUrl: whyVisitPhoto,
     imageAlt: 'Visitors seated in a conference auditorium',
     imagePosition: 'right',
     stats: [

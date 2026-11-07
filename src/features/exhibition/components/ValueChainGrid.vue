@@ -41,19 +41,24 @@
 
 <script setup>
 import SectionHeader from '@/shared/components/SectionHeader.vue'
-// Each sector: labelKey (i18n) + local background image (Unsplash photos, see public/images/exhibition/CREDITS.md).
+// Each sector: labelKey (i18n) + background photo (Unsplash, see src/assets/exhibition/CREDITS.md).
+// The photos are imported rather than served from public/ so Vite fingerprints the file
+// names: nginx caches images for a year as immutable, and a replaced photo under the same
+// name never reached returning visitors.
+const sectorPhotos = import.meta.glob('../../../assets/exhibition/sectors/*.jpg', { eager: true, import: 'default' })
+const photo = (name) => sectorPhotos[`../../../assets/exhibition/sectors/${name}.jpg`]
 const sectorConfigs = [
-  { labelKey: 'exhibition.valueChain.buildingMaterials', imageUrl: '/images/exhibition/sectors/building-materials.jpg' },
-  { labelKey: 'exhibition.valueChain.concreteCement', imageUrl: '/images/exhibition/sectors/concrete-cement.jpg' },
-  { labelKey: 'exhibition.valueChain.interiorsFinishes', imageUrl: '/images/exhibition/sectors/interiors-finishes.jpg' },
-  { labelKey: 'exhibition.valueChain.urbanDesign', imageUrl: '/images/exhibition/sectors/urban-design.jpg' },
-  { labelKey: 'exhibition.valueChain.buildingServices', imageUrl: '/images/exhibition/sectors/building-services.jpg' },
-  { labelKey: 'exhibition.valueChain.constructionTools', imageUrl: '/images/exhibition/sectors/construction-tools.jpg' },
-  { labelKey: 'exhibition.valueChain.hvacCooling', imageUrl: '/images/exhibition/sectors/hvac-cooling.jpg' },
-  { labelKey: 'exhibition.valueChain.digitalConstruction', imageUrl: '/images/exhibition/sectors/digital-construction.jpg' },
-  { labelKey: 'exhibition.valueChain.solarEnergy', imageUrl: '/images/exhibition/sectors/solar-energy.jpg' },
-  { labelKey: 'exhibition.valueChain.heavyMachinery', imageUrl: '/images/exhibition/sectors/heavy-machinery.jpg' },
-  { labelKey: 'exhibition.valueChain.intelligentBuilding', imageUrl: '/images/exhibition/sectors/intelligent-building.jpg' },
-  { labelKey: 'exhibition.valueChain.sustainableConstruction', imageUrl: '/images/exhibition/sectors/sustainable-construction.jpg' }
+  { labelKey: 'exhibition.valueChain.buildingMaterials', imageUrl: photo('building-materials') },
+  { labelKey: 'exhibition.valueChain.concreteCement', imageUrl: photo('concrete-cement') },
+  { labelKey: 'exhibition.valueChain.interiorsFinishes', imageUrl: photo('interiors-finishes') },
+  { labelKey: 'exhibition.valueChain.urbanDesign', imageUrl: photo('urban-design') },
+  { labelKey: 'exhibition.valueChain.buildingServices', imageUrl: photo('building-services') },
+  { labelKey: 'exhibition.valueChain.constructionTools', imageUrl: photo('construction-tools') },
+  { labelKey: 'exhibition.valueChain.hvacCooling', imageUrl: photo('hvac-cooling') },
+  { labelKey: 'exhibition.valueChain.digitalConstruction', imageUrl: photo('digital-construction') },
+  { labelKey: 'exhibition.valueChain.solarEnergy', imageUrl: photo('solar-energy') },
+  { labelKey: 'exhibition.valueChain.heavyMachinery', imageUrl: photo('heavy-machinery') },
+  { labelKey: 'exhibition.valueChain.intelligentBuilding', imageUrl: photo('intelligent-building') },
+  { labelKey: 'exhibition.valueChain.sustainableConstruction', imageUrl: photo('sustainable-construction') }
 ]
 </script>
