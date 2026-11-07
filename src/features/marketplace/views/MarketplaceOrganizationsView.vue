@@ -112,7 +112,7 @@
                 {{ (org.name || 'O').charAt(0).toUpperCase() }}
               </div>
               <div class="min-w-0 flex-1">
-                <h2 class="text-base sm:text-lg font-semibold text-gray-900 truncate flex items-center flex-wrap gap-2">
+                <h2 class="pr-20 text-base sm:text-lg font-bold leading-snug text-gray-900 line-clamp-2">
                   {{ org.name }}
                   <VerifiedBadge :level="getVerificationLevel(org)" size="sm" />
                 </h2>
