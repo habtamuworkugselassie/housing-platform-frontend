@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { installReveal } from './shared/directives/reveal'
 import { createPinia } from 'pinia'
 import { createHead } from '@unhead/vue'
 import App from './App.vue'
@@ -15,6 +16,7 @@ import './styles/material-icons.css'
 // win on pages that already had a considered light treatment.
 import './styles/light-app.css'
 import './styles/public-design.css'
+import './styles/motion.css'
 
 // Analytics runs only for a visitor who has said yes.
 //
@@ -38,5 +40,6 @@ app.use(createPinia())
 app.use(head)
 app.use(router)
 app.use(i18n)
+installReveal(app)
 
 app.mount('#app')

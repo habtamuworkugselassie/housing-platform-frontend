@@ -6,33 +6,34 @@
     <!-- Live device broadcasts from visitors / exhibitors / organizers -->
     <LiveBroadcastWall v-if="liveEnabled" />
 
+    <!-- The sectors on show, as an endless strip. -->
+    <ExpoTicker />
+
     <!-- What to expect (3 cards with icons). id=planning keeps the footer anchor working. -->
     <section id="planning" class="py-16 lg:py-24 bg-violet-50 scroll-mt-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-primary-600 mb-2">
-          {{ $t('exhibition.whatToExpect.eyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-3">
-          {{ $t('exhibition.whatHappened.title') }}
-        </h2>
-        <p class="text-gray-600 max-w-2xl mb-10">
-          {{ $t('exhibition.whatHappened.subtitle') }}
-        </p>
-        <div class="grid md:grid-cols-3 gap-5 lg:gap-6">
+        <SectionHeader
+          v-reveal
+          :eyebrow="$t('exhibition.whatToExpect.eyebrow')"
+          :title="$t('exhibition.whatHappened.title')"
+          :subtitle="$t('exhibition.whatHappened.subtitle')"
+        />
+        <div v-reveal data-stagger class="grid md:grid-cols-3 gap-5 lg:gap-6">
           <div
             v-for="(card, index) in whatToExpectCards"
             :key="card.titleKey"
-            class="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-6 sm:p-7 transition-all duration-300 hover:border-primary-300 hover:bg-primary-50"
+            class="group hover-lift relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 hover:border-primary-300"
           >
-            <div class="mb-4 flex items-center justify-between">
-              <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary-50 text-gray-900 transition-colors group-hover:bg-primary-100">
+            <div class="mb-5 flex items-center justify-between">
+              <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-700 transition-colors group-hover:bg-gold-100 group-hover:text-gold-800">
                 <component :is="card.icon" class="h-6 w-6" aria-hidden="true" />
               </div>
+              <span class="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-bold tracking-wider text-gray-500">0{{ index + 1 }}</span>
             </div>
-            <h3 class="text-base font-bold text-gray-900 mb-2">
+            <h3 class="text-lg font-bold text-gray-900 mb-2">
               {{ $t(card.titleKey) }}
             </h3>
-            <p class="text-sm text-gray-600 leading-relaxed flex-1">
+            <p class="text-sm sm:text-[15px] text-gray-600 leading-relaxed flex-1">
               {{ $t(card.bodyKey) }}
             </p>
           </div>
@@ -51,26 +52,22 @@
     <!-- Why participate / Key show features -->
     <section id="show-features" class="py-16 lg:py-24 bg-white text-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-primary-600 mb-2">
-          {{ $t('exhibition.keyShowFeatures.eyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-3 text-gray-900">
-          {{ $t('exhibition.keyShowFeatures.title') }}
-        </h2>
-        <p class="text-gray-600 max-w-2xl mb-2">
-          {{ $t('exhibition.keyShowFeatures.subtitle') }}
-        </p>
-        <p class="text-sm text-gray-500 max-w-2xl mb-10">
-          {{ $t('exhibition.keyShowFeatures.intro') }}
-        </p>
+        <SectionHeader
+          v-reveal
+          :eyebrow="$t('exhibition.keyShowFeatures.eyebrow')"
+          :title="$t('exhibition.keyShowFeatures.title')"
+          :subtitle="$t('exhibition.keyShowFeatures.subtitle')"
+        >
+          <template #aside>{{ $t('exhibition.keyShowFeatures.intro') }}</template>
+        </SectionHeader>
         <PillarGrid compact />
-        <div class="mt-12 rounded-xl border border-gray-200 bg-white px-6 py-8 sm:px-8 sm:py-10 text-center">
+        <div v-reveal class="mt-12 rounded-2xl border border-gray-200 bg-violet-50 px-6 py-8 sm:px-8 sm:py-10 text-center">
           <p class="text-sm text-gray-600 max-w-xl mx-auto mb-5">
             {{ $t('exhibition.keyShowFeatures.exploreMoreHint') }}
           </p>
           <a
             href="#who-attends"
-            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 font-semibold text-sm text-white rounded-lg hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 font-semibold text-sm text-white rounded-full hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
           >
             {{ $t('exhibition.keyShowFeatures.exploreMoreLabel') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -84,21 +81,21 @@
     <!-- Who Attends -->
     <section id="who-attends" class="py-20 lg:py-28 bg-violet-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-primary-600 mb-2">
-          {{ $t('exhibition.whoAttends.eyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mb-4 text-gray-900">{{ $t('exhibition.whoAttends.title') }}</h2>
-        <p class="text-gray-600 max-w-2xl mb-12">
-          {{ $t('exhibition.whoAttends.subtitle') }}
-        </p>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <SectionHeader
+          v-reveal
+          :eyebrow="$t('exhibition.whoAttends.eyebrow')"
+          :title="$t('exhibition.whoAttends.title')"
+          :subtitle="$t('exhibition.whoAttends.subtitle')"
+        />
+        <div v-reveal data-stagger class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <div
-            v-for="audience in whoAttends"
+            v-for="(audience, index) in whoAttends"
             :key="audience.key"
-            class="block p-6 rounded-lg bg-white border border-gray-200 hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 group border-l-2 border-l-transparent group-hover:border-l-primary-600"
+            class="group hover-lift flex flex-col rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 hover:border-primary-300"
           >
-            <h3 class="text-sm font-bold text-gray-900 mb-1">{{ $t(audience.titleKey) }}</h3>
-            <p class="text-xs text-gray-500 group-hover:text-gray-600">{{ $t(audience.descKey) }}</p>
+            <span class="mb-4 inline-flex w-fit rounded-full bg-primary-50 px-2.5 py-1 text-[11px] font-bold tracking-wider text-primary-700">0{{ index + 1 }}</span>
+            <h3 class="text-sm sm:text-base font-bold text-gray-900 mb-1">{{ $t(audience.titleKey) }}</h3>
+            <p class="text-xs sm:text-sm text-gray-500 group-hover:text-gray-600">{{ $t(audience.descKey) }}</p>
           </div>
         </div>
       </div>
@@ -111,50 +108,39 @@
     <!-- on-dark: this band keeps its dark brand surface, so the light theme must
          leave its text alone (see styles/light-app.css). -->
     <section class="on-dark py-20 lg:py-24 bg-violet-950 border-t border-white/10">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-white mb-4 text-center">
+      <div v-reveal class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="mb-4 text-center text-[13px] font-bold uppercase tracking-[0.12em] text-gold-300">
           {{ $t('exhibition.testimonial.eyebrow') }}
         </p>
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white mb-10 text-center">
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-10 text-center leading-[1.08]">
           {{ $t('exhibition.testimonial.title') }}
         </h2>
-        <blockquote class="pl-6 sm:pl-8 border-l-4 border-white/15 text-lg sm:text-xl text-white/85 leading-relaxed mb-6">
+        <blockquote class="relative pl-8 sm:pl-10 text-xl sm:text-2xl text-white/90 leading-relaxed mb-6">
+          <span class="absolute -top-3 left-0 text-6xl font-black leading-none text-gold-400/80" aria-hidden="true">“</span>
           {{ $t('exhibition.testimonial.quote') }}
         </blockquote>
-        <p class="text-sm text-white/70">{{ $t('exhibition.testimonial.author') }}</p>
+        <p class="pl-8 sm:pl-10 text-sm font-medium text-white/70">— {{ $t('exhibition.testimonial.author') }}</p>
       </div>
     </section>
 
-    <!-- Plan your visit -->
-    <section class="py-20 lg:py-28 bg-white text-gray-900">
-      <div class="max-w-3xl mx-auto px-4 text-center rounded-2xl border border-gray-200 bg-white py-16 sm:py-20">
-        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900">{{ $t('exhibition.planVisit.title') }}</h2>
-        <p class="text-lg text-gray-600 mb-10">
-          {{ $t('exhibition.planVisit.body') }}
-        </p>
-        <a href="#register" class="inline-flex px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white">
-          {{ $t('exhibition.planVisit.planYourVisit') }}
-        </a>
-      </div>
-    </section>
+    <!-- Get involved: exhibit or visit, in one brand-violet band. -->
+    <ExhibitionCtaSection :brochure-href="brochureHref" />
 
     <!-- Event brochure (scroll target for #brochure) -->
     <section id="brochure" class="py-14 lg:py-20 bg-violet-50 scroll-mt-24">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-sm font-semibold text-primary-600 mb-3">
-          {{ $t('exhibition.brochureStrip.eyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-          {{ $t('exhibition.brochureStrip.title') }}
-        </h2>
-        <p class="text-sm text-gray-600 mb-8 max-w-xl mx-auto">
-          {{ $t('exhibition.brochureStrip.intro') }}
-        </p>
+      <div v-reveal class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <SectionHeader
+          align="center"
+          class="!mb-8"
+          :eyebrow="$t('exhibition.brochureStrip.eyebrow')"
+          :title="$t('exhibition.brochureStrip.title')"
+          :subtitle="$t('exhibition.brochureStrip.intro')"
+        />
         <a
           :href="brochureHref"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
+          class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition-colors rounded-full focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
         >
           {{ $t('exhibition.hero.downloadBrochure') }}
         </a>
@@ -172,23 +158,21 @@
     <ExhibitionFaqSection />
 
     <section id="register" class="py-20 lg:py-28 bg-white text-gray-900 scroll-mt-24">
-      <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-primary-600 mb-2 text-center">
-          {{ $t('exhibition.registerInterest.eyebrow') }}
-        </p>
-        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-gray-900 text-center">
-          {{ $t('exhibition.registerInterest.title') }}
-        </h2>
-        <p class="text-gray-600 text-center mb-3">
-          {{ $t('exhibition.registerInterest.subtitle') }}
-        </p>
+      <div v-reveal class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          align="center"
+          class="!mb-3"
+          :eyebrow="$t('exhibition.registerInterest.eyebrow')"
+          :title="$t('exhibition.registerInterest.title')"
+          :subtitle="$t('exhibition.registerInterest.subtitle')"
+        />
         <p class="mb-10 flex items-center justify-center gap-2 text-sm font-medium text-primary-700">
           <span class="material-icons !text-[18px] leading-none" aria-hidden="true">schedule</span>
           {{ $t('exhibition.registerInterest.responseTime') }}
         </p>
         <form
           v-if="!interestSubmitted"
-          class="space-y-5 rounded-xl border border-gray-200 bg-white p-6 sm:p-8"
+          class="space-y-5 rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_24px_60px_-30px_rgba(46,16,101,0.35)]"
           @submit.prevent="submitInterest"
         >
           <ExhibitionInterestFormFields
@@ -202,7 +186,7 @@
           <button
             type="submit"
             :disabled="interestSubmitting"
-            class="w-full py-3 px-6 bg-primary-600 text-white font-semibold text-sm rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:bg-primary-300"
+            class="w-full py-3.5 px-6 bg-primary-600 text-white font-semibold text-sm rounded-full hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:bg-primary-300"
           >
             {{ interestSubmitting ? $t('exhibition.registerInterest.submitting') : $t('exhibition.registerInterest.submit') }}
           </button>
@@ -221,13 +205,13 @@
     <section id="partners" class="py-16 bg-violet-50 scroll-mt-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-sm font-semibold text-primary-600 mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
+        <div v-reveal data-stagger class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
           <template v-if="partnersList.length">
             <a
               v-for="partner in partnersList"
               :key="partner.id"
               :href="`/organizations/${partner.id}`"
-              class="flex flex-col items-center gap-2 h-14 w-32 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:border-primary-300 hover:bg-primary-50 transition-all duration-300"
+              class="hover-lift flex flex-col items-center gap-2 h-14 w-32 rounded-xl border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:border-primary-300"
               :class="(partner.sponsorshipType || '').toUpperCase() === 'EXCLUSIVE' ? 'border-gray-200 bg-primary-50' : ''"
             >
               <img
@@ -252,15 +236,13 @@
     <!-- Featured properties (real estate listings — scroll target for "Browse listings" from hero) -->
     <section id="main-listings" class="bg-white py-12 lg:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold text-primary-600 mb-2">
-          {{ $t('exhibition.featuredListings.marketplaceEyebrow') }}
-        </p>
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-          {{ $t('property.properties') }}
-        </h2>
-        <p class="text-sm text-gray-500 max-w-2xl mb-4">
-          {{ $t('exhibition.featuredListings.subtext') }}
-        </p>
+        <SectionHeader
+          v-reveal
+          class="!mb-4"
+          :eyebrow="$t('exhibition.featuredListings.marketplaceEyebrow')"
+          :title="$t('property.properties')"
+          :subtitle="$t('exhibition.featuredListings.subtext')"
+        />
         <div class="mb-6 max-w-md">
           <input
             v-model="propertiesSearchQuery"
@@ -273,12 +255,12 @@
         <div v-if="propertiesLoading" class="flex justify-center py-12">
           <div class="inline-block h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-transparent" />
         </div>
-        <div v-else-if="(propertiesList || []).length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div v-else-if="(propertiesList || []).length" v-reveal data-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <a
             v-for="(item, index) in (propertiesList || [])"
             :key="item?.id ?? index"
             :href="item?.id ? `/properties/${item.id}` : '#'"
-            class="group flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 transition-all duration-300 hover:border-primary-300 hover:bg-primary-50 hover:shadow-lg hover:shadow-black/5"
+            class="group hover-lift flex flex-col overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-primary-300"
           >
             <div class="relative aspect-[4/3] flex-shrink-0 overflow-hidden bg-gray-100">
               <img
@@ -381,6 +363,9 @@ const ExhibitionSponsorshipPackagesSection = defineAsyncComponent(
   () => import('../components/ExhibitionSponsorshipPackagesSection.vue')
 )
 import ExhibitionInterestFormFields from '@/features/exhibition/components/ExhibitionInterestFormFields.vue'
+import SectionHeader from '@/shared/components/SectionHeader.vue'
+import ExpoTicker from '@/features/exhibition/components/ExpoTicker.vue'
+const ExhibitionCtaSection = defineAsyncComponent(() => import('../components/ExhibitionCtaSection.vue'))
 import ExhibitionFaqSection from '@/features/exhibition/components/ExhibitionFaqSection.vue'
 import TikTokFeedSection from '@/features/exhibition/components/TikTokFeedSection.vue'
 import LiveStreamSection from '@/features/exhibition/components/LiveStreamSection.vue'

@@ -1428,6 +1428,9 @@
       "seconds": "ሰከንዶች",
       "happeningNow": "አሁን በመካሄድ ላይ — ኤክስፖው ክፍት ነው"
     },
+    "ticker": {
+      "label": "የሚቀርቡ ሴክተሮች"
+    },
     "hero": {
       "eventName": "ኢትዮ ቢልድ ኮነክት ኤክስፖ",
       "tagline1": "ድጋሜ ፕሮጀክቶች።",
@@ -1439,7 +1442,19 @@
       "downloadBrochure": "የዝግጅት ብሮሹር አውርድ",
       "foundationPartners": "መሠረታዊ አጋሮች",
       "partner": "አጋር",
-      "featured": "ተለይቶ የቀረበ"
+      "featured": "ተለይቶ የቀረበ",
+      "panelLabel": "የኤክስፖ ወለል · 2027",
+      "panelStage": "ዋና መድረክ",
+      "panelEntrance": "መግቢያ",
+      "datesLabel": "ቀናት",
+      "datesValue": "9–13 ጃንዋሪ 2027",
+      "venueLabel": "ቦታ",
+      "venueValue": "አዲስ ኮንቬንሽን ማእከል",
+      "statDays": "5 ቀናት",
+      "statDaysNote": "ምርቃቶች፣ ንግግሮች እና ስምምነቶች",
+      "statVenue": "አዲስ አበባ",
+      "statVenueNote": "ኮንቬንሽን ማእከል",
+      "statOpen": "ክፍት"
     },
     "whyExhibit": {
       "title": "በኤግዚቢሽኑ ውስጥ የኢንዱስትሪ መሪዎችን አነሳስ",
@@ -1651,7 +1666,12 @@
       "title": "ከመሪዎች ጋር ለመቀላቀል ዝግጁ?",
       "body": "ስታንድዎን ይያዙ ወይም በዓመቱ በጣም የሚጠበቀውን የንብረት እና የግንባታ ዝግጅት ለመጎብኘት ይመዝግቡ።",
       "standEnquiry": "ስታንድ ጥያቄ",
-      "viewBrochure": "የዝግጅት ብሮሹር ይመልከቱ"
+      "viewBrochure": "የዝግጅት ብሮሹር ይመልከቱ",
+      "exhibitorsTag": "አቅራቢዎች እና ስፖንሰሮች",
+      "exhibitorsTitle": "ስታንድዎን ይያዙ",
+      "exhibitorsBody": "ፕሮጀክቶችዎን እና ምርቶችዎን ከመላው የእሴት ሰንሰለት ለመጡ ገዢዎች፣ ባለሀብቶች እና አጋሮች ፊት ያቅርቡ — አምስት ቀናት፣ አንድ ጣራ።",
+      "visitorsTag": "ጎብኚዎች እና ገዢዎች",
+      "visitorsBody": "ገንቢዎችን፣ ባንኮችን፣ ተቋራጮችን እና አቅራቢዎችን በአንድ ቦታ ያግኙ፣ በገበያው ያለውን ያወዳድሩ እና ትክክለኛ ግንኙነቶችን ይዘው ይውጡ።"
     },
     "footer": {
       "copyright": "© 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. መብቱ በህግ የተጠበቀ ነው።",

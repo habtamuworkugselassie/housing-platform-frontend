@@ -1,6 +1,8 @@
 <template>
-  <nav class="site-nav border-b border-white/10 sticky top-0 z-[70] text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- A floating pill: the nav is a transparent sticky frame with a little inset, and the
+       rounded bar inside it carries the dark surface (styles/public-design.css). -->
+  <nav class="site-nav sticky top-0 z-[70] text-white px-2 pt-2 sm:px-4 sm:pt-3">
+    <div class="site-nav__bar max-w-7xl mx-auto rounded-2xl px-3 sm:px-5 lg:px-6">
       <div class="flex justify-between items-center h-16 gap-2">
         <div class="flex items-center min-w-0">
           <!-- Mobile menu button -->
