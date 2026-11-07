@@ -252,7 +252,7 @@
           :aria-label="$t('nav.menuTitle')"
           class="lg:hidden fixed end-0 top-0 bottom-0 z-[72] flex w-[88%] max-w-[23rem] flex-col overflow-y-auto overscroll-contain rounded-s-3xl bg-[#f7f6fb] text-gray-900 shadow-[0_0_80px_rgba(17,4,39,0.5)]"
         >
-          <div class="flex items-start justify-between gap-4 px-6 pb-2 pt-6">
+          <div class="flex items-start justify-between gap-4 px-6 pb-1 pt-5">
             <div>
               <p class="text-2xl font-bold tracking-tight text-gray-900">{{ $t('nav.menuTitle') }}</p>
               <p class="mt-1 text-sm text-gray-500">{{ $t('nav.menuSubtitle') }}</p>
@@ -272,7 +272,7 @@
             <li v-for="link in jumpLinks" :key="link.key">
               <router-link
                 :to="link.to"
-                class="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-lg font-medium text-gray-900 transition-colors hover:bg-white"
+                class="flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-[17px] font-medium text-gray-900 transition-colors hover:bg-white"
                 :class="isCurrent(link.to) ? 'bg-white' : ''"
                 :aria-current="isCurrent(link.to) ? 'page' : undefined"
                 @click="mobileMenuOpen = false"
@@ -291,7 +291,7 @@
                 v-for="cat in marketplaceCategories"
                 :key="cat.to"
                 :to="cat.to"
-                class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-[13px] font-medium text-gray-800 transition-colors hover:border-primary-300 hover:bg-primary-50"
+                class="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-[13px] font-medium text-gray-800 transition-colors hover:border-primary-300 hover:bg-primary-50"
                 :class="isCurrent(cat.to) ? 'border-primary-300 bg-primary-50 text-primary-900' : ''"
                 :aria-current="isCurrent(cat.to) ? 'page' : undefined"
                 @click="mobileMenuOpen = false"
@@ -333,7 +333,7 @@
 
           <!-- Pinned to the bottom: the two calls to action, then the legal links. The pb
                clears the iOS home indicator. -->
-          <div class="mt-auto space-y-2.5 px-6 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-6">
+          <div class="mt-auto space-y-2.5 px-6 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-5">
             <router-link
               :to="{ path: '/', query: { interest: 'exhibitor' }, hash: '#register' }"
               class="flex w-full items-center justify-center gap-2 rounded-full bg-gold-400 px-5 py-3.5 text-[15px] font-bold text-primary-950 transition-colors hover:bg-gold-300"
@@ -349,7 +349,7 @@
               {{ $t('nav.getAppShort') }}
               <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" /></svg>
             </a>
-            <div class="flex items-center gap-6 pt-2 text-[13px] text-gray-500">
+            <div class="flex items-center gap-6 pt-1 text-[13px] text-gray-500">
               <router-link to="/privacy" class="hover:text-gray-800" @click="mobileMenuOpen = false">
                 {{ $t('legal.navPrivacy') }}
               </router-link>
