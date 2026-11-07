@@ -2,7 +2,7 @@
   <!-- on-dark: this is a deliberately dark band, so its text-white must NOT be inverted to dark
        ink by the light theme (see src/styles/light-app.css). Without it the featured-partner name
        and eyebrow render dark-on-dark and are invisible. -->
-  <section v-if="slides.length > 0 || loading" class="on-dark relative flex w-full flex-col overflow-hidden m-0 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
+  <section v-if="slides.length > 0 || loading" class="on-dark relative flex w-full flex-col overflow-hidden m-0 bg-primary-950 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.06),inset_0_-30px_30px_-20px_rgba(255,255,255,0.04)]">
     <!-- Carousel area: inset blur border (visible inside overflow) -->
     <!-- No z-index lift: sponsor strip (z-10) stays above carousel edge on all breakpoints -->
     <div class="relative w-full overflow-hidden flex-shrink-0 rounded-b-lg shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_40px_rgba(255,255,255,0.04)]" :class="heightClass">
@@ -30,9 +30,21 @@
           >
             <!-- Media: load video only for current and next slide; lazy-load images for others -->
             <div class="absolute inset-0 z-0">
+              <!-- Echo: the same photo blurred and tinted violet fills the sides that object-contain
+                   leaves empty, so the band reads as part of the violet site, not a grey strip. -->
+              <template v-if="slideEchoSrc(slide, index)">
+                <img
+                  :src="mediaUrl(slideEchoSrc(slide, index))"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  class="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
+                />
+                <div class="absolute inset-0 bg-primary-950/55" aria-hidden="true" />
+              </template>
               <template v-if="getSlideActiveMedia(index)">
                 <template v-if="getSlideActiveMedia(index).isVideo && (index === currentIndex || index === (currentIndex + 1) % slides.length)">
-                  <div class="relative h-full w-full bg-zinc-950/50">
+                  <div class="relative h-full w-full">
                     <video
                       :key="'v-' + slide.id + index + '-' + getSlideActiveMedia(index).url"
                       :src="mediaUrl(getSlideActiveMedia(index).url)"
@@ -42,7 +54,7 @@
                       loop
                       playsinline
                       preload="auto"
-                      class="absolute inset-0 h-full w-full object-contain bg-zinc-950/50"
+                      class="absolute inset-0 h-full w-full object-contain"
                     />
                   </div>
                 </template>
@@ -52,13 +64,13 @@
                     :src="mediaUrl(getSlideActiveMedia(index).url)"
                     :alt="slide.realEstateCompanyName || slide.title"
                     :loading="index <= currentIndex + 1 || (currentIndex === slides.length - 1 && index === 0) ? 'eager' : 'lazy'"
-                    class="w-full h-full object-contain bg-zinc-950/50 transition-opacity duration-500"
+                    class="relative w-full h-full object-contain transition-opacity duration-500"
                   />
                 </template>
               </template>
               <div
                 v-else
-                class="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900"
+                class="w-full h-full bg-gradient-to-br from-primary-900 to-primary-950"
               />
               <div v-if="slidesMediaMap[index] && slidesMediaMap[index].length > 1 && index === currentIndex" class="absolute top-4 right-4 z-20 flex gap-1.5 pointer-events-none">
                 <div v-for="(_m, mIdx) in slidesMediaMap[index]" :key="mIdx" class="h-1.5 rounded-full bg-white/80 transition-all duration-300 shadow-sm" :class="((slideMediaIndexes[slide.id] || 0) % slidesMediaMap[index].length) === mIdx ? 'w-4' : 'w-1.5 opacity-50'" />
@@ -149,7 +161,7 @@
     <!-- Sponsor list at bottom: blurred violet-950 transition (no solid), bordered -->
     <div
       v-if="slides.length > 0"
-      class="sponsor-strip relative z-10 -mt-16 flex-shrink-0 border-t border-white/10 px-4 py-2 pt-4 md:px-8 lg:px-12 backdrop-blur-xl bg-gradient-to-b from-transparent via-black/40 to-black/80 shadow-[inset_0_25px_40px_-15px_rgba(255,255,255,0.06)]"
+      class="sponsor-strip relative z-10 -mt-16 flex-shrink-0 border-t border-white/10 px-4 py-2 pt-4 md:px-8 lg:px-12 backdrop-blur-xl bg-gradient-to-b from-transparent via-primary-950/70 to-primary-950 shadow-[inset_0_25px_40px_-15px_rgba(255,255,255,0.06)]"
     >
       <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4">
         <button
@@ -157,7 +169,7 @@
           :key="slide.id + (slide.realEstateCompanyId || '') + index"
           type="button"
           class="flex h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 flex-shrink-0 items-center justify-center rounded-full overflow-hidden bg-white/90 transition-all focus:outline-none focus:ring-2 focus:ring-gold-400 hover:scale-105 border border-white/20"
-          :class="currentIndex === index ? 'ring-2 ring-gold-400 ring-offset-2 ring-offset-black/60 scale-110' : 'opacity-75'"
+          :class="currentIndex === index ? 'ring-2 ring-gold-400 ring-offset-2 ring-offset-primary-950 scale-110' : 'opacity-75'"
           :aria-label="(slide.realEstateCompanyName || slide.title) + (currentIndex === index ? ' (current)' : '')"
           :title="slide.realEstateCompanyName || slide.title"
           @click="goTo(index)"
@@ -280,6 +292,13 @@ const sponsorSlideMediaUrlsForWarmup = computed(() => {
 })
 
 useMediaWarmup(sponsorSlideMediaUrlsForWarmup)
+
+/** Still image used for the blurred echo behind a slide: the active image, else the poster. */
+function slideEchoSrc(slide, index) {
+  const m = getSlideActiveMedia(index)
+  if (m && !m.isVideo) return m.url
+  return slidePoster(slide) || null
+}
 
 function slidePoster(slide) {
   return String(slide?.logoUrl || slide?.imageUrl || '').trim()
