@@ -11,8 +11,8 @@
  * which this module sets as soon as it runs: markup that reaches a browser without
  * JavaScript (prerendered HTML, a failed chunk) is simply visible, never stuck at
  * opacity 0. Browsers without IntersectionObserver get everything shown at once, and
- * The rise runs in every motion mode; content is never hidden, because the hidden state
- */
+ * the rise runs in every motion mode, and the hidden start state only applies once the
+ * observer is live, so content is never stuck hidden.
 const seen = new WeakSet()
 let observer = null
 
