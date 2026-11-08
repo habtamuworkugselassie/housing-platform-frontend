@@ -2,361 +2,279 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Get Ethio Build Connect</title>
+<title>Get the Ethio Build Connect app</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Download the Ethio Build Connect Android app: browse listings, connect with builders and banks, and watch the expo live.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root {
-    --bg: #f4f1fa;
+    --canvas: #f5f3ff;
     --card: #ffffff;
-    --ink: #1a1626;
-    --muted: #6b6580;
-    --line: #e7e2f2;
-    --brand: #7c3aed;
-    --brand-deep: #2e1065;
-    --brand-soft: #f5f3ff;
-    --gold: #d99f3f;
-    --shadow: 0 20px 50px -24px rgba(46, 16, 101, .45);
-    --tile: #ffffff;
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --violet: #7c3aed;
+    --violet-700: #6d28d9;
+    --violet-900: #4c1d95;
+    --violet-950: #2e1065;
+    --gold: #f4c977;
+    --gold-300: #f6d68f;
+    --gold-600: #d99f3f;
+    --gold-ink: #2e1065;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #120c20;
-      --card: #1c1530;
-      --ink: #f1edfa;
-      --muted: #a89fc4;
-      --line: #2e2547;
-      --brand: #a78bfa;
-      --brand-deep: #0e0820;
-      --brand-soft: #241a40;
-      --shadow: 0 24px 60px -28px rgba(0, 0, 0, .7);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #120c20;
-    --card: #1c1530;
-    --ink: #f1edfa;
-    --muted: #a89fc4;
-    --line: #2e2547;
-    --brand: #a78bfa;
-    --brand-deep: #0e0820;
-    --brand-soft: #241a40;
-    --shadow: 0 24px 60px -28px rgba(0, 0, 0, .7);
-  }
-
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     min-height: 100vh;
-    background: var(--bg);
+    background: var(--canvas);
     color: var(--ink);
-    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
     line-height: 1.55;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+    -webkit-font-smoothing: antialiased;
   }
+  a { color: inherit; }
   img { max-width: 100%; }
-  .wrap { width: 100%; max-width: 620px; }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
+  /* Floating pill nav, like the site */
+  .nav {
+    position: sticky; top: 12px; z-index: 10;
+    margin: 12px 16px 0;
+    display: flex; justify-content: center;
   }
-
-  .head {
-    padding: 30px 34px 26px;
-    background: linear-gradient(135deg, var(--brand-deep), var(--brand) 160%);
-    color: #fff;
-    position: relative;
-  }
-  .mark {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .glyph {
-    width: 40px; height: 40px;
-    display: grid; place-items: center;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.22);
-    border-radius: 11px;
-    flex: none;
-  }
-  .wordmark {
-    font-family: "Sora", sans-serif;
-    font-weight: 700;
-    letter-spacing: -.01em;
-    font-size: 15px;
-    line-height: 1.1;
-  }
-  .wordmark small {
-    display: block;
-    font-family: "IBM Plex Mono", monospace;
-    font-weight: 500;
-    font-size: 10px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.72);
-    margin-top: 3px;
-  }
-  h1 {
-    font-family: "Sora", sans-serif;
-    font-weight: 700;
-    font-size: clamp(26px, 6vw, 34px);
-    letter-spacing: -.02em;
-    text-wrap: balance;
-    margin: 6px 0 8px;
-  }
-  .tagline { margin: 0; color: rgba(255,255,255,.82); max-width: 42ch; }
-  .meta {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 18px;
-  }
-  .chip {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: .04em;
-    padding: 5px 10px;
+  .nav__bar {
+    width: 100%; max-width: 1040px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 12px 10px 18px;
+    background: rgba(46, 16, 101, .94);
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: 999px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.2);
-    color: #fff;
+    box-shadow: 0 10px 34px rgba(34, 5, 63, .35), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   }
+  .nav__bar img { height: 30px; display: block; }
+  .nav__link {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border-radius: 999px;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16);
+    color: #fff; font-weight: 700; font-size: 13.5px; text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+  .nav__link:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
 
-  .body { padding: 28px 34px 8px; }
-  .get {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 26px;
-    align-items: center;
-  }
-  @media (max-width: 480px) {
-    .get { grid-template-columns: 1fr; text-align: center; }
-    .qr-wrap { margin: 0 auto; }
-  }
+  main { max-width: 1040px; margin: 0 auto; padding: 40px 16px 72px; }
 
-  .dl {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 15px 22px;
-    background: var(--brand);
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    text-decoration: none;
-    border-radius: 13px;
-    transition: transform .12s ease, filter .12s ease;
-  }
-  .dl:hover { filter: brightness(1.06); transform: translateY(-1px); }
-  .dl:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-  .btns { display: grid; gap: 10px; }
-  .ios {
-    background: transparent;
-    color: var(--brand);
-    border: 1.5px solid var(--brand);
-  }
-  .ios:hover { filter: none; background: var(--brand-soft); }
-  .ios.soon {
-    color: var(--muted);
-    border-color: var(--line);
-    background: transparent;
-    cursor: default;
-    pointer-events: none;
-    transform: none;
-  }
-  .ios.soon .badge {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 10px;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 999px;
-    background: var(--line);
-    color: var(--muted);
-  }
-  .sub {
-    margin: 12px 2px 0;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .url {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11.5px;
-    color: var(--brand);
-    word-break: break-all;
-  }
-
-  .qr-wrap { text-align: center; }
-  .qr {
-    width: 148px; height: 148px;
-    padding: 10px;
-    background: var(--tile);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    display: grid; place-items: center;
-  }
-  .qr img, .qr canvas { display: block; width: 128px !important; height: 128px !important; }
-  .qr-label {
-    margin-top: 9px;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .steps { padding: 8px 34px 26px; }
-  .steps h2 {
-    font-family: "Sora", sans-serif;
-    font-size: 12px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 20px 0 14px;
-  }
-  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  ol li {
-    display: grid;
-    grid-template-columns: 30px 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-  .n {
-    width: 30px; height: 30px;
-    display: grid; place-items: center;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--brand);
-    background: var(--brand-soft);
-    border: 1px solid var(--line);
-    border-radius: 9px;
-  }
-  ol li p { margin: 4px 0 0; }
-  ol li strong { font-weight: 600; }
-  ol li span { color: var(--muted); font-size: 14px; }
-
-  .note {
-    margin: 4px 34px 30px;
-    padding: 14px 16px;
-    background: var(--brand-soft);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .note b { color: var(--ink); font-weight: 600; }
-  .foot {
+  /* The CTA panel: gold like the reference, dark violet type, dotted texture */
+  .cta {
+    position: relative; overflow: clip;
+    border-radius: 28px;
+    background: radial-gradient(120% 80% at 100% 0%, var(--gold-300), var(--gold) 55%, #efc06a);
+    color: var(--gold-ink);
+    padding: 44px 20px 24px;
+    box-shadow: 0 30px 70px -40px rgba(46, 16, 101, .55);
     text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 18px;
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .cta::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(46,16,101,.12) 1px, transparent 1.2px);
+    background-size: 18px 18px; opacity: .6;
+  }
+  .cta > * { position: relative; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 999px;
+    background: rgba(46,16,101,.12); border: 1px solid rgba(46,16,101,.12);
+    font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  }
+  .eyebrow svg { width: 16px; height: 16px; }
+  .cta h1 {
+    margin: 18px auto 12px; max-width: 14ch;
+    font-size: clamp(34px, 8.5vw, 56px); font-weight: 900; line-height: 1.02; letter-spacing: -.03em;
+    text-wrap: balance;
+  }
+  .cta .lead { margin: 0 auto; max-width: 42ch; font-size: 17px; color: rgba(46,16,101,.78); }
+
+  .apps { display: grid; gap: 16px; margin-top: 32px; }
+  @media (min-width: 760px) { .apps { grid-template-columns: 1fr 1fr; } }
+  .app {
+    position: relative; text-align: center;
+    border-radius: 24px; padding: 26px 20px 22px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(46,16,101,.16);
+    backdrop-filter: blur(6px);
+  }
+  .app__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .tag {
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(46,16,101,.12); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .icon {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(46,16,101,.12);
+  }
+  .icon svg { width: 22px; height: 22px; }
+  .app h2 { margin: 18px 0 8px; font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+  .app p { margin: 0 auto 20px; max-width: 34ch; color: rgba(46,16,101,.78); font-size: 15.5px; }
+  .btns { display: grid; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 15px 22px; border-radius: 999px;
+    font-weight: 700; font-size: 16px; text-decoration: none;
+    transition: transform .15s ease, filter .15s ease, background .15s ease;
+  }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn--dark { background: var(--violet-950); color: #fff; box-shadow: 0 14px 30px -16px rgba(46,16,101,.8); }
+  .btn--dark:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .btn--ghost { background: transparent; color: var(--gold-ink); border: 1.5px solid rgba(46,16,101,.4); }
+  .btn--ghost:hover { background: rgba(46,16,101,.08); }
+  .btn.soon { opacity: .6; cursor: default; pointer-events: none; }
+  .btn .badge {
+    font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 999px; background: rgba(46,16,101,.14);
+  }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+  .chip {
+    font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+    background: rgba(46,16,101,.1); color: var(--gold-ink);
+  }
+  .qr-row { display: flex; align-items: center; gap: 16px; justify-content: center; margin-top: 18px; text-align: left; }
+  .qr {
+    width: 112px; height: 112px; padding: 8px; flex: none;
+    background: #fff; border-radius: 16px; display: grid; place-items: center;
+    box-shadow: 0 14px 30px -18px rgba(46,16,101,.6);
+  }
+  .qr img, .qr canvas { display: block; width: 96px !important; height: 96px !important; }
+  .qr-text { font-size: 13.5px; color: rgba(46,16,101,.8); max-width: 20ch; }
+  .qr-text b { display: block; color: var(--gold-ink); font-size: 15px; }
+  .url { font-size: 12px; word-break: break-all; color: rgba(46,16,101,.7); }
+
+  /* Steps */
+  .steps { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 28px 20px; }
+  @media (min-width: 760px) { .steps { padding: 36px; } }
+  .steps .eyebrow { background: var(--canvas); border-color: #ede9fe; color: var(--violet-700); }
+  .steps .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .steps h2 { margin: 14px 0 20px; font-size: 28px; font-weight: 800; letter-spacing: -.02em; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  @media (min-width: 760px) { ol { grid-template-columns: repeat(3, 1fr); } }
+  ol li { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 20px; background: var(--canvas); }
+  .n {
+    width: 32px; height: 32px; flex: none; border-radius: 50%;
+    display: grid; place-items: center; background: var(--violet-950); color: var(--gold); font-weight: 800; font-size: 14px;
+  }
+  ol b { display: block; font-size: 15.5px; margin-bottom: 2px; }
+  ol span { color: var(--muted); font-size: 14px; }
+  .note { margin: 18px 0 0; font-size: 13.5px; color: var(--muted); }
+  .note b { color: var(--ink); }
+  .foot { text-align: center; margin: 28px 0 0; font-size: 13px; color: var(--muted); }
+  .foot a { color: var(--violet-700); font-weight: 700; text-decoration: none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <main class="card">
-    <header class="head">
-      <div class="mark">
-        <span class="glyph" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round">
-            <path d="M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/>
-            <path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4"/>
-            <circle cx="12" cy="12" r="2.2" fill="#fff" stroke="none"/>
-          </svg>
-        </span>
-        <span class="wordmark">Ethio Build Connect<small>Live &middot; Marketplace</small></span>
-      </div>
-      <h1>Get the app on Android</h1>
-      <p class="tagline">Ethiopia's real-estate &amp; construction marketplace &mdash; browse listings, connect with builders and banks, and watch the expo live.</p>
-      <div class="meta">
-        <span class="chip">Android 7.0+ &middot; 64-bit</span>
-        <span class="chip">v1.0.1</span>
-        <span class="chip">~36 MB</span>
-        <span class="chip">.apk</span>
-      </div>
-    </header>
+<nav class="nav" aria-label="Site">
+  <div class="nav__bar">
+    <a href="/" aria-label="Ethio Build Connect home"><img src="/images/branding/ethio-build-connect-wordmark.png" alt="Ethio Build Connect"></a>
+    <a class="nav__link" href="/">
+      Back to the site
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+  </div>
+</nav>
 
-    <section class="body">
-      <div class="get">
-        <div>
-          <div class="btns">
-            <a class="dl" id="dl" href="#" download>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/>
-              </svg>
-              Android &mdash; Download APK
-            </a>
-            <a class="dl ios soon" id="ios" href="#" aria-disabled="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M16.4 12.9c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.5-.4 6.3 1 8.3.7 1 1.5 2.1 2.6 2.1 1 0 1.4-.7 2.7-.7 1.3 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.1-.8-2.1-3.2zM14.3 6.7c.6-.7 1-1.7.9-2.7-.8 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.1 1.8-.5 2.5-1.2z"/>
-              </svg>
-              <span>iPhone &mdash; TestFlight</span>
-              <span class="badge">Soon</span>
-            </a>
-          </div>
-          <p class="sub">Android direct download &middot; <span class="url" id="urlText">&hellip;</span></p>
+<main>
+  <section class="cta" id="cta">
+    <span class="eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17v4M17 19h4M5 3v3M3.5 4.5h3"/></svg>
+      Get the app
+    </span>
+    <h1>Start using Ethio Build Connect today.</h1>
+    <p class="lead">Browse listings, meet developers, banks and builders, register for the expo and watch it live, all from your phone.</p>
+
+    <div class="apps">
+      <article class="app">
+        <div class="app__top">
+          <span class="tag">Android</span>
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>
+          </span>
         </div>
-        <div class="qr-wrap">
+        <h2>Ethio Build Connect app</h2>
+        <p>Install directly on any Android phone. No store account needed.</p>
+        <div class="btns">
+          <a class="btn btn--dark" id="dl" href="#" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Download APK
+          </a>
+        </div>
+        <div class="meta">
+          <span class="chip" id="verChip">v1.1.0</span>
+          <span class="chip" id="sizeChip">~36 MB</span>
+          <span class="chip">Android 5.0+</span>
+        </div>
+        <div class="qr-row">
           <div class="qr" id="qr" role="img" aria-label="QR code to download the app"></div>
-          <div class="qr-label">Scan on your phone</div>
+          <div class="qr-text"><b>Scan to download</b> Point your phone's camera at the code.<br><span class="url" id="urlText">&hellip;</span></div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <section class="steps">
-      <h2>Installing</h2>
-      <ol>
-        <li>
-          <span class="n">1</span>
-          <p><strong>Download the APK</strong><br><span>Tap the button above, or scan the QR with your phone's camera.</span></p>
-        </li>
-        <li>
-          <span class="n">2</span>
-          <p><strong>Allow the install</strong><br><span>Android will ask to allow installing apps from this source &mdash; tap <em>Settings</em>, enable <em>Allow from this source</em>, then go back.</span></p>
-        </li>
-        <li>
-          <span class="n">3</span>
-          <p><strong>Open &amp; install</strong><br><span>Tap the downloaded file, then <em>Install</em>. Launch Ethio Build Connect from your app drawer.</span></p>
-        </li>
-      </ol>
-    </section>
+      <article class="app">
+        <div class="app__top">
+          <span class="tag">iPhone</span>
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.5-.4 6.3 1 8.3.7 1 1.5 2.1 2.6 2.1 1 0 1.4-.7 2.7-.7 1.3 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.1-.8-2.1-3.2zM14.3 6.7c.6-.7 1-1.7.9-2.7-.8 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.1 1.8-.5 2.5-1.2z"/></svg>
+          </span>
+        </div>
+        <h2>iPhone &amp; iPad</h2>
+        <p>The iOS app ships through TestFlight. Until then, the full site works on Safari.</p>
+        <div class="btns">
+          <a class="btn btn--dark soon" id="ios" href="#" aria-disabled="true">
+            <span>TestFlight</span>
+            <span class="badge">Soon</span>
+          </a>
+          <a class="btn btn--ghost" href="/">
+            Use it in the browser
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 6l6 6-6 6M5 12h14"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
 
-    <p class="note">
-      <b>Updating from v1.0.0?</b> Uninstall the old app first. That first preview was signed with a temporary key, so Android will not install this version over it. Later versions update in place.
-    </p>
-    <p class="note">
-      <b>Preview build.</b> This is a test/demo version for sideloading &mdash; not the Play Store release. iPhone users get the app through <b>TestFlight</b> instead (coming soon). Live video needs a network connection to the exhibition server.
-    </p>
-  </main>
-  <p class="foot">Ethio Build Connect &middot; ethiobuildconnect.et</p>
-</div>
+  <section class="steps" aria-labelledby="install-title">
+    <span class="eyebrow"><i aria-hidden="true"></i> Installing on Android</span>
+    <h2 id="install-title">Three taps and you are in</h2>
+    <ol>
+      <li><span class="n">1</span><div><b>Download the APK</b><span>Tap the button above, or scan the QR code with your phone's camera.</span></div></li>
+      <li><span class="n">2</span><div><b>Allow the install</b><span>Android asks to allow apps from this source. Tap <em>Settings</em>, switch on <em>Allow from this source</em>, then go back.</span></div></li>
+      <li><span class="n">3</span><div><b>Open and install</b><span>Tap the downloaded file, then <em>Install</em>. Find Ethio Build Connect in your app drawer.</span></div></li>
+    </ol>
+    <p class="note"><b>Updating from an earlier preview?</b> Uninstall the old app first. Earlier previews were signed with a temporary key, so Android will not install this version over them. From this version on, updates install in place.</p>
+    <p class="note"><b>Direct download.</b> This build is distributed from ethiobuildconnect.et rather than Google Play. Live video needs a network connection to the exhibition server.</p>
+  </section>
+
+  <p class="foot">Ethio Build Connect &middot; <a href="/">ethiobuildconnect.et</a></p>
+</main>
 
 <script>
-  // The page reads the APK location from ?apk=... so it works wherever it's
-  // hosted. Default: the copy served from this site's /downloads folder.
+  // The page reads the APK location from ?apk=... so it works wherever it's hosted.
+  // Default: the copy served from this site's /downloads folder.
   var DEFAULT_APK = "/downloads/ethio-build-connect.apk";
   var apk = new URLSearchParams(location.search).get("apk") || DEFAULT_APK;
-  // The QR must encode an absolute URL to scan from a phone; resolve relatives.
   var apkAbs = new URL(apk, location.href).href;
 
   document.getElementById("dl").setAttribute("href", apkAbs);
   document.getElementById("urlText").textContent = apkAbs.replace(/^https?:\/\//, "");
 
-  // iOS / TestFlight. Set a URL here, pass ?ios=<url>, or the page will ask the
-  // backend (/api/v1/public/download/info) whether an iOS link is configured.
+  // Size chip from the file itself, so it never goes stale.
+  fetch(apkAbs, { method: "HEAD" })
+    .then(function (r) {
+      var len = Number(r.headers.get("content-length"));
+      if (r.ok && len > 0) document.getElementById("sizeChip").textContent = (len / 1048576).toFixed(0) + " MB";
+    })
+    .catch(function () {});
+
+  // iOS / TestFlight: set a URL here, pass ?ios=<url>, or the backend may advertise one.
   var DEFAULT_IOS = "";
   function enableIos(url) {
     var btn = document.getElementById("ios");
@@ -376,17 +294,13 @@
     fetch("/api/v1/public/download/info", { headers: { Accept: "application/json" } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) { if (d && d.ios && d.ios.available && d.ios.url) enableIos(d.ios.url); })
-      .catch(function () { /* stay "Soon" */ });
+      .catch(function () {});
   }
 
   try {
     new QRCode(document.getElementById("qr"), {
-      text: apkAbs,
-      width: 128,
-      height: 128,
-      colorDark: "#1a1626",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
+      text: apkAbs, width: 96, height: 96,
+      colorDark: "#2e1065", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M
     });
   } catch (e) {
     document.getElementById("qr").textContent = "QR unavailable";
