@@ -11,7 +11,8 @@
  * which this module sets as soon as it runs: markup that reaches a browser without
  * JavaScript (prerendered HTML, a failed chunk) is simply visible, never stuck at
  * opacity 0. Browsers without IntersectionObserver get everything shown at once, and
- * `prefers-reduced-motion` turns the whole thing into a plain appear in CSS.
+ * the rise runs in every motion mode, and the hidden start state only applies once the
+ * observer is live, so content is never stuck hidden.
  */
 const seen = new WeakSet()
 let observer = null
