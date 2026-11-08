@@ -9,17 +9,20 @@
  *  .dots-bg / .grid-bg— quiet background textures (dots on dark, grid on light)
  *  .swash             — hand-drawn gold underline for the accent word of a heading
  *
- * Reduced-motion policy: the scroll reveal becomes a plain appear (nothing is ever hidden),
- * and the hover lift, float and ticker keep running like every other site's decoration;
- * they are gentle, slow and never block reading.
+ * Motion runs in every mode, like the decoration on the sites this one is measured against;
+ * everything here is gentle, slow and never blocks reading. Content is never hidden: the
+ * reveal only starts from opacity 0 once the directive's observer is live (html.has-reveal).
  */
 
 /* ---- reveal ---------------------------------------------------------------- */
+/* Markup that reaches a browser without the directive's JS (prerender, failed chunk) stays
+   visible because `has-reveal` is only set once the observer is live. The rise runs in every
+   motion mode, like the rest of the site's decoration. */
 html.has-reveal .reveal {
   opacity: 1;
   transform: none;
 }
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   html.has-reveal .reveal {
     opacity: 0;
     transform: translateY(26px);
@@ -92,7 +95,7 @@ html.has-reveal .reveal {
     border-color 0.2s ease,
     background-color 0.2s ease;
 }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) {
   .hover-lift:hover {
     transform: translateY(-4px);
     box-shadow: 0 22px 44px -18px rgba(46, 16, 101, 0.28);
