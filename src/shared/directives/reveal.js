@@ -13,6 +13,7 @@
  * opacity 0. Browsers without IntersectionObserver get everything shown at once, and
  * the rise runs in every motion mode, and the hidden start state only applies once the
  * observer is live, so content is never stuck hidden.
+ */
 const seen = new WeakSet()
 let observer = null
 
