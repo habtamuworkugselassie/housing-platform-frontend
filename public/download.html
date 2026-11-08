@@ -149,6 +149,8 @@
   .qr-text { font-size: 13.5px; color: rgba(46,16,101,.8); max-width: 20ch; }
   .qr-text b { display: block; color: var(--gold-ink); font-size: 15px; }
   .url { font-size: 12px; word-break: break-all; color: rgba(46,16,101,.7); }
+  .alt { margin: 12px 0 0; font-size: 13px; color: rgba(46,16,101,.75); }
+  .alt a { font-weight: 700; color: var(--gold-ink); }
 
   /* Steps */
   .steps { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 28px 20px; }
@@ -210,8 +212,9 @@
         <div class="meta">
           <span class="chip" id="verChip">v1.1.0</span>
           <span class="chip" id="sizeChip">~36 MB</span>
-          <span class="chip">Android 5.0+</span>
+          <span class="chip">Android 5.0+ · 64-bit</span>
         </div>
+        <p class="alt">Older 32-bit phone? <a href="/downloads/ethio-build-connect-32bit.apk" download>Get the 32-bit APK</a> (29 MB).</p>
         <div class="qr-row">
           <div class="qr" id="qr" role="img" aria-label="QR code to download the app"></div>
           <div class="qr-text"><b>Scan to download</b> Point your phone's camera at the code.<br><span class="url" id="urlText">&hellip;</span></div>
