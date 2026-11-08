@@ -9,8 +9,9 @@
  *  .dots-bg / .grid-bg— quiet background textures (dots on dark, grid on light)
  *  .swash             — hand-drawn gold underline for the accent word of a heading
  *
- * Every animation is inside `prefers-reduced-motion: no-preference`; without it the
- * elements simply sit in their final state.
+ * Reduced-motion policy: the scroll reveal becomes a plain appear (nothing is ever hidden),
+ * and the hover lift, float and ticker keep running like every other site's decoration;
+ * they are gentle, slow and never block reading.
  */
 
 /* ---- reveal ---------------------------------------------------------------- */
@@ -57,14 +58,12 @@ html.has-reveal .reveal {
 }
 
 /* ---- float ----------------------------------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes ebc-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-9px); }
-  }
-  .float { animation: ebc-float 5s ease-in-out infinite; }
-  .float--slow { animation-duration: 7s; animation-delay: -2s; }
+@keyframes ebc-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
 }
+.float { animation: ebc-float 5s ease-in-out infinite; }
+.float--slow { animation-duration: 7s; animation-delay: -2s; }
 
 /* ---- marquee --------------------------------------------------------------- */
 .marquee {
@@ -77,21 +76,13 @@ html.has-reveal .reveal {
   width: max-content;
   gap: 0.75rem;
 }
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes ebc-marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  .marquee__track { animation: ebc-marquee var(--marquee-duration, 48s) linear infinite; }
-  .marquee:hover .marquee__track,
-  .marquee:focus-within .marquee__track { animation-play-state: paused; }
+@keyframes ebc-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-@media (prefers-reduced-motion: reduce) {
-  /* No motion: show one copy, let it wrap. */
-  .marquee { mask-image: none; -webkit-mask-image: none; }
-  .marquee__track { width: auto; flex-wrap: wrap; justify-content: center; }
-  .marquee__track > [aria-hidden="true"] { display: none; }
-}
+.marquee__track { animation: ebc-marquee var(--marquee-duration, 48s) linear infinite; }
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track { animation-play-state: paused; }
 
 /* ---- hover lift ------------------------------------------------------------ */
 .hover-lift {
