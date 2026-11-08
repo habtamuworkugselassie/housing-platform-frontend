@@ -101,15 +101,15 @@
             <span class="float absolute left-[48%] top-[42%] -translate-x-1/2 rounded-xl border border-white/15 bg-primary-950/80 px-3 py-2 text-xs font-semibold shadow-lg backdrop-blur">
               {{ $t('exhibition.hero.panelStage') }}
             </span>
-            <span class="absolute bottom-[8%] left-[27%] rounded-lg bg-white/10 px-2.5 py-1 text-[11px] font-medium text-white/85 backdrop-blur">
+            <span class="absolute bottom-[8%] left-[27%] hidden rounded-lg bg-white/10 px-2.5 py-1 text-[11px] font-medium text-white/85 backdrop-blur sm:inline">
               {{ $t('exhibition.hero.panelEntrance') }}
             </span>
           </div>
 
-          <!-- Floating fact cards (desktop); the same facts sit in the copy on small screens. -->
-          <div class="float--slow float absolute -right-4 -top-6 z-10 hidden rounded-2xl border border-gray-200 bg-white p-3.5 shadow-xl sm:block">
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gold-100 text-gold-700">
+          <!-- Floating fact cards: tucked inside the panel on phones, overhanging its corners from sm up. -->
+          <div class="float--slow float absolute right-3 top-3 z-10 rounded-2xl border border-gray-200 bg-white p-2.5 shadow-xl sm:-right-4 sm:-top-6 sm:p-3.5">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+              <span class="flex h-9 w-9 items-center justify-center rounded-full bg-gold-100 text-gold-700 sm:h-10 sm:w-10">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" /></svg>
               </span>
               <div>
@@ -118,9 +118,9 @@
               </div>
             </div>
           </div>
-          <div class="float absolute -bottom-6 -left-4 z-10 hidden rounded-2xl border border-gray-200 bg-white p-3.5 shadow-xl sm:block">
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary-700">
+          <div class="float absolute bottom-3 left-3 z-10 rounded-2xl border border-gray-200 bg-white p-2.5 shadow-xl sm:-bottom-6 sm:-left-4 sm:p-3.5">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+              <span class="flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-primary-700 sm:h-10 sm:w-10">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.3 7-11.5A7 7 0 005 9.5C5 14.7 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
               </span>
               <div>
@@ -215,10 +215,12 @@ onMounted(async () => {
   -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 35%, transparent 78%);
   mask-image: radial-gradient(ellipse at 50% 40%, #000 35%, transparent 78%);
 }
+/* The route dashes and the stage pulse are small, slow and local, so they run under
+   prefers-reduced-motion too; only the larger movements (float, marquee, reveal) are gated. */
+.landing-hero__route { animation: ebc-route 2.4s linear infinite; }
+@keyframes ebc-route { to { stroke-dashoffset: -52; } }
+.landing-hero__pulse { transform-origin: 408px 120px; animation: ebc-pulse 2.6s ease-out infinite; }
 @media (prefers-reduced-motion: no-preference) {
-  .landing-hero__route { animation: ebc-route 2.4s linear infinite; }
-  @keyframes ebc-route { to { stroke-dashoffset: -52; } }
-  .landing-hero__pulse { transform-origin: 408px 120px; animation: ebc-pulse 2.6s ease-out infinite; }
   @keyframes ebc-pulse {
     0% { transform: scale(0.6); opacity: 0.9; }
     100% { transform: scale(1.6); opacity: 0; }

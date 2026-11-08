@@ -142,11 +142,11 @@ html.has-reveal .reveal {
   stroke-width: 7;
   stroke-linecap: round;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .swash > svg path {
-    stroke-dasharray: 320;
-    stroke-dashoffset: 320;
-    animation: ebc-swash 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
-  }
-  @keyframes ebc-swash { to { stroke-dashoffset: 0; } }
+/* The swash draws itself once, in under a second: a reveal rather than motion, so it also
+   runs under prefers-reduced-motion. */
+.swash > svg path {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: ebc-swash 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
 }
+@keyframes ebc-swash { to { stroke-dashoffset: 0; } }
