@@ -451,12 +451,21 @@ const interestPackages = ref([])
 const interestPackagesLoading = ref(false)
 
 // Deep links from the hero ("Exhibit / Visit / Sponsor") preselect the interest type:
-// /?interest=exhibitor|visitor|partner#register
+// /?interest=exhibitor|visitor|partner#register. Links get typed by hand and pasted into
+// flyers, so misspellings (exibitor, exhibiter) and synonyms (sponsor, exhibit, visit) count.
+function normalizeInterest(v) {
+  const t = String(v || '').toLowerCase().replace(/[^a-z]/g, '')
+  if (!t) return ''
+  if (/^ex(h)?[ia]b/.test(t) || t === 'exhibit' || t === 'stand') return 'exhibitor'
+  if (/^visit/.test(t) || t === 'attend' || t === 'attendee') return 'visitor'
+  if (/^(partner|sponsor|media)/.test(t)) return 'partner'
+  return ''
+}
 watch(
   () => route.query.interest,
   (v) => {
-    const t = String(v || '').toLowerCase()
-    if (['exhibitor', 'visitor', 'partner'].includes(t)) interestForm.value.interestType = t
+    const t = normalizeInterest(v)
+    if (t) interestForm.value.interestType = t
   },
   { immediate: true },
 )
