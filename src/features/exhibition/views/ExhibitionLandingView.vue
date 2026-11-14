@@ -615,9 +615,10 @@ watch(locale, syncExpoEventJsonLd)
 onUnmounted(removeExpoEventJsonLd)
 
 // Deep-link scrolling. The target is the hash, or the form when the link only carries
-// ?interest=. One scroll on mount is not enough: the sponsor band, packages and listings
-// above the form are still loading and the splash may still be covering the page, so the
-// scroll keeps re-aiming while the target moves and stops once it has held still.
+// ?interest=. One scroll on mount is not enough: the sponsor band, packages, listings and
+// images above the form keep arriving for a while on a phone connection, and the splash
+// may still be covering the page. So the scroll re-aims on every change of page height
+// (ResizeObserver on <body>) until the visitor scrolls on their own.
 function deepLinkTarget() {
   const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')
   if (hash) return hash.replace(/^#/, '')
@@ -625,45 +626,55 @@ function deepLinkTarget() {
   return ''
 }
 
-let scrollTimer = null
+let deepLink = null
+function stopDeepLink() {
+  if (!deepLink) return
+  deepLink.ro?.disconnect()
+  clearInterval(deepLink.splashPoll)
+  clearTimeout(deepLink.idleTimer)
+  for (const ev of ['wheel', 'touchmove', 'keydown']) window.removeEventListener(ev, deepLink.onUser)
+  deepLink = null
+}
+
 function scrollToHash() {
   const id = deepLinkTarget()
   if (!id || typeof window === 'undefined') return
-  if (scrollTimer) clearInterval(scrollTimer)
-  const started = Date.now()
-  let settled = 0
+  stopDeepLink()
+  const state = { ro: null, splashPoll: null, idleTimer: null, onUser: null, first: true }
+  deepLink = state
   const navOffset = () => {
     const nav = document.querySelector('.site-nav__bar')
     return (nav ? nav.getBoundingClientRect().bottom : 0) + 16
   }
-  const tick = () => {
+  const aim = () => {
     const el = document.getElementById(id)
-    const splashUp = Boolean(document.querySelector('.splash-screen'))
-    if (el && !splashUp) {
-      const top = el.getBoundingClientRect().top
-      if (Math.abs(top - navOffset()) > 4) {
-        window.scrollTo({ top: window.scrollY + top - navOffset(), behavior: settled ? 'auto' : 'smooth' })
-        settled = 0
-      } else {
-        settled += 1
-      }
-      lastTop = top
+    if (!el || document.querySelector('.splash-screen')) return
+    const delta = el.getBoundingClientRect().top - navOffset()
+    if (Math.abs(delta) > 2) {
+      window.scrollTo({ top: window.scrollY + delta, behavior: state.first ? 'smooth' : 'auto' })
+      state.first = false
     }
-    if (settled >= 4 || Date.now() - started > 6000) {
-      clearInterval(scrollTimer)
-      scrollTimer = null
-    }
+    // Give up a while after the page last changed size; most pages settle well within this.
+    clearTimeout(state.idleTimer)
+    state.idleTimer = setTimeout(stopDeepLink, 15000)
   }
-  nextTick(() => {
-    tick()
-    scrollTimer = setInterval(tick, 250)
-  })
+  state.onUser = () => stopDeepLink()
+  for (const ev of ['wheel', 'touchmove', 'keydown']) window.addEventListener(ev, state.onUser, { passive: true })
+  if ('ResizeObserver' in window) {
+    state.ro = new ResizeObserver(aim)
+    state.ro.observe(document.body)
+  }
+  // Until the splash goes, poll; the first aim after it is gone is the smooth one.
+  state.splashPoll = setInterval(() => {
+    if (document.querySelector('.splash-screen')) return
+    clearInterval(state.splashPoll)
+    aim()
+  }, 100)
+  nextTick(aim)
 }
 
 onMounted(scrollToHash)
-onUnmounted(() => {
-  if (scrollTimer) clearInterval(scrollTimer)
-})
+onUnmounted(stopDeepLink)
 watch(() => [route.hash, route.query.interest], scrollToHash)
 
 // Partners list (all sponsored organizations, including exclusive)
