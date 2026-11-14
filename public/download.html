@@ -7,7 +7,9 @@
 <meta name="description" content="Download the Ethio Build Connect Android app: browse listings, connect with builders and banks, and watch the expo live.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Noto+Sans+Ethiopic:wght@400;500;700;900&display=swap">
+<link rel="alternate" hreflang="en" href="https://ethiobuildconnect.et/download.html">
+<link rel="alternate" hreflang="am" href="https://ethiobuildconnect.et/am/download.html">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root {
@@ -64,6 +66,14 @@
     transition: background .2s, transform .2s;
   }
   .nav__link:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
+  .nav__right { display: flex; align-items: center; gap: 8px; }
+  .nav__lang {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 44px;
+    padding: 9px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22);
+    color: #fff; font-weight: 700; font-size: 13px; text-decoration: none;
+  }
+  .nav__lang:hover { background: rgba(255,255,255,.12); }
+  html[lang="am"] body { font-family: "Noto Sans Ethiopic", Roboto, system-ui, sans-serif; }
 
   main { max-width: 1040px; margin: 0 auto; padding: 40px 16px 72px; }
 
@@ -177,10 +187,13 @@
 <nav class="nav" aria-label="Site">
   <div class="nav__bar">
     <a href="/" aria-label="Ethio Build Connect home"><img src="/images/branding/ethio-build-connect-wordmark.png" alt="Ethio Build Connect"></a>
-    <a class="nav__link" href="/">
-      Back to the site
+    <div class="nav__right">
+      <a class="nav__lang" id="langToggle" href="/am/download.html" hreflang="am" lang="am">አማ</a>
+      <a class="nav__link" href="/" id="siteLink">
+      <span data-i18n="nav.back">Back to the site</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-    </a>
+      </a>
+    </div>
   </div>
 </nav>
 
@@ -188,55 +201,55 @@
   <section class="cta" id="cta">
     <span class="eyebrow">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17v4M17 19h4M5 3v3M3.5 4.5h3"/></svg>
-      Get the app
+      <span data-i18n="eyebrow">Get the app</span>
     </span>
-    <h1>Start using Ethio Build Connect today.</h1>
-    <p class="lead">Browse listings, meet developers, banks and builders, register for the expo and watch it live, all from your phone.</p>
+    <h1 data-i18n="h1">Start using Ethio Build Connect today.</h1>
+    <p class="lead" data-i18n="lead">Browse listings, meet developers, banks and builders, register for the expo and watch it live, all from your phone.</p>
 
     <div class="apps">
       <article class="app">
         <div class="app__top">
-          <span class="tag">Android</span>
+          <span class="tag" data-i18n="android.tag">Android</span>
           <span class="icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>
           </span>
         </div>
-        <h2>Ethio Build Connect app</h2>
-        <p>Install directly on any Android phone. No store account needed.</p>
+        <h2 data-i18n="android.title">Ethio Build Connect app</h2>
+        <p data-i18n="android.body">Install directly on any Android phone. No store account needed.</p>
         <div class="btns">
           <a class="btn btn--dark" id="dl" href="#" download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
-            Download APK
+            <span data-i18n="android.btn">Download APK</span>
           </a>
         </div>
         <div class="meta">
           <span class="chip" id="verChip">v1.1.2</span>
           <span class="chip" id="sizeChip">~36 MB</span>
-          <span class="chip">Android 5.0+ · 64-bit</span>
+          <span class="chip" data-i18n="android.chip">Android 5.0+ · 64-bit</span>
         </div>
-        <p class="alt">Older 32-bit phone? <a href="/downloads/ethio-build-connect-32bit.apk" download>Get the 32-bit APK</a> (29 MB).</p>
+        <p class="alt"><span data-i18n="android.alt">Older 32-bit phone?</span> <a href="/downloads/ethio-build-connect-32bit.apk" download data-i18n="android.alt.link">Get the 32-bit APK</a> (29 MB).</p>
         <div class="qr-row">
           <div class="qr" id="qr" role="img" aria-label="QR code to download the app"></div>
-          <div class="qr-text"><b>Scan to download</b> Point your phone's camera at the code.<br><span class="url" id="urlText">&hellip;</span></div>
+          <div class="qr-text"><b data-i18n="qr.title">Scan to download</b> <span data-i18n="qr.body">Point your phone's camera at the code.</span><br><span class="url" id="urlText">&hellip;</span></div>
         </div>
       </article>
 
       <article class="app">
         <div class="app__top">
-          <span class="tag">iPhone</span>
+          <span class="tag" data-i18n="ios.tag">iPhone</span>
           <span class="icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.5-.4 6.3 1 8.3.7 1 1.5 2.1 2.6 2.1 1 0 1.4-.7 2.7-.7 1.3 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.1-.8-2.1-3.2zM14.3 6.7c.6-.7 1-1.7.9-2.7-.8 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.1 1.8-.5 2.5-1.2z"/></svg>
           </span>
         </div>
-        <h2>iPhone &amp; iPad</h2>
-        <p>The iOS app ships through TestFlight. Until then, the full site works on Safari.</p>
+        <h2 data-i18n="ios.title">iPhone &amp; iPad</h2>
+        <p data-i18n="ios.body">The iOS app ships through TestFlight. Until then, the full site works on Safari.</p>
         <div class="btns">
           <a class="btn btn--dark soon" id="ios" href="#" aria-disabled="true">
-            <span>TestFlight</span>
-            <span class="badge">Soon</span>
+            <span data-i18n="ios.btn">TestFlight</span>
+            <span class="badge" data-i18n="ios.soon">Soon</span>
           </a>
           <a class="btn btn--ghost" href="/">
-            Use it in the browser
+            <span data-i18n="ios.web">Use it in the browser</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 6l6 6-6 6M5 12h14"/></svg>
           </a>
         </div>
@@ -245,20 +258,38 @@
   </section>
 
   <section class="steps" aria-labelledby="install-title">
-    <span class="eyebrow"><i aria-hidden="true"></i> Installing on Android</span>
-    <h2 id="install-title">Three taps and you are in</h2>
+    <span class="eyebrow"><i aria-hidden="true"></i> <span data-i18n="steps.eyebrow">Installing on Android</span></span>
+    <h2 id="install-title" data-i18n="steps.title">Three taps and you are in</h2>
     <ol>
-      <li><span class="n">1</span><div><b>Download the APK</b><span>Tap the button above, or scan the QR code with your phone's camera.</span></div></li>
-      <li><span class="n">2</span><div><b>Allow the install</b><span>Android asks to allow apps from this source. Tap <em>Settings</em>, switch on <em>Allow from this source</em>, then go back.</span></div></li>
-      <li><span class="n">3</span><div><b>Open and install</b><span>Tap the downloaded file, then <em>Install</em>. Find Ethio Build Connect in your app drawer.</span></div></li>
+      <li><span class="n">1</span><div><b data-i18n="step1.t">Download the APK</b><span data-i18n="step1.b">Tap the button above, or scan the QR code with your phone's camera.</span></div></li>
+      <li><span class="n">2</span><div><b data-i18n="step2.t">Allow the install</b><span data-i18n="step2.b">Android asks to allow apps from this source. Tap <em>Settings</em>, switch on <em>Allow from this source</em>, then go back.</span></div></li>
+      <li><span class="n">3</span><div><b data-i18n="step3.t">Open and install</b><span data-i18n="step3.b">Tap the downloaded file, then <em>Install</em>. Find Ethio Build Connect in your app drawer.</span></div></li>
     </ol>
-    <p class="note"><b>Updating from an earlier preview?</b> Uninstall the old app first. Earlier previews were signed with a temporary key, so Android will not install this version over them. From this version on, updates install in place.</p>
-    <p class="note"><b>Direct download.</b> This build is distributed from ethiobuildconnect.et rather than Google Play. Live video needs a network connection to the exhibition server.</p>
+    <p class="note" data-i18n="note1"><b>Updating from an earlier preview?</b> Uninstall the old app first. Earlier previews were signed with a temporary key, so Android will not install this version over them. From this version on, updates install in place.</p>
+    <p class="note" data-i18n="note2"><b>Direct download.</b> This build is distributed from ethiobuildconnect.et rather than Google Play. Live video needs a network connection to the exhibition server.</p>
   </section>
 
   <p class="foot">Ethio Build Connect &middot; <a href="/">ethiobuildconnect.et</a></p>
 </main>
 
+<script>
+  // Bilingual page: /am/download.html is the Amharic copy, /download.html the English one.
+  // The same file is served for both; the path picks the language. (?lang=am also works.)
+  var AM = {"nav.back": "ወደ ድረ-ገጹ ተመለስ", "eyebrow": "መተግበሪያውን ያግኙ", "h1": "ኢትዮ ቢልድ ኮኔክትን ዛሬውኑ መጠቀም ይጀምሩ።", "lead": "ዝርዝሮችን ይመልከቱ፣ ከገንቢዎች፣ ባንኮች እና ግንበኞች ጋር ይገናኙ፣ ለኤክስፖው ይመዝገቡ እና በቀጥታ ይከታተሉ፤ ሁሉንም ከስልክዎ።", "android.tag": "አንድሮይድ", "android.title": "የኢትዮ ቢልድ ኮኔክት መተግበሪያ", "android.body": "በማንኛውም የአንድሮይድ ስልክ ላይ በቀጥታ ይጫኑ። የመደብር መለያ አያስፈልግም።", "android.btn": "APK ያውርዱ", "android.chip": "አንድሮይድ 5.0+ · 64-ቢት", "android.alt": "የቆየ 32-ቢት ስልክ ነው?", "android.alt.link": "32-ቢት APK ያውርዱ", "qr.title": "ለማውረድ ይቃኙ", "qr.body": "የስልክዎን ካሜራ ወደ ኮዱ ያዙሩ።", "ios.tag": "አይፎን", "ios.title": "አይፎን እና አይፓድ", "ios.body": "የiOS መተግበሪያው በTestFlight በኩል ይደርሳል። እስከዚያው ድረስ ሙሉ ድረ-ገጹ በSafari ይሰራል።", "ios.btn": "TestFlight", "ios.soon": "በቅርቡ", "ios.web": "በአሳሽ ይጠቀሙ", "steps.eyebrow": "በአንድሮይድ ላይ መጫን", "steps.title": "በሶስት ንክኪ ይጀምሩ", "step1.t": "APK ያውርዱ", "step1.b": "ከላይ ያለውን አዝራር ይንኩ፣ ወይም የQR ኮዱን በስልክዎ ካሜራ ይቃኙ።", "step2.t": "መጫኑን ይፍቀዱ", "step2.b": "አንድሮይድ ከዚህ ምንጭ መተግበሪያዎችን ለመፍቀድ ይጠይቃል። <em>Settings</em> ይንኩ፣ <em>Allow from this source</em> ያብሩ፣ ከዚያ ይመለሱ።", "step3.t": "ይክፈቱ እና ይጫኑ", "step3.b": "የወረደውን ፋይል ይንኩ፣ ከዚያ <em>Install</em>። ኢትዮ ቢልድ ኮኔክትን በመተግበሪያ መሳቢያዎ ውስጥ ያግኙ።", "note1": "<b>ከቀድሞ ቅድመ-ዕይታ እያዘመኑ ነው?</b> መጀመሪያ የቆየውን መተግበሪያ ያስወግዱ። የቀድሞ ቅድመ-ዕይታዎች በጊዜያዊ ቁልፍ የተፈረሙ ስለነበሩ አንድሮይድ ይህን ስሪት በላያቸው አይጭንም። ከዚህ ስሪት ጀምሮ ዝመናዎች በቦታው ይጫናሉ።", "note2": "<b>ቀጥታ ማውረድ።</b> ይህ ግንባታ ከGoogle Play ሳይሆን ከethiobuildconnect.et ይሰራጫል። የቀጥታ ቪዲዮ ከኤግዚቢሽኑ አገልጋይ ጋር የአውታረ መረብ ግንኙነት ይፈልጋል።"};
+  var isAm = /^\/am\//.test(location.pathname) || new URLSearchParams(location.search).get("lang") === "am";
+  if (isAm) {
+    document.documentElement.lang = "am";
+    document.title = "የኢትዮ ቢልድ ኮኔክት መተግበሪያ ያውርዱ";
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (AM[k]) el.innerHTML = AM[k];
+    });
+    var t = document.getElementById("langToggle");
+    t.href = "/download.html"; t.textContent = "EN"; t.setAttribute("hreflang", "en"); t.setAttribute("lang", "en");
+    document.getElementById("siteLink").href = "/am";
+    document.querySelector('a[aria-label="Ethio Build Connect home"]').href = "/am";
+  }
+</script>
 <script>
   // The page reads the APK location from ?apk=... so it works wherever it's hosted.
   // Default: the copy served from this site's /downloads folder.
