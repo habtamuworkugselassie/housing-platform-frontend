@@ -605,20 +605,57 @@ onMounted(() => {
 watch(locale, syncExpoEventJsonLd)
 onUnmounted(removeExpoEventJsonLd)
 
-function scrollToHash() {
+// Deep-link scrolling. The target is the hash, or the form when the link only carries
+// ?interest=. One scroll on mount is not enough: the sponsor band, packages and listings
+// above the form are still loading and the splash may still be covering the page, so the
+// scroll keeps re-aiming while the target moves and stops once it has held still.
+function deepLinkTarget() {
   const hash = route.hash || (typeof window !== 'undefined' ? window.location.hash : '')
-  if (!hash) return
-  const id = hash.replace(/^#/, '')
+  if (hash) return hash.replace(/^#/, '')
+  if (route.query.interest) return 'register'
+  return ''
+}
+
+let scrollTimer = null
+function scrollToHash() {
+  const id = deepLinkTarget()
+  if (!id || typeof window === 'undefined') return
+  if (scrollTimer) clearInterval(scrollTimer)
+  const started = Date.now()
+  let settled = 0
+  const navOffset = () => {
+    const nav = document.querySelector('.site-nav__bar')
+    return (nav ? nav.getBoundingClientRect().bottom : 0) + 16
+  }
+  const tick = () => {
+    const el = document.getElementById(id)
+    const splashUp = Boolean(document.querySelector('.splash-screen'))
+    if (el && !splashUp) {
+      const top = el.getBoundingClientRect().top
+      if (Math.abs(top - navOffset()) > 4) {
+        window.scrollTo({ top: window.scrollY + top - navOffset(), behavior: settled ? 'auto' : 'smooth' })
+        settled = 0
+      } else {
+        settled += 1
+      }
+      lastTop = top
+    }
+    if (settled >= 4 || Date.now() - started > 6000) {
+      clearInterval(scrollTimer)
+      scrollTimer = null
+    }
+  }
   nextTick(() => {
-    setTimeout(() => {
-      const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 100)
+    tick()
+    scrollTimer = setInterval(tick, 250)
   })
 }
 
 onMounted(scrollToHash)
-watch(() => route.hash, scrollToHash)
+onUnmounted(() => {
+  if (scrollTimer) clearInterval(scrollTimer)
+})
+watch(() => [route.hash, route.query.interest], scrollToHash)
 
 // Partners list (all sponsored organizations, including exclusive)
 const partnersList = ref([])
