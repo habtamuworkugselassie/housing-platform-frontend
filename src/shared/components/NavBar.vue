@@ -105,7 +105,7 @@
              users reach the download via the footer link and the mobile menu. -->
         <a
           v-if="!authStore.isAuthenticated"
-          href="/download.html"
+          :href="downloadHref"
           class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-gold-400 px-3.5 py-2 text-xs font-bold text-primary-950 shadow-[0_8px_20px_-10px_rgba(244,201,119,0.9)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 sm:gap-2 sm:px-4 sm:text-sm"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -343,7 +343,7 @@
               <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 6l6 6-6 6M5 12h14" /></svg>
             </router-link>
             <a
-              href="/download.html"
+              :href="downloadHref"
               class="flex w-full items-center justify-center gap-2 rounded-full bg-primary-950 px-5 py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-primary-900"
             >
               {{ $t('nav.getAppShort') }}
@@ -376,7 +376,7 @@ import UserDropdown from '@/shared/components/UserDropdown.vue'
 const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const mobileMenuOpen = ref(false)
 const marketplaceDropdownOpen = ref(false)
 
@@ -515,4 +515,7 @@ const handleLogout = async () => {
   router.push('/')
   mobileMenuOpen.value = false
 }
+
+// The download page is bilingual; Amharic visitors get the Amharic copy.
+const downloadHref = computed(() => (locale.value === 'am' ? '/am/download.html' : '/download.html'))
 </script>

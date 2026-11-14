@@ -68,7 +68,7 @@
 
           <!-- Get the mobile app (static install page in /public) -->
           <a
-            href="/download.html"
+            :href="downloadHref"
             class="inline-flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
           >
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -236,10 +236,12 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import { useDisplaySettings } from '@/shared/composables/useDisplaySettings'
 import { useAuthStore } from '@/features/auth'
 
+const { locale } = useI18n()
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 
@@ -299,4 +301,7 @@ const socialLinks = [
       'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.69 1.62 4.24 1.79v4.03c-1.43-.04-2.86-.35-4.17-.97-.57-.27-1.1-.61-1.62-.95-.01 2.92.02 5.84-.02 8.75-.08 1.4-.54 2.78-1.35 3.94-1.31 1.9-3.52 3.19-5.81 3.42-1.4.15-2.83.02-4.16-.5-2.21-.86-4-2.66-4.79-4.9-.42-1.17-.56-2.43-.48-3.67.23-2.68 1.88-5.16 4.31-6.32 1.84-.89 3.98-1.13 5.95-.66.02 1.48-.04 2.96-.04 4.44-.9-.29-1.92-.35-2.83-.03-1.31.43-2.34 1.52-2.74 2.84-.27.93-.24 1.93.1 2.84.48 1.25 1.62 2.24 2.9 2.56.85.21 1.76.19 2.6-.06 1.2-.36 2.22-1.29 2.7-2.44.2-.47.3-.98.3-1.49.01-6.61-.01-13.22.02-19.83z'
   }
 ]
+
+// The download page is bilingual; Amharic visitors get the Amharic copy.
+const downloadHref = computed(() => (locale.value === 'am' ? '/am/download.html' : '/download.html'))
 </script>
