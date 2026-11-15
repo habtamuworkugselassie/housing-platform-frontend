@@ -1,50 +1,40 @@
 <template>
   <footer class="site-footer flex-shrink-0 border-t border-white/10 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-14">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-12">
-        <!-- Brand / logo (Expo-style anchor column) -->
-        <div class="col-span-2 lg:col-span-1 flex flex-col gap-3 lg:gap-4">
-          <RouterLink
-            :to="{ name: 'Home' }"
-            class="inline-flex w-fit rounded-xl bg-white p-2 lg:rounded-2xl lg:p-3 shadow-sm ring-1 ring-black/5 transition-opacity hover:opacity-90"
-          >
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <div class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-12">
+        <!-- Brand column: wordmark, a frosted contact card, the app button, account pills. -->
+        <div class="col-span-2 lg:col-span-1 flex flex-col gap-5">
+          <RouterLink :to="{ name: 'Home' }" class="inline-flex w-fit transition-opacity hover:opacity-90">
             <img
-              src="/images/branding/ethio-build-connect-logo-stacked.png"
+              src="/images/branding/ethio-build-connect-wordmark.png"
               :alt="$t('exhibition.hero.eventName')"
-              class="h-14 sm:h-20 lg:h-28 w-auto object-contain"
+              class="h-12 w-auto object-contain lg:h-14"
             />
           </RouterLink>
-          <p class="text-sm text-gray-400 leading-relaxed max-w-sm">
-            {{ address }}
+          <p class="max-w-sm text-sm leading-relaxed text-white/70">
+            {{ $t('exhibition.footer.tagline') }}
           </p>
-          <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-400">
-            <a
-              v-for="line in phones"
-              :key="line.tel"
-              :href="`tel:${line.tel}`"
-              class="hover:text-primary-400 transition-colors"
-            >
-              {{ line.display }}
-            </a>
+
+          <div class="rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-sm">
+            <div class="flex items-start gap-3">
+              <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-400/15 text-gold-300">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.3 7-11.5A7 7 0 005 9.5C5 14.7 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+              </span>
+              <span class="text-white/80">{{ address }}</span>
+            </div>
+            <div class="mt-3 flex items-start gap-3">
+              <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-400/15 text-gold-300">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h2.2a1 1 0 01.95.68l1.1 3.3a1 1 0 01-.25 1.03L7.6 9.4a12 12 0 006.99 6.99l1.4-1.4a1 1 0 011.03-.25l3.3 1.1a1 1 0 01.68.95V19a2 2 0 01-2 2A16 16 0 013 5z" /></svg>
+              </span>
+              <span class="flex flex-wrap gap-x-4 gap-y-1">
+                <a v-for="line in phones" :key="line.tel" :href="`tel:${line.tel}`" class="font-semibold text-white transition-colors hover:text-gold-300">
+                  {{ line.display }}
+                </a>
+              </span>
+            </div>
           </div>
-          <a
-            :href="websiteUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hidden lg:inline-flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-2.5 transition-colors hover:border-primary-400"
-            aria-label="Open Ethio Build Connect portal"
-          >
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fethiobuildconnect.et%2F"
-              alt="QR code to open Ethio Build Connect portal"
-              class="h-20 w-20 rounded bg-white p-1"
-            />
-            <span class="text-xs leading-relaxed text-gray-300">
-              Scan to visit
-              <span class="block font-medium text-white">{{ website }}</span>
-            </span>
-          </a>
-          <div class="flex flex-wrap items-center gap-2 text-gray-400">
+
+          <div class="flex flex-wrap items-center gap-2.5">
             <a
               v-for="item in socialLinks"
               :key="item.label"
@@ -53,57 +43,66 @@
               rel="noopener noreferrer"
               :title="item.label"
               :aria-label="item.label"
-              class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-colors hover:border-primary-400 hover:text-primary-400"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.06] text-white/80 transition-all hover:-translate-y-0.5 hover:border-gold-400/60 hover:text-gold-300"
             >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path :d="item.iconPath" />
-              </svg>
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="item.iconPath" /></svg>
             </a>
           </div>
 
-          <!-- Get the mobile app (static install page in /public) -->
-          <a
-            :href="downloadHref"
-            class="inline-flex w-fit items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
-          >
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" />
-            </svg>
-            {{ $t('nav.getApp') }}
-          </a>
-
-          <!-- Account (moved out of the header) -->
-          <div v-if="!isAuthenticated" class="flex flex-wrap items-center gap-3 pt-1">
-            <RouterLink
-              to="/login"
-              class="inline-flex items-center justify-center rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-400 hover:text-primary-400"
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              :href="downloadHref"
+              class="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-bold text-primary-950 shadow-[0_10px_24px_-12px_rgba(244,201,119,0.9)] transition-all hover:-translate-y-0.5 hover:bg-gold-300"
             >
-              {{ $t('nav.login') }}
-            </RouterLink>
-            <RouterLink
-              to="/register"
-              class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
-            >
-              {{ $t('nav.register') }}
-            </RouterLink>
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" /></svg>
+              {{ $t('nav.getApp') }}
+            </a>
+            <template v-if="!isAuthenticated">
+              <RouterLink
+                to="/login"
+                class="inline-flex items-center justify-center rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-gold-400/60 hover:text-gold-300"
+              >
+                {{ $t('nav.login') }}
+              </RouterLink>
+              <RouterLink
+                to="/register"
+                class="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-white/20"
+              >
+                {{ $t('nav.register') }}
+              </RouterLink>
+            </template>
           </div>
+
+          <a
+            :href="websiteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hidden lg:inline-flex w-fit items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-2.5 transition-colors hover:border-gold-400/60"
+            aria-label="Open Ethio Build Connect portal"
+          >
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fethiobuildconnect.et%2F"
+              alt="QR code to open Ethio Build Connect portal"
+              class="h-20 w-20 rounded-xl bg-white p-1"
+            />
+            <span class="text-xs leading-relaxed text-white/70">
+              Scan to visit
+              <span class="block font-semibold text-white">{{ website }}</span>
+            </span>
+          </a>
         </div>
 
         <!-- Business -->
         <div>
-          <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
+          <h3 class="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 lg:mb-4">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
             {{ $t('exhibition.footer.columns.business') }}
           </h3>
-          <ul class="space-y-2.5 lg:space-y-3 text-sm">
+          <ul class="space-y-2 text-[15px] lg:space-y-2.5 lg:text-sm">
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#planning' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
+                class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
               >
                 {{ $t('exhibition.footer.links.aboutExhibition') }}
               </RouterLink>
@@ -111,7 +110,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#register' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
+                class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
               >
                 {{ $t('exhibition.footer.links.registerInterest') }}
               </RouterLink>
@@ -119,7 +118,7 @@
             <li>
               <RouterLink
                 :to="{ name: 'Home', hash: '#partners' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
+                class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
               >
                 {{ $t('exhibition.footer.links.partners') }}
               </RouterLink>
@@ -127,7 +126,7 @@
             <li v-if="showSponsorshipPackagesNavLink">
               <RouterLink
                 :to="{ name: 'Home', hash: '#sponsorship-packages' }"
-                class="text-gray-300 hover:text-primary-400 transition-colors"
+                class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
               >
                 {{ $t('exhibition.footer.links.sponsorshipPackages') }}
               </RouterLink>
@@ -140,14 +139,15 @@
         <div class="flex flex-col gap-8 lg:contents">
           <!-- Media -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
+            <h3 class="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 lg:mb-4">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
               {{ $t('exhibition.footer.columns.media') }}
             </h3>
-            <ul class="space-y-2.5 lg:space-y-3 text-sm">
+            <ul class="space-y-2 text-[15px] lg:space-y-2.5 lg:text-sm">
               <li>
                 <RouterLink
                   :to="{ name: 'Home', hash: '#brochure' }"
-                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                  class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
                 >
                   {{ $t('exhibition.footer.links.brochure') }}
                 </RouterLink>
@@ -155,7 +155,7 @@
               <li>
                 <RouterLink
                   :to="{ name: 'Home', hash: '#main-listings' }"
-                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                  class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
                 >
                   {{ $t('exhibition.footer.links.featuredListings') }}
                 </RouterLink>
@@ -166,7 +166,7 @@
               <li>
                 <RouterLink
                   to="/ethiopia-real-estate-market"
-                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                  class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
                 >
                   {{ $t('nav.ethiopiaRealEstateMarket') }}
                 </RouterLink>
@@ -176,14 +176,15 @@
 
           <!-- Support -->
           <div>
-            <h3 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-3 lg:mb-4">
+            <h3 class="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 lg:mb-4">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
               {{ $t('exhibition.footer.columns.support') }}
             </h3>
-            <ul class="space-y-2.5 lg:space-y-3 text-sm">
+            <ul class="space-y-2 text-[15px] lg:space-y-2.5 lg:text-sm">
               <li>
                 <RouterLink
                   :to="{ name: 'Home', hash: '#faq' }"
-                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                  class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
                 >
                   {{ $t('exhibition.footer.links.faq') }}
                 </RouterLink>
@@ -191,7 +192,7 @@
               <li>
                 <RouterLink
                   :to="{ name: 'Home', hash: '#register' }"
-                  class="text-gray-300 hover:text-primary-400 transition-colors"
+                  class="inline-block py-0.5 text-white/80 transition-colors hover:text-gold-300"
                 >
                   {{ $t('exhibition.footer.links.contactUs') }}
                 </RouterLink>
@@ -205,23 +206,23 @@
       <div
         class="mt-10 lg:mt-12 pt-8 border-t border-white/10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8"
       >
-        <p class="text-sm text-gray-400 order-3 lg:order-1 text-center lg:text-start">
+        <p class="order-3 text-center text-xs text-white/50 lg:order-1 lg:text-start lg:text-sm">
           {{ $t('exhibition.footer.copyright') }}
         </p>
         <nav
-          class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400 order-1 lg:order-2"
+          class="order-1 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/70 lg:order-2"
           aria-label="Legal"
         >
-          <RouterLink to="/privacy" class="hover:text-primary-400 transition-colors">{{
+          <RouterLink to="/privacy" class="transition-colors hover:text-gold-300">{{
             $t('exhibition.footer.privacy')
           }}</RouterLink>
-          <RouterLink to="/terms" class="hover:text-primary-400 transition-colors">{{
+          <RouterLink to="/terms" class="transition-colors hover:text-gold-300">{{
             $t('exhibition.footer.terms')
           }}</RouterLink>
-          <RouterLink to="/cookies" class="hover:text-primary-400 transition-colors">{{
+          <RouterLink to="/cookies" class="transition-colors hover:text-gold-300">{{
             $t('legal.navCookies')
           }}</RouterLink>
-          <RouterLink to="/legal" class="hover:text-primary-400 transition-colors">{{
+          <RouterLink to="/legal" class="transition-colors hover:text-gold-300">{{
             $t('exhibition.footer.legal')
           }}</RouterLink>
         </nav>
