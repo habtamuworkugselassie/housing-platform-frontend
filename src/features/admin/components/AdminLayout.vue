@@ -149,6 +149,7 @@ import { useAuthStore } from '@/features/auth'
 import { useAdmin } from '../composables/useAdmin'
 import { useAdminTheme } from '../composables/useAdminTheme'
 import UserDropdown from '@/shared/components/UserDropdown.vue'
+import { enquiryApi } from '@/features/enquiry/api/enquiry.api'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -160,6 +161,14 @@ const { theme, isDark, toggleTheme } = useAdminTheme()
 const sidebarOpen = ref(false)
 const { stats, loadStats } = useAdmin()
 const pendingApprovals = computed(() => stats.value?.pendingApprovals ?? 0)
+const newEnquiries = ref(0)
+onMounted(async () => {
+  try {
+    newEnquiries.value = await enquiryApi.adminCountNew()
+  } catch {
+    newEnquiries.value = 0
+  }
+})
 
 const isActive = (path) => {
   const current = stripLocale(route.path)
@@ -192,6 +201,13 @@ const navigation = computed(() => [
     iconPath:
       'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
     badge: null
+  },
+  {
+    name: t('admin.nav.enquiries'),
+    path: '/admin/enquiries',
+    iconPath:
+      'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    badge: newEnquiries.value > 0 ? newEnquiries.value : null
   },
   {
     name: 'Properties',

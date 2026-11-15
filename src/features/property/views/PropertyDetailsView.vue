@@ -323,6 +323,21 @@
               </a>
             </div>
 
+            <!-- Ask about this property (desktop; phones use the contact sheet) -->
+            <div id="enquire" class="hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm lg:block">
+              <p class="text-xs font-semibold uppercase tracking-wide text-primary-600">{{ $t('enquiry.eyebrow') }}</p>
+              <h2 class="mt-1 text-lg font-bold text-gray-900">{{ $t('enquiry.propertyTitle') }}</h2>
+              <p class="mt-1 text-sm text-gray-500">{{ $t('enquiry.propertySubtitle') }}</p>
+              <div class="mt-4">
+                <ListingEnquiryForm
+                  :property-id="property.id"
+                  :subject-title="property.title"
+                  :company-name="company?.name || property.realEstateCompanyName || ''"
+                  source="property-sidebar"
+                />
+              </div>
+            </div>
+
             <!-- Listed by -->
             <div v-if="company || property.realEstateCompanyName" class="rounded-2xl border border-gray-200 bg-white p-6">
               <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-primary-600">{{ $t('property.realEstateCompany') }}</p>
@@ -381,7 +396,7 @@
       class="fixed inset-0 bg-violet-950/70 flex items-center justify-center z-50 p-4"
       @click.self="showContactModal = false"
     >
-      <div class="bg-white border border-gray-200 rounded-2xl max-w-md w-full p-6 sm:p-8">
+      <div class="bg-white border border-gray-200 rounded-2xl max-w-md w-full max-h-[min(94dvh,920px)] overflow-y-auto overscroll-y-contain p-6 sm:p-8">
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-gray-900">{{ $t('property.contactInformation') }}</h3>
           <button
@@ -392,6 +407,19 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
+        </div>
+
+        <div class="mb-6 rounded-2xl bg-primary-50/70 p-4 sm:p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-primary-600">{{ $t('enquiry.eyebrow') }}</p>
+          <p class="mt-1 text-sm text-gray-600">{{ $t('enquiry.propertySubtitle') }}</p>
+          <div class="mt-3">
+            <ListingEnquiryForm
+              :property-id="property.id"
+              :subject-title="property.title"
+              :company-name="company?.name || property.realEstateCompanyName || ''"
+              source="property-modal"
+            />
+          </div>
         </div>
 
         <div v-if="company">
@@ -625,6 +653,7 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api, { mediaUrl } from '@/shared/api/client'
+import ListingEnquiryForm from '@/features/enquiry/components/ListingEnquiryForm.vue'
 import {
   getPublicSiteUrl,
   truncateMetaDescription,
