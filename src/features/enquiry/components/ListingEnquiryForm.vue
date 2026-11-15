@@ -126,7 +126,7 @@ const props = defineProps({
 
 const emit = defineEmits(['sent'])
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const authStore = useAuthStore()
 
 let counter = 0
@@ -198,6 +198,7 @@ async function submit() {
       phoneNumber: phone,
       message: form.message.trim(),
       pageUrl: typeof window !== 'undefined' ? window.location.href.slice(0, 1000) : undefined,
+      locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en',
       website: form.website || undefined
     }
     const result = await enquiryApi.submit(body)

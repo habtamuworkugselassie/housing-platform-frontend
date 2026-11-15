@@ -1036,7 +1036,8 @@
       "markContacted": "ተገናኝቷል ብለው ምልክት ያድርጉ",
       "close": "ዝጋ",
       "reopen": "እንደገና ክፈት",
-      "pageOf": "ገጽ {page} ከ {total}"
+      "pageOf": "ገጽ {page} ከ {total}",
+      "amharicVisitor": "ከአማርኛ ድረ-ገጹ የተላከ፤ ደረሰኙ በአማርኛ ተልኳል።"
     }
   },
   "validation": {

@@ -650,7 +650,8 @@ async function submitRegisterModal() {
       organizationType: registerForm.value.organizationType,
       interestType: it,
       company: registerForm.value.company || undefined,
-      message: registerForm.value.message || undefined
+      message: registerForm.value.message || undefined,
+      locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
     }
     if ((it === 'exhibitor' || it === 'partner') && registerForm.value.sponsorshipId) {
       payload.sponsorshipId = registerForm.value.sponsorshipId

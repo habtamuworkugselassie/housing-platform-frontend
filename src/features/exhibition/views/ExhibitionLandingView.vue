@@ -507,7 +507,8 @@ async function submitInterest() {
       organizationType: interestForm.value.organizationType,
       interestType: it,
       company: interestForm.value.company || undefined,
-      message: interestForm.value.message || undefined
+      message: interestForm.value.message || undefined,
+      locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
     }
     if ((it === 'exhibitor' || it === 'partner') && interestForm.value.sponsorshipId) {
       payload.sponsorshipId = interestForm.value.sponsorshipId

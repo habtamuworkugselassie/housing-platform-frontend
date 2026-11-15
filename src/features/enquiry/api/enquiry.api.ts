@@ -12,6 +12,8 @@ export interface ListingEnquiryRequest {
   phoneNumber?: string
   message: string
   pageUrl?: string
+  /** Visitor's language, en or am; the receipt is sent in it. */
+  locale?: 'en' | 'am'
   /** Honeypot; must stay empty. */
   website?: string
 }
@@ -31,6 +33,7 @@ export interface ListingEnquiry {
   message: string
   status: ListingEnquiryStatus
   pageUrl: string | null
+  locale: string | null
   createdAt: string
   updatedAt: string
 }
