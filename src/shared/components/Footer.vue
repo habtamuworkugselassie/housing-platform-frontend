@@ -32,6 +32,12 @@
                 </a>
               </span>
             </div>
+            <div class="mt-3 flex items-start gap-3">
+              <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-400/15 text-gold-300">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              </span>
+              <a :href="`mailto:${email}`" class="break-all font-semibold text-white transition-colors hover:text-gold-300">{{ email }}</a>
+            </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-2.5">
@@ -252,6 +258,7 @@ const FALLBACK = {
     { display: '+251 913 504 097', tel: '251913504097' },
     { display: '+251 920 783 807', tel: '251920783807' }
   ],
+  email: 'ethiobuildconnectexpo@gmail.com',
   websiteLabel: 'ethiobuildconnect.et',
   websiteUrl: 'https://ethiobuildconnect.et/'
 }
@@ -273,6 +280,9 @@ const phones = computed(() => {
   }
   return FALLBACK.phones
 })
+const email = computed(
+  () => settings.footer?.email || import.meta.env.VITE_SUPPORT_EMAIL || FALLBACK.email
+)
 const website = computed(() => settings.footer?.websiteLabel || FALLBACK.websiteLabel)
 const websiteUrl = computed(() => settings.footer?.websiteUrl || FALLBACK.websiteUrl)
 const socialLinks = [
