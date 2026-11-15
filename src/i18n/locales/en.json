@@ -383,7 +383,7 @@
     "unitsWithCount": "Units ({count})",
     "phoneLabel": "Phone",
     "websiteLabel": "Website",
-    "locationMap" : "Location Map"
+    "locationMap": "Location Map"
   },
   "loan": {
     "title": "Loan",
@@ -621,7 +621,8 @@
       "exhibitionInterests": "Exhibition leads",
       "videoFeedback": "Video feedback",
       "purchaseOrders": "Purchase orders",
-      "liveBroadcasts": "Live broadcasts"
+      "liveBroadcasts": "Live broadcasts",
+      "enquiries": "Enquiries"
     },
     "simulcast": {
       "destinations": "Social destinations",
@@ -648,7 +649,10 @@
       "saveError": "Could not save the destination."
     },
     "purchaseOrders": {
-      "onlineLimits": {"title": "Maximum per online payment", "help": "The most Chapa accepts in one payment (ETB 75,000 on the test account). Deposits are capped at it; buyers pay larger amounts in parts or by transfer. Empty or 0 removes the limit."},
+      "onlineLimits": {
+        "title": "Maximum per online payment",
+        "help": "The most Chapa accepts in one payment (ETB 75,000 on the test account). Deposits are capped at it; buyers pay larger amounts in parts or by transfer. Empty or 0 removes the limit."
+      },
       "fees": {
         "title": "Service fee (markup) and VAT",
         "help": "Charged to buyers on top of the price and paid once the seller accepts. VAT is charged on the price plus the fee. New orders use these rates; placed orders keep theirs.",
@@ -1034,6 +1038,28 @@
       "saved": "Saved.",
       "loadError": "Could not load display settings.",
       "saveError": "Could not save display settings."
+    },
+    "enquiries": {
+      "title": "Listing enquiries",
+      "subtitle": "Messages sent from property and company pages. Each one was emailed to the company's contact address and to the team inbox; use this list to make sure every lead gets an answer.",
+      "filterAll": "All",
+      "statusNew": "New",
+      "statusContacted": "Contacted",
+      "statusClosed": "Closed",
+      "empty": "No enquiries yet.",
+      "loadError": "Could not load enquiries.",
+      "colDate": "Received",
+      "colFrom": "From",
+      "colAbout": "About",
+      "colMessage": "Message",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "subjectProperty": "Property",
+      "subjectOrganization": "Company",
+      "markContacted": "Mark contacted",
+      "close": "Close",
+      "reopen": "Reopen",
+      "pageOf": "Page {page} of {total}"
     }
   },
   "validation": {
@@ -1732,33 +1758,33 @@
     }
   },
   "cookieConsent": {
-      "title": "Cookies on this site",
-      "message": "We use Google Analytics to count visits and see which pages get read. It sets cookies. Nothing else on this site does, and we never use it for advertising. You can change your mind at any time on our",
-      "accept": "Accept",
-      "reject": "Reject",
-      "manageTitle": "Your choice",
-      "manageGranted": "Analytics cookies are enabled. You accepted on {date}.",
-      "manageDenied": "Analytics cookies are disabled. You declined on {date}.",
-      "manageUnset": "You have not chosen yet, so analytics is off and no analytics cookies are set."
-    },
+    "title": "Cookies on this site",
+    "message": "We use Google Analytics to count visits and see which pages get read. It sets cookies. Nothing else on this site does, and we never use it for advertising. You can change your mind at any time on our",
+    "accept": "Accept",
+    "reject": "Reject",
+    "manageTitle": "Your choice",
+    "manageGranted": "Analytics cookies are enabled. You accepted on {date}.",
+    "manageDenied": "Analytics cookies are disabled. You declined on {date}.",
+    "manageUnset": "You have not chosen yet, so analytics is off and no analytics cookies are set."
+  },
   "seasonal": {
-      "enkutatash": {
-        "title": "ዕንቍጣጣሽ",
-        "subtitle": "Melkam Addis Amet — Happy Ethiopian New Year 2019"
-      },
-      "demera": {
-        "title": "መልካም የደመራ በዓል",
-        "subtitle": "Happy Demera — may the bonfire light the year ahead"
-      },
-      "meskel": {
-        "title": "መልካም የመስቀል በዓል",
-        "subtitle": "Wishing you a joyful Meskel from Ethio Build Connect"
-      },
-      "gregorian": {
-        "title": "Happy New Year 2027",
-        "subtitle": "Wishing you a prosperous year of building, from Ethio Build Connect"
-      }
+    "enkutatash": {
+      "title": "ዕንቍጣጣሽ",
+      "subtitle": "Melkam Addis Amet — Happy Ethiopian New Year 2019"
     },
+    "demera": {
+      "title": "መልካም የደመራ በዓል",
+      "subtitle": "Happy Demera — may the bonfire light the year ahead"
+    },
+    "meskel": {
+      "title": "መልካም የመስቀል በዓል",
+      "subtitle": "Wishing you a joyful Meskel from Ethio Build Connect"
+    },
+    "gregorian": {
+      "title": "Happy New Year 2027",
+      "subtitle": "Wishing you a prosperous year of building, from Ethio Build Connect"
+    }
+  },
   "legal": {
     "badge": "Legal",
     "navPrivacy": "Privacy policy",
@@ -1869,141 +1895,141 @@
       ]
     },
     "cookies": {
-        "title": "Cookie policy",
-        "lastUpdated": "Last updated: September 10, 2026",
-        "intro": "This policy explains the cookies and similar technologies used on the Ethio Build Connect website, what each one is for, and how to turn them off. It sits alongside our privacy policy, which covers personal information more broadly.",
-        "sections": [
-          {
-            "heading": "Cookies we set ourselves: none",
-            "body": "Ethio Build Connect's own code does not set any cookies, and nothing is set before you choose. Signing in does not use a session cookie — our servers hold no session for you, and every request is authenticated with a token your browser sends. What the site does use is browser storage: small values saved by your own browser, on your own device, which are not attached to requests and are not transmitted to us. They are listed below. Cookies are set on this site, but by Google Analytics rather than by us, and only if you accept them when asked; those are listed further down."
-          },
-          {
-            "heading": "Browser storage this site uses",
-            "body": "Local storage stays until you clear it or sign out. Session storage is discarded as soon as you close the tab. None of it is sent to our servers.",
-            "columns": [
-              "Name",
-              "What it is for",
-              "Type",
-              "Cleared"
+      "title": "Cookie policy",
+      "lastUpdated": "Last updated: September 10, 2026",
+      "intro": "This policy explains the cookies and similar technologies used on the Ethio Build Connect website, what each one is for, and how to turn them off. It sits alongside our privacy policy, which covers personal information more broadly.",
+      "sections": [
+        {
+          "heading": "Cookies we set ourselves: none",
+          "body": "Ethio Build Connect's own code does not set any cookies, and nothing is set before you choose. Signing in does not use a session cookie — our servers hold no session for you, and every request is authenticated with a token your browser sends. What the site does use is browser storage: small values saved by your own browser, on your own device, which are not attached to requests and are not transmitted to us. They are listed below. Cookies are set on this site, but by Google Analytics rather than by us, and only if you accept them when asked; those are listed further down."
+        },
+        {
+          "heading": "Browser storage this site uses",
+          "body": "Local storage stays until you clear it or sign out. Session storage is discarded as soon as you close the tab. None of it is sent to our servers.",
+          "columns": [
+            "Name",
+            "What it is for",
+            "Type",
+            "Cleared"
+          ],
+          "rows": [
+            [
+              "cookieConsent",
+              "Whether you accepted or declined analytics, and the date you chose. This is what stops the site asking again on every page, and it is kept whichever way you answered.",
+              "Local storage",
+              "When you clear site data"
             ],
-            "rows": [
-              [
-                "cookieConsent",
-                "Whether you accepted or declined analytics, and the date you chose. This is what stops the site asking again on every page, and it is kept whichever way you answered.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "accessToken, refreshToken",
-                "Keeps you signed in between page loads so you are not asked for your password on every visit.",
-                "Local storage",
-                "When you sign out, or when you clear site data"
-              ],
-              [
-                "user",
-                "Your own name, role and profile details, so the interface can show them without fetching them again.",
-                "Local storage",
-                "When you sign out, or when you clear site data"
-              ],
-              [
-                "locale",
-                "Remembers whether you chose English or Amharic.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "housing_platform_favorites",
-                "Properties you saved before signing in, so they are still there when you come back.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "live_guest_name",
-                "The display name you entered to join a live broadcast, so you do not retype it.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "housing.supportChat.hintSeen",
-                "Records that you have already seen the support-chat prompt, so it appears once rather than every visit.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "housing.supportChat.panelSize",
-                "The size you dragged the support-chat panel to.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "admin-theme",
-                "Light or dark appearance of the administration screens. Only set for staff accounts that use them.",
-                "Local storage",
-                "When you clear site data"
-              ],
-              [
-                "splashShown",
-                "Records that the opening screen has played, so it does not replay on every page you open.",
-                "Session storage",
-                "When you close the tab"
-              ],
-              [
-                "chunk-reload:<page>",
-                "A one-time marker used to refresh the page once after we publish a new version of the site, so you are not left on a broken half-updated page.",
-                "Session storage",
-                "When you close the tab"
-              ]
-            ]
-          },
-          {
-            "heading": "Cookies set by others",
-            "body": "These are set by third parties whose code runs on our pages. We do not control their contents, and their own policies apply to them.",
-            "columns": [
-              "Who",
-              "What it does",
-              "Cookies",
-              "Where it appears"
+            [
+              "accessToken, refreshToken",
+              "Keeps you signed in between page loads so you are not asked for your password on every visit.",
+              "Local storage",
+              "When you sign out, or when you clear site data"
             ],
-            "rows": [
-              [
-                "Google Analytics 4 (Google)",
-                "Counts visits and which pages are read, so we can see what is useful. It loads only after you accept; decline and the script is never fetched at all. It reports on visits in aggregate; we do not use it to identify you individually, and we do not use it for advertising.",
-                "_ga and _ga_<property id>, stored under ethiobuildconnect.et, typically for up to two years",
-                "Every page of the website, once accepted"
-              ],
-              [
-                "YouTube (Google) and Facebook (Meta)",
-                "Plays an embedded live broadcast when one is running. Loading the player lets the provider set its own cookies, whether or not you press play.",
-                "Set by youtube.com and facebook.com under their own domains; see their policies",
-                "Only pages showing an embedded live stream"
-              ],
-              [
-                "TikTok (ByteDance)",
-                "Plays our own TikTok posts in the page. It loads only if you accepted cookies or pressed the button in that section; until then nothing is requested from TikTok and you see a placeholder with a link to the profile instead.",
-                "Set by tiktok.com under its own domains; see TikTok's policy",
-                "Only the section of the home page showing our TikTok posts"
-              ]
+            [
+              "user",
+              "Your own name, role and profile details, so the interface can show them without fetching them again.",
+              "Local storage",
+              "When you sign out, or when you clear site data"
+            ],
+            [
+              "locale",
+              "Remembers whether you chose English or Amharic.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "housing_platform_favorites",
+              "Properties you saved before signing in, so they are still there when you come back.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "live_guest_name",
+              "The display name you entered to join a live broadcast, so you do not retype it.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "housing.supportChat.hintSeen",
+              "Records that you have already seen the support-chat prompt, so it appears once rather than every visit.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "housing.supportChat.panelSize",
+              "The size you dragged the support-chat panel to.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "admin-theme",
+              "Light or dark appearance of the administration screens. Only set for staff accounts that use them.",
+              "Local storage",
+              "When you clear site data"
+            ],
+            [
+              "splashShown",
+              "Records that the opening screen has played, so it does not replay on every page you open.",
+              "Session storage",
+              "When you close the tab"
+            ],
+            [
+              "chunk-reload:<page>",
+              "A one-time marker used to refresh the page once after we publish a new version of the site, so you are not left on a broken half-updated page.",
+              "Session storage",
+              "When you close the tab"
             ]
-          },
-          {
-            "heading": "Services we call that do not set cookies",
-            "body": "Some parts of the site load files from other services. These do not store anything on your device, but the request itself tells that service your IP address and which page asked for it: Google Fonts (fonts.googleapis.com and fonts.gstatic.com) for typefaces; OpenStreetMap for map tiles and for turning an address into map coordinates; unpkg.com for map marker images; api.qrserver.com for the QR code shown in the footer; and images.unsplash.com for some illustrative photographs."
-          },
-          {
-            "heading": "How to refuse or remove any of this",
-            "body": "The quickest route is this page: the Your choice section below records your answer and switches analytics on or off immediately, and declining also deletes any analytics cookies already on your device. The same choice is offered by the banner on your first visit. Beyond that, every browser lets you block or delete cookies and site data, usually under Settings, then Privacy. Clearing site data for ethiobuildconnect.et removes everything in the table above: you will be signed out, your language choice will reset to English, and any properties you saved without an account will be lost. Signing out clears the sign-in values on its own. Browsing in a private or incognito window keeps nothing after you close it. To opt out of Google Analytics across all sites, Google publishes a browser add-on at tools.google.com/dlpage/gaoptout. Blocking third-party cookies in your browser stops the embedded video players from setting theirs. Note that if you block storage entirely you can still read the site, but you will not be able to stay signed in."
-          },
-          {
-            "heading": "Do Not Track and Global Privacy Control",
-            "body": "Analytics is off until you accept, so nothing is measured before you answer. Beyond that, the website does not currently change its behaviour in response to Do Not Track or Global Privacy Control browser signals; the controls described above remain available to you, and we will update this section if that changes."
-          },
-          {
-            "heading": "Changes to this policy",
-            "body": "We will post any updated version on this page and revise the date at the top. Where the change is significant, we will say what changed."
-          }
-        ],
-        "contactLabel": "Questions about cookies:"
-      }
+          ]
+        },
+        {
+          "heading": "Cookies set by others",
+          "body": "These are set by third parties whose code runs on our pages. We do not control their contents, and their own policies apply to them.",
+          "columns": [
+            "Who",
+            "What it does",
+            "Cookies",
+            "Where it appears"
+          ],
+          "rows": [
+            [
+              "Google Analytics 4 (Google)",
+              "Counts visits and which pages are read, so we can see what is useful. It loads only after you accept; decline and the script is never fetched at all. It reports on visits in aggregate; we do not use it to identify you individually, and we do not use it for advertising.",
+              "_ga and _ga_<property id>, stored under ethiobuildconnect.et, typically for up to two years",
+              "Every page of the website, once accepted"
+            ],
+            [
+              "YouTube (Google) and Facebook (Meta)",
+              "Plays an embedded live broadcast when one is running. Loading the player lets the provider set its own cookies, whether or not you press play.",
+              "Set by youtube.com and facebook.com under their own domains; see their policies",
+              "Only pages showing an embedded live stream"
+            ],
+            [
+              "TikTok (ByteDance)",
+              "Plays our own TikTok posts in the page. It loads only if you accepted cookies or pressed the button in that section; until then nothing is requested from TikTok and you see a placeholder with a link to the profile instead.",
+              "Set by tiktok.com under its own domains; see TikTok's policy",
+              "Only the section of the home page showing our TikTok posts"
+            ]
+          ]
+        },
+        {
+          "heading": "Services we call that do not set cookies",
+          "body": "Some parts of the site load files from other services. These do not store anything on your device, but the request itself tells that service your IP address and which page asked for it: Google Fonts (fonts.googleapis.com and fonts.gstatic.com) for typefaces; OpenStreetMap for map tiles and for turning an address into map coordinates; unpkg.com for map marker images; api.qrserver.com for the QR code shown in the footer; and images.unsplash.com for some illustrative photographs."
+        },
+        {
+          "heading": "How to refuse or remove any of this",
+          "body": "The quickest route is this page: the Your choice section below records your answer and switches analytics on or off immediately, and declining also deletes any analytics cookies already on your device. The same choice is offered by the banner on your first visit. Beyond that, every browser lets you block or delete cookies and site data, usually under Settings, then Privacy. Clearing site data for ethiobuildconnect.et removes everything in the table above: you will be signed out, your language choice will reset to English, and any properties you saved without an account will be lost. Signing out clears the sign-in values on its own. Browsing in a private or incognito window keeps nothing after you close it. To opt out of Google Analytics across all sites, Google publishes a browser add-on at tools.google.com/dlpage/gaoptout. Blocking third-party cookies in your browser stops the embedded video players from setting theirs. Note that if you block storage entirely you can still read the site, but you will not be able to stay signed in."
+        },
+        {
+          "heading": "Do Not Track and Global Privacy Control",
+          "body": "Analytics is off until you accept, so nothing is measured before you answer. Beyond that, the website does not currently change its behaviour in response to Do Not Track or Global Privacy Control browser signals; the controls described above remain available to you, and we will update this section if that changes."
+        },
+        {
+          "heading": "Changes to this policy",
+          "body": "We will post any updated version on this page and revise the date at the top. Where the change is significant, we will say what changed."
+        }
+      ],
+      "contactLabel": "Questions about cookies:"
+    }
   },
   "pageNotFound": {
     "badge": "Page not found",
@@ -2540,6 +2566,38 @@
       "orderNotFound": "Purchase order not found.",
       "loadFailed": "Could not load the purchase order.",
       "actionFailed": "The action could not be completed."
+    }
+  },
+  "enquiry": {
+    "eyebrow": "Enquire",
+    "propertyTitle": "Ask about this property",
+    "propertySubtitle": "Send a message to the lister. They reply to your email directly, and you get a copy.",
+    "organizationTitle": "Contact this company",
+    "organizationSubtitle": "Send {company} a message about their listings or services. No account needed.",
+    "name": "Your name",
+    "namePlaceholder": "Full name",
+    "email": "Email",
+    "emailPlaceholder": "you{'@'}example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "9 12 34 56 78",
+    "optional": "optional",
+    "message": "Message",
+    "messagePlaceholderProperty": "Hello, I am interested in {title}. Is it still available? When can I visit?",
+    "messagePlaceholderOrganization": "Hello {company}, I would like to know more about...",
+    "thisProperty": "this property",
+    "theLister": "the lister",
+    "send": "Send enquiry",
+    "sending": "Sending...",
+    "privacy": "We share your details only with the company you are contacting.",
+    "sentTitle": "Enquiry sent",
+    "sentBody": "{company} has your message and will reply to your email. A copy is on its way to your inbox.",
+    "sendAnother": "Send another message",
+    "errors": {
+      "name": "Please enter your name",
+      "email": "Please enter a valid email address",
+      "message": "Please write a message of at least 10 characters",
+      "tooMany": "Too many messages in a short time. Please try again in a minute.",
+      "generic": "Could not send your enquiry. Please try again or call the number shown."
     }
   }
 }

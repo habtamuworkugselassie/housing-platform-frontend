@@ -383,6 +383,20 @@
             </div>
           </div>
 
+          <div id="enquire" class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <p class="text-xs font-semibold uppercase tracking-wide text-primary-600">{{ $t('enquiry.eyebrow') }}</p>
+            <h2 class="mt-1 text-xl font-extrabold tracking-tight text-gray-900">{{ $t('enquiry.organizationTitle') }}</h2>
+            <p class="mt-1 text-sm text-gray-500">{{ $t('enquiry.organizationSubtitle', { company: organization.name }) }}</p>
+            <div class="mt-4">
+              <ListingEnquiryForm
+                :organization-id="organization.id"
+                :subject-title="organization.name"
+                :company-name="organization.name"
+                source="organization-page"
+              />
+            </div>
+          </div>
+
           <div
             v-if="showSponsorshipApplicationsSection"
             class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6"
@@ -616,6 +630,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/features/auth'
 import api, { mediaUrl } from '@/shared/api/client'
+import ListingEnquiryForm from '@/features/enquiry/components/ListingEnquiryForm.vue'
 import {
   truncateMetaDescription,
   getPublicSiteUrl,
