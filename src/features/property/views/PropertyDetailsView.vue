@@ -393,15 +393,17 @@
     <!-- Contact Modal -->
     <div
       v-if="showContactModal"
-      class="fixed inset-0 bg-violet-950/70 flex items-center justify-center z-50 p-4"
+      class="fixed inset-0 z-[100] flex items-end justify-center bg-violet-950/75 backdrop-blur-md sm:items-center sm:p-4"
       @click.self="showContactModal = false"
     >
-      <div class="bg-white border border-gray-200 rounded-2xl max-w-md w-full max-h-[min(94dvh,920px)] overflow-y-auto overscroll-y-contain p-6 sm:p-8">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-2xl font-bold text-gray-900">{{ $t('property.contactInformation') }}</h3>
+      <div class="relative flex max-h-[min(94dvh,920px)] min-h-0 w-full max-w-md flex-col overflow-hidden rounded-t-3xl border border-gray-200 bg-white sm:rounded-3xl">
+        <div class="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 py-4 sm:px-8">
+          <h3 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $t('property.contactInformation') }}</h3>
           <button
+            type="button"
+            :aria-label="$t('common.close')"
             @click="showContactModal = false"
-            class="text-gray-500 hover:text-primary-400 transition-colors"
+            class="-me-2 inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-primary-600"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -409,6 +411,7 @@
           </button>
         </div>
 
+        <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5 sm:px-8">
         <div class="mb-6 rounded-2xl bg-primary-50/70 p-4 sm:p-5">
           <p class="text-xs font-semibold uppercase tracking-wide text-primary-600">{{ $t('enquiry.eyebrow') }}</p>
           <p class="mt-1 text-sm text-gray-600">{{ $t('enquiry.propertySubtitle') }}</p>
@@ -520,6 +523,7 @@
 
         <div v-else class="text-center py-8">
           <p class="text-gray-600">{{ $t('property.contactInformationNotAvailable') }}</p>
+        </div>
         </div>
       </div>
     </div>
