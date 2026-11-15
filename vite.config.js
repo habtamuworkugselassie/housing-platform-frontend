@@ -4,6 +4,11 @@ import path from 'path'
 import prerenderMarketingPages from './vite/prerender.js'
 
 export default defineConfig({
+  define: {
+    // vue-i18n compiles messages with new Function() unless JIT mode is on; JIT keeps the
+    // runtime free of eval so the Content-Security-Policy can forbid it.
+    __INTLIFY_JIT_COMPILATION__: true,
+  },
   plugins: [vue(), prerenderMarketingPages()],
   optimizeDeps: {
     // Avoid pre-bundle stripping named re-exports (e.g. createHead) from @unhead/vue on Vite 6
