@@ -160,10 +160,10 @@
         :aria-labelledby="detailsTitleId"
         @click.self="closeDetailsModal"
       >
-        <div class="relative w-full max-w-lg sm:max-w-2xl max-h-[min(92vh,900px)] flex flex-col sm:mx-4">
-          <div class="relative w-full rounded-t-3xl sm:rounded-3xl shadow-2xl">
+        <div class="relative w-full max-w-lg sm:max-w-2xl max-h-[min(92dvh,900px)] min-h-0 flex flex-col sm:mx-4">
+          <div class="relative flex min-h-0 w-full flex-col rounded-t-3xl sm:rounded-3xl shadow-2xl">
             <div
-              class="relative flex max-h-[min(92vh,900px)] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
+              class="relative flex max-h-[min(92dvh,900px)] min-h-0 flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
@@ -200,7 +200,7 @@
                   <XMarkIcon class="h-6 w-6" />
                 </button>
               </div>
-              <div class="flex-1 overflow-y-auto space-y-6 px-5 pt-5 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
+              <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain space-y-6 px-5 pt-5 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
                 <p v-if="detailsModalPackage.description" class="text-sm text-gray-600 leading-relaxed">
                   {{ detailsModalPackage.description }}
                 </p>
@@ -276,10 +276,10 @@
         :aria-labelledby="registerTitleId"
         @click.self="closeRegisterModal"
       >
-        <div class="relative w-full max-w-lg max-h-[min(94vh,920px)] flex flex-col sm:mx-4">
-          <div class="relative w-full rounded-t-3xl sm:rounded-3xl shadow-2xl">
+        <div class="relative w-full max-w-lg max-h-[min(94dvh,920px)] min-h-0 flex flex-col sm:mx-4">
+          <div class="relative flex min-h-0 w-full flex-col rounded-t-3xl sm:rounded-3xl shadow-2xl">
             <div
-              class="relative z-[1] flex max-h-[min(94vh,920px)] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
+              class="relative z-[1] flex max-h-[min(94dvh,920px)] min-h-0 flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-gray-200 bg-white"
             >
               <div
                 class="h-1.5 w-full shrink-0 sm:rounded-t-[13px]"
@@ -298,7 +298,7 @@
                   <h3 :id="registerTitleId" class="text-xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
                     {{ $t('exhibition.sponsorshipPackages.registerModalTitle') }}
                   </h3>
-                  <p class="mt-1.5 text-sm text-gray-600 leading-relaxed">
+                  <p class="mt-1.5 hidden text-sm text-gray-600 leading-relaxed sm:block">
                     {{ $t('exhibition.sponsorshipPackages.registerModalSubtitle') }}
                   </p>
                   <p
@@ -321,7 +321,7 @@
                 </button>
               </div>
 
-              <div class="flex-1 overflow-y-auto px-5 py-5 sm:px-6">
+              <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
                 <div
                   v-if="registerSubmitted"
                   class="rounded-xl border border-green-200 bg-green-50 p-8 text-center"
