@@ -49,28 +49,27 @@
             </a>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <a
-              :href="downloadHref"
-              class="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-bold text-primary-950 shadow-[0_10px_24px_-12px_rgba(244,201,119,0.9)] transition-all hover:-translate-y-0.5 hover:bg-gold-300"
+          <a
+            :href="downloadHref"
+            class="inline-flex w-fit items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-bold text-primary-950 shadow-[0_10px_24px_-12px_rgba(244,201,119,0.9)] transition-all hover:-translate-y-0.5 hover:bg-gold-300"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" /></svg>
+            {{ $t('nav.getApp') }}
+          </a>
+          <!-- Account: its own row, the two pills side by side. -->
+          <div v-if="!isAuthenticated" class="flex items-center gap-3">
+            <RouterLink
+              to="/login"
+              class="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:border-gold-400/60 hover:text-gold-300"
             >
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M11 18h2" /></svg>
-              {{ $t('nav.getApp') }}
-            </a>
-            <template v-if="!isAuthenticated">
-              <RouterLink
-                to="/login"
-                class="inline-flex items-center justify-center rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-gold-400/60 hover:text-gold-300"
-              >
-                {{ $t('nav.login') }}
-              </RouterLink>
-              <RouterLink
-                to="/register"
-                class="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-white/20"
-              >
-                {{ $t('nav.register') }}
-              </RouterLink>
-            </template>
+              {{ $t('nav.login') }}
+            </RouterLink>
+            <RouterLink
+              to="/register"
+              class="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-white/20"
+            >
+              {{ $t('nav.register') }}
+            </RouterLink>
           </div>
 
           <a
