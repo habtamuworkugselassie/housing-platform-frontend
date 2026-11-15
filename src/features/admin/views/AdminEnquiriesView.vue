@@ -61,6 +61,7 @@
                   <span class="inline-block rounded-full bg-admin-sunken/60 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-admin-muted">
                     {{ row.subjectType === 'PROPERTY' ? $t('admin.enquiries.subjectProperty') : $t('admin.enquiries.subjectOrganization') }}
                   </span>
+                  <span v-if="row.locale === 'am'" class="ms-1 inline-block rounded-full bg-gold-400/30 px-2 py-0.5 text-[11px] font-semibold text-admin-fg" :title="$t('admin.enquiries.amharicVisitor')">አማ</span>
                   <div class="mt-1">
                     <router-link
                       v-if="row.subjectType === 'PROPERTY' && row.propertyId"

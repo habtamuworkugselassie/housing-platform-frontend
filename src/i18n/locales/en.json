@@ -1059,7 +1059,8 @@
       "markContacted": "Mark contacted",
       "close": "Close",
       "reopen": "Reopen",
-      "pageOf": "Page {page} of {total}"
+      "pageOf": "Page {page} of {total}",
+      "amharicVisitor": "Submitted from the Amharic site; the receipt was sent in Amharic."
     }
   },
   "validation": {

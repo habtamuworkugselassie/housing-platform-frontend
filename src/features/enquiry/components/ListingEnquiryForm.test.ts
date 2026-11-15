@@ -67,7 +67,8 @@ describe('ListingEnquiryForm', () => {
         name: 'Abebe Kebede',
         email: 'abebe@example.com',
         phoneNumber: '+251911223344',
-        message: 'Is this still available? I can visit Saturday.'
+        message: 'Is this still available? I can visit Saturday.',
+        locale: 'en'
       })
     )
     expect(wrapper.find('[data-testid="enquiry-sent"]').exists()).toBe(true)

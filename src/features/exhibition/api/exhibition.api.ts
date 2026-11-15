@@ -54,6 +54,8 @@ export interface RegisterInterestRequest {
   sponsorshipId?: string
   company?: string
   message?: string
+  /** Registrant's language, en or am; the receipt is sent in it. */
+  locale?: 'en' | 'am'
 }
 
 /** All active sponsored organizations (for partners list and carousel). */

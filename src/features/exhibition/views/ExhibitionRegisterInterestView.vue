@@ -94,7 +94,7 @@ import ExhibitionInterestFormFields from '@/features/exhibition/components/Exhib
 import LocaleSwitcher from '@/shared/components/LocaleSwitcher.vue'
 import { DEFAULT_COUNTRY_CODE } from '@/shared/data/countryCodes'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const router = useRouter()
 
 // Register interest form (exhibition)
@@ -151,7 +151,8 @@ async function submitInterest() {
       organizationType: interestForm.value.organizationType,
       interestType: it,
       company: interestForm.value.company || undefined,
-      message: interestForm.value.message || undefined
+      message: interestForm.value.message || undefined,
+      locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
     }
     if ((it === 'exhibitor' || it === 'partner') && interestForm.value.sponsorshipId) {
       payload.sponsorshipId = interestForm.value.sponsorshipId
