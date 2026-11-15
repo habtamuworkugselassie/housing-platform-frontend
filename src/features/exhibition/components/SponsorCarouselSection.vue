@@ -37,7 +37,8 @@
                   :src="mediaUrl(slideEchoSrc(slide, index))"
                   alt=""
                   aria-hidden="true"
-                  loading="lazy"
+                  :loading="index === 0 ? 'eager' : 'lazy'"
+                  :fetchpriority="index === 0 ? 'high' : 'auto'"
                   class="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
                 />
                 <div class="absolute inset-0 bg-primary-950/55" aria-hidden="true" />
