@@ -192,7 +192,10 @@ async function sendCode() {
   if (loginErrors.value.phone) return
   busy.value = true
   try {
-    await authApi.requestOtpLogin(normalizePhone(login.phone)!)
+    await authApi.requestOtpLogin(
+      normalizePhone(login.phone)!,
+      String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
+    )
     codeSent.value = true
     attempted.value = false
   } catch (err) {

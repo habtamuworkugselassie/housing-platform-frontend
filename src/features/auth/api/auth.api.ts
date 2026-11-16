@@ -53,14 +53,15 @@ export const authApi = {
   },
 
   /**
-   * Send a WhatsApp sign-in code to a registered phone number.
+   * Send a sign-in code for a phone number. The backend texts it (Brevo SMS) and emails it to the
+   * address on the account, using whichever channels are configured.
    */
-  requestOtpLogin: async (phoneNumber: string): Promise<void> => {
-    await api.post('/auth/login/otp/send', { phoneNumber })
+  requestOtpLogin: async (phoneNumber: string, lang?: 'en' | 'am'): Promise<void> => {
+    await api.post('/auth/login/otp/send', lang ? { phoneNumber, lang } : { phoneNumber })
   },
 
   /**
-   * Exchange a WhatsApp sign-in code for tokens.
+   * Exchange a sign-in code for tokens.
    */
   confirmOtpLogin: async (phoneNumber: string, code: string): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/login/otp/confirm', { phoneNumber, code })
