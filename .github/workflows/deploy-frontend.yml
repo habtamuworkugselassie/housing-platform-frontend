@@ -104,11 +104,10 @@ jobs:
             docker pull "$REGISTRY_IMAGE:$SHA"
             docker tag "$REGISTRY_IMAGE:$SHA" "$DEPLOY_IMAGE:latest"
 
-            # frontend and the caddy edge in front of it. Through depends_on this also brings up
-            # backend/postgres/redis if they are not running, so the backend workflow must have
-            # deployed at least once first — otherwise this fails on its missing image, which is
-            # the right error to see.
-            $COMPOSE up -d frontend caddy
+            # frontend and the caddy edge in front of it. The API is not touched: nginx resolves
+            # `backend` per request, so whichever API slot (backend-blue / backend-green) the
+            # backend workflow left serving keeps serving.
+            $COMPOSE up -d --no-deps frontend caddy
 
             # Lightweight health gate. The frontend is a static nginx image with no migrations or
             # DB, so the failure mode is a corrupt/mis-tagged image that crash-loops rather than a
