@@ -1,0 +1,38 @@
+name: CI
+
+# Tests + production build on every pull request, and as the first job of every
+# deploy (deploy-frontend.yml calls this workflow).
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Same workaround as the Dockerfile: npm skips Rollup's Linux binary when the
+      # lockfile was written on macOS (https://github.com/npm/cli/issues/4828).
+      - name: Rollup native binary
+        run: npm install @rollup/rollup-linux-x64-gnu@4.59.0 --no-save
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

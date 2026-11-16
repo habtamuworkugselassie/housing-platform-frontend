@@ -101,7 +101,7 @@ describe('PurchaseAccountStep', () => {
     await wrapper.find('#login-phone').setValue('0911223344')
     await wrapper.find('form').trigger('submit')
     await flushPromises()
-    expect(authApi.requestOtpLogin).toHaveBeenCalledWith('+251911223344')
+    expect(authApi.requestOtpLogin).toHaveBeenCalledWith('+251911223344', 'en')
 
     await wrapper.find('#login-code').setValue('123456')
     await wrapper.find('form').trigger('submit')
