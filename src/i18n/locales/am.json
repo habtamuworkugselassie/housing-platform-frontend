@@ -102,7 +102,8 @@
       "error": "የሆነ ስህተት ተፈጥሯል። እንደገና ይሞክሩ ወይም በመነሻ ገጹ የግንኙነት ቅጽ ይጠቀሙ።",
       "typing": "በማሰብ ላይ…",
       "resizeHandle": "የውይይት ፓነል መጠን ለውጥ"
-    }
+    },
+    "currency": "ምንዛሪ"
   },
   "profile": {
     "deleteTitle": "መለያ ሰርዝ",
@@ -190,10 +191,19 @@
   "marketplace": {
     "organizationsByType": "በዚህ ምድብ ውስጥ የተጸድቁ ድርጅቶች",
     "noOrganizations": "በዚህ ምድብ ውስጥ ገና ድርጅቶች የሉም።",
-    "eyebrow": "ገበያ"
+    "eyebrow": "ገበያ",
+    "allSubcategories": "ሁሉም የቁሳቁስ አይነቶች",
+    "materialSpecialties": "የቁሳቁስ ልዩ ሙያዎች",
+    "materialSubcategory": "የቁሳቁስ አይነት"
   },
   "organization": {
-    "documentReviewSummaryTitle": "በማረጋገጫ ሰነዶችዎ ላይ የአስተዳዳር አስተያየት"
+    "documentReviewSummaryTitle": "በማረጋገጫ ሰነዶችዎ ላይ የአስተዳዳር አስተያየት",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "socialMedia": "ማህበራዊ ሚዲያ",
+    "twitter": "X / Twitter",
+    "youtube": "YouTube"
   },
   "auth": {
     "login": "ግባ",
@@ -322,7 +332,10 @@
     "baths": "መታጠቢያዎች",
     "agentLabel": "አገልጋይ",
     "unitsCount": "ክፍሎች",
-    "availableCount": "ይገኛል"
+    "availableCount": "ይገኛል",
+    "month": "ወር",
+    "noPropertiesFound": "ፍለጋዎን የሚያሟላ ንብረት አልተገኘም",
+    "completed": "ተጠናቋል"
   },
   "building": {
     "title": "ሕንፃ",
@@ -1038,7 +1051,21 @@
       "reopen": "እንደገና ክፈት",
       "pageOf": "ገጽ {page} ከ {total}",
       "amharicVisitor": "ከአማርኛ ድረ-ገጹ የተላከ፤ ደረሰኙ በአማርኛ ተልኳል።"
-    }
+    },
+    "addSubcategory": "ንዑስ ምድብ ያክሉ",
+    "manageMaterialSubcategories": "የቁሳቁስ ንዑስ ምድቦችን ያስተዳድሩ",
+    "materialSupplierSubcategories": "የቁሳቁስ አቅራቢ ምድቦች",
+    "materialSupplierSubcategoriesHint": "ይህ አቅራቢ የሚያቀርበውን ይምረጡ (ለምሳሌ ሲሚንቶ፣ ብረት፣ ቀለም)። በአቅራቢዎች ገበያ ገጽ ላይ ይታያል።",
+    "noSubcategoriesLoaded": "ንዑስ ምድቦችን መጫን አልተቻለም። ግንኙነትዎን ያረጋግጡ ወይም እንደገና ይሞክሩ።",
+    "saveMaterialSpecialties": "ልዩ ሙያዎችን ያስቀምጡ",
+    "subcategoryActive": "ንቁ",
+    "subcategoryCatalogHelp": "እነዚህ መለያዎች ለግንባታ ቁሳቁስ አቅራቢዎች ማጣሪያዎችንና መለያ ምልክቶችን ያገለግላሉ። ንቁ ያልሆኑ ንጥሎች ለድርጅቶች ሊመደቡ አይችሉም።",
+    "subcategoryCatalogTitle": "የቁሳቁስ አቅራቢ ንዑስ ምድቦች",
+    "subcategoryName": "ስም",
+    "subcategorySlug": "ኮድ",
+    "subcategorySlugOptional": "ኮድ (አማራጭ)",
+    "subcategorySort": "ቅደም ተከተል",
+    "viewMaterialSpecialties": "የቁሳቁስ ልዩ ሙያዎች"
   },
   "validation": {
     "required": "ይህ መስክ ያስፈልጋል",
@@ -1324,7 +1351,10 @@
     "common": {
       "viewAll": "ሁሉንም ይመልከቱ",
       "page": "ገጽ"
-    }
+    },
+    "selectType": "አይነት ይምረጡ",
+    "currency": "ምንዛሪ",
+    "phase": "ደረጃ"
   },
   "exhibition": {
     "tiktok": {
