@@ -93,6 +93,44 @@ export interface LiveBroadcastItem {
   status: 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'LIVE' | 'ENDED'
   hlsUrl?: string
   recordingUrl?: string
+  /** Only on the go-live response: the broadcaster's proof of ownership. Never shown to viewers. */
+  manageKey?: string
+}
+
+/**
+ * Broadcaster manage keys, by broadcast id. The backend returns the key once, in the response to
+ * the go-live request; visitor streams have no account, so every broadcaster action (publish, end,
+ * moderate co-hosts) sends it back as X-Broadcast-Key. Kept in sessionStorage so a reload of the
+ * go-live tab can still end its own stream.
+ */
+const MANAGE_KEY_STORAGE = 'ebc.liveManageKeys'
+const manageKeys = new Map<string, string>()
+
+function rememberManageKey(id: string, key: string) {
+  manageKeys.set(id, key)
+  try {
+    const stored = JSON.parse(sessionStorage.getItem(MANAGE_KEY_STORAGE) || '{}')
+    stored[id] = key
+    sessionStorage.setItem(MANAGE_KEY_STORAGE, JSON.stringify(stored))
+  } catch {
+    /* storage unavailable: the in-memory copy still covers this page */
+  }
+}
+
+function manageKeyFor(id: string): string | undefined {
+  const inMemory = manageKeys.get(id)
+  if (inMemory) return inMemory
+  try {
+    const stored = JSON.parse(sessionStorage.getItem(MANAGE_KEY_STORAGE) || '{}')
+    return typeof stored[id] === 'string' ? stored[id] : undefined
+  } catch {
+    return undefined
+  }
+}
+
+function broadcasterHeaders(id: string): Record<string, string> | undefined {
+  const key = manageKeyFor(id)
+  return key ? { 'X-Broadcast-Key': key } : undefined
 }
 
 /** A viewer's request to co-host (publish into) a live broadcast. */
@@ -128,6 +166,9 @@ export const exhibitionApi = {
   // --- Live broadcasting (gated go-live) ------------------------------------
   async requestGoLive(body: GoLiveRequest): Promise<LiveBroadcastItem> {
     const { data } = await api.post<LiveBroadcastItem>('/exhibition/live/request', body)
+    if (data?.id && data.manageKey) {
+      rememberManageKey(data.id, data.manageKey)
+    }
     return data
   },
   async getBroadcast(id: string): Promise<LiveBroadcastItem> {
@@ -135,7 +176,9 @@ export const exhibitionApi = {
     return data
   },
   async getPublishToken(id: string): Promise<LiveTokenResponse> {
-    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/publish-token`)
+    const { data } = await api.get<LiveTokenResponse>(`/exhibition/live/${id}/publish-token`, {
+      headers: broadcasterHeaders(id),
+    })
     return data
   },
   async getViewerToken(id: string, name?: string): Promise<LiveTokenResponse> {
@@ -160,6 +203,7 @@ export const exhibitionApi = {
    */
   async startRecording(id: string, audioTrackId?: string, videoTrackId?: string): Promise<void> {
     await api.post(`/exhibition/live/${id}/recording/start`, null, {
+      headers: broadcasterHeaders(id),
       params: {
         ...(audioTrackId ? { audioTrackId } : {}),
         ...(videoTrackId ? { videoTrackId } : {}),
@@ -171,15 +215,18 @@ export const exhibitionApi = {
    * room and marks it ENDED. Called when they hit "Stop broadcasting" or leave the page.
    */
   async endBroadcast(id: string): Promise<void> {
-    await api.post(`/exhibition/live/${id}/end`)
+    await api.post(`/exhibition/live/${id}/end`, null, { headers: broadcasterHeaders(id) })
   },
   /**
    * Reliable end-on-unload: a normal request is cancelled when the tab closes, so use
-   * sendBeacon (survives unload) with a POST the backend accepts unauthenticated for
-   * this broadcast id. Falls back to a keepalive fetch where Beacon is unavailable.
+   * sendBeacon (survives unload). Beacons cannot carry headers, so the manage key rides in the
+   * query string. Falls back to a keepalive fetch where Beacon is unavailable.
    */
   endBroadcastBeacon(id: string): void {
-    const url = `${api.defaults.baseURL || ''}/exhibition/live/${id}/end`
+    const key = manageKeyFor(id)
+    const url =
+      `${api.defaults.baseURL || ''}/exhibition/live/${id}/end` +
+      (key ? `?key=${encodeURIComponent(key)}` : '')
     try {
       if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([], { type: 'text/plain' }))) {
         return
@@ -211,18 +258,24 @@ export const exhibitionApi = {
   },
   /** Broadcaster: pending co-host requests to moderate. */
   async listCohostRequests(id: string): Promise<CohostRequestItem[]> {
-    const { data } = await api.get(`/exhibition/live/${id}/cohost/requests`)
+    const { data } = await api.get(`/exhibition/live/${id}/cohost/requests`, {
+      headers: broadcasterHeaders(id),
+    })
     return Array.isArray(data) ? data : []
   },
   async approveCohost(id: string, requestId: string): Promise<CohostRequestItem> {
     const { data } = await api.post<CohostRequestItem>(
       `/exhibition/live/${id}/cohost/${requestId}/approve`,
+      null,
+      { headers: broadcasterHeaders(id) },
     )
     return data
   },
   async denyCohost(id: string, requestId: string): Promise<CohostRequestItem> {
     const { data } = await api.post<CohostRequestItem>(
       `/exhibition/live/${id}/cohost/${requestId}/deny`,
+      null,
+      { headers: broadcasterHeaders(id) },
     )
     return data
   },
