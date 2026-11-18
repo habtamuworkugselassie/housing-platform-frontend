@@ -70,8 +70,10 @@ export interface OutreachPreview {
   to: string
   subject: string
   body: string
+  html: string
   templateKey: string
   locale: string
+  attachments: string[]
 }
 
 export interface OutreachMessage {
@@ -127,6 +129,9 @@ export const outreachApi = {
   },
   async preview(id: string, step = 1): Promise<OutreachPreview> {
     return (await api.get<OutreachPreview>(`/admin/outreach/contacts/${id}/preview`, { params: { step } })).data
+  },
+  async render(id: string, body: { subject: string; body: string; includePackages: boolean }): Promise<string> {
+    return (await api.post<string>(`/admin/outreach/contacts/${id}/render`, body, { responseType: 'text' })).data
   },
   async messages(id: string): Promise<OutreachMessage[]> {
     return (await api.get<OutreachMessage[]>(`/admin/outreach/contacts/${id}/messages`)).data

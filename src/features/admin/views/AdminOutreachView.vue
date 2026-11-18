@@ -211,17 +211,31 @@
             </select>
           </div>
           <div v-if="preview" class="rounded-lg border border-admin-line/10 bg-admin-sunken/30 p-3" data-testid="compose">
-            <p class="text-xs text-admin-subtle">{{ $t('admin.outreach.previewTo', { to: preview.to }) }} · {{ preview.templateKey }} · {{ preview.locale.toUpperCase() }}</p>
-            <input v-model="compose.subject" class="mt-2 w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm font-semibold text-admin-fg" data-testid="compose-subject" />
-            <textarea v-model="compose.body" rows="14" class="mt-2 w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 font-sans text-sm text-admin-fg" data-testid="compose-body" />
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-xs text-admin-subtle">{{ $t('admin.outreach.previewTo', { to: preview.to }) }} · {{ preview.templateKey }} · {{ preview.locale.toUpperCase() }}</p>
+              <div class="flex gap-1" role="tablist">
+                <button type="button" role="tab" :aria-selected="composeMode === 'preview'" :class="['rounded-full px-3 py-1 text-xs font-semibold', composeMode === 'preview' ? 'bg-admin-nav text-white' : 'bg-admin-sunken/60 text-admin-muted']" data-testid="mode-preview" @click="composeMode = 'preview'">{{ $t('admin.outreach.modePreview') }}</button>
+                <button type="button" role="tab" :aria-selected="composeMode === 'edit'" :class="['rounded-full px-3 py-1 text-xs font-semibold', composeMode === 'edit' ? 'bg-admin-nav text-white' : 'bg-admin-sunken/60 text-admin-muted']" data-testid="mode-edit" @click="composeMode = 'edit'">{{ $t('admin.outreach.modeEdit') }}</button>
+              </div>
+            </div>
+
+            <div v-show="composeMode === 'preview'" class="mt-2 overflow-hidden rounded-lg border border-admin-line/10 bg-white">
+              <iframe :srcdoc="previewHtml" sandbox="" title="Email preview" class="block h-[36rem] w-full" data-testid="preview-frame" />
+            </div>
+            <div v-show="composeMode === 'edit'" class="mt-2">
+              <p class="mb-2 text-[11px] text-admin-subtle">{{ $t('admin.outreach.composeHint') }}</p>
+              <input v-model="compose.subject" class="w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm font-semibold text-admin-fg" data-testid="compose-subject" @input="scheduleRender" />
+              <textarea v-model="compose.body" rows="16" class="mt-2 w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 font-sans text-sm text-admin-fg" data-testid="compose-body" @input="scheduleRender" />
+            </div>
+
             <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-admin-muted">
-              <label class="inline-flex items-center gap-1"><input v-model="compose.includePackages" type="checkbox" /> {{ $t('admin.outreach.optPackages') }}</label>
+              <label class="inline-flex items-center gap-1"><input v-model="compose.includePackages" type="checkbox" @change="scheduleRender" /> {{ $t('admin.outreach.optPackages') }}</label>
               <label class="inline-flex items-center gap-1"><input v-model="compose.attachBrochure" type="checkbox" /> {{ $t('admin.outreach.optBrochure') }}</label>
               <label class="inline-flex items-center gap-1"><input v-model="compose.attachSponsorship" type="checkbox" /> {{ $t('admin.outreach.optSponsorship') }}</label>
               <label class="inline-flex items-center gap-1"><input v-model="compose.attachAgreement" type="checkbox" /> {{ $t('admin.outreach.optAgreement') }}</label>
               <label v-if="drawer.step === 0" class="inline-flex items-center gap-1"><input v-model="compose.scheduleFollowUp" type="checkbox" /> {{ $t('admin.outreach.optFollowUp') }}</label>
             </div>
-            <p class="mt-2 text-[11px] text-admin-subtle">{{ $t('admin.outreach.composeHint') }}</p>
+            <p v-if="attachmentNames.length" class="mt-2 text-[11px] text-admin-subtle">{{ $t('admin.outreach.attachmentsLine', { list: attachmentNames.join(' · ') }) }}</p>
             <div class="mt-3 flex flex-wrap items-center gap-2">
               <button type="button" class="rounded-lg bg-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-500 disabled:opacity-50" :disabled="sending || !stats?.mailConfigured" data-testid="send-now" @click="sendNow">
                 {{ sending ? $t('admin.outreach.sending') : $t('admin.outreach.sendNow', { to: preview.to }) }}
@@ -283,6 +297,9 @@ const saving = ref(false)
 const preview = ref(null)
 const compose = reactive({ subject: '', body: '', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: true, scheduleFollowUp: true })
 const sending = ref(false)
+const composeMode = ref('preview')
+const previewHtml = ref('')
+let renderTimer = null
 const history = ref([])
 const testTo = ref('')
 
@@ -421,10 +438,35 @@ async function saveContact() {
   }
 }
 
+const attachmentNames = computed(() => {
+  const lang = (drawer.value?.locale || 'en') === 'am' ? 'Amharic' : 'English'
+  const names = []
+  if (compose.attachBrochure) names.push(`Brochure (${lang})`)
+  if (compose.attachSponsorship) names.push(`Sponsorship packages (${lang})`)
+  if (compose.attachAgreement) names.push(`Exhibitor agreement (${lang})`)
+  return names
+})
+
+function scheduleRender() {
+  if (renderTimer) clearTimeout(renderTimer)
+  renderTimer = setTimeout(refreshRender, 600)
+}
+
+async function refreshRender() {
+  if (!drawer.value || !preview.value) return
+  try {
+    previewHtml.value = await outreachApi.render(drawer.value.id, { subject: compose.subject, body: compose.body, includePackages: compose.includePackages })
+  } catch (e) {
+    fail(e)
+  }
+}
+
 async function loadPreview(step) {
   if (!drawer.value) return
   try {
     preview.value = await outreachApi.preview(drawer.value.id, step)
+    previewHtml.value = preview.value.html || ''
+    composeMode.value = 'preview'
     compose.subject = preview.value.subject
     compose.body = preview.value.body
     const first = step === 1

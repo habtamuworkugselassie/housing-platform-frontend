@@ -8,7 +8,7 @@ import { outreachApi } from '@/features/outreach/api/outreach.api'
 vi.mock('@/features/outreach/api/outreach.api', () => ({
   outreachApi: {
     stats: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
-    update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), sendNow: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
+    update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), sendNow: vi.fn(), render: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
   }
 }))
 
@@ -58,7 +58,7 @@ describe('AdminOutreachView', () => {
   it('opens a contact, edits the opening line and previews the email', async () => {
     vi.mocked(outreachApi.messages).mockResolvedValue([])
     vi.mocked(outreachApi.update).mockResolvedValue(contact({ hook: 'Saw your Atlas launch' }) as any)
-    vi.mocked(outreachApi.preview).mockResolvedValue({ to: 'info@noah.et', subject: 'Noah at the expo', body: 'Dear Noah team,', templateKey: 'REAL_ESTATE', locale: 'en' })
+    vi.mocked(outreachApi.preview).mockResolvedValue({ to: 'info@noah.et', subject: 'Noah at the expo', body: 'Dear Noah team,', html: '<html><body><h1>Noah at the expo</h1></body></html>', templateKey: 'REAL_ESTATE', locale: 'en', attachments: ['Brochure (English)'] })
     const w = mountView()
     await flushPromises()
     await w.find('[data-testid="contact-c1"] button').trigger('click')
@@ -74,6 +74,8 @@ describe('AdminOutreachView', () => {
     await buttons[0].trigger('click')
     await flushPromises()
     expect(outreachApi.preview).toHaveBeenCalledWith('c1', 1)
+    expect(w.find('[data-testid="preview-frame"]').attributes('srcdoc')).toContain('<h1>Noah at the expo</h1>')
+    await w.find('[data-testid="mode-edit"]').trigger('click')
     expect((w.find('[data-testid="compose-subject"]').element as HTMLInputElement).value).toBe('Noah at the expo')
 
     vi.mocked(outreachApi.sendNow).mockResolvedValue(contact({ status: 'SENT', step: 1 }) as any)
