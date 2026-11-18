@@ -1145,10 +1145,13 @@
       "optSponsorship": "Attach package sheet",
       "optAgreement": "Attach exhibitor agreement",
       "optFollowUp": "Schedule the automatic follow-up",
-      "composeHint": "Edit the subject and text freely. The signature, the portal link and the opt-out line are already in the text; attachments follow the contact's language.",
+      "composeHint": "Edit only what needs changing: the greeting, the opening line and the ask. The event facts, package table, signature, portal link and opt-out line are laid out automatically; the preview updates as you type.",
       "sendNow": "Send now to {to}",
       "confirmSend": "Send this email to {to} now?",
-      "sentNow": "Sent to {to}."
+      "sentNow": "Sent to {to}.",
+      "modePreview": "Preview",
+      "modeEdit": "Edit text",
+      "attachmentsLine": "Attached: {list}"
     }
   },
   "validation": {
