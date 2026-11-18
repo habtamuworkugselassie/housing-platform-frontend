@@ -256,6 +256,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {
+    path: '/admin/outreach',
+    name: 'AdminOutreach',
+    component: () => import('@/features/admin/views/AdminOutreachView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
     path: '/admin/enquiries',
     name: 'AdminEnquiries',
     component: () => import('@/features/admin/views/AdminEnquiriesView.vue'),
