@@ -8,7 +8,7 @@ import { outreachApi } from '@/features/outreach/api/outreach.api'
 vi.mock('@/features/outreach/api/outreach.api', () => ({
   outreachApi: {
     stats: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
-    update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
+    update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), sendNow: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
   }
 }))
 
@@ -32,8 +32,8 @@ describe('AdminOutreachView', () => {
   beforeEach(() => {
     vi.mocked(outreachApi.stats).mockResolvedValue({
       byStatus: { NEW: 2, QUEUED: 1, SENT: 3, FOLLOWED_UP: 0, REPLIED: 1, REGISTERED: 1, OPTED_OUT: 0, BOUNCED: 0, PAUSED: 0 },
-      sentToday: 4, sentLastHour: 1, dailyCap: 30, hourlyCap: 8, enabled: true, gmailConfigured: true, insideSendWindow: true,
-      senderEmail: 'ethiobuildconnectexpo@gmail.com', timezone: 'Africa/Addis_Ababa', sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5
+      sentToday: 4, sentLastHour: 1, dailyCap: 30, hourlyCap: 8, enabled: true, mailConfigured: true, replyReaderConfigured: true, insideSendWindow: true,
+      senderEmail: 'partnerships@ethiobuildconnect.et', replyTo: 'ethiobuildconnectexpo@gmail.com', timezone: 'Africa/Addis_Ababa', sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5
     })
     vi.mocked(outreachApi.list).mockResolvedValue({ content: [contact(), contact({ id: 'c2', name: 'Awash Bank', sector: 'Bank', effectiveTemplateKey: 'BANK', hook: 'Your diaspora mortgage', status: 'SENT', lastSentAt: '2026-11-18T09:00:00', nextActionAt: '2026-11-25T09:00:00' })], totalElements: 2, totalPages: 1, number: 0, size: 50 })
     vi.mocked(outreachApi.templates).mockResolvedValue([{ id: 't1', templateKey: 'BANK', locale: 'en', subject: 'S', body: 'B' }])
@@ -74,6 +74,16 @@ describe('AdminOutreachView', () => {
     await buttons[0].trigger('click')
     await flushPromises()
     expect(outreachApi.preview).toHaveBeenCalledWith('c1', 1)
-    expect(w.find('[data-testid="contact-drawer"]').text()).toContain('Noah at the expo')
+    expect((w.find('[data-testid="compose-subject"]').element as HTMLInputElement).value).toBe('Noah at the expo')
+
+    vi.mocked(outreachApi.sendNow).mockResolvedValue(contact({ status: 'SENT', step: 1 }) as any)
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    await w.find('[data-testid="compose-subject"]').setValue('Noah at the expo (edited)')
+    await w.find('[data-testid="send-now"]').trigger('click')
+    await flushPromises()
+    expect(outreachApi.sendNow).toHaveBeenCalledWith('c1', expect.objectContaining({
+      subject: 'Noah at the expo (edited)', body: 'Dear Noah team,', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: false, scheduleFollowUp: true
+    }))
+    expect(w.find('[data-testid="contact-c1"]').text()).toContain('admin.outreach.status.SENT')
   })
 })

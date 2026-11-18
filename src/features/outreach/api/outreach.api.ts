@@ -47,9 +47,11 @@ export interface OutreachStats {
   dailyCap: number
   hourlyCap: number
   enabled: boolean
-  gmailConfigured: boolean
+  mailConfigured: boolean
+  replyReaderConfigured: boolean
   insideSendWindow: boolean
   senderEmail: string
+  replyTo: string
   timezone: string
   sendWindowStart: number
   sendWindowEnd: number
@@ -78,6 +80,16 @@ export interface OutreachMessage {
   subject: string
   body: string
   sentAt: string
+}
+
+export interface SendNowRequest {
+  subject: string
+  body: string
+  includePackages: boolean
+  attachBrochure: boolean
+  attachSponsorship: boolean
+  attachAgreement: boolean
+  scheduleFollowUp: boolean
 }
 
 export interface ImportResult {
@@ -121,6 +133,9 @@ export const outreachApi = {
   },
   async sendTest(id: string, to: string, step = 1): Promise<void> {
     await api.post(`/admin/outreach/contacts/${id}/send-test`, { to, step })
+  },
+  async sendNow(id: string, body: SendNowRequest): Promise<OutreachContact> {
+    return (await api.post<OutreachContact>(`/admin/outreach/contacts/${id}/send`, body)).data
   },
   async templates(): Promise<OutreachTemplate[]> {
     return (await api.get<OutreachTemplate[]>('/admin/outreach/templates')).data
