@@ -1069,10 +1069,10 @@
     },
     "outreach": {
       "title": "Partner outreach",
-      "subtitle": "One-to-one emails to the curated prospect list, sent from the expo mailbox under a daily cap on weekdays, with one follow-up. Replies, opt-outs and portal registrations are picked up automatically. Add a personal opening line before queueing anyone.",
+      "subtitle": "One-to-one emails to the curated prospect list, sent through Brevo from the expo sender with the brochure and package sheet attached. Queue contacts for the capped weekday scheduler, or open a contact and send now with the text edited as you like. Add a personal opening line before sending.",
       "tabContacts": "Contacts",
       "tabTemplates": "Templates",
-      "sending": "Sending",
+      "sending": "Sending…",
       "sendingOn": "On",
       "sendingOff": "Off",
       "gmailNotConfigured": "Gmail not configured on the server",
@@ -1136,7 +1136,19 @@
         "OPTED_OUT": "Opted out",
         "BOUNCED": "Bounced",
         "PAUSED": "Paused"
-      }
+      },
+      "mailNotConfigured": "Outgoing mail is not configured on the server",
+      "fromReply": "From {from} · replies to {replyTo}",
+      "manualReplies": "Reply detection is off (no IMAP settings): mark replies by hand.",
+      "optPackages": "Package table in the email",
+      "optBrochure": "Attach brochure",
+      "optSponsorship": "Attach package sheet",
+      "optAgreement": "Attach exhibitor agreement",
+      "optFollowUp": "Schedule the automatic follow-up",
+      "composeHint": "Edit the subject and text freely. The signature, the portal link and the opt-out line are already in the text; attachments follow the contact's language.",
+      "sendNow": "Send now to {to}",
+      "confirmSend": "Send this email to {to} now?",
+      "sentNow": "Sent to {to}."
     }
   },
   "validation": {

@@ -25,11 +25,11 @@
       <div v-if="stats" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="outreach-stats">
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
           <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.outreach.sending') }}</p>
-          <p class="mt-1 text-sm font-semibold" :class="stats.enabled && stats.gmailConfigured ? 'text-emerald-600' : 'text-amber-600'">
-            {{ stats.enabled && stats.gmailConfigured ? $t('admin.outreach.sendingOn') : $t('admin.outreach.sendingOff') }}
+          <p class="mt-1 text-sm font-semibold" :class="stats.enabled && stats.mailConfigured ? 'text-emerald-600' : 'text-amber-600'">
+            {{ stats.enabled && stats.mailConfigured ? $t('admin.outreach.sendingOn') : $t('admin.outreach.sendingOff') }}
           </p>
           <p class="mt-1 text-xs text-admin-subtle">
-            {{ stats.gmailConfigured ? stats.senderEmail : $t('admin.outreach.gmailNotConfigured') }}
+            {{ stats.mailConfigured ? $t('admin.outreach.fromReply', { from: stats.senderEmail, replyTo: stats.replyTo }) : $t('admin.outreach.mailNotConfigured') }}
           </p>
         </div>
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
@@ -45,7 +45,7 @@
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
           <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.outreach.outcomes') }}</p>
           <p class="mt-1 text-2xl font-bold text-admin-fg">{{ (stats.byStatus.REPLIED || 0) + (stats.byStatus.REGISTERED || 0) }}</p>
-          <p class="mt-1 text-xs text-admin-subtle">{{ $t('admin.outreach.outcomesDetail', { replied: stats.byStatus.REPLIED || 0, registered: stats.byStatus.REGISTERED || 0, optedOut: stats.byStatus.OPTED_OUT || 0, bounced: stats.byStatus.BOUNCED || 0 }) }}</p>
+          <p class="mt-1 text-xs text-admin-subtle">{{ stats.replyReaderConfigured ? '' : $t('admin.outreach.manualReplies') + ' ' }}{{ $t('admin.outreach.outcomesDetail', { replied: stats.byStatus.REPLIED || 0, registered: stats.byStatus.REGISTERED || 0, optedOut: stats.byStatus.OPTED_OUT || 0, bounced: stats.byStatus.BOUNCED || 0 }) }}</p>
         </div>
       </div>
 
@@ -210,11 +210,22 @@
               <option v-for="s in statuses" :key="s" :value="s">{{ statusLabel(s) }}</option>
             </select>
           </div>
-          <div v-if="preview" class="rounded-lg border border-admin-line/10 bg-admin-sunken/30 p-3">
+          <div v-if="preview" class="rounded-lg border border-admin-line/10 bg-admin-sunken/30 p-3" data-testid="compose">
             <p class="text-xs text-admin-subtle">{{ $t('admin.outreach.previewTo', { to: preview.to }) }} · {{ preview.templateKey }} · {{ preview.locale.toUpperCase() }}</p>
-            <p class="mt-1 font-semibold text-admin-fg">{{ preview.subject }}</p>
-            <pre class="mt-2 whitespace-pre-wrap font-sans text-sm text-admin-muted">{{ preview.body }}</pre>
+            <input v-model="compose.subject" class="mt-2 w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm font-semibold text-admin-fg" data-testid="compose-subject" />
+            <textarea v-model="compose.body" rows="14" class="mt-2 w-full rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 font-sans text-sm text-admin-fg" data-testid="compose-body" />
+            <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-admin-muted">
+              <label class="inline-flex items-center gap-1"><input v-model="compose.includePackages" type="checkbox" /> {{ $t('admin.outreach.optPackages') }}</label>
+              <label class="inline-flex items-center gap-1"><input v-model="compose.attachBrochure" type="checkbox" /> {{ $t('admin.outreach.optBrochure') }}</label>
+              <label class="inline-flex items-center gap-1"><input v-model="compose.attachSponsorship" type="checkbox" /> {{ $t('admin.outreach.optSponsorship') }}</label>
+              <label class="inline-flex items-center gap-1"><input v-model="compose.attachAgreement" type="checkbox" /> {{ $t('admin.outreach.optAgreement') }}</label>
+              <label v-if="drawer.step === 0" class="inline-flex items-center gap-1"><input v-model="compose.scheduleFollowUp" type="checkbox" /> {{ $t('admin.outreach.optFollowUp') }}</label>
+            </div>
+            <p class="mt-2 text-[11px] text-admin-subtle">{{ $t('admin.outreach.composeHint') }}</p>
             <div class="mt-3 flex flex-wrap items-center gap-2">
+              <button type="button" class="rounded-lg bg-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-500 disabled:opacity-50" :disabled="sending || !stats?.mailConfigured" data-testid="send-now" @click="sendNow">
+                {{ sending ? $t('admin.outreach.sending') : $t('admin.outreach.sendNow', { to: preview.to }) }}
+              </button>
               <input v-model="testTo" type="email" :placeholder="$t('admin.outreach.testTo')" class="rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-1.5 text-xs text-admin-fg" />
               <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-1.5 text-xs font-semibold text-admin-muted" :disabled="!testTo" @click="sendTest">{{ $t('admin.outreach.sendTest') }}</button>
             </div>
@@ -270,6 +281,8 @@ const drawer = ref(null)
 const edit = reactive({ contactName: '', locale: 'en', templateKey: '', owner: '', hook: '', notes: '', status: 'NEW' })
 const saving = ref(false)
 const preview = ref(null)
+const compose = reactive({ subject: '', body: '', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: false, scheduleFollowUp: true })
+const sending = ref(false)
 const history = ref([])
 const testTo = ref('')
 
@@ -412,8 +425,35 @@ async function loadPreview(step) {
   if (!drawer.value) return
   try {
     preview.value = await outreachApi.preview(drawer.value.id, step)
+    compose.subject = preview.value.subject
+    compose.body = preview.value.body
+    const first = step === 1
+    compose.includePackages = first
+    compose.attachBrochure = first
+    compose.attachSponsorship = first
+    compose.attachAgreement = false
+    compose.scheduleFollowUp = first
   } catch (e) {
     fail(e)
+  }
+}
+
+async function sendNow() {
+  if (!drawer.value || !preview.value) return
+  if (!window.confirm(t('admin.outreach.confirmSend', { to: preview.value.to }))) return
+  sending.value = true
+  try {
+    const updated = await outreachApi.sendNow(drawer.value.id, { ...compose })
+    const i = rows.value.findIndex((r) => r.id === updated.id)
+    if (i >= 0) rows.value[i] = updated
+    drawer.value = updated
+    notice.value = t('admin.outreach.sentNow', { to: updated.email })
+    history.value = await outreachApi.messages(updated.id)
+    loadStats()
+  } catch (e) {
+    fail(e)
+  } finally {
+    sending.value = false
   }
 }
 
