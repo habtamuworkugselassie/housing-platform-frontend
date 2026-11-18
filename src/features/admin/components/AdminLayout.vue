@@ -203,6 +203,13 @@ const navigation = computed(() => [
     badge: null
   },
   {
+    name: t('admin.nav.outreach'),
+    path: '/admin/outreach',
+    iconPath:
+      'M12 19l9 2-9-18-9 18 9-2zm0 0v-8',
+    badge: null
+  },
+  {
     name: t('admin.nav.enquiries'),
     path: '/admin/enquiries',
     iconPath:
