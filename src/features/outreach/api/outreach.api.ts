@@ -58,6 +58,15 @@ export interface OutreachStats {
   followUpAfterDays: number
 }
 
+export interface OutreachSettingsRequest {
+  enabled?: boolean
+  dailyCap?: number
+  hourlyCap?: number
+  sendWindowStart?: number
+  sendWindowEnd?: number
+  followUpAfterDays?: number
+}
+
 export interface OutreachTemplate {
   id: string
   templateKey: string
@@ -150,5 +159,8 @@ export const outreachApi = {
   },
   async sync(): Promise<void> {
     await api.post('/admin/outreach/sync')
+  },
+  async updateSettings(body: OutreachSettingsRequest): Promise<OutreachStats> {
+    return (await api.put<OutreachStats>('/admin/outreach/settings', body)).data
   }
 }

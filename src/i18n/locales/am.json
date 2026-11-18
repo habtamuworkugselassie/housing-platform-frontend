@@ -1151,7 +1151,21 @@
       "sentNow": "ወደ {to} ተልኳል።",
       "modePreview": "ቅድመ-እይታ",
       "modeEdit": "ጽሑፍ አስተካክል",
-      "attachmentsLine": "ተያይዟል፡ {list}"
+      "attachmentsLine": "ተያይዟል፡ {list}",
+      "scheduler": "በመርሐ ግብር መላክ",
+      "sendingOnNoMail": "በርቷል (ኢሜይል አልተዋቀረም)",
+      "editSettings": "ገደቦችንና ሰዓት ያስተካክሉ",
+      "hideSettings": "ቅንብሮችን ደብቅ",
+      "dailyCap": "የቀን ገደብ",
+      "hourlyCap": "የሰዓት ገደብ",
+      "windowStart": "መጀመሪያ ሰዓት",
+      "windowEnd": "መጨረሻ ሰዓት",
+      "followUpDays": "ክትትል ከ (ቀናት) በኋላ",
+      "saveSettings": "ቅንብሮችን አስቀምጥ",
+      "settingsHint": "የሥራ ቀናት ብቻ፣ ሰዓቶች በ {tz}። ለውጦቹ በሚቀጥለው 5 ደቂቃ ይተገበራሉ፤ ዳግም ማስጀመር አያስፈልግም።",
+      "settingsSaved": "ቅንብሮቹ ተቀምጠዋል።",
+      "schedulerTurnedOn": "በመርሐ ግብር መላክ በርቷል። በወረፋ ያሉ ተቋማት በመላኪያ ሰዓት ውስጥ ኢሜይል ይደርሳቸዋል።",
+      "schedulerTurnedOff": "በመርሐ ግብር መላክ ጠፍቷል። በወረፋ ያሉ ተቋማት እንዳሉ ይቆያሉ፤ አሁን ላክ አሁንም ይሰራል።"
     }
   },
   "validation": {

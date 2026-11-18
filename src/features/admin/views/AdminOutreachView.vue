@@ -24,13 +24,32 @@
       <!-- Status strip -->
       <div v-if="stats" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="outreach-stats">
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
-          <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.outreach.sending') }}</p>
-          <p class="mt-1 text-sm font-semibold" :class="stats.enabled && stats.mailConfigured ? 'text-emerald-600' : 'text-amber-600'">
-            {{ stats.enabled && stats.mailConfigured ? $t('admin.outreach.sendingOn') : $t('admin.outreach.sendingOff') }}
-          </p>
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.outreach.scheduler') }}</p>
+              <p class="mt-1 text-sm font-semibold" :class="stats.enabled && stats.mailConfigured ? 'text-emerald-600' : 'text-amber-600'" data-testid="scheduler-state">
+                {{ stats.enabled ? (stats.mailConfigured ? $t('admin.outreach.sendingOn') : $t('admin.outreach.sendingOnNoMail')) : $t('admin.outreach.sendingOff') }}
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              :aria-checked="stats.enabled"
+              :aria-label="$t('admin.outreach.scheduler')"
+              :disabled="savingSettings"
+              :class="['relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:opacity-60', stats.enabled ? 'bg-emerald-600' : 'bg-admin-sunken']"
+              data-testid="scheduler-toggle"
+              @click="toggleScheduler"
+            >
+              <span :class="['inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform', stats.enabled ? 'translate-x-5' : 'translate-x-0.5']"></span>
+            </button>
+          </div>
           <p class="mt-1 text-xs text-admin-subtle">
             {{ stats.mailConfigured ? $t('admin.outreach.fromReply', { from: stats.senderEmail, replyTo: stats.replyTo }) : $t('admin.outreach.mailNotConfigured') }}
           </p>
+          <button type="button" class="mt-2 text-xs font-semibold text-admin-nav hover:underline" data-testid="settings-toggle" @click="openSettings">
+            {{ settingsOpen ? $t('admin.outreach.hideSettings') : $t('admin.outreach.editSettings') }}
+          </button>
         </div>
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
           <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.outreach.today') }}</p>
@@ -48,6 +67,35 @@
           <p class="mt-1 text-xs text-admin-subtle">{{ stats.replyReaderConfigured ? '' : $t('admin.outreach.manualReplies') + ' ' }}{{ $t('admin.outreach.outcomesDetail', { replied: stats.byStatus.REPLIED || 0, registered: stats.byStatus.REGISTERED || 0, optedOut: stats.byStatus.OPTED_OUT || 0, bounced: stats.byStatus.BOUNCED || 0 }) }}</p>
         </div>
       </div>
+
+      <form v-if="stats && settingsOpen" class="grid gap-3 rounded-lg border border-admin-line/10 bg-admin-surface p-4 sm:grid-cols-5" data-testid="settings-form" @submit.prevent="saveSettings">
+        <label class="block text-xs font-medium text-admin-muted">
+          {{ $t('admin.outreach.dailyCap') }}
+          <input v-model.number="settingsForm.dailyCap" type="number" min="1" max="200" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
+        </label>
+        <label class="block text-xs font-medium text-admin-muted">
+          {{ $t('admin.outreach.hourlyCap') }}
+          <input v-model.number="settingsForm.hourlyCap" type="number" min="1" max="50" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
+        </label>
+        <label class="block text-xs font-medium text-admin-muted">
+          {{ $t('admin.outreach.windowStart') }}
+          <input v-model.number="settingsForm.sendWindowStart" type="number" min="0" max="23" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
+        </label>
+        <label class="block text-xs font-medium text-admin-muted">
+          {{ $t('admin.outreach.windowEnd') }}
+          <input v-model.number="settingsForm.sendWindowEnd" type="number" min="1" max="24" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
+        </label>
+        <label class="block text-xs font-medium text-admin-muted">
+          {{ $t('admin.outreach.followUpDays') }}
+          <input v-model.number="settingsForm.followUpAfterDays" type="number" min="1" max="30" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
+        </label>
+        <div class="flex items-end gap-2 sm:col-span-5">
+          <button type="submit" :disabled="savingSettings" class="rounded-lg bg-admin-nav px-3 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-60" data-testid="settings-save">
+            {{ savingSettings ? $t('admin.outreach.saving') : $t('admin.outreach.saveSettings') }}
+          </button>
+          <p class="text-xs text-admin-subtle">{{ $t('admin.outreach.settingsHint', { tz: stats.timezone }) }}</p>
+        </div>
+      </form>
 
       <p v-if="error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
       <p v-if="notice" class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ notice }}</p>
@@ -276,6 +324,9 @@ const tabs = computed(() => [
 const activeTab = ref('contacts')
 
 const stats = ref(null)
+const settingsOpen = ref(false)
+const savingSettings = ref(false)
+const settingsForm = reactive({ dailyCap: 30, hourlyCap: 8, sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5 })
 const rows = ref([])
 const loading = ref(true)
 const error = ref('')
@@ -387,6 +438,44 @@ async function pauseSelected() {
   } catch (e) {
     fail(e)
   }
+}
+
+function openSettings() {
+  if (!settingsOpen.value && stats.value) {
+    Object.assign(settingsForm, {
+      dailyCap: stats.value.dailyCap,
+      hourlyCap: stats.value.hourlyCap,
+      sendWindowStart: stats.value.sendWindowStart,
+      sendWindowEnd: stats.value.sendWindowEnd,
+      followUpAfterDays: stats.value.followUpAfterDays
+    })
+  }
+  settingsOpen.value = !settingsOpen.value
+}
+
+async function applySettings(body) {
+  savingSettings.value = true
+  error.value = ''
+  try {
+    stats.value = await outreachApi.updateSettings(body)
+    return true
+  } catch (e) {
+    fail(e)
+    return false
+  } finally {
+    savingSettings.value = false
+  }
+}
+
+async function toggleScheduler() {
+  const next = !stats.value.enabled
+  if (await applySettings({ enabled: next })) {
+    notice.value = next ? t('admin.outreach.schedulerTurnedOn') : t('admin.outreach.schedulerTurnedOff')
+  }
+}
+
+async function saveSettings() {
+  if (await applySettings({ ...settingsForm })) notice.value = t('admin.outreach.settingsSaved')
 }
 
 async function sync() {
