@@ -82,7 +82,7 @@ describe('AdminOutreachView', () => {
     await w.find('[data-testid="send-now"]').trigger('click')
     await flushPromises()
     expect(outreachApi.sendNow).toHaveBeenCalledWith('c1', expect.objectContaining({
-      subject: 'Noah at the expo (edited)', body: 'Dear Noah team,', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: false, scheduleFollowUp: true
+      subject: 'Noah at the expo (edited)', body: 'Dear Noah team,', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: true, scheduleFollowUp: true
     }))
     expect(w.find('[data-testid="contact-c1"]').text()).toContain('admin.outreach.status.SENT')
   })

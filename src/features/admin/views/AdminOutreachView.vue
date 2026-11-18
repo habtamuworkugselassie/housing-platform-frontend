@@ -281,7 +281,7 @@ const drawer = ref(null)
 const edit = reactive({ contactName: '', locale: 'en', templateKey: '', owner: '', hook: '', notes: '', status: 'NEW' })
 const saving = ref(false)
 const preview = ref(null)
-const compose = reactive({ subject: '', body: '', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: false, scheduleFollowUp: true })
+const compose = reactive({ subject: '', body: '', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: true, scheduleFollowUp: true })
 const sending = ref(false)
 const history = ref([])
 const testTo = ref('')
@@ -431,7 +431,7 @@ async function loadPreview(step) {
     compose.includePackages = first
     compose.attachBrochure = first
     compose.attachSponsorship = first
-    compose.attachAgreement = false
+    compose.attachAgreement = first
     compose.scheduleFollowUp = first
   } catch (e) {
     fail(e)
