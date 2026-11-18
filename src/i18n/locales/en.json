@@ -1151,7 +1151,21 @@
       "sentNow": "Sent to {to}.",
       "modePreview": "Preview",
       "modeEdit": "Edit text",
-      "attachmentsLine": "Attached: {list}"
+      "attachmentsLine": "Attached: {list}",
+      "scheduler": "Scheduled sending",
+      "sendingOnNoMail": "On (mail not configured)",
+      "editSettings": "Edit caps & window",
+      "hideSettings": "Hide settings",
+      "dailyCap": "Daily cap",
+      "hourlyCap": "Hourly cap",
+      "windowStart": "Window start (hour)",
+      "windowEnd": "Window end (hour)",
+      "followUpDays": "Follow-up after (days)",
+      "saveSettings": "Save settings",
+      "settingsHint": "Weekdays only, hours in {tz}. Changes apply at the next 5-minute tick, no restart needed.",
+      "settingsSaved": "Settings saved.",
+      "schedulerTurnedOn": "Scheduled sending is on. Queued contacts will be emailed inside the send window.",
+      "schedulerTurnedOff": "Scheduled sending is off. Queued contacts stay queued; Send now still works."
     }
   },
   "validation": {

@@ -7,7 +7,7 @@ import { outreachApi } from '@/features/outreach/api/outreach.api'
 
 vi.mock('@/features/outreach/api/outreach.api', () => ({
   outreachApi: {
-    stats: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
+    stats: vi.fn(), updateSettings: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
     update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), sendNow: vi.fn(), render: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
   }
 }))
@@ -87,5 +87,26 @@ describe('AdminOutreachView', () => {
       subject: 'Noah at the expo (edited)', body: 'Dear Noah team,', includePackages: true, attachBrochure: true, attachSponsorship: true, attachAgreement: true, scheduleFollowUp: true
     }))
     expect(w.find('[data-testid="contact-c1"]').text()).toContain('admin.outreach.status.SENT')
+  })
+
+  it('switches scheduled sending off from the header and saves caps', async () => {
+    vi.mocked(outreachApi.updateSettings).mockImplementation(async (body) => ({
+      ...(await vi.mocked(outreachApi.stats).getMockImplementation()!()), enabled: body.enabled ?? false, dailyCap: body.dailyCap ?? 30
+    }))
+    const w = mountView()
+    await flushPromises()
+    expect(w.find('[data-testid="scheduler-state"]').text()).toBe('admin.outreach.sendingOn')
+    await w.find('[data-testid="scheduler-toggle"]').trigger('click')
+    await flushPromises()
+    expect(outreachApi.updateSettings).toHaveBeenCalledWith({ enabled: false })
+    expect(w.find('[data-testid="scheduler-state"]').text()).toBe('admin.outreach.sendingOff')
+
+    await w.find('[data-testid="settings-toggle"]').trigger('click')
+    const daily = w.find('[data-testid="settings-form"] input')
+    await daily.setValue('12')
+    await w.find('[data-testid="settings-form"]').trigger('submit')
+    await flushPromises()
+    expect(outreachApi.updateSettings).toHaveBeenLastCalledWith(expect.objectContaining({ dailyCap: 12, hourlyCap: 8, sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5 }))
+    expect(w.find('[data-testid="outreach-stats"]').text()).toContain('/ 12')
   })
 })
