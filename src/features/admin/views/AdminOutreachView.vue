@@ -47,6 +47,9 @@
           <p class="mt-1 text-xs text-admin-subtle">
             {{ stats.mailConfigured ? $t('admin.outreach.fromReply', { from: stats.senderEmail, replyTo: stats.replyTo }) : $t('admin.outreach.mailNotConfigured') }}
           </p>
+          <p class="mt-1 text-xs" :class="stats.autoQueueNew ? 'text-emerald-700' : 'text-admin-subtle'" data-testid="auto-queue-state">
+            {{ stats.autoQueueNew ? $t('admin.outreach.autoQueueOn') : $t('admin.outreach.autoQueueOff') }}
+          </p>
           <button type="button" class="mt-2 text-xs font-semibold text-admin-nav hover:underline" data-testid="settings-toggle" @click="openSettings">
             {{ settingsOpen ? $t('admin.outreach.hideSettings') : $t('admin.outreach.editSettings') }}
           </button>
@@ -89,6 +92,10 @@
           {{ $t('admin.outreach.followUpDays') }}
           <input v-model.number="settingsForm.followUpAfterDays" type="number" min="1" max="30" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" />
         </label>
+        <label class="flex items-start gap-2 text-xs text-admin-muted sm:col-span-5">
+          <input v-model="settingsForm.autoQueueNew" type="checkbox" class="mt-0.5" data-testid="auto-queue-input" />
+          <span><span class="font-medium text-admin-fg">{{ $t('admin.outreach.autoQueue') }}</span> {{ $t('admin.outreach.autoQueueHelp') }}</span>
+        </label>
         <div class="flex items-end gap-2 sm:col-span-5">
           <button type="submit" :disabled="savingSettings" class="rounded-lg bg-admin-nav px-3 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-60" data-testid="settings-save">
             {{ savingSettings ? $t('admin.outreach.saving') : $t('admin.outreach.saveSettings') }}
@@ -128,6 +135,9 @@
           </button>
           <button type="button" class="rounded-lg bg-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-500 disabled:opacity-50" :disabled="!selected.size" data-testid="queue-selected" @click="queueSelected">
             {{ $t('admin.outreach.queueSelected', { n: selected.size }) }}
+          </button>
+          <button type="button" class="rounded-lg border border-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-400/30 disabled:opacity-50" :disabled="!(stats && stats.byStatus.NEW)" data-testid="queue-all" @click="queueAll">
+            {{ $t('admin.outreach.queueAll', { n: stats ? stats.byStatus.NEW || 0 : 0 }) }}
           </button>
           <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60 disabled:opacity-50" :disabled="!selected.size" @click="pauseSelected">
             {{ $t('admin.outreach.pauseSelected') }}
@@ -326,7 +336,7 @@ const activeTab = ref('contacts')
 const stats = ref(null)
 const settingsOpen = ref(false)
 const savingSettings = ref(false)
-const settingsForm = reactive({ dailyCap: 30, hourlyCap: 8, sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5 })
+const settingsForm = reactive({ dailyCap: 30, hourlyCap: 8, sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5, autoQueueNew: true })
 const rows = ref([])
 const loading = ref(true)
 const error = ref('')
@@ -420,6 +430,17 @@ async function onImport(ev) {
   }
 }
 
+async function queueAll() {
+  if (!window.confirm(t('admin.outreach.queueAllConfirm', { n: stats.value?.byStatus.NEW || 0 }))) return
+  try {
+    const n = await outreachApi.queueAll()
+    notice.value = t('admin.outreach.queued', { n })
+    await Promise.all([load(page.value), loadStats()])
+  } catch (e) {
+    fail(e)
+  }
+}
+
 async function queueSelected() {
   try {
     const n = await outreachApi.queue([...selected.value])
@@ -447,7 +468,8 @@ function openSettings() {
       hourlyCap: stats.value.hourlyCap,
       sendWindowStart: stats.value.sendWindowStart,
       sendWindowEnd: stats.value.sendWindowEnd,
-      followUpAfterDays: stats.value.followUpAfterDays
+      followUpAfterDays: stats.value.followUpAfterDays,
+      autoQueueNew: !!stats.value.autoQueueNew
     })
   }
   settingsOpen.value = !settingsOpen.value
