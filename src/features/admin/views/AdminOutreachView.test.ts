@@ -7,7 +7,7 @@ import { outreachApi } from '@/features/outreach/api/outreach.api'
 
 vi.mock('@/features/outreach/api/outreach.api', () => ({
   outreachApi: {
-    stats: vi.fn(), updateSettings: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
+    stats: vi.fn(), updateSettings: vi.fn(), queueAll: vi.fn(), list: vi.fn(), templates: vi.fn(), queue: vi.fn(), pause: vi.fn(),
     update: vi.fn(), preview: vi.fn(), messages: vi.fn(), sendTest: vi.fn(), sendNow: vi.fn(), render: vi.fn(), importCsv: vi.fn(), sync: vi.fn(), updateTemplate: vi.fn()
   }
 }))
@@ -33,7 +33,7 @@ describe('AdminOutreachView', () => {
     vi.mocked(outreachApi.stats).mockResolvedValue({
       byStatus: { NEW: 2, QUEUED: 1, SENT: 3, FOLLOWED_UP: 0, REPLIED: 1, REGISTERED: 1, OPTED_OUT: 0, BOUNCED: 0, PAUSED: 0 },
       sentToday: 4, sentLastHour: 1, dailyCap: 30, hourlyCap: 8, enabled: true, mailConfigured: true, replyReaderConfigured: true, insideSendWindow: true,
-      senderEmail: 'partnerships@ethiobuildconnect.et', replyTo: 'ethiobuildconnectexpo@gmail.com', timezone: 'Africa/Addis_Ababa', sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5
+      senderEmail: 'partnerships@ethiobuildconnect.et', replyTo: 'ethiobuildconnectexpo@gmail.com', timezone: 'Africa/Addis_Ababa', sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5, autoQueueNew: true
     })
     vi.mocked(outreachApi.list).mockResolvedValue({ content: [contact(), contact({ id: 'c2', name: 'Awash Bank', sector: 'Bank', effectiveTemplateKey: 'BANK', hook: 'Your diaspora mortgage', status: 'SENT', lastSentAt: '2026-11-18T09:00:00', nextActionAt: '2026-11-25T09:00:00' })], totalElements: 2, totalPages: 1, number: 0, size: 50 })
     vi.mocked(outreachApi.templates).mockResolvedValue([{ id: 't1', templateKey: 'BANK', locale: 'en', subject: 'S', body: 'B' }])
@@ -108,5 +108,16 @@ describe('AdminOutreachView', () => {
     await flushPromises()
     expect(outreachApi.updateSettings).toHaveBeenLastCalledWith(expect.objectContaining({ dailyCap: 12, hourlyCap: 8, sendWindowStart: 9, sendWindowEnd: 17, followUpAfterDays: 5 }))
     expect(w.find('[data-testid="outreach-stats"]').text()).toContain('/ 12')
+  })
+
+  it('queues every new contact in one click after confirming', async () => {
+    vi.mocked(outreachApi.queueAll).mockResolvedValue(2)
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    const w = mountView()
+    await flushPromises()
+    expect(w.find('[data-testid="auto-queue-state"]').text()).toBe('admin.outreach.autoQueueOn')
+    await w.find('[data-testid="queue-all"]').trigger('click')
+    await flushPromises()
+    expect(outreachApi.queueAll).toHaveBeenCalled()
   })
 })

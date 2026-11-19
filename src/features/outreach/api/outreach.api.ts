@@ -56,6 +56,7 @@ export interface OutreachStats {
   sendWindowStart: number
   sendWindowEnd: number
   followUpAfterDays: number
+  autoQueueNew: boolean
 }
 
 export interface OutreachSettingsRequest {
@@ -65,6 +66,7 @@ export interface OutreachSettingsRequest {
   sendWindowStart?: number
   sendWindowEnd?: number
   followUpAfterDays?: number
+  autoQueueNew?: boolean
 }
 
 export interface OutreachTemplate {
@@ -129,6 +131,9 @@ export const outreachApi = {
   },
   async update(id: string, body: Partial<Pick<OutreachContact, 'contactName' | 'templateKey' | 'locale' | 'hook' | 'owner' | 'notes' | 'phone' | 'status'>>): Promise<OutreachContact> {
     return (await api.patch<OutreachContact>(`/admin/outreach/contacts/${id}`, body)).data
+  },
+  async queueAll(): Promise<number> {
+    return (await api.post<{ queued: number }>('/admin/outreach/contacts/queue-all')).data.queued
   },
   async queue(ids: string[]): Promise<number> {
     return (await api.post<{ queued: number }>('/admin/outreach/contacts/queue', { ids })).data.queued

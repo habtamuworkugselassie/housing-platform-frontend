@@ -1165,7 +1165,13 @@
       "settingsHint": "Weekdays only, hours in {tz}. Changes apply at the next 5-minute tick, no restart needed.",
       "settingsSaved": "Settings saved.",
       "schedulerTurnedOn": "Scheduled sending is on. Queued contacts will be emailed inside the send window.",
-      "schedulerTurnedOff": "Scheduled sending is off. Queued contacts stay queued; Send now still works."
+      "schedulerTurnedOff": "Scheduled sending is off. Queued contacts stay queued; Send now still works.",
+      "autoQueue": "Email new contacts automatically.",
+      "autoQueueHelp": "The scheduler takes NEW contacts by itself, oldest first, under the caps. Turn off to send only what you queue by hand.",
+      "autoQueueOn": "New contacts are emailed automatically, oldest first.",
+      "autoQueueOff": "Only queued contacts are sent; queue them by hand.",
+      "queueAll": "Queue all new ({n})",
+      "queueAllConfirm": "Queue all {n} new contacts for the scheduler? Only Send now or scheduled sending will email them."
     }
   },
   "validation": {
