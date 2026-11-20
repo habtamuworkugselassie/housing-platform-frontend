@@ -446,6 +446,64 @@
     .sponsor-loading { font-size: 9pt; color: #6b7280; }
     @media print { .sponsor-loading { color: #666; } }
     #sponsor-load-error { color: #f87171; font-size: 10pt; text-align: center; padding: 8px; }
+
+    /* --- proposal pages --- */
+    .page-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 2px solid #4c1d95; padding-bottom: 6px; margin-bottom: 14px; }
+    .page-head .brand { font-size: 8pt; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 800; color: #4c1d95; }
+    .page-head .pno { font-size: 8pt; color: #6b7280; letter-spacing: 0.1em; }
+    .page-foot { margin-top: 18px; padding-top: 8px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between; gap: 10px; font-size: 8pt; color: #6b7280; }
+    .lead { font-size: 11pt; color: #374151; max-width: 40em; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0 16px; }
+    .facts.four { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 640px) { .facts, .facts.four { grid-template-columns: 1fr 1fr; } .fact { min-width: 0; } }
+    .fact { border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 11px; background: #ffffff; }
+    .fact .k { font-size: 7.5pt; letter-spacing: 0.15em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .fact .v { font-weight: 700; font-size: 10pt; color: #111827; margin-top: 2px; line-height: 1.3; overflow-wrap: anywhere; }
+    .fact .s { font-size: 8.5pt; color: #6b7280; margin-top: 2px; }
+    .numbered { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 9.5pt; margin: 8px 0 12px; }
+    .numbered.one { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .numbered { grid-template-columns: 1fr; } }
+    .numbered .item { display: flex; gap: 10px; align-items: flex-start; }
+    .numbered .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #4c1d95; color: #fff; font-weight: 800; font-size: 8.5pt; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .numbered .item strong { display: block; color: #111827; }
+    .numbered .item span { color: #6b7280; font-size: 9pt; }
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 6px 0 14px; }
+    .tbl th, .tbl td { border-bottom: 1px solid #e5e7eb; padding: 6px 8px; text-align: left; vertical-align: top; }
+    .tbl th { font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .tbl td.c, .tbl th.c { text-align: center; }
+    .tbl tr.price td { font-weight: 800; color: #4c1d95; }
+    .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 14px; }
+    @media (max-width: 640px) { .tiers { grid-template-columns: 1fr; } }
+    .tier { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; background: #ffffff; break-inside: avoid; }
+    .tier.top { grid-column: 1 / -1; background: #4c1d95; color: #ffffff; border-color: #4c1d95; }
+    .tier .t-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+    .tier .t-name { font-weight: 800; font-size: 11.5pt; color: #111827; }
+    .tier.top .t-name { color: #ffffff; }
+    .tier .t-sub { font-size: 7.5pt; letter-spacing: 0.15em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .tier.top .t-sub { color: #fde047; }
+    .tier .price { font-size: 14pt; font-weight: 800; color: #4c1d95; white-space: nowrap; text-align: right; }
+    .tier.top .price { color: #fde047; }
+    .tier .booth { font-size: 8.5pt; color: #6b7280; text-align: right; }
+    .tier.top .booth { color: #e9d5ff; }
+    .tier ul { font-size: 9pt; margin: 8px 0 0; padding-left: 1.1em; columns: 2; column-gap: 18px; }
+    .tier.top ul { color: #f3e8ff; }
+    .tier:not(.top) ul { columns: 1; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 14px; }
+    @media (max-width: 640px) { .stats { grid-template-columns: 1fr 1fr; } }
+    .stat { border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; background: #f9fafb; }
+    .stat .big { font-size: 15pt; font-weight: 800; color: #4c1d95; line-height: 1.1; }
+    .stat .l { font-size: 9pt; font-weight: 700; color: #111827; }
+    .stat .s { font-size: 8pt; color: #6b7280; }
+    .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0 14px; text-align: center; }
+    .strip div { background: #4c1d95; color: #fff; border-radius: 8px; padding: 10px 8px; }
+    .strip .big { font-size: 16pt; font-weight: 800; color: #fde047; line-height: 1.1; }
+    .strip .s { font-size: 8.5pt; color: #e9d5ff; margin-top: 2px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 14px 0 6px; }
+    .cta { display: inline-block; background: #facc15; color: #1f1535; font-weight: 800; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-size: 10pt; }
+    .cta-link { color: #4c1d95; font-weight: 700; text-decoration: underline; font-size: 10pt; }
+    .quiet { font-size: 8.5pt; color: #6b7280; }
+    @media print { .tier.top, .strip div { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .page-foot, .quiet { color: #555; } }
   </style>
 </head>
 <body class="brochure-lang-am">
@@ -485,13 +543,13 @@
       </div>
       <h1>ድጋሜ ፕሮጀክቶች።<br />ታላቅ ግንኙነቶች።<br />ይበልጥ ታላቅ እድሎች።</h1>
       <p class="date-line accent">9–13 ጃንዋሪ 2027</p>
-      <p class="date-line muted" style="margin-top: 4px;">አዲስ ኮንቬንሽን ማእከል — አዲስ አበባ፣ ኢትዮጵያ</p>
+      <p class="date-line muted" style="margin-top: 4px;">አዲስ ዓለም አቀፍ ኮንቬንሽን ሴንተር (AICC) — አዲስ አበባ፣ ኢትዮጵያ</p>
       <p class="sub">
         የአለም ቪዥነሪዎችን ይግኙ፣ ታዋቂ ፕሮጀክቶችን ይመልከቱ እና በክልሉ ትልቁ የንብረት እና የግንባታ ማሳያ ላይ ዕድገት እና ትብብር መንገዶችን ይክፈቱ።
       </p>
     </div>
     <div>
-      <p class="pill">በ2027 ይመጣል</p>
+      <p class="pill">የኢትዮጵያ የመጀመሪያ ዘርፈ ብዙ በመተግበሪያና በድረ-ገፅ የተደገፈ ኤክስፖ</p>
       <p class="muted" style="font-size: 9.5pt;">
         የንብረት ኩባንያዎች፣ ተቋራጮች፣ አቅራቢዎች እና ኮንሳልታንቶች ፕሮጀክቶቻቸውን እና ምርቶቻቸውን ለገዢዎች፣ ባለሃብቶች እና አጋሮች የሚያሳዩበት ልዩ መድረክ። ተሳተፊዎች ገንቢዎች፣ ተቋራጮች፣ አርኪቴክቶች፣ የግንባታ ቁሳቁሶች እና የመጨረሻ ስራ አቅራቢዎች እና አገልግሎት ሰጪዎችን ያካትታሉ — ሁሉም በአንድ ጣራ ሥር።
       </p>
@@ -516,130 +574,78 @@
     </div>
   </section>
 
-  <!-- ገጽ 3 -->
+    <!-- ግብዣ -->
   <section class="sheet">
-    <h2>ለምን ይጎብኙ</h2>
-    <p class="muted" style="margin-bottom: 12px;">
-      በክልሉ ትልቁ የንብረት ዝግጅት የመኖሪያ የወደፊት እድገትን ያስሱ። በፈጠራ የከተማ ጥበቃዎች ውስጥ ይግቡ እና ከአለም አቀፍ የንብረት መሪዎች ጋር ይግኙ።
-    </p>
-    <ul>
-      <li>300+ ተሳተፊዎች · 500+ ተናጋሪዎች · 6 ደረጃዎች</li>
-      <li>180+ ሰዓት የስብሰባ ይዘት</li>
-      <li>በተሳተፊ የማሳያ ባህሪያት እና ኔትወርኪንግ</li>
-    </ul>
-
-    <h2>ለምን ይሳተፉ (ተሳተፊ)</h2>
-    <p class="muted" style="margin-bottom: 12px;">
-      ቪዥንዎን ከአለም አቀፍ ተጽዕኖ ፈጣሪዎች እና ውሳኔ ተሳታፊዎች ጋር ያሳዩ። የግንባታ እና የንብረት የወደፊት እድገትን የሚያስተዳድሩ ተቋራጭ ባለሃብቶች፣ ገንቢዎች እና የመንግሥት አካላት ይግኙ።
-    </p>
-    <ul>
-      <li>ለከፍተኛ ዋጋ ያላቸው ፕሮጀክቶች እና ትብብሮች ያልተበላሸ መድረስ</li>
-      <li>በስፖንሰርሺፕ እድሎች በኩል መገኘትዎን ከፍ ማድረግ</li>
-      <li>የስብሰባ፣ የኔትወርኪንግ እና የባለሃብት ፕሮግራሞች</li>
-    </ul>
-
-    <h2>በኤግዚቢሽኑ ምን እንደሚጠበቅ</h2>
-    <div class="grid-2">
-      <div class="box">
-        <h3>የክልሉ ትልልቅ ፕሮጀክቶች</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          የቅርብ ጊዜ ማስጀመሪያዎች፣ ቪዥነሪ ዋና ዕቅዶች እና ፈጠራ እድገቶች — ሁሉም በአንድ ጣራ ሥር። 550+ ተሳተፊዎች የንብረት እና የግንባታ የወደፊት እድገትን ያሳያሉ።
-        </p>
-      </div>
-      <div class="box">
-        <h3>ከውሳኔ ተሳታፊዎች ጋር ይግኙ</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          በተዘጋጁ ኔትወርኪንግ በባለሃብቶች፣ ገንቢዎች እና የከተማ መሪዎች ጋር ይግኙ። አዲስ ካፒታል፣ ትብብሮች ይፍጠሩ እና በሚጠቅሙ ገበያዎች ያስፋፉ።
-        </p>
-      </div>
-      <div class="box" style="grid-column: 1 / -1;">
-        <h3>ጠቃሚ ግንዛቤዎች</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          ከኢንዱስትሪ መሪዎች በእንዴት እንኖራለን፣ እንትወድማለን እና እንገነባለን በሚለው አዝማሚያ ላይ ተግባራዊ ግንዛቤዎች። ለገበያ የተዘጋጁ የስብሰባ እና የዝግጅት ክፍሎች።
-        </p>
-      </div>
-    </div>
-    <p class="footer-note">
-      ዋና የማሳያ ባህሪያት፦ የዓለም ደረጃ ስብሰባዎች፣ ትልልቅ ማስታወቂያዎች፣ የገንቢ ፕሮግራም እና ልዩ ትራክቶች። ብትሳተፍ ወይም ብትጎብኝ፣ እዚህ ለእርስዎ ያለው ጥቅም ነው።
-    </p>
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ግብዣ · 03 / 11</span></div>
+    <h2>በኢትዮ ቢልድ ኮኔክት ኤክስፖ ላይ እንዲሳተፉ ተጋብዘዋል</h2>
+<p class="lead">ድርጅታችን ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር ከንግድና ቀጠናዊ ትስስር ሚኒስቴር ጋር በጋራ በመሆን እንዲሁም በአዲስ አበባ ቻምበር ኦፍ ኮሜርስ ተባባሪ አዘጋጅነት፣ የኢትዮጵያን የመጀመሪያ ዘርፈ ብዙ በመተግበሪያና በድረ-ገፅ የተደገፈ ኤክስፖ ለማቅረብ ዝግጅቱን ጨርሷል።</p><div class="facts four"><div class="fact"><div class="k">የዝግጅቱ ስም</div><div class="v">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</div></div><div class="fact"><div class="k">ቀን</div><div class="v">ጥር 01–05, 2019 ዓ.ም</div><div class="s">9–13 January 2027</div></div><div class="fact"><div class="k">የቆይታ ጊዜ</div><div class="v">5 ተከታታይ ቀናት</div><div class="s">70–90 ዳሶች · የ365 ቀን መተግበሪያ</div></div><div class="fact"><div class="k">ቦታ</div><div class="v">አዲስ ዓለም አቀፍ ኮንቬንሽን ሴንተር</div><div class="s">AICC · አዲስ አበባ</div></div></div><div class="grid-2"><div><h3>የተሳትፎ ጥቅሞች</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>ገዥዎች ታማኝ እና ግልፅ የፕሮጀክት መረጃ የሚያገኙበት መድረክ</strong></div></div><div class="item"><span class="n">2</span><div><strong>በገዥና በሻጭ መካከል ያለውን የመተማመን ድልድይ ማጠናከር</strong></div></div><div class="item"><span class="n">3</span><div><strong>ከኤግዚቢሽኑ በኋላም የሚቀጥል ድረ-ገፅ እና ሞባይል መተግበሪያ</strong></div></div><div class="item"><span class="n">4</span><div><strong>ከባንኮችና ከፋይናንስ ተቋማት ጋር ቀጥታ ትውውቅ</strong></div></div><div class="item"><span class="n">5</span><div><strong>በግብይት ወቅት የህግ ባለሙያዎች የማማከር አገልግሎት</strong></div></div><div class="item"><span class="n">6</span><div><strong>ለጎብኚዎች የልዩ ቅናሽ ፓኬጅ የማቅረብ እድል</strong></div></div></div></div><div><h3>የዘርፉ ተግዳሮቶች</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>የፋይናንስ ተቋማት ስለ ፕሮጀክቶች ግልፅ መረጃ አለማግኘት</strong></div></div><div class="item"><span class="n">2</span><div><strong>የሪል ስቴት ፕሮጀክቶች መረጃ ተበታትኖ መገኘት እና ለገዥዎች ታማኝ መረጃ እጥረት</strong></div></div><div class="item"><span class="n">3</span><div><strong>የዋጋና የአቅርቦት ግልፅነት ክፍተት፣ ተጠያቂነት የላላ መሆን</strong></div></div><div class="item"><span class="n">4</span><div><strong>ለከፍተኛ የማስተዋወቂያ ወጪ መዳረግ፣ ሆኖም የተጠበቀውን ውጤት አለማምጣት</strong></div></div><div class="item"><span class="n">5</span><div><strong>ዝቅተኛ የዲጂታል አጠቃቀም እና ፕሮጀክቶችን ለመከታተል የሚያስችል መድረክ አለመዘርጋት</strong></div></div></div></div></div><h3>የሚሳተፉ ዘርፎች</h3><div class="cols-3"><div class="sector-tag">የሪል ስቴት አልሚዎች</div><div class="sector-tag">ባንኮችና ማይክሮ ፋይናንስ</div><div class="sector-tag">ኢንሹራንሶች</div><div class="sector-tag">ኮንትራክተሮች</div><div class="sector-tag">ኮንሰልታንቶች</div><div class="sector-tag">አርክቴክቶች</div><div class="sector-tag">የኮንስትራክሽን ዕቃ አምራችና አስመጭ</div><div class="sector-tag">የፊኒሺንግ ስራ ድርጅቶች</div><div class="sector-tag">ፕሮፕቴክ እና ዲጂታል አገልግሎቶች</div></div><p style="margin-top:12px">ስለሆነም ከላይ የተዘረዘሩትን ነጥቦች በመረዳት ድርጅትዎ በብዙ የሚያተርፍበትን ይህን ኤግዚቢሽን እንዲሳተፍ እንጋብዛለን። የተሳትፎና የስፖንሰርሺፕ ፓኬጆች በገፅ 10 እና 11 ላይ ቀርበዋል።</p><p class="quiet">ከሠላምታ ጋር፣ ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር · ከንግድና ቀጠናዊ ትስስር ሚኒስቴር እና ከአዲስ አበባ ቻምበር ኦፍ ኮሜርስ ጋር በጋራ</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ፍለጋውን ተዉ · ግንባታውን ጀምሩ · ሁሉም ነገር እዚህ ነው</span><span>ethiobuildconnect.et</span></div>
   </section>
 
-  <!-- ገጽ 4 -->
+  <!-- አዘጋጅ -->
   <section class="sheet">
-    <h2>ማን ይገኛል</h2>
-    <p class="muted" style="margin-bottom: 10px;">
-      ዝግጅቱ የንብረት መሪዎችን — ባለሃብቶች፣ ገንቢዎች፣ አርኪቴክቶች፣ የመንግሥት ባለስልጣናት እና የቤት ገዢዎች — ያስተካክላል።
-    </p>
-    <div class="grid-2" style="font-size: 9.5pt;">
-      <div class="box"><strong>የንብረት ገንቢዎች</strong><br /><span class="muted">ዋና ዕቅድ አዘጋጆች እና የፕሮጀክት መሪዎች</span></div>
-      <div class="box"><strong>ፕሮፕቴክ ፈጣሪዎች</strong><br /><span class="muted">ቴክ እና የንብረት ገበያ መፍትሄዎች</span></div>
-      <div class="box"><strong>አርኪቴክቶች እና ዲዛይነሮች</strong><br /><span class="muted">ዘላቂ እና የወደፊት ዲዛይን</span></div>
-      <div class="box"><strong>የመንግሥት ባለስልጣናት</strong><br /><span class="muted">የብሔራዊ እድገት ስትራቴጂዎች</span></div>
-      <div class="box"><strong>የግንባታ ባለሙያዎች</strong><br /><span class="muted">ተቋራጮች እና መሠረታዊ ግንባታ</span></div>
-      <div class="box"><strong>ብሮከርስ እና ኮንሳልታንቶች</strong><br /><span class="muted">የገበያ ብልጥ ግንዛቤ እና ምክር</span></div>
-      <div class="box"><strong>ባለሃብቶች እና ፋይናንሺያሎች</strong><br /><span class="muted">ከፍተኛ ዋጋ ያላቸው የንብረት እድሎች</span></div>
-      <div class="box"><strong>የቤት ገዢዎች</strong><br /><span class="muted">የመኖሪያ አዝማሚያዎች እና ብልጽግና መኖር</span></div>
-    </div>
-
-    <h2 style="margin-top: 18px;">የግንባታ ዋጋ ሰንሰለት</h2>
-    <p class="muted" style="margin-bottom: 10px;">ሙሉውን የኢንዱስትሪ ስፔክትረም እንሸፍናለን። ለንግድዎ ጠቃሚ የሆነውን አካባቢ ያግኙ።</p>
-    <div class="cols-3">
-      <div class="sector-tag">የግንባታ ቁሳቁሶች</div>
-      <div class="sector-tag">ኮንክሪት እና ሲሚንቶ</div>
-      <div class="sector-tag">ውስጣዊ እና መጨረሻዎች</div>
-      <div class="sector-tag">የከተማ ዲዛይን</div>
-      <div class="sector-tag">የሕንፃ አገልግሎቶች (MEP)</div>
-      <div class="sector-tag">የግንባታ መሳሪያዎች</div>
-      <div class="sector-tag">HVAC እና ቀዝቃዛ</div>
-      <div class="sector-tag">ዲጂታል ግንባታ</div>
-      <div class="sector-tag">የፀሐይ ኢነርጂ</div>
-      <div class="sector-tag">ከባድ ማሽኖች</div>
-      <div class="sector-tag">ብልጥ ሕንፃ</div>
-      <div class="sector-tag">ዘላቂ ግንባታ</div>
-    </div>
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">አዘጋጅ · 04 / 11</span></div>
+    <h2>ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር</h2>
+<p class="lead">የድርጅት መገለጫ እና ከንግድና ቀጠናዊ ትስስር ሚኒስቴር የተሰጠ የንግድ ትርዒት ፈቃድ።</p><div class="box" style="margin:10px 0 14px"><p class="pill">በመንግስት የተፈቀደ · ፈቃድ ቁጥር 011.6.2/10087 · 26 ጁን 2026</p><p style="font-size:9.5pt;margin:0">የኢትዮጵያ ፌዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ የንግድና ቀጠናዊ ትስስር ሚኒስቴር፣ ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር ሜይ 13 ቀን 2026 ባቀረበው ጥያቄ መሰረት፣ ኢትዮ ቢልድ ኮኔክት ኤክስፖን ከጥር 01 እስከ 05 2019 ዓ.ም (9–13 January 2027) በአዲስ ዓለም አቀፍ ኮንቬንሽን ሴንተር (AICC) አዲስ አበባ እንዲያዘጋጅ ፈቅዷል።</p></div><div class="facts four"><div class="fact"><div class="k">የተቋቋመበት ዓመት</div><div class="v">2019 · አዲስ አበባ</div></div><div class="fact"><div class="k">የንግድ ምዝገባ ቁጥር</div><div class="v">BL/AA/2/0016871/2010</div></div><div class="fact"><div class="k">የንግድ ፈቃድ ቁጥር</div><div class="v">AACATB/14/673/50205257/2018</div></div><div class="fact"><div class="k">የግብር ከፋይ መለያ (TIN)</div><div class="v">0058735690</div></div><div class="fact"><div class="k">ካፒታል</div><div class="v">ብር 8,016,000.00</div></div><div class="fact"><div class="k">አድራሻ</div><div class="v">ቦሌ ክ/ከተማ፣ ወረዳ 04፣ አዲስ አበባ</div></div><div class="fact"><div class="k">ስራ አስኪያጅ</div><div class="v">ወ/ት ሀና ሰለሞን በላይ</div></div><div class="fact"><div class="k">የንግድ ዘርፍ</div><div class="v">ልዩ ዝግጅቶች፤ ማስታወቂያ፤ ህትመት</div><div class="s">የማሸጊያና የጽሕፈት መሳሪያ ጅምላ ንግድ</div></div></div><h3>ስለ ድርጅቱ</h3><div class="grid-2" style="font-size:9.5pt"><p class="muted">ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር በ2019 የቢሮ ዕቃዎች አቅራቢ፣ የህትመትና የማስታወቂያ ድርጅት ሆኖ የተቋቋመ ሲሆን፣ ከጊዜ በኋላ የወጪ ንግድ ስራ ጀምሯል። ድርጅቱ በማኑፋክቸሪንግ ዘርፍ የተሰማራ ሲሆን የታሸገ የምንጭ ውሃ ፋብሪካ በመገንባት ላይ ይገኛል። ዋና ዓላማው ደንበኛን ያማከለ አገልግሎት መስጠት ነው።</p><p class="muted">ኢትዮ ቢልድ ኮኔክት ኤክስፖ የግንባታ፣ የሪል እስቴት፣ የግንባታ ግብዓቶች፣ የፋይናንስ፣ የኢንሹራንስ፣ የኮንትራክተሮች፣ የአርክቴክትና የማማከር ዘርፎችን በአንድ የንግድ መድረክ ያስተሳስራል። የ3D ግንባታ ፕሪንተሮች፣ ፕሪፋብሪኬሽን፣ ስማርት ሲቲ እና አረንጓዴ ኃይል ቆጣቢ ቴክኖሎጂዎች ይተዋወቃሉ፤ ይህም የውጭ ቀጥተኛ ኢንቨስትመንት ለማስፋት፣ የቴክኖሎጂ ሽግግርን ለማፋጠንና የሥራ ዕድል ለመፍጠር ያግዛል።</p></div><p class="quiet">የንግድ ምዝገባ የምስክር ወረቀት፣ የንግድ ፈቃድ፣ የግብር ከፋይ ምዝገባ የምስክር ወረቀት እና የሚኒስቴሩ የንግድ ትርዒት ፈቃድ ግልባጮች ሲጠየቁ ይቀርባሉ።</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ፈቃድ ያለው · የተመዘገበ · በመንግስት የተፈቀደ</span><span>ethiobuildconnect.et</span></div>
   </section>
 
-  <!-- ገጽ 5 -->
+  <!-- ፕሮፖዛል -->
   <section class="sheet">
-    <h2>ለምን ይሳተፉ</h2>
-    <p class="muted" style="margin-bottom: 12px;">የቅርብ ጊዜ ፈጠራዎችን ያግኙ እና ዘርፉን የሚያስቀድም የከፍተኛ ደረጃ ኔትወርኪንግ።</p>
-    <div class="grid-2">
-      <div class="box">
-        <h3>ንግድዎን ያስፋፉ</h3>
-        <p class="muted" style="font-size: 9.5pt;">አዲስ ትብብሮች ይፍጠሩ እና በፈጣን ማስፋፋት ላይ ባለው ገበያ ኔትወርክዎን ያድጉ።</p>
-      </div>
-      <div class="box">
-        <h3>ምርቶችዎን ያሳዩ</h3>
-        <p class="muted" style="font-size: 9.5pt;">የቅርብ ጊዜ ፈጠራዎችዎን ለሺዎች የሚሆኑ ግብአቶች እና ውሳኔ ተሳታፊዎች ያሳዩ።</p>
-      </div>
-      <div class="box">
-        <h3>ቁርጥ የሆኑ ገዢዎችን ይግኙ</h3>
-        <p class="muted" style="font-size: 9.5pt;">ከግዥ ስራ አስኪያጆች፣ አርኪቴክቶች እና ገንቢዎች በቀጥታ ይግኙ።</p>
-      </div>
-      <div class="box">
-        <h3>ጥራት ያላቸው ሊድስ ይፍጠሩ</h3>
-        <p class="muted" style="font-size: 9.5pt;">ፒፓይላይንዎን ከከፍተኛ ዋጋ ያላቸው እውቂያዎች እና እውነተኛ የንግድ እድሎች ያስቀምጡ።</p>
-      </div>
-    </div>
-
-    <p class="pill" style="margin-top: 18px;">በእነርሱ ቃል</p>
-    <blockquote>
-      «ኤግዚቢሽኑ አለም አቀፍ ባለሃብቶች የሚገናኙበት እና ሀሳቦችን የሚለዋወጡበት እና የራሳቸውን ምርት እና ተወሳሽነት ያለውን ገበያ እንዴት ማዳበር እንደሚችሉ የሚያስሱበት ፍጹም መድረሻ ነው።»
-    </blockquote>
-    <p class="muted" style="font-size: 9pt;">— የኢንዱስትሪ መሪ</p>
-
-    <h2 style="margin-top: 20px;">ጉዞዎን ይዋቅሩ እና ይመዝግቡ</h2>
-    <p class="muted">
-      በንብረት እና የከተማ እድገት ውስጥ በሚቻል ነገር ድንበሮችን የሚያሻሽል ዝግጅት ጋር ይግኙን። ስታንድዎን ይያዙ ወይም በዓመቱ በጣም የሚጠበቀውን የንብረት እና የግንባታ ዝግጅት ለመጎብኘት ይመዝግቡ።
-    </p>
-    <p style="margin-top: 12px; font-weight: 600;">
-      ስለ ቀናት፣ የተሳተፊ መረጃ እና እንዴት እንደሚሳተፉ ዝማሬዎች ለማግኘት በ Ethio Build Connect የኤግዚቢሽን ገጽ ላይ ፍላጎትዎን ይመዝግቡ።
-    </p>
-    <p class="footer-note">
-      ተሳተፊዎች ገንቢዎች፣ ተቋራጮች፣ አርኪቴክቶች፣ የግንባታ ቁሳቁሶች እና የመጨረሻ ስራ አቅራቢዎች እና አገልግሎት ሰጪዎችን ያካትታሉ። ፕሪሚየም እና ጎልድ ስፖንሰር እድሎች ይገኛሉ።<br />
-      © 2026 ድሪም ቲምስ ትሬዲንግ ኃ/የተ/የግ/ማ. መብቱ በህግ የተጠበቀ ነው።
-    </p>
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ፕሮፖዛል · 05 / 11</span></div>
+    <h2>ራዕይ፣ ዓላማዎች እና ስትራቴጂካዊ ንድፍ</h2>
+<p class="lead">የኢትዮጵያ መንግስት በረጅምና በመካከለኛ ጊዜ ዕቅዶቹ ፈጣን የከተማ እድገት፣ የተደራጀ የመኖሪያ ቤቶች አቅርቦት፣ ዘመናዊ የኮንስትራክሽን ቴክኖሎጂዎችን ማስፋፋት፣ የግል ዘርፍ ተሳትፎን ማጠናከር እና የፋይናንስ ስርዓቱን ማስፋት እንደ ቁልፍ ግቦች አስቀምጧል። ይህ ኤክስፖ የሪል ስቴት፣ የኮንስትራክሽን እና የፋይናንስ ዘርፎችን በአንድ የተቀናጀ መድረክ በማሰባሰብ እነዚህን ግቦች በተግባር ይደግፋል።</p><h3>ዋና ዓላማ</h3><p>የሪል ስቴት፣ የኮንስትራክሽን እና የፋይናንስ ዘርፎችን በአንድ መድረክ ላይ በመደመር የጋራ ትውውቅና የስራ ግንኙነት ማጠናከር።</p><h3>ዝርዝር ዓላማዎች</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>ተሳታፊ ድርጅቶች ፕሮጀክቶቻቸውን፣ አገልግሎቶቻቸውን እና ምርቶቻቸውን ለህዝብ ማቅረብ</strong></div></div><div class="item"><span class="n">2</span><div><strong>አዳዲስ ደንበኞችና ክላየንቶች ማግኘት</strong></div></div><div class="item"><span class="n">3</span><div><strong>የሀገር ውስጥ ምርቶች ሽያጭ ማጠናከር</strong></div></div><div class="item"><span class="n">4</span><div><strong>የፋይናንስ አማራጮችን (ብድር፣ መድን፣ ማይክሮ ፋይናንስ) በቀጥታ ለጎብኚዎች ማስተዋወቅ</strong></div></div><div class="item"><span class="n">5</span><div><strong>የኮንስትራክሽን አዳዲስ ቴክኖሎጂዎችና እቃዎችን ማሳየት</strong></div></div></div><div class="cols-3" style="margin-top:12px;font-size:9.5pt"><div class="box"><p class="pill">ራዕይ</p><p style="margin:0">በኢትዮጵያ ውስጥ በሚገኙ የሪል እስቴት እና ተዛማጅ ዘርፎች ውስጥ የተመረጠ እና ለዘላቂ የንግድ ሂደት አስተዋፆው የላቀ የንግድ እና የዲጂታል መድረክ መሆን።</p></div><div class="box"><p class="pill">ተልዕኮ</p><p style="margin:0">ግልፅ እና የተቀናጀ ኤግዚቢሽን በመፍጠር የንግድ ሂደቱን ማቀላጠፍ፤ የሀገር ውስጥ ምርቶችን ማቅረብ፤ የዲጂታል መድረኮችን ማቅረብ፤ በገዥ እና በሻጭ መካከል እምነትን ማጠናከር፤ በክልል ከተሞችና በሌሎች ሀገራት በሚዘጋጁ መድረኮች መሳተፍ።</p></div><div class="box"><p class="pill">ዋና እሴቶች</p><p style="margin:0"><strong>ግልፅነት · ታማኝነት · ፈጠራ።</strong> እነዚህ እሴቶች ለእያንዳንዱ ተሳታፊ፣ ጎብኚ እና አጋር የምንሰጠውን አገልግሎት ይመራሉ።</p></div></div><p style="margin-top:12px">ይህ የተቀናጀ ዘርፈ ብዙ አቀራረብ በገዥና በሻጭ መካከል ያለውን የመተማመን ክፍተት ለመድፈን፣ የሀገር ውስጥ ምርቶች ሽያጭን ለማሳደግ፣ እንዲሁም ከአምስቱ የኤግዚቢሽን ቀናት በኋላም የሚዘልቅ ዲጂታል መድረክ ለኢትዮጵያ የግንባታ ዘርፍ ለመስጠት የተነደፈ ነው።</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ተገናኙ · ፈጥሩ · ገንቡ · በጋራ</span><span>ethiobuildconnect.et</span></div>
   </section>
+
+  <!-- ቡድን እና ዋና ኩነቶች -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ቡድን እና ዋና ኩነቶች · 06 / 11</span></div>
+    <h2>የቡድን መዋቅር እና የዝግጅቱ ዋና ዋና ኩነቶች</h2>
+<h3>የቡድን መዋቅር እና የሚና ምደባ</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">ቡድን</th><th class="">ሚና</th><th class="">ዋና አባላት</th></tr></thead><tbody><tr><td class="">የፕሮጀክት ማኔጅመንት</td><td class="">ስራ አስኪያጅ፣ አስተባባሪ፣ እቅድ አውጪ</td><td class="">ንጉስ ሰለሞን</td></tr><tr><td class="">ብራንዲንግ እና ዲዛይን</td><td class="">ግራፊክስ ዲዛይነሮች፣ የህትመት ተቆጣጣሪዎች</td><td class="">ቅዱስ አበራ</td></tr><tr><td class="">ዲጂታል ሚዲያ</td><td class="">ቪዲዮ አዘጋጆች፣ አኒሜተሮች፣ የማህበራዊ ሚዲያ መሪዎች</td><td class="">ሄርሜላ እና ኪዱስ</td></tr><tr><td class="">ቴክኖሎጂ እና ምርት</td><td class="">የኤልኢዲ ቴክኒሻኖች፣ የድረ-ገጽ እና የሞባይል መተግበሪያ አልሚ</td><td class="">ሀብታሙ ወርቁ እና ንጉስ</td></tr><tr><td class="">ግንባታ እና ስብሰባ</td><td class="">ዲኮር፣ የመድረክ/የዳስ ግንቢዎች፣ መብራት</td><td class="">ዳግም እና ዳዊት</td></tr><tr><td class="">የእንግዳ አያያዝ</td><td class="">የምዝገባ መሪዎች፣ አስተናጋጆች፣ የቁጥጥር ኦፊሰሮች</td><td class="">ሄርሜላ እና ሩት</td></tr><tr><td class="">ማርኬቲንግ እና ኮሙዩኒኬሽን</td><td class="">የማህበራዊ ሚዲያ ስራ አስኪያጆች፣ የፅሁፍ ይዘት አዘጋጆች</td><td class="">ቅዱስ እና ሩት</td></tr><tr><td class="">ሎጂስቲክስ</td><td class="">ትራንስፖርት፣ የእቃ ተቆጣጣሪዎች፣ ግዥ</td><td class="">ሩት እና ንጉስ</td></tr></tbody></table></div><h3>የዝግጅቱ ዋና ዋና ኩነቶች</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>ይፋዊ መክፈቻ እና የመተግበሪያዎች ማስጀመሪያ</strong><span>በሚኒስትሮች ገለፃ</span></div></div><div class="item"><span class="n">2</span><div><strong>የኢንዱስትሪ መሪዎች ምስክርነት</strong><span>አጫጭር የቪዲዮ ምስክርነቶች</span></div></div><div class="item"><span class="n">3</span><div><strong>የኤግዚቢሽን መሪ ጉብኝት</strong><span>ክቡር እንግዶች፣ ባለሀብቶችና ሚዲያዎች</span></div></div><div class="item"><span class="n">4</span><div><strong>የኢትዮጵያ የግንባታ ዘርፍ አቅም ማሳያ</strong><span>የሀገር ውስጥ ግብዓት እና ማኑፋክቸሪንግ</span></div></div><div class="item"><span class="n">5</span><div><strong>የህንፃ እና የሪል እስቴት ኢንቨስትመንት ፎረም</strong><span>ባለሀብቶች፣ ባንኮች፣ አልሚዎች እና መንግስት</span></div></div><div class="item"><span class="n">6</span><div><strong>የ B2B ትስስር መድረክ</strong><span>አምራቾች፣ ኮንትራክተሮች፣ አቅራቢዎችና ገዢዎች</span></div></div><div class="item"><span class="n">7</span><div><strong>የሽልማትና እውቅና ስነ-ስርዓት</strong><span>የላቀ አፈጻጸም ላሳዩና ስፖንሰር ላደረጉ</span></div></div><div class="item"><span class="n">8</span><div><strong>የመዝጊያ ስነ-ስርዓት እና የትብብር ፊርማዎች</strong><span>የመግባቢያ ሰነድ (MoU) ፊርማዎች</span></div></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ተገናኙ · ፈጥሩ · ገንቡ · በጋራ</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- ዲጂታል መድረክ -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ዲጂታል መድረክ · 07 / 11</span></div>
+    <h2>ከኤግዚቢሽኑ በኋላም የሚቀጥል የድረ-ገፅና የሞባይል መተግበሪያ</h2>
+<div class="strip"><div><div class="big">365 ቀናት</div><div class="s">ዲጂታል</div></div><div><div class="big">5 ቀናት</div><div class="s">ቀጥታ</div></div><div><div class="big">∞</div><div class="s">ማብቂያ የሌለው ዕድል</div></div></div><div class="grid-2"><div><h3>ዲጂታል መተግበሪያ</h3><p class="muted" style="font-size:9.5pt">በኤግዚቢሽኑ መክፈቻ ቀን በይፋ የሚመረቀው የድረ-ገፅና የሞባይል መተግበሪያ ለእያንዳንዱ ተሳታፊ ድርጅት የራሱ መግቢያ እና የይለፍ ቃል ይሰጣል። ድርጅቶች በራሳቸው በማስተዳደር የፕሮጀክቶቻቸውን ሂደት፣ ምስሎችና ቪዲዮዎች በማንኛውም ጊዜ ይለጥፋሉ፤ ኤግዚቢሽኑ ከተጠናቀቀ በኋላም የመገናኛ መድረክ ሆኖ ይቀጥላል።</p></div><div><h3>ለተሳታፊ ድርጅቶች</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>የራስ መግቢያ (Username) እና የይለፍ ቃል</strong></div></div><div class="item"><span class="n">2</span><div><strong>የፕሮጀክት ሂደት፣ ምስሎችና ቪዲዮዎች በማንኛውም ጊዜ</strong></div></div><div class="item"><span class="n">3</span><div><strong>ከኤክስፖው በኋላም የሚቀጥል የመገናኛ መድረክ</strong></div></div></div></div></div><h3>የገበያ ጥናት</h3><p class="muted" style="font-size:9.5pt">በሃገራችን የከተሞች እድገት ፈጣን ነው፤ በተለይም በአዲስ አበባ ወደ ከተማው የሚፈልሰው ህዝብ ቁጥር ከፍተኛ ሆኖ ከፍተኛ የቤት ፍላጎትንና እጥረትን ፈጥሯል። ከሃገር ውጭ የሚኖሩ ኢትዮጵያውያን እና ትውልደ ኢትዮጵያውያን በሃገራቸው ኢንቨስት የማድረግ ፍላጎት እያደገ ሲሆን፣ ባንኮችና የፋይናንስ ተቋማትም የቤት ብድር ስርዓት ላይ እየሰሩ ይገኛሉ። ሆኖም የተደራጀ እና ለገዥዎች በቀላሉ የሚደርስ የመረጃ ግልፅነት እጥረት በገዥ እና በሻጭ መካከል ሊኖር የሚገባውን እምነት ይሸረሽራል።</p><h3>ዓለም አቀፍ ተሞክሮ እና ጥቅም</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>Cityscape Global (Dubai)</strong><span>የሪል ስቴት ኩባንያዎችን፣ ባንኮችንና ኮንትራክተሮችን በአንድ መድረክ የሚያቀርብ።</span></div></div><div class="item"><span class="n">2</span><div><strong>The Big 5 Construction (UAE)</strong><span>የኮንስትራክሽን እቃና ቴክኖሎጂ ዓለም አቀፍ ኤግዚቢሽን።</span></div></div><div class="item"><span class="n">3</span><div><strong>የጋራ ትውውቅና የስራ ግንኙነት</strong><span>በተሳታፊ ተቋማት መካከል የጋራ ትውውቅና የስራ ግንኙነት መጠናከር።</span></div></div><div class="item"><span class="n">4</span><div><strong>አዳዲስ ደንበኞች እና ኢንቨስትመንት</strong><span>አዳዲስ ደንበኞችን በቀጥታ ማግኘት እና የኢንቨስትመንት እድሎችን መፍጠር።</span></div></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>365 ቀናት ዲጂታል · 5 ቀናት ቀጥታ · ማብቂያ የሌለው ዕድል</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- ፕሮግራም እና አደረጃጀት -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ፕሮግራም እና አደረጃጀት · 08 / 11</span></div>
+    <h2>የ5 ቀናት ፕሮግራም እና የኤግዚቢሽኑ አደረጃጀት</h2>
+<div class="grid-2"><div><h3>የኤግዚቢሽን ፕሮግራም</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">ቀን</th><th class="">ሰዓት</th><th class="">ፕሮግራም</th></tr></thead><tbody><tr><td class="">ቀን 1</td><td class="">2:30 – 4:00</td><td class="">የመክፈቻ ስነ ስርዓት</td></tr><tr><td class="">ቀን 1</td><td class="">4:00 – 5:00</td><td class="">የድረ ገፅ እና የሞባይል መተግበሪያዎች ማስጀመሪያ ስነ ስርዓት</td></tr><tr><td class="">ቀን 1</td><td class="">5:00</td><td class="">የክብር እንግዶች ጉብኝት</td></tr><tr><td class="">ቀን 2</td><td class=""></td><td class="">የተሳታፊ ድርጅቶች ተወካዮች የእርስ በእርስ ትውውቅ የሚያደርጉበት የሻይ ቡና ፕሮግራም</td></tr><tr><td class="">ቀን 3–5</td><td class=""></td><td class="">የኤግዚቢሽኑ ጉብኝት ይቀጥላል</td></tr></tbody></table></div></div><div><h3>የኤግዚቢሽኑ አደረጃጀት</h3><p class="muted" style="font-size:9.5pt">ከ70–90 የሚደርሱ መደበኛ ዳሶች (እያንዳንዳቸው 3×3 ሜትር) በጋራ የክብር እንግዶች መድረክ፣ የቡና ማስተናገጃ እና የጥያቄና መልስ ቀጠናዎች ዙሪያ ይደራጃሉ፤ ሁሉም በተመሳሳይ የዲዛይን፣ የደህንነት እና የተደራሽነት መስፈርቶች፣ ከመግቢያ በሩ እና ከዋናው መድረክ ጋር በአንድ ወጥ የብራንድ ገጽታ ይገነባሉ። የቡና ማስተናገጃው ትስስር ለማጠናከር ባህላዊ የኢትዮጵያ ቡና ያቀርባል።</p><div class="cols-3"><div class="sector-tag">የክብር እንግዶች መድረክ (VIP)</div><div class="sector-tag">የቡና ማስተናገጃ ቦታ</div><div class="sector-tag">የጥያቄና መልስ ቀጠና</div></div></div></div><h3>የመክፈቻ ፕሮግራም ቅደም ተከተል</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>የእንኳን ደህና መጣችሁ ንግግር እና በይፋ መከፈት</strong><span>በንግድና ቀጠናዊ ትስስር ሚኒስቴር ይበሰራል</span></div></div><div class="item"><span class="n">2</span><div><strong>የስፖንሰር ድርጅቶች ንግግር</strong><span>የአጋር እና የኤክስክሉሲቭ ደረጃ ስፖንሰር ድርጅቶች ተወካዮች</span></div></div><div class="item"><span class="n">3</span><div><strong>ቁልፍ ንግግር</strong><span>በድሪም ቲም ትሬዲንግ ዋና ስራ አስፈፃሚ</span></div></div></div><div class="grid-2"><div><h3>የመግቢያ እና የእግር ጉዞ መንገዶች</h3><p class="muted" style="font-size:9.5pt">ተሳታፊዎችና ጎብኝዎች በሩቅ እንዲያዩትና ሳቢ ድባብ ለመፍጠር በዋናው መግቢያ ላይ የኤልኢዲ መብራት ሳጥኖች ይገጠማሉ። የሰዎችን ፍሰት ለማቀላጠፍ እና ደህንነትን ለመጠበቅ መግቢያው ይደራጃል፤ በመሄጃ መንገዶች ግራ እና ቀኝ የኢትዮጵያን የሪል ስቴት እድገት የሚገልፁ ባነሮች ይለጠፋሉ።</p></div><div><h3>የመግቢያ በር ዲዛይን</h3><p class="muted" style="font-size:9.5pt">4 ሜትር ቁመት እና 6 ሜትር ስፋት ያለው፣ የጂኦሜትሪክ ዲዛይን እና የተዋሃዱ የLED ማሳያ ፓነሎችን የያዘ የመግቢያ ቅስት ይገነባል፤ ለረጅም ጊዜ የሚቆይ፣ ቀላል ክብደት ያለው እና የአየር ሁኔታን የሚቋቋም ቁሳቁስ ይጠቀማል። ጎብኚዎች በQR ኮድ በመቃኘት የሞባይል መተግበሪያውን ማውረድ ወይም ድረ ገፁን መጎብኘት ይችላሉ።</p></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>አንድ በር · አንድ መድረክ · አንድ ወጥ ብራንድ</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- የተሳታፊ መመሪያ -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">የተሳታፊ መመሪያ · 09 / 11</span></div>
+    <h2>የዳስ መስፈርቶች፣ ሚዲያ እና ሎጂስቲክስ</h2>
+<h3>የዳስ ገጠማ እና መስፈርቶች</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>መደበኛ ዳስ 3×3 ሜትር</strong><span>እያንዳንዱ ዳስ የባለቤቱን የብራንድ ታሪክ እና አዳዲስ ፈጠራዎች በጉልህ ማሳየት አለበት።</span></div></div><div class="item"><span class="n">2</span><div><strong>የዲዛይን መመሪያዎች</strong><span>ከፍተኛ የቁመት ገደብ፣ እሳትን የሚቋቋሙ ቁሳቁሶች፣ የጎረቤት ዳሶችን ሳይጋርዱ ግልጽ ወሰን።</span></div></div><div class="item"><span class="n">3</span><div><strong>ተደራሽነት እና ደህንነት</strong><span>አካል ጉዳተኞችና አረጋውያን በቀላሉ እንዲገቡ መወጣጫዎች፤ የአደጋ ጊዜ መውጫዎችና የደህንነት እቃዎች እንዳይጋረዱ።</span></div></div></div><h3>ምዝገባ፣ ተደራሽነት እና የህትመት ቁሳቁሶች</h3><div class="stats"><div class="stat"><div class="big">10,000</div><div class="l">የጎብኝ መታወቂያዎች</div><div class="s">የQR ኮድ ያላቸው</div></div><div class="stat"><div class="big">5</div><div class="l">የመታወቂያ ዓይነቶች</div><div class="s">VVIP · VIP · አዘጋጅ · ተሳታፊ · ጎብኚ</div></div><div class="stat"><div class="big">5,000</div><div class="l">የፕሮግራም መፅሔቶች</div><div class="s">ሙሉ ቀለም</div></div><div class="stat"><div class="big">2</div><div class="l">የመድረክ ባነሮች</div><div class="s">ትላልቅ ባነሮች</div></div><div class="stat"><div class="big">4 + 2</div><div class="l">ኤል ኢ ዲ ስክሪኖች</div><div class="s">በማዕከሉ ውስጥ + ውጭ</div></div><div class="stat"><div class="big">10</div><div class="l">የአቅጣጫ ጠቋሚ ምልክቶች</div></div><div class="stat"><div class="big">70–80</div><div class="l">የዳስ ጀርባ ባነሮች</div></div><div class="stat"><div class="big">80–90</div><div class="l">የዳስ ጠረጴዛ ልብሶች</div></div></div><h3>የሚዲያ እና ዲጂታል ማርኬቲንግ ዘመቻ</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">ደረጃ</th><th class="">እንቅስቃሴ</th></tr></thead><tbody><tr><td class="">ከዝግጅቱ በፊት</td><td class="">የዝግጅቱ ማስታወቂያዎች እና አጫጭር ማስተዋወቂያዎች፤ ተሳታፊዎች የይለፍ ቃል ያለው መግቢያ ተሰጥቷቸው ምርቶቻቸውን በድረ ገፅ እና በመተግበሪያ ይለጥፋሉ</td></tr><tr><td class="">በዝግጅቱ ወቅት</td><td class="">ሙሉ ሂደቱ በድረ ገፅ እና በሞባይል መተግበሪያ በቀጥታ ይተላለፋል</td></tr><tr><td class="">ከዝግጅቱ በኋላ</td><td class="">ተሳታፊዎች መለጠፋቸውን ቀጥለው ታማኝ መረጃዎች መድረሳቸው ክትትል ይደረጋል</td></tr><tr><td class="">ዲጂታል ማርኬቲንግ</td><td class="">ከተፅዕኖ ፈጣሪዎች ጋር ማስታወቂያ፣ የSEO ስራዎች እና የኢሜይል ዘመቻዎች</td></tr></tbody></table></div><h3>ማጠቃለያ</h3><p class="muted" style="font-size:9.5pt">ይህ ኤግዚቢሽን የኢትዮጵያን የሪል ስቴትና የኮንስትራክሽን ዘርፎች ከፋይናንስ ተቋማት ጋር በማጣመር የጋራ መድረክ ይፈጥራል፤ ለተሳታፊ ድርጅቶች ቀጣይነት ያለው ዲጂታል መድረክ በመፍጠር አዲስ የቢዝነስ እድሎችን ይከፍታል።</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>አንድ በር · አንድ መድረክ · አንድ ወጥ ብራንድ</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- ስፖንሰርሺፕ -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ስፖንሰርሺፕ · 10 / 11</span></div>
+    <h2>የስፖንሰርሺፕ እና የተሳትፎ ፓኬጆች</h2>
+<p class="lead">ኢትዮ ቢልድ ኮኔክት ኤክስፖ ድርጅትዎ ኦፊሴላዊ ስፖንሰር እና ተባባሪ አዘጋጅ እንዲሆን በአክብሮት ይጋብዛል። እያንዳንዱ ደረጃ የራሱ የብራንድ፣ የሚዲያ እና የትስስር ጥቅሞች አሉት። ቦታዎች ውስን ሲሆኑ እንደ መጡበት ቅደም ተከተል ይሰጣሉ።</p><div class="tiers"><div class="tier top"><div class="t-head"><div><div class="t-sub">Exclusive · ተባባሪ አዘጋጅ</div><div class="t-name">ልዩ ደረጃ ስፖንሰር</div></div><div><div class="price">5,000,000 ብር</div><div class="booth">የዳስ ቦታ 54 ካሬ ሜትር</div></div></div><ul><li>በንግድና ቀጠናዊ ትስስር ሚኒስቴር ሚኒስትር የተፈረመ የዕውቅና ሰርተፍኬት ከልዩ ማስታወሻ ጋር</li><li>ዝግጅቱን በተባባሪ አዘጋጅነት የማዘጋጀት ዕድል፤ ከክብር እንግዶች በመቀጠል የመክፈቻ ንግግር</li><li>በድረ ገፅና በመተግበሪያ መክፈቻ ማያ ላይ ሎጎ፤ የፊትና የውስጥ ማስታወቂያዎች</li><li>ፕራይም ሎኬሽን 54 ካሬ ሜትር፤ ለጎብኚዎች 5,000 ብሮሸሮች በነፃ</li><li>በAICC ውስጥና ውጭ ባሉ ስክሪኖች ላይ ማስታወቂያ</li><li>በተለያዩ ሚዲያዎች የሎጎ ተጠቃሾነት</li><li>በውይይት መድረኮች የቪአይፒ ቦታ፤ 20 የማስታወቂያ ባንዲራዎች በመግቢያዎች</li><li>በአዘጋጅ ድርጅቶች ዝርዝር ውስጥ መካተት፤ በፕሮግራም መሪዎች ተጠቃሾነት</li><li>ለ1 ዓመት ማስታወቂያ፣ ዜና፣ ምስልና ቪዲዮ የመለጠፍ መብት</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Platinum partner</div><div class="t-name">1ኛ ደረጃ · ፕላቲኒየም</div></div><div><div class="price">1,700,000 ብር</div><div class="booth">የዳስ ቦታ 27 ካሬ ሜትር</div></div></div><ul><li>በሚኒስትር የተፈረመ የዕውቅና ሰርተፍኬት</li><li>ፕራይም ሎኬሽን 27 ካሬ ሜትር፤ 2,500 ብሮሸሮች በነፃ</li><li>በኮንቬንሽን ሴንተር ውስጥና ውጭ ስክሪን ማስታወቂያ</li><li>የፊትና የውስጥ ገፅ ማስታወቂያ በድረ ገፅና በመተግበሪያ</li><li>በሚዲያዎች የሎጎ ተጠቃሾነት፤ የቪአይፒ ቦታ</li><li>10 የማስታወቂያ ባንዲራዎች፤ በፕሮግራም በአንደኛ ደረጃ ተጠቃሾነት</li><li>ለ1 ዓመት የዲጂታል መለጠፍ መብት</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Gold partner</div><div class="t-name">2ኛ ደረጃ · ወርቅ</div></div><div><div class="price">900,000 ብር</div><div class="booth">የዳስ ቦታ 18 ካሬ ሜትር</div></div></div><ul><li>ፕራይም ሎኬሽን 18 ካሬ ሜትር፤ 1,500 ብሮሸሮች በነፃ</li><li>ስክሪን ማስታወቂያ (ከልዩ እና ፕላቲኒየም ያነሰ ድግግሞሽ)</li><li>የውስጥ ገፅ ማስታወቂያ በድረ ገፅና በመተግበሪያ</li><li>በቅድመ ዝግጅት ሚዲያ ዘመቻ የሎጎ ተጠቃሾነት፤ የቪአይፒ ቦታ</li><li>6 የማስታወቂያ ባንዲራዎች፤ በፕሮግራም በሁለተኛ ደረጃ ተጠቃሾነት</li><li>ለ1 ዓመት የዲጂታል መለጠፍ መብት</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Silver sponsor</div><div class="t-name">3ኛ ደረጃ · ብር</div></div><div><div class="price">250,000 ብር</div><div class="booth">የዳስ ቦታ 9 ካሬ ሜትር</div></div></div><ul><li>ፕራይም ሎኬሽን 9 ካሬ ሜትር የዳስ ቦታ</li><li>በውይይት መድረኮች የቪአይፒ ቦታ</li><li>ለ1 ዓመት ማስታወቂያ፣ ዜና፣ ምስልና ቪዲዮ የመለጠፍ መብት</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">በአካል ላልተገኙ ተቋማት</div><div class="t-name">የልዩ ተሳታፊ ፓኬጅ</div></div><div><div class="price">100,000 ብር</div><div class="booth">ዲጂታል ብቻ</div></div></div><ul><li>በድረ ገፅና በመተግበሪያ ሙሉ አድራሻ፦ ሎጎ፣ የቢሮ አድራሻ፣ ስልክ፣ ኢሜይል፣ ድረ ገፅ እና በፎቶና ቪዲዮ የታገዘ መግለጫ</li><li>ድርጅትዎ በራሱ የሚያስተዳድርበት የመግቢያ ስም እና የይለፍ ቃል</li><li>በአካል ሳይገኙ ተወዳዳሪ ሆነው እንዲቀጥሉ</li><li>ውሉ ከተፈረመበት ቀን ጀምሮ ለ1 ዓመት የመለጠፍ መብት</li></ul></div></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">ጥቅም</th><th class="c">ልዩ</th><th class="c">ፕላቲኒየም</th><th class="c">ወርቅ</th><th class="c">ብር</th><th class="c">ልዩ ተሳታፊ</th></tr></thead><tbody><tr class="price"><td class="">ዋጋ (ብር)</td><td class="c">5,000,000</td><td class="c">1,700,000</td><td class="c">900,000</td><td class="c">250,000</td><td class="c">100,000</td></tr><tr><td class="">የዳስ ቦታ</td><td class="c">54 ካሬ ሜትር</td><td class="c">27 ካሬ ሜትር</td><td class="c">18 ካሬ ሜትር</td><td class="c">9 ካሬ ሜትር</td><td class="c">ዲጂታል ብቻ</td></tr><tr><td class="">ነፃ ብሮሸሮች</td><td class="c">5,000</td><td class="c">2,500</td><td class="c">1,500</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">የማስታወቂያ ባንዲራዎች</td><td class="c">20</td><td class="c">10</td><td class="c">6</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">ድረ ገፅ እና መተግበሪያ</td><td class="c">የፊት + የውስጥ</td><td class="c">የፊት + የውስጥ</td><td class="c">የውስጥ ገፅ</td><td class="c">ሙሉ መገለጫ</td><td class="c">ሙሉ መገለጫ</td></tr><tr><td class="">በሚኒስትር የተፈረመ ሰርተፍኬት</td><td class="c">✓</td><td class="c">✓</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">የቪአይፒ ቦታ</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">—</td></tr><tr><td class="">ተባባሪ አዘጋጅ እና የመክፈቻ ንግግር</td><td class="c">✓</td><td class="c">—</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">ለ1 ዓመት የዲጂታል መለጠፍ</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td></tr></tbody></table></div><div class="cta-row"><a class="cta" href="/am/?interest=exhibitor">ድርጅትዎን በፖርታሉ ላይ ያስመዝግቡ</a><a class="cta-link" href="/am/#sponsorship-packages">ፓኬጆቹን በመስመር ላይ ይመልከቱ</a></div><p class="quiet">ሁሉም ዋጋዎች ተ.እ.ታ. አያካትቱም። ሙሉ ውል እና ዝርዝር ጥቅማ ጥቅሞች ሲጠየቁ ይቀርባሉ።</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ኢትዮጵያን በጋራ እንገንባ · ልዩ · ፕላቲኒየም · ወርቅ · ብር · ልዩ ተሳታፊ</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- ክፍያ እና አድራሻ -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">ኢትዮ ቢልድ ኮኔክት ኤክስፖ</span><span class="pno">ክፍያ እና አድራሻ · 11 / 11</span></div>
+    <h2>የክፍያ መመሪያ እና አድራሻ</h2>
+<div class="grid-2"><div><h3>የክፍያ መመሪያ</h3><p class="muted" style="font-size:9.5pt">ስምምነቱ ከተፈረመ በ10 የስራ ቀናት ውስጥ ሙሉ (100%) ክፍያ ከሚከተሉት የድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር ሂሳቦች በአንዱ ይፈጸማል፦</p><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">ባንክ</th><th class="">የሂሳብ ቁጥር</th></tr></thead><tbody><tr><td class="">የኢትዮጵያ ንግድ ባንክ</td><td class="">1000314847467</td></tr><tr><td class="">አቢሲኒያ ባንክ</td><td class="">58656283</td></tr><tr><td class="">አዋሽ ባንክ</td><td class="">01304814267901</td></tr><tr><td class="">የኦሮሚያ ህብረት ስራ ባንክ</td><td class="">1062400139578</td></tr><tr><td class="">አማራ ባንክ</td><td class="">9900003477154</td></tr><tr><td class="">ዳሽን ባንክ</td><td class="">0264189810011</td></tr><tr><td class="">እናት ባንክ</td><td class="">0201124323140001</td></tr></tbody></table></div><p class="quiet">ሁሉም ዋጋዎች ተ.እ.ታ. አያካትቱም። ፓኬጅ መርጠው ውሉን ሲፈርሙና ክፍያው ሲረጋገጥ ተሳትፎዎ ይረጋገጣል።</p></div><div><h3>ያግኙን</h3><div class="facts"><div class="fact"><div class="k">ስልክ</div><div class="v">+251 913 504 097</div></div><div class="fact"><div class="k">ኢሜይል</div><div class="v">ethiobuildconnectexpo@gmail.com</div></div><div class="fact"><div class="k">ድረ-ገፅ</div><div class="v">ethiobuildconnect.et</div></div><div class="fact"><div class="k">አድራሻ</div><div class="v">ቦሌ ክ/ከተማ፣ ወረዳ 04፣ አዲስ አበባ</div></div></div><div class="cta-row"><a class="cta" href="/am/?interest=exhibitor">ፍላጎትዎን ያስመዝግቡ</a></div><p class="quiet">አዘጋጅ፦ ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር፣ ከንግድና ቀጠናዊ ትስስር ሚኒስቴር እና ከአዲስ አበባ ቻምበር ኦፍ ኮሜርስ ጋር በጋራ።</p></div></div><p class="footer-note">© 2026 ድሪም ቲም ትሬዲንግ ኃ/የተ/የግ/ማህበር። መብቱ በህግ የተጠበቀ ነው።</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>ኢትዮጵያን በጋራ እንገንባ</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
   <script>
     (function () {
       var API = '/api/v1'
