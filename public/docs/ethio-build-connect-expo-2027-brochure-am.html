@@ -524,6 +524,25 @@
       .tier ul { columns: 2; }
       h2 { margin-bottom: 6px; } h3 { margin-top: 10px; }
     }
+
+    /* --- print on narrow screens (phones print at their own width) --- */
+    @media print {
+      html, body { width: 190mm; }
+      .sheet { width: 190mm; max-width: 190mm; margin: 0 auto; }
+      body { font-size: 9.5pt; }
+      .grid-2 { grid-template-columns: 1fr 1fr !important; }
+      .numbered { grid-template-columns: 1fr 1fr !important; }
+      .numbered.one { grid-template-columns: 1fr !important; }
+      .facts { grid-template-columns: repeat(3, 1fr) !important; }
+      .facts.four { grid-template-columns: repeat(4, 1fr) !important; }
+      .cols-3 { grid-template-columns: repeat(3, 1fr) !important; }
+      .tiers { grid-template-columns: 1fr 1fr !important; }
+      .stats { grid-template-columns: repeat(4, 1fr) !important; }
+      .strip { grid-template-columns: repeat(3, 1fr) !important; }
+      .sponsor-spotlight-root { grid-template-columns: 1fr 1fr !important; }
+      .tier.top { grid-column: 1 / -1 !important; }
+      .toolbar { display: none !important; }
+    }
   </style>
 </head>
 <body class="brochure-lang-am">
