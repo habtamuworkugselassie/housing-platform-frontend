@@ -416,6 +416,64 @@
     .sponsor-loading { font-size: 9pt; color: #6b7280; }
     @media print { .sponsor-loading { color: #666; } }
     #sponsor-load-error { color: #f87171; font-size: 10pt; text-align: center; padding: 8px; }
+
+    /* --- proposal pages --- */
+    .page-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 2px solid #4c1d95; padding-bottom: 6px; margin-bottom: 14px; }
+    .page-head .brand { font-size: 8pt; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 800; color: #4c1d95; }
+    .page-head .pno { font-size: 8pt; color: #6b7280; letter-spacing: 0.1em; }
+    .page-foot { margin-top: 18px; padding-top: 8px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between; gap: 10px; font-size: 8pt; color: #6b7280; }
+    .lead { font-size: 11pt; color: #374151; max-width: 40em; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0 16px; }
+    .facts.four { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 640px) { .facts, .facts.four { grid-template-columns: 1fr 1fr; } .fact { min-width: 0; } }
+    .fact { border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 11px; background: #ffffff; }
+    .fact .k { font-size: 7.5pt; letter-spacing: 0.15em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .fact .v { font-weight: 700; font-size: 10pt; color: #111827; margin-top: 2px; line-height: 1.3; overflow-wrap: anywhere; }
+    .fact .s { font-size: 8.5pt; color: #6b7280; margin-top: 2px; }
+    .numbered { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 9.5pt; margin: 8px 0 12px; }
+    .numbered.one { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .numbered { grid-template-columns: 1fr; } }
+    .numbered .item { display: flex; gap: 10px; align-items: flex-start; }
+    .numbered .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #4c1d95; color: #fff; font-weight: 800; font-size: 8.5pt; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .numbered .item strong { display: block; color: #111827; }
+    .numbered .item span { color: #6b7280; font-size: 9pt; }
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 6px 0 14px; }
+    .tbl th, .tbl td { border-bottom: 1px solid #e5e7eb; padding: 6px 8px; text-align: left; vertical-align: top; }
+    .tbl th { font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .tbl td.c, .tbl th.c { text-align: center; }
+    .tbl tr.price td { font-weight: 800; color: #4c1d95; }
+    .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 14px; }
+    @media (max-width: 640px) { .tiers { grid-template-columns: 1fr; } }
+    .tier { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; background: #ffffff; break-inside: avoid; }
+    .tier.top { grid-column: 1 / -1; background: #4c1d95; color: #ffffff; border-color: #4c1d95; }
+    .tier .t-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+    .tier .t-name { font-weight: 800; font-size: 11.5pt; color: #111827; }
+    .tier.top .t-name { color: #ffffff; }
+    .tier .t-sub { font-size: 7.5pt; letter-spacing: 0.15em; text-transform: uppercase; color: #b45309; font-weight: 700; }
+    .tier.top .t-sub { color: #fde047; }
+    .tier .price { font-size: 14pt; font-weight: 800; color: #4c1d95; white-space: nowrap; text-align: right; }
+    .tier.top .price { color: #fde047; }
+    .tier .booth { font-size: 8.5pt; color: #6b7280; text-align: right; }
+    .tier.top .booth { color: #e9d5ff; }
+    .tier ul { font-size: 9pt; margin: 8px 0 0; padding-left: 1.1em; columns: 2; column-gap: 18px; }
+    .tier.top ul { color: #f3e8ff; }
+    .tier:not(.top) ul { columns: 1; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 14px; }
+    @media (max-width: 640px) { .stats { grid-template-columns: 1fr 1fr; } }
+    .stat { border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; background: #f9fafb; }
+    .stat .big { font-size: 15pt; font-weight: 800; color: #4c1d95; line-height: 1.1; }
+    .stat .l { font-size: 9pt; font-weight: 700; color: #111827; }
+    .stat .s { font-size: 8pt; color: #6b7280; }
+    .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0 14px; text-align: center; }
+    .strip div { background: #4c1d95; color: #fff; border-radius: 8px; padding: 10px 8px; }
+    .strip .big { font-size: 16pt; font-weight: 800; color: #fde047; line-height: 1.1; }
+    .strip .s { font-size: 8.5pt; color: #e9d5ff; margin-top: 2px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 14px 0 6px; }
+    .cta { display: inline-block; background: #facc15; color: #1f1535; font-weight: 800; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-size: 10pt; }
+    .cta-link { color: #4c1d95; font-weight: 700; text-decoration: underline; font-size: 10pt; }
+    .quiet { font-size: 8.5pt; color: #6b7280; }
+    @media print { .tier.top, .strip div { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .page-foot, .quiet { color: #555; } }
   </style>
 </head>
 <body>
@@ -455,20 +513,20 @@
       </div>
       <h1>Bold Projects.<br />Big Connections.<br />Bigger Opportunities.</h1>
       <p class="date-line accent">9–13 January 2027</p>
-      <p class="date-line muted" style="margin-top: 4px;">Addis Convention Center — Addis Ababa, Ethiopia</p>
+      <p class="date-line muted" style="margin-top: 4px;">Addis International Convention Center (AICC) — Addis Ababa, Ethiopia</p>
       <p class="sub">
         Meet global visionaries, explore iconic projects, and unlock pathways to growth and collaboration at the region’s biggest real estate and construction show.
       </p>
     </div>
     <div>
-      <p class="pill">Coming 2027</p>
+      <p class="pill">Ethiopia’s first multi-sectoral app- and website-based expo</p>
       <p class="muted" style="font-size: 9.5pt;">
         A dedicated platform where real estate companies, contractors, suppliers, and consultants showcase projects and products to buyers, investors, and partners — all under one roof.
       </p>
       <div id="sponsor-cover-strip" class="sponsor-cover-strip">
         <p class="sponsor-loading muted">Loading partner logos…</p>
       </div>
-      <p class="footer-note">© 2026 Dream Teams Trading PLC. Ethio Build Connect Expo.</p>
+      <p class="footer-note">© 2026 Dream Team Trading PLC. Ethio Build Connect Expo.</p>
     </div>
   </section>
 
@@ -486,130 +544,78 @@
     </div>
   </section>
 
-  <!-- Page 3: Visitor & exhibitor value -->
+    <!-- Invitation -->
   <section class="sheet">
-    <h2>Why visit</h2>
-    <p class="muted" style="margin-bottom: 12px;">
-      Explore the future of living at the region’s largest real estate event. Immerse yourself in groundbreaking urban innovations and connect with global real estate leaders.
-    </p>
-    <ul>
-      <li>300+ exhibitors · 500+ speakers · 6 stages</li>
-      <li>180+ hours of conference content</li>
-      <li>Interactive show features and networking</li>
-    </ul>
-
-    <h2>Why exhibit</h2>
-    <p class="muted" style="margin-bottom: 12px;">
-      Showcase your vision alongside global influencers and decision-makers. Connect with institutional investors, developers, and government bodies shaping construction and real estate.
-    </p>
-    <ul>
-      <li>Unmatched access to high-value projects and partnerships</li>
-      <li>Elevate your presence through sponsorship opportunities</li>
-      <li>Conferences, networking sessions, and investor programmes</li>
-    </ul>
-
-    <h2>What to expect</h2>
-    <div class="grid-2">
-      <div class="box">
-        <h3>The region’s biggest projects</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          Latest launches, visionary masterplans, and breakthrough developments. Leaders in real estate and construction showcasing the future of the industry.
-        </p>
-      </div>
-      <div class="box">
-        <h3>Network with decision-makers</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          Connect with investors, developers, and city leaders through curated networking. Unlock capital, forge partnerships, and expand in the markets that matter.
-        </p>
-      </div>
-      <div class="box" style="grid-column: 1 / -1;">
-        <h3>Insights that matter</h3>
-        <p class="muted" style="font-size: 9.5pt;">
-          Actionable insights from industry leaders on trends reshaping how we live, invest, and build — conferences and sessions designed for the market.
-        </p>
-      </div>
-    </div>
-    <p class="footer-note">
-      Key show features: world-class conferences, major announcements, developer programme, and specialised tracks — whether you exhibit or visit.
-    </p>
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Invitation · 03 / 11</span></div>
+    <h2>You are invited to exhibit at Ethio Build Connect Expo</h2>
+<p class="lead">Our company, Dream Team Trading PLC, working jointly with the Ministry of Trade and Regional Integration and with the Addis Ababa Chamber of Commerce as co-organizer, has completed its preparations to present Ethiopia’s first multi-sectoral app- and website-based expo.</p><div class="facts four"><div class="fact"><div class="k">Event</div><div class="v">Ethio Build Connect Expo</div></div><div class="fact"><div class="k">Date</div><div class="v">9–13 January 2027</div><div class="s">Tir 01–05, 2019 E.C.</div></div><div class="fact"><div class="k">Duration</div><div class="v">5 consecutive days</div><div class="s">70–90 booths · 365-day app</div></div><div class="fact"><div class="k">Venue</div><div class="v">Addis International Convention Center</div><div class="s">AICC · Addis Ababa</div></div></div><div class="grid-2"><div><h3>Benefits of taking part</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>A platform where buyers get reliable, transparent project information</strong></div></div><div class="item"><span class="n">2</span><div><strong>A stronger bridge of trust between buyers and sellers</strong></div></div><div class="item"><span class="n">3</span><div><strong>A website and mobile app that continue after the exhibition</strong></div></div><div class="item"><span class="n">4</span><div><strong>Direct introductions to banks and financial institutions</strong></div></div><div class="item"><span class="n">5</span><div><strong>Legal advice from lawyers during transactions</strong></div></div><div class="item"><span class="n">6</span><div><strong>A chance to offer visitors special discount packages</strong></div></div></div></div><div><h3>Sector challenges we address</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>Financial institutions lack clear information about projects</strong></div></div><div class="item"><span class="n">2</span><div><strong>Real estate project information is scattered and buyers lack reliable information</strong></div></div><div class="item"><span class="n">3</span><div><strong>Gaps in price and supply transparency, and weak accountability</strong></div></div><div class="item"><span class="n">4</span><div><strong>Heavy promotion spending that fails to deliver the expected results</strong></div></div><div class="item"><span class="n">5</span><div><strong>Low use of digital tools and no platform for following projects</strong></div></div></div></div></div><h3>Participating sectors</h3><div class="cols-3"><div class="sector-tag">Real estate developers</div><div class="sector-tag">Banks and microfinance</div><div class="sector-tag">Insurers</div><div class="sector-tag">Contractors</div><div class="sector-tag">Consultants</div><div class="sector-tag">Architects</div><div class="sector-tag">Construction material makers and importers</div><div class="sector-tag">Finishing-works companies</div><div class="sector-tag">Proptech and digital services</div></div><p style="margin-top:12px">With the points above in mind, we invite your organization to take part in this exhibition, from which it stands to gain a great deal. The participation and sponsorship packages are on pages 10 and 11.</p><p class="quiet">Kind regards, Dream Team Trading PLC · jointly with the Ministry of Trade and Regional Integration and the Addis Ababa Chamber of Commerce</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Stop searching · Start building · Everything is here</span><span>ethiobuildconnect.et</span></div>
   </section>
 
-  <!-- Page 4: Audience & sectors -->
+  <!-- Organizer -->
   <section class="sheet">
-    <h2>Who attends</h2>
-    <p class="muted" style="margin-bottom: 10px;">
-      The event brings together real estate leaders — investors, developers, architects, government officials, and homebuyers.
-    </p>
-    <div class="grid-2" style="font-size: 9.5pt;">
-      <div class="box"><strong>Real estate developers</strong><br /><span class="muted">Master planners and project leads</span></div>
-      <div class="box"><strong>Proptech innovators</strong><br /><span class="muted">Tech and property market solutions</span></div>
-      <div class="box"><strong>Architects &amp; designers</strong><br /><span class="muted">Sustainable and futuristic design</span></div>
-      <div class="box"><strong>Government officials</strong><br /><span class="muted">National development strategies</span></div>
-      <div class="box"><strong>Construction professionals</strong><br /><span class="muted">Contractors and infrastructure</span></div>
-      <div class="box"><strong>Brokers &amp; consultants</strong><br /><span class="muted">Market intelligence and advisory</span></div>
-      <div class="box"><strong>Investors &amp; financiers</strong><br /><span class="muted">High-value real estate opportunities</span></div>
-      <div class="box"><strong>Homebuyers</strong><br /><span class="muted">Residential trends and smart living</span></div>
-    </div>
-
-    <h2 style="margin-top: 18px;">Construction value chain</h2>
-    <p class="muted" style="margin-bottom: 10px;">We cover the entire spectrum of the industry — find the niche that matters to your business.</p>
-    <div class="cols-3">
-      <div class="sector-tag">Building materials</div>
-      <div class="sector-tag">Concrete &amp; cement</div>
-      <div class="sector-tag">Interiors &amp; finishes</div>
-      <div class="sector-tag">Urban design</div>
-      <div class="sector-tag">Building services (MEP)</div>
-      <div class="sector-tag">Construction tools</div>
-      <div class="sector-tag">HVAC &amp; cooling</div>
-      <div class="sector-tag">Digital construction</div>
-      <div class="sector-tag">Solar energy</div>
-      <div class="sector-tag">Heavy machinery</div>
-      <div class="sector-tag">Intelligent building</div>
-      <div class="sector-tag">Sustainable construction</div>
-    </div>
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Organizer · 04 / 11</span></div>
+    <h2>Dream Team Trading PLC</h2>
+<p class="lead">Company profile and the trade-fair permit issued by the Ministry of Trade and Regional Integration.</p><div class="box" style="margin:10px 0 14px"><p class="pill">Government-approved · Permit no. 011.6.2/10087 · 26 June 2026</p><p style="font-size:9.5pt;margin:0">The Ministry of Trade and Regional Integration of the Federal Democratic Republic of Ethiopia, following the request submitted by Dream Team Trading PLC on 13 May 2026, has authorized the company to organize Ethio Build Connect Expo from Tir 01 to 05, 2019 E.C. (9–13 January 2027) at the Addis International Convention Center (AICC), Addis Ababa.</p></div><div class="facts four"><div class="fact"><div class="k">Year established</div><div class="v">2019 · Addis Ababa</div></div><div class="fact"><div class="k">Business registration no.</div><div class="v">BL/AA/2/0016871/2010</div></div><div class="fact"><div class="k">Trade licence no.</div><div class="v">AACATB/14/673/50205257/2018</div></div><div class="fact"><div class="k">Taxpayer ID (TIN)</div><div class="v">0058735690</div></div><div class="fact"><div class="k">Capital</div><div class="v">ETB 8,016,000.00</div></div><div class="fact"><div class="k">Address</div><div class="v">Bole Sub-city, Woreda 04, Addis Ababa</div></div><div class="fact"><div class="k">Manager</div><div class="v">Ms. Hana Solomon Belay</div></div><div class="fact"><div class="k">Business sector</div><div class="v">Special events; advertising; printing</div><div class="s">wholesale of packaging and stationery</div></div></div><h3>About the company</h3><div class="grid-2" style="font-size:9.5pt"><p class="muted">Dream Team Trading P.L.C. was established in 2019 as an office supplies vendor, printing and advertising company, and later expanded into the export sector. Currently engaged in manufacturing, the company is also constructing a bottled spring water factory. Its core mission is to deliver customer-centric services.</p><p class="muted">Ethio Build Connect Expo integrates the construction, real estate, building materials, finance, insurance, contracting, architecture and consulting sectors within a single business platform. It showcases 3D construction printing, prefabrication, smart-city solutions and green, energy-efficient technologies, to expand foreign direct investment, accelerate technology transfer and create jobs.</p></div><p class="quiet">Copies of the business registration certificate, trade licence, taxpayer registration certificate and the Ministry’s trade-fair permit are available on request.</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Licensed · Registered · Government-approved</span><span>ethiobuildconnect.et</span></div>
   </section>
 
-  <!-- Page 5: Pillars, quote, CTA -->
+  <!-- Proposal -->
   <section class="sheet">
-    <h2>Why participate</h2>
-    <p class="muted" style="margin-bottom: 12px;">Discover the latest innovations and high-level networking that drives the sector forward.</p>
-    <div class="grid-2">
-      <div class="box">
-        <h3>Expand your business</h3>
-        <p class="muted" style="font-size: 9.5pt;">Establish new partnerships and grow your network in a rapidly expanding market.</p>
-      </div>
-      <div class="box">
-        <h3>Showcase your products</h3>
-        <p class="muted" style="font-size: 9.5pt;">Display your latest innovations to thousands of potential customers and decision-makers.</p>
-      </div>
-      <div class="box">
-        <h3>Meet serious buyers</h3>
-        <p class="muted" style="font-size: 9.5pt;">Connect directly with procurement managers, architects, and developers.</p>
-      </div>
-      <div class="box">
-        <h3>Generate quality leads</h3>
-        <p class="muted" style="font-size: 9.5pt;">Fill your pipeline with high-value contacts and real business opportunities.</p>
-      </div>
-    </div>
-
-    <p class="pill" style="margin-top: 18px;">In their words</p>
-    <blockquote>
-      “The exhibition is a perfect destination for international investors to meet and exchange ideas and explore how they can develop their own product and the wider market.”
-    </blockquote>
-    <p class="muted" style="font-size: 9pt;">— Industry leader</p>
-
-    <h2 style="margin-top: 20px;">Plan your visit &amp; register</h2>
-    <p class="muted">
-      Join us for an event that pushes the boundaries of what’s possible in real estate and urban development. Book your stand or register to visit the most anticipated real estate and construction event of the year.
-    </p>
-    <p style="margin-top: 12px; font-weight: 600;">
-      Register your interest on the Ethio Build Connect exhibition page for updates on dates, exhibitor information, and how to participate.
-    </p>
-    <p class="footer-note">
-      Exhibitors include developers, contractors, architects, building materials and finishing suppliers, and service providers. Premium &amp; Gold sponsor opportunities available.<br />
-      © 2026 Dream Teams Trading PLC. All rights reserved.
-    </p>
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Proposal · 05 / 11</span></div>
+    <h2>Vision, objectives and strategic design</h2>
+<p class="lead">In its long- and medium-term plans, the Government of Ethiopia has set rapid urban growth, a better-organized housing supply, wider use of modern construction technologies, stronger private-sector participation and an expanded financial system as key goals. This expo supports those goals by bringing the real estate, construction and finance sectors together on one integrated platform.</p><h3>Main objective</h3><p>To strengthen networking and working relationships by bringing the real estate, construction and finance sectors together on one platform.</p><h3>Specific objectives</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>Participating organizations present their projects, services and products to the public</strong></div></div><div class="item"><span class="n">2</span><div><strong>Winning new customers and clients</strong></div></div><div class="item"><span class="n">3</span><div><strong>Growing sales of locally made products</strong></div></div><div class="item"><span class="n">4</span><div><strong>Introducing finance options (loans, insurance, microfinance) directly to visitors</strong></div></div><div class="item"><span class="n">5</span><div><strong>Showcasing new construction technologies and materials</strong></div></div></div><div class="cols-3" style="margin-top:12px;font-size:9.5pt"><div class="box"><p class="pill">Vision</p><p style="margin:0">To be the preferred business and digital platform for Ethiopia’s real estate and related sectors, making an outstanding contribution to sustainable trade.</p></div><div class="box"><p class="pill">Mission</p><p style="margin:0">Streamline trade through a transparent, well-coordinated exhibition; showcase locally made products; provide digital platforms; strengthen trust between buyers and sellers; and take part in events in regional cities and abroad.</p></div><div class="box"><p class="pill">Core values</p><p style="margin:0"><strong>Transparency · Integrity · Innovation.</strong> These values guide the service we give every participant, visitor and partner.</p></div></div><p style="margin-top:12px">This integrated, multi-sector approach is designed to close the trust gap between buyers and sellers, grow sales of locally made products, and give Ethiopia’s construction sector a digital platform that lasts beyond the five exhibition days.</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Connect · Create · Build · Together</span><span>ethiobuildconnect.et</span></div>
   </section>
+
+  <!-- Team &amp; highlights -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Team &amp; highlights · 06 / 11</span></div>
+    <h2>Team structure and key events</h2>
+<h3>Team structure and roles</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">Team</th><th class="">Role</th><th class="">Key members</th></tr></thead><tbody><tr><td class="">Project management</td><td class="">Manager, coordinator, planner</td><td class="">Nigus Solomon</td></tr><tr><td class="">Branding and design</td><td class="">Graphic designers, print supervisors</td><td class="">Kidus Abera</td></tr><tr><td class="">Digital media</td><td class="">Video producers, animators, social media leads</td><td class="">Hermela and Kidus</td></tr><tr><td class="">Technology and production</td><td class="">LED technicians, website and mobile app developers</td><td class="">Habtamu Worku and Nigus</td></tr><tr><td class="">Build and assembly</td><td class="">Décor, stage and booth builders, lighting</td><td class="">Dagim and Dawit</td></tr><tr><td class="">Guest services</td><td class="">Registration leads, hosts, control officers</td><td class="">Hermela and Ruth</td></tr><tr><td class="">Marketing and communication</td><td class="">Social media managers, content writers</td><td class="">Kidus and Ruth</td></tr><tr><td class="">Logistics</td><td class="">Transport, stock controllers, procurement</td><td class="">Ruth and Nigus</td></tr></tbody></table></div><h3>Key events</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>Official opening and app launch</strong><span>Briefing by ministers</span></div></div><div class="item"><span class="n">2</span><div><strong>Industry leaders’ testimonials</strong><span>Short video testimonials</span></div></div><div class="item"><span class="n">3</span><div><strong>Guided exhibition tour</strong><span>Distinguished guests, investors and media</span></div></div><div class="item"><span class="n">4</span><div><strong>Showcase of Ethiopia’s construction capacity</strong><span>Local inputs and manufacturing</span></div></div><div class="item"><span class="n">5</span><div><strong>Building and real estate investment forum</strong><span>Investors, banks, developers and government</span></div></div><div class="item"><span class="n">6</span><div><strong>B2B networking forum</strong><span>Manufacturers, contractors, suppliers and buyers</span></div></div><div class="item"><span class="n">7</span><div><strong>Awards and recognition ceremony</strong><span>For top performers and sponsors</span></div></div><div class="item"><span class="n">8</span><div><strong>Closing ceremony and cooperation signings</strong><span>MoU signings</span></div></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Connect · Create · Build · Together</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- Digital platform -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Digital platform · 07 / 11</span></div>
+    <h2>A website and mobile app that continue after the exhibition</h2>
+<div class="strip"><div><div class="big">365 days</div><div class="s">Digital</div></div><div><div class="big">5 days</div><div class="s">Live</div></div><div><div class="big">∞</div><div class="s">Endless opportunity</div></div></div><div class="grid-2"><div><h3>Digital app</h3><p class="muted" style="font-size:9.5pt">The website and mobile app, launched officially on the opening day, give every participating organization its own login and password. Organizations manage their own pages and post project progress, photos and videos at any time; the platform stays open as a meeting place after the exhibition ends.</p></div><div><h3>For participating organizations</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>Your own login (username) and password</strong></div></div><div class="item"><span class="n">2</span><div><strong>Project progress, photos and videos at any time</strong></div></div><div class="item"><span class="n">3</span><div><strong>A meeting platform that continues after the expo</strong></div></div></div></div></div><h3>Market study</h3><p class="muted" style="font-size:9.5pt">Urban growth in Ethiopia is rapid. In Addis Ababa in particular, high migration into the city has created strong demand for housing and a serious shortage. Ethiopians and people of Ethiopian origin living abroad are increasingly keen to invest at home, and banks and financial institutions are building mortgage schemes. Yet the lack of organized, transparent information that buyers can easily reach erodes the trust that should exist between buyers and sellers.</p><h3>International experience and benefits</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>Cityscape Global (Dubai)</strong><span>Brings real estate companies, banks and contractors together on one platform.</span></div></div><div class="item"><span class="n">2</span><div><strong>The Big 5 Construction (UAE)</strong><span>International exhibition of construction materials and technology.</span></div></div><div class="item"><span class="n">3</span><div><strong>Networking and working relationships</strong><span>Stronger networking among participating institutions.</span></div></div><div class="item"><span class="n">4</span><div><strong>New customers and investment</strong><span>Meeting new clients directly and creating investment opportunities.</span></div></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>365 days digital · 5 days live · Endless opportunity</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- Programme &amp; venue -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Programme &amp; venue · 08 / 11</span></div>
+    <h2>Five-day programme and exhibition layout</h2>
+<div class="grid-2"><div><h3>Exhibition programme</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">Day</th><th class="">Time</th><th class="">Programme</th></tr></thead><tbody><tr><td class="">Day 1</td><td class="">2:30 – 4:00</td><td class="">Opening ceremony</td></tr><tr><td class="">Day 1</td><td class="">4:00 – 5:00</td><td class="">Website and mobile app launch ceremony</td></tr><tr><td class="">Day 1</td><td class="">5:00</td><td class="">Tour by distinguished guests</td></tr><tr><td class="">Day 2</td><td class=""></td><td class="">Tea and coffee networking session for representatives of participating organizations</td></tr><tr><td class="">Days 3–5</td><td class=""></td><td class="">Exhibition visits continue</td></tr></tbody></table></div></div><div><h3>Exhibition layout</h3><p class="muted" style="font-size:9.5pt">70–90 standard booths (3×3 m each) are arranged around a shared VIP stage, a coffee lounge and question-and-answer zones. All are built to the same design, safety and accessibility standards, with one consistent brand look shared with the entrance gate and the main stage. The coffee lounge serves traditional Ethiopian coffee to encourage networking.</p><div class="cols-3"><div class="sector-tag">VIP stage</div><div class="sector-tag">Coffee lounge</div><div class="sector-tag">Q&amp;A zone</div></div></div></div><h3>Opening programme running order</h3><div class="numbered"><div class="item"><span class="n">1</span><div><strong>Welcome address and official opening</strong><span>Announced by the Ministry of Trade and Regional Integration</span></div></div><div class="item"><span class="n">2</span><div><strong>Sponsor addresses</strong><span>Representatives of partner and exclusive-tier sponsors</span></div></div><div class="item"><span class="n">3</span><div><strong>Keynote address</strong><span>By the CEO of Dream Team Trading</span></div></div></div><div class="grid-2"><div><h3>Entrance and walkways</h3><p class="muted" style="font-size:9.5pt">LED light boxes at the main entrance make it visible from a distance and inviting. The entrance keeps visitors moving and safe; banners showing Ethiopia’s real estate growth line both sides of the walkways.</p></div><div><h3>Entrance gate design</h3><p class="muted" style="font-size:9.5pt">A 4 m high, 6 m wide entrance arch with a geometric design and integrated LED display panels, built from durable, lightweight, weather-resistant materials. Visitors scan a QR code to download the app or open the website.</p></div></div>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>One gate · One stage · One consistent brand</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- Exhibitor guide -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Exhibitor guide · 09 / 11</span></div>
+    <h2>Booth requirements, media and logistics</h2>
+<h3>Booth set-up and requirements</h3><div class="numbered one"><div class="item"><span class="n">1</span><div><strong>Standard booth 3×3 m</strong><span>Every booth must clearly present its owner’s brand story and latest innovations.</span></div></div><div class="item"><span class="n">2</span><div><strong>Design guidelines</strong><span>Maximum height limits, fire-resistant materials, and clear boundaries that do not block neighbouring booths.</span></div></div><div class="item"><span class="n">3</span><div><strong>Accessibility and safety</strong><span>Ramps for people with disabilities and older visitors; emergency exits and safety equipment must never be blocked.</span></div></div></div><h3>Registration, access and printed materials</h3><div class="stats"><div class="stat"><div class="big">10,000</div><div class="l">Visitor badges</div><div class="s">With QR codes</div></div><div class="stat"><div class="big">5</div><div class="l">Badge types</div><div class="s">VVIP · VIP · Organizer · Exhibitor · Visitor</div></div><div class="stat"><div class="big">5,000</div><div class="l">Programme magazines</div><div class="s">Full colour</div></div><div class="stat"><div class="big">2</div><div class="l">Stage banners</div><div class="s">Large banners</div></div><div class="stat"><div class="big">4 + 2</div><div class="l">LED screens</div><div class="s">Inside the centre + outside</div></div><div class="stat"><div class="big">10</div><div class="l">Wayfinding signs</div></div><div class="stat"><div class="big">70–80</div><div class="l">Booth back-wall banners</div></div><div class="stat"><div class="big">80–90</div><div class="l">Booth table cloths</div></div></div><h3>Media and digital marketing campaign</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">Phase</th><th class="">Activity</th></tr></thead><tbody><tr><td class="">Before the event</td><td class="">Event announcements and short teasers; participants receive a password-protected login and post their products on the website and app</td></tr><tr><td class="">During the event</td><td class="">The whole event is streamed live on the website and mobile app</td></tr><tr><td class="">After the event</td><td class="">Participants keep posting, and the reliability of published information is monitored</td></tr><tr><td class="">Digital marketing</td><td class="">Influencer advertising, SEO and email campaigns</td></tr></tbody></table></div><h3>Conclusion</h3><p class="muted" style="font-size:9.5pt">This exhibition creates a shared platform that brings Ethiopia’s real estate and construction sectors together with financial institutions, and opens new business opportunities by giving participating organizations a lasting digital platform.</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>One gate · One stage · One consistent brand</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- Sponsorship -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Sponsorship · 10 / 11</span></div>
+    <h2>Sponsorship and participation packages</h2>
+<p class="lead">Ethio Build Connect Expo respectfully invites your organization to become an official sponsor and co-organizer. Each tier carries its own branding, media and networking benefits. Places are limited and allocated first come, first served.</p><div class="tiers"><div class="tier top"><div class="t-head"><div><div class="t-sub">Exclusive · Co-organizer</div><div class="t-name">Exclusive Sponsor</div></div><div><div class="price">ETB 5,000,000</div><div class="booth">Booth 54 m²</div></div></div><ul><li>Certificate of recognition with a special citation, signed by the Minister of Trade and Regional Integration</li><li>Stage the event as co-organizer; opening speech after the guests of honour</li><li>Logo on the website and mobile app splash screen; front and inside advertising</li><li>Prime location of 54 m²; 5,000 free brochures for visitors</li><li>Advertising on screens inside and outside the AICC</li><li>Logo credit in advertising across media outlets</li><li>VIP seating at panel discussions; 20 advertising flags at the entrances</li><li>Listed among the organizers; co-organizer mention by the MCs</li><li>One year of posting adverts, news, photos and videos</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Platinum partner</div><div class="t-name">Tier 1 · Platinum</div></div><div><div class="price">ETB 1,700,000</div><div class="booth">Booth 27 m²</div></div></div><ul><li>Certificate of recognition signed by the Minister</li><li>Prime location of 27 m²; 2,500 free brochures</li><li>Screen advertising inside and outside the centre</li><li>Front-page and inside advertising on website and app</li><li>Logo credit across media outlets; VIP seating</li><li>10 advertising flags; first-tier mention in the programme</li><li>One year of digital posting</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Gold partner</div><div class="t-name">Tier 2 · Gold</div></div><div><div class="price">ETB 900,000</div><div class="booth">Booth 18 m²</div></div></div><ul><li>Prime location of 18 m²; 1,500 free brochures</li><li>Screen advertising (less often than Exclusive and Platinum)</li><li>Inside-page advertising on website and app</li><li>Logo credit in the pre-event media campaign; VIP seating</li><li>6 advertising flags; second-tier mention in the programme</li><li>One year of digital posting</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">Silver sponsor</div><div class="t-name">Tier 3 · Silver</div></div><div><div class="price">ETB 250,000</div><div class="booth">Booth 9 m²</div></div></div><ul><li>Prime-location booth space of 9 m²</li><li>VIP seating at panel discussions</li><li>One year of posting adverts, news, photos and videos</li></ul></div><div class="tier"><div class="t-head"><div><div class="t-sub">For organizations not attending in person</div><div class="t-name">Special Participant Package</div></div><div><div class="price">ETB 100,000</div><div class="booth">Digital only</div></div></div><ul><li>Full listing on the website and app: logo, address, phone, email, website, profile with photos and video</li><li>Your own username and password to manage your page</li><li>Stay competitive without attending in person</li><li>One year of digital posting from the contract date</li></ul></div></div><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">Benefit</th><th class="c">Exclusive</th><th class="c">Platinum</th><th class="c">Gold</th><th class="c">Silver</th><th class="c">Special</th></tr></thead><tbody><tr class="price"><td class="">Price (ETB)</td><td class="c">5,000,000</td><td class="c">1,700,000</td><td class="c">900,000</td><td class="c">250,000</td><td class="c">100,000</td></tr><tr><td class="">Booth space</td><td class="c">54 m²</td><td class="c">27 m²</td><td class="c">18 m²</td><td class="c">9 m²</td><td class="c">Digital only</td></tr><tr><td class="">Free brochures</td><td class="c">5,000</td><td class="c">2,500</td><td class="c">1,500</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">Advertising flags</td><td class="c">20</td><td class="c">10</td><td class="c">6</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">Website and app</td><td class="c">Front + inside</td><td class="c">Front + inside</td><td class="c">Inside page</td><td class="c">Full profile</td><td class="c">Full profile</td></tr><tr><td class="">Certificate signed by the Minister</td><td class="c">✓</td><td class="c">✓</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">VIP seating at panels</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">—</td></tr><tr><td class="">Co-organizer and opening speech</td><td class="c">✓</td><td class="c">—</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr><tr><td class="">One year of digital posting</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td><td class="c">✓</td></tr></tbody></table></div><div class="cta-row"><a class="cta" href="/?interest=exhibitor">Register your company on the portal</a><a class="cta-link" href="/#sponsorship-packages">See the packages online</a></div><p class="quiet">All prices exclude VAT. The full contract and detailed benefits are available on request.</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Let’s build Ethiopia together · Exclusive · Platinum · Gold · Silver · Special</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
+  <!-- Payment &amp; contact -->
+  <section class="sheet">
+    <div class="page-head"><span class="brand">Ethio Build Connect Expo</span><span class="pno">Payment &amp; contact · 11 / 11</span></div>
+    <h2>Payment and contact</h2>
+<div class="grid-2"><div><h3>Payment instructions</h3><p class="muted" style="font-size:9.5pt">Full (100%) payment is due within 10 working days of signing the agreement, to any one of these Dream Team Trading PLC accounts:</p><div class="tbl-wrap"><table class="tbl"><thead><tr><th class="">Bank</th><th class="">Account number</th></tr></thead><tbody><tr><td class="">Commercial Bank of Ethiopia</td><td class="">1000314847467</td></tr><tr><td class="">Bank of Abyssinia</td><td class="">58656283</td></tr><tr><td class="">Awash Bank</td><td class="">01304814267901</td></tr><tr><td class="">Cooperative Bank of Oromia</td><td class="">1062400139578</td></tr><tr><td class="">Amhara Bank</td><td class="">9900003477154</td></tr><tr><td class="">Dashen Bank</td><td class="">0264189810011</td></tr><tr><td class="">Enat Bank</td><td class="">0201124323140001</td></tr></tbody></table></div><p class="quiet">All prices exclude VAT. Participation is confirmed once you choose a package, sign the contract and your payment is confirmed.</p></div><div><h3>Contact us</h3><div class="facts"><div class="fact"><div class="k">Phone</div><div class="v">+251 913 504 097</div></div><div class="fact"><div class="k">Email</div><div class="v">ethiobuildconnectexpo@gmail.com</div></div><div class="fact"><div class="k">Website</div><div class="v">ethiobuildconnect.et</div></div><div class="fact"><div class="k">Address</div><div class="v">Bole Sub-city, Woreda 04, Addis Ababa</div></div></div><div class="cta-row"><a class="cta" href="/?interest=exhibitor">Register your interest</a></div><p class="quiet">Organized by Dream Team Trading PLC, jointly with the Ministry of Trade and Regional Integration and the Addis Ababa Chamber of Commerce.</p></div></div><p class="footer-note">© 2026 Dream Team Trading PLC. All rights reserved.</p>
+    <div class="page-foot"><span>Dream Team Trading PLC</span><span>Let’s build Ethiopia together</span><span>ethiobuildconnect.et</span></div>
+  </section>
+
   <script>
     (function () {
       var API = '/api/v1'
@@ -680,7 +686,7 @@
             if (!Array.isArray(orgs) || orgs.length === 0) {
               if (coverStrip) {
                 coverStrip.innerHTML =
-                  '<p class="pill" style="margin-bottom:10px">Foundation partners</p><p class="muted" style="font-size:9pt">Premium &amp; Gold sponsor spots available</p>'
+                  '<p class="pill" style="margin-bottom:10px">Foundation partners</p><p class="muted" style="font-size:9pt">Exclusive, Platinum, Gold and Silver sponsor places available</p>'
               }
               if (spotlight) {
                 spotlight.innerHTML =
