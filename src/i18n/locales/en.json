@@ -628,7 +628,8 @@
       "liveBroadcasts": "Live broadcasts",
       "enquiries": "Enquiries",
       "outreach": "Outreach",
-      "visitors": "Visitors"
+      "visitors": "Visitors",
+      "reservations": "Reservations"
     },
     "simulcast": {
       "destinations": "Social destinations",
@@ -1215,6 +1216,40 @@
       "resend": "Resend badge",
       "cancel": "Cancel",
       "resent": "Badge resent to {email}."
+    },
+    "reservations": {
+      "title": "Sponsorship reservations",
+      "subtitle": "Every package reserved from the site, from request to full payment. Change the stage, record what was paid, assign an owner, resend the agreement or send a reminder. Reservations idle for five business days get an automatic reminder (two at most).",
+      "openForm": "Open reservation form",
+      "openPipeline": "Open pipeline",
+      "openCount": "{n} active reservations",
+      "collected": "Collected",
+      "paidCount": "{n} paid in full",
+      "byStage": "By stage (click to filter)",
+      "search": "Search company, contact, email or reference",
+      "apply": "Apply",
+      "clearFilter": "Clear filter",
+      "count": "{n} reservations",
+      "empty": "No reservations yet.",
+      "loadError": "Could not load reservations.",
+      "booth": "Booth",
+      "paid": "Paid",
+      "owner": "Owner",
+      "notes": "Notes",
+      "agreementSentAt": "Agreement sent {d}",
+      "reminders": "{n} reminder(s)",
+      "sendAgreement": "Resend agreement",
+      "remind": "Send reminder",
+      "agreementSent": "Agreement resent to {email}.",
+      "reminded": "Reminder sent to {email}.",
+      "status": {
+        "REQUESTED": "Requested",
+        "AGREEMENT_SENT": "Agreement sent",
+        "SIGNED": "Signed",
+        "DEPOSIT_PAID": "Deposit paid",
+        "PAID": "Paid",
+        "CANCELLED": "Cancelled"
+      }
     }
   },
   "validation": {
@@ -2812,6 +2847,44 @@
       "MEDIA": "Media",
       "STUDENT": "Student",
       "OTHER": "Other"
+    },
+    "alreadyRegisteredCount": "{n} visitors already registered"
+  },
+  "reservation": {
+    "eyebrow": "Sponsorship",
+    "title": "Reserve this package",
+    "subtitle": "Tell us who to make the agreement out to. We email you the signed-ready agreement, the package sheet and the bank details within a minute.",
+    "pageIntro": "Choose a package and tell us who to make the agreement out to. Places are allocated first come, first served; your place is confirmed once payment is received.",
+    "choose": "Choose a package",
+    "loadingPackages": "Loading packages…",
+    "selected": "Selected package",
+    "exclVat": "excl. VAT",
+    "reserveCta": "Reserve this package",
+    "company": "Company or organization",
+    "contactName": "Contact person",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "tin": "TIN (optional)",
+    "booth": "Booth preference (optional)",
+    "boothPlaceholder": "e.g. near the main stage, corner booth",
+    "message": "Anything we should know? (optional)",
+    "submit": "Reserve and email me the agreement",
+    "submitting": "Reserving…",
+    "fineprint": "No payment is taken on this page. Full payment is due within 10 working days of signing the agreement. All prices exclude VAT.",
+    "doneTitle": "Your reservation is in",
+    "doneBody": "We have emailed the agreement, the package sheet and the bank details to {email}. Reply to that email with the signed agreement.",
+    "payTo": "Pay to {payee}",
+    "payNote": "Any one of these accounts. Put your reference in the transfer note. All prices exclude VAT.",
+    "close": "Close",
+    "pageFoot": "Not sure which tier fits?",
+    "seePackages": "Compare the packages",
+    "errors": {
+      "company": "Please enter your company.",
+      "contactName": "Please enter the contact person.",
+      "email": "Please enter a valid email address.",
+      "package": "Please choose a package first.",
+      "tooMany": "Too many attempts. Please wait a minute and try again.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }

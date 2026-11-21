@@ -39,6 +39,10 @@
             </div>
             <h3 class="mt-5 text-xl font-bold sm:text-2xl">{{ $t(card.titleKey) }}</h3>
             <p class="mt-2 flex-1 text-sm leading-relaxed text-white/75 sm:text-[15px]">{{ $t(card.bodyKey) }}</p>
+            <p v-if="card.key === 'visit' && registeredVisitors >= 10" class="mt-2 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-gold-200" data-testid="visitor-count">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold-300" aria-hidden="true"></span>
+              {{ $t('visitor.alreadyRegisteredCount', { n: registeredVisitors.toLocaleString() }) }}
+            </p>
             <div class="mt-6 flex flex-col gap-3 sm:flex-row">
               <router-link
                 :to="card.primary.to"
@@ -63,8 +67,19 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { BuildingStorefrontIcon, TicketIcon } from '@heroicons/vue/24/outline'
+import api from '@/shared/api/client'
+
+const registeredVisitors = ref(0)
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/visitors/count')
+    registeredVisitors.value = Number(data?.registered) || 0
+  } catch {
+    registeredVisitors.value = 0
+  }
+})
 
 const props = defineProps({
   /** Print-ready brochure URL for the exhibitor card's second button. */
