@@ -1262,7 +1262,16 @@
       "assignTitle": "ለ{ref} · {company} ዳሶች",
       "assignSave": "ዳሶችን አስቀምጥ",
       "assigned": "ዳሶች ተቀምጠዋል፦ {codes}።",
-      "noBooths": "እስካሁን ዳስ አልተመደበም"
+      "noBooths": "እስካሁን ዳስ አልተመደበም",
+      "newReservation": "አዲስ ማስያዣ",
+      "newHint": "በስልክ፣ በኢሜይል ወይም በአካል ለያዘ ስፖንሰር። ውሉና የባንክ መረጃው ወዲያውኑ በኢሜይል ሊላክላቸው ይችላል።",
+      "package": "ፓኬጅ",
+      "stage": "ደረጃ",
+      "agreedAmount": "የተስማሙበት መጠን (ብር፣ ባዶ = የዝርዝር ዋጋ)",
+      "language": "የስፖንሰሩ ቋንቋ",
+      "sendEmailNow": "ውሉንና የባንክ መረጃውን አሁን በኢሜይል ላክ",
+      "createSave": "ማስያዣ አስቀምጥ",
+      "created": "ማስያዣ {ref} ተፈጥሯል።"
     }
   },
   "validation": {

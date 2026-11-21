@@ -132,7 +132,29 @@ export interface AdminReservationUpdate {
   boothPreference?: string
 }
 
+export interface AdminReservationCreate {
+  sponsorshipId: string
+  company: string
+  contactName: string
+  email: string
+  phone?: string
+  tin?: string
+  boothPreference?: string
+  message?: string
+  locale?: string
+  boothCodes?: string[]
+  status?: ReservationStatus
+  amount?: number
+  amountPaid?: number
+  adminNotes?: string
+  assignedTo?: string
+  sendEmail?: boolean
+}
+
 export const reservationApi = {
+  async create(body: AdminReservationCreate): Promise<AdminReservation> {
+    return (await api.post<AdminReservation>('/admin/sponsorship-reservations', body)).data
+  },
   async reserve(body: ReserveRequest): Promise<ReservationConfirmation> {
     return (await api.post<ReservationConfirmation>('/sponsorship-reservations', body)).data
   },
