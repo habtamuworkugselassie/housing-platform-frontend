@@ -38,6 +38,15 @@ export function boothsForPackage(type?: string | null): number {
   }
 }
 
+/** Booth types a package may take (mirrors the backend). */
+export function boothTypesForPackage(type?: string | null): BoothType[] {
+  switch (String(type || '').toUpperCase()) {
+    case 'EXCLUSIVE': case 'PLATINUM': case 'PREMIUM': return ['PREMIUM', 'CORNER', 'STANDARD']
+    case 'GOLD': return ['CORNER', 'STANDARD']
+    default: return ['STANDARD']
+  }
+}
+
 export interface ReserveRequest {
   sponsorshipId: string
   boothCodes?: string[]

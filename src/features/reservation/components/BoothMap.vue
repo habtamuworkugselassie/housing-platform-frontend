@@ -1,7 +1,14 @@
 <template>
   <div class="booth-map">
+    <div class="mb-2 flex items-center justify-between gap-2 sm:hidden">
+      <p class="text-[11px] text-gray-500">{{ $t('booth.scrollHint') }}</p>
+      <div class="flex gap-1">
+        <button type="button" class="rounded-md border border-gray-300 px-2 py-0.5 text-sm font-bold text-gray-700" :aria-label="$t('booth.zoomOut')" @click="zoom = Math.max(1, zoom - 0.5)">−</button>
+        <button type="button" class="rounded-md border border-gray-300 px-2 py-0.5 text-sm font-bold text-gray-700" :aria-label="$t('booth.zoomIn')" @click="zoom = Math.min(3, zoom + 0.5)">+</button>
+      </div>
+    </div>
     <div class="booth-map__scroll">
-    <svg :viewBox="`0 0 ${W} ${H}`" class="booth-map__svg h-auto w-full select-none" role="img" :aria-label="$t('booth.mapAria')">
+    <svg :viewBox="`0 0 ${W} ${H}`" class="booth-map__svg h-auto w-full select-none" :style="svgStyle" role="img" :aria-label="$t('booth.mapAria')">
       <!-- hall -->
       <rect x="0" y="0" :width="W" :height="H" rx="10" fill="#faf9fd" stroke="#d9d2ea" />
       <!-- fixtures -->
@@ -20,7 +27,14 @@
         <text v-for="b in blockLabels" :key="b.label" :x="b.x" :y="gridY + gridH + 11" font-weight="800" fill="#6d28d9">{{ b.label }}</text>
       </g>
       <!-- booths -->
-      <g v-for="b in placed" :key="b.code" :class="['booth', b.status.toLowerCase(), { selected: isSelected(b.code), pickable: canPick(b) }]" :tabindex="canPick(b) ? 0 : -1" role="button" :aria-pressed="isSelected(b.code)" :aria-label="`${b.code} ${$t('booth.status.' + b.status)}`" @click="toggle(b)" @keydown.enter.prevent="toggle(b)" @keydown.space.prevent="toggle(b)">
+      <defs>
+        <pattern id="booth-ineligible" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="6" height="6" fill="#f3f4f6" />
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#d1d5db" stroke-width="2" />
+        </pattern>
+      </defs>
+      <g v-for="b in placed" :key="b.code" :class="['booth', b.status.toLowerCase(), { selected: isSelected(b.code), pickable: canPick(b), ineligible: !eligible(b) }]" :tabindex="canPick(b) ? 0 : -1" role="button" :aria-pressed="isSelected(b.code)" :aria-disabled="selectable && !canPick(b)" :aria-label="`${b.code} ${$t('booth.status.' + b.status)}${eligible(b) ? '' : ' · ' + $t('booth.notForPackage')}`" @click="toggle(b)" @keydown.enter.prevent="toggle(b)" @keydown.space.prevent="toggle(b)">
+        <title v-if="selectable && !eligible(b)">{{ $t('booth.notForPackage') }}</title>
         <rect :x="b.x" :y="b.y" :width="b.w" :height="b.h" rx="2" :fill="fill(b)" :stroke="stroke(b)" :stroke-width="isSelected(b.code) ? 2 : 1" />
         <text :x="b.x + b.w / 2" :y="b.y + b.h / 2 + 3" font-size="7.5" font-family="Roboto, Helvetica, Arial, sans-serif" font-weight="600" text-anchor="middle" :fill="textFill(b)">{{ b.code }}</text>
       </g>
@@ -31,13 +45,14 @@
       <span class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm bg-amber-300"></i>{{ $t('booth.status.HELD') }}</span>
       <span class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm bg-gray-400"></i>{{ $t('booth.status.SOLD') }}</span>
       <span v-if="selectable" class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm bg-primary-600"></i>{{ $t('booth.selectedLegend') }}</span>
+      <span v-if="selectable && allowedTypes" class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm" style="background: repeating-linear-gradient(45deg,#f3f4f6,#f3f4f6 2px,#d1d5db 2px,#d1d5db 4px)"></i>{{ $t('booth.notForPackage') }}</span>
       <span class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm border-2 border-amber-500 bg-white"></i>{{ $t('booth.type.PREMIUM') }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /** [{ code, block, col, row, boothType, status }] */
@@ -46,8 +61,12 @@ const props = defineProps({
   selected: { type: Array, default: () => [] },
   maxSelect: { type: Number, default: 0 },
   /** Admin mode: any booth is clickable, selection rules do not apply. */
-  adminPick: { type: Boolean, default: false }
+  adminPick: { type: Boolean, default: false },
+  /** Booth types the current package may take; null = no restriction. */
+  allowedTypes: { type: Array, default: null }
 })
+const zoom = ref(1)
+const svgStyle = computed(() => (zoom.value > 1 ? { width: `${zoom.value * 100}%`, minWidth: `${600 * zoom.value}px` } : {}))
 const emit = defineEmits(['update:selected', 'pick'])
 
 // Geometry (SVG units). Columns: 0 = left perimeter, 1-2 A, 3-5 B, 6-8 C, 9-10 D, 11 = right perimeter.
@@ -99,9 +118,14 @@ const placed = computed(() =>
 function isSelected(code) {
   return props.selected.includes(code)
 }
+function eligible(b) {
+  if (!props.allowedTypes) return true
+  return props.allowedTypes.includes(b.boothType)
+}
 function canPick(b) {
   if (props.adminPick) return true
   if (!props.selectable) return false
+  if (!eligible(b)) return false
   return b.status === 'AVAILABLE' || isSelected(b.code)
 }
 function toggle(b) {
@@ -117,6 +141,7 @@ function toggle(b) {
 }
 function fill(b) {
   if (isSelected(b.code)) return '#6d28d9'
+  if (props.selectable && !eligible(b) && b.status === 'AVAILABLE') return 'url(#booth-ineligible)'
   if (b.status === 'SOLD') return '#9ca3af'
   if (b.status === 'HELD') return '#fcd34d'
   if (b.status === 'BLOCKED') return '#e5e7eb'
@@ -130,6 +155,7 @@ function stroke(b) {
 function textFill(b) {
   if (isSelected(b.code)) return '#ffffff'
   if (b.status === 'SOLD') return '#ffffff'
+  if (props.selectable && !eligible(b)) return '#9ca3af'
   return '#2e1065'
 }
 </script>
