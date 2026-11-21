@@ -1,5 +1,5 @@
 <template>
-  <div class="booth-map">
+  <div class="booth-map min-w-0 max-w-full">
     <div class="mb-2 flex items-center justify-between gap-2 sm:hidden">
       <p class="text-[11px] text-gray-500">{{ $t('booth.scrollHint') }}</p>
       <div class="flex gap-1">
@@ -162,7 +162,8 @@ function textFill(b) {
 
 <style scoped>
 /* Phones: keep the codes legible and let the plan scroll sideways instead of shrinking. */
-.booth-map__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.booth-map { width: 100%; }
+.booth-map__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
 .booth-map__svg { min-width: 600px; }
 @media (min-width: 640px) { .booth-map__svg { min-width: 0; } }
 .booth.pickable { cursor: pointer; }

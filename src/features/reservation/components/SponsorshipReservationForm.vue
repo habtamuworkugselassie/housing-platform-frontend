@@ -21,7 +21,7 @@
       <button type="button" class="w-full rounded-full bg-primary-600 px-6 py-3 text-sm font-bold text-white hover:bg-primary-700" @click="$emit('done')">{{ $t('reservation.close') }}</button>
     </div>
 
-    <form v-else class="space-y-4" novalidate data-testid="reservation-form" @submit.prevent="submit">
+    <form v-else class="min-w-0 space-y-4 overflow-x-hidden" novalidate data-testid="reservation-form" @submit.prevent="submit">
       <div v-if="pkg" class="rounded-xl border border-primary-100 bg-violet-50 px-4 py-3">
         <p class="text-xs font-semibold uppercase tracking-wide text-primary-700">{{ $t('reservation.selected') }}</p>
         <p class="text-base font-bold text-gray-900">{{ pkg.name }}</p>
@@ -51,7 +51,7 @@
           <label :for="`${uid}-tin`" class="mb-1 block text-sm font-medium text-gray-700">{{ $t('reservation.tin') }}</label>
           <input :id="`${uid}-tin`" v-model.trim="form.tin" type="text" maxlength="40" :class="inputCls(false)" />
         </div>
-        <div v-if="pkg && boothsIncluded > 0" class="sm:col-span-2">
+        <div v-if="pkg && boothsIncluded > 0" class="min-w-0 overflow-hidden sm:col-span-2">
           <p class="mb-1 text-sm font-medium text-gray-700">{{ $t('booth.pick', { n: boothsIncluded }) }} <span class="font-normal text-gray-500">{{ $t('booth.pickOptional') }}</span></p>
           <p v-if="map" class="mb-2 text-xs text-gray-500">{{ $t('booth.availableCount', { n: map.counts.AVAILABLE || 0, total: map.counts.TOTAL || 0 }) }}</p>
           <p class="mb-2 text-xs text-gray-500">{{ $t('booth.eligibleTypes', { types: allowedTypes.map((t) => $t(`booth.type.${t}`)).join(', ') }) }}</p>
