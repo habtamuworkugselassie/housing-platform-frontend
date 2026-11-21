@@ -94,6 +94,18 @@ const routes = [
     meta: { noindex: true }
   },
   {
+    path: '/register-visitor',
+    name: 'RegisterVisitor',
+    component: () => import('@/features/visitor/views/VisitorRegisterView.vue'),
+    meta: { hideLayout: true }
+  },
+  {
+    path: '/badge/:code',
+    name: 'VisitorBadge',
+    component: () => import('@/features/visitor/views/VisitorBadgeView.vue'),
+    meta: { noindex: true, hideLayout: true }
+  },
+  {
     path: '/register-interest',
     name: 'RegisterInterest',
     component: () => import('@/features/exhibition/views/ExhibitionRegisterInterestView.vue'),
@@ -259,6 +271,12 @@ const routes = [
     path: '/admin/outreach',
     name: 'AdminOutreach',
     component: () => import('@/features/admin/views/AdminOutreachView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
+    path: '/admin/visitors',
+    name: 'AdminVisitors',
+    component: () => import('@/features/admin/views/AdminVisitorsView.vue'),
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {

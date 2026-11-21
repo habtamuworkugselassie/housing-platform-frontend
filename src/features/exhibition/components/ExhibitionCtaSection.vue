@@ -87,8 +87,8 @@ const cards = computed(() => [
     tagKey: 'exhibition.cta.visitorsTag',
     titleKey: 'exhibition.planVisit.title',
     bodyKey: 'exhibition.cta.visitorsBody',
-    primary: { labelKey: 'exhibition.planVisit.planYourVisit', to: { path: '/', query: { interest: 'visitor' }, hash: '#register' } },
-    secondary: { labelKey: 'home.expoMarketplaceLink', to: '/properties' },
+    primary: { labelKey: 'visitor.ctaBadge', to: '/register-visitor' },
+    secondary: { labelKey: 'exhibition.planVisit.planYourVisit', to: { path: '/', query: { interest: 'visitor' }, hash: '#register' } },
   },
 ])
 </script>

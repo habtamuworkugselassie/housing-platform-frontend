@@ -108,6 +108,11 @@ export const seoByRouteName = {
     title: 'Create Account - Ethio Build Connect',
     description: 'Register for Ethio Build Connect to list properties and access the marketplace.'
   },
+  RegisterVisitor: {
+    title: 'Register to Visit - Ethio Build Connect Expo 2027',
+    description:
+      'Free visitor registration for the Ethio Build Connect Expo, 9-13 January 2027 at the Addis International Convention Center. Get your QR entry badge by email.'
+  },
   RegisterInterest: {
     title: 'Register Interest - Ethio Build Connect',
     description: 'Register your interest for the Ethiopia Property and Construction Expo.'
@@ -175,6 +180,11 @@ export const seoByRouteName = {
  * duplicate, not a translation, so Amharic serves them without being indexed.
  */
 export const amSeoByRouteName = {
+  RegisterVisitor: {
+    title: 'ለመጎብኘት ይመዝገቡ - ኢትዮ ቢልድ ኮኔክት ኤክስፖ 2027',
+    description:
+      'ለኢትዮ ቢልድ ኮኔክት ኤክስፖ (ጥር 01–05, 2019 ዓ.ም፣ አዲስ ዓለም አቀፍ ኮንቬንሽን ሴንተር) ነፃ የጎብኚ ምዝገባ። የQR መግቢያ ባጅዎን በኢሜይል ያግኙ።'
+  },
   Home: {
     title: 'የኢትዮጵያ የሪል እስቴት ኤክስፖ እና የግንባታ ኤግዚቢሽን 2027',
     description:
