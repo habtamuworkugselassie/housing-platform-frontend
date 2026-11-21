@@ -7,7 +7,7 @@ import { visitorApi } from '@/features/visitor/api/visitor.api'
 
 vi.mock('@/features/visitor/api/visitor.api', async (orig) => {
   const actual = await orig<typeof import('@/features/visitor/api/visitor.api')>()
-  return { ...actual, visitorApi: { register: vi.fn(), badge: vi.fn() }, visitorQrUrl: (c: string) => `/api/v1/visitors/${c}/qr.png` }
+  return { ...actual, visitorApi: { register: vi.fn(), badge: vi.fn() }, visitorQrUrl: (c: string) => `/api/v1/visitors/${c}/qr` }
 })
 vi.mock('@/utils/analytics', () => ({ trackEvent: vi.fn() }))
 vi.mock('vue-router', () => ({ useRoute: () => ({ query: { src: 'flyer' }, params: {} }), useRouter: () => ({ push: vi.fn() }) }))
@@ -43,7 +43,7 @@ describe('VisitorRegisterView', () => {
     await flushPromises()
     expect(visitorApi.register).toHaveBeenCalledWith(expect.objectContaining({ fullName: 'Sara Tesfaye', email: 'sara@example.com', visitorType: 'INVESTOR', locale: 'en', source: 'flyer' }))
     expect(w.find('[data-testid="badge-code"]').text()).toBe('EBC-K7M2PX')
-    expect(w.find('[data-testid="visitor-badge"] img').attributes('src')).toContain('EBC-K7M2PX/qr.png')
+    expect(w.find('[data-testid="visitor-badge"] img').attributes('src')).toContain('EBC-K7M2PX/qr')
   })
 
   it('tells the visitor when the email was already registered', async () => {
