@@ -20,7 +20,7 @@
             <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
-        <div class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
+        <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
           <SponsorshipReservationForm :key="pkg ? pkg.id : 'none'" :pkg="pkg" source="site" @done="$emit('close')" />
         </div>
       </div>
