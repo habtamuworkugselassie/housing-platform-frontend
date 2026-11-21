@@ -147,6 +147,14 @@
         >
           {{ $t('exhibition.cta.standEnquiry') }}
         </button>
+        <button
+          type="button"
+          class="inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full border border-primary-300 bg-white px-8 py-3.5 text-sm font-bold text-primary-800 transition-colors hover:bg-violet-50 focus:outline-none focus:ring-2 focus:ring-primary-400"
+          data-testid="open-floor-plan"
+          @click="floorPlanOpen = true"
+        >
+          {{ $t('booth.viewPlan') }}
+        </button>
         <a
           :href="brochureHref"
           target="_blank"
@@ -276,6 +284,25 @@
 
     <!-- Register interest modal (theme follows selected package tier, or brand default) -->
     <SponsorshipReservationModal :open="reserveModalOpen" :pkg="reservePackage" @close="reserveModalOpen = false" />
+    <Teleport to="body">
+      <div v-if="floorPlanOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-violet-950/75 p-4 backdrop-blur-md" role="dialog" aria-modal="true" @click.self="floorPlanOpen = false">
+        <div class="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-white p-5 text-gray-900 sm:p-7">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold text-primary-700">{{ $t('booth.planEyebrow') }}</p>
+              <h3 class="text-xl font-extrabold tracking-tight sm:text-2xl">{{ $t('booth.planTitle') }}</h3>
+              <p v-if="floorPlan" class="mt-1 text-sm text-gray-600">{{ $t('booth.availableCount', { n: floorPlan.counts.AVAILABLE || 0, total: floorPlan.counts.TOTAL || 0 }) }}</p>
+            </div>
+            <button type="button" class="rounded-xl p-2 text-gray-400 hover:text-gray-600" :aria-label="$t('exhibition.sponsorshipPackages.close')" @click="floorPlanOpen = false"><XMarkIcon class="h-6 w-6" /></button>
+          </div>
+          <div class="mt-4">
+            <BoothMap v-if="floorPlan" :booths="floorPlan.booths" />
+            <p v-else class="py-10 text-center text-sm text-gray-500">{{ $t('booth.loading') }}</p>
+          </div>
+          <p class="mt-3 text-xs text-gray-500">{{ $t('booth.planNote') }}</p>
+        </div>
+      </div>
+    </Teleport>
 
     <Teleport to="body">
       <div
@@ -397,6 +424,8 @@ import { useI18n } from 'vue-i18n'
 import { XMarkIcon, SparklesIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { getActiveSponsorshipPackages, exhibitionApi } from '@/features/exhibition/api/exhibition.api'
 import SponsorshipReservationModal from '@/features/reservation/components/SponsorshipReservationModal.vue'
+import BoothMap from '@/features/reservation/components/BoothMap.vue'
+import { reservationApi } from '@/features/reservation/api/reservation.api'
 import { listingSortTierRank } from '@/shared/utils/sponsorshipTier'
 import { normalizeSponsorshipTierKey } from '@/shared/utils/exhibitionSponsorshipTierTheme'
 
@@ -611,6 +640,17 @@ function formatTierLabel(type) {
 
 const reserveModalOpen = ref(false)
 const reservePackage = ref(null)
+const floorPlanOpen = ref(false)
+const floorPlan = ref(null)
+watch(floorPlanOpen, async (open) => {
+  if (open && !floorPlan.value) {
+    try {
+      floorPlan.value = await reservationApi.boothMap()
+    } catch {
+      floorPlan.value = null
+    }
+  }
+})
 function openReserveModal(pkg) {
   reservePackage.value = pkg
   reserveModalOpen.value = true

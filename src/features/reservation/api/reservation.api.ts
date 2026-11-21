@@ -4,8 +4,43 @@ import api from '@/shared/api/client'
 export type ReservationStatus = 'REQUESTED' | 'AGREEMENT_SENT' | 'SIGNED' | 'DEPOSIT_PAID' | 'PAID' | 'CANCELLED'
 export const RESERVATION_STATUSES: ReservationStatus[] = ['REQUESTED', 'AGREEMENT_SENT', 'SIGNED', 'DEPOSIT_PAID', 'PAID', 'CANCELLED']
 
+export type BoothStatus = 'AVAILABLE' | 'HELD' | 'SOLD' | 'BLOCKED'
+export type BoothType = 'STANDARD' | 'CORNER' | 'PREMIUM'
+
+export interface Booth {
+  code: string
+  block: string
+  col: number
+  row: number
+  boothType: BoothType
+  sizeSqm: number
+  status: BoothStatus
+  reservationId?: string | null
+  holdExpiresAt?: string | null
+  notes?: string | null
+}
+
+export interface BoothMapData {
+  booths: Booth[]
+  counts: Record<string, number>
+  holdBusinessDays: number
+}
+
+/** Booths a package carries (mirrors the backend). */
+export function boothsForPackage(type?: string | null): number {
+  switch (String(type || '').toUpperCase()) {
+    case 'EXCLUSIVE': return 6
+    case 'PLATINUM': case 'PREMIUM': return 3
+    case 'GOLD': return 2
+    case 'SILVER': return 1
+    case 'SPECIAL': return 0
+    default: return 1
+  }
+}
+
 export interface ReserveRequest {
   sponsorshipId: string
+  boothCodes?: string[]
   company: string
   contactName: string
   email: string
@@ -27,6 +62,8 @@ export interface ReservationConfirmation {
   email: string
   bankAccounts: { bank: string; number: string }[]
   payee: string
+  boothCodes: string[]
+  boothsIncluded: number
 }
 
 export interface AdminReservation {
@@ -58,6 +95,8 @@ export interface AdminReservation {
   statusChangedAt: string
   createdAt: string
   updatedAt: string
+  boothCodes: string[]
+  boothsIncluded: number
 }
 
 export interface AdminReservationPage {
@@ -73,6 +112,7 @@ export interface Pipeline {
   openValue: number
   paidValue: number
   byStatus: Record<string, { count: number; value: number; paid: number }>
+  booths: Record<string, number>
 }
 
 export interface AdminReservationUpdate {
@@ -105,5 +145,17 @@ export const reservationApi = {
   },
   async remind(id: string): Promise<AdminReservation> {
     return (await api.post<AdminReservation>(`/admin/sponsorship-reservations/${id}/remind`)).data
+  },
+  async boothMap(): Promise<BoothMapData> {
+    return (await api.get<BoothMapData>('/sponsorship-reservations/booths')).data
+  },
+  async adminBooths(): Promise<Booth[]> {
+    return (await api.get<Booth[]>('/admin/sponsorship-reservations/booths')).data
+  },
+  async updateBooth(code: string, body: { status?: BoothStatus; boothType?: BoothType; notes?: string }): Promise<Booth> {
+    return (await api.patch<Booth>(`/admin/sponsorship-reservations/booths/${encodeURIComponent(code)}`, body)).data
+  },
+  async assignBooths(id: string, codes: string[]): Promise<AdminReservation> {
+    return (await api.put<AdminReservation>(`/admin/sponsorship-reservations/${id}/booths`, { codes })).data
   }
 }

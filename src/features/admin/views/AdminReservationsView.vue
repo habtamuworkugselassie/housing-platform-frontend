@@ -6,10 +6,63 @@
           <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.reservations.title') }}</h1>
           <p class="mt-2 max-w-3xl text-sm text-admin-subtle">{{ $t('admin.reservations.subtitle') }}</p>
         </div>
-        <a :href="reserveLink" target="_blank" rel="noopener" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60">{{ $t('admin.reservations.openForm') }}</a>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'pipeline' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" @click="tab = 'pipeline'">{{ $t('admin.reservations.tabPipeline') }}</button>
+          <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'map' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-map" @click="openMap">{{ $t('admin.reservations.tabMap') }}</button>
+          <a :href="reserveLink" target="_blank" rel="noopener" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60">{{ $t('admin.reservations.openForm') }}</a>
+        </div>
       </div>
 
-      <div v-if="pipeline" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="pipeline">
+      <!-- Floor plan -->
+      <div v-if="tab === 'map'" class="grid gap-4 lg:grid-cols-3" data-testid="map-panel">
+        <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4 lg:col-span-2">
+          <p class="mb-2 text-xs text-admin-subtle">{{ $t('admin.reservations.mapHint') }}</p>
+          <BoothMap v-if="booths.length" :booths="booths" admin-pick @pick="selectBooth" />
+          <p v-else class="py-8 text-center text-sm text-admin-subtle">{{ $t('booth.loading') }}</p>
+        </div>
+        <div class="space-y-3 rounded-lg border border-admin-line/10 bg-admin-surface p-4">
+          <div v-if="pipeline && pipeline.booths" class="grid grid-cols-2 gap-2 text-center text-xs">
+            <div class="rounded-lg bg-admin-sunken/40 p-2"><p class="text-lg font-bold text-admin-fg">{{ pipeline.booths.AVAILABLE || 0 }}</p>{{ $t('booth.status.AVAILABLE') }}</div>
+            <div class="rounded-lg bg-amber-50 p-2"><p class="text-lg font-bold text-amber-800">{{ pipeline.booths.HELD || 0 }}</p>{{ $t('booth.status.HELD') }}</div>
+            <div class="rounded-lg bg-gray-100 p-2"><p class="text-lg font-bold text-gray-700">{{ pipeline.booths.SOLD || 0 }}</p>{{ $t('booth.status.SOLD') }}</div>
+            <div class="rounded-lg bg-admin-sunken/40 p-2"><p class="text-lg font-bold text-admin-fg">{{ pipeline.booths.BLOCKED || 0 }}</p>{{ $t('booth.status.BLOCKED') }}</div>
+          </div>
+          <div v-if="activeBooth" data-testid="booth-editor">
+            <p class="text-lg font-bold text-admin-fg">{{ activeBooth.code }} <span class="text-xs font-normal text-admin-subtle">{{ $t('booth.block') }} {{ activeBooth.block }} · {{ activeBooth.sizeSqm }} m²</span></p>
+            <p v-if="activeBooth.reservationId" class="text-xs text-admin-muted">{{ $t('admin.reservations.heldBy', { ref: reservationRef(activeBooth.reservationId) }) }}<span v-if="activeBooth.holdExpiresAt"> · {{ $t('admin.reservations.holdUntil', { d: formatDate(activeBooth.holdExpiresAt) }) }}</span></p>
+            <label class="mt-2 block text-xs text-admin-subtle">{{ $t('admin.reservations.boothStatus') }}
+              <select :value="activeBooth.status" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" data-testid="booth-status" @change="saveBooth({ status: $event.target.value })">
+                <option v-for="s in ['AVAILABLE', 'HELD', 'SOLD', 'BLOCKED']" :key="s" :value="s">{{ $t(`booth.status.${s}`) }}</option>
+              </select>
+            </label>
+            <label class="mt-2 block text-xs text-admin-subtle">{{ $t('admin.reservations.boothType') }}
+              <select :value="activeBooth.boothType" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" @change="saveBooth({ boothType: $event.target.value })">
+                <option v-for="s in ['STANDARD', 'CORNER', 'PREMIUM']" :key="s" :value="s">{{ $t(`booth.type.${s}`) }}</option>
+              </select>
+            </label>
+            <label class="mt-2 block text-xs text-admin-subtle">{{ $t('admin.reservations.notes') }}
+              <input :value="activeBooth.notes || ''" type="text" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1.5 text-sm text-admin-fg" @change="saveBooth({ notes: $event.target.value })" />
+            </label>
+          </div>
+          <p v-else class="text-sm text-admin-subtle">{{ $t('admin.reservations.pickBooth') }}</p>
+        </div>
+      </div>
+
+      <!-- Assign booths to a reservation -->
+      <div v-if="assigning" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" @click.self="assigning = null">
+        <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl bg-white p-5 text-gray-900">
+          <p class="text-lg font-bold">{{ $t('admin.reservations.assignTitle', { ref: assigning.reference, company: assigning.company }) }}</p>
+          <p class="text-sm text-gray-600">{{ $t('booth.pick', { n: assigning.boothsIncluded }) }}</p>
+          <div class="my-3"><BoothMap v-model:selected="assignCodes" :booths="assignBooths" selectable :max-select="assigning.boothsIncluded" /></div>
+          <p class="text-sm font-semibold text-primary-800">{{ assignCodes.length ? $t('booth.picked', { codes: assignCodes.join(', ') }) : $t('admin.reservations.noBooths') }}</p>
+          <div class="mt-4 flex justify-end gap-2">
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-sm" @click="assigning = null">{{ $t('reservation.close') }}</button>
+            <button type="button" class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white" data-testid="assign-save" @click="saveAssignment">{{ $t('admin.reservations.assignSave') }}</button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="pipeline && tab === 'pipeline'" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-testid="pipeline">
         <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
           <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.reservations.openPipeline') }}</p>
           <p class="mt-1 text-2xl font-bold text-admin-fg">{{ money(pipeline.openValue) }} <span class="text-sm font-normal text-admin-subtle">ETB</span></p>
@@ -33,14 +86,14 @@
       <p v-if="error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
       <p v-if="notice" class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ notice }}</p>
 
-      <div class="flex flex-wrap items-center gap-2">
+      <div v-if="tab === 'pipeline'" class="flex flex-wrap items-center gap-2">
         <input v-model.trim="q" type="search" :placeholder="$t('admin.reservations.search')" class="w-64 rounded-lg border border-admin-line/20 px-3 py-2 text-sm text-admin-fg" data-testid="search" @keyup.enter="reload" />
         <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" @click="reload">{{ $t('admin.reservations.apply') }}</button>
         <button v-if="statusFilter" type="button" class="text-xs text-admin-nav underline" @click="setStatus('')">{{ $t('admin.reservations.clearFilter') }}</button>
         <span class="text-xs text-admin-subtle">{{ $t('admin.reservations.count', { n: total }) }}</span>
       </div>
 
-      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
+      <div v-if="tab === 'pipeline'" class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
         <div v-if="loading" class="text-center py-12"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15" /></div>
         <div v-else-if="!rows.length" class="px-6 py-12 text-center text-admin-subtle text-sm">{{ $t('admin.reservations.empty') }}</div>
         <div v-else class="divide-y divide-admin-line/10">
@@ -56,6 +109,11 @@
               <p class="font-semibold text-admin-fg">{{ row.packageName }}</p>
               <p class="text-sm text-admin-muted">{{ money(row.amount) }} {{ row.currency }}</p>
               <p v-if="row.boothPreference" class="text-xs text-admin-subtle">{{ $t('admin.reservations.booth') }}: {{ row.boothPreference }}</p>
+              <p class="mt-1 text-xs">
+                <span v-if="row.boothCodes && row.boothCodes.length" class="font-mono font-semibold text-admin-fg">{{ row.boothCodes.join(', ') }}</span>
+                <span v-else-if="row.boothsIncluded > 0" class="text-amber-700">{{ $t('admin.reservations.noBooths') }}</span>
+                <button v-if="row.boothsIncluded > 0 && row.status !== 'CANCELLED'" type="button" class="ml-1 text-admin-nav underline" :data-testid="`assign-${row.reference}`" @click="openAssign(row)">{{ $t('admin.reservations.assign') }}</button>
+              </p>
             </div>
             <div class="lg:col-span-3 space-y-2">
               <div class="flex items-center gap-2">
@@ -98,6 +156,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import BoothMap from '@/features/reservation/components/BoothMap.vue'
 import { reservationApi, RESERVATION_STATUSES } from '@/features/reservation/api/reservation.api'
 
 const { t, locale } = useI18n()
@@ -114,6 +173,67 @@ const notice = ref('')
 const q = ref('')
 const statusFilter = ref('')
 const busyId = ref('')
+
+const tab = ref('pipeline')
+const booths = ref([])
+const activeBooth = ref(null)
+const assigning = ref(null)
+const assignCodes = ref([])
+const assignBooths = computed(() => {
+  // Booths this reservation already holds count as pickable for it.
+  if (!assigning.value) return booths.value
+  return booths.value.map((b) => (b.reservationId === assigning.value.id ? { ...b, status: 'AVAILABLE' } : b))
+})
+
+async function loadBooths() {
+  try {
+    booths.value = await reservationApi.adminBooths()
+    if (activeBooth.value) activeBooth.value = booths.value.find((b) => b.code === activeBooth.value.code) || null
+  } catch (e) {
+    fail(e)
+  }
+}
+async function openMap() {
+  tab.value = 'map'
+  await loadBooths()
+}
+function selectBooth(b) {
+  activeBooth.value = booths.value.find((x) => x.code === b.code) || b
+}
+async function saveBooth(body) {
+  if (!activeBooth.value) return
+  try {
+    const updated = await reservationApi.updateBooth(activeBooth.value.code, body)
+    const i = booths.value.findIndex((b) => b.code === updated.code)
+    if (i >= 0) booths.value.splice(i, 1, updated)
+    activeBooth.value = updated
+    loadPipeline()
+  } catch (e) {
+    fail(e)
+  }
+}
+function reservationRef(id) {
+  const r = rows.value.find((x) => x.id === id)
+  return r ? `${r.reference} · ${r.company}` : id.slice(0, 8)
+}
+async function openAssign(row) {
+  await loadBooths()
+  assigning.value = row
+  assignCodes.value = [...(row.boothCodes || [])]
+}
+async function saveAssignment() {
+  if (!assigning.value) return
+  try {
+    const updated = await reservationApi.assignBooths(assigning.value.id, assignCodes.value)
+    const row = rows.value.find((r) => r.id === updated.id)
+    if (row) Object.assign(row, updated)
+    assigning.value = null
+    notice.value = t('admin.reservations.assigned', { codes: (updated.boothCodes || []).join(', ') || '—' })
+    loadPipeline()
+  } catch (e) {
+    fail(e)
+  }
+}
 
 const reserveLink = computed(() => (typeof window !== 'undefined' ? `${window.location.origin}/reserve` : '/reserve'))
 

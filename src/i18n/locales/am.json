@@ -1249,7 +1249,20 @@
         "DEPOSIT_PAID": "ቅድመ ክፍያ ተከፍሏል",
         "PAID": "ተከፍሏል",
         "CANCELLED": "ተሰርዟል"
-      }
+      },
+      "tabPipeline": "ፓይፕላይን",
+      "tabMap": "የአዳራሽ ፕላን",
+      "mapHint": "ሁኔታውን ወይም ዓይነቱን ለመቀየር ዳስ ይጫኑ። ወርቃማ = በማስያዣ የተያዘ፣ ግራጫ = የተሸጠ።",
+      "heldBy": "በ{ref} ተይዟል",
+      "holdUntil": "እስከ {d}",
+      "boothStatus": "የዳስ ሁኔታ",
+      "boothType": "የዳስ ዓይነት",
+      "pickBooth": "በፕላኑ ላይ ዳስ ይምረጡ።",
+      "assign": "ዳሶችን መድብ",
+      "assignTitle": "ለ{ref} · {company} ዳሶች",
+      "assignSave": "ዳሶችን አስቀምጥ",
+      "assigned": "ዳሶች ተቀምጠዋል፦ {codes}።",
+      "noBooths": "እስካሁን ዳስ አልተመደበም"
     }
   },
   "validation": {
@@ -2886,5 +2899,37 @@
       "tooMany": "ብዙ ሙከራዎች። እባክዎ አንድ ደቂቃ ቆይተው ይሞክሩ።",
       "generic": "ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"
     }
+  },
+  "booth": {
+    "mapAria": "የኤግዚቢሽን አዳራሽ ፕላን ከዳስ ተገኝነት ጋር",
+    "entrance": "ዋና መግቢያ · የምዝገባ ሎቢ",
+    "featureArea": "ማሳያ ቦታ",
+    "stage": "መድረክ",
+    "firstAid": "የመጀመሪያ እርዳታ",
+    "cafeteria": "ካፌቴሪያ እና ላውንጅ",
+    "vipEntrance": "የVIP መግቢያ",
+    "status": {
+      "AVAILABLE": "ክፍት",
+      "HELD": "ተይዟል",
+      "SOLD": "ተሽጧል",
+      "BLOCKED": "ለሽያጭ አይደለም"
+    },
+    "type": {
+      "STANDARD": "መደበኛ",
+      "CORNER": "የጥግ",
+      "PREMIUM": "ፕሪሚየም (የፊት ረድፍ)"
+    },
+    "selectedLegend": "የእርስዎ ምርጫ",
+    "block": "ብሎክ",
+    "pick": "በፕላኑ ላይ እስከ {n} ዳስ ይምረጡ",
+    "pickOptional": "(አማራጭ፤ የመጨረሻውን ቦታ ከእርስዎ ጋር እናረጋግጣለን)",
+    "availableCount": "ከ{total} ዳሶች {n} አሁንም ክፍት ናቸው",
+    "loading": "የአዳራሽ ፕላን በመጫን ላይ…",
+    "picked": "የተመረጡ፦ {codes}",
+    "heldFor": "ዳሶች {codes} ለ{days} የስራ ቀናት ተይዘውልዎታል።",
+    "viewPlan": "የአዳራሹን ፕላን ይመልከቱ",
+    "planEyebrow": "አዲስ ዓለም አቀፍ አዳራሽ · 70 × 60 ሜ",
+    "planTitle": "የኤግዚቢሽን ፕላን",
+    "planNote": "ብሎኮች A–D 100 መደበኛ 3×3 ሜ ዳሶችን ይይዛሉ፤ 01–20 በግድግዳው ዳር ናቸው። የፊት ረድፍ ዳሶች ፕሪሚየም ናቸው። ውሉ በ10 የስራ ቀናት ካልተጠናቀቀ የተያዙ ዳሶች ይለቀቃሉ። አዘጋጁ ፕላኑን ሊያሻሽል ይችላል።"
   }
 }
