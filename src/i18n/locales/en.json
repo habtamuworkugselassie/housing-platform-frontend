@@ -1262,7 +1262,16 @@
       "assignTitle": "Booths for {ref} · {company}",
       "assignSave": "Save booths",
       "assigned": "Booths saved: {codes}.",
-      "noBooths": "No booths assigned yet"
+      "noBooths": "No booths assigned yet",
+      "newReservation": "New reservation",
+      "newHint": "For a sponsor who reserved by phone, email or in person. The agreement and bank details can be emailed to them at once.",
+      "package": "Package",
+      "stage": "Stage",
+      "agreedAmount": "Agreed amount (ETB, blank = list price)",
+      "language": "Sponsor's language",
+      "sendEmailNow": "Email the sponsor the agreement and bank details now",
+      "createSave": "Save reservation",
+      "created": "Reservation {ref} created."
     }
   },
   "validation": {

@@ -7,6 +7,7 @@
           <p class="mt-2 max-w-3xl text-sm text-admin-subtle">{{ $t('admin.reservations.subtitle') }}</p>
         </div>
         <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg bg-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-500" data-testid="new-reservation" @click="openCreate">{{ $t('admin.reservations.newReservation') }}</button>
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'pipeline' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" @click="tab = 'pipeline'">{{ $t('admin.reservations.tabPipeline') }}</button>
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'map' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-map" @click="openMap">{{ $t('admin.reservations.tabMap') }}</button>
           <a :href="reserveLink" target="_blank" rel="noopener" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60">{{ $t('admin.reservations.openForm') }}</a>
@@ -46,6 +47,51 @@
           </div>
           <p v-else class="text-sm text-admin-subtle">{{ $t('admin.reservations.pickBooth') }}</p>
         </div>
+      </div>
+
+      <!-- Manual reservation -->
+      <div v-if="creating" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" @click.self="creating = false">
+        <form class="max-h-[92vh] w-full max-w-3xl space-y-4 overflow-y-auto rounded-xl bg-white p-5 text-gray-900" data-testid="create-form" @submit.prevent="submitCreate">
+          <div>
+            <p class="text-lg font-bold">{{ $t('admin.reservations.newReservation') }}</p>
+            <p class="text-sm text-gray-600">{{ $t('admin.reservations.newHint') }}</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.package') }}
+              <select v-model="createForm.sponsorshipId" required class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-package">
+                <option value="" disabled>{{ $t('reservation.choose') }}</option>
+                <option v-for="p in packages" :key="p.id" :value="p.id">{{ p.name }} · {{ money(p.basePrice) }} ETB</option>
+              </select>
+            </label>
+            <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('reservation.company') }}<input v-model.trim="createForm.company" required type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-company" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.contactName') }}<input v-model.trim="createForm.contactName" required type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-contact" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.email') }}<input v-model.trim="createForm.email" required type="email" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-email" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.phone') }}<input v-model.trim="createForm.phone" type="tel" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.tin') }}<input v-model.trim="createForm.tin" type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.stage') }}
+              <select v-model="createForm.status" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-status">
+                <option v-for="s in STATUSES.filter((x) => x !== 'CANCELLED')" :key="s" :value="s">{{ $t(`admin.reservations.status.${s}`) }}</option>
+              </select>
+            </label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.paid') }} (ETB)<input v-model.number="createForm.amountPaid" type="number" min="0" step="1000" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.agreedAmount') }}<input v-model.number="createForm.amount" type="number" min="0" step="1000" :placeholder="selectedPackage ? money(selectedPackage.basePrice) : ''" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.language') }}
+              <select v-model="createForm.locale" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"><option value="en">English</option><option value="am">አማርኛ</option></select>
+            </label>
+            <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.notes') }}<textarea v-model.trim="createForm.adminNotes" rows="2" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea></label>
+          </div>
+          <div v-if="selectedPackage && createBoothsIncluded > 0">
+            <p class="text-sm font-medium text-gray-700">{{ $t('booth.pick', { n: createBoothsIncluded }) }}</p>
+            <BoothMap v-model:selected="createCodes" :booths="booths" selectable :max-select="createBoothsIncluded" :allowed-types="boothTypesForPackage(selectedPackage.type)" />
+            <p v-if="createCodes.length" class="mt-1 text-sm font-semibold text-primary-800">{{ $t('booth.picked', { codes: createCodes.join(', ') }) }}</p>
+          </div>
+          <label class="flex items-center gap-2 text-sm text-gray-700"><input v-model="createForm.sendEmail" type="checkbox" data-testid="create-send-email" /> {{ $t('admin.reservations.sendEmailNow') }}</label>
+          <p v-if="createError" class="text-sm text-red-600" role="alert">{{ createError }}</p>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-sm" @click="creating = false">{{ $t('reservation.close') }}</button>
+            <button type="submit" :disabled="createBusy" class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50" data-testid="create-save">{{ createBusy ? $t('reservation.submitting') : $t('admin.reservations.createSave') }}</button>
+          </div>
+        </form>
       </div>
 
       <!-- Assign booths to a reservation -->
@@ -153,11 +199,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import BoothMap from '@/features/reservation/components/BoothMap.vue'
-import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage } from '@/features/reservation/api/reservation.api'
+import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage, boothsForPackage } from '@/features/reservation/api/reservation.api'
+import { getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
 
 const { t, locale } = useI18n()
 const STATUSES = RESERVATION_STATUSES
@@ -232,6 +279,59 @@ async function saveAssignment() {
     loadPipeline()
   } catch (e) {
     fail(e)
+  }
+}
+
+const creating = ref(false)
+const createBusy = ref(false)
+const createError = ref('')
+const packages = ref([])
+const createCodes = ref([])
+const emptyCreate = () => ({ sponsorshipId: '', company: '', contactName: '', email: '', phone: '', tin: '', status: 'REQUESTED', amountPaid: 0, amount: null, locale: 'en', adminNotes: '', sendEmail: true })
+const createForm = ref(emptyCreate())
+const selectedPackage = computed(() => packages.value.find((p) => p.id === createForm.value.sponsorshipId) || null)
+const createBoothsIncluded = computed(() => boothsForPackage(selectedPackage.value?.type))
+watch(() => createForm.value.sponsorshipId, () => { createCodes.value = [] })
+
+async function openCreate() {
+  createForm.value = emptyCreate()
+  createCodes.value = []
+  createError.value = ''
+  creating.value = true
+  try {
+    if (!packages.value.length) packages.value = (await getActiveSponsorshipPackages()).sort((a, b) => (Number(b.basePrice) || 0) - (Number(a.basePrice) || 0))
+  } catch {
+    packages.value = []
+  }
+  loadBooths()
+}
+async function submitCreate() {
+  createError.value = ''
+  createBusy.value = true
+  try {
+    const f = createForm.value
+    const created = await reservationApi.create({
+      sponsorshipId: f.sponsorshipId,
+      company: f.company,
+      contactName: f.contactName,
+      email: f.email,
+      phone: f.phone || undefined,
+      tin: f.tin || undefined,
+      locale: f.locale,
+      status: f.status,
+      amountPaid: Number(f.amountPaid) || 0,
+      amount: f.amount === null || f.amount === '' ? undefined : Number(f.amount),
+      adminNotes: f.adminNotes || undefined,
+      boothCodes: createCodes.value.length ? [...createCodes.value] : undefined,
+      sendEmail: !!f.sendEmail
+    })
+    creating.value = false
+    notice.value = t('admin.reservations.created', { ref: created.reference })
+    await Promise.all([load(0), loadPipeline()])
+  } catch (e) {
+    createError.value = e?.response?.data?.message || e?.message || t('admin.reservations.loadError')
+  } finally {
+    createBusy.value = false
   }
 }
 

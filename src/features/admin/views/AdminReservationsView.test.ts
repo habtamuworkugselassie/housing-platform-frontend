@@ -7,8 +7,10 @@ import { reservationApi } from '@/features/reservation/api/reservation.api'
 
 vi.mock('@/features/reservation/api/reservation.api', async (orig) => {
   const actual = await orig<typeof import('@/features/reservation/api/reservation.api')>()
-  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn() } }
+  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn(), create: vi.fn() } }
 })
+
+vi.mock('@/features/exhibition/api/exhibition.api', () => ({ getActiveSponsorshipPackages: vi.fn().mockResolvedValue([{ id: 'p1', name: 'Tier 2 · Gold', type: 'GOLD', basePrice: 900000, status: 'ACTIVE' }]) }))
 
 const row = (o: Record<string, unknown> = {}) => ({
   id: 'r1', reference: 'RSV-K7M2PX', sponsorshipId: 'p1', packageName: 'Tier 2 · Gold', packageType: 'GOLD', amount: 900000, currency: 'ETB',
@@ -80,5 +82,25 @@ describe('AdminReservationsView', () => {
     await w.find('[data-testid="booth-status"]').setValue('BLOCKED')
     await flushPromises()
     expect(reservationApi.updateBooth).toHaveBeenCalledWith('B104', { status: 'BLOCKED' })
+  })
+
+  it('enters a manual reservation with a booth and a starting stage', async () => {
+    vi.mocked(reservationApi.create).mockResolvedValue(row({ reference: 'RSV-MANUAL', status: 'SIGNED', boothCodes: ['B104'], source: 'manual' }) as any)
+    const w = mountView()
+    await flushPromises()
+    await w.find('[data-testid="new-reservation"]').trigger('click')
+    await flushPromises()
+    await w.find('[data-testid="create-package"]').setValue('p1')
+    await w.find('[data-testid="create-company"]').setValue('Walk-in PLC')
+    await w.find('[data-testid="create-contact"]').setValue('Dawit')
+    await w.find('[data-testid="create-email"]').setValue('dawit@walkin.et')
+    await w.find('[data-testid="create-status"]').setValue('SIGNED')
+    await w.find('[data-testid="create-send-email"]').setValue(false)
+    await flushPromises()
+    await w.find('g.booth').trigger('click')
+    await w.find('[data-testid="create-form"]').trigger('submit')
+    await flushPromises()
+    expect(reservationApi.create).toHaveBeenCalledWith(expect.objectContaining({ sponsorshipId: 'p1', company: 'Walk-in PLC', contactName: 'Dawit', email: 'dawit@walkin.et', status: 'SIGNED', boothCodes: ['B104'], sendEmail: false }))
+    expect(w.text()).toContain('admin.reservations.created')
   })
 })
