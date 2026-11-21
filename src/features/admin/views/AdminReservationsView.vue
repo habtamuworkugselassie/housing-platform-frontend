@@ -53,7 +53,7 @@
         <div class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl bg-white p-5 text-gray-900">
           <p class="text-lg font-bold">{{ $t('admin.reservations.assignTitle', { ref: assigning.reference, company: assigning.company }) }}</p>
           <p class="text-sm text-gray-600">{{ $t('booth.pick', { n: assigning.boothsIncluded }) }}</p>
-          <div class="my-3"><BoothMap v-model:selected="assignCodes" :booths="assignBooths" selectable :max-select="assigning.boothsIncluded" /></div>
+          <div class="my-3"><BoothMap v-model:selected="assignCodes" :booths="assignBooths" selectable :max-select="assigning.boothsIncluded" :allowed-types="boothTypesForPackage(assigning.packageType)" /></div>
           <p class="text-sm font-semibold text-primary-800">{{ assignCodes.length ? $t('booth.picked', { codes: assignCodes.join(', ') }) : $t('admin.reservations.noBooths') }}</p>
           <div class="mt-4 flex justify-end gap-2">
             <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-sm" @click="assigning = null">{{ $t('reservation.close') }}</button>
@@ -157,7 +157,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import BoothMap from '@/features/reservation/components/BoothMap.vue'
-import { reservationApi, RESERVATION_STATUSES } from '@/features/reservation/api/reservation.api'
+import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage } from '@/features/reservation/api/reservation.api'
 
 const { t, locale } = useI18n()
 const STATUSES = RESERVATION_STATUSES

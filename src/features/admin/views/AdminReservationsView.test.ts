@@ -23,8 +23,8 @@ describe('AdminReservationsView', () => {
   beforeEach(() => {
     vi.mocked(reservationApi.pipeline).mockResolvedValue({ openCount: 3, openValue: 2600000, paidValue: 900000, byStatus: { REQUESTED: { count: 1, value: 1700000, paid: 0 }, AGREEMENT_SENT: { count: 1, value: 900000, paid: 0 }, PAID: { count: 1, value: 900000, paid: 900000 } }, booths: { AVAILABLE: 117, HELD: 2, SOLD: 1, BLOCKED: 0, TOTAL: 120 } })
     vi.mocked(reservationApi.adminBooths).mockResolvedValue([
-      { code: 'B101', block: 'B', col: 3, row: 1, boothType: 'PREMIUM', sizeSqm: 9, status: 'AVAILABLE' },
-      { code: 'B102', block: 'B', col: 4, row: 1, boothType: 'PREMIUM', sizeSqm: 9, status: 'AVAILABLE' }
+      { code: 'B104', block: 'B', col: 3, row: 2, boothType: 'CORNER', sizeSqm: 9, status: 'AVAILABLE' },
+      { code: 'B105', block: 'B', col: 4, row: 2, boothType: 'STANDARD', sizeSqm: 9, status: 'AVAILABLE' }
     ] as any)
     vi.mocked(reservationApi.list).mockResolvedValue({ content: [row()], totalElements: 1, totalPages: 1, number: 0, size: 50 })
     vi.mocked(reservationApi.update).mockReset()
@@ -54,7 +54,7 @@ describe('AdminReservationsView', () => {
   })
 
   it('assigns booths to a reservation from the map', async () => {
-    vi.mocked(reservationApi.assignBooths).mockResolvedValue(row({ boothCodes: ['B101', 'B102'] }) as any)
+    vi.mocked(reservationApi.assignBooths).mockResolvedValue(row({ boothCodes: ['B104', 'B105'] }) as any)
     const w = mountView()
     await flushPromises()
     expect(w.find('[data-testid="reservation-RSV-K7M2PX"]').text()).toContain('admin.reservations.noBooths')
@@ -66,8 +66,8 @@ describe('AdminReservationsView', () => {
     await cells[1].trigger('click')
     await w.find('[data-testid="assign-save"]').trigger('click')
     await flushPromises()
-    expect(reservationApi.assignBooths).toHaveBeenCalledWith('r1', ['B101', 'B102'])
-    expect(w.find('[data-testid="reservation-RSV-K7M2PX"]').text()).toContain('B101, B102')
+    expect(reservationApi.assignBooths).toHaveBeenCalledWith('r1', ['B104', 'B105'])
+    expect(w.find('[data-testid="reservation-RSV-K7M2PX"]').text()).toContain('B104, B105')
   })
 
   it('edits a booth from the floor plan tab', async () => {
@@ -79,6 +79,6 @@ describe('AdminReservationsView', () => {
     await w.findAll('g.booth')[0].trigger('click')
     await w.find('[data-testid="booth-status"]').setValue('BLOCKED')
     await flushPromises()
-    expect(reservationApi.updateBooth).toHaveBeenCalledWith('B101', { status: 'BLOCKED' })
+    expect(reservationApi.updateBooth).toHaveBeenCalledWith('B104', { status: 'BLOCKED' })
   })
 })

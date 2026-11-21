@@ -54,7 +54,8 @@
         <div v-if="pkg && boothsIncluded > 0" class="sm:col-span-2">
           <p class="mb-1 text-sm font-medium text-gray-700">{{ $t('booth.pick', { n: boothsIncluded }) }} <span class="font-normal text-gray-500">{{ $t('booth.pickOptional') }}</span></p>
           <p v-if="map" class="mb-2 text-xs text-gray-500">{{ $t('booth.availableCount', { n: map.counts.AVAILABLE || 0, total: map.counts.TOTAL || 0 }) }}</p>
-          <BoothMap v-if="map" v-model:selected="selectedBooths" :booths="map.booths" selectable :max-select="boothsIncluded" />
+          <p class="mb-2 text-xs text-gray-500">{{ $t('booth.eligibleTypes', { types: allowedTypes.map((t) => $t(`booth.type.${t}`)).join(', ') }) }}</p>
+          <BoothMap v-if="map" v-model:selected="selectedBooths" :booths="map.booths" selectable :max-select="boothsIncluded" :allowed-types="allowedTypes" />
           <p v-else class="text-xs text-gray-500">{{ $t('booth.loading') }}</p>
           <p v-if="selectedBooths.length" class="mt-2 text-sm font-semibold text-primary-800" data-testid="picked-booths">{{ $t('booth.picked', { codes: selectedBooths.join(', ') }) }}</p>
         </div>
@@ -81,7 +82,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BoothMap from './BoothMap.vue'
-import { reservationApi, boothsForPackage } from '@/features/reservation/api/reservation.api'
+import { reservationApi, boothsForPackage, boothTypesForPackage } from '@/features/reservation/api/reservation.api'
 import { trackEvent } from '@/utils/analytics'
 
 const props = defineProps({
@@ -101,6 +102,7 @@ const confirmation = ref(null)
 const map = ref(null)
 const selectedBooths = ref([])
 const boothsIncluded = computed(() => boothsForPackage(props.pkg?.type))
+const allowedTypes = computed(() => boothTypesForPackage(props.pkg?.type))
 const holdDays = computed(() => map.value?.holdBusinessDays || 10)
 
 watch(() => props.pkg?.id, () => { selectedBooths.value = [] })

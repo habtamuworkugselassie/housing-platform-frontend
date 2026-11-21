@@ -7,7 +7,7 @@ import { reservationApi } from '@/features/reservation/api/reservation.api'
 
 vi.mock('@/features/reservation/api/reservation.api', async (orig) => {
   const actual = await orig<typeof import('@/features/reservation/api/reservation.api')>()
-  return { ...actual, reservationApi: { reserve: vi.fn(), boothMap: vi.fn().mockResolvedValue({ booths: [{ code: 'B101', block: 'B', col: 3, row: 1, boothType: 'PREMIUM', sizeSqm: 9, status: 'AVAILABLE' }], counts: { AVAILABLE: 119, TOTAL: 120 }, holdBusinessDays: 10 }) } }
+  return { ...actual, reservationApi: { reserve: vi.fn(), boothMap: vi.fn().mockResolvedValue({ booths: [{ code: 'B104', block: 'B', col: 3, row: 2, boothType: 'CORNER', sizeSqm: 9, status: 'AVAILABLE' }], counts: { AVAILABLE: 119, TOTAL: 120 }, holdBusinessDays: 10 }) } }
 })
 vi.mock('@/utils/analytics', () => ({ trackEvent: vi.fn() }))
 
@@ -32,7 +32,7 @@ describe('SponsorshipReservationForm', () => {
   it('reserves and shows the reference and bank accounts', async () => {
     vi.mocked(reservationApi.reserve).mockResolvedValue({
       reference: 'RSV-K7M2PX', packageName: 'Tier 2 · Gold', amount: 900000, currency: 'ETB', status: 'REQUESTED', email: 'sara@noah.et',
-      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B101'], boothsIncluded: 2
+      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B104'], boothsIncluded: 2
     })
     const w = mountForm()
     await flushPromises()
@@ -44,7 +44,7 @@ describe('SponsorshipReservationForm', () => {
     await w.find('input[type="email"]').setValue('sara@noah.et')
     await w.find('[data-testid="reservation-form"]').trigger('submit')
     await flushPromises()
-    expect(reservationApi.reserve).toHaveBeenCalledWith(expect.objectContaining({ sponsorshipId: 'p-gold', company: 'Noah Real Estate', contactName: 'Sara Tesfaye', email: 'sara@noah.et', locale: 'en', source: 'test', boothCodes: ['B101'] }))
+    expect(reservationApi.reserve).toHaveBeenCalledWith(expect.objectContaining({ sponsorshipId: 'p-gold', company: 'Noah Real Estate', contactName: 'Sara Tesfaye', email: 'sara@noah.et', locale: 'en', source: 'test', boothCodes: ['B104'] }))
     expect(w.find('[data-testid="held-booths"]').exists()).toBe(true)
     expect(w.find('[data-testid="reservation-reference"]').text()).toBe('RSV-K7M2PX')
     expect(w.text()).toContain('1000314847467')

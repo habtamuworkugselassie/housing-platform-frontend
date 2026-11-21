@@ -2930,6 +2930,11 @@
     "viewPlan": "View the hall plan",
     "planEyebrow": "Addis International Hall · 70 × 60 m",
     "planTitle": "Exhibition floor plan",
-    "planNote": "Blocks A–D hold 100 standard 3×3 m booths; 01–20 line the walls. Front-row booths are premium. Held booths are released if the agreement is not completed within 10 business days. The organizer may amend the plan."
+    "planNote": "Blocks A–D hold 100 standard 3×3 m booths; 01–20 line the walls. Front-row booths are premium. Held booths are released if the agreement is not completed within 10 business days. The organizer may amend the plan.",
+    "notForPackage": "Not included in this package",
+    "eligibleTypes": "This package can take: {types}.",
+    "scrollHint": "Drag sideways to see the whole hall",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
   }
 }

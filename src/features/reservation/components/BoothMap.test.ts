@@ -43,4 +43,14 @@ describe('BoothMap', () => {
     await w.findAll('g.booth')[3].trigger('click')
     expect(w.emitted('pick')?.[0]?.[0]).toMatchObject({ code: 'B101' })
   })
+
+  it('greys out booth types the package may not take', async () => {
+    const w = mountMap({ selectable: true, maxSelect: 2, selected: [], allowedTypes: ['CORNER', 'STANDARD'] })
+    const g = w.findAll('g.booth')
+    expect(g[1].classes()).toContain('ineligible') // A101 is PREMIUM
+    await g[1].trigger('click')
+    expect(w.emitted('update:selected')).toBeUndefined()
+    await g[4].trigger('click') // D120 is CORNER
+    expect(w.emitted('update:selected')?.[0]).toEqual([['D120']])
+  })
 })
