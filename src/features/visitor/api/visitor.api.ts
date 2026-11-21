@@ -77,7 +77,7 @@ export interface VisitorStats {
 /** Absolute URL of the QR image for a code (relative API base resolves against the site). */
 export function visitorQrUrl(code: string, size = 440): string {
   const base = (api.defaults.baseURL || '/api/v1').replace(/\/$/, '')
-  return `${base}/visitors/${encodeURIComponent(code)}/qr.png?size=${size}`
+  return `${base}/visitors/${encodeURIComponent(code)}/qr?size=${size}`
 }
 
 export const visitorApi = {
