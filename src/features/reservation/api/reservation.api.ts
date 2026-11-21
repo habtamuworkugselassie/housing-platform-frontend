@@ -42,8 +42,7 @@ export function boothsForPackage(type?: string | null): number {
 export function boothTypesForPackage(type?: string | null): BoothType[] {
   switch (String(type || '').toUpperCase()) {
     case 'EXCLUSIVE': case 'PLATINUM': case 'PREMIUM': return ['PREMIUM', 'CORNER', 'STANDARD']
-    case 'GOLD': return ['CORNER', 'STANDARD']
-    default: return ['STANDARD']
+    default: return ['CORNER', 'STANDARD']
   }
 }
 
