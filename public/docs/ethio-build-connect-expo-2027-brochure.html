@@ -513,6 +513,15 @@
       .tier.top { grid-column: 1 / -1 !important; }
       .toolbar { display: none !important; }
     }
+    @media print {
+      .tiers { gap: 8px; margin: 6px 0 8px; }
+      .tier { padding: 8px 10px; }
+      .tier ul { font-size: 8.5pt; margin-top: 5px; line-height: 1.35; }
+      .tier .price { font-size: 12pt; }
+      .lead { font-size: 10pt; margin-bottom: 4px; }
+      .page-foot { margin-top: 10px; break-before: avoid; page-break-before: avoid; }
+      .sheet { padding-bottom: 0; }
+    }
   </style>
 </head>
 <body>
