@@ -118,10 +118,18 @@
                 type="button"
                 class="mt-5 inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-white"
                 :class="tierAccent(pkg).cta"
+                :data-testid="`reserve-${pkg.id}`"
+                @click="openReserveModal(pkg)"
+              >
+                {{ $t('reservation.reserveCta') }}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 6l6 6-6 6M5 12h14" /></svg>
+              </button>
+              <button
+                type="button"
+                class="mt-2 inline-flex w-full items-center justify-center text-xs font-semibold text-primary-700 underline-offset-4 hover:underline"
                 @click="openRegisterModal(pkg)"
               >
                 {{ $t('exhibition.sponsorshipPackages.enquireCta') }}
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 6l6 6-6 6M5 12h14" /></svg>
               </button>
             </div>
           </div>
@@ -267,6 +275,8 @@
     </Teleport>
 
     <!-- Register interest modal (theme follows selected package tier, or brand default) -->
+    <SponsorshipReservationModal :open="reserveModalOpen" :pkg="reservePackage" @close="reserveModalOpen = false" />
+
     <Teleport to="body">
       <div
         v-if="registerModalOpen"
@@ -386,6 +396,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { XMarkIcon, SparklesIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { getActiveSponsorshipPackages, exhibitionApi } from '@/features/exhibition/api/exhibition.api'
+import SponsorshipReservationModal from '@/features/reservation/components/SponsorshipReservationModal.vue'
 import { listingSortTierRank } from '@/shared/utils/sponsorshipTier'
 import { normalizeSponsorshipTierKey } from '@/shared/utils/exhibitionSponsorshipTierTheme'
 
@@ -596,6 +607,13 @@ function formatTierLabel(type) {
   const translated = t(key)
   if (translated !== key) return translated
   return u || '—'
+}
+
+const reserveModalOpen = ref(false)
+const reservePackage = ref(null)
+function openReserveModal(pkg) {
+  reservePackage.value = pkg
+  reserveModalOpen.value = true
 }
 
 function openDetailsModal(pkg) {

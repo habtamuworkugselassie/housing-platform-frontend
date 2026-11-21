@@ -108,6 +108,11 @@ export const seoByRouteName = {
     title: 'Create Account - Ethio Build Connect',
     description: 'Register for Ethio Build Connect to list properties and access the marketplace.'
   },
+  ReservePackage: {
+    title: 'Reserve a Sponsorship Package - Ethio Build Connect Expo 2027',
+    description:
+      'Reserve an Exclusive, Platinum, Gold, Silver or Special Participant package for the Ethio Build Connect Expo 2027 and receive the agreement and payment details by email.'
+  },
   RegisterVisitor: {
     title: 'Register to Visit - Ethio Build Connect Expo 2027',
     description:

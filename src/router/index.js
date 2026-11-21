@@ -100,6 +100,19 @@ const routes = [
     meta: { hideLayout: true }
   },
   {
+    path: '/reserve',
+    name: 'ReservePackage',
+    component: () => import('@/features/reservation/views/ReservePackageView.vue'),
+    meta: { hideLayout: true }
+  },
+  {
+    // Short link for flyers and banners: /visit -> visitor registration, tagged as print.
+    path: '/visit',
+    name: 'VisitShortLink',
+    redirect: (to) => ({ path: `${to.meta?.locale === 'am' ? '/am' : ''}/register-visitor`, query: { src: 'print' } }),
+    meta: { noindex: true }
+  },
+  {
     path: '/badge/:code',
     name: 'VisitorBadge',
     component: () => import('@/features/visitor/views/VisitorBadgeView.vue'),
@@ -271,6 +284,12 @@ const routes = [
     path: '/admin/outreach',
     name: 'AdminOutreach',
     component: () => import('@/features/admin/views/AdminOutreachView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+  },
+  {
+    path: '/admin/sponsorship-reservations',
+    name: 'AdminReservations',
+    component: () => import('@/features/admin/views/AdminReservationsView.vue'),
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {
