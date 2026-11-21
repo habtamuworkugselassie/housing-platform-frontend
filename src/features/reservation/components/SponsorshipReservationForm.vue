@@ -9,6 +9,7 @@
         <p class="mt-1 text-sm text-gray-600">{{ $t('reservation.doneBody', { email: confirmation.email }) }}</p>
         <p class="mt-3 text-2xl font-extrabold tracking-[0.1em] text-primary-900" data-testid="reservation-reference">{{ confirmation.reference }}</p>
         <p class="text-sm text-gray-700">{{ confirmation.packageName }} · {{ money(confirmation.amount) }} {{ confirmation.currency }}</p>
+        <p v-if="confirmation.boothCodes && confirmation.boothCodes.length" class="mt-1 text-sm font-semibold text-primary-800" data-testid="held-booths">{{ $t('booth.heldFor', { codes: confirmation.boothCodes.join(', '), days: holdDays }) }}</p>
       </div>
       <div class="rounded-xl border border-gray-200 bg-white p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-primary-700">{{ $t('reservation.payTo', { payee: confirmation.payee }) }}</p>
@@ -50,6 +51,13 @@
           <label :for="`${uid}-tin`" class="mb-1 block text-sm font-medium text-gray-700">{{ $t('reservation.tin') }}</label>
           <input :id="`${uid}-tin`" v-model.trim="form.tin" type="text" maxlength="40" :class="inputCls(false)" />
         </div>
+        <div v-if="pkg && boothsIncluded > 0" class="sm:col-span-2">
+          <p class="mb-1 text-sm font-medium text-gray-700">{{ $t('booth.pick', { n: boothsIncluded }) }} <span class="font-normal text-gray-500">{{ $t('booth.pickOptional') }}</span></p>
+          <p v-if="map" class="mb-2 text-xs text-gray-500">{{ $t('booth.availableCount', { n: map.counts.AVAILABLE || 0, total: map.counts.TOTAL || 0 }) }}</p>
+          <BoothMap v-if="map" v-model:selected="selectedBooths" :booths="map.booths" selectable :max-select="boothsIncluded" />
+          <p v-else class="text-xs text-gray-500">{{ $t('booth.loading') }}</p>
+          <p v-if="selectedBooths.length" class="mt-2 text-sm font-semibold text-primary-800" data-testid="picked-booths">{{ $t('booth.picked', { codes: selectedBooths.join(', ') }) }}</p>
+        </div>
         <div class="sm:col-span-2">
           <label :for="`${uid}-booth`" class="mb-1 block text-sm font-medium text-gray-700">{{ $t('reservation.booth') }}</label>
           <input :id="`${uid}-booth`" v-model.trim="form.boothPreference" type="text" maxlength="200" :placeholder="$t('reservation.boothPlaceholder')" :class="inputCls(false)" />
@@ -70,9 +78,10 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { reservationApi } from '@/features/reservation/api/reservation.api'
+import BoothMap from './BoothMap.vue'
+import { reservationApi, boothsForPackage } from '@/features/reservation/api/reservation.api'
 import { trackEvent } from '@/utils/analytics'
 
 const props = defineProps({
@@ -89,6 +98,19 @@ const errors = reactive({ company: '', contactName: '', email: '' })
 const submitting = ref(false)
 const submitError = ref('')
 const confirmation = ref(null)
+const map = ref(null)
+const selectedBooths = ref([])
+const boothsIncluded = computed(() => boothsForPackage(props.pkg?.type))
+const holdDays = computed(() => map.value?.holdBusinessDays || 10)
+
+watch(() => props.pkg?.id, () => { selectedBooths.value = [] })
+onMounted(async () => {
+  try {
+    map.value = await reservationApi.boothMap()
+  } catch {
+    map.value = null
+  }
+})
 
 function inputCls(invalid) {
   return [
@@ -123,6 +145,7 @@ async function submit() {
       phone: form.phone || undefined,
       tin: form.tin || undefined,
       boothPreference: form.boothPreference || undefined,
+      boothCodes: selectedBooths.value.length ? [...selectedBooths.value] : undefined,
       message: form.message || undefined,
       locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en',
       source: props.source,

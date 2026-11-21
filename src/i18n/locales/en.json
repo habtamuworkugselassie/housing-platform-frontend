@@ -1249,7 +1249,20 @@
         "DEPOSIT_PAID": "Deposit paid",
         "PAID": "Paid",
         "CANCELLED": "Cancelled"
-      }
+      },
+      "tabPipeline": "Pipeline",
+      "tabMap": "Floor plan",
+      "mapHint": "Click a booth to change its status or type. Gold = held by a reservation, grey = sold.",
+      "heldBy": "Held by {ref}",
+      "holdUntil": "until {d}",
+      "boothStatus": "Booth status",
+      "boothType": "Booth type",
+      "pickBooth": "Select a booth on the plan.",
+      "assign": "Assign booths",
+      "assignTitle": "Booths for {ref} · {company}",
+      "assignSave": "Save booths",
+      "assigned": "Booths saved: {codes}.",
+      "noBooths": "No booths assigned yet"
     }
   },
   "validation": {
@@ -2886,5 +2899,37 @@
       "tooMany": "Too many attempts. Please wait a minute and try again.",
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "booth": {
+    "mapAria": "Exhibition hall floor plan with booth availability",
+    "entrance": "Main entrance · Registration lobby",
+    "featureArea": "Feature area",
+    "stage": "Stage",
+    "firstAid": "First aid",
+    "cafeteria": "Cafeteria & lounge",
+    "vipEntrance": "VIP entrance",
+    "status": {
+      "AVAILABLE": "Available",
+      "HELD": "Held",
+      "SOLD": "Sold",
+      "BLOCKED": "Not for sale"
+    },
+    "type": {
+      "STANDARD": "Standard",
+      "CORNER": "Corner",
+      "PREMIUM": "Premium (front row)"
+    },
+    "selectedLegend": "Your pick",
+    "block": "Block",
+    "pick": "Pick up to {n} booth(s) on the plan",
+    "pickOptional": "(optional; we confirm the final position with you)",
+    "availableCount": "{n} of {total} booths still available",
+    "loading": "Loading the hall plan…",
+    "picked": "Picked: {codes}",
+    "heldFor": "Booths {codes} are held for you for {days} business days.",
+    "viewPlan": "View the hall plan",
+    "planEyebrow": "Addis International Hall · 70 × 60 m",
+    "planTitle": "Exhibition floor plan",
+    "planNote": "Blocks A–D hold 100 standard 3×3 m booths; 01–20 line the walls. Front-row booths are premium. Held booths are released if the agreement is not completed within 10 business days. The organizer may amend the plan."
   }
 }
