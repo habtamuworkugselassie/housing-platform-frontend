@@ -1,6 +1,7 @@
 <template>
   <div class="booth-map">
-    <svg :viewBox="`0 0 ${W} ${H}`" class="h-auto w-full select-none" role="img" :aria-label="$t('booth.mapAria')">
+    <div class="booth-map__scroll">
+    <svg :viewBox="`0 0 ${W} ${H}`" class="booth-map__svg h-auto w-full select-none" role="img" :aria-label="$t('booth.mapAria')">
       <!-- hall -->
       <rect x="0" y="0" :width="W" :height="H" rx="10" fill="#faf9fd" stroke="#d9d2ea" />
       <!-- fixtures -->
@@ -24,6 +25,7 @@
         <text :x="b.x + b.w / 2" :y="b.y + b.h / 2 + 3" font-size="7.5" font-family="Roboto, Helvetica, Arial, sans-serif" font-weight="600" text-anchor="middle" :fill="textFill(b)">{{ b.code }}</text>
       </g>
     </svg>
+    </div>
     <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-gray-600">
       <span class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm border border-violet-300 bg-white"></i>{{ $t('booth.status.AVAILABLE') }}</span>
       <span class="inline-flex items-center gap-1"><i class="inline-block h-3 w-3 rounded-sm bg-amber-300"></i>{{ $t('booth.status.HELD') }}</span>
@@ -133,6 +135,10 @@ function textFill(b) {
 </script>
 
 <style scoped>
+/* Phones: keep the codes legible and let the plan scroll sideways instead of shrinking. */
+.booth-map__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.booth-map__svg { min-width: 600px; }
+@media (min-width: 640px) { .booth-map__svg { min-width: 0; } }
 .booth.pickable { cursor: pointer; }
 .booth.pickable:hover rect { filter: brightness(0.95); }
 .booth:not(.pickable) { cursor: default; }
