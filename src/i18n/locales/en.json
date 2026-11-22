@@ -1348,7 +1348,13 @@
       "prev": "Previous",
       "next": "Next"
     },
-    "viewSite": "View site"
+    "viewSite": "View site",
+    "orgExpo": {
+      "title": "Expo pipeline",
+      "none": "No lead or reservation for this organization yet.",
+      "lead": "Lead",
+      "newReservation": "Record a reservation"
+    }
   },
   "validation": {
     "required": "This field is required",

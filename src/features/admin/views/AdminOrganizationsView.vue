@@ -506,6 +506,27 @@
                   </span>
                   {{ $t('admin.sponsorshipManagement') }}
                 </h4>
+                <!-- Where this organization stands in the expo funnel -->
+                <div class="mb-4 rounded border border-admin-line/20 bg-admin-field/5 px-3 py-2" data-testid="org-expo">
+                  <p class="text-[11px] font-semibold uppercase tracking-wide text-admin-subtle">{{ $t('admin.orgExpo.title') }}</p>
+                  <p v-if="!orgExpo.leads.length && !orgExpo.reservations.length" class="mt-1 text-xs text-admin-subtle">{{ $t('admin.orgExpo.none') }}</p>
+                  <ul v-if="orgExpo.leads.length" class="mt-1 space-y-1 text-xs">
+                    <li v-for="l in orgExpo.leads" :key="l.id" class="flex flex-wrap items-center gap-x-2 text-admin-muted">
+                      <span class="font-semibold text-admin-fg capitalize">{{ $t('admin.orgExpo.lead') }} · {{ l.interestType }}</span>
+                      <span v-if="l.packageName">{{ l.packageName }}</span>
+                      <span class="text-admin-subtle">{{ l.email }} · {{ formatDate(l.createdAt) }}</span>
+                    </li>
+                  </ul>
+                  <ul v-if="orgExpo.reservations.length" class="mt-1 space-y-1 text-xs">
+                    <li v-for="r in orgExpo.reservations" :key="r.id" class="flex flex-wrap items-center gap-x-2 text-admin-muted">
+                      <router-link :to="{ path: '/admin/sponsorship-reservations', query: { q: r.reference } }" class="font-mono font-semibold text-admin-nav hover:underline">{{ r.reference }}</router-link>
+                      <span>{{ r.packageName }}</span>
+                      <span class="inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold" :class="r.status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : r.status === 'CANCELLED' ? 'bg-admin-sunken/60 text-admin-subtle' : 'bg-gold-400 text-primary-950'">{{ $t(`admin.reservations.status.${r.status}`) }}</span>
+                      <span class="text-admin-subtle">{{ Number(r.amountPaid || 0).toLocaleString() }} / {{ Number(r.amount || 0).toLocaleString() }} ETB</span>
+                    </li>
+                  </ul>
+                  <router-link v-if="!orgExpo.reservations.length" :to="{ path: '/admin/sponsorship-reservations' }" class="mt-1 inline-block text-xs font-semibold text-admin-nav hover:underline">{{ $t('admin.orgExpo.newReservation') }}</router-link>
+                </div>
                 <div v-if="orgSponsorshipApplications.length" class="space-y-2 mb-4">
                   <div
                     v-for="app in orgSponsorshipApplications"
@@ -1493,6 +1514,7 @@
 </template>
 
 <script setup>
+import { reservationApi } from '@/features/reservation/api/reservation.api'
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { mediaUrl } from '@/shared/api/client'
@@ -2060,15 +2082,25 @@ async function addCatalogSubcategory() {
   }
 }
 
+const orgExpo = ref({ leads: [], reservations: [] })
 async function loadSponsorshipData(organizationId) {
   if (!organizationId) return
+  orgExpo.value = { leads: [], reservations: [] }
   try {
-    const [apps, packages] = await Promise.all([
+    const [apps, packages, expo] = await Promise.all([
       getSponsorshipApplicationsByOrganization(organizationId),
-      getActiveSponsorships()
+      getActiveSponsorships(),
+      reservationApi.forOrganization(organizationId).catch(() => ({ leads: [], reservations: [] }))
     ])
     orgSponsorshipApplications.value = apps || []
     activeSponsorshipsList.value = packages || []
+    orgExpo.value = { leads: expo?.leads || [], reservations: expo?.reservations || [] }
+    // The package the organization asked for (reservation first, else lead) preselects the
+    // assignment form when no application exists yet.
+    if (!orgSponsorshipApplications.value.length && !assignSponsorship.value.sponsorshipId) {
+      const wanted = orgExpo.value.reservations.find((r) => r.status !== 'CANCELLED')?.sponsorshipId || orgExpo.value.leads.find((l) => l.sponsorshipId)?.sponsorshipId || ''
+      if (wanted && (packages || []).some((p) => p.id === wanted)) assignSponsorship.value.sponsorshipId = wanted
+    }
   } catch (e) {
     console.error('Failed to load sponsorship data:', e)
     orgSponsorshipApplications.value = []
