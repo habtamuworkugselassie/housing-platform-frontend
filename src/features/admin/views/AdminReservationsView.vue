@@ -86,6 +86,26 @@
                 <option v-for="p in packages" :key="p.id" :value="p.id">{{ p.name }} · {{ money(p.basePrice) }} ETB</option>
               </select>
             </label>
+            <div class="sm:col-span-2 rounded-lg border border-gray-200 bg-gray-50 p-3" data-testid="org-picker">
+              <p class="text-xs font-semibold text-gray-700">{{ $t('admin.reservations.orgTitle') }}</p>
+              <p class="text-[11px] text-gray-500">{{ $t('admin.reservations.orgHint') }}</p>
+              <div v-if="createForm.organizationId" class="mt-2 flex items-center justify-between gap-2 rounded-lg bg-white px-3 py-2 text-sm" data-testid="org-selected">
+                <span><span class="font-semibold">{{ createForm.organizationName }}</span><span class="ml-2 text-xs text-gray-500">{{ $t('admin.reservations.orgLinked') }}</span></span>
+                <button type="button" class="text-xs text-primary-700 underline" @click="clearOrg">{{ $t('admin.reservations.orgChange') }}</button>
+              </div>
+              <template v-else>
+                <input v-model.trim="orgQuery" type="search" :placeholder="$t('admin.reservations.orgSearch')" class="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="org-search" @input="searchOrgs" />
+                <ul v-if="orgResults.length" class="mt-1 max-h-40 divide-y divide-gray-100 overflow-y-auto rounded-lg border border-gray-200 bg-white text-sm">
+                  <li v-for="o in orgResults" :key="o.id">
+                    <button type="button" class="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-primary-50" :data-testid="`org-option-${o.id}`" @click="pickOrg(o)">
+                      <span>{{ o.name }}<span v-if="o.city" class="ml-1 text-xs text-gray-500">· {{ o.city }}</span></span>
+                      <span class="text-[10px] uppercase text-gray-500">{{ o.status }}</span>
+                    </button>
+                  </li>
+                </ul>
+                <p v-else-if="orgQuery.length >= 2 && !orgSearching" class="mt-1 text-[11px] text-gray-500">{{ $t('admin.reservations.orgNone') }}</p>
+              </template>
+            </div>
             <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('reservation.company') }}<input v-model.trim="createForm.company" required type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-company" /></label>
             <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.contactName') }}<input v-model.trim="createForm.contactName" required type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-contact" /></label>
             <label class="block text-xs font-medium text-gray-700">{{ $t('reservation.email') }}<input v-model.trim="createForm.email" required type="email" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="create-email" /></label>
@@ -182,6 +202,11 @@
         </template>
         <template #cell-company="{ row }">
           <p class="font-semibold text-admin-fg">{{ row.company }}</p>
+          <router-link v-if="row.organizationId" :to="`/organizations/${row.organizationId}`" class="inline-flex items-center gap-1 text-[11px] text-admin-nav hover:underline" :data-testid="`org-${row.reference}`">
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" /></svg>
+            {{ row.organizationName || $t('admin.reservations.orgLinked') }}
+          </router-link>
+          <button v-else type="button" class="text-[11px] text-amber-700 underline" :disabled="busyId === 'link'" @click="linkAll">{{ $t('admin.reservations.orgMissing') }}</button>
           <p class="text-xs text-admin-muted">{{ row.contactName }}</p>
           <a :href="`mailto:${row.email}`" class="block text-xs text-admin-subtle hover:underline break-all">{{ row.email }}</a>
           <p v-if="row.phone" class="text-xs text-admin-subtle">{{ row.phone }}</p>
@@ -246,6 +271,7 @@ import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage, boothsForPackage } from '@/features/reservation/api/reservation.api'
 import { getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
 import { exhibitorApi } from '@/features/exhibitor/api/exhibitor.api'
+import { adminApi } from '@/features/admin/api/admin.api'
 import { mediaUrl } from '@/shared/api/client'
 import { useRoute } from 'vue-router'
 
@@ -377,14 +403,67 @@ const createBusy = ref(false)
 const createError = ref('')
 const packages = ref([])
 const createCodes = ref([])
-const emptyCreate = () => ({ sponsorshipId: '', company: '', contactName: '', email: '', phone: '', tin: '', status: 'REQUESTED', amountPaid: 0, amount: null, locale: 'en', adminNotes: '', sendEmail: true })
+const emptyCreate = () => ({ sponsorshipId: '', organizationId: '', organizationName: '', company: '', contactName: '', email: '', phone: '', tin: '', status: 'REQUESTED', amountPaid: 0, amount: null, locale: 'en', adminNotes: '', sendEmail: true })
 const createForm = ref(emptyCreate())
+
+// Organization picker: search existing organizations; the form fills from the pick.
+const orgQuery = ref('')
+const orgResults = ref([])
+const orgSearching = ref(false)
+let orgTimer = null
+function searchOrgs() {
+  clearTimeout(orgTimer)
+  const q = orgQuery.value
+  if (q.length < 2) {
+    orgResults.value = []
+    return
+  }
+  orgTimer = setTimeout(async () => {
+    orgSearching.value = true
+    try {
+      const res = await adminApi.getOrganizations({ search: q })
+      orgResults.value = (res.data || []).slice(0, 8)
+    } catch {
+      orgResults.value = []
+    } finally {
+      orgSearching.value = false
+    }
+  }, 250)
+}
+function pickOrg(o) {
+  createForm.value.organizationId = o.id
+  createForm.value.organizationName = o.name
+  if (!createForm.value.company) createForm.value.company = o.name
+  if (!createForm.value.email && o.email) createForm.value.email = o.email
+  if (!createForm.value.phone && o.phoneNumbers?.length) createForm.value.phone = o.phoneNumbers[0].number || ''
+  if (!createForm.value.tin && o.tinNumber) createForm.value.tin = o.tinNumber
+  orgResults.value = []
+  orgQuery.value = ''
+}
+function clearOrg() {
+  createForm.value.organizationId = ''
+  createForm.value.organizationName = ''
+}
+async function linkAll() {
+  busyId.value = 'link'
+  try {
+    const { linked } = await reservationApi.linkOrganizations()
+    notice.value = t('admin.reservations.orgLinkedAll', { n: linked })
+    await load(page.value)
+  } catch (e) {
+    fail(e)
+  } finally {
+    busyId.value = ''
+  }
+}
 const selectedPackage = computed(() => packages.value.find((p) => p.id === createForm.value.sponsorshipId) || null)
 const createBoothsIncluded = computed(() => boothsForPackage(selectedPackage.value?.type))
 watch(() => createForm.value.sponsorshipId, () => { createCodes.value = [] })
 
 async function openCreate() {
   createForm.value = emptyCreate()
+  orgQuery.value = ''
+  orgResults.value = []
   createCodes.value = []
   createError.value = ''
   creating.value = true
@@ -402,6 +481,7 @@ async function submitCreate() {
     const f = createForm.value
     const created = await reservationApi.create({
       sponsorshipId: f.sponsorshipId,
+      organizationId: f.organizationId || undefined,
       company: f.company,
       contactName: f.contactName,
       email: f.email,

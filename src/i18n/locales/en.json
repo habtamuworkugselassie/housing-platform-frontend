@@ -1310,7 +1310,15 @@
       "colPaid": "Paid (ETB)",
       "colOwner": "Owner",
       "portalReady": "Exhibitor portal ready",
-      "paidAt": "Paid in full {d}"
+      "paidAt": "Paid in full {d}",
+      "orgTitle": "Organization",
+      "orgHint": "Search for an existing organization to attach this reservation to. Leave it empty and one is matched by email or created from the company name.",
+      "orgSearch": "Search organizations by name…",
+      "orgNone": "No organization found; a new one will be created from the company name.",
+      "orgLinked": "Linked organization",
+      "orgChange": "Change",
+      "orgMissing": "No organization linked · link now",
+      "orgLinkedAll": "{n} reservation(s) linked to an organization."
     },
     "navGroups": {
       "overview": "Overview",

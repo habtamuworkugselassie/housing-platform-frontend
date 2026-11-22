@@ -108,6 +108,7 @@ export interface AdminReservation {
   boothCodes: string[]
   boothsIncluded: number
   organizationId?: string | null
+  organizationName?: string | null
   exhibitorInvitedAt?: string | null
 }
 
@@ -199,6 +200,8 @@ export interface ReservationCheckoutResponse {
 
 export interface AdminReservationCreate {
   sponsorshipId: string
+  /** Existing organization to attach; omitted means find by email or create one. */
+  organizationId?: string
   company: string
   contactName: string
   email: string
@@ -250,6 +253,10 @@ export const reservationApi = {
   /** Creates the exhibitor account for a paid reservation, or sends the invitation again. */
   async exhibitorAccount(id: string): Promise<AdminReservation> {
     return (await api.post<AdminReservation>(`/admin/sponsorship-reservations/${id}/exhibitor-account`)).data
+  },
+  /** Attaches an organization to every reservation that still has none. */
+  async linkOrganizations(): Promise<{ linked: number }> {
+    return (await api.post<{ linked: number }>('/admin/sponsorship-reservations/link-organizations')).data
   },
   async mine(): Promise<ExhibitorReservation[]> {
     return (await api.get<ExhibitorReservation[]>('/sponsorship-reservations/mine')).data

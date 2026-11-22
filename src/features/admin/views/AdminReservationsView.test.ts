@@ -7,10 +7,11 @@ import { reservationApi } from '@/features/reservation/api/reservation.api'
 
 vi.mock('@/features/reservation/api/reservation.api', async (orig) => {
   const actual = await orig<typeof import('@/features/reservation/api/reservation.api')>()
-  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn(), create: vi.fn(), exhibitorAccount: vi.fn() } }
+  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn(), create: vi.fn(), exhibitorAccount: vi.fn(), linkOrganizations: vi.fn() } }
 })
 
 vi.mock('@/features/exhibitor/api/exhibitor.api', () => ({ exhibitorApi: { pendingMedia: vi.fn().mockResolvedValue([{ id: 'm1', url: '/api/v1/uploads/organizations/o1/logo.png', mediaKind: 'LOGO', reviewStatus: 'PENDING', organizationId: 'o1', organizationName: 'Abay Steel PLC', createdAt: '2026-11-22T10:00:00' }]), review: vi.fn().mockResolvedValue(undefined) } }))
+vi.mock('@/features/admin/api/admin.api', () => ({ adminApi: { getOrganizations: vi.fn().mockResolvedValue({ data: [{ id: 'o9', name: 'Existing Cement SC', city: 'Adama', status: 'APPROVED', email: 'info@cement.et', phoneNumbers: [{ countryCode: '+251', number: '0911222333' }] }] }) } }))
 vi.mock('vue-router', () => ({ useRoute: () => ({ query: {} }), useRouter: () => ({ push: vi.fn() }) }))
 
 vi.mock('@/features/exhibition/api/exhibition.api', () => ({ getActiveSponsorshipPackages: vi.fn().mockResolvedValue([{ id: 'p1', name: 'Tier 2 · Gold', type: 'GOLD', basePrice: 900000, status: 'ACTIVE' }]) }))
@@ -127,5 +128,27 @@ describe('AdminReservationsView', () => {
     const { exhibitorApi } = await import('@/features/exhibitor/api/exhibitor.api')
     expect(exhibitorApi.review).toHaveBeenCalledWith('o1', 'm1', 'APPROVED', undefined)
     expect(w.find('[data-testid="upload-m1"]').exists()).toBe(false)
+  })
+
+  it('lets the admin attach an existing organization to a manual reservation', async () => {
+    vi.useFakeTimers()
+    vi.mocked(reservationApi.create).mockResolvedValue(row({ reference: 'RSV-NEW001', organizationId: 'o9', organizationName: 'Existing Cement SC' }) as any)
+    const w = mountView()
+    await flushPromises()
+    await w.find('[data-testid="new-reservation"]').trigger('click')
+    await flushPromises()
+    await w.find('[data-testid="org-search"]').setValue('cem')
+    await vi.advanceTimersByTimeAsync(300)
+    await flushPromises()
+    await w.find('[data-testid="org-option-o9"]').trigger('click')
+    expect(w.find('[data-testid="org-selected"]').text()).toContain('Existing Cement SC')
+    expect((w.find('[data-testid="create-company"]').element as HTMLInputElement).value).toBe('Existing Cement SC')
+    expect((w.find('[data-testid="create-email"]').element as HTMLInputElement).value).toBe('info@cement.et')
+    await w.find('[data-testid="create-package"]').setValue('p1')
+    await w.find('[data-testid="create-contact"]').setValue('Dawit')
+    await w.find('[data-testid="create-form"]').trigger('submit.prevent')
+    await flushPromises()
+    expect(reservationApi.create).toHaveBeenCalledWith(expect.objectContaining({ organizationId: 'o9', company: 'Existing Cement SC' }))
+    vi.useRealTimers()
   })
 })
