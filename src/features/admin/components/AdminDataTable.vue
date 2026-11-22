@@ -6,6 +6,9 @@
       <table class="w-full divide-y divide-admin-line/10 rtable" :style="minWidth ? { minWidth } : undefined">
         <thead class="bg-admin-raised">
           <tr>
+            <th v-if="selectable" scope="col" class="w-8 px-3 py-3">
+              <input type="checkbox" :checked="allSelected" :aria-label="$t('admin.table.selectAll')" data-testid="select-all" @change="toggleAll" />
+            </th>
             <th
               v-for="c in columns"
               :key="c.key"
@@ -21,9 +24,12 @@
         <tbody class="divide-y divide-admin-line/10">
           <template v-for="row in rows" :key="rowKey(row)">
             <tr
-              :class="['align-top transition-colors hover:bg-admin-nav/5', isOpen(row) ? 'bg-admin-nav/5' : '']"
+              :class="['align-top transition-colors hover:bg-admin-nav/5', isOpen(row) ? 'bg-admin-nav/5' : '', rowClass ? rowClass(row) : '']"
               :data-testid="rowTestId ? rowTestId(row) : undefined"
             >
+              <td v-if="selectable" class="px-3 py-3">
+                <input type="checkbox" :checked="selected.has(rowKey(row))" :aria-label="$t('admin.table.selectRow')" @change="toggleSelect(row)" />
+              </td>
               <td
                 v-for="c in columns"
                 :key="c.key"
@@ -45,7 +51,7 @@
               </td>
             </tr>
             <tr v-if="$slots.expanded && isOpen(row)" class="bg-admin-sunken/40" :data-testid="`expanded-${rowKey(row)}`">
-              <td :colspan="columns.length + 1" class="px-4 py-4"><slot name="expanded" :row="row" /></td>
+              <td :colspan="columns.length + 1 + (selectable ? 1 : 0)" class="px-4 py-4"><slot name="expanded" :row="row" /></td>
             </tr>
           </template>
         </tbody>
@@ -63,7 +69,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 /**
  * The admin list: a real table on desktop with an optional expandable detail row, stacked cards
@@ -79,9 +85,26 @@ const props = defineProps({
   minWidth: { type: String, default: '' },
   page: { type: Number, default: 0 },
   totalPages: { type: Number, default: 0 },
-  total: { type: Number, default: null }
+  total: { type: Number, default: null },
+  /** Row checkboxes; `selected` is a Set of row keys, updated through update:selected. */
+  selectable: Boolean,
+  selected: { type: Set, default: () => new Set() },
+  /** Extra classes for a row, e.g. to tint a secondary kind of row. */
+  rowClass: { type: Function, default: null }
 })
-defineEmits(['page'])
+const emit = defineEmits(['page', 'update:selected'])
+
+const allSelected = computed(() => props.rows.length > 0 && props.rows.every((r) => props.selected.has(rowKey(r))))
+function toggleSelect(row) {
+  const next = new Set(props.selected)
+  const k = rowKey(row)
+  if (next.has(k)) next.delete(k)
+  else next.add(k)
+  emit('update:selected', next)
+}
+function toggleAll() {
+  emit('update:selected', allSelected.value ? new Set() : new Set(props.rows.map(rowKey)))
+}
 
 const open = ref(new Set())
 const rowKey = (row) => String(props.rowId(row))

@@ -17,269 +17,204 @@
         </div>
       </div>
 
-      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
-        <div v-if="loading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15" />
-        </div>
-
-        <div v-else-if="error" class="px-6 py-8 text-center text-admin-danger text-sm">
-          {{ error }}
-        </div>
-
-        <div v-else-if="!rows.length && !orphanSponsorshipApps.length" class="px-6 py-12 text-center text-admin-subtle text-sm">
-          {{ $t('admin.exhibitionInterests.empty') }}
-        </div>
-
-        <div v-else class="overflow-x-auto">
-            <table class="w-full min-w-[72rem] divide-y divide-admin-line/10 rtable">
-            <thead class="bg-admin-raised">
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colDate') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colContact') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colInterest') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colPackage') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colReservations') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colOrganization') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colMessage') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colSponsorshipStatus') }}
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colContactToVerify') }}
-                </th>
-                <th class="px-4 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">
-                  {{ $t('admin.exhibitionInterests.colActions') }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-admin-line/10">
-              <!-- Exhibition registrations (same list as before), augmented with marketplace sponsorship review -->
-              <tr
-                v-for="row in rows"
-                :key="`ex-${row.id}`"
-                class="hover:bg-admin-nav/5 transition-colors align-top"
-              >
-                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap" :data-label="$t('admin.exhibitionInterests.colDate')">
-                  {{ formatDate(row.createdAt) }}
-                </td>
-                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colContact')">
-                  <div class="text-admin-fg font-medium">{{ row.email }}</div>
-                  <div v-if="row.phoneNumber" class="text-admin-subtle text-xs mt-0.5">{{ row.phoneNumber }}</div>
-                  <div v-if="row.company" class="text-admin-faint text-xs mt-0.5">{{ row.company }}</div>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-muted" :data-label="$t('admin.exhibitionInterests.colInterest')">
-                  <div class="capitalize">{{ row.interestType }}</div>
-                  <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-admin-subtle">
-                    <div>{{ formatEnum(row.partnerRole) }}</div>
-                    <div>{{ formatEnum(row.visibilityScope) }} · {{ formatEnum(row.contributionMode) }}</div>
-                  </div>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-muted" :data-label="$t('admin.exhibitionInterests.colPackage')">
-                  {{ row.sponsorshipPackageName || '—' }}
-                </td>
-                <td class="px-4 py-3 text-sm" :data-testid="`lead-reservations-${row.id}`">
-                  <template v-if="row.reservations && row.reservations.length">
-                    <router-link v-for="r in row.reservations" :key="r.id" :to="{ path: '/admin/sponsorship-reservations', query: { q: r.reference } }" class="mb-1 block">
-                      <span class="font-mono text-xs font-semibold text-admin-fg">{{ r.reference }}</span>
-                      <span class="ml-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold" :class="reservationCls(r.status)">{{ $t(`admin.reservations.status.${r.status}`) }}</span>
-                    </router-link>
-                  </template>
-                  <template v-else-if="row.interestType !== 'visitor'">
-                    <span class="block text-xs text-admin-faint">{{ $t('admin.exhibitionInterests.noReservation') }}</span>
-                    <button type="button" class="mt-1 text-xs font-semibold text-admin-nav hover:underline" :disabled="invitingId === row.id" :data-testid="`invite-${row.id}`" @click="inviteToReserve(row)">{{ row.reserveInvitedAt ? $t('admin.exhibitionInterests.inviteAgain') : $t('admin.exhibitionInterests.inviteToReserve') }}</button>
-                    <span v-if="row.reserveInvitedAt" class="block text-[10px] text-admin-subtle">{{ $t('admin.exhibitionInterests.invitedAt', { d: formatDate(row.reserveInvitedAt) }) }}<span v-if="row.nudgeCount"> · {{ $t('admin.exhibitionInterests.nudged', { n: row.nudgeCount }) }}</span></span>
-                  </template>
-                  <span v-else class="text-xs text-admin-faint">—</span>
-                </td>
-                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colReservations')">
-                  <div class="text-admin-fg">{{ row.organizationName || '—' }}</div>
-                  <div class="text-xs text-admin-faint mt-0.5">
-                    <span v-if="row.organizationType">{{ row.organizationType }}</span>
-                    <span v-if="row.organizationType && row.organizationStatus"> · </span>
-                    <span v-if="row.organizationStatus" class="text-admin-subtle">{{ row.organizationStatus }}</span>
-                  </div>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[12rem]" :data-label="$t('admin.exhibitionInterests.colOrganization')">
-                  <span class="line-clamp-2" :title="row.message || ''">{{ row.message || '—' }}</span>
-                </td>
-                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colMessage')">
-                  <SponsorshipReviewCells
-                    v-if="sponsorshipAppForOrg(row.organizationId)"
-                    :app="sponsorshipAppForOrg(row.organizationId)"
-                  />
-                  <div
-                    v-else-if="showExhibitionPendingOrgReview(row)"
-                    class="flex flex-wrap gap-1 text-xs"
-                  >
-                    <span
-                      v-if="row.contactVerifiedAt"
-                      class="inline-flex px-2 py-0.5 rounded bg-green-500/30 text-admin-ok"
-                    >
-                      {{ $t('admin.exhibitionInterests.badgeContactVerified') }}
-                    </span>
-                    <span
-                      v-else
-                      class="inline-flex px-2 py-0.5 rounded bg-amber-500/30 text-amber-200"
-                    >
-                      {{ $t('admin.exhibitionInterests.badgeContactPending') }}
-                    </span>
-                    <span
-                      class="inline-flex px-2 py-0.5 rounded bg-admin-raised text-admin-muted font-mono text-[10px] uppercase tracking-wide"
-                    >
-                      {{ row.organizationStatus }}
-                    </span>
-                  </div>
-                  <span v-else class="text-admin-faint text-xs leading-snug">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]" :data-label="$t('admin.exhibitionInterests.colSponsorshipStatus')">
-                  <SponsorshipContactCell
-                    v-if="sponsorshipAppForOrg(row.organizationId)"
-                    :app="sponsorshipAppForOrg(row.organizationId)"
-                  />
-                  <div v-else-if="showExhibitionPendingOrgReview(row)" class="text-xs text-admin-muted space-y-1">
-                    <p class="text-admin-fg">{{ row.email }}</p>
-                    <p v-if="row.phoneNumber" class="text-admin-faint">{{ row.phoneNumber }}</p>
-                    <p class="text-admin-faint leading-snug">{{ $t('admin.exhibitionInterests.exhibitionLeadVerifyContactHint') }}</p>
-                  </div>
-                  <span v-else class="text-admin-faint text-xs">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
-                </td>
-                <td class="px-4 py-3 text-sm text-right" :data-label="$t('admin.exhibitionInterests.colContactToVerify')">
-                  <div class="flex flex-col items-end gap-2">
-                    <router-link
-                      v-if="row.organizationId"
-                      :to="`/organizations/${row.organizationId}`"
-                      class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
-                    >
-                      {{ $t('admin.exhibitionInterests.viewOrg') }}
-                    </router-link>
-                    <SponsorshipActionButtons
-                      v-if="sponsorshipAppForOrg(row.organizationId)"
-                      :app="sponsorshipAppForOrg(row.organizationId)"
-                      @verify-org="verifyOrgApp"
-                      @verify-user="verifyUserApp"
-                      @approve="approveSponsorshipApp"
-                      @reject="openRejectSponsorship"
-                      @cancel="cancelPendingSponsorshipApp"
-                    />
-                    <template v-else-if="showExhibitionPendingOrgReview(row)">
-                      <button
-                        type="button"
-                        :disabled="exhibitionVerifyDisabled(row) || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50 disabled:pointer-events-none transition-colors"
-                        @click="openVerifyExhibitionContact(row)"
-                      >
-                        {{ $t('admin.exhibitionInterests.verifyRegistrantContact') }}
-                      </button>
-                      <button
-                        type="button"
-                        :disabled="!row.contactVerifiedAt || exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
-                        @click="approveExhibitionOrg(row)"
-                      >
-                        {{ $t('admin.exhibitionInterests.verifyApproveOrganization') }}
-                      </button>
-                      <button
-                        type="button"
-                        :disabled="exhibitionBusyKey === rowKey(row)"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-400/40 text-admin-danger hover:bg-red-500/10 disabled:opacity-50 disabled:pointer-events-none transition-colors"
-                        @click="openRejectExhibitionOrg(row)"
-                      >
-                        {{ $t('admin.exhibitionInterests.rejectOrganization') }}
-                      </button>
-                    </template>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Marketplace-only pending sponsorships (no exhibition registration for that org) -->
-              <tr
-                v-for="app in orphanSponsorshipApps"
-                :key="`mkt-${app.id}`"
-                class="hover:bg-admin-nav/5 align-top bg-admin-sunken/40"
-              >
-                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap">
-                  {{ formatDate(app.createdAt) }}
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-faint text-xs" colspan="3">
-                  <span class="text-amber-200/90 font-medium">{{ $t('admin.exhibitionInterests.rowMarketplaceOnly') }}</span>
-                  <span class="block mt-1 text-admin-faint">{{ $t('admin.exhibitionInterests.rowMarketplaceOnlyHint') }}</span>
-                </td>
-                <td class="px-4 py-3 text-sm">
-                  <div class="text-admin-fg font-medium">{{ app.organizationName }}</div>
-                  <div v-if="app.organizationStatus" class="text-xs text-amber-200/90 mt-0.5">{{ app.organizationStatus }}</div>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-faint">—</td>
-                <td class="px-4 py-3 text-sm">
-                  <SponsorshipReviewCells :app="app" />
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]">
-                  <SponsorshipContactCell :app="app" />
-                </td>
-                <td class="px-4 py-3 text-sm text-right">
-                  <div class="flex flex-col items-end gap-2">
-                    <router-link
-                      v-if="app.organizationId"
-                      :to="`/organizations/${app.organizationId}`"
-                      class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
-                    >
-                      {{ $t('admin.exhibitionInterests.viewOrg') }}
-                    </router-link>
-                    <SponsorshipActionButtons
-                      :app="app"
-                      @verify-org="verifyOrgApp"
-                      @verify-user="verifyUserApp"
-                      @approve="approveSponsorshipApp"
-                      @reject="openRejectSponsorship"
-                      @cancel="cancelPendingSponsorshipApp"
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div
-          v-if="rows.length > 0"
-          class="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t border-admin-line/10 bg-admin-sunken/50"
-        >
-          <p class="text-xs text-admin-faint">
-            {{ $t('admin.exhibitionInterests.pageOf', { current: page + 1, total: Math.max(1, totalPages) }) }}
-          </p>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              :disabled="page <= 0 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
-              @click="goPrev"
+      <p v-if="!loading && error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
+      <AdminDataTable
+        :columns="columns"
+        :rows="tableRows"
+        :loading="loading"
+        :empty-text="$t('admin.exhibitionInterests.empty')"
+        :row-id="(r) => r.rowKey"
+        :row-test-id="(r) => (r.kind === 'lead' ? `lead-${r.id}` : `app-${r.id}`)"
+        :row-class="(r) => (r.kind === 'app' ? 'bg-admin-sunken/40' : '')"
+        :page="page"
+        :total-pages="totalPages"
+        min-width="72rem"
+        @page="goTo"
+      >
+        <template #cell-createdAt="{ row }">{{ formatDate(row.createdAt) }}</template>
+        <template #cell-contact="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <div class="text-admin-fg font-medium">{{ row.email }}</div>
+            <div v-if="row.phoneNumber" class="text-admin-subtle text-xs mt-0.5">{{ row.phoneNumber }}</div>
+            <div v-if="row.company" class="text-admin-faint text-xs mt-0.5">{{ row.company }}</div>
+          </template>
+          <template v-else>
+            <span class="text-amber-700 font-medium text-xs">{{ $t('admin.exhibitionInterests.rowMarketplaceOnly') }}</span>
+            <span class="block mt-1 text-xs text-admin-faint">{{ $t('admin.exhibitionInterests.rowMarketplaceOnlyHint') }}</span>
+          </template>
+        </template>
+        <template #cell-interest="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <div class="capitalize">{{ row.interestType }}</div>
+            <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-admin-subtle">
+            <div>{{ formatEnum(row.partnerRole) }}</div>
+            <div>{{ formatEnum(row.visibilityScope) }} · {{ formatEnum(row.contributionMode) }}</div>
+            </div>
+          </template>
+          <span v-else>—</span>
+        </template>
+        <template #cell-package="{ row }">
+          <template v-if="row.kind === 'lead'">
+            {{ row.sponsorshipPackageName || '—' }}
+          </template>
+          <span v-else>{{ row.sponsorshipName || '—' }}</span>
+        </template>
+        <template #cell-reservations="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <template v-if="row.reservations && row.reservations.length">
+            <router-link v-for="r in row.reservations" :key="r.id" :to="{ path: '/admin/sponsorship-reservations', query: { q: r.reference } }" class="mb-1 block">
+            <span class="font-mono text-xs font-semibold text-admin-fg">{{ r.reference }}</span>
+            <span class="ml-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold" :class="reservationCls(r.status)">{{ $t(`admin.reservations.status.${r.status}`) }}</span>
+            </router-link>
+            </template>
+            <template v-else-if="row.interestType !== 'visitor'">
+            <span class="block text-xs text-admin-faint">{{ $t('admin.exhibitionInterests.noReservation') }}</span>
+            <button type="button" class="mt-1 text-xs font-semibold text-admin-nav hover:underline" :disabled="invitingId === row.id" :data-testid="`invite-${row.id}`" @click="inviteToReserve(row)">{{ row.reserveInvitedAt ? $t('admin.exhibitionInterests.inviteAgain') : $t('admin.exhibitionInterests.inviteToReserve') }}</button>
+            <span v-if="row.reserveInvitedAt" class="block text-[10px] text-admin-subtle">{{ $t('admin.exhibitionInterests.invitedAt', { d: formatDate(row.reserveInvitedAt) }) }}<span v-if="row.nudgeCount"> · {{ $t('admin.exhibitionInterests.nudged', { n: row.nudgeCount }) }}</span></span>
+            </template>
+            <span v-else class="text-xs text-admin-faint">—</span>
+          </template>
+          <span v-else class="text-xs text-admin-faint">—</span>
+        </template>
+        <template #cell-organization="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <div class="text-admin-fg">{{ row.organizationName || '—' }}</div>
+            <div class="text-xs text-admin-faint mt-0.5">
+            <span v-if="row.organizationType">{{ row.organizationType }}</span>
+            <span v-if="row.organizationType && row.organizationStatus"> · </span>
+            <span v-if="row.organizationStatus" class="text-admin-subtle">{{ row.organizationStatus }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="text-admin-fg font-medium">{{ row.organizationName }}</div>
+            <div v-if="row.organizationStatus" class="text-xs text-amber-200/90 mt-0.5">{{ row.organizationStatus }}</div>
+          </template>
+        </template>
+        <template #cell-message="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <span class="line-clamp-2" :title="row.message || ''">{{ row.message || '—' }}</span>
+          </template>
+          <span v-else class="text-admin-faint">—</span>
+        </template>
+        <template #cell-sponsorshipStatus="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <SponsorshipReviewCells
+            v-if="sponsorshipAppForOrg(row.organizationId)"
+            :app="sponsorshipAppForOrg(row.organizationId)"
+            />
+            <div
+            v-else-if="showExhibitionPendingOrgReview(row)"
+            class="flex flex-wrap gap-1 text-xs"
             >
-              {{ $t('common.previous') }}
+            <span
+            v-if="row.contactVerifiedAt"
+            class="inline-flex px-2 py-0.5 rounded bg-green-500/30 text-admin-ok"
+            >
+            {{ $t('admin.exhibitionInterests.badgeContactVerified') }}
+            </span>
+            <span
+            v-else
+            class="inline-flex px-2 py-0.5 rounded bg-amber-500/30 text-amber-200"
+            >
+            {{ $t('admin.exhibitionInterests.badgeContactPending') }}
+            </span>
+            <span
+            class="inline-flex px-2 py-0.5 rounded bg-admin-raised text-admin-muted font-mono text-[10px] uppercase tracking-wide"
+            >
+            {{ row.organizationStatus }}
+            </span>
+            </div>
+            <span v-else class="text-admin-faint text-xs leading-snug">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
+          </template>
+          <template v-else>
+            <SponsorshipReviewCells :app="row" />
+          </template>
+        </template>
+        <template #cell-contactToVerify="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <SponsorshipContactCell
+            v-if="sponsorshipAppForOrg(row.organizationId)"
+            :app="sponsorshipAppForOrg(row.organizationId)"
+            />
+            <div v-else-if="showExhibitionPendingOrgReview(row)" class="text-xs text-admin-muted space-y-1">
+            <p class="text-admin-fg">{{ row.email }}</p>
+            <p v-if="row.phoneNumber" class="text-admin-faint">{{ row.phoneNumber }}</p>
+            <p class="text-admin-faint leading-snug">{{ $t('admin.exhibitionInterests.exhibitionLeadVerifyContactHint') }}</p>
+            </div>
+            <span v-else class="text-admin-faint text-xs">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
+          </template>
+          <template v-else>
+            <SponsorshipContactCell :app="row" />
+          </template>
+        </template>
+        <template #cell-actions="{ row }">
+          <template v-if="row.kind === 'lead'">
+            <div class="flex flex-col items-end gap-2">
+            <router-link
+            v-if="row.organizationId"
+            :to="`/organizations/${row.organizationId}`"
+            class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
+            >
+            {{ $t('admin.exhibitionInterests.viewOrg') }}
+            </router-link>
+            <SponsorshipActionButtons
+            v-if="sponsorshipAppForOrg(row.organizationId)"
+            :app="sponsorshipAppForOrg(row.organizationId)"
+            @verify-org="verifyOrgApp"
+            @verify-user="verifyUserApp"
+            @approve="approveSponsorshipApp"
+            @reject="openRejectSponsorship"
+            @cancel="cancelPendingSponsorshipApp"
+            />
+            <template v-else-if="showExhibitionPendingOrgReview(row)">
+            <button
+            type="button"
+            :disabled="exhibitionVerifyDisabled(row) || exhibitionBusyKey === rowKey(row)"
+            class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-accent text-admin-accent-fg hover:bg-admin-accent-hover disabled:opacity-50 disabled:pointer-events-none transition-colors"
+            @click="openVerifyExhibitionContact(row)"
+            >
+            {{ $t('admin.exhibitionInterests.verifyRegistrantContact') }}
             </button>
             <button
-              type="button"
-              :disabled="page >= totalPages - 1 || loading"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-40 disabled:pointer-events-none transition-colors"
-              @click="goNext"
+            type="button"
+            :disabled="!row.contactVerifiedAt || exhibitionBusyKey === rowKey(row)"
+            class="px-3 py-1.5 text-xs font-medium rounded-lg border border-admin-line/20 bg-admin-field/5 text-admin-fg hover:bg-admin-accent-hover/20 hover:border-primary-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+            @click="approveExhibitionOrg(row)"
             >
-              {{ $t('common.next') }}
+            {{ $t('admin.exhibitionInterests.verifyApproveOrganization') }}
             </button>
-          </div>
-        </div>
-      </div>
+            <button
+            type="button"
+            :disabled="exhibitionBusyKey === rowKey(row)"
+            class="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-400/40 text-admin-danger hover:bg-red-500/10 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+            @click="openRejectExhibitionOrg(row)"
+            >
+            {{ $t('admin.exhibitionInterests.rejectOrganization') }}
+            </button>
+            </template>
+            </div>
+          </template>
+          <template v-else>
+            <div class="flex flex-col items-end gap-2">
+            <router-link
+            v-if="row.organizationId"
+            :to="`/organizations/${row.organizationId}`"
+            class="text-admin-fg hover:text-primary-400 text-xs underline-offset-2 hover:underline"
+            >
+            {{ $t('admin.exhibitionInterests.viewOrg') }}
+            </router-link>
+            <SponsorshipActionButtons
+            :app="row"
+            @verify-org="verifyOrgApp"
+            @verify-user="verifyUserApp"
+            @approve="approveSponsorshipApp"
+            @reject="openRejectSponsorship"
+            @cancel="cancelPendingSponsorshipApp"
+            />
+            </div>
+          </template>
+        </template>
+      </AdminDataTable>
     </div>
 
     <ProvisionPrimaryUserModal
@@ -365,6 +300,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { adminApi } from '../api/admin.api'
 import SponsorshipReviewCells from '../components/SponsorshipReviewCells.vue'
@@ -373,6 +309,27 @@ import SponsorshipActionButtons from '../components/SponsorshipActionButtons.vue
 import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 
 const { t, locale } = useI18n()
+const columns = computed(() => [
+  { key: 'createdAt', label: t('admin.exhibitionInterests.colDate'), nowrap: true },
+  { key: 'contact', label: t('admin.exhibitionInterests.colContact') },
+  { key: 'interest', label: t('admin.exhibitionInterests.colInterest') },
+  { key: 'package', label: t('admin.exhibitionInterests.colPackage') },
+  { key: 'reservations', label: t('admin.exhibitionInterests.colReservations') },
+  { key: 'organization', label: t('admin.exhibitionInterests.colOrganization') },
+  { key: 'message', label: t('admin.exhibitionInterests.colMessage') },
+  { key: 'sponsorshipStatus', label: t('admin.exhibitionInterests.colSponsorshipStatus') },
+  { key: 'contactToVerify', label: t('admin.exhibitionInterests.colContactToVerify') },
+  { key: 'actions', label: t('admin.exhibitionInterests.colActions'), align: 'right' }
+])
+/** Leads first, then marketplace-only pending applications (no lead for that organization). */
+const tableRows = computed(() => [
+  ...rows.value.map((r) => ({ ...r, kind: 'lead', rowKey: `ex-${r.id}` })),
+  ...orphanSponsorshipApps.value.map((a) => ({ ...a, kind: 'app', rowKey: `mkt-${a.id}` }))
+])
+function goTo(p) {
+  if (p < page.value) goPrev()
+  else if (p > page.value) goNext()
+}
 
 const loading = ref(true)
 const error = ref('')
