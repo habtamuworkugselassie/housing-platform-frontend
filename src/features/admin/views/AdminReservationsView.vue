@@ -10,7 +10,29 @@
           <button type="button" class="rounded-lg bg-gold-400 px-3 py-2 text-xs font-semibold text-primary-950 hover:bg-gold-500" data-testid="new-reservation" @click="openCreate">{{ $t('admin.reservations.newReservation') }}</button>
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'pipeline' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" @click="tab = 'pipeline'">{{ $t('admin.reservations.tabPipeline') }}</button>
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'map' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-map" @click="openMap">{{ $t('admin.reservations.tabMap') }}</button>
+          <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'uploads' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-uploads" @click="openUploads">{{ $t('admin.reservations.tabUploads') }}<span v-if="pendingMedia.length" class="ml-1 rounded-full bg-gold-400 px-1.5 text-[10px] text-primary-950">{{ pendingMedia.length }}</span></button>
           <a :href="reserveLink" target="_blank" rel="noopener" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60">{{ $t('admin.reservations.openForm') }}</a>
+        </div>
+      </div>
+
+      <!-- Exhibitor uploads waiting for review -->
+      <div v-if="tab === 'uploads'" class="space-y-3" data-testid="uploads-panel">
+        <p class="text-sm text-admin-subtle">{{ $t('admin.reservations.uploadsHint') }}</p>
+        <p v-if="!pendingMedia.length" class="rounded-lg border border-admin-line/10 bg-admin-surface px-4 py-6 text-center text-sm text-admin-subtle">{{ $t('admin.reservations.noUploads') }}</p>
+        <div v-else class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div v-for="m in pendingMedia" :key="m.id" class="rounded-lg border border-admin-line/10 bg-admin-surface p-3" :data-testid="`upload-${m.id}`">
+            <div class="aspect-video overflow-hidden rounded bg-admin-sunken/60">
+              <video v-if="m.mediaKind === 'VIDEO'" :src="mediaUrl(m.url)" class="h-full w-full object-cover" muted playsinline controls></video>
+              <img v-else :src="mediaUrl(m.url)" :alt="m.organizationName || ''" class="h-full w-full object-contain" />
+            </div>
+            <p class="mt-2 text-sm font-semibold text-admin-fg">{{ m.organizationName }}</p>
+            <p class="text-[11px] text-admin-subtle">{{ $t(`admin.reservations.mediaKind.${m.mediaKind}`) }} · {{ formatDate(m.createdAt) }}</p>
+            <input v-model="reviewNotes[m.id]" type="text" :placeholder="$t('admin.reservations.rejectReason')" class="mt-2 w-full rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" />
+            <div class="mt-2 flex gap-2 text-xs">
+              <button type="button" class="rounded-lg bg-emerald-600 px-3 py-1.5 font-semibold text-white hover:bg-emerald-700" :disabled="busyId === m.id" :data-testid="`approve-${m.id}`" @click="review(m, 'APPROVED')">{{ $t('admin.reservations.approve') }}</button>
+              <button type="button" class="rounded-lg border border-red-300 px-3 py-1.5 font-semibold text-red-700 hover:bg-red-50" :disabled="busyId === m.id" @click="review(m, 'REJECTED')">{{ $t('admin.reservations.reject') }}</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -185,6 +207,8 @@
             <div class="flex flex-wrap items-start gap-2 text-xs lg:col-span-2 lg:flex-col">
               <button type="button" class="font-semibold text-admin-nav hover:underline" :disabled="busyId === row.id" @click="sendAgreement(row)">{{ $t('admin.reservations.sendAgreement') }}</button>
               <button type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id || row.status === 'PAID' || row.status === 'CANCELLED'" @click="remind(row)">{{ $t('admin.reservations.remind') }}</button>
+              <button v-if="row.status === 'PAID' || row.status === 'DEPOSIT_PAID'" type="button" class="font-semibold text-emerald-700 hover:underline" :disabled="busyId === row.id" :data-testid="`exhibitor-${row.reference}`" @click="exhibitorAccount(row)">{{ row.organizationId ? $t('admin.reservations.reinviteExhibitor') : $t('admin.reservations.createExhibitor') }}</button>
+              <router-link v-if="row.organizationId" to="/admin/organizations" class="text-[11px] text-admin-subtle hover:underline">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(row.exhibitorInvitedAt) }) }}</router-link>
             </div>
           </div>
         </div>
@@ -205,6 +229,9 @@ import AdminLayout from '../components/AdminLayout.vue'
 import BoothMap from '@/features/reservation/components/BoothMap.vue'
 import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage, boothsForPackage } from '@/features/reservation/api/reservation.api'
 import { getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
+import { exhibitorApi } from '@/features/exhibitor/api/exhibitor.api'
+import { mediaUrl } from '@/shared/api/client'
+import { useRoute } from 'vue-router'
 
 const { t, locale } = useI18n()
 const STATUSES = RESERVATION_STATUSES
@@ -221,7 +248,46 @@ const q = ref('')
 const statusFilter = ref('')
 const busyId = ref('')
 
-const tab = ref('pipeline')
+const route = useRoute()
+const tab = ref(route.query.tab === 'uploads' ? 'uploads' : 'pipeline')
+const pendingMedia = ref([])
+const reviewNotes = ref({})
+
+async function loadPendingMedia() {
+  try {
+    pendingMedia.value = await exhibitorApi.pendingMedia()
+  } catch {
+    pendingMedia.value = []
+  }
+}
+function openUploads() {
+  tab.value = 'uploads'
+  loadPendingMedia()
+}
+async function review(m, status) {
+  busyId.value = m.id
+  try {
+    await exhibitorApi.review(m.organizationId, m.id, status, reviewNotes.value[m.id])
+    pendingMedia.value = pendingMedia.value.filter((x) => x.id !== m.id)
+    notice.value = t(status === 'APPROVED' ? 'admin.reservations.approved' : 'admin.reservations.rejected', { org: m.organizationName })
+  } catch (e) {
+    fail(e)
+  } finally {
+    busyId.value = ''
+  }
+}
+async function exhibitorAccount(row) {
+  busyId.value = row.id
+  try {
+    const updated = await reservationApi.exhibitorAccount(row.id)
+    Object.assign(row, updated)
+    notice.value = t('admin.reservations.exhibitorInvitedNotice', { email: row.email })
+  } catch (e) {
+    fail(e)
+  } finally {
+    busyId.value = ''
+  }
+}
 const booths = ref([])
 const activeBooth = ref(null)
 const assigning = ref(null)
@@ -433,5 +499,5 @@ function formatDate(v) {
     return String(v)
   }
 }
-onMounted(() => Promise.all([load(0), loadPipeline()]))
+onMounted(() => Promise.all([load(0), loadPipeline(), loadPendingMedia()]))
 </script>

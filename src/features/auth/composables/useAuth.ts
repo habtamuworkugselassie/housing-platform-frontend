@@ -38,6 +38,18 @@ export const useAuthStore = defineStore('auth', () => {
    */
   const isAdmin = computed(() => hasRole('ADMIN') || hasRole('SUPER_ADMIN'))
 
+  /**
+   * An organization account that is not a realtor, banker or admin: exhibitors and sponsors
+   * provisioned from a paid reservation. Their home is the exhibitor portal.
+   */
+  const isExhibitor = computed(
+    () =>
+      Boolean(user.value?.organizationId) &&
+      !isAdmin.value &&
+      !hasRole('REALTOR') &&
+      !hasRole('BANKER')
+  )
+
   const hydrateUser = async (): Promise<void> => {
     if (!token.value) return
     try {
@@ -169,6 +181,7 @@ export const useAuthStore = defineStore('auth', () => {
     hasRole,
     hasScope,
     isAdmin,
+    isExhibitor,
     login,
     register,
     logout,

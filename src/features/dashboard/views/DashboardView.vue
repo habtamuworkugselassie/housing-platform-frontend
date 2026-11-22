@@ -1643,6 +1643,7 @@ const newEditCreditOffer = () => ({
 
 const loadDashboardData = async () => {
   if (!authStore.hasRole('REALTOR')) {
+    if (authStore.isExhibitor) router.replace('/exhibitor')
     return
   }
 
