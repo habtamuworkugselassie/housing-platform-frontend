@@ -144,7 +144,7 @@
         :placeholder="$t('exhibition.registerInterest.companyPlaceholder')"
       />
     </div>
-    <OrganizationLookup v-model="form.organizationId" @select="(o) => { if (!form.company) form.company = o.name }" />
+    <OrganizationLookup v-model="form.organizationId" :hints="{ name: form.company, email: form.email, phone: form.phoneNumber }" @select="(o) => { if (!form.company) form.company = o.name }" />
     <div>
       <label :for="`${fieldIdPrefix}-message`" :class="['block text-sm font-medium mb-1', labelCls]">{{
         $t('exhibition.registerInterest.messageOptional')

@@ -32,7 +32,7 @@
         <p class="text-base font-bold text-gray-900">{{ pkg.name }}</p>
         <p class="text-sm text-gray-700">{{ money(pkg.basePrice) }} ETB <span class="text-gray-500">· {{ $t('reservation.exclVat') }}</span></p>
       </div>
-      <OrganizationLookup v-model="form.organizationId" :initial-name="form.organizationName" @select="onOrgPicked" />
+      <OrganizationLookup v-model="form.organizationId" :initial-name="form.organizationName" :hints="{ name: form.company, email: form.email, phone: form.phone }" @select="onOrgPicked" />
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label :for="`${uid}-company`" class="mb-1 block text-sm font-medium text-gray-700">{{ $t('reservation.company') }}</label>

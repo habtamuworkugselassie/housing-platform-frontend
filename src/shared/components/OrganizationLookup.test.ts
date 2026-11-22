@@ -29,4 +29,17 @@ describe('OrganizationLookup', () => {
     expect(w.emitted('select')?.[0]?.[0]).toMatchObject({ id: 'o1', name: 'Abay Steel PLC' })
     vi.useRealTimers()
   })
+
+  it('offers the organization that already uses the typed email and attaches it on confirm', async () => {
+    vi.mocked(api.get).mockResolvedValue({ status: 200, data: { id: 'o2', name: 'Kifiya Financial Technologies PLC', status: 'APPROVED', matchedBy: 'email' } } as any)
+    const w = mount(OrganizationLookup, { props: { modelValue: '', hints: { name: '', email: '', phone: '' } }, global: { plugins: [i18n] } })
+    await w.setProps({ hints: { name: '', email: 'hello@kifiya.com', phone: '' } })
+    await vi.advanceTimersByTimeAsync(700)
+    await flushPromises()
+    expect(api.get).toHaveBeenCalledWith('/organizations/match', { params: { email: 'hello@kifiya.com' } })
+    expect(w.find('[data-testid="org-lookup-suggestion"]').text()).toContain('orgLookup.found')
+    await w.find('[data-testid="org-lookup-use"]').trigger('click')
+    expect(w.emitted('update:modelValue')?.[0]).toEqual(['o2'])
+    vi.useRealTimers()
+  })
 })
