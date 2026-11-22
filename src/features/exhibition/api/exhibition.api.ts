@@ -43,6 +43,8 @@ export async function getActiveSponsorshipPackages(): Promise<PublicSponsorshipP
 }
 
 export interface RegisterInterestRequest {
+  /** Existing organization picked from the public lookup. */
+  organizationId?: string
   email: string
   phoneNumber?: string
   organizationType: string

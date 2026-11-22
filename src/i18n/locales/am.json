@@ -816,7 +816,13 @@
       "colContactToVerify": "ለማረጋገጥ ግንኙነት",
       "colActions": "ድርጊቶች",
       "viewOrg": "ድርጅት ይመልከቱ",
-      "pageOf": "ገጽ {current} ከ {total}"
+      "pageOf": "ገጽ {current} ከ {total}",
+      "colReservations": "ቦታ ማስያዣዎች",
+      "noReservation": "እስካሁን ቦታ ማስያዣ የለም",
+      "inviteToReserve": "እንዲያስይዙ ጋብዝ",
+      "inviteAgain": "እንደገና ጋብዝ",
+      "invitedAt": "ተጋብዟል {d}",
+      "invited": "የቦታ ማስያዣ አገናኝ ወደ {email} ተልኳል።"
     },
     "users": "ተጠቃሚዎች",
     "organizations": "ድርጅቶች",
@@ -3124,5 +3130,15 @@
     "removed": "ተወግዷል።",
     "uploaded": "{n} ፋይል(ሎች) ተጭነው ለግምገማ ተልከዋል።",
     "reviewNote": "ጭነቶች ቡድናችን ከገመገማቸው በኋላ በድረ-ገጹ ላይ ይታያሉ፣ አብዛኛውን ጊዜ በአንድ የስራ ቀን ውስጥ።"
+  },
+  "orgLookup": {
+    "title": "ከዚህ በፊት በ Ethio Build Connect ላይ ነዎት?",
+    "hint": "አዲስ ከመፍጠር ይልቅ ካለው መገለጫዎ ጋር እንድናያይዝ ኩባንያዎን ይፈልጉ። በመጠባበቅ ላይ ያሉ መገለጫዎችም ይቆጠራሉ።",
+    "placeholder": "የኩባንያዎን ስም ይፈልጉ…",
+    "selected": "ተያይዟል",
+    "change": "ቀይር",
+    "approved": "ተዘርዝሯል",
+    "pending": "በመጠባበቅ ላይ",
+    "none": "ምንም አልተገኘም፤ ከታች ካለው የኩባንያ ስም መገለጫ ይፈጠራል።"
   }
 }

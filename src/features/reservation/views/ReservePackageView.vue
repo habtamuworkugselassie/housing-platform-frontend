@@ -28,7 +28,7 @@
               <p class="text-sm text-gray-700">{{ money(p.basePrice) }} ETB</p>
             </button>
           </div>
-          <SponsorshipReservationForm :key="selected ? selected.id : 'none'" :pkg="selected" :source="source" @done="goHome" />
+          <SponsorshipReservationForm :key="selected ? selected.id : 'none'" :pkg="selected" :source="source" :prefill="prefill" @done="goHome" />
         </template>
       </div>
       <p class="text-center text-xs text-white/60">{{ $t('reservation.pageFoot') }} <a :href="localized('/#sponsorship-packages')" class="underline">{{ $t('reservation.seePackages') }}</a></p>
@@ -52,6 +52,16 @@ const packages = ref([])
 const selected = ref(null)
 const loading = ref(true)
 const source = typeof route.query.src === 'string' ? route.query.src.slice(0, 40) : 'reserve-page'
+const qs = (k, max = 200) => (typeof route.query[k] === 'string' ? route.query[k].slice(0, max) : '')
+/** Invitation and interest links carry the organization and contact so nothing is retyped. */
+const prefill = {
+  organizationId: qs('org', 40),
+  organizationName: qs('company'),
+  company: qs('company'),
+  contactName: qs('contact'),
+  email: qs('email', 255),
+  phone: qs('phone', 50)
+}
 
 function localized(path) {
   return `${localePrefix(String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en')}${path}`

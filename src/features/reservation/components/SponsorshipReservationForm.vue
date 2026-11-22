@@ -32,6 +32,7 @@
         <p class="text-base font-bold text-gray-900">{{ pkg.name }}</p>
         <p class="text-sm text-gray-700">{{ money(pkg.basePrice) }} ETB <span class="text-gray-500">· {{ $t('reservation.exclVat') }}</span></p>
       </div>
+      <OrganizationLookup v-model="form.organizationId" :initial-name="form.organizationName" @select="onOrgPicked" />
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label :for="`${uid}-company`" class="mb-1 block text-sm font-medium text-gray-700">{{ $t('reservation.company') }}</label>
@@ -84,6 +85,7 @@
 </template>
 
 <script setup>
+import OrganizationLookup from '@/shared/components/OrganizationLookup.vue'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BoothMap from './BoothMap.vue'
@@ -93,13 +95,30 @@ import { trackEvent } from '@/utils/analytics'
 const props = defineProps({
   /** The chosen package: { id, name, basePrice, type }. */
   pkg: { type: Object, default: null },
-  source: { type: String, default: 'web' }
+  source: { type: String, default: 'web' },
+  /** Values to start with, e.g. from an invitation link: { organizationId, organizationName, company, contactName, email, phone }. */
+  prefill: { type: Object, default: null }
 })
 const emit = defineEmits(['done', 'reserved'])
 
 const { t, locale } = useI18n()
 const uid = `rsv-${Math.random().toString(36).slice(2, 8)}`
-const form = reactive({ company: '', contactName: '', email: '', phone: '', tin: '', boothPreference: '', message: '', website: '' })
+const form = reactive({
+  organizationId: props.prefill?.organizationId || '',
+  organizationName: props.prefill?.organizationName || props.prefill?.company || '',
+  company: props.prefill?.company || '',
+  contactName: props.prefill?.contactName || '',
+  email: props.prefill?.email || '',
+  phone: props.prefill?.phone || '',
+  tin: '',
+  boothPreference: '',
+  message: '',
+  website: ''
+})
+function onOrgPicked(o) {
+  form.organizationName = o.name
+  if (!form.company) form.company = o.name
+}
 const errors = reactive({ company: '', contactName: '', email: '' })
 const submitting = ref(false)
 const submitError = ref('')
@@ -151,6 +170,7 @@ async function submit() {
   try {
     confirmation.value = await reservationApi.reserve({
       sponsorshipId: props.pkg.id,
+      organizationId: form.organizationId || undefined,
       company: form.company,
       contactName: form.contactName,
       email: form.email,
