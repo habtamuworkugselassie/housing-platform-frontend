@@ -13,6 +13,7 @@
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'map' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-map" @click="openMap">{{ $t('admin.reservations.tabMap') }}</button>
           <button type="button" :class="['rounded-lg px-3 py-2 text-xs font-semibold', tab === 'uploads' ? 'bg-admin-nav text-white' : 'border border-admin-line/20 text-admin-muted hover:bg-admin-sunken/60']" data-testid="tab-uploads" @click="openUploads">{{ $t('admin.reservations.tabUploads') }}<span v-if="pendingMedia.length" class="ml-1 rounded-full bg-gold-400 px-1.5 text-[10px] text-primary-950">{{ pendingMedia.length }}</span></button>
           <a :href="reserveLink" target="_blank" rel="noopener" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60">{{ $t('admin.reservations.openForm') }}</a>
+          <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60 disabled:opacity-50" :disabled="busyId === 'link'" :title="$t('admin.reservations.relinkHint')" data-testid="relink" @click="linkAll">{{ busyId === 'link' ? $t('admin.reservations.relinking') : $t('admin.reservations.relink') }}</button>
         </div>
       </div>
 
@@ -483,8 +484,8 @@ function clearOrg() {
 async function linkAll() {
   busyId.value = 'link'
   try {
-    const { linked } = await reservationApi.linkOrganizations()
-    notice.value = t('admin.reservations.orgLinkedAll', { n: linked })
+    const res = await reservationApi.linkOrganizations()
+    notice.value = t('admin.reservations.orgLinkedAll', { n: res.linked, leads: res.leads ?? 0 })
     await load(page.value)
   } catch (e) {
     fail(e)
