@@ -144,6 +144,7 @@
         :placeholder="$t('exhibition.registerInterest.companyPlaceholder')"
       />
     </div>
+    <OrganizationLookup v-model="form.organizationId" @select="(o) => { if (!form.company) form.company = o.name }" />
     <div>
       <label :for="`${fieldIdPrefix}-message`" :class="['block text-sm font-medium mb-1', labelCls]">{{
         $t('exhibition.registerInterest.messageOptional')
@@ -160,6 +161,7 @@
 </template>
 
 <script setup>
+import OrganizationLookup from '@/shared/components/OrganizationLookup.vue'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'

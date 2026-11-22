@@ -816,7 +816,13 @@
       "colContactToVerify": "Contact to verify",
       "colActions": "Actions",
       "viewOrg": "View org",
-      "pageOf": "Page {current} of {total}"
+      "pageOf": "Page {current} of {total}",
+      "colReservations": "Reservations",
+      "noReservation": "No reservation yet",
+      "inviteToReserve": "Invite to reserve",
+      "inviteAgain": "Invite again",
+      "invitedAt": "Invited {d}",
+      "invited": "Reservation link sent to {email}."
     },
     "users": "Users",
     "organizations": "Organizations",
@@ -3124,5 +3130,15 @@
     "removed": "Removed.",
     "uploaded": "{n} file(s) uploaded and sent for review.",
     "reviewNote": "Uploads show on the website after our team reviews them, usually within one working day."
+  },
+  "orgLookup": {
+    "title": "Already on Ethio Build Connect?",
+    "hint": "Search for your company so we attach this to your existing profile instead of creating a new one. Pending profiles count too.",
+    "placeholder": "Search your company name…",
+    "selected": "attached",
+    "change": "Change",
+    "approved": "Listed",
+    "pending": "Pending",
+    "none": "No match; a profile will be created from the company name below."
   }
 }

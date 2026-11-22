@@ -61,4 +61,17 @@ describe('SponsorshipReservationForm', () => {
     expect(reservationApi.reserve).not.toHaveBeenCalled()
     expect(w.text()).toContain('reservation.errors.package')
   })
+
+  it('starts from an invitation prefill and sends the organization id', async () => {
+    vi.mocked(reservationApi.reserve).mockResolvedValue({ reference: 'RSV-PRE001', email: 'hana@abay.et', packageName: 'Gold', boothCodes: [], boothsIncluded: 2, bankAccounts: [], payee: 'Dream Team Trading PLC' } as any)
+    const w = mount(SponsorshipReservationForm, {
+      props: { pkg: { id: 'p1', name: 'Gold', basePrice: 900000, type: 'GOLD' }, prefill: { organizationId: 'o1', company: 'Abay Steel PLC', contactName: 'Hana', email: 'hana@abay.et' } },
+      global: { plugins: [i18n], stubs: { OrganizationLookup: { props: ['modelValue', 'initialName'], template: '<div data-testid="org-stub">{{ initialName }}</div>' }, BoothMap: true } }
+    })
+    await flushPromises()
+    expect(w.find('[data-testid="org-stub"]').text()).toBe('Abay Steel PLC')
+    await w.find('form').trigger('submit.prevent')
+    await flushPromises()
+    expect(reservationApi.reserve).toHaveBeenCalledWith(expect.objectContaining({ organizationId: 'o1', company: 'Abay Steel PLC', email: 'hana@abay.et' }))
+  })
 })

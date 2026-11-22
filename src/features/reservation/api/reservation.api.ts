@@ -47,6 +47,8 @@ export function boothTypesForPackage(type?: string | null): BoothType[] {
 }
 
 export interface ReserveRequest {
+  /** Existing organization picked from the public lookup. */
+  organizationId?: string
   sponsorshipId: string
   boothCodes?: string[]
   company: string

@@ -2,6 +2,7 @@
   <AdminLayout>
     <div class="space-y-6">
       <ExpoWorkspaceBar current="/admin/exhibition-interests" />
+      <p v-if="notice" class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700" data-testid="lead-notice">{{ notice }}</p>
       <div>
         <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.nav.leads') }}</h1>
         <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.exhibitionInterests.subtitleUnified') }}</p>
@@ -46,6 +47,9 @@
                   {{ $t('admin.exhibitionInterests.colPackage') }}
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
+                  {{ $t('admin.exhibitionInterests.colReservations') }}
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
                   {{ $t('admin.exhibitionInterests.colOrganization') }}
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">
@@ -86,6 +90,20 @@
                 </td>
                 <td class="px-4 py-3 text-sm text-admin-muted">
                   {{ row.sponsorshipPackageName || '—' }}
+                </td>
+                <td class="px-4 py-3 text-sm" :data-testid="`lead-reservations-${row.id}`">
+                  <template v-if="row.reservations && row.reservations.length">
+                    <router-link v-for="r in row.reservations" :key="r.id" :to="{ path: '/admin/sponsorship-reservations', query: { q: r.reference } }" class="mb-1 block">
+                      <span class="font-mono text-xs font-semibold text-admin-fg">{{ r.reference }}</span>
+                      <span class="ml-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold" :class="reservationCls(r.status)">{{ $t(`admin.reservations.status.${r.status}`) }}</span>
+                    </router-link>
+                  </template>
+                  <template v-else-if="row.interestType !== 'visitor'">
+                    <span class="block text-xs text-admin-faint">{{ $t('admin.exhibitionInterests.noReservation') }}</span>
+                    <button type="button" class="mt-1 text-xs font-semibold text-admin-nav hover:underline" :disabled="invitingId === row.id" :data-testid="`invite-${row.id}`" @click="inviteToReserve(row)">{{ row.reserveInvitedAt ? $t('admin.exhibitionInterests.inviteAgain') : $t('admin.exhibitionInterests.inviteToReserve') }}</button>
+                    <span v-if="row.reserveInvitedAt" class="block text-[10px] text-admin-subtle">{{ $t('admin.exhibitionInterests.invitedAt', { d: formatDate(row.reserveInvitedAt) }) }}</span>
+                  </template>
+                  <span v-else class="text-xs text-admin-faint">—</span>
                 </td>
                 <td class="px-4 py-3 text-sm">
                   <div class="text-admin-fg">{{ row.organizationName || '—' }}</div>
@@ -354,10 +372,11 @@ import SponsorshipContactCell from '../components/SponsorshipContactCell.vue'
 import SponsorshipActionButtons from '../components/SponsorshipActionButtons.vue'
 import ProvisionPrimaryUserModal from '../components/ProvisionPrimaryUserModal.vue'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 const loading = ref(true)
 const error = ref('')
+const notice = ref('')
 const rows = ref([])
 const page = ref(0)
 const pageSize = 20
@@ -441,6 +460,25 @@ function formatDate(iso) {
   }
 }
 
+const invitingId = ref('')
+async function inviteToReserve(row) {
+  invitingId.value = row.id
+  try {
+    const res = await adminApi.inviteLeadToReserve(row.id)
+    Object.assign(row, res.data || {})
+    notice.value = t('admin.exhibitionInterests.invited', { email: row.email })
+  } catch (e) {
+    error.value = e?.response?.data?.message || e?.message || ''
+  } finally {
+    invitingId.value = ''
+  }
+}
+function reservationCls(s) {
+  if (s === 'PAID') return 'bg-emerald-100 text-emerald-800'
+  if (s === 'DEPOSIT_PAID' || s === 'SIGNED') return 'bg-blue-100 text-blue-800'
+  if (s === 'CANCELLED') return 'bg-admin-sunken/60 text-admin-subtle'
+  return 'bg-gold-400 text-primary-950'
+}
 function formatEnum(value) {
   if (!value) return '—'
   return String(value)

@@ -114,7 +114,8 @@ const interestForm = ref({
   contributionMode: 'IN_KIND',
   sponsorshipId: '',
   company: '',
-  message: ''
+  message: '',
+  organizationId: ''
 })
 const interestPackages = ref([])
 const interestPackagesLoading = ref(false)
@@ -122,9 +123,17 @@ const interestSubmitting = ref(false)
 const interestSubmitted = ref(false)
 const submittedInterestType = ref('visitor')
 const submittedPackageId = ref('')
+const submittedLead = ref({ org: '', email: '', company: '', phone: '' })
 const reserveLink = computed(() => {
   const am = String(locale.value || 'en').toLowerCase().startsWith('am')
-  return { path: `${am ? '/am' : ''}/reserve`, query: submittedPackageId.value ? { package: submittedPackageId.value, src: 'interest' } : { src: 'interest' } }
+  const query = { src: 'interest' }
+  if (submittedPackageId.value) query.package = submittedPackageId.value
+  // The lead's organization and contact ride along so the reservation form is prefilled.
+  if (submittedLead.value.org) query.org = submittedLead.value.org
+  if (submittedLead.value.email) query.email = submittedLead.value.email
+  if (submittedLead.value.company) query.company = submittedLead.value.company
+  if (submittedLead.value.phone) query.phone = submittedLead.value.phone
+  return { path: `${am ? '/am' : ''}/reserve`, query }
 })
 const interestError = ref('')
 
@@ -163,6 +172,7 @@ async function submitInterest() {
       interestType: it,
       company: interestForm.value.company || undefined,
       message: interestForm.value.message || undefined,
+      organizationId: interestForm.value.organizationId || undefined,
       locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
     }
     if ((it === 'exhibitor' || it === 'partner') && interestForm.value.sponsorshipId) {
@@ -173,9 +183,15 @@ async function submitInterest() {
       payload.visibilityScope = interestForm.value.visibilityScope
       payload.contributionMode = interestForm.value.contributionMode
     }
-    await exhibitionApi.registerInterest(payload)
+    const created = await exhibitionApi.registerInterest(payload)
     submittedInterestType.value = it
     submittedPackageId.value = payload.sponsorshipId || ''
+    submittedLead.value = {
+      org: created?.data?.organizationId || '',
+      email: payload.email || '',
+      company: payload.company || '',
+      phone: payload.phoneNumber || ''
+    }
     interestSubmitted.value = true
     // The site's primary conversion. Fired after the request resolves so failed
     // submissions never count, and before the redirect so it is not racing the

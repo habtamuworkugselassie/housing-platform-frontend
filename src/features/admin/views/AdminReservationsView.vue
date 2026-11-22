@@ -603,5 +603,8 @@ function formatDate(v) {
     return String(v)
   }
 }
-onMounted(() => Promise.all([load(0), loadPipeline(), loadPendingMedia()]))
+onMounted(() => {
+  if (typeof route.query.q === 'string') q.value = route.query.q
+  return Promise.all([load(0), loadPipeline(), loadPendingMedia()])
+})
 </script>

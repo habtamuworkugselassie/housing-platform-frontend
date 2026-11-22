@@ -56,6 +56,10 @@ export const adminApi = {
   /**
    * Exhibition interest leads (public form submissions), paginated. Admin only.
    */
+  inviteLeadToReserve: async (interestId: string): Promise<AxiosResponse<any>> => {
+    return api.post(`/admin/exhibition-interests/${interestId}/invite-to-reserve`)
+  },
+
   getExhibitionInterests: async (
     pageRequest?: PageRequest
   ): Promise<AxiosResponse<ExhibitionInterestsPage>> => {
