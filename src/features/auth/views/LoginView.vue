@@ -107,6 +107,11 @@ const route = useRoute()
 const { t } = useI18n()
 const authStore = useAuthStore()
 
+/** Exhibitor accounts land on their portal; everyone else keeps the dashboard. */
+function defaultLanding() {
+  return authStore.isExhibitor ? '/exhibitor' : '/dashboard'
+}
+
 const loginMode = ref('email')
 const loginPhoneCountryCode = ref('+251')
 const loginPhoneNumber = ref('')
@@ -135,7 +140,7 @@ const handleLogin = async () => {
 
   try {
     await authStore.login(form.value)
-    const redirect = route.query.redirect || '/dashboard'
+    const redirect = route.query.redirect || defaultLanding()
     router.push(redirect)
   } catch (err) {
     error.value = err.message || 'Invalid credentials. Please try again.'

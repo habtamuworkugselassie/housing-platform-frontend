@@ -182,7 +182,8 @@
     "whoAttends": "Who Attends",
     "menuTitle": "Menu",
     "menuSubtitle": "Jump to a section on the page.",
-    "sectors": "Sectors"
+    "sectors": "Sectors",
+    "exhibitorPortal": "Exhibitor portal"
   },
   "splash": {
     "enter": "Enter",
@@ -247,7 +248,10 @@
     "somethingWentWrong": "Something went wrong. Please try again.",
     "loginEyebrow": "Welcome back",
     "registerEyebrow": "Join the platform",
-    "accountEyebrow": "Your account"
+    "accountEyebrow": "Your account",
+    "welcomeSetPasswordTitle": "Set your password",
+    "welcomeSetPasswordSubtitle": "Choose a password for your exhibitor account, then sign in to complete your company profile.",
+    "signInToPortal": "Sign in to your portal"
   },
   "property": {
     "noListingsYet": "No listings published yet.",
@@ -1271,7 +1275,24 @@
       "language": "Sponsor's language",
       "sendEmailNow": "Email the sponsor the agreement and bank details now",
       "createSave": "Save reservation",
-      "created": "Reservation {ref} created."
+      "created": "Reservation {ref} created.",
+      "tabUploads": "Exhibitor uploads",
+      "uploadsHint": "Logos, photos and videos exhibitors uploaded from their portal. Nothing shows on the website until you approve it.",
+      "noUploads": "No uploads waiting for review.",
+      "rejectReason": "Reason (sent to the exhibitor if rejected)",
+      "approve": "Approve",
+      "reject": "Reject",
+      "approved": "Approved: it is now live on {org}’s profile.",
+      "rejected": "Rejected: {org} has been told to replace it.",
+      "createExhibitor": "Create exhibitor account",
+      "reinviteExhibitor": "Re-send portal invite",
+      "exhibitorInvited": "Portal invited {d} · open organization",
+      "exhibitorInvitedNotice": "Exhibitor account ready; invitation sent to {email}.",
+      "mediaKind": {
+        "IMAGE": "Photo",
+        "VIDEO": "Video",
+        "LOGO": "Logo"
+      }
     }
   },
   "validation": {
@@ -2990,5 +3011,69 @@
     "scrollHint": "Drag sideways to see the whole hall",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out"
+  },
+  "exhibitor": {
+    "eyebrow": "Exhibitor portal",
+    "loading": "Loading your exhibitor portal…",
+    "loadFailed": "We could not load your portal. Please try again.",
+    "failed": "That did not work. Please try again.",
+    "noOrgTitle": "No exhibitor account yet",
+    "noOrgBody": "Your sign-in is not linked to an exhibitor profile. Exhibitor accounts open automatically once a package reservation is paid. If you have paid, write to ethiobuildconnectexpo{'@'}gmail.com and we will link it.",
+    "reserveCta": "Reserve a package",
+    "goDashboard": "Go to my dashboard",
+    "live": "Live on the website",
+    "underReview": "Profile under review",
+    "viewPublic": "View public page",
+    "reservationsTitle": "Your reservations",
+    "boothsPending": "Booths to be assigned",
+    "paidOf": "Paid {paid} of {total}",
+    "viewReservation": "View reservation",
+    "payBalance": "View & pay balance",
+    "logoTitle": "Company logo",
+    "logoHint": "A square PNG or SVG with a transparent background works best. It appears in the sponsor strip and on your profile.",
+    "uploadLogo": "Upload logo",
+    "replaceLogo": "Upload a new logo",
+    "profileTitle": "Company profile",
+    "profileHint": "What visitors read on your public page and in the exhibitor directory.",
+    "fields": {
+      "name": "Company name",
+      "type": "Business type",
+      "phone": "Phone",
+      "description": "About the company",
+      "descriptionHint": "What you build, supply or offer, and what visitors will find at your booth.",
+      "email": "Public email",
+      "website": "Website",
+      "address": "Address",
+      "city": "City"
+    },
+    "types": {
+      "SUPPLIER": "Supplier",
+      "CONTRACTOR": "Contractor",
+      "DEVELOPER": "Developer",
+      "REAL_ESTATE_COMPANY": "Real estate company",
+      "CONSULTANT_ARCHITECT": "Consultant / architect",
+      "FINISHING_CONTRACTOR": "Finishing contractor",
+      "BANK": "Bank",
+      "INSURANCE": "Insurance",
+      "MEDIA_COMPANY": "Media company"
+    },
+    "saveProfile": "Save profile",
+    "saving": "Saving…",
+    "profileSaved": "Profile saved.",
+    "galleryTitle": "Photos & videos",
+    "galleryHint": "Projects, products and your team. Up to 100MB per file.",
+    "addPhotos": "Add photos",
+    "addVideo": "Add video",
+    "galleryEmpty": "No photos or videos yet.",
+    "review": {
+      "PENDING": "Awaiting review",
+      "APPROVED": "Live",
+      "REJECTED": "Not approved"
+    },
+    "remove": "Remove",
+    "removeConfirm": "Remove this file?",
+    "removed": "Removed.",
+    "uploaded": "{n} file(s) uploaded and sent for review.",
+    "reviewNote": "Uploads show on the website after our team reviews them, usually within one working day."
   }
 }

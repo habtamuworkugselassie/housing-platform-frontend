@@ -3,10 +3,10 @@
     <div class="max-w-md w-full rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_24px_60px_-30px_rgba(46,16,101,0.35)] sm:p-10 space-y-8">
       <div>
         <div class="text-center"><p class="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-100 bg-primary-50 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-700"><span class="h-1.5 w-1.5 rounded-full bg-gold-500" aria-hidden="true" />{{ $t('auth.accountEyebrow') }}</p></div><h2 class="text-center text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          {{ $t('auth.resetPasswordTitle') }}
+          {{ welcome ? $t('auth.welcomeSetPasswordTitle') : $t('auth.resetPasswordTitle') }}
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-          {{ $t('auth.resetPasswordSubtitle') }}
+          {{ welcome ? $t('auth.welcomeSetPasswordSubtitle') : $t('auth.resetPasswordSubtitle') }}
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
@@ -46,6 +46,7 @@
         <div v-if="success" class="rounded-md bg-green-900/40 border border-green-500/30 p-4">
           <div class="text-sm text-green-200">
             {{ $t('auth.resetSuccessMessage') }}
+            <router-link v-if="welcome" to="/login?redirect=/exhibitor" class="ml-1 font-semibold underline">{{ $t('auth.signInToPortal') }}</router-link>
           </div>
         </div>
 
@@ -79,6 +80,8 @@ import { authApi } from '../api/auth.api'
 const { t } = useI18n()
 const route = useRoute()
 const token = computed(() => (route.query.token || '').trim())
+/** Set from the exhibitor invitation: the page reads as a first sign-in, not a reset. */
+const welcome = computed(() => String(route.query.welcome || '') === '1')
 
 const form = ref({
   newPassword: '',

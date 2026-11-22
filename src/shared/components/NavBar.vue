@@ -197,6 +197,13 @@
                 {{ $t('nav.supplier') }}
               </router-link>
               <router-link
+                v-if="authStore.isExhibitor"
+                to="/exhibitor"
+                class="px-3 py-2 text-sm font-medium text-gold-400 hover:text-gold-300"
+              >
+                {{ $t('nav.exhibitorPortal') }}
+              </router-link>
+              <router-link
                 v-if="!authStore.isAdmin"
                 to="/dashboard"
                 class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-primary-400"
@@ -445,6 +452,7 @@ const accountItems = computed(() => {
     { key: 'purchases', to: '/purchase-orders', icon: 'receipt_long', label: t('nav.myPurchases'), show: authStore.hasRole('BUYER') },
     { key: 'construction', to: '/construction/dashboard', icon: 'construction', label: t('nav.construction'), show: isRealtor },
     { key: 'supplier', to: '/supplier/dashboard', icon: 'local_shipping', label: t('nav.supplier'), show: authStore.hasRole('SUPPLIER') },
+    { key: 'exhibitor', to: '/exhibitor', icon: 'storefront', label: t('nav.exhibitorPortal'), show: authStore.isExhibitor },
     { key: 'dashboard', to: '/dashboard', icon: 'dashboard', label: t('nav.dashboard'), show: !authStore.isAdmin },
     { key: 'profile', to: '/profile', icon: 'person', label: t('common.profile') || 'Profile', show: true }
   ].filter((e) => e.show)

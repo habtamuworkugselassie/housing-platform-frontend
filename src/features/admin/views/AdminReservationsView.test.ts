@@ -7,8 +7,11 @@ import { reservationApi } from '@/features/reservation/api/reservation.api'
 
 vi.mock('@/features/reservation/api/reservation.api', async (orig) => {
   const actual = await orig<typeof import('@/features/reservation/api/reservation.api')>()
-  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn(), create: vi.fn() } }
+  return { ...actual, reservationApi: { pipeline: vi.fn(), list: vi.fn(), update: vi.fn(), sendAgreement: vi.fn(), remind: vi.fn(), adminBooths: vi.fn(), updateBooth: vi.fn(), assignBooths: vi.fn(), create: vi.fn(), exhibitorAccount: vi.fn() } }
 })
+
+vi.mock('@/features/exhibitor/api/exhibitor.api', () => ({ exhibitorApi: { pendingMedia: vi.fn().mockResolvedValue([{ id: 'm1', url: '/api/v1/uploads/organizations/o1/logo.png', mediaKind: 'LOGO', reviewStatus: 'PENDING', organizationId: 'o1', organizationName: 'Abay Steel PLC', createdAt: '2026-11-22T10:00:00' }]), review: vi.fn().mockResolvedValue(undefined) } }))
+vi.mock('vue-router', () => ({ useRoute: () => ({ query: {} }), useRouter: () => ({ push: vi.fn() }) }))
 
 vi.mock('@/features/exhibition/api/exhibition.api', () => ({ getActiveSponsorshipPackages: vi.fn().mockResolvedValue([{ id: 'p1', name: 'Tier 2 · Gold', type: 'GOLD', basePrice: 900000, status: 'ACTIVE' }]) }))
 
@@ -102,5 +105,26 @@ describe('AdminReservationsView', () => {
     await flushPromises()
     expect(reservationApi.create).toHaveBeenCalledWith(expect.objectContaining({ sponsorshipId: 'p1', company: 'Walk-in PLC', contactName: 'Dawit', email: 'dawit@walkin.et', status: 'SIGNED', boothCodes: ['B104'], sendEmail: false }))
     expect(w.text()).toContain('admin.reservations.created')
+  })
+
+  it('offers the exhibitor account on a paid row and reviews pending uploads', async () => {
+    vi.mocked(reservationApi.list).mockResolvedValue({ content: [row({ status: 'DEPOSIT_PAID', amountPaid: 75000 })], totalElements: 1, totalPages: 1, number: 0, size: 50 })
+    vi.mocked(reservationApi.exhibitorAccount).mockResolvedValue(row({ status: 'DEPOSIT_PAID', organizationId: 'o1', exhibitorInvitedAt: '2026-11-22T10:00:00' }) as any)
+    const w = mountView()
+    await flushPromises()
+    await w.find('[data-testid="exhibitor-RSV-K7M2PX"]').trigger('click')
+    await flushPromises()
+    expect(reservationApi.exhibitorAccount).toHaveBeenCalledWith('r1')
+    expect(w.find('[data-testid="exhibitor-RSV-K7M2PX"]').text()).toBe('admin.reservations.reinviteExhibitor')
+
+    expect(w.find('[data-testid="tab-uploads"]').text()).toContain('1')
+    await w.find('[data-testid="tab-uploads"]').trigger('click')
+    await flushPromises()
+    expect(w.find('[data-testid="uploads-panel"]').text()).toContain('Abay Steel PLC')
+    await w.find('[data-testid="approve-m1"]').trigger('click')
+    await flushPromises()
+    const { exhibitorApi } = await import('@/features/exhibitor/api/exhibitor.api')
+    expect(exhibitorApi.review).toHaveBeenCalledWith('o1', 'm1', 'APPROVED', undefined)
+    expect(w.find('[data-testid="upload-m1"]').exists()).toBe(false)
   })
 })

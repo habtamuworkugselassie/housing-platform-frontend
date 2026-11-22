@@ -182,7 +182,8 @@
     "whoAttends": "ማን ይገኛል",
     "menuTitle": "ምናሌ",
     "menuSubtitle": "በገጹ ላይ ወደ አንድ ክፍል ይዝለሉ።",
-    "sectors": "ሴክተሮች"
+    "sectors": "ሴክተሮች",
+    "exhibitorPortal": "የአሳታፊ መግቢያ"
   },
   "splash": {
     "enter": "ግባ",
@@ -247,7 +248,10 @@
     "somethingWentWrong": "የሆነ ችግር ተፈጥሯል። እባክዎ ይሞክሩ።",
     "loginEyebrow": "እንኳን ደህና መጡ",
     "registerEyebrow": "መድረኩን ይቀላቀሉ",
-    "accountEyebrow": "መለያዎ"
+    "accountEyebrow": "መለያዎ",
+    "welcomeSetPasswordTitle": "የይለፍ ቃል ያዘጋጁ",
+    "welcomeSetPasswordSubtitle": "ለአሳታፊ መለያዎ የይለፍ ቃል ይምረጡ፣ ከዚያ ገብተው የድርጅትዎን መገለጫ ያጠናቅቁ።",
+    "signInToPortal": "ወደ መግቢያዎ ይግቡ"
   },
   "property": {
     "noListingsYet": "እስካሁን የታተመ ዝርዝር የለም።",
@@ -1271,7 +1275,24 @@
       "language": "የስፖንሰሩ ቋንቋ",
       "sendEmailNow": "ውሉንና የባንክ መረጃውን አሁን በኢሜይል ላክ",
       "createSave": "ማስያዣ አስቀምጥ",
-      "created": "ማስያዣ {ref} ተፈጥሯል።"
+      "created": "ማስያዣ {ref} ተፈጥሯል።",
+      "tabUploads": "የአሳታፊ ጭነቶች",
+      "uploadsHint": "አሳታፊዎች ከመግቢያቸው የጫኑት አርማዎች፣ ፎቶዎችና ቪዲዮዎች። እስኪያጸድቁ ድረስ በድረ-ገጹ ላይ አይታይም።",
+      "noUploads": "ግምገማ የሚጠብቅ ጭነት የለም።",
+      "rejectReason": "ምክንያት (ውድቅ ከተደረገ ለአሳታፊው ይላካል)",
+      "approve": "አጽድቅ",
+      "reject": "ውድቅ አድርግ",
+      "approved": "ጸድቋል፦ አሁን በ{org} መገለጫ ላይ ይታያል።",
+      "rejected": "ውድቅ ተደርጓል፦ {org} እንዲተካ ተነግሮታል።",
+      "createExhibitor": "የአሳታፊ መለያ ፍጠር",
+      "reinviteExhibitor": "ግብዣውን እንደገና ላክ",
+      "exhibitorInvited": "መግቢያ ተጋብዟል {d} · ድርጅቱን ክፈት",
+      "exhibitorInvitedNotice": "የአሳታፊ መለያ ዝግጁ ነው፤ ግብዣ ወደ {email} ተልኳል።",
+      "mediaKind": {
+        "IMAGE": "ፎቶ",
+        "VIDEO": "ቪዲዮ",
+        "LOGO": "አርማ"
+      }
     }
   },
   "validation": {
@@ -2990,5 +3011,69 @@
     "scrollHint": "ሙሉ አዳራሹን ለማየት ወደ ጎን ይጎትቱ",
     "zoomIn": "አጉላ",
     "zoomOut": "አሳንስ"
+  },
+  "exhibitor": {
+    "eyebrow": "የአሳታፊ መግቢያ",
+    "loading": "የአሳታፊ መግቢያዎ እየተጫነ ነው…",
+    "loadFailed": "መግቢያዎን መጫን አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
+    "failed": "አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+    "noOrgTitle": "እስካሁን የአሳታፊ መለያ የለም",
+    "noOrgBody": "መግቢያዎ ከአሳታፊ መገለጫ ጋር አልተገናኘም። የጥቅል ቦታ ማስያዝ ክፍያ ሲፈጸም የአሳታፊ መለያ በራስ-ሰር ይከፈታል። ከከፈሉ ወደ ethiobuildconnectexpo{'@'}gmail.com ይጻፉልን፣ እናገናኘዋለን።",
+    "reserveCta": "ጥቅል ያስይዙ",
+    "goDashboard": "ወደ ዳሽቦርዴ",
+    "live": "በድረ-ገጹ ላይ ይታያል",
+    "underReview": "መገለጫ በግምገማ ላይ",
+    "viewPublic": "የህዝብ ገጽ ይመልከቱ",
+    "reservationsTitle": "የእርስዎ ቦታ ማስያዣዎች",
+    "boothsPending": "ዳሶች ገና ይመደባሉ",
+    "paidOf": "ከ{total} ውስጥ {paid} ተከፍሏል",
+    "viewReservation": "ቦታ ማስያዣ ይመልከቱ",
+    "payBalance": "ይመልከቱ እና ቀሪውን ይክፈሉ",
+    "logoTitle": "የኩባንያ አርማ",
+    "logoHint": "ግልጽ ዳራ ያለው ካሬ PNG ወይም SVG የተሻለ ነው። በስፖንሰር ማሳያና በመገለጫዎ ላይ ይታያል።",
+    "uploadLogo": "አርማ ይጫኑ",
+    "replaceLogo": "አዲስ አርማ ይጫኑ",
+    "profileTitle": "የኩባንያ መገለጫ",
+    "profileHint": "ጎብኚዎች በህዝብ ገጽዎና በአሳታፊ ማውጫ ውስጥ የሚያነቡት።",
+    "fields": {
+      "name": "የኩባንያ ስም",
+      "type": "የንግድ ዓይነት",
+      "phone": "ስልክ",
+      "description": "ስለ ኩባንያው",
+      "descriptionHint": "ምን እንደሚገነቡ፣ እንደሚያቀርቡ ወይም እንደሚያቀርቡ፣ እና ጎብኚዎች በዳስዎ ምን እንደሚያገኙ።",
+      "email": "የህዝብ ኢሜይል",
+      "website": "ድረ-ገጽ",
+      "address": "አድራሻ",
+      "city": "ከተማ"
+    },
+    "types": {
+      "SUPPLIER": "አቅራቢ",
+      "CONTRACTOR": "ተቋራጭ",
+      "DEVELOPER": "አልሚ",
+      "REAL_ESTATE_COMPANY": "የሪል እስቴት ኩባንያ",
+      "CONSULTANT_ARCHITECT": "አማካሪ / አርክቴክት",
+      "FINISHING_CONTRACTOR": "የማጠናቀቂያ ተቋራጭ",
+      "BANK": "ባንክ",
+      "INSURANCE": "ኢንሹራንስ",
+      "MEDIA_COMPANY": "የሚዲያ ኩባንያ"
+    },
+    "saveProfile": "መገለጫ አስቀምጥ",
+    "saving": "እየተቀመጠ…",
+    "profileSaved": "መገለጫ ተቀምጧል።",
+    "galleryTitle": "ፎቶዎች እና ቪዲዮዎች",
+    "galleryHint": "ፕሮጀክቶች፣ ምርቶችና ቡድንዎ። በፋይል እስከ 100MB።",
+    "addPhotos": "ፎቶዎች ጨምር",
+    "addVideo": "ቪዲዮ ጨምር",
+    "galleryEmpty": "እስካሁን ፎቶ ወይም ቪዲዮ የለም።",
+    "review": {
+      "PENDING": "ግምገማ በመጠበቅ ላይ",
+      "APPROVED": "ይታያል",
+      "REJECTED": "አልጸደቀም"
+    },
+    "remove": "አስወግድ",
+    "removeConfirm": "ይህን ፋይል ያስወግዱ?",
+    "removed": "ተወግዷል።",
+    "uploaded": "{n} ፋይል(ሎች) ተጭነው ለግምገማ ተልከዋል።",
+    "reviewNote": "ጭነቶች ቡድናችን ከገመገማቸው በኋላ በድረ-ገጹ ላይ ይታያሉ፣ አብዛኛውን ጊዜ በአንድ የስራ ቀን ውስጥ።"
   }
 }

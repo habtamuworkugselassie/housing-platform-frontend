@@ -107,6 +107,23 @@ export interface AdminReservation {
   updatedAt: string
   boothCodes: string[]
   boothsIncluded: number
+  organizationId?: string | null
+  exhibitorInvitedAt?: string | null
+}
+
+/** What a signed-in exhibitor sees of its own reservations. */
+export interface ExhibitorReservation {
+  reference: string
+  packageName: string
+  packageType: string | null
+  amount: number
+  amountPaid: number
+  currency: string
+  status: ReservationStatus
+  boothCodes: string[]
+  boothsIncluded: number
+  email: string
+  paidAt: string | null
 }
 
 export interface AdminReservationPage {
@@ -229,6 +246,13 @@ export const reservationApi = {
   },
   async remind(id: string): Promise<AdminReservation> {
     return (await api.post<AdminReservation>(`/admin/sponsorship-reservations/${id}/remind`)).data
+  },
+  /** Creates the exhibitor account for a paid reservation, or sends the invitation again. */
+  async exhibitorAccount(id: string): Promise<AdminReservation> {
+    return (await api.post<AdminReservation>(`/admin/sponsorship-reservations/${id}/exhibitor-account`)).data
+  },
+  async mine(): Promise<ExhibitorReservation[]> {
+    return (await api.get<ExhibitorReservation[]>('/sponsorship-reservations/mine')).data
   },
   async boothMap(): Promise<BoothMapData> {
     return (await api.get<BoothMapData>('/sponsorship-reservations/booths')).data

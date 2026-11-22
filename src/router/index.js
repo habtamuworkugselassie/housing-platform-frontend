@@ -191,6 +191,12 @@ const routes = [
     meta: { requiresAuth: true, noindex: true }
   },
   {
+    path: '/exhibitor',
+    name: 'ExhibitorPortal',
+    component: () => import('@/features/exhibitor/views/ExhibitorPortalView.vue'),
+    meta: { requiresAuth: true, noindex: true }
+  },
+  {
     path: '/profile',
     name: 'UserProfile',
     component: () => import('@/features/identity/views/UserProfileView.vue'),
