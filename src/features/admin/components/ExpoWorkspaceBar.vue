@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-wrap items-center gap-1 rounded-lg border border-admin-line/10 bg-admin-surface px-2 py-1.5 text-xs" :aria-label="$t('admin.expo.workflow')" data-testid="expo-workspace">
+  <nav class="flex items-center gap-1 overflow-x-auto whitespace-nowrap rounded-lg border border-admin-line/10 bg-admin-surface px-2 py-1.5 text-xs" :aria-label="$t('admin.expo.workflow')" data-testid="expo-workspace">
     <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-admin-subtle">{{ $t('admin.expo.workflow') }}</span>
     <template v-for="(step, i) in steps" :key="step.path">
       <span v-if="i > 0" class="text-admin-subtle" aria-hidden="true">›</span>

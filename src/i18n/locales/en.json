@@ -1333,7 +1333,8 @@
       "count": "{n} rows",
       "prev": "Previous",
       "next": "Next"
-    }
+    },
+    "viewSite": "View site"
   },
   "validation": {
     "required": "This field is required",

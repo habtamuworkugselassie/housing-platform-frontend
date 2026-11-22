@@ -206,7 +206,7 @@ const routes = [
     path: '/sponsorships',
     name: 'Sponsorships',
     redirect: '/admin/sponsorships',
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/live',
@@ -224,115 +224,115 @@ const routes = [
     path: '/admin',
     name: 'AdminDashboard',
     component: () => import('@/features/admin/views/AdminDashboardView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/users',
     name: 'AdminUsers',
     component: () => import('@/features/admin/views/AdminUsersView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/organizations',
     name: 'AdminOrganizations',
     component: () => import('@/features/admin/views/AdminOrganizationsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/properties',
     name: 'AdminProperties',
     component: () => import('@/features/admin/views/AdminPropertiesView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/buildings',
     name: 'AdminBuildings',
     component: () => import('@/features/admin/views/AdminBuildingsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/construction',
     name: 'AdminConstruction',
     component: () => import('@/features/admin/views/AdminConstructionView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/banking',
     name: 'AdminBanking',
     component: () => import('@/features/admin/views/AdminBankingView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/loans',
     name: 'AdminLoans',
     component: () => import('@/features/admin/views/AdminLoansView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/property-documents',
     name: 'AdminPropertyDocuments',
     component: () => import('@/features/admin/views/AdminPropertyDocumentsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/purchase-orders',
     name: 'AdminPurchaseOrders',
     component: () => import('@/features/admin/views/AdminPurchaseOrdersView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/sponsorships',
     name: 'AdminSponsorships',
     component: () => import('@/features/admin/views/AdminSponsorshipsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/exhibition-interests',
     name: 'AdminExhibitionInterests',
     component: () => import('@/features/admin/views/AdminExhibitionInterestsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/outreach',
     name: 'AdminOutreach',
     component: () => import('@/features/admin/views/AdminOutreachView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/sponsorship-reservations',
     name: 'AdminReservations',
     component: () => import('@/features/admin/views/AdminReservationsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/visitors',
     name: 'AdminVisitors',
     component: () => import('@/features/admin/views/AdminVisitorsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/enquiries',
     name: 'AdminEnquiries',
     component: () => import('@/features/admin/views/AdminEnquiriesView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/video-feedback',
     name: 'AdminVideoFeedback',
     component: () => import('@/features/admin/views/AdminVideoFeedbackView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/live-broadcasts',
     name: 'AdminLiveBroadcasts',
     component: () => import('@/features/admin/views/AdminLiveBroadcastsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/admin/settings',
     name: 'AdminDisplaySettings',
     component: () => import('@/features/admin/views/AdminDisplaySettingsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
+    meta: { requiresAuth: true, requiresAdmin: true, noindex: true, hideLayout: true }
   },
   {
     path: '/banking/dashboard',

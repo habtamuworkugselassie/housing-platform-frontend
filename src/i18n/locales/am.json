@@ -1333,7 +1333,8 @@
       "count": "{n} ረድፎች",
       "prev": "ቀዳሚ",
       "next": "ቀጣይ"
-    }
+    },
+    "viewSite": "ድረ-ገጹን ይመልከቱ"
   },
   "validation": {
     "required": "ይህ መስክ ያስፈልጋል",
