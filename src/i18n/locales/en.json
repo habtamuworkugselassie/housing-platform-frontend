@@ -1333,7 +1333,7 @@
       "orgLinked": "Linked organization",
       "orgChange": "Change",
       "orgMissing": "No organization linked · link now",
-      "orgLinkedAll": "{n} reservation(s) linked to an organization.",
+      "orgLinkedAll": "{n} reservation(s) linked to an organization, {leads} lead(s) created or attached.",
       "colActions": "Actions",
       "edit": "Edit",
       "save": "Save changes",
@@ -1343,7 +1343,10 @@
       "overdueSince": "Overdue since {d}",
       "dueOn": "Payment due {d}",
       "paymentDue": "Payment due date",
-      "paymentReminders": "{n} payment reminder(s) sent"
+      "paymentReminders": "{n} payment reminder(s) sent",
+      "relink": "Relink organizations & leads",
+      "relinking": "Relinking…",
+      "relinkHint": "Attach an organization and a lead to every reservation that lacks one (safe to run any time)."
     },
     "navGroups": {
       "overview": "Overview",

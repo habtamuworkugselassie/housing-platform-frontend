@@ -267,8 +267,8 @@ export const reservationApi = {
     return (await api.get(`/admin/sponsorship-reservations/organization/${organizationId}`)).data
   },
   /** Attaches an organization to every reservation that still has none. */
-  async linkOrganizations(): Promise<{ linked: number }> {
-    return (await api.post<{ linked: number }>('/admin/sponsorship-reservations/link-organizations')).data
+  async linkOrganizations(): Promise<{ linked: number; leads: number }> {
+    return (await api.post<{ linked: number; leads: number }>('/admin/sponsorship-reservations/link-organizations')).data
   },
   async mine(): Promise<ExhibitorReservation[]> {
     return (await api.get<ExhibitorReservation[]>('/sponsorship-reservations/mine')).data
