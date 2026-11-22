@@ -3139,6 +3139,14 @@
     "change": "Change",
     "approved": "Listed",
     "pending": "Pending",
-    "none": "No match; a profile will be created from the company name below."
+    "none": "No match; a profile will be created from the company name below.",
+    "found": "Looks like {name} is already registered.",
+    "useThis": "Yes, that is us",
+    "notUs": "Not us",
+    "matchedBy": {
+      "email": "Matched by the email you entered.",
+      "phone": "Matched by the phone number you entered.",
+      "name": "Matched by the company name."
+    }
   }
 }

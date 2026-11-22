@@ -269,6 +269,14 @@
                 </button>
                 <button
                   type="button"
+                  class="w-full rounded-full bg-gold-400 px-5 py-3 text-sm font-bold text-primary-950 shadow-lg transition-all hover:bg-gold-500 sm:w-auto"
+                  data-testid="details-reserve"
+                  @click="openReserveFromDetails"
+                >
+                  {{ $t('reservation.reserveCta') }}
+                </button>
+                <button
+                  type="button"
                   class="w-full rounded-full px-5 py-3 text-sm font-bold shadow-lg transition-all sm:w-auto"
                   :class="detailsModalTheme.primaryCta"
                   @click="openRegisterFromDetails"
@@ -570,6 +578,7 @@ function emptyRegisterForm() {
     partnerRole: 'MEDIA_PARTNER',
     visibilityScope: 'BOTH',
     contributionMode: 'IN_KIND',
+    organizationId: '',
     sponsorshipId: '',
     company: '',
     message: ''
@@ -687,6 +696,12 @@ function openRegisterModal(pkg) {
   registerModalOpen.value = true
 }
 
+function openReserveFromDetails() {
+  const pkg = detailsModalPackage.value
+  closeDetailsModal()
+  openReserveModal(pkg || null)
+}
+
 function openRegisterFromDetails() {
   const pkg = detailsModalPackage.value
   closeDetailsModal()
@@ -721,6 +736,7 @@ async function submitRegisterModal() {
       interestType: it,
       company: registerForm.value.company || undefined,
       message: registerForm.value.message || undefined,
+      organizationId: registerForm.value.organizationId || undefined,
       locale: String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en'
     }
     if ((it === 'exhibitor' || it === 'partner') && registerForm.value.sponsorshipId) {
