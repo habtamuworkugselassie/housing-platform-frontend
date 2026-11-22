@@ -2907,6 +2907,42 @@
       "package": "Please choose a package first.",
       "tooMany": "Too many attempts. Please wait a minute and try again.",
       "generic": "Something went wrong. Please try again."
+    },
+    "statusTitle": "Your reservation",
+    "statusHelp": "Open the link from your confirmation email; it carries the reference and the email address the reservation was made with.",
+    "notFound": "We could not find a reservation for that reference and email.",
+    "paymentOk": "Payment received. Thank you!",
+    "paymentPending": "We are waiting for the payment provider to confirm. Refresh in a moment.",
+    "total": "Package price",
+    "paid": "Paid",
+    "outstanding": "Outstanding",
+    "payDepositTitle": "Lock your booths now with a {amount} ETB deposit",
+    "payDepositBody": "Pay the deposit online with telebirr, CBE Birr, M-Pesa, Awash Birr or a card. Your booth hold then no longer expires; the balance is due within 10 working days of signing.",
+    "payDepositCta": "Pay the deposit online",
+    "payDepositCtaAmount": "Pay deposit · {amount} ETB",
+    "payBalanceTitle": "Balance due: {amount} ETB",
+    "payBalanceBody": "Pay the balance online or by bank transfer to one of the accounts below.",
+    "payFullCta": "Pay {amount} ETB",
+    "redirecting": "Opening secure checkout…",
+    "chapaNote": "Payments are processed by Chapa. All prices exclude VAT.",
+    "allPaid": "Paid in full. Your place is confirmed; see you in January.",
+    "paymentsTitle": "Online payments",
+    "resume": "Resume",
+    "methods": {
+      "TELEBIRR": "telebirr",
+      "CBE_BIRR": "CBE Birr",
+      "MPESA": "M-Pesa",
+      "AWASH_BIRR": "Awash Birr",
+      "CARD": "Card"
+    },
+    "purpose": {
+      "DEPOSIT": "Deposit",
+      "BALANCE": "Balance"
+    },
+    "payStatus": {
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "FAILED": "Failed"
     }
   },
   "booth": {

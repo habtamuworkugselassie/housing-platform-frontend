@@ -72,6 +72,8 @@ export interface ReservationConfirmation {
   payee: string
   boothCodes: string[]
   boothsIncluded: number
+  depositAmount: number | null
+  checkoutAvailable: boolean
 }
 
 export interface AdminReservation {
@@ -132,6 +134,50 @@ export interface AdminReservationUpdate {
   boothPreference?: string
 }
 
+export type ReservationPaymentMethod = 'TELEBIRR' | 'CBE_BIRR' | 'MPESA' | 'AWASH_BIRR' | 'CARD'
+export const RESERVATION_PAYMENT_METHODS: ReservationPaymentMethod[] = ['TELEBIRR', 'CBE_BIRR', 'MPESA', 'AWASH_BIRR', 'CARD']
+
+export interface ReservationPaymentView {
+  txRef: string
+  purpose: 'DEPOSIT' | 'BALANCE'
+  amount: number
+  currency: string
+  status: 'PENDING' | 'PAID' | 'FAILED'
+  checkoutUrl: string | null
+  method: string | null
+  paidAt: string | null
+  createdAt: string
+}
+
+export interface ReservationStatusView {
+  reference: string
+  packageName: string
+  company: string
+  contactName: string
+  amount: number
+  amountPaid: number
+  outstanding: number
+  depositAmount: number
+  depositPercent: number
+  depositPaid: boolean
+  currency: string
+  status: ReservationStatus
+  locale: string
+  boothCodes: string[]
+  checkoutAvailable: boolean
+  payments: ReservationPaymentView[]
+  bankAccounts: { bank: string; number: string }[]
+  payee: string
+}
+
+export interface ReservationCheckoutResponse {
+  txRef: string
+  checkoutUrl: string
+  amount: number
+  currency: string
+  purpose: 'DEPOSIT' | 'BALANCE'
+}
+
 export interface AdminReservationCreate {
   sponsorshipId: string
   company: string
@@ -157,6 +203,12 @@ export const reservationApi = {
   },
   async reserve(body: ReserveRequest): Promise<ReservationConfirmation> {
     return (await api.post<ReservationConfirmation>('/sponsorship-reservations', body)).data
+  },
+  async status(reference: string, email: string, refresh = false): Promise<ReservationStatusView> {
+    return (await api.get<ReservationStatusView>(`/sponsorship-reservations/${encodeURIComponent(reference)}`, { params: { email, refresh } })).data
+  },
+  async checkout(reference: string, email: string, purpose: 'DEPOSIT' | 'BALANCE', method?: ReservationPaymentMethod | null): Promise<ReservationCheckoutResponse> {
+    return (await api.post<ReservationCheckoutResponse>(`/sponsorship-reservations/${encodeURIComponent(reference)}/checkout`, { email, purpose, method: method || undefined })).data
   },
   async pipeline(): Promise<Pipeline> {
     return (await api.get<Pipeline>('/admin/sponsorship-reservations/pipeline')).data

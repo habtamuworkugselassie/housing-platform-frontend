@@ -11,6 +11,11 @@
         <p class="text-sm text-gray-700">{{ confirmation.packageName }} · {{ money(confirmation.amount) }} {{ confirmation.currency }}</p>
         <p v-if="confirmation.boothCodes && confirmation.boothCodes.length" class="mt-1 text-sm font-semibold text-primary-800" data-testid="held-booths">{{ $t('booth.heldFor', { codes: confirmation.boothCodes.join(', '), days: holdDays }) }}</p>
       </div>
+      <div v-if="confirmation.checkoutAvailable && confirmation.depositAmount" class="rounded-xl border border-gold-300 bg-gold-50 p-4 text-center" data-testid="pay-deposit-box">
+        <p class="text-sm font-semibold text-gray-900">{{ $t('reservation.payDepositTitle', { amount: money(confirmation.depositAmount) }) }}</p>
+        <p class="mt-1 text-xs text-gray-600">{{ $t('reservation.payDepositBody') }}</p>
+        <a :href="statusPath" class="mt-3 inline-block rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500" data-testid="pay-deposit-link">{{ $t('reservation.payDepositCta') }}</a>
+      </div>
       <div class="rounded-xl border border-gray-200 bg-white p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-primary-700">{{ $t('reservation.payTo', { payee: confirmation.payee }) }}</p>
         <ul class="mt-2 divide-y divide-gray-100 text-sm">
@@ -99,6 +104,11 @@ const errors = reactive({ company: '', contactName: '', email: '' })
 const submitting = ref(false)
 const submitError = ref('')
 const confirmation = ref(null)
+const statusPath = computed(() => {
+  if (!confirmation.value) return '#'
+  const am = String(locale.value || 'en').toLowerCase().startsWith('am')
+  return `${am ? '/am' : ''}/reserve/${encodeURIComponent(confirmation.value.reference)}?email=${encodeURIComponent(confirmation.value.email)}`
+})
 const map = ref(null)
 const selectedBooths = ref([])
 const boothsIncluded = computed(() => boothsForPackage(props.pkg?.type))
