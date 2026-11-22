@@ -145,61 +145,45 @@
           </button>
         </div>
 
-        <div class="overflow-hidden rounded-lg border border-admin-line/10 bg-admin-surface">
-          <div v-if="loading" class="py-12 text-center"><div class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-admin-line/15" /></div>
-          <div v-else-if="!rows.length" class="px-6 py-12 text-center text-sm text-admin-subtle">{{ $t('admin.outreach.empty') }}</div>
-          <div v-else class="overflow-x-auto">
-            <table class="rtable w-full min-w-[72rem] divide-y divide-admin-line/10">
-              <thead class="bg-admin-raised">
-                <tr>
-                  <th class="px-3 py-3"><input type="checkbox" :checked="allSelected" @change="toggleAll" /></th>
-                  <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colOrganization') }}</th>
-                  <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colSector') }}</th>
-                  <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colHook') }}</th>
-                  <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colStatus') }}</th>
-                  <th class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colNext') }}</th>
-                  <th class="px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-admin-subtle">{{ $t('admin.outreach.colActions') }}</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-admin-line/10">
-                <tr v-for="row in rows" :key="row.id" class="align-top transition-colors hover:bg-admin-nav/5" :data-testid="`contact-${row.id}`">
-                  <td class="px-3 py-3"><input type="checkbox" :checked="selected.has(row.id)" @change="toggle(row.id)" /></td>
-                  <td class="px-3 py-3 text-sm">
-                    <div class="font-medium text-admin-fg">{{ row.name }}</div>
-                    <div class="text-xs text-admin-subtle break-all">{{ row.email }}</div>
-                    <div v-if="row.confidence && !row.confidence.startsWith('Verified')" class="mt-0.5 text-[11px] text-amber-700">{{ row.confidence }}</div>
-                  </td>
-                  <td class="px-3 py-3 text-sm text-admin-muted">
-                    <div>{{ row.sector }}</div>
-                    <div class="text-xs text-admin-subtle">{{ row.effectiveTemplateKey }} · {{ row.locale.toUpperCase() }}</div>
-                  </td>
-                  <td class="max-w-xs px-3 py-3 text-sm text-admin-muted">
-                    <span v-if="row.hook">{{ row.hook }}</span>
-                    <span v-else class="text-amber-700">{{ $t('admin.outreach.noHook') }}</span>
-                  </td>
-                  <td class="px-3 py-3 text-sm">
-                    <span :class="['inline-block rounded-full px-2 py-0.5 text-xs font-semibold', statusCls(row.status)]">{{ statusLabel(row.status) }}</span>
-                    <div v-if="row.lastError" class="mt-1 max-w-[14rem] text-[11px] text-red-600">{{ row.lastError }}</div>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-3 text-xs text-admin-subtle">
-                    <div v-if="row.nextActionAt">{{ formatDate(row.nextActionAt) }}</div>
-                    <div v-if="row.lastSentAt">{{ $t('admin.outreach.sentAt', { date: formatDate(row.lastSentAt) }) }}</div>
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-3 text-right text-sm">
-                    <button type="button" class="rounded-lg border border-admin-line/20 px-2.5 py-1 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" @click="openDrawer(row)">{{ $t('admin.outreach.edit') }}</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div v-if="!loading && totalPages > 1" class="flex items-center justify-between border-t border-admin-line/10 px-4 py-3 text-sm text-admin-subtle">
-            <span>{{ $t('admin.enquiries.pageOf', { page: page + 1, total: totalPages }) }}</span>
-            <div class="flex gap-2">
-              <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-1 disabled:opacity-40" :disabled="page === 0" @click="load(page - 1)">‹</button>
-              <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-1 disabled:opacity-40" :disabled="page + 1 >= totalPages" @click="load(page + 1)">›</button>
-            </div>
-          </div>
-        </div>
+        <AdminDataTable
+          :columns="columns"
+          :rows="rows"
+          :loading="loading"
+          :empty-text="$t('admin.outreach.empty')"
+          :row-test-id="(r) => `contact-${r.id}`"
+          :page="page"
+          :total-pages="totalPages"
+          selectable
+          :selected="selected"
+          min-width="72rem"
+          @update:selected="(s) => (selected = s)"
+          @page="load"
+        >
+          <template #cell-name="{ row }">
+            <div class="font-medium text-admin-fg">{{ row.name }}</div>
+            <div class="text-xs text-admin-subtle break-all">{{ row.email }}</div>
+            <div v-if="row.confidence && !row.confidence.startsWith('Verified')" class="mt-0.5 text-[11px] text-amber-700">{{ row.confidence }}</div>
+          </template>
+          <template #cell-sector="{ row }">
+            <div>{{ row.sector }}</div>
+            <div class="text-xs text-admin-subtle">{{ row.effectiveTemplateKey }} · {{ row.locale.toUpperCase() }}</div>
+          </template>
+          <template #cell-hook="{ row }">
+            <span v-if="row.hook">{{ row.hook }}</span>
+            <span v-else class="text-amber-700">{{ $t('admin.outreach.noHook') }}</span>
+          </template>
+          <template #cell-status="{ row }">
+            <span :class="['inline-block rounded-full px-2 py-0.5 text-xs font-semibold', statusCls(row.status)]">{{ statusLabel(row.status) }}</span>
+            <div v-if="row.lastError" class="mt-1 max-w-[14rem] text-[11px] text-red-600">{{ row.lastError }}</div>
+          </template>
+          <template #cell-nextActionAt="{ row }">
+            <div v-if="row.nextActionAt" class="text-xs">{{ formatDate(row.nextActionAt) }}</div>
+            <div v-if="row.lastSentAt" class="text-xs text-admin-subtle">{{ $t('admin.outreach.sentAt', { date: formatDate(row.lastSentAt) }) }}</div>
+          </template>
+          <template #cell-actions="{ row }">
+            <button type="button" class="rounded-lg border border-admin-line/20 px-2.5 py-1 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" @click="openDrawer(row)">{{ $t('admin.outreach.edit') }}</button>
+          </template>
+        </AdminDataTable>
       </div>
 
       <!-- Templates tab -->
@@ -320,10 +304,19 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { outreachApi } from '@/features/outreach/api/outreach.api'
 
 const { t, locale } = useI18n()
+const columns = computed(() => [
+  { key: 'name', label: t('admin.outreach.colOrganization') },
+  { key: 'sector', label: t('admin.outreach.colSector') },
+  { key: 'hook', label: t('admin.outreach.colHook') },
+  { key: 'status', label: t('admin.outreach.colStatus') },
+  { key: 'nextActionAt', label: t('admin.outreach.colNext'), nowrap: true },
+  { key: 'actions', label: t('admin.outreach.colActions'), align: 'right' }
+])
 
 const statuses = ['NEW', 'QUEUED', 'SENT', 'FOLLOWED_UP', 'REPLIED', 'REGISTERED', 'OPTED_OUT', 'BOUNCED', 'PAUSED']
 const templateKeys = ['REAL_ESTATE', 'BANK', 'INSURANCE', 'CONTRACTOR', 'ASSOCIATION', 'MEDIA', 'CONSULTANCY']
