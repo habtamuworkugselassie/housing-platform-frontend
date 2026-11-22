@@ -256,6 +256,10 @@ export const reservationApi = {
   async exhibitorAccount(id: string): Promise<AdminReservation> {
     return (await api.post<AdminReservation>(`/admin/sponsorship-reservations/${id}/exhibitor-account`)).data
   },
+  /** Admin: an organization's leads and reservations for the organization pane. */
+  async forOrganization(organizationId: string): Promise<{ reservations: AdminReservation[]; leads: { id: string; createdAt: string; email: string; phone: string | null; interestType: string; sponsorshipId: string | null; packageName: string | null; reserveInvitedAt: string | null }[] }> {
+    return (await api.get(`/admin/sponsorship-reservations/organization/${organizationId}`)).data
+  },
   /** Attaches an organization to every reservation that still has none. */
   async linkOrganizations(): Promise<{ linked: number }> {
     return (await api.post<{ linked: number }>('/admin/sponsorship-reservations/link-organizations')).data
