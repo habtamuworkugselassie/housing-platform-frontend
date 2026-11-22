@@ -37,13 +37,14 @@
           <div v-if="s.checkoutAvailable" class="space-y-3 rounded-xl border border-gold-300 bg-gold-50 p-4" data-testid="pay-box">
             <p class="text-sm font-semibold text-gray-900">{{ s.depositPaid ? $t('reservation.payBalanceTitle', { amount: money(s.outstanding) }) : $t('reservation.payDepositTitle', { amount: money(s.depositAmount) }) }}</p>
             <p class="text-xs text-gray-600">{{ s.depositPaid ? $t('reservation.payBalanceBody') : $t('reservation.payDepositBody') }}</p>
+            <p v-if="s.outstanding > s.onlineMax" class="text-xs font-medium text-amber-800" data-testid="online-cap-note">{{ $t('reservation.onlineCapNote', { max: money(s.onlineMax) }) }}</p>
             <div class="grid gap-2 sm:grid-cols-5" role="radiogroup">
               <button v-for="m in METHODS" :key="m" type="button" role="radio" :aria-checked="method === m" :class="['rounded-lg border px-2 py-2 text-xs font-semibold', method === m ? 'border-primary-600 bg-white ring-2 ring-primary-300' : 'border-gray-300 bg-white']" @click="method = m">{{ $t(`reservation.methods.${m}`) }}</button>
             </div>
             <p v-if="payError" class="text-sm text-red-600" role="alert">{{ payError }}</p>
             <div class="flex flex-wrap gap-2">
               <button v-if="!s.depositPaid" type="button" :disabled="paying" class="rounded-full bg-gold-400 px-5 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500 disabled:opacity-50" data-testid="pay-deposit" @click="pay('DEPOSIT')">{{ paying ? $t('reservation.redirecting') : $t('reservation.payDepositCtaAmount', { amount: money(s.depositAmount) }) }}</button>
-              <button type="button" :disabled="paying" class="rounded-full border border-primary-600 bg-white px-5 py-3 text-sm font-bold text-primary-800 hover:bg-violet-50 disabled:opacity-50" data-testid="pay-balance" @click="pay('BALANCE')">{{ paying ? $t('reservation.redirecting') : $t('reservation.payFullCta', { amount: money(s.outstanding) }) }}</button>
+              <button type="button" :disabled="paying" class="rounded-full border border-primary-600 bg-white px-5 py-3 text-sm font-bold text-primary-800 hover:bg-violet-50 disabled:opacity-50" data-testid="pay-balance" @click="pay('BALANCE')">{{ paying ? $t('reservation.redirecting') : $t('reservation.payFullCta', { amount: money(s.nextOnlineAmount) }) }}</button>
             </div>
             <p class="text-[11px] text-gray-500">{{ $t('reservation.chapaNote') }}</p>
           </div>

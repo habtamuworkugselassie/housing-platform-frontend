@@ -159,6 +159,8 @@ export interface ReservationStatusView {
   outstanding: number
   depositAmount: number
   depositPercent: number
+  onlineMax: number
+  nextOnlineAmount: number
   depositPaid: boolean
   currency: string
   status: ReservationStatus

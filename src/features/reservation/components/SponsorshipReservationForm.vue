@@ -13,7 +13,7 @@
       </div>
       <div v-if="confirmation.checkoutAvailable && confirmation.depositAmount" class="rounded-xl border border-gold-300 bg-gold-50 p-4 text-center" data-testid="pay-deposit-box">
         <p class="text-sm font-semibold text-gray-900">{{ $t('reservation.payDepositTitle', { amount: money(confirmation.depositAmount) }) }}</p>
-        <p class="mt-1 text-xs text-gray-600">{{ $t('reservation.payDepositBody') }}</p>
+        <p class="mt-1 text-xs text-gray-600">{{ $t('reservation.payDepositBodyShort') }}</p>
         <a :href="statusPath" class="mt-3 inline-block rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500" data-testid="pay-deposit-link">{{ $t('reservation.payDepositCta') }}</a>
       </div>
       <div class="rounded-xl border border-gray-200 bg-white p-4">
