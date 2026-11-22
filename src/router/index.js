@@ -106,6 +106,11 @@ const routes = [
     meta: { noindex: true, hideLayout: true }
   },
   {
+    path: '/exhibitors',
+    name: 'ExhibitorDirectory',
+    component: () => import('@/features/exhibition/views/ExhibitorDirectoryView.vue')
+  },
+  {
     path: '/reserve',
     name: 'ReservePackage',
     component: () => import('@/features/reservation/views/ReservePackageView.vue'),

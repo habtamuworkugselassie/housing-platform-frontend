@@ -231,6 +231,7 @@
     <section id="partners" class="py-16 bg-violet-50 scroll-mt-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-sm font-semibold text-primary-600 mb-8">{{ $t('exhibition.partners.foundationPartners') }}</p>
+        <router-link :to="localized('/exhibitors')" class="mb-8 inline-flex items-center gap-2 rounded-full border border-primary-200 bg-white px-5 py-2 text-sm font-bold text-primary-700 hover:bg-primary-50" data-testid="see-exhibitors">{{ $t('exhibition.directory.seeAll') }}</router-link>
         <div v-reveal data-stagger class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-items-center">
           <template v-if="partnersList.length">
             <a
@@ -368,6 +369,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { mediaUrl } from '@/shared/api/client'
 import { propertyApi } from '@/features/property/api/property.api'
+import { localePrefix } from '@/i18n/localeRoutes'
 import { exhibitionApi, getActiveSponsorshipPackages, getExclusiveOrganizations } from '@/features/exhibition/api/exhibition.api'
 import { trackInterestRegistration } from '@/utils/analytics'
 import { setExpoEventJsonLd, removeExpoEventJsonLd, getPublicSiteUrl } from '@/utils/seo'
@@ -431,6 +433,9 @@ const whatToExpectCards = [
   { titleKey: 'exhibition.whatHappened.card3Title', bodyKey: 'exhibition.whatHappened.card3Body', icon: LightBulbIcon }
 ]
 const { t, locale } = useI18n()
+function localized(path) {
+  return `${localePrefix(String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en')}${path}`
+}
 const router = useRouter()
 const brochureHref = computed(() =>
   locale.value === 'am'

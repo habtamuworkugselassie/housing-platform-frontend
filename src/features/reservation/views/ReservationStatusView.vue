@@ -34,6 +34,7 @@
             <div class="rounded-xl bg-gray-50 p-3"><p class="text-[11px] uppercase tracking-wide text-gray-600">{{ $t('reservation.outstanding') }}</p><p class="font-bold">{{ money(s.outstanding) }}</p></div>
           </div>
 
+          <p v-if="s.paymentDueAt && s.outstanding > 0" class="rounded-xl px-4 py-2 text-sm font-semibold" :class="s.overdue ? 'bg-red-50 text-red-700' : 'bg-violet-50 text-primary-800'" data-testid="due-line">{{ s.overdue ? $t('reservation.overdueSince', { d: dateOnly(s.paymentDueAt) }) : $t('reservation.dueOn', { d: dateOnly(s.paymentDueAt) }) }}</p>
           <div v-if="s.checkoutAvailable" class="space-y-3 rounded-xl border border-gold-300 bg-gold-50 p-4" data-testid="pay-box">
             <p class="text-sm font-semibold text-gray-900">{{ s.depositPaid ? $t('reservation.payBalanceTitle', { amount: money(s.outstanding) }) : $t('reservation.payDepositTitle', { amount: money(s.depositAmount) }) }}</p>
             <p class="text-xs text-gray-600">{{ s.depositPaid ? $t('reservation.payBalanceBody') : $t('reservation.payDepositBody') }}</p>
@@ -103,6 +104,13 @@ const statusCls = computed(() => {
   return 'bg-gold-100 text-primary-900'
 })
 
+function dateOnly(v) {
+  try {
+    return new Date(v).toLocaleDateString(String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am-ET' : 'en-GB', { dateStyle: 'medium' })
+  } catch {
+    return String(v).slice(0, 10)
+  }
+}
 function localized(path) {
   return `${localePrefix(String(locale.value || 'en').toLowerCase().startsWith('am') ? 'am' : 'en')}${path}`
 }

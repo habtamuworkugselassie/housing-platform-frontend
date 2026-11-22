@@ -138,6 +138,8 @@ export interface AdminReservationPage {
 }
 
 export interface Pipeline {
+  overdueCount?: number
+  overdueValue?: number
   openCount: number
   openValue: number
   paidValue: number
@@ -146,6 +148,8 @@ export interface Pipeline {
 }
 
 export interface AdminReservationUpdate {
+  /** ISO date (YYYY-MM-DD); empty string clears the due date. */
+  paymentDueAt?: string
   status?: ReservationStatus
   amountPaid?: number
   amount?: number
@@ -170,6 +174,8 @@ export interface ReservationPaymentView {
 }
 
 export interface ReservationStatusView {
+  paymentDueAt?: string | null
+  overdue?: boolean
   reference: string
   packageName: string
   company: string

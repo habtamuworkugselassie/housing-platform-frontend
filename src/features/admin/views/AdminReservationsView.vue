@@ -162,7 +162,12 @@
           <p class="mt-1 text-2xl font-bold text-emerald-700">{{ money(pipeline.paidValue) }} <span class="text-sm font-normal text-admin-subtle">ETB</span></p>
           <p class="mt-1 text-xs text-admin-subtle">{{ $t('admin.reservations.paidCount', { n: pipeline.byStatus.PAID?.count || 0 }) }}</p>
         </div>
-        <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4 lg:col-span-2">
+        <div class="rounded-lg border p-4" :class="pipeline.overdueCount ? 'border-red-200 bg-red-50' : 'border-admin-line/10 bg-admin-surface'" data-testid="overdue-card">
+          <p class="text-xs uppercase tracking-wide" :class="pipeline.overdueCount ? 'text-red-700' : 'text-admin-subtle'">{{ $t('admin.reservations.overdue') }}</p>
+          <p class="mt-1 text-2xl font-bold" :class="pipeline.overdueCount ? 'text-red-700' : 'text-admin-fg'">{{ money(pipeline.overdueValue || 0) }} <span class="text-sm font-normal text-admin-subtle">ETB</span></p>
+          <p class="mt-1 text-xs text-admin-subtle">{{ $t('admin.reservations.overdueCount', { n: pipeline.overdueCount || 0 }) }}</p>
+        </div>
+        <div class="rounded-lg border border-admin-line/10 bg-admin-surface p-4">
           <p class="text-xs uppercase tracking-wide text-admin-subtle">{{ $t('admin.reservations.byStage') }}</p>
           <div class="mt-2 flex flex-wrap gap-2">
             <button v-for="s in STATUSES" :key="s" type="button" :class="['rounded-full px-3 py-1 text-xs font-semibold', statusFilter === s ? 'bg-admin-nav text-white' : statusCls(s)]" @click="setStatus(s)">
@@ -213,6 +218,8 @@
         </template>
         <template #cell-status="{ row }">
           <span class="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="statusCls(row.status)">{{ $t(`admin.reservations.status.${row.status}`) }}</span>
+          <p v-if="row.overdue" class="mt-1 text-[11px] font-semibold text-red-700" :data-testid="`overdue-${row.reference}`">{{ $t('admin.reservations.overdueSince', { d: formatDate(row.paymentDueAt) }) }}</p>
+          <p v-else-if="row.paymentDueAt && row.status !== 'PAID' && row.status !== 'CANCELLED'" class="mt-1 text-[11px] text-admin-subtle">{{ $t('admin.reservations.dueOn', { d: formatDate(row.paymentDueAt) }) }}</p>
           <p v-if="row.organizationId && row.exhibitorInvitedAt" class="mt-1 text-[11px] text-emerald-700">{{ $t('admin.reservations.portalReady') }}</p>
           <p v-if="row.reminderCount" class="text-[11px] text-admin-subtle">{{ $t('admin.reservations.reminders', { n: row.reminderCount }) }}</p>
         </template>
@@ -247,6 +254,7 @@
             </label>
             <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.paid') }} (ETB)<input v-model.number="editForm.amountPaid" type="number" min="0" step="1000" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" :data-testid="`paid-${editing.reference}`" /></label>
             <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.agreedAmount') }}<input v-model.number="editForm.amount" type="number" min="0" step="1000" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.paymentDue') }}<input v-model="editForm.paymentDueAt" type="date" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" data-testid="edit-due" /></label>
             <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.owner') }}<input v-model.trim="editForm.assignedTo" type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
             <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.booth') }}<input v-model.trim="editForm.boothPreference" type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
             <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.notes') }}<textarea v-model="editForm.adminNotes" rows="4" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea></label>
@@ -257,6 +265,7 @@
             <p v-if="editing.agreementSentAt">{{ $t('admin.reservations.agreementSentAt', { d: formatDate(editing.agreementSentAt) }) }}</p>
             <p v-if="editing.paidAt">{{ $t('admin.reservations.paidAt', { d: formatDate(editing.paidAt) }) }}</p>
             <p v-if="editing.exhibitorInvitedAt">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(editing.exhibitorInvitedAt) }) }}</p>
+            <p v-if="editing.paymentReminderCount">{{ $t('admin.reservations.paymentReminders', { n: editing.paymentReminderCount }) }}</p>
           </div>
           <div class="flex flex-wrap gap-2 text-xs">
             <button v-if="editing.boothsIncluded > 0 && editing.status !== 'CANCELLED'" type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 font-semibold text-gray-700 hover:bg-gray-50" :data-testid="`assign-${editing.reference}`" @click="openAssign(editing)">{{ $t('admin.reservations.assign') }}</button>
@@ -586,7 +595,7 @@ const editForm = ref({})
 function openEdit(row) {
   editing.value = row
   editError.value = ''
-  editForm.value = { status: row.status, amountPaid: row.amountPaid ?? 0, amount: row.amount ?? 0, assignedTo: row.assignedTo || '', boothPreference: row.boothPreference || '', adminNotes: row.adminNotes || '' }
+  editForm.value = { status: row.status, amountPaid: row.amountPaid ?? 0, amount: row.amount ?? 0, assignedTo: row.assignedTo || '', boothPreference: row.boothPreference || '', adminNotes: row.adminNotes || '', paymentDueAt: row.paymentDueAt ? String(row.paymentDueAt).slice(0, 10) : '' }
 }
 /** Sends only what changed, so an untouched field never overwrites a concurrent edit. */
 async function saveEdit() {
@@ -600,6 +609,7 @@ async function saveEdit() {
   if ((f.assignedTo || '') !== (row.assignedTo || '')) body.assignedTo = f.assignedTo
   if ((f.boothPreference || '') !== (row.boothPreference || '')) body.boothPreference = f.boothPreference
   if ((f.adminNotes || '') !== (row.adminNotes || '')) body.adminNotes = f.adminNotes
+  if ((f.paymentDueAt || '') !== (row.paymentDueAt ? String(row.paymentDueAt).slice(0, 10) : '')) body.paymentDueAt = f.paymentDueAt || ''
   if (!Object.keys(body).length) {
     editing.value = null
     return

@@ -68,6 +68,23 @@ export async function getSponsoredOrganizations(): Promise<SponsoredOrganization
     : []
 }
 
+export interface ExhibitorCard {
+  organizationId: string
+  name: string
+  logoUrl: string | null
+  organizationType: string | null
+  city: string | null
+  packageType: string | null
+  partnerRole: string | null
+  boothCodes: string[]
+}
+
+/** Public directory: confirmed exhibitors and sponsors with their booths. */
+export async function getExhibitors(): Promise<ExhibitorCard[]> {
+  const { data } = await api.get<ExhibitorCard[]>('/sponsorship-reservations/exhibitors')
+  return Array.isArray(data) ? data : []
+}
+
 /** Exclusive sponsors only (for splash and hero featured strip). */
 export async function getExclusiveOrganizations(): Promise<SponsoredOrganizationResponse[]> {
   const { data } = await api.get<SponsoredOrganizationResponse[]>('/sponsorships/exclusive-organizations')
