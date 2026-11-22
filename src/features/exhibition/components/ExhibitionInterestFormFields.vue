@@ -104,6 +104,14 @@
       <p v-else-if="form.interestType === 'exhibitor' && interestPackages.length === 0" :class="['mt-2 text-sm', light ? 'text-amber-700' : 'text-amber-400/90']">
         {{ $t('exhibition.registerInterest.packagesLoadEmpty') }}
       </p>
+      <div
+        v-if="form.interestType !== 'visitor'"
+        :class="['mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg px-3 py-2 text-xs', light ? 'bg-gold-50 text-gray-700' : 'bg-white/10 text-white/80']"
+        data-testid="interest-reserve-inline"
+      >
+        <span>{{ (form.sponsorshipId || '').trim() ? $t('exhibition.registerInterest.reserveInlinePackage') : $t('exhibition.registerInterest.reserveInline') }}</span>
+        <router-link :to="reserveLink" :class="['font-bold underline underline-offset-2', light ? 'text-primary-700' : 'text-gold-300']" data-testid="interest-reserve-inline-link">{{ $t('exhibition.registerInterest.reserveInlineCta') }}</router-link>
+      </div>
     </div>
     <div>
       <label :for="`${fieldIdPrefix}-org-type`" :class="['block text-sm font-medium mb-1', labelCls]">{{
@@ -153,6 +161,7 @@
 
 <script setup>
 import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import CountryCodePhoneInput from '@/shared/components/CountryCodePhoneInput.vue'
 import { EXHIBITION_REGISTER_INTEREST_ORGANIZATION_TYPES } from '@/features/exhibition/constants/exhibitionOrganizationTypes'
 
@@ -169,6 +178,13 @@ const props = defineProps({
   light: { type: Boolean, default: false }
 })
 
+const { locale } = useI18n()
+/** Straight to the reservation for the chosen package; the interest form is for those who want a call first. */
+const reserveLink = computed(() => {
+  const am = String(locale.value || 'en').toLowerCase().startsWith('am')
+  const id = (form.value.sponsorshipId || '').trim()
+  return { path: `${am ? '/am' : ''}/reserve`, query: id ? { package: id, src: 'interest-form' } : { src: 'interest-form' } }
+})
 const labelCls = computed(() => (props.light ? 'text-gray-700' : 'text-white/80'))
 const mutedCls = computed(() => (props.light ? 'text-gray-500' : 'text-white/70'))
 const inputCls = computed(() =>
