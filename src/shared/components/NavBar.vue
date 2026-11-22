@@ -446,7 +446,7 @@ const accountItems = computed(() => {
     { key: 'messages', to: '/agent/messages', icon: 'forum', label: 'Messages', show: isRealtor },
     { key: 'go-live', to: '/go-live', icon: 'sensors', label: t('nav.goLive'), show: authStore.isAdmin },
     { key: 'admin', to: '/admin', icon: 'admin_panel_settings', label: t('nav.adminPortal'), show: authStore.isAdmin },
-    { key: 'sponsorships', to: '/sponsorships', icon: 'handshake', label: t('nav.sponsorships'), show: authStore.isAdmin },
+    { key: 'sponsorships', to: '/admin/sponsorships', icon: 'handshake', label: t('nav.sponsorships'), show: authStore.isAdmin },
     { key: 'banking', to: '/banking/dashboard', icon: 'account_balance', label: t('nav.banking'), show: authStore.hasRole('BANKER') },
     { key: 'loans', to: '/loan-applications', icon: 'request_quote', label: t('nav.myLoans'), show: authStore.hasRole('BUYER') },
     { key: 'purchases', to: '/purchase-orders', icon: 'receipt_long', label: t('nav.myPurchases'), show: authStore.hasRole('BUYER') },

@@ -1,6 +1,7 @@
 <template>
   <AdminLayout>
     <div class="space-y-6">
+      <ExpoWorkspaceBar current="/admin/outreach" />
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.outreach.title') }}</h1>
@@ -319,6 +320,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { outreachApi } from '@/features/outreach/api/outreach.api'
 
 const { t, locale } = useI18n()

@@ -633,7 +633,17 @@
       "enquiries": "Enquiries",
       "outreach": "Outreach",
       "visitors": "Visitors",
-      "reservations": "Reservations"
+      "reservations": "Reservations",
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "organizations": "Organizations",
+      "leads": "Leads",
+      "sponsors": "Exhibitors & sponsors",
+      "properties": "Properties",
+      "buildings": "Buildings",
+      "construction": "Construction",
+      "banking": "Banking",
+      "loans": "Loans"
     },
     "simulcast": {
       "destinations": "Social destinations",
@@ -771,7 +781,7 @@
     "exhibitionInterests": {
       "title": "Exhibition interest",
       "subtitle": "Public registrations from the exhibition page: visitor or exhibitor, optional sponsorship package, and the organization record created for approval.",
-      "subtitleUnified": "Exhibition registrations and marketplace sponsorship review in one list. When a pending sponsorship exists for the same organization, verify organization and user here, then activate. Rows labeled marketplace-only have no exhibition registration.",
+      "subtitleUnified": "Interest registrations from the website, with the sponsorship application each one opened. Verify the company and contact here, then approve. Sponsors who pay a reservation are approved automatically and appear under Exhibitors & sponsors.",
       "pendingSponsorshipCount": "Pending marketplace sponsorship applications: {count}",
       "howToSeeVerification": "For organizations in PENDING_APPROVAL or SPONSORSHIP_PENDING when there is no pending marketplace sponsorship application for that org in the list, use Verify registrant contact, then Verify organization here. When a pending marketplace sponsorship exists for the same org, the sponsorship verification columns and actions apply instead.",
       "cellNoPendingSponsorship": "No actions: organization is not pending exhibition approval and there is no pending marketplace sponsorship for this organization.",
@@ -1292,7 +1302,37 @@
         "IMAGE": "Photo",
         "VIDEO": "Video",
         "LOGO": "Logo"
-      }
+      },
+      "colReference": "Reference",
+      "colSponsor": "Sponsor",
+      "colPackage": "Package & booths",
+      "colStage": "Stage",
+      "colPaid": "Paid (ETB)",
+      "colOwner": "Owner",
+      "portalReady": "Exhibitor portal ready",
+      "paidAt": "Paid in full {d}"
+    },
+    "navGroups": {
+      "overview": "Overview",
+      "expo": "Expo & sponsors",
+      "marketplace": "Marketplace",
+      "finance": "Finance",
+      "media": "Media",
+      "system": "System"
+    },
+    "expo": {
+      "workflow": "Expo workflow",
+      "sponsorsSubtitle": "Packages on sale and every sponsorship application. Paid reservations arrive here approved automatically; leads from the site are verified and approved by hand.",
+      "packages": "Packages",
+      "applications": "Applications",
+      "createPackage": "Create package"
+    },
+    "table": {
+      "details": "Details",
+      "hide": "Hide",
+      "count": "{n} rows",
+      "prev": "Previous",
+      "next": "Next"
     }
   },
   "validation": {

@@ -1,8 +1,9 @@
 <template>
   <AdminLayout>
     <div class="space-y-6">
+      <ExpoWorkspaceBar current="/admin/exhibition-interests" />
       <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.exhibitionInterests.title') }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.nav.leads') }}</h1>
         <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.exhibitionInterests.subtitleUnified') }}</p>
         <div
           v-if="!loading && !error"
@@ -346,6 +347,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { adminApi } from '../api/admin.api'
 import SponsorshipReviewCells from '../components/SponsorshipReviewCells.vue'
 import SponsorshipContactCell from '../components/SponsorshipContactCell.vue'

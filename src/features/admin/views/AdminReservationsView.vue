@@ -1,6 +1,7 @@
 <template>
   <AdminLayout>
     <div class="space-y-6">
+      <ExpoWorkspaceBar current="/admin/sponsorship-reservations" />
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.reservations.title') }}</h1>
@@ -161,63 +162,76 @@
         <span class="text-xs text-admin-subtle">{{ $t('admin.reservations.count', { n: total }) }}</span>
       </div>
 
-      <div v-if="tab === 'pipeline'" class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
-        <div v-if="loading" class="text-center py-12"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15" /></div>
-        <div v-else-if="!rows.length" class="px-6 py-12 text-center text-admin-subtle text-sm">{{ $t('admin.reservations.empty') }}</div>
-        <div v-else class="divide-y divide-admin-line/10">
-          <div v-for="row in rows" :key="row.id" class="grid gap-3 px-4 py-4 lg:grid-cols-12" :data-testid="`reservation-${row.reference}`">
-            <div class="lg:col-span-3">
-              <p class="font-mono text-xs font-semibold text-admin-subtle">{{ row.reference }} · {{ formatDate(row.createdAt) }}</p>
-              <p class="font-semibold text-admin-fg">{{ row.company }}</p>
-              <p class="text-xs text-admin-muted">{{ row.contactName }} · <a :href="`mailto:${row.email}`" class="hover:underline">{{ row.email }}</a><span v-if="row.phone"> · {{ row.phone }}</span></p>
-              <p v-if="row.tin" class="text-xs text-admin-subtle">TIN {{ row.tin }}</p>
-              <p v-if="row.message" class="mt-1 text-xs text-admin-muted">“{{ row.message }}”</p>
+      <AdminDataTable
+        v-if="tab === 'pipeline'"
+        :columns="columns"
+        :rows="rows"
+        :loading="loading"
+        :empty-text="$t('admin.reservations.empty')"
+        :row-test-id="(r) => `reservation-${r.reference}`"
+        :page="page"
+        :total-pages="totalPages"
+        :total="total"
+        min-width="72rem"
+        @page="load"
+      >
+        <template #cell-reference="{ row }">
+          <p class="font-mono text-xs font-semibold text-admin-fg">{{ row.reference }}</p>
+          <p class="text-xs text-admin-subtle">{{ formatDate(row.createdAt) }}</p>
+          <p v-if="row.source" class="text-[10px] uppercase tracking-wide text-admin-subtle">{{ row.source }}</p>
+        </template>
+        <template #cell-company="{ row }">
+          <p class="font-semibold text-admin-fg">{{ row.company }}</p>
+          <p class="text-xs text-admin-muted">{{ row.contactName }}</p>
+          <a :href="`mailto:${row.email}`" class="block text-xs text-admin-subtle hover:underline break-all">{{ row.email }}</a>
+          <p v-if="row.phone" class="text-xs text-admin-subtle">{{ row.phone }}</p>
+        </template>
+        <template #cell-packageName="{ row }">
+          <p class="font-semibold text-admin-fg">{{ row.packageName }}</p>
+          <p class="text-xs text-admin-muted">{{ money(row.amount) }} {{ row.currency }}</p>
+          <p class="mt-1 text-xs">
+            <span v-if="row.boothCodes && row.boothCodes.length" class="font-mono font-semibold text-admin-fg">{{ row.boothCodes.join(', ') }}</span>
+            <span v-else-if="row.boothsIncluded > 0" class="text-amber-700">{{ $t('admin.reservations.noBooths') }}</span>
+            <button v-if="row.boothsIncluded > 0 && row.status !== 'CANCELLED'" type="button" class="ml-1 text-admin-nav underline" :data-testid="`assign-${row.reference}`" @click="openAssign(row)">{{ $t('admin.reservations.assign') }}</button>
+          </p>
+        </template>
+        <template #cell-status="{ row }">
+          <select :value="row.status" class="w-full max-w-[11rem] rounded-lg border border-admin-line/20 px-2 py-1.5 text-xs text-admin-fg" :data-testid="`status-${row.reference}`" @change="setRowStatus(row, $event.target.value)">
+            <option v-for="s in STATUSES" :key="s" :value="s">{{ $t(`admin.reservations.status.${s}`) }}</option>
+          </select>
+          <span class="mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="statusCls(row.status)">{{ $t(`admin.reservations.status.${row.status}`) }}</span>
+          <p v-if="row.organizationId" class="mt-1 text-[11px] text-emerald-700">{{ $t('admin.reservations.portalReady') }}</p>
+        </template>
+        <template #cell-amountPaid="{ row }">
+          <input :value="row.amountPaid" type="number" min="0" step="1000" class="w-28 rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" :data-testid="`paid-${row.reference}`" @change="setPaid(row, $event.target.value)" />
+          <p class="mt-1 text-[11px] text-admin-subtle">/ {{ money(row.amount) }}</p>
+        </template>
+        <template #cell-assignedTo="{ row }">
+          <input :value="row.assignedTo || ''" type="text" :placeholder="$t('admin.reservations.owner')" class="w-28 rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { assignedTo: $event.target.value })" />
+        </template>
+        <template #expanded="{ row }">
+          <div class="grid gap-4 lg:grid-cols-3">
+            <div class="space-y-1 text-xs text-admin-muted">
+              <p v-if="row.tin"><span class="font-semibold text-admin-fg">TIN</span> {{ row.tin }}</p>
+              <p v-if="row.boothPreference"><span class="font-semibold text-admin-fg">{{ $t('admin.reservations.booth') }}:</span> {{ row.boothPreference }}</p>
+              <p v-if="row.message" class="italic">“{{ row.message }}”</p>
+              <p v-if="row.agreementSentAt">{{ $t('admin.reservations.agreementSentAt', { d: formatDate(row.agreementSentAt) }) }}</p>
+              <p v-if="row.reminderCount">{{ $t('admin.reservations.reminders', { n: row.reminderCount }) }}</p>
+              <p v-if="row.paidAt">{{ $t('admin.reservations.paidAt', { d: formatDate(row.paidAt) }) }}</p>
             </div>
-            <div class="lg:col-span-2">
-              <p class="font-semibold text-admin-fg">{{ row.packageName }}</p>
-              <p class="text-sm text-admin-muted">{{ money(row.amount) }} {{ row.currency }}</p>
-              <p v-if="row.boothPreference" class="text-xs text-admin-subtle">{{ $t('admin.reservations.booth') }}: {{ row.boothPreference }}</p>
-              <p class="mt-1 text-xs">
-                <span v-if="row.boothCodes && row.boothCodes.length" class="font-mono font-semibold text-admin-fg">{{ row.boothCodes.join(', ') }}</span>
-                <span v-else-if="row.boothsIncluded > 0" class="text-amber-700">{{ $t('admin.reservations.noBooths') }}</span>
-                <button v-if="row.boothsIncluded > 0 && row.status !== 'CANCELLED'" type="button" class="ml-1 text-admin-nav underline" :data-testid="`assign-${row.reference}`" @click="openAssign(row)">{{ $t('admin.reservations.assign') }}</button>
-              </p>
+            <div>
+              <label class="text-[11px] font-semibold uppercase tracking-wide text-admin-subtle">{{ $t('admin.reservations.notes') }}</label>
+              <textarea :value="row.adminNotes || ''" rows="4" :placeholder="$t('admin.reservations.notes')" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { adminNotes: $event.target.value })"></textarea>
             </div>
-            <div class="lg:col-span-3 space-y-2">
-              <div class="flex items-center gap-2">
-                <select :value="row.status" class="rounded-lg border border-admin-line/20 px-2 py-1.5 text-xs text-admin-fg" :data-testid="`status-${row.reference}`" @change="setRowStatus(row, $event.target.value)">
-                  <option v-for="s in STATUSES" :key="s" :value="s">{{ $t(`admin.reservations.status.${s}`) }}</option>
-                </select>
-                <span class="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="statusCls(row.status)">{{ $t(`admin.reservations.status.${row.status}`) }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <label class="text-xs text-admin-subtle">{{ $t('admin.reservations.paid') }}</label>
-                <input :value="row.amountPaid" type="number" min="0" step="1000" class="w-32 rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" :data-testid="`paid-${row.reference}`" @change="setPaid(row, $event.target.value)" />
-                <span class="text-xs text-admin-subtle">/ {{ money(row.amount) }}</span>
-              </div>
-              <p class="text-[11px] text-admin-subtle">
-                <span v-if="row.agreementSentAt">{{ $t('admin.reservations.agreementSentAt', { d: formatDate(row.agreementSentAt) }) }}</span>
-                <span v-if="row.reminderCount"> · {{ $t('admin.reservations.reminders', { n: row.reminderCount }) }}</span>
-              </p>
-            </div>
-            <div class="lg:col-span-2 space-y-2">
-              <input :value="row.assignedTo || ''" type="text" :placeholder="$t('admin.reservations.owner')" class="w-full rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { assignedTo: $event.target.value })" />
-              <textarea :value="row.adminNotes || ''" rows="2" :placeholder="$t('admin.reservations.notes')" class="w-full rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { adminNotes: $event.target.value })"></textarea>
-            </div>
-            <div class="flex flex-wrap items-start gap-2 text-xs lg:col-span-2 lg:flex-col">
-              <button type="button" class="font-semibold text-admin-nav hover:underline" :disabled="busyId === row.id" @click="sendAgreement(row)">{{ $t('admin.reservations.sendAgreement') }}</button>
-              <button type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id || row.status === 'PAID' || row.status === 'CANCELLED'" @click="remind(row)">{{ $t('admin.reservations.remind') }}</button>
-              <button v-if="row.status === 'PAID' || row.status === 'DEPOSIT_PAID'" type="button" class="font-semibold text-emerald-700 hover:underline" :disabled="busyId === row.id" :data-testid="`exhibitor-${row.reference}`" @click="exhibitorAccount(row)">{{ row.organizationId ? $t('admin.reservations.reinviteExhibitor') : $t('admin.reservations.createExhibitor') }}</button>
-              <router-link v-if="row.organizationId" to="/admin/organizations" class="text-[11px] text-admin-subtle hover:underline">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(row.exhibitorInvitedAt) }) }}</router-link>
+            <div class="flex flex-wrap content-start gap-2 text-xs">
+              <button type="button" class="rounded-lg bg-admin-nav px-3 py-1.5 font-semibold text-white hover:opacity-90" :disabled="busyId === row.id" @click="sendAgreement(row)">{{ $t('admin.reservations.sendAgreement') }}</button>
+              <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-1.5 font-semibold text-admin-muted hover:bg-admin-sunken/60" :disabled="busyId === row.id || row.status === 'PAID' || row.status === 'CANCELLED'" @click="remind(row)">{{ $t('admin.reservations.remind') }}</button>
+              <button v-if="row.status === 'PAID' || row.status === 'DEPOSIT_PAID'" type="button" class="rounded-lg bg-emerald-600 px-3 py-1.5 font-semibold text-white hover:bg-emerald-700" :disabled="busyId === row.id" :data-testid="`exhibitor-${row.reference}`" @click="exhibitorAccount(row)">{{ row.organizationId ? $t('admin.reservations.reinviteExhibitor') : $t('admin.reservations.createExhibitor') }}</button>
+              <router-link v-if="row.organizationId" to="/admin/organizations" class="self-center text-[11px] text-admin-subtle hover:underline">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(row.exhibitorInvitedAt) }) }}</router-link>
             </div>
           </div>
-        </div>
-        <div v-if="totalPages > 1" class="flex items-center justify-between border-t border-admin-line/10 px-4 py-3 text-xs text-admin-subtle">
-          <button type="button" :disabled="page === 0" class="font-semibold text-admin-nav disabled:opacity-40" @click="load(page - 1)">‹</button>
-          <span>{{ page + 1 }} / {{ totalPages }}</span>
-          <button type="button" :disabled="page >= totalPages - 1" class="font-semibold text-admin-nav disabled:opacity-40" @click="load(page + 1)">›</button>
-        </div>
-      </div>
+        </template>
+      </AdminDataTable>
     </div>
   </AdminLayout>
 </template>
@@ -227,6 +241,8 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
 import BoothMap from '@/features/reservation/components/BoothMap.vue'
+import AdminDataTable from '../components/AdminDataTable.vue'
+import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { reservationApi, RESERVATION_STATUSES, boothTypesForPackage, boothsForPackage } from '@/features/reservation/api/reservation.api'
 import { getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
 import { exhibitorApi } from '@/features/exhibitor/api/exhibitor.api'
@@ -235,6 +251,14 @@ import { useRoute } from 'vue-router'
 
 const { t, locale } = useI18n()
 const STATUSES = RESERVATION_STATUSES
+const columns = computed(() => [
+  { key: 'reference', label: t('admin.reservations.colReference'), nowrap: true },
+  { key: 'company', label: t('admin.reservations.colSponsor') },
+  { key: 'packageName', label: t('admin.reservations.colPackage') },
+  { key: 'status', label: t('admin.reservations.colStage') },
+  { key: 'amountPaid', label: t('admin.reservations.colPaid') },
+  { key: 'assignedTo', label: t('admin.reservations.colOwner') }
+])
 
 const pipeline = ref(null)
 const rows = ref([])
