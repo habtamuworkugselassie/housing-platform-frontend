@@ -100,6 +100,12 @@ const routes = [
     meta: { hideLayout: true }
   },
   {
+    path: '/reserve/:reference',
+    name: 'ReservationStatus',
+    component: () => import('@/features/reservation/views/ReservationStatusView.vue'),
+    meta: { noindex: true, hideLayout: true }
+  },
+  {
     path: '/reserve',
     name: 'ReservePackage',
     component: () => import('@/features/reservation/views/ReservePackageView.vue'),

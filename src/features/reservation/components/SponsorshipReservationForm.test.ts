@@ -32,7 +32,7 @@ describe('SponsorshipReservationForm', () => {
   it('reserves and shows the reference and bank accounts', async () => {
     vi.mocked(reservationApi.reserve).mockResolvedValue({
       reference: 'RSV-K7M2PX', packageName: 'Tier 2 · Gold', amount: 900000, currency: 'ETB', status: 'REQUESTED', email: 'sara@noah.et',
-      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B104'], boothsIncluded: 2
+      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B104'], boothsIncluded: 2, depositAmount: 270000, checkoutAvailable: true
     })
     const w = mountForm()
     await flushPromises()
@@ -46,6 +46,7 @@ describe('SponsorshipReservationForm', () => {
     await flushPromises()
     expect(reservationApi.reserve).toHaveBeenCalledWith(expect.objectContaining({ sponsorshipId: 'p-gold', company: 'Noah Real Estate', contactName: 'Sara Tesfaye', email: 'sara@noah.et', locale: 'en', source: 'test', boothCodes: ['B104'] }))
     expect(w.find('[data-testid="held-booths"]').exists()).toBe(true)
+    expect(w.find('[data-testid="pay-deposit-link"]').attributes('href')).toBe('/reserve/RSV-K7M2PX?email=sara%40noah.et')
     expect(w.find('[data-testid="reservation-reference"]').text()).toBe('RSV-K7M2PX')
     expect(w.text()).toContain('1000314847467')
     expect(w.emitted('reserved')).toBeTruthy()
