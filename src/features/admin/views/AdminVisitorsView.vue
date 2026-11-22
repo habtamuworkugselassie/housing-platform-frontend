@@ -1,6 +1,7 @@
 <template>
   <AdminLayout>
     <div class="space-y-6">
+      <ExpoWorkspaceBar current="/admin/visitors" />
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.visitors.title') }}</h1>
@@ -144,6 +145,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { visitorApi, VISITOR_TYPES } from '@/features/visitor/api/visitor.api'
 
 const { t, locale } = useI18n()

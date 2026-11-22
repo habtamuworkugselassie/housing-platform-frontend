@@ -112,6 +112,7 @@ describe('AdminReservationsView', () => {
     vi.mocked(reservationApi.exhibitorAccount).mockResolvedValue(row({ status: 'DEPOSIT_PAID', organizationId: 'o1', exhibitorInvitedAt: '2026-11-22T10:00:00' }) as any)
     const w = mountView()
     await flushPromises()
+    await w.find('[data-testid="toggle-r1"]').trigger('click')
     await w.find('[data-testid="exhibitor-RSV-K7M2PX"]').trigger('click')
     await flushPromises()
     expect(reservationApi.exhibitorAccount).toHaveBeenCalledWith('r1')

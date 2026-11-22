@@ -55,6 +55,18 @@ option {
     white-space: normal !important;
     text-align: left !important;
   }
+  /* cells that carry a data-label show it as a small caption, so a stacked row still reads */
+  table.rtable td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-top: 0.35rem;
+  }
+  table.rtable td[data-label]:first-child::before { margin-top: 0; }
   /* right-aligned action cells: lay actions out in a wrapping row on mobile */
   table.rtable td:last-child { padding-top: 0.5rem !important; }
   table.rtable td:last-child > div { justify-content: flex-start !important; }

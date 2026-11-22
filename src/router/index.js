@@ -205,7 +205,7 @@ const routes = [
   {
     path: '/sponsorships',
     name: 'Sponsorships',
-    component: () => import('@/features/admin/views/SponsorshipsView.vue'),
+    redirect: '/admin/sponsorships',
     meta: { requiresAuth: true, requiresAdmin: true, noindex: true }
   },
   {

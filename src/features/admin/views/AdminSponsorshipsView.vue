@@ -1,11 +1,12 @@
 <template>
   <AdminLayout>
     <div class="space-y-6">
+      <ExpoWorkspaceBar current="/admin/sponsorships" />
       <!-- Page Header -->
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">Sponsorship Management</h1>
-          <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.manageSponsorshipsSubtitle') }}</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.nav.sponsors') }}</h1>
+          <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.expo.sponsorsSubtitle') }}</p>
         </div>
         <div class="flex space-x-3">
           <button
@@ -17,13 +18,13 @@
                 : 'border border-admin-line/20 text-admin-fg hover:bg-admin-nav/20 hover:border-primary-400'
             ]"
           >
-            Applications ({{ pendingApplicationsCount }})
+            {{ $t('admin.expo.applications') }} ({{ pendingApplicationsCount }})
           </button>
           <button
             @click="showCreateModal = true"
             class="px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-lg hover:bg-admin-accent-hover font-medium transition-colors"
           >
-            + Create Package
+            + {{ $t('admin.expo.createPackage') }}
           </button>
         </div>
       </div>
@@ -40,7 +41,7 @@
                 : 'border-transparent text-admin-subtle hover:text-primary-400 hover:border-admin-line/30'
             ]"
           >
-            Sponsorship Packages
+            {{ $t('admin.expo.packages') }}
           </button>
           <button
             @click="activeTab = 'applications'"
@@ -51,7 +52,7 @@
                 : 'border-transparent text-admin-subtle hover:text-primary-400 hover:border-admin-line/30'
             ]"
           >
-            Applications
+            {{ $t('admin.expo.applications') }}
             <span
               v-if="pendingApplicationsCount > 0"
               class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/30 text-admin-danger"
@@ -720,6 +721,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
+import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import api from '@/shared/api/client'
 
 const activeTab = ref('packages')
