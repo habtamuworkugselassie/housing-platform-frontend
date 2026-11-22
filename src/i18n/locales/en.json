@@ -2943,7 +2943,9 @@
       "PENDING": "Pending",
       "PAID": "Paid",
       "FAILED": "Failed"
-    }
+    },
+    "onlineCapNote": "Online payments are limited to {max} ETB per transaction. Pay in instalments here, or transfer the rest to a bank account below.",
+    "payDepositBodyShort": "Pay the deposit with telebirr, CBE Birr, M-Pesa, Awash Birr or a card. Your booth hold then no longer expires."
   },
   "booth": {
     "mapAria": "Exhibition hall floor plan with booth availability",

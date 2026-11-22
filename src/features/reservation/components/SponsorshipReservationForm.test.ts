@@ -32,7 +32,7 @@ describe('SponsorshipReservationForm', () => {
   it('reserves and shows the reference and bank accounts', async () => {
     vi.mocked(reservationApi.reserve).mockResolvedValue({
       reference: 'RSV-K7M2PX', packageName: 'Tier 2 · Gold', amount: 900000, currency: 'ETB', status: 'REQUESTED', email: 'sara@noah.et',
-      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B104'], boothsIncluded: 2, depositAmount: 270000, checkoutAvailable: true
+      bankAccounts: [{ bank: 'Commercial Bank of Ethiopia', number: '1000314847467' }], payee: 'Dream Team Trading PLC', boothCodes: ['B104'], boothsIncluded: 2, depositAmount: 75000, checkoutAvailable: true
     })
     const w = mountForm()
     await flushPromises()
