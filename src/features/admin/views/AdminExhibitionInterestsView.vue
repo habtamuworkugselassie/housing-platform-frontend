@@ -73,22 +73,22 @@
                 :key="`ex-${row.id}`"
                 class="hover:bg-admin-nav/5 transition-colors align-top"
               >
-                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap">
+                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap" :data-label="$t('admin.exhibitionInterests.colDate')">
                   {{ formatDate(row.createdAt) }}
                 </td>
-                <td class="px-4 py-3 text-sm">
+                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colContact')">
                   <div class="text-admin-fg font-medium">{{ row.email }}</div>
                   <div v-if="row.phoneNumber" class="text-admin-subtle text-xs mt-0.5">{{ row.phoneNumber }}</div>
                   <div v-if="row.company" class="text-admin-faint text-xs mt-0.5">{{ row.company }}</div>
                 </td>
-                <td class="px-4 py-3 text-sm text-admin-muted">
+                <td class="px-4 py-3 text-sm text-admin-muted" :data-label="$t('admin.exhibitionInterests.colInterest')">
                   <div class="capitalize">{{ row.interestType }}</div>
                   <div v-if="row.interestType === 'partner'" class="mt-1 text-xs text-admin-subtle">
                     <div>{{ formatEnum(row.partnerRole) }}</div>
                     <div>{{ formatEnum(row.visibilityScope) }} · {{ formatEnum(row.contributionMode) }}</div>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm text-admin-muted">
+                <td class="px-4 py-3 text-sm text-admin-muted" :data-label="$t('admin.exhibitionInterests.colPackage')">
                   {{ row.sponsorshipPackageName || '—' }}
                 </td>
                 <td class="px-4 py-3 text-sm" :data-testid="`lead-reservations-${row.id}`">
@@ -101,11 +101,11 @@
                   <template v-else-if="row.interestType !== 'visitor'">
                     <span class="block text-xs text-admin-faint">{{ $t('admin.exhibitionInterests.noReservation') }}</span>
                     <button type="button" class="mt-1 text-xs font-semibold text-admin-nav hover:underline" :disabled="invitingId === row.id" :data-testid="`invite-${row.id}`" @click="inviteToReserve(row)">{{ row.reserveInvitedAt ? $t('admin.exhibitionInterests.inviteAgain') : $t('admin.exhibitionInterests.inviteToReserve') }}</button>
-                    <span v-if="row.reserveInvitedAt" class="block text-[10px] text-admin-subtle">{{ $t('admin.exhibitionInterests.invitedAt', { d: formatDate(row.reserveInvitedAt) }) }}</span>
+                    <span v-if="row.reserveInvitedAt" class="block text-[10px] text-admin-subtle">{{ $t('admin.exhibitionInterests.invitedAt', { d: formatDate(row.reserveInvitedAt) }) }}<span v-if="row.nudgeCount"> · {{ $t('admin.exhibitionInterests.nudged', { n: row.nudgeCount }) }}</span></span>
                   </template>
                   <span v-else class="text-xs text-admin-faint">—</span>
                 </td>
-                <td class="px-4 py-3 text-sm">
+                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colReservations')">
                   <div class="text-admin-fg">{{ row.organizationName || '—' }}</div>
                   <div class="text-xs text-admin-faint mt-0.5">
                     <span v-if="row.organizationType">{{ row.organizationType }}</span>
@@ -113,10 +113,10 @@
                     <span v-if="row.organizationStatus" class="text-admin-subtle">{{ row.organizationStatus }}</span>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[12rem]">
+                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[12rem]" :data-label="$t('admin.exhibitionInterests.colOrganization')">
                   <span class="line-clamp-2" :title="row.message || ''">{{ row.message || '—' }}</span>
                 </td>
-                <td class="px-4 py-3 text-sm">
+                <td class="px-4 py-3 text-sm" :data-label="$t('admin.exhibitionInterests.colMessage')">
                   <SponsorshipReviewCells
                     v-if="sponsorshipAppForOrg(row.organizationId)"
                     :app="sponsorshipAppForOrg(row.organizationId)"
@@ -145,7 +145,7 @@
                   </div>
                   <span v-else class="text-admin-faint text-xs leading-snug">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
                 </td>
-                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]">
+                <td class="px-4 py-3 text-sm text-admin-subtle max-w-[11rem]" :data-label="$t('admin.exhibitionInterests.colSponsorshipStatus')">
                   <SponsorshipContactCell
                     v-if="sponsorshipAppForOrg(row.organizationId)"
                     :app="sponsorshipAppForOrg(row.organizationId)"
@@ -157,7 +157,7 @@
                   </div>
                   <span v-else class="text-admin-faint text-xs">{{ $t('admin.exhibitionInterests.cellNoPendingSponsorship') }}</span>
                 </td>
-                <td class="px-4 py-3 text-sm text-right">
+                <td class="px-4 py-3 text-sm text-right" :data-label="$t('admin.exhibitionInterests.colContactToVerify')">
                   <div class="flex flex-col items-end gap-2">
                     <router-link
                       v-if="row.organizationId"

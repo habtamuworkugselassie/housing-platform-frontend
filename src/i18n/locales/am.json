@@ -822,7 +822,8 @@
       "inviteToReserve": "እንዲያስይዙ ጋብዝ",
       "inviteAgain": "እንደገና ጋብዝ",
       "invitedAt": "ተጋብዟል {d}",
-      "invited": "የቦታ ማስያዣ አገናኝ ወደ {email} ተልኳል።"
+      "invited": "የቦታ ማስያዣ አገናኝ ወደ {email} ተልኳል።",
+      "nudged": "{n}× ተገፋፍቷል"
     },
     "users": "ተጠቃሚዎች",
     "organizations": "ድርጅቶች",

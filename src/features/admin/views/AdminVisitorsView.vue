@@ -86,57 +86,41 @@
         <span class="text-xs text-admin-subtle">{{ $t('admin.visitors.count', { n: total }) }}</span>
       </div>
 
-      <div class="bg-admin-surface border border-admin-line/10 rounded-lg overflow-hidden">
-        <div v-if="loading" class="text-center py-12"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-admin-line/15" /></div>
-        <div v-else-if="!rows.length" class="px-6 py-12 text-center text-admin-subtle text-sm">{{ $t('admin.visitors.empty') }}</div>
-        <div v-else class="overflow-x-auto">
-          <table class="w-full min-w-[60rem] divide-y divide-admin-line/10 rtable">
-            <thead class="bg-admin-raised">
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colCode') }}</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colVisitor') }}</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colType') }}</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colRegistered') }}</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colStatus') }}</th>
-                <th class="px-4 py-3 text-right text-xs font-medium text-admin-subtle uppercase tracking-wider">{{ $t('admin.visitors.colActions') }}</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-admin-line/10">
-              <tr v-for="row in rows" :key="row.id" class="hover:bg-admin-nav/5 align-top" :data-testid="`visitor-${row.code}`">
-                <td class="px-4 py-3 text-sm font-mono font-semibold text-admin-fg whitespace-nowrap">{{ row.code }}</td>
-                <td class="px-4 py-3 text-sm">
-                  <div class="font-medium text-admin-fg">{{ row.fullName }}</div>
-                  <a :href="`mailto:${row.email}`" class="block text-xs text-admin-subtle hover:underline break-all">{{ row.email }}</a>
-                  <span v-if="row.phone" class="block text-xs text-admin-subtle">{{ row.phone }}</span>
-                  <span v-if="row.organization" class="block text-xs text-admin-muted">{{ row.organization }}</span>
-                </td>
-                <td class="px-4 py-3 text-sm text-admin-muted">{{ $t(`visitor.types.${row.visitorType}`) }}<span v-if="row.interests" class="block text-xs text-admin-subtle">{{ row.interests }}</span></td>
-                <td class="px-4 py-3 text-sm text-admin-muted whitespace-nowrap">{{ formatDate(row.createdAt) }}<span class="block text-xs text-admin-subtle">{{ row.badgeSentAt ? $t('admin.visitors.badgeSent') : $t('admin.visitors.badgeNotSent') }}</span></td>
-                <td class="px-4 py-3 text-sm">
-                  <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-semibold" :class="statusCls(row.status)">{{ $t(`admin.visitors.status${row.status}`) }}</span>
-                  <span v-if="row.checkedInAt" class="block text-xs text-admin-subtle">{{ formatDate(row.checkedInAt) }}</span>
-                </td>
-                <td class="px-4 py-3 text-right text-xs whitespace-nowrap">
-                  <button v-if="row.status === 'REGISTERED'" type="button" class="font-semibold text-admin-nav hover:underline" :disabled="busyId === row.id" @click="checkIn(row.code)">{{ $t('admin.visitors.checkInBtn') }}</button>
-                  <button v-else-if="row.status === 'CHECKED_IN'" type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'REGISTERED')">{{ $t('admin.visitors.undo') }}</button>
-                  <button v-else type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'REGISTERED')">{{ $t('admin.visitors.restore') }}</button>
-                  <span class="mx-1 text-admin-subtle">·</span>
-                  <button type="button" class="text-admin-muted hover:underline" :disabled="busyId === row.id" @click="resend(row)">{{ $t('admin.visitors.resend') }}</button>
-                  <template v-if="row.status !== 'CANCELLED'">
-                    <span class="mx-1 text-admin-subtle">·</span>
-                    <button type="button" class="text-admin-danger hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'CANCELLED')">{{ $t('admin.visitors.cancel') }}</button>
-                  </template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div v-if="totalPages > 1" class="flex items-center justify-between border-t border-admin-line/10 px-4 py-3 text-xs text-admin-subtle">
-          <button type="button" :disabled="page === 0" class="font-semibold text-admin-nav disabled:opacity-40" @click="goTo(page - 1)">‹</button>
-          <span>{{ page + 1 }} / {{ totalPages }}</span>
-          <button type="button" :disabled="page >= totalPages - 1" class="font-semibold text-admin-nav disabled:opacity-40" @click="goTo(page + 1)">›</button>
-        </div>
-      </div>
+      <AdminDataTable
+        :columns="columns"
+        :rows="rows"
+        :loading="loading"
+        :empty-text="$t('admin.visitors.empty')"
+        :row-test-id="(r) => `visitor-${r.code}`"
+        :page="page"
+        :total-pages="totalPages"
+        :total="total"
+        min-width="60rem"
+        @page="goTo"
+      >
+        <template #cell-code="{ row }"><span class="font-mono font-semibold text-admin-fg">{{ row.code }}</span></template>
+        <template #cell-fullName="{ row }">
+          <div class="font-medium text-admin-fg">{{ row.fullName }}</div>
+          <a :href="`mailto:${row.email}`" class="block text-xs text-admin-subtle hover:underline break-all">{{ row.email }}</a>
+          <span v-if="row.phone" class="block text-xs text-admin-subtle">{{ row.phone }}</span>
+          <span v-if="row.organization" class="block text-xs text-admin-muted">{{ row.organization }}</span>
+        </template>
+        <template #cell-visitorType="{ row }">{{ $t(`visitor.types.${row.visitorType}`) }}<span v-if="row.interests" class="block text-xs text-admin-subtle">{{ row.interests }}</span></template>
+        <template #cell-createdAt="{ row }">{{ formatDate(row.createdAt) }}<span class="block text-xs text-admin-subtle">{{ row.badgeSentAt ? $t('admin.visitors.badgeSent') : $t('admin.visitors.badgeNotSent') }}</span></template>
+        <template #cell-status="{ row }">
+          <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-semibold" :class="statusCls(row.status)">{{ $t(`admin.visitors.status${row.status}`) }}</span>
+          <span v-if="row.checkedInAt" class="block text-xs text-admin-subtle">{{ formatDate(row.checkedInAt) }}</span>
+        </template>
+        <template #cell-actions="{ row }">
+          <div class="flex flex-wrap justify-end gap-x-2 gap-y-1 text-xs">
+            <button v-if="row.status === 'REGISTERED'" type="button" class="font-semibold text-admin-nav hover:underline" :disabled="busyId === row.id" @click="checkIn(row.code)">{{ $t('admin.visitors.checkInBtn') }}</button>
+            <button v-else-if="row.status === 'CHECKED_IN'" type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'REGISTERED')">{{ $t('admin.visitors.undo') }}</button>
+            <button v-else type="button" class="font-semibold text-admin-muted hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'REGISTERED')">{{ $t('admin.visitors.restore') }}</button>
+            <button type="button" class="text-admin-muted hover:underline" :disabled="busyId === row.id" @click="resend(row)">{{ $t('admin.visitors.resend') }}</button>
+            <button v-if="row.status !== 'CANCELLED'" type="button" class="text-admin-danger hover:underline" :disabled="busyId === row.id" @click="setStatus(row, 'CANCELLED')">{{ $t('admin.visitors.cancel') }}</button>
+          </div>
+        </template>
+      </AdminDataTable>
     </div>
   </AdminLayout>
 </template>
@@ -145,10 +129,19 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { visitorApi, VISITOR_TYPES } from '@/features/visitor/api/visitor.api'
 
 const { t, locale } = useI18n()
+const columns = computed(() => [
+  { key: 'code', label: t('admin.visitors.colCode'), nowrap: true },
+  { key: 'fullName', label: t('admin.visitors.colVisitor') },
+  { key: 'visitorType', label: t('admin.visitors.colType') },
+  { key: 'createdAt', label: t('admin.visitors.colRegistered'), nowrap: true },
+  { key: 'status', label: t('admin.visitors.colStatus') },
+  { key: 'actions', label: t('admin.visitors.colActions'), align: 'right' }
+])
 
 const stats = ref(null)
 const rows = ref([])

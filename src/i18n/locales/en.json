@@ -822,7 +822,8 @@
       "inviteToReserve": "Invite to reserve",
       "inviteAgain": "Invite again",
       "invitedAt": "Invited {d}",
-      "invited": "Reservation link sent to {email}."
+      "invited": "Reservation link sent to {email}.",
+      "nudged": "Nudged {n}×"
     },
     "users": "Users",
     "organizations": "Organizations",
