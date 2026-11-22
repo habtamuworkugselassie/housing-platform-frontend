@@ -183,7 +183,8 @@
     "menuTitle": "Menu",
     "menuSubtitle": "Jump to a section on the page.",
     "sectors": "Sectors",
-    "exhibitorPortal": "Exhibitor portal"
+    "exhibitorPortal": "Exhibitor portal",
+    "exhibitors": "Exhibitors"
   },
   "splash": {
     "enter": "Enter",
@@ -1336,7 +1337,13 @@
       "colActions": "Actions",
       "edit": "Edit",
       "save": "Save changes",
-      "saved": "{ref} saved."
+      "saved": "{ref} saved.",
+      "overdue": "Overdue payments",
+      "overdueCount": "{n} past due date",
+      "overdueSince": "Overdue since {d}",
+      "dueOn": "Payment due {d}",
+      "paymentDue": "Payment due date",
+      "paymentReminders": "{n} payment reminder(s) sent"
     },
     "navGroups": {
       "overview": "Overview",
@@ -2107,6 +2114,42 @@
       "sponsor": "Sponsor",
       "featuredPartner": "Featured partner",
       "playVideo": "Play sponsor video"
+    },
+    "directory": {
+      "eyebrow": "Expo 2027 · 9–13 January · AICC",
+      "title": "Who is exhibiting",
+      "intro": "The developers, banks, insurers, contractors, consultants, suppliers and finishing trades confirmed for Ethio Build Connect Expo 2027, with their booths. Updated as reservations are paid.",
+      "reserveCta": "Reserve your booth",
+      "visitCta": "Register to visit",
+      "seeAll": "See all confirmed exhibitors",
+      "loading": "Loading exhibitors…",
+      "search": "Search by name or city…",
+      "allSectors": "All sectors",
+      "count": "{n} exhibitors",
+      "emptyTitle": "Be the first name on this page",
+      "emptyBody": "Confirmed exhibitors and sponsors appear here with their logo and booth the moment a reservation is paid.",
+      "noMatch": "No exhibitor matches that search.",
+      "booth": "Booth {codes}",
+      "mediaPartner": "Media partner",
+      "exhibitor": "Exhibitor",
+      "tier": {
+        "EXCLUSIVE": "Exclusive sponsor",
+        "PLATINUM": "Platinum sponsor",
+        "GOLD": "Gold sponsor",
+        "SILVER": "Silver sponsor",
+        "SPECIAL": "Special participant"
+      },
+      "types": {
+        "SUPPLIER": "Materials supplier",
+        "CONTRACTOR": "Contractor",
+        "DEVELOPER": "Developer",
+        "REAL_ESTATE_COMPANY": "Real estate",
+        "CONSULTANT_ARCHITECT": "Consultants & architects",
+        "FINISHING_CONTRACTOR": "Finishing trades",
+        "BANK": "Bank",
+        "INSURANCE": "Insurance",
+        "MEDIA_COMPANY": "Media"
+      }
     }
   },
   "cookieConsent": {
@@ -3082,7 +3125,9 @@
       "FAILED": "Failed"
     },
     "onlineCapNote": "Online payments are limited to {max} ETB per transaction. Pay in instalments here, or transfer the rest to a bank account below.",
-    "payDepositBodyShort": "Pay the deposit with telebirr, CBE Birr, M-Pesa, Awash Birr or a card. Your booth hold then no longer expires."
+    "payDepositBodyShort": "Pay the deposit with telebirr, CBE Birr, M-Pesa, Awash Birr or a card. Your booth hold then no longer expires.",
+    "dueOn": "Payment due by {d}.",
+    "overdueSince": "Payment was due on {d}. Your place is confirmed as soon as it reaches us."
   },
   "booth": {
     "mapAria": "Exhibition hall floor plan with booth availability",

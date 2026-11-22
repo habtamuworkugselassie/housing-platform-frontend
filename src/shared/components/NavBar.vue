@@ -431,6 +431,7 @@ const jumpLinks = computed(() => {
     )
   }
   links.push(
+    { key: 'exhibitors', to: '/exhibitors', label: t('nav.exhibitors') },
     { key: 'properties', to: '/properties', label: t('nav.properties') },
     { key: 'live', to: '/live', label: t('nav.live'), live: true }
   )

@@ -108,6 +108,11 @@ export const seoByRouteName = {
     title: 'Create Account - Ethio Build Connect',
     description: 'Register for Ethio Build Connect to list properties and access the marketplace.'
   },
+  ExhibitorDirectory: {
+    title: 'Who Is Exhibiting - Ethio Build Connect Expo 2027',
+    description:
+      'Confirmed exhibitors and sponsors of the Ethio Build Connect Expo 2027 at Addis International Convention Center, 9-13 January 2027: developers, banks, insurers, contractors, consultants, suppliers and finishing trades, with their booths.'
+  },
   ReservePackage: {
     title: 'Reserve a Sponsorship Package - Ethio Build Connect Expo 2027',
     description:
@@ -185,6 +190,11 @@ export const seoByRouteName = {
  * duplicate, not a translation, so Amharic serves them without being indexed.
  */
 export const amSeoByRouteName = {
+  ExhibitorDirectory: {
+    title: 'እነማን ያሳያሉ - ኢትዮ ቢልድ ኮኔክት ኤክስፖ 2027',
+    description:
+      'በአዲስ ኢንተርናሽናል ኮንቬንሽን ሴንተር ከጥር 1-5 2019 ዓ.ም የሚካሄደው የኢትዮ ቢልድ ኮኔክት ኤክስፖ 2027 የተረጋገጡ አሳታፊዎችና ስፖንሰሮች፣ ከዳሶቻቸው ጋር።'
+  },
   RegisterVisitor: {
     title: 'ለመጎብኘት ይመዝገቡ - ኢትዮ ቢልድ ኮኔክት ኤክስፖ 2027',
     description:

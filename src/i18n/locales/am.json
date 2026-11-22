@@ -183,7 +183,8 @@
     "menuTitle": "ምናሌ",
     "menuSubtitle": "በገጹ ላይ ወደ አንድ ክፍል ይዝለሉ።",
     "sectors": "ሴክተሮች",
-    "exhibitorPortal": "የአሳታፊ መግቢያ"
+    "exhibitorPortal": "የአሳታፊ መግቢያ",
+    "exhibitors": "አሳታፊዎች"
   },
   "splash": {
     "enter": "ግባ",
@@ -1336,7 +1337,13 @@
       "colActions": "እርምጃዎች",
       "edit": "አርትዕ",
       "save": "ለውጦችን አስቀምጥ",
-      "saved": "{ref} ተቀምጧል።"
+      "saved": "{ref} ተቀምጧል።",
+      "overdue": "ያለፈባቸው ክፍያዎች",
+      "overdueCount": "{n} የክፍያ ቀን ያለፈባቸው",
+      "overdueSince": "ከ{d} ጀምሮ አልፏል",
+      "dueOn": "የክፍያ ቀን {d}",
+      "paymentDue": "የክፍያ ቀን",
+      "paymentReminders": "{n} የክፍያ አስታዋሽ(ዎች) ተልከዋል"
     },
     "navGroups": {
       "overview": "አጠቃላይ",
@@ -2107,6 +2114,42 @@
       "sponsor": "ስፖንሰር",
       "featuredPartner": "የተመረጠ አጋር",
       "playVideo": "የስፖንሰር ቪዲዮ ጀምር"
+    },
+    "directory": {
+      "eyebrow": "ኤክስፖ 2027 · ጥር 1–5 · AICC",
+      "title": "እነማን ያሳያሉ",
+      "intro": "ለኢትዮ ቢልድ ኮኔክት ኤክስፖ 2027 የተረጋገጡ አልሚዎች፣ ባንኮች፣ ኢንሹራንሶች፣ ተቋራጮች፣ አማካሪዎች፣ አቅራቢዎችና የማጠናቀቂያ ባለሙያዎች፣ ከዳሶቻቸው ጋር። ቦታ ማስያዣዎች ሲከፈሉ ይዘመናል።",
+      "reserveCta": "ዳስዎን ያስይዙ",
+      "visitCta": "ለመጎብኘት ይመዝገቡ",
+      "seeAll": "ሁሉንም የተረጋገጡ አሳታፊዎች ይመልከቱ",
+      "loading": "አሳታፊዎች እየተጫኑ ነው…",
+      "search": "በስም ወይም በከተማ ይፈልጉ…",
+      "allSectors": "ሁሉም ዘርፎች",
+      "count": "{n} አሳታፊዎች",
+      "emptyTitle": "በዚህ ገጽ ላይ የመጀመሪያው ስም ይሁኑ",
+      "emptyBody": "የተረጋገጡ አሳታፊዎችና ስፖንሰሮች ቦታ ማስያዣ እንደተከፈለ ከአርማቸውና ከዳሳቸው ጋር እዚህ ይታያሉ።",
+      "noMatch": "ከፍለጋው ጋር የሚዛመድ አሳታፊ የለም።",
+      "booth": "ዳስ {codes}",
+      "mediaPartner": "የሚዲያ አጋር",
+      "exhibitor": "አሳታፊ",
+      "tier": {
+        "EXCLUSIVE": "ብቸኛ ስፖንሰር",
+        "PLATINUM": "ፕላቲነም ስፖንሰር",
+        "GOLD": "ወርቅ ስፖንሰር",
+        "SILVER": "ብር ስፖንሰር",
+        "SPECIAL": "ልዩ ተሳታፊ"
+      },
+      "types": {
+        "SUPPLIER": "የግንባታ ዕቃ አቅራቢ",
+        "CONTRACTOR": "ተቋራጭ",
+        "DEVELOPER": "አልሚ",
+        "REAL_ESTATE_COMPANY": "ሪል እስቴት",
+        "CONSULTANT_ARCHITECT": "አማካሪዎች እና አርክቴክቶች",
+        "FINISHING_CONTRACTOR": "የማጠናቀቂያ ስራዎች",
+        "BANK": "ባንክ",
+        "INSURANCE": "ኢንሹራንስ",
+        "MEDIA_COMPANY": "ሚዲያ"
+      }
     }
   },
   "cookieConsent": {
@@ -3082,7 +3125,9 @@
       "FAILED": "አልተሳካም"
     },
     "onlineCapNote": "የመስመር ላይ ክፍያዎች በአንድ ግብይት እስከ {max} ብር ብቻ ናቸው። እዚህ በክፍልፋይ ይክፈሉ ወይም ቀሪውን ከታች ወዳለው የባንክ ሂሳብ ያስተላልፉ።",
-    "payDepositBodyShort": "ቅድመ ክፍያውን በቴሌብር፣ በሲቢኢ ብር፣ በኤም-ፔሳ፣ በአዋሽ ብር ወይም በካርድ ይክፈሉ። ከዚያ የዳስ መያዣዎ አያልፍም።"
+    "payDepositBodyShort": "ቅድመ ክፍያውን በቴሌብር፣ በሲቢኢ ብር፣ በኤም-ፔሳ፣ በአዋሽ ብር ወይም በካርድ ይክፈሉ። ከዚያ የዳስ መያዣዎ አያልፍም።",
+    "dueOn": "ክፍያ እስከ {d} ይጠበቃል።",
+    "overdueSince": "ክፍያው በ{d} ይጠበቅ ነበር። እንደደረሰን ቦታዎ ይረጋገጣል።"
   },
   "booth": {
     "mapAria": "የኤግዚቢሽን አዳራሽ ፕላን ከዳስ ተገኝነት ጋር",
