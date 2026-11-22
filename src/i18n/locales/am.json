@@ -1896,7 +1896,11 @@
       "submitting": "በመላክ ላይ…",
       "successTitle": "አመሰግናለሁ",
       "successMessage": "ፍላጎትዎን ተቀብለናል፤ ስለ ኤግዚቢሽኑ ዝግጅት እድሳቶችን እናሳውቃችኋለን።",
-      "errorGeneric": "ያልተጠበቀ ነገር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"
+      "errorGeneric": "ያልተጠበቀ ነገር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
+      "reserveNextTitle": "ወደ ቀጣዩ ደረጃ ለመሄድ ዝግጁ ነዎት?",
+      "reserveNextBody": "ፓኬጅዎን አሁን ያስይዙ፦ ውሉንና የባንክ መረጃውን ወዲያውኑ በኢሜይል ያገኛሉ፣ በቅድመ ክፍያም በአዳራሹ ፕላን ላይ ዳሶችን ማስጠበቅ ይችላሉ።",
+      "reserveNextCta": "ፓኬጅ ያስይዙ",
+      "backHome": "ወደ መነሻ ተመለስ"
     },
     "partners": {
       "foundationPartners": "መሠረታዊ አጋሮች",

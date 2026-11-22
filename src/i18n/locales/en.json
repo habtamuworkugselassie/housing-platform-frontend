@@ -1896,7 +1896,11 @@
       "submitting": "Sending…",
       "successTitle": "Thank you",
       "successMessage": "We've received your interest and will be in touch with updates about the exhibition.",
-      "errorGeneric": "Something went wrong. Please try again."
+      "errorGeneric": "Something went wrong. Please try again.",
+      "reserveNextTitle": "Ready to go further?",
+      "reserveNextBody": "Reserve your package now: you get the agreement and bank details by email at once, and you can lock booths on the hall plan with a deposit.",
+      "reserveNextCta": "Reserve a package",
+      "backHome": "Back to home"
     },
     "partners": {
       "foundationPartners": "Foundation partners",
