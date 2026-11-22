@@ -1900,7 +1900,10 @@
       "reserveNextTitle": "Ready to go further?",
       "reserveNextBody": "Reserve your package now: you get the agreement and bank details by email at once, and you can lock booths on the hall plan with a deposit.",
       "reserveNextCta": "Reserve a package",
-      "backHome": "Back to home"
+      "backHome": "Back to home",
+      "reserveInline": "Already decided? Skip the enquiry and reserve a package: agreement and bank details by email, booths on the hall plan.",
+      "reserveInlinePackage": "Already decided on this package? Reserve it now: agreement and bank details by email, booths on the hall plan.",
+      "reserveInlineCta": "Reserve instead"
     },
     "partners": {
       "foundationPartners": "Foundation partners",
