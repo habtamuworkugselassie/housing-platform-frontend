@@ -175,12 +175,7 @@
       <p v-if="error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
       <p v-if="notice" class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ notice }}</p>
 
-      <div v-if="tab === 'pipeline'" class="flex flex-wrap items-center gap-2">
-        <input v-model.trim="q" type="search" :placeholder="$t('admin.reservations.search')" class="w-64 rounded-lg border border-admin-line/20 px-3 py-2 text-sm text-admin-fg" data-testid="search" @keyup.enter="reload" />
-        <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" @click="reload">{{ $t('admin.reservations.apply') }}</button>
-        <button v-if="statusFilter" type="button" class="text-xs text-admin-nav underline" @click="setStatus('')">{{ $t('admin.reservations.clearFilter') }}</button>
-        <span class="text-xs text-admin-subtle">{{ $t('admin.reservations.count', { n: total }) }}</span>
-      </div>
+      <AdminFilterBar v-if="tab === 'pipeline'" v-model="filterValues" :fields="filterFields" :count="total" @apply="reload" />
 
       <AdminDataTable
         v-if="tab === 'pipeline'"
@@ -202,10 +197,7 @@
         </template>
         <template #cell-company="{ row }">
           <p class="font-semibold text-admin-fg">{{ row.company }}</p>
-          <router-link v-if="row.organizationId" :to="`/organizations/${row.organizationId}`" class="inline-flex items-center gap-1 text-[11px] text-admin-nav hover:underline" :data-testid="`org-${row.reference}`">
-            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" /></svg>
-            {{ row.organizationName || $t('admin.reservations.orgLinked') }}
-          </router-link>
+          <router-link v-if="row.organizationId" :to="`/organizations/${row.organizationId}`" class="inline-flex items-center gap-1 text-[11px] text-admin-nav hover:underline" :data-testid="`org-${row.reference}`">{{ row.organizationName || $t('admin.reservations.orgLinked') }}</router-link>
           <button v-else type="button" class="text-[11px] text-amber-700 underline" :disabled="busyId === 'link'" @click="linkAll">{{ $t('admin.reservations.orgMissing') }}</button>
           <p class="text-xs text-admin-muted">{{ row.contactName }}</p>
           <a :href="`mailto:${row.email}`" class="block text-xs text-admin-subtle hover:underline break-all">{{ row.email }}</a>
@@ -217,46 +209,68 @@
           <p class="mt-1 text-xs">
             <span v-if="row.boothCodes && row.boothCodes.length" class="font-mono font-semibold text-admin-fg">{{ row.boothCodes.join(', ') }}</span>
             <span v-else-if="row.boothsIncluded > 0" class="text-amber-700">{{ $t('admin.reservations.noBooths') }}</span>
-            <button v-if="row.boothsIncluded > 0 && row.status !== 'CANCELLED'" type="button" class="ml-1 text-admin-nav underline" :data-testid="`assign-${row.reference}`" @click="openAssign(row)">{{ $t('admin.reservations.assign') }}</button>
           </p>
         </template>
         <template #cell-status="{ row }">
-          <select :value="row.status" class="w-full max-w-[11rem] rounded-lg border border-admin-line/20 px-2 py-1.5 text-xs text-admin-fg" :data-testid="`status-${row.reference}`" @change="setRowStatus(row, $event.target.value)">
-            <option v-for="s in STATUSES" :key="s" :value="s">{{ $t(`admin.reservations.status.${s}`) }}</option>
-          </select>
-          <span class="mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="statusCls(row.status)">{{ $t(`admin.reservations.status.${row.status}`) }}</span>
-          <p v-if="row.organizationId" class="mt-1 text-[11px] text-emerald-700">{{ $t('admin.reservations.portalReady') }}</p>
+          <span class="inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold" :class="statusCls(row.status)">{{ $t(`admin.reservations.status.${row.status}`) }}</span>
+          <p v-if="row.organizationId && row.exhibitorInvitedAt" class="mt-1 text-[11px] text-emerald-700">{{ $t('admin.reservations.portalReady') }}</p>
+          <p v-if="row.reminderCount" class="text-[11px] text-admin-subtle">{{ $t('admin.reservations.reminders', { n: row.reminderCount }) }}</p>
         </template>
         <template #cell-amountPaid="{ row }">
-          <input :value="row.amountPaid" type="number" min="0" step="1000" class="w-28 rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" :data-testid="`paid-${row.reference}`" @change="setPaid(row, $event.target.value)" />
-          <p class="mt-1 text-[11px] text-admin-subtle">/ {{ money(row.amount) }}</p>
+          <p class="font-semibold" :class="Number(row.amountPaid) >= Number(row.amount) && Number(row.amount) > 0 ? 'text-emerald-700' : 'text-admin-fg'">{{ money(row.amountPaid) }}</p>
+          <p class="text-[11px] text-admin-subtle">/ {{ money(row.amount) }}</p>
         </template>
-        <template #cell-assignedTo="{ row }">
-          <input :value="row.assignedTo || ''" type="text" :placeholder="$t('admin.reservations.owner')" class="w-28 rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { assignedTo: $event.target.value })" />
-        </template>
-        <template #expanded="{ row }">
-          <div class="grid gap-4 lg:grid-cols-3">
-            <div class="space-y-1 text-xs text-admin-muted">
-              <p v-if="row.tin"><span class="font-semibold text-admin-fg">TIN</span> {{ row.tin }}</p>
-              <p v-if="row.boothPreference"><span class="font-semibold text-admin-fg">{{ $t('admin.reservations.booth') }}:</span> {{ row.boothPreference }}</p>
-              <p v-if="row.message" class="italic">“{{ row.message }}”</p>
-              <p v-if="row.agreementSentAt">{{ $t('admin.reservations.agreementSentAt', { d: formatDate(row.agreementSentAt) }) }}</p>
-              <p v-if="row.reminderCount">{{ $t('admin.reservations.reminders', { n: row.reminderCount }) }}</p>
-              <p v-if="row.paidAt">{{ $t('admin.reservations.paidAt', { d: formatDate(row.paidAt) }) }}</p>
-            </div>
-            <div>
-              <label class="text-[11px] font-semibold uppercase tracking-wide text-admin-subtle">{{ $t('admin.reservations.notes') }}</label>
-              <textarea :value="row.adminNotes || ''" rows="4" :placeholder="$t('admin.reservations.notes')" class="mt-1 w-full rounded-lg border border-admin-line/20 px-2 py-1 text-xs text-admin-fg" @change="save(row, { adminNotes: $event.target.value })"></textarea>
-            </div>
-            <div class="flex flex-wrap content-start gap-2 text-xs">
-              <button type="button" class="rounded-lg bg-admin-nav px-3 py-1.5 font-semibold text-white hover:opacity-90" :disabled="busyId === row.id" @click="sendAgreement(row)">{{ $t('admin.reservations.sendAgreement') }}</button>
-              <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-1.5 font-semibold text-admin-muted hover:bg-admin-sunken/60" :disabled="busyId === row.id || row.status === 'PAID' || row.status === 'CANCELLED'" @click="remind(row)">{{ $t('admin.reservations.remind') }}</button>
-              <button v-if="row.status === 'PAID' || row.status === 'DEPOSIT_PAID'" type="button" class="rounded-lg bg-emerald-600 px-3 py-1.5 font-semibold text-white hover:bg-emerald-700" :disabled="busyId === row.id" :data-testid="`exhibitor-${row.reference}`" @click="exhibitorAccount(row)">{{ row.organizationId ? $t('admin.reservations.reinviteExhibitor') : $t('admin.reservations.createExhibitor') }}</button>
-              <router-link v-if="row.organizationId" to="/admin/organizations" class="self-center text-[11px] text-admin-subtle hover:underline">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(row.exhibitorInvitedAt) }) }}</router-link>
-            </div>
+        <template #cell-assignedTo="{ row }"><span class="text-admin-fg">{{ row.assignedTo || '—' }}</span></template>
+        <template #cell-actions="{ row }">
+          <div class="flex flex-wrap justify-end gap-2">
+            <button type="button" class="rounded-lg bg-admin-nav px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90" :data-testid="`edit-${row.reference}`" @click="openEdit(row)">{{ $t('admin.reservations.edit') }}</button>
           </div>
         </template>
       </AdminDataTable>
+
+      <!-- Edit one reservation: stage, money, owner, notes, and the actions on it -->
+      <div v-if="editing" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" @click.self="editing = null">
+        <form class="max-h-[92vh] w-full max-w-2xl space-y-4 overflow-y-auto rounded-xl bg-white p-5 text-gray-900" data-testid="edit-form" @submit.prevent="saveEdit">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="font-mono text-xs font-semibold text-gray-500">{{ editing.reference }}</p>
+              <p class="text-lg font-bold">{{ editing.company }}</p>
+              <p class="text-sm text-gray-600">{{ editing.packageName }} · {{ money(editing.amount) }} {{ editing.currency }}</p>
+            </div>
+            <button type="button" class="text-sm text-gray-500 hover:text-gray-900" @click="editing = null">{{ $t('reservation.close') }}</button>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.stage') }}
+              <select v-model="editForm.status" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" :data-testid="`status-${editing.reference}`">
+                <option v-for="s in STATUSES" :key="s" :value="s">{{ $t(`admin.reservations.status.${s}`) }}</option>
+              </select>
+            </label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.paid') }} (ETB)<input v-model.number="editForm.amountPaid" type="number" min="0" step="1000" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" :data-testid="`paid-${editing.reference}`" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.agreedAmount') }}<input v-model.number="editForm.amount" type="number" min="0" step="1000" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700">{{ $t('admin.reservations.owner') }}<input v-model.trim="editForm.assignedTo" type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.booth') }}<input v-model.trim="editForm.boothPreference" type="text" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" /></label>
+            <label class="block text-xs font-medium text-gray-700 sm:col-span-2">{{ $t('admin.reservations.notes') }}<textarea v-model="editForm.adminNotes" rows="4" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea></label>
+          </div>
+          <div class="rounded-lg bg-gray-50 p-3 text-xs text-gray-600">
+            <p v-if="editing.message" class="italic">“{{ editing.message }}”</p>
+            <p v-if="editing.tin">TIN {{ editing.tin }}</p>
+            <p v-if="editing.agreementSentAt">{{ $t('admin.reservations.agreementSentAt', { d: formatDate(editing.agreementSentAt) }) }}</p>
+            <p v-if="editing.paidAt">{{ $t('admin.reservations.paidAt', { d: formatDate(editing.paidAt) }) }}</p>
+            <p v-if="editing.exhibitorInvitedAt">{{ $t('admin.reservations.exhibitorInvited', { d: formatDate(editing.exhibitorInvitedAt) }) }}</p>
+          </div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button v-if="editing.boothsIncluded > 0 && editing.status !== 'CANCELLED'" type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 font-semibold text-gray-700 hover:bg-gray-50" :data-testid="`assign-${editing.reference}`" @click="openAssign(editing)">{{ $t('admin.reservations.assign') }}</button>
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 font-semibold text-gray-700 hover:bg-gray-50" :disabled="busyId === editing.id" @click="sendAgreement(editing)">{{ $t('admin.reservations.sendAgreement') }}</button>
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 font-semibold text-gray-700 hover:bg-gray-50" :disabled="busyId === editing.id || editing.status === 'PAID' || editing.status === 'CANCELLED'" @click="remind(editing)">{{ $t('admin.reservations.remind') }}</button>
+            <button v-if="editing.status === 'PAID' || editing.status === 'DEPOSIT_PAID'" type="button" class="rounded-lg bg-emerald-600 px-3 py-1.5 font-semibold text-white hover:bg-emerald-700" :disabled="busyId === editing.id" :data-testid="`exhibitor-${editing.reference}`" @click="exhibitorAccount(editing)">{{ editing.organizationId && editing.exhibitorInvitedAt ? $t('admin.reservations.reinviteExhibitor') : $t('admin.reservations.createExhibitor') }}</button>
+          </div>
+          <p v-if="editError" class="text-sm text-red-600" role="alert">{{ editError }}</p>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-sm" @click="editing = null">{{ $t('reservation.close') }}</button>
+            <button type="submit" :disabled="busyId === editing.id" class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50" data-testid="edit-save">{{ $t('admin.reservations.save') }}</button>
+          </div>
+        </form>
+      </div>
     </div>
   </AdminLayout>
 </template>
@@ -265,6 +279,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import BoothMap from '@/features/reservation/components/BoothMap.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
@@ -283,7 +298,8 @@ const columns = computed(() => [
   { key: 'packageName', label: t('admin.reservations.colPackage') },
   { key: 'status', label: t('admin.reservations.colStage') },
   { key: 'amountPaid', label: t('admin.reservations.colPaid') },
-  { key: 'assignedTo', label: t('admin.reservations.colOwner') }
+  { key: 'assignedTo', label: t('admin.reservations.colOwner') },
+  { key: 'actions', label: t('admin.reservations.colActions'), align: 'right' }
 ])
 
 const pipeline = ref(null)
@@ -297,6 +313,17 @@ const notice = ref('')
 const q = ref('')
 const statusFilter = ref('')
 const busyId = ref('')
+const filterFields = computed(() => [
+  { key: 'q', type: 'search', placeholder: t('admin.reservations.search') },
+  { key: 'status', type: 'select', label: t('admin.filters.stage'), allLabel: t('admin.filters.allStages'), options: STATUSES.map((s) => ({ value: s, label: t(`admin.reservations.status.${s}`) })) }
+])
+const filterValues = computed({
+  get: () => ({ q: q.value, status: statusFilter.value }),
+  set: (v) => {
+    q.value = v.q || ''
+    statusFilter.value = v.status || ''
+  }
+})
 
 const route = useRoute()
 const tab = ref(route.query.tab === 'uploads' ? 'uploads' : 'pipeline')
@@ -548,17 +575,43 @@ async function save(row, body) {
     loadPipeline()
   } catch (e) {
     fail(e)
+    throw e
   } finally {
     busyId.value = ''
   }
 }
-function setRowStatus(row, status) {
-  save(row, { status })
+const editing = ref(null)
+const editError = ref('')
+const editForm = ref({})
+function openEdit(row) {
+  editing.value = row
+  editError.value = ''
+  editForm.value = { status: row.status, amountPaid: row.amountPaid ?? 0, amount: row.amount ?? 0, assignedTo: row.assignedTo || '', boothPreference: row.boothPreference || '', adminNotes: row.adminNotes || '' }
 }
-function setPaid(row, value) {
-  const n = Number(value)
-  if (Number.isNaN(n) || n < 0) return
-  save(row, { amountPaid: n })
+/** Sends only what changed, so an untouched field never overwrites a concurrent edit. */
+async function saveEdit() {
+  const row = editing.value
+  if (!row) return
+  const f = editForm.value
+  const body = {}
+  if (f.status !== row.status) body.status = f.status
+  if (Number(f.amountPaid) !== Number(row.amountPaid ?? 0)) body.amountPaid = Number(f.amountPaid) || 0
+  if (Number(f.amount) !== Number(row.amount ?? 0)) body.amount = Number(f.amount) || 0
+  if ((f.assignedTo || '') !== (row.assignedTo || '')) body.assignedTo = f.assignedTo
+  if ((f.boothPreference || '') !== (row.boothPreference || '')) body.boothPreference = f.boothPreference
+  if ((f.adminNotes || '') !== (row.adminNotes || '')) body.adminNotes = f.adminNotes
+  if (!Object.keys(body).length) {
+    editing.value = null
+    return
+  }
+  editError.value = ''
+  try {
+    await save(row, body)
+    notice.value = t('admin.reservations.saved', { ref: row.reference })
+    editing.value = null
+  } catch (e) {
+    editError.value = e?.response?.data?.message || e?.message || ''
+  }
 }
 async function sendAgreement(row) {
   busyId.value = row.id

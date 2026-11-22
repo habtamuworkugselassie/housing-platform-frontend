@@ -823,7 +823,14 @@
       "inviteAgain": "እንደገና ጋብዝ",
       "invitedAt": "ተጋብዟል {d}",
       "invited": "የቦታ ማስያዣ አገናኝ ወደ {email} ተልኳል።",
-      "nudged": "{n}× ተገፋፍቷል"
+      "nudged": "{n}× ተገፋፍቷል",
+      "search": "ኢሜይል፣ ኩባንያ ወይም ድርጅት ይፈልጉ…",
+      "allTypes": "ሁሉም የፍላጎት ዓይነቶች",
+      "type": {
+        "exhibitor": "አሳታፊ",
+        "partner": "አጋር",
+        "visitor": "ጎብኚ"
+      }
     },
     "users": "ተጠቃሚዎች",
     "organizations": "ድርጅቶች",
@@ -1325,7 +1332,11 @@
       "orgLinked": "የተገናኘ ድርጅት",
       "orgChange": "ቀይር",
       "orgMissing": "ድርጅት አልተገናኘም · አሁን አገናኝ",
-      "orgLinkedAll": "{n} ቦታ ማስያዣ(ዎች) ከድርጅት ጋር ተገናኝተዋል።"
+      "orgLinkedAll": "{n} ቦታ ማስያዣ(ዎች) ከድርጅት ጋር ተገናኝተዋል።",
+      "colActions": "እርምጃዎች",
+      "edit": "አርትዕ",
+      "save": "ለውጦችን አስቀምጥ",
+      "saved": "{ref} ተቀምጧል።"
     },
     "navGroups": {
       "overview": "አጠቃላይ",
@@ -1379,6 +1390,18 @@
       "none": "ለዚህ ድርጅት እስካሁን ፍላጎት ወይም ቦታ ማስያዣ የለም።",
       "lead": "ፍላጎት",
       "newReservation": "ቦታ ማስያዣ መዝግብ"
+    },
+    "filters": {
+      "apply": "ተግብር",
+      "clear": "ማጣሪያዎችን አጽዳ",
+      "search": "ፈልግ…",
+      "status": "ሁኔታ",
+      "type": "ዓይነት",
+      "stage": "ደረጃ",
+      "sector": "ዘርፍ",
+      "allStatuses": "ሁሉም ሁኔታዎች",
+      "allTypes": "ሁሉም ዓይነቶች",
+      "allStages": "ሁሉም ደረጃዎች"
     }
   },
   "validation": {

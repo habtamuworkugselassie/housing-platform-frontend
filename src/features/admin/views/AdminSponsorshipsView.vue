@@ -65,46 +65,7 @@
 
       <!-- Sponsorship Packages Tab -->
       <div v-if="activeTab === 'packages'" class="space-y-6">
-        <!-- Filters -->
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-4">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <label class="block text-sm font-medium text-admin-muted">Status</label>
-              <select
-                v-model="filters.status"
-                @change="loadPackages"
-                class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
-              >
-                <option value="">All</option>
-                <option value="ACTIVE">Active</option>
-                <option value="INACTIVE">Inactive</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-admin-muted">Type</label>
-              <select
-                v-model="filters.type"
-                @change="loadPackages"
-                class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-primary-400 focus:border-primary-400"
-              >
-                <option value="">All Types</option>
-                <option value="EXCLUSIVE">Exclusive</option>
-                <option value="PLATINUM">Platinum (1st tier)</option>
-                <option value="GOLD">Gold (2nd tier)</option>
-                <option value="SILVER">Silver (3rd tier)</option>
-                <option value="SPECIAL">Special participant</option>
-              </select>
-            </div>
-            <div class="flex items-end">
-              <button
-                @click="clearFilters"
-                class="w-full px-4 py-2 border border-admin-line/20 rounded-md text-sm font-medium text-admin-fg bg-admin-field/5 hover:bg-admin-accent-hover/20 hover:border-primary-400 transition-colors"
-              >
-                Clear Filters
-              </button>
-            </div>
-          </div>
-        </div>
+        <AdminFilterBar v-model="packageFilterValues" :fields="packageFilterFields" :count="packages.length" @apply="loadPackages" />
 
         <!-- Packages Table -->
         <AdminDataTable
@@ -145,32 +106,7 @@
       <!-- Applications Tab -->
       <div v-if="activeTab === 'applications'" class="space-y-6">
         <!-- Filters -->
-        <div class="bg-admin-surface border border-admin-line/10 rounded-lg p-4">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <label class="block text-sm font-medium text-admin-subtle">Status</label>
-              <select
-                v-model="applicationFilters.status"
-                @change="loadApplications"
-                class="mt-1 block w-full border border-admin-line/20 bg-admin-field/5 text-admin-fg rounded-md py-2 px-3 focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
-              >
-                <option value="">All</option>
-                <option value="PENDING">Pending</option>
-                <option value="APPROVED">Approved</option>
-                <option value="REJECTED">Rejected</option>
-                <option value="CANCELLED">Cancelled</option>
-              </select>
-            </div>
-            <div class="flex items-end">
-              <button
-                @click="loadApplications"
-                class="w-full px-4 py-2 bg-admin-accent text-admin-accent-fg rounded-md hover:bg-admin-accent-hover"
-              >
-                Apply Filters
-              </button>
-            </div>
-          </div>
-        </div>
+        <AdminFilterBar v-model="applicationFilterValues" :fields="applicationFilterFields" :count="applications.length" @apply="loadApplications" />
 
         <!-- Applications Table -->
         <AdminDataTable
@@ -588,6 +524,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import api from '@/shared/api/client'
@@ -626,6 +563,25 @@ const filters = ref({
 
 const applicationFilters = ref({
   status: ''
+})
+const packageFilterFields = computed(() => [
+  { key: 'status', type: 'select', label: t('admin.filters.status'), allLabel: t('admin.filters.allStatuses'), options: [{ value: 'ACTIVE', label: 'ACTIVE' }, { value: 'INACTIVE', label: 'INACTIVE' }] },
+  { key: 'type', type: 'select', label: t('admin.filters.type'), allLabel: t('admin.filters.allTypes'), options: ['EXCLUSIVE', 'PLATINUM', 'GOLD', 'SILVER', 'SPECIAL'].map((v) => ({ value: v, label: v })) }
+])
+const packageFilterValues = computed({
+  get: () => ({ status: filters.value.status, type: filters.value.type }),
+  set: (v) => {
+    filters.value = { status: v.status || '', type: v.type || '' }
+  }
+})
+const applicationFilterFields = computed(() => [
+  { key: 'status', type: 'select', label: t('admin.filters.status'), allLabel: t('admin.filters.allStatuses'), options: ['PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'].map((v) => ({ value: v, label: v })) }
+])
+const applicationFilterValues = computed({
+  get: () => ({ status: applicationFilters.value.status }),
+  set: (v) => {
+    applicationFilters.value = { status: v.status || '' }
+  }
 })
 
 const form = ref({
