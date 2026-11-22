@@ -370,9 +370,14 @@
                   </div>
                   <p class="text-green-700 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
                   <p class="text-sm text-gray-600">{{ $t('exhibition.registerInterest.successMessage') }}</p>
+                  <div class="mt-5 rounded-xl bg-white p-4 text-left" data-testid="interest-reserve-next">
+                    <p class="text-sm font-semibold text-gray-900">{{ $t('exhibition.registerInterest.reserveNextTitle') }}</p>
+                    <p class="mt-1 text-xs text-gray-600">{{ $t('exhibition.registerInterest.reserveNextBody') }}</p>
+                    <button type="button" class="mt-3 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500" data-testid="interest-reserve-cta" @click="reserveFromInterest">{{ $t('exhibition.registerInterest.reserveNextCta') }}</button>
+                  </div>
                   <button
                     type="button"
-                    class="mt-6 rounded-full px-6 py-3 text-sm font-bold transition-colors"
+                    class="mt-4 rounded-full px-6 py-3 text-sm font-bold transition-colors"
                     :class="registerModalTheme.primaryCta"
                     @click="closeRegisterModal"
                   >
@@ -654,6 +659,13 @@ watch(floorPlanOpen, async (open) => {
 function openReserveModal(pkg) {
   reservePackage.value = pkg
   reserveModalOpen.value = true
+}
+/** From the interest success screen straight into the reservation for the same package. */
+function reserveFromInterest() {
+  const id = (registerForm.value.sponsorshipId || '').trim()
+  const pkg = packages.value.find((p) => p.id === id) || null
+  closeRegisterModal()
+  openReserveModal(pkg)
 }
 
 function openDetailsModal(pkg) {

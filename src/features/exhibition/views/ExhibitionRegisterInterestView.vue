@@ -70,12 +70,17 @@
             <h3 class="text-green-200 font-semibold text-lg mb-1">{{ $t('exhibition.registerInterest.successTitle') }}</h3>
             <p class="text-sm text-white/80 leading-relaxed">{{ $t('exhibition.registerInterest.successMessage') }}</p>
           </div>
+          <div v-if="submittedInterestType !== 'visitor'" class="rounded-lg bg-white/10 p-4 text-left" data-testid="interest-reserve-next">
+            <p class="text-sm font-semibold text-white">{{ $t('exhibition.registerInterest.reserveNextTitle') }}</p>
+            <p class="mt-1 text-xs text-white/75">{{ $t('exhibition.registerInterest.reserveNextBody') }}</p>
+            <router-link :to="reserveLink" class="mt-3 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500">{{ $t('exhibition.registerInterest.reserveNextCta') }}</router-link>
+          </div>
           <div class="pt-4">
             <router-link
               to="/"
               class="inline-flex items-center gap-2 px-5 py-2 border border-white/20 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white transition-colors"
             >
-              Back to Home
+              {{ $t('exhibition.registerInterest.backHome') }}
             </router-link>
           </div>
         </div>
@@ -85,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { exhibitionApi, getActiveSponsorshipPackages } from '@/features/exhibition/api/exhibition.api'
@@ -115,6 +120,12 @@ const interestPackages = ref([])
 const interestPackagesLoading = ref(false)
 const interestSubmitting = ref(false)
 const interestSubmitted = ref(false)
+const submittedInterestType = ref('visitor')
+const submittedPackageId = ref('')
+const reserveLink = computed(() => {
+  const am = String(locale.value || 'en').toLowerCase().startsWith('am')
+  return { path: `${am ? '/am' : ''}/reserve`, query: submittedPackageId.value ? { package: submittedPackageId.value, src: 'interest' } : { src: 'interest' } }
+})
 const interestError = ref('')
 
 async function loadInterestPackages() {
@@ -163,6 +174,8 @@ async function submitInterest() {
       payload.contributionMode = interestForm.value.contributionMode
     }
     await exhibitionApi.registerInterest(payload)
+    submittedInterestType.value = it
+    submittedPackageId.value = payload.sponsorshipId || ''
     interestSubmitted.value = true
     // The site's primary conversion. Fired after the request resolves so failed
     // submissions never count, and before the redirect so it is not racing the

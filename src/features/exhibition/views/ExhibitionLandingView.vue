@@ -218,6 +218,11 @@
         >
           <p class="text-green-700 font-semibold mb-2">{{ $t('exhibition.registerInterest.successTitle') }}</p>
           <p class="text-sm text-gray-600">{{ $t('exhibition.registerInterest.successMessage') }}</p>
+          <div v-if="submittedInterestType !== 'visitor'" class="mt-5" data-testid="interest-reserve-next">
+            <p class="text-sm font-semibold text-gray-900">{{ $t('exhibition.registerInterest.reserveNextTitle') }}</p>
+            <p class="mt-1 text-xs text-gray-600">{{ $t('exhibition.registerInterest.reserveNextBody') }}</p>
+            <router-link :to="reserveLink" class="mt-3 inline-flex items-center gap-2 rounded-full bg-gold-400 px-6 py-3 text-sm font-bold text-primary-950 hover:bg-gold-500">{{ $t('exhibition.registerInterest.reserveNextCta') }}</router-link>
+          </div>
         </div>
       </div>
     </section>
@@ -471,6 +476,12 @@ watch(
 )
 const interestSubmitting = ref(false)
 const interestSubmitted = ref(false)
+const submittedInterestType = ref('visitor')
+const submittedPackageId = ref('')
+const reserveLink = computed(() => {
+  const am = String(locale.value || 'en').toLowerCase().startsWith('am')
+  return { path: `${am ? '/am' : ''}/reserve`, query: submittedPackageId.value ? { package: submittedPackageId.value, src: 'interest' } : { src: 'interest' } }
+})
 const interestError = ref('')
 
 async function loadInterestPackages() {
@@ -519,6 +530,8 @@ async function submitInterest() {
       payload.contributionMode = interestForm.value.contributionMode
     }
     await exhibitionApi.registerInterest(payload)
+    submittedInterestType.value = it
+    submittedPackageId.value = payload.sponsorshipId || ''
     interestSubmitted.value = true
     // The site's primary conversion. Fired after the request resolves so failed
     // submissions never count, and before the redirect so it is not racing the
