@@ -76,8 +76,7 @@ describe('AdminEnquiriesView', () => {
     expect(enquiryApi.adminUpdateStatus).toHaveBeenCalledWith('e1', 'CONTACTED')
     expect(wrapper.find('[data-testid="enquiry-e1"]').text()).toContain('admin.enquiries.statusContacted')
 
-    const tabs = wrapper.findAll('[role="tab"]')
-    await tabs[1].trigger('click')
+    await wrapper.find('[data-testid="filter-status"]').setValue('NEW')
     await flushPromises()
     expect(enquiryApi.adminList).toHaveBeenLastCalledWith({ status: 'NEW', page: 0, size: 25 })
   })

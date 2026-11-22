@@ -115,21 +115,7 @@
             <input type="file" accept=".csv,text/csv" class="hidden" data-testid="import-input" @change="onImport" />
             {{ importing ? $t('admin.outreach.importing') : $t('admin.outreach.importCsv') }}
           </label>
-          <input
-            v-model="q"
-            type="search"
-            :placeholder="$t('admin.outreach.search')"
-            class="rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm text-admin-fg"
-            @keyup.enter="load(0)"
-          />
-          <select v-model="statusFilter" class="rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm text-admin-fg" @change="load(0)">
-            <option value="">{{ $t('admin.outreach.allStatuses') }}</option>
-            <option v-for="s in statuses" :key="s" :value="s">{{ statusLabel(s) }}</option>
-          </select>
-          <select v-model="sectorFilter" class="rounded-lg border border-admin-line/20 bg-admin-surface px-3 py-2 text-sm text-admin-fg" @change="load(0)">
-            <option value="">{{ $t('admin.outreach.allSectors') }}</option>
-            <option v-for="s in sectors" :key="s" :value="s">{{ s }}</option>
-          </select>
+          <AdminFilterBar v-model="filterValues" :fields="filterFields" @apply="load(0)" />
           <span class="flex-1" />
           <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" :disabled="syncing" @click="sync">
             {{ syncing ? $t('admin.outreach.syncing') : $t('admin.outreach.syncReplies') }}
@@ -304,6 +290,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { outreachApi } from '@/features/outreach/api/outreach.api'
@@ -341,6 +328,19 @@ const totalPages = ref(0)
 const q = ref('')
 const statusFilter = ref('')
 const sectorFilter = ref('')
+const filterFields = computed(() => [
+  { key: 'q', type: 'search', placeholder: t('admin.outreach.search') },
+  { key: 'status', type: 'select', label: t('admin.filters.status'), allLabel: t('admin.outreach.allStatuses'), options: statuses.map((s) => ({ value: s, label: statusLabel(s) })) },
+  { key: 'sector', type: 'select', label: t('admin.filters.sector'), allLabel: t('admin.outreach.allSectors'), options: sectors.map((s) => ({ value: s, label: s })) }
+])
+const filterValues = computed({
+  get: () => ({ q: q.value, status: statusFilter.value, sector: sectorFilter.value }),
+  set: (v) => {
+    q.value = v.q || ''
+    statusFilter.value = v.status || ''
+    sectorFilter.value = v.sector || ''
+  }
+})
 const selected = ref(new Set())
 const importing = ref(false)
 const syncing = ref(false)

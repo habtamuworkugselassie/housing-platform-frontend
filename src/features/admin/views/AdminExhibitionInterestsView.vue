@@ -18,6 +18,7 @@
       </div>
 
       <p v-if="!loading && error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
+      <AdminFilterBar v-model="leadFilters" :fields="filterFields" @apply="applyFilters" />
       <AdminDataTable
         :columns="columns"
         :rows="tableRows"
@@ -300,6 +301,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { adminApi } from '../api/admin.api'
@@ -479,11 +481,22 @@ async function loadExhibitionOrgIdSnapshot() {
   exhibitionOrgIdSet.value = ids
 }
 
+const leadFilters = ref({ q: '', type: '' })
+const filterFields = computed(() => [
+  { key: 'q', type: 'search', placeholder: t('admin.exhibitionInterests.search') },
+  { key: 'type', type: 'select', label: t('admin.filters.type'), allLabel: t('admin.exhibitionInterests.allTypes'), options: ['exhibitor', 'partner', 'visitor'].map((v) => ({ value: v, label: t(`admin.exhibitionInterests.type.${v}`) })) }
+])
+function applyFilters() {
+  page.value = 0
+  load()
+}
 async function loadExhibitionPage() {
   const res = await adminApi.getExhibitionInterests({
     page: page.value,
     size: pageSize,
-    sort: 'createdAt,desc'
+    sort: 'createdAt,desc',
+    q: leadFilters.value.q || undefined,
+    type: leadFilters.value.type || undefined
   })
   const data = res.data
   rows.value = Array.isArray(data?.content) ? data.content : []

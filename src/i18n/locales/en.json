@@ -823,7 +823,14 @@
       "inviteAgain": "Invite again",
       "invitedAt": "Invited {d}",
       "invited": "Reservation link sent to {email}.",
-      "nudged": "Nudged {n}×"
+      "nudged": "Nudged {n}×",
+      "search": "Search email, company or organization…",
+      "allTypes": "All lead types",
+      "type": {
+        "exhibitor": "Exhibitor",
+        "partner": "Partner",
+        "visitor": "Visitor"
+      }
     },
     "users": "Users",
     "organizations": "Organizations",
@@ -1325,7 +1332,11 @@
       "orgLinked": "Linked organization",
       "orgChange": "Change",
       "orgMissing": "No organization linked · link now",
-      "orgLinkedAll": "{n} reservation(s) linked to an organization."
+      "orgLinkedAll": "{n} reservation(s) linked to an organization.",
+      "colActions": "Actions",
+      "edit": "Edit",
+      "save": "Save changes",
+      "saved": "{ref} saved."
     },
     "navGroups": {
       "overview": "Overview",
@@ -1379,6 +1390,18 @@
       "none": "No lead or reservation for this organization yet.",
       "lead": "Lead",
       "newReservation": "Record a reservation"
+    },
+    "filters": {
+      "apply": "Apply",
+      "clear": "Clear filters",
+      "search": "Search…",
+      "status": "Status",
+      "type": "Type",
+      "stage": "Stage",
+      "sector": "Sector",
+      "allStatuses": "All statuses",
+      "allTypes": "All types",
+      "allStages": "All stages"
     }
   },
   "validation": {

@@ -69,22 +69,7 @@
       <p v-if="error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
       <p v-if="notice" class="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ notice }}</p>
 
-      <!-- Filters -->
-      <div class="flex flex-wrap items-center gap-2">
-        <input v-model.trim="q" type="search" :placeholder="$t('admin.visitors.search')" class="w-64 rounded-lg border border-admin-line/20 px-3 py-2 text-sm text-admin-fg" data-testid="search" @keyup.enter="reload" />
-        <select v-model="statusFilter" class="rounded-lg border border-admin-line/20 px-3 py-2 text-sm text-admin-fg" @change="reload">
-          <option value="">{{ $t('admin.visitors.allStatuses') }}</option>
-          <option value="REGISTERED">{{ $t('admin.visitors.statusREGISTERED') }}</option>
-          <option value="CHECKED_IN">{{ $t('admin.visitors.statusCHECKED_IN') }}</option>
-          <option value="CANCELLED">{{ $t('admin.visitors.statusCANCELLED') }}</option>
-        </select>
-        <select v-model="typeFilter" class="rounded-lg border border-admin-line/20 px-3 py-2 text-sm text-admin-fg" @change="reload">
-          <option value="">{{ $t('admin.visitors.allTypes') }}</option>
-          <option v-for="t in VISITOR_TYPES" :key="t" :value="t">{{ $t(`visitor.types.${t}`) }}</option>
-        </select>
-        <button type="button" class="rounded-lg border border-admin-line/20 px-3 py-2 text-xs font-semibold text-admin-muted hover:bg-admin-sunken/60" @click="reload">{{ $t('admin.visitors.apply') }}</button>
-        <span class="text-xs text-admin-subtle">{{ $t('admin.visitors.count', { n: total }) }}</span>
-      </div>
+      <AdminFilterBar v-model="filterValues" :fields="filterFields" :count="total" @apply="reload" />
 
       <AdminDataTable
         :columns="columns"
@@ -129,6 +114,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import ExpoWorkspaceBar from '../components/ExpoWorkspaceBar.vue'
 import { visitorApi, VISITOR_TYPES } from '@/features/visitor/api/visitor.api'
@@ -154,6 +140,19 @@ const notice = ref('')
 const q = ref('')
 const statusFilter = ref('')
 const typeFilter = ref('')
+const filterFields = computed(() => [
+  { key: 'q', type: 'search', placeholder: t('admin.visitors.search') },
+  { key: 'status', type: 'select', label: t('admin.filters.status'), allLabel: t('admin.visitors.allStatuses'), options: ['REGISTERED', 'CHECKED_IN', 'CANCELLED'].map((s) => ({ value: s, label: t(`admin.visitors.status${s}`) })) },
+  { key: 'type', type: 'select', label: t('admin.filters.type'), allLabel: t('admin.visitors.allTypes'), options: VISITOR_TYPES.map((v) => ({ value: v, label: t(`visitor.types.${v}`) })) }
+])
+const filterValues = computed({
+  get: () => ({ q: q.value, status: statusFilter.value, type: typeFilter.value }),
+  set: (v) => {
+    q.value = v.q || ''
+    statusFilter.value = v.status || ''
+    typeFilter.value = v.type || ''
+  }
+})
 const busyId = ref('')
 const exporting = ref(false)
 

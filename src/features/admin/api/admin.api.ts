@@ -61,7 +61,7 @@ export const adminApi = {
   },
 
   getExhibitionInterests: async (
-    pageRequest?: PageRequest
+    pageRequest?: PageRequest & { q?: string; type?: string }
   ): Promise<AxiosResponse<ExhibitionInterestsPage>> => {
     const response = await api.get<ExhibitionInterestsPage>('/admin/exhibition-interests', {
       params: pageRequest || {}

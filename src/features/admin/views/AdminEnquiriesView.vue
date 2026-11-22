@@ -6,24 +6,7 @@
           <h1 class="text-2xl sm:text-3xl font-bold text-admin-fg">{{ $t('admin.enquiries.title') }}</h1>
           <p class="mt-2 text-sm text-admin-subtle">{{ $t('admin.enquiries.subtitle') }}</p>
         </div>
-        <div class="flex flex-wrap gap-2" role="tablist">
-          <button
-            v-for="f in filters"
-            :key="f.value"
-            type="button"
-            role="tab"
-            :aria-selected="statusFilter === f.value"
-            :class="[
-              'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors',
-              statusFilter === f.value
-                ? 'bg-admin-nav text-white'
-                : 'bg-admin-sunken/60 text-admin-muted hover:bg-admin-sunken'
-            ]"
-            @click="setFilter(f.value)"
-          >
-            {{ f.label }}
-          </button>
-        </div>
+        <AdminFilterBar v-model="filterValues" :fields="filterFields" @apply="load" />
       </div>
 
       <p v-if="!loading && error" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{{ error }}</p>
@@ -118,6 +101,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminLayout from '../components/AdminLayout.vue'
+import AdminFilterBar from '../components/AdminFilterBar.vue'
 import AdminDataTable from '../components/AdminDataTable.vue'
 import { enquiryApi } from '@/features/enquiry/api/enquiry.api'
 
@@ -138,6 +122,16 @@ const page = ref(0)
 const totalPages = ref(0)
 const statusFilter = ref('')
 const busyId = ref('')
+const filterFields = computed(() => [
+  { key: 'status', type: 'select', label: t('admin.filters.status'), allLabel: t('admin.enquiries.filterAll'), options: filters.value.filter((f) => f.value).map((f) => ({ value: f.value, label: f.label })) }
+])
+const filterValues = computed({
+  get: () => ({ status: statusFilter.value }),
+  set: (v) => {
+    statusFilter.value = v.status || ''
+    page.value = 0
+  }
+})
 
 const filters = computed(() => [
   { value: '', label: t('admin.enquiries.filterAll') },
